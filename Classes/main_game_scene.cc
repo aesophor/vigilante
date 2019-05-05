@@ -20,6 +20,7 @@ bool MainGameScene::init() {
   auto visibleSize = Director::getInstance()->getVisibleSize();
   Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+  /*
   // 2. add a menu item with "X" image, which is clicked to quit the program
   //    you may modify it.
 
@@ -29,7 +30,7 @@ bool MainGameScene::init() {
       "CloseSelected.png",
       CC_CALLBACK_1(MainGameScene::menuCloseCallback, this));
 
-  if (closeItem == nullptr ||
+  if (!closeItem||
       closeItem->getContentSize().width <= 0 ||
       closeItem->getContentSize().height <= 0) {
     problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
@@ -43,14 +44,15 @@ bool MainGameScene::init() {
   auto menu = Menu::create(closeItem, NULL);
   menu->setPosition(Vec2::ZERO);
   addChild(menu, 1);
+  */
 
   // 3. add your codes below...
   // add a label shows "Hello World"
   // create and initialize a label
 
-  auto label = Label::createWithTTF("Vigilante", "fonts/Marker Felt.ttf", 24);
+  auto label = Label::createWithTTF("Vigilante", "Font/HeartbitXX.ttf", 24);
   if (!label) {
-    problemLoading("'fonts/Marker Felt.ttf'");
+    problemLoading("'Font/HeartbitXX.ttf'");
   } else {
     // position the label on the center of the screen
     label->setPosition(Vec2(origin.x + visibleSize.width/2,
@@ -79,9 +81,4 @@ void MainGameScene::menuCloseCallback(Ref* pSender)
 {
   //Close the cocos2d-x game scene and quit the application
   Director::getInstance()->end();
-
-  /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-  //EventCustom customEndEvent("game_scene_close_event");
-  //_eventDispatcher->dispatchEvent(&customEndEvent);
 }
