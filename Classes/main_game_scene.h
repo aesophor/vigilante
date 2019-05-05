@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-class HelloWorld : public cocos2d::Scene {
+class MainGameScene : public cocos2d::Scene {
  public:
   virtual bool init();
 
@@ -11,7 +11,7 @@ class HelloWorld : public cocos2d::Scene {
   void menuCloseCallback(cocos2d::Ref* pSender);
 
   // Implement the "static create()" method manually
-  CREATE_FUNC(HelloWorld);
+  CREATE_FUNC(MainGameScene);
 };
 
 #endif // MAIN_GAME_SCENE_H_
