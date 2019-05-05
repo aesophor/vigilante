@@ -39,32 +39,29 @@ add_subdirectory(${COCOS2DX_ROOT_PATH}/cocos ${ENGINE_BINARY_PATH}/cocos/core)
 set(GAME_SOURCE)
 set(GAME_HEADER)
 
-set(GAME_RES_FOLDER
-    "${CMAKE_CURRENT_SOURCE_DIR}/Resources"
-    )
+set(GAME_RES_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}/Resources")
+
 if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
 
+# Grab all .cc and .h under Classes/
+FILE(GLOB_RECURSE VIGILANTE_CC Classes/*.cc)
+FILE(GLOB_RECURSE VIGILANTE_H Classes/*.h)
+
 # add cross-platforms source files and header files 
-list(APPEND GAME_SOURCE
-     Classes/AppDelegate.cpp
-     Classes/HelloWorldScene.cpp
-     )
-list(APPEND GAME_HEADER
-     Classes/AppDelegate.h
-     Classes/HelloWorldScene.h
-     )
+list(APPEND GAME_SOURCE ${VIGILANTE_CC})
+list(APPEND GAME_HEADER ${VIGILANTE_H})
 
 if(ANDROID)
     # change APP_NAME to the share library name for Android, it's value depend on AndroidManifest.xml
     set(APP_NAME MyGame)
     list(APPEND GAME_SOURCE
-         proj.android/app/jni/hellocpp/main.cpp
+         proj.android/app/jni/hellocpp/main.cc
          )
 elseif(LINUX)
     list(APPEND GAME_SOURCE
-         proj.linux/main.cpp
+         proj.linux/main.cc
          )
 elseif(WINDOWS)
     list(APPEND GAME_HEADER
@@ -72,7 +69,7 @@ elseif(WINDOWS)
          proj.win32/resource.h
          )
     list(APPEND GAME_SOURCE
-         proj.win32/main.cpp
+         proj.win32/main.cc
          proj.win32/game.rc
          ${common_res_files}
          )
@@ -100,7 +97,7 @@ elseif(APPLE)
             proj.ios_mac/mac/Info.plist
             )
         list(APPEND GAME_SOURCE
-             proj.ios_mac/mac/main.cpp
+             proj.ios_mac/mac/main.cc
              proj.ios_mac/mac/Prefix.pch
              ${APP_UI_RES}
              )

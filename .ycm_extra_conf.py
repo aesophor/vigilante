@@ -28,9 +28,6 @@ CPP_BASE_FLAGS = [
     '-DUSE_CLANG_COMPLETER',
     '-std=c++11',
     '-xc++',
-    '-isystem', '/usr/local/include',
-    '-isystem', '/usr/lib64/gcc/x86_64-pc-linux-gnu/8.2.0/include/g++-v8'
-    '-isystem', '/usr/include',
     '-I' + proj_root + 'cocos2d',
     '-I' + proj_root + 'cocos2d/cocos',
     '-I' + proj_root + 'cocos2d/cocos/base',

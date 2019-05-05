@@ -22,8 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "app_delegate.h"
+#include "main_game_scene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -76,6 +76,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // initialize director
   auto director = Director::getInstance();
   auto glview = director->getOpenGLView();
+
   if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     glview = GLViewImpl::createWithRect("Vigilante", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
@@ -86,7 +87,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   }
 
   // turn on display FPS
-  director->setDisplayStats(true);
+  //director->setDisplayStats(true);
 
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
@@ -94,26 +95,22 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // Set the design resolution
   glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
   auto frameSize = glview->getFrameSize();
-  // if the frame's height is larger than the height of medium size.
-  if (frameSize.height > mediumResolutionSize.height)
-  {        
+
+  if (frameSize.height > mediumResolutionSize.height) {        
+    // if the frame's height is larger than the height of medium size.
     director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
-  }
-  // if the frame's height is larger than the height of small size.
-  else if (frameSize.height > smallResolutionSize.height)
-  {        
+  } else if (frameSize.height > smallResolutionSize.height) {        
+    // if the frame's height is larger than the height of small size.
     director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
-  }
-  // if the frame's height is smaller than the height of medium size.
-  else
-  {        
+  } else {        
+    // if the frame's height is smaller than the height of medium size.
     director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
   }
 
   register_all_packages();
 
   // create a scene. it's an autorelease object
-  auto scene = HelloWorld::createScene();
+  Scene* scene = HelloWorld::create();
 
   // run
   director->runWithScene(scene);

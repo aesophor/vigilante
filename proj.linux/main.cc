@@ -22,43 +22,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef _APP_DELEGATE_H_
-#define _APP_DELEGATE_H_
+#include "../Classes/app_delegate.h"
 
-#include "cocos2d.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string>
 
-/**
-@brief    The cocos2d Application.
+USING_NS_CC;
 
-Private inheritance here hides part of interface from Director.
-*/
-class  AppDelegate : private cocos2d::Application
-{
-public:
-    AppDelegate();
-    virtual ~AppDelegate();
-
-    virtual void initGLContextAttrs();
-
-    /**
-    @brief    Implement Director and Scene init code here.
-    @return true    Initialize success, app continue.
-    @return false   Initialize failed, app terminate.
-    */
-    virtual bool applicationDidFinishLaunching();
-
-    /**
-    @brief  Called when the application moves to the background
-    @param  the pointer of the application
-    */
-    virtual void applicationDidEnterBackground();
-
-    /**
-    @brief  Called when the application reenters the foreground
-    @param  the pointer of the application
-    */
-    virtual void applicationWillEnterForeground();
-};
-
-#endif // _APP_DELEGATE_H_
-
+int main(int argc, char* args[]) {
+  // Create the application instance
+  AppDelegate app;
+  return Application::getInstance()->run();
+}
