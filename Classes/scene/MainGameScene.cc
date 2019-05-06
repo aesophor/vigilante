@@ -5,10 +5,15 @@
 #include "SimpleAudioEngine.h"
 
 #include "gl/GLESRender.h"
+#include "world/GameMapManager.h"
 #include "util/box2d/B2DebugDrawLayer.h"
+#include "util/Constants.h"
 
 using std::cout;
 using std::endl;
+using vigilante::kPPM;
+using vigilante::kGravity;
+using vigilante::GameMapManager;
 
 USING_NS_CC;
 
@@ -65,11 +70,11 @@ bool MainGameScene::init() {
     problemLoading("'Font/HeartbitXX.ttf'");
   } else {
     // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-          origin.y + visibleSize.height - label->getContentSize().height));
+    //label->setPosition(Vec2(origin.x + visibleSize.width/2,
+    //      origin.y + visibleSize.height - label->getContentSize().height));
 
     // add the label as a child to this layer
-    addChild(label, 1);
+    //addChild(label, 1);
   }
 
   // add "MainGameScene" splash screen"
@@ -87,37 +92,22 @@ bool MainGameScene::init() {
   */
 
 
-  map_ = TMXTiledMap::create("Map/village.tmx");
-  map_->setScale(500 / 100);
 
   // Create Box2d world
-  const float kGravity = - 32.0f / 0.7f;
-  world_ = new b2World({0,0});
-
+  world_ = new b2World({0, kGravity});
   world_->SetAllowSleeping(false);
   //world_->SetContinuousPhysics(true);
 
-
-  // map_->getLayer() to get sprite (texture) layers
-  // map_->getObjectGroups() to get object layers
-  TMXObjectGroup* ground = map_->getObjectGroup("Portal");
-  
-  for (auto& obj : ground->getObjects()) {
-    auto& values = obj.asValueMap();
-    cout << values.at("x").asString() << endl;
-  }
-  
-
-  addChild(map_, 0);
-  
+  GameMapManager* gameMapManager = new GameMapManager(world_);
+  gameMapManager->load("Map/village.tmx");
+  addChild(gameMapManager->getMap(), 0);
   
   
   /////////////////////////////////////////
+  
+  
 #define PTM_RATIO 100
-  b2Vec2 gravity;
-  gravity.Set(0.0f, -10.0f);
-  world_ = new b2World(gravity);
-
+  
   b2BodyDef groundBodyDef;
   groundBodyDef.position.Set(0,0);
   b2Body* _groundBody = world_->CreateBody(&groundBodyDef);
@@ -161,9 +151,46 @@ bool MainGameScene::init() {
     ballShapeDef.shape = &circle;
     ballShapeDef.density = 1.0f;
     ballShapeDef.friction = 0.0f;
-    ballShapeDef.restitution = 1.0f;
+    ballShapeDef.restitution = .2f;
     b2Fixture* ballFixture = ballBody->CreateFixture(&ballShapeDef);
   }
+  
+  // Rectangle shit (using polygon)
+  // Create body.
+  /*
+  b2BodyDef bdef;
+  bdef.type = b2BodyType::b2_staticBody;
+  bdef.position.Set(583.75 / kPPM, 36.875f / kPPM);
+  b2Body* body = world_->CreateBody(&bdef);
+
+  // Attach a fixture to body.
+  b2PolygonShape shape;
+  shape.SetAsBox(4.375f / 2 / kPPM, 18.125f / 2 / kPPM);
+
+  b2FixtureDef fdef;
+  fdef.shape = &shape;
+  fdef.isSensor = false;
+  fdef.friction = 1;
+  //fdef.filter.categoryBits = 0;
+  body->CreateFixture(&fdef);
+*/
+
+  // Polyline shit
+  // Create body.
+  b2BodyDef bdef;
+  bdef.type = b2BodyType::b2_staticBody;
+  bdef.position.SetZero();
+  b2Body* body = world_->CreateBody(&bdef);
+
+  b2Vec2 vertices[2] = {{89 / kPPM, 258 / kPPM}, {133 / kPPM, 258 / kPPM}};
+  b2ChainShape shape;
+  shape.CreateChain(vertices, 2);
+
+  b2FixtureDef fdef;
+  fdef.shape = &shape;
+  fdef.isSensor = false;
+  fdef.friction = 1;
+  body->CreateFixture(&fdef);
 
   this->schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
   /////////////////////////////////////////
@@ -176,24 +203,21 @@ bool MainGameScene::init() {
 }
 
 void MainGameScene::update(float delta) {
-    {
-        int velocityIterations = 5;
-        int positionIterations = 1;
-        
-        world_->Step(delta, velocityIterations, positionIterations);
-        
-        for (b2Body* body = world_->GetBodyList(); body; body = body->GetNext())
-        {
-            if (body->GetUserData() != NULL) {
+  int velocityIterations = 5;
+  int positionIterations = 1;
 
-                Sprite* sprite = (Sprite*)body->GetUserData();
-                Vec2 position = Vec2( body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO) ;
-                CCLOG("Position:%.2f,%.2f", position.x, position.y);
-                sprite->setPosition(position );
-                sprite->setRotation( -1 * CC_RADIANS_TO_DEGREES(body->GetAngle()) );
-            }
-        }
+  world_->Step(delta, velocityIterations, positionIterations);
+
+  for (b2Body* body = world_->GetBodyList(); body; body = body->GetNext()) {
+    if (body->GetUserData()) {
+
+      Sprite* sprite = (Sprite*)body->GetUserData();
+      Vec2 position = Vec2( body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO) ;
+      //log("Position:%.2f,%.2f", position.x, position.y);
+      sprite->setPosition(position );
+      sprite->setRotation( -1 * CC_RADIANS_TO_DEGREES(body->GetAngle()) );
     }
+  }
 }
 
 void MainGameScene::createFixtures(CCTMXLayer* layer) {
