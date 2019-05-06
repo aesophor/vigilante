@@ -5,7 +5,6 @@
 #include "SimpleAudioEngine.h"
 
 #include "gl/GLESRender.h"
-#include "world/GameMapManager.h"
 #include "util/box2d/B2DebugDrawLayer.h"
 #include "util/Constants.h"
 
@@ -24,6 +23,10 @@ static void problemLoading(const char* filename) {
   printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainGameSceneScene.cpp\n");
 }
 
+MainGameScene::~MainGameScene() { 
+  // Release class member objects.
+  delete _gameMapManager; // TODO: use unique_ptr
+}
 
 
 // on "init" you need to initialize your instance
@@ -32,6 +35,9 @@ bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;
   }
+
+  _gameMapManager = nullptr;
+
   auto visibleSize = Director::getInstance()->getVisibleSize();
   Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -93,14 +99,14 @@ bool MainGameScene::init() {
 
 
 
-  // Create Box2d world
-  world_ = new b2World({0, kGravity});
-  world_->SetAllowSleeping(false);
-  //world_->SetContinuousPhysics(true);
+  // Create Box2d world by calling GameMapManager's ctor.
+  _gameMapManager = new GameMapManager({0, kGravity});
+  getWorld()->SetAllowSleeping(true);
+  getWorld()->SetContinuousPhysics(true);
 
-  GameMapManager* gameMapManager = new GameMapManager(world_);
-  gameMapManager->load("Map/village.tmx");
-  addChild(gameMapManager->getMap(), 0);
+  // Load tiled map and add it to our scene.
+  _gameMapManager->load("Map/test.tmx");
+  //addChild(_gameMapManager->getMap(), 0);
   
   
   /////////////////////////////////////////
@@ -110,25 +116,25 @@ bool MainGameScene::init() {
   
   b2BodyDef groundBodyDef;
   groundBodyDef.position.Set(0,0);
-  b2Body* _groundBody = world_->CreateBody(&groundBodyDef);
+  b2Body* groundBody = getWorld()->CreateBody(&groundBodyDef);
 
   b2EdgeShape groundBox;
   b2FixtureDef groundBoxDef;
   groundBoxDef.shape = &groundBox;
 
   groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2( (origin.x + visibleSize.width)/PTM_RATIO, origin.y / PTM_RATIO));
-  b2Fixture* fixture = _groundBody->CreateFixture(&groundBoxDef);
+  b2Fixture* fixture = groundBody->CreateFixture(&groundBoxDef);
 
   groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2(origin.x / PTM_RATIO   , (origin.y + visibleSize.height) / PTM_RATIO));
-  _groundBody->CreateFixture(&groundBoxDef);
+  groundBody->CreateFixture(&groundBoxDef);
 
   groundBox.Set(b2Vec2(origin.x  / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
       b2Vec2((origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO));
-  _groundBody->CreateFixture(&groundBoxDef);
+  groundBody->CreateFixture(&groundBoxDef);
 
   groundBox.Set(b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
       b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, origin.y / PTM_RATIO));
-  _groundBody->CreateFixture(&groundBoxDef);
+  groundBody->CreateFixture(&groundBoxDef);
 
   b2Vec2 center = b2Vec2( (origin.x + visibleSize.width * 0.5) / PTM_RATIO, (origin.y + visibleSize.height * 0.5) / PTM_RATIO);
 
@@ -142,7 +148,7 @@ bool MainGameScene::init() {
     ballBodyDef.position.Set(10.0 / PTM_RATIO * ((float)i + 1.0), center.y);
     ballBodyDef.userData = ball;
 
-    b2Body* ballBody = world_->CreateBody(&ballBodyDef);
+    b2Body* ballBody = getWorld()->CreateBody(&ballBodyDef);
 
     b2CircleShape circle;
     circle.m_radius = ball->getContentSize().width * 0.5 / PTM_RATIO;
@@ -180,7 +186,7 @@ bool MainGameScene::init() {
   b2BodyDef bdef;
   bdef.type = b2BodyType::b2_staticBody;
   bdef.position.SetZero();
-  b2Body* body = world_->CreateBody(&bdef);
+  b2Body* body = getWorld()->CreateBody(&bdef);
 
   b2Vec2 vertices[2] = {{89 / kPPM, 258 / kPPM}, {133 / kPPM, 258 / kPPM}};
   b2ChainShape shape;
@@ -196,7 +202,7 @@ bool MainGameScene::init() {
   /////////////////////////////////////////
   
   // create debugDrawNode
-  auto b = B2DebugDrawLayer::create(world_);
+  auto b = B2DebugDrawLayer::create(getWorld());
   addChild(b);
 
   return true;
@@ -206,9 +212,9 @@ void MainGameScene::update(float delta) {
   int velocityIterations = 5;
   int positionIterations = 1;
 
-  world_->Step(delta, velocityIterations, positionIterations);
+  getWorld()->Step(delta, velocityIterations, positionIterations);
 
-  for (b2Body* body = world_->GetBodyList(); body; body = body->GetNext()) {
+  for (b2Body* body = getWorld()->GetBodyList(); body; body = body->GetNext()) {
     if (body->GetUserData()) {
 
       Sprite* sprite = (Sprite*)body->GetUserData();
@@ -220,52 +226,7 @@ void MainGameScene::update(float delta) {
   }
 }
 
-void MainGameScene::createFixtures(CCTMXLayer* layer) {
-  // Create all rectangular fixtures for each tile
-  Size layerSize = layer->getLayerSize();
-  for (int y = 0; y < layerSize.height; y++) {
-    for (int x = 0; x < layerSize.width; x++) {
-//      auto tileSprite = layer->getTileAt(Point(x, y));
-      // Create a fixture if this tile has a sprite
-//      if (tileSprite) {
-        //createRectangle(layer, x, y, 1.1f, 1.1f);
-//      }
-    }
-  }
-}
 
-void MainGameScene::createRectangle(TMXLayer* layer, int x, int y, float width, float height) {
-  auto p = layer->getPositionAt(Point(x, y));
-  auto tileSize = map_->getTileSize();
-  const float ppm = 32.0f;
-
-  b2BodyDef bodyDef;
-  bodyDef.type = b2_staticBody;
-  bodyDef.position.Set(
-      (p.x + (tileSize.width / 2.0f)) / ppm,
-      (p.y + (tileSize.height / 2.0f)) / ppm
-  );
-  b2Body* body = world_->CreateBody(&bodyDef);
-
-  // Define the shape
-  b2PolygonShape shape;
-  shape.SetAsBox(
-      (tileSize.width / ppm) * 0.5f * width,
-      (tileSize.width / ppm) * 0.5f * height
-  );
-
-  // Create the fixture
-  b2FixtureDef fixtureDef;
-  fixtureDef.shape = &shape;
-  fixtureDef.density = 1.0f;
-  fixtureDef.friction = .3f;
-//  fixtureDef.filter.categoryBits = kFilterCategoryLevel;
-  fixtureDef.filter.maskBits = 0xffff;
-  body->CreateFixture(&fixtureDef);
-}
-
-
-void MainGameScene::menuCloseCallback(Ref* pSender) {
-  //Close the cocos2d-x game scene and quit the application
-  Director::getInstance()->end();
+b2World* MainGameScene::getWorld() const {
+  return _gameMapManager->getWorld();
 }

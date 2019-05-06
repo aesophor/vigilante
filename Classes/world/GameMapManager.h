@@ -10,7 +10,7 @@ namespace vigilante {
 
 class GameMapManager {
  public:
-  GameMapManager(b2World* world);
+  GameMapManager(const b2Vec2& gravity);
   virtual ~GameMapManager();
   void load(const std::string& mapFileName);
 
