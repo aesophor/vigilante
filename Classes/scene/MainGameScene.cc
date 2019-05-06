@@ -1,11 +1,11 @@
-#include "main_game_scene.h"
+#include "MainGameScene.h"
 
 #include <iostream>
 
 #include "SimpleAudioEngine.h"
 
-#include "GLESRender.h"
-#include "B2DebugDrawLayer.h"
+#include "gl/GLESRender.h"
+#include "util/box2d/B2DebugDrawLayer.h"
 
 using std::cout;
 using std::endl;
@@ -88,7 +88,7 @@ bool MainGameScene::init() {
 
 
   map_ = TMXTiledMap::create("Map/village.tmx");
-  map_->setScale(2);
+  map_->setScale(500 / 100);
 
   // Create Box2d world
   const float kGravity = - 32.0f / 0.7f;
@@ -108,65 +108,64 @@ bool MainGameScene::init() {
   }
   
 
-  //addChild(map_, 3);
+  addChild(map_, 0);
   
   
   
   /////////////////////////////////////////
-#define PTM_RATIO 32
+#define PTM_RATIO 100
   b2Vec2 gravity;
-        gravity.Set(0.0f, -10.0f);
-        world_ = new b2World(gravity);
+  gravity.Set(0.0f, -10.0f);
+  world_ = new b2World(gravity);
 
-        b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(0,0);
-        b2Body* _groundBody = world_->CreateBody(&groundBodyDef);
-        
-        b2EdgeShape groundBox;
-        b2FixtureDef groundBoxDef;
-        groundBoxDef.shape = &groundBox;
-        
-        groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2( (origin.x + visibleSize.width)/PTM_RATIO, origin.y / PTM_RATIO));
-        b2Fixture * fixture = _groundBody->CreateFixture(&groundBoxDef);
-        
-        groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2(origin.x / PTM_RATIO   , (origin.y + visibleSize.height) / PTM_RATIO));
-        _groundBody->CreateFixture(&groundBoxDef);
-        
-        groundBox.Set(b2Vec2(origin.x  / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
-                      b2Vec2((origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO));
-        _groundBody->CreateFixture(&groundBoxDef);
-        
-        groundBox.Set(b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
-                      b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, origin.y / PTM_RATIO));
-        _groundBody->CreateFixture(&groundBoxDef);
-        
-        b2Vec2 center = b2Vec2( (origin.x + visibleSize.width * 0.5) / PTM_RATIO, (origin.y + visibleSize.height * 0.5) / PTM_RATIO);
+  b2BodyDef groundBodyDef;
+  groundBodyDef.position.Set(0,0);
+  b2Body* _groundBody = world_->CreateBody(&groundBodyDef);
 
-        for (int i=0; i<10; i++)
-        {
-            Sprite *ball = Sprite::create("lol.png");
-            ball->setTag(1);
-            this->addChild(ball);
-            
-            b2BodyDef ballBodyDef;
-            ballBodyDef.type = b2_dynamicBody;
-            ballBodyDef.position.Set(10.0 / PTM_RATIO * ((float)i + 1.0), center.y);
-            ballBodyDef.userData = ball;
-            
-            b2Body *ballBody = world_->CreateBody(&ballBodyDef);
-            
-            b2CircleShape circle;
-            circle.m_radius = ball->getContentSize().width * 0.5 / PTM_RATIO;
-            
-            b2FixtureDef ballShapeDef;
-            ballShapeDef.shape = &circle;
-            ballShapeDef.density = 1.0f;
-            ballShapeDef.friction = 0.0f;
-            ballShapeDef.restitution = 1.0f;
-            b2Fixture * ballFixture = ballBody->CreateFixture(&ballShapeDef);
-        }
+  b2EdgeShape groundBox;
+  b2FixtureDef groundBoxDef;
+  groundBoxDef.shape = &groundBox;
 
-        this->schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
+  groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2( (origin.x + visibleSize.width)/PTM_RATIO, origin.y / PTM_RATIO));
+  b2Fixture* fixture = _groundBody->CreateFixture(&groundBoxDef);
+
+  groundBox.Set(b2Vec2(origin.x / PTM_RATIO, origin.y / PTM_RATIO), b2Vec2(origin.x / PTM_RATIO   , (origin.y + visibleSize.height) / PTM_RATIO));
+  _groundBody->CreateFixture(&groundBoxDef);
+
+  groundBox.Set(b2Vec2(origin.x  / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
+      b2Vec2((origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO));
+  _groundBody->CreateFixture(&groundBoxDef);
+
+  groundBox.Set(b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, (origin.y + visibleSize.height) / PTM_RATIO),
+      b2Vec2( (origin.x + visibleSize.width) / PTM_RATIO, origin.y / PTM_RATIO));
+  _groundBody->CreateFixture(&groundBoxDef);
+
+  b2Vec2 center = b2Vec2( (origin.x + visibleSize.width * 0.5) / PTM_RATIO, (origin.y + visibleSize.height * 0.5) / PTM_RATIO);
+
+  for (int i = 0; i < 10; i++) {
+    Sprite* ball = Sprite::create("lol.png");
+    ball->setTag(1);
+    this->addChild(ball);
+
+    b2BodyDef ballBodyDef;
+    ballBodyDef.type = b2_dynamicBody;
+    ballBodyDef.position.Set(10.0 / PTM_RATIO * ((float)i + 1.0), center.y);
+    ballBodyDef.userData = ball;
+
+    b2Body* ballBody = world_->CreateBody(&ballBodyDef);
+
+    b2CircleShape circle;
+    circle.m_radius = ball->getContentSize().width * 0.5 / PTM_RATIO;
+
+    b2FixtureDef ballShapeDef;
+    ballShapeDef.shape = &circle;
+    ballShapeDef.density = 1.0f;
+    ballShapeDef.friction = 0.0f;
+    ballShapeDef.restitution = 1.0f;
+    b2Fixture* ballFixture = ballBody->CreateFixture(&ballShapeDef);
+  }
+
+  this->schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
   /////////////////////////////////////////
   
   // create debugDrawNode

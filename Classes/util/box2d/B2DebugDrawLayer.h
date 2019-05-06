@@ -24,27 +24,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __B2_DEBUG_DRAW_LAYER_H__
-#define __B2_DEBUG_DRAW_LAYER_H__
+#ifndef B2_DEBUG_DRAW_LAYER_H_
+#define B2_DEBUG_DRAW_LAYER_H_
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
-#include "GLESRender.h"
+#include "gl/GLESRender.h"
 
-class B2DebugDrawLayer : public cocos2d::Sprite
-{
+class B2DebugDrawLayer : public cocos2d::Sprite {
   b2World* _world;
   GLESDebugDraw* mB2DebugDraw;
-    
-    cocos2d::CustomCommand _customCmd;
+
+  cocos2d::CustomCommand _customCmd;
  
 public:
   B2DebugDrawLayer(b2World* world);
   static B2DebugDrawLayer* create(b2World* world);
   bool init() override;
   void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
-    void onDraw(const cocos2d::Mat4 &transform, uint32_t flags);
-
+  void onDraw(const cocos2d::Mat4 &transform, uint32_t flags);
 };
 
-#endif // __B2_DEBUG_DRAW_LAYER_H__
+#endif // B2_DEBUG_DRAW_LAYER_H_

@@ -26,32 +26,24 @@ THE SOFTWARE.
 
 #include "B2DebugDrawLayer.h"
 
-using namespace cocos2d;
+USING_NS_CC;
 
-B2DebugDrawLayer* B2DebugDrawLayer::create(b2World* world)
-{
+B2DebugDrawLayer* B2DebugDrawLayer::create(b2World* world) {
   B2DebugDrawLayer *pRet = new B2DebugDrawLayer(world);
-  if (pRet && pRet->init())
-  {
+  if (pRet && pRet->init()) {
     pRet->autorelease();
     return pRet;
-  }
-  else
-  {
+  } else {
     delete pRet;
-    pRet = NULL;
-    return NULL;
+    pRet = nullptr;
+    return nullptr;
   }
 }
 
 B2DebugDrawLayer::B2DebugDrawLayer(b2World* world)
-: _world(world)
-{
-}
+    : _world(world) {}
 
-bool B2DebugDrawLayer::init()
-{
-  
+bool B2DebugDrawLayer::init() {
   mB2DebugDraw = new GLESDebugDraw( 100 );
   _world->SetDebugDraw(mB2DebugDraw);
   uint32 flags = 0;
@@ -66,30 +58,24 @@ bool B2DebugDrawLayer::init()
 }
 
 
-
-void B2DebugDrawLayer::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
-{
-    
-    
-    //Sprite::draw(renderer, transform, flags);
-    _customCmd.init(_globalZOrder, transform, flags);
-    _customCmd.func = CC_CALLBACK_0(B2DebugDrawLayer::onDraw, this, transform, flags);
-    renderer->addCommand(&_customCmd);
-    
+void B2DebugDrawLayer::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) {
+  //Sprite::draw(renderer, transform, flags);
+  _customCmd.init(_globalZOrder, transform, flags);
+  _customCmd.func = CC_CALLBACK_0(B2DebugDrawLayer::onDraw, this, transform, flags);
+  renderer->addCommand(&_customCmd);
 }
 
-void B2DebugDrawLayer::onDraw(const Mat4 &transform, uint32_t flags)
-{
-    Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-    director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-    director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
-    
-    GL::enableVertexAttribs( cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION );
-    
-    _world->DrawDebugData();
-    
-    CHECK_GL_ERROR_DEBUG();
-    
-    director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+void B2DebugDrawLayer::onDraw(const Mat4 &transform, uint32_t flags) {
+  Director* director = Director::getInstance();
+  CCASSERT(director, "Director is null when seting matrix stack");
+  director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+  director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
+
+  GL::enableVertexAttribs( cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION );
+
+  _world->DrawDebugData();
+
+  CHECK_GL_ERROR_DEBUG();
+
+  director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
