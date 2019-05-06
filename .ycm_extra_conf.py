@@ -41,6 +41,7 @@ CPP_BASE_FLAGS = [
     '-I' + proj_root + 'cocos2d/extensions',
     '-I' + proj_root + 'cocos2d/external',
     '-I' + proj_root + 'cocos2d/external/glfw3/include/linux',
+    '-I' + proj_root + 'cocos2d/external/Box2D/include',
     '-I' + proj_root + 'cocos2d/cocos/platform/linux',
     '-I' + proj_root + 'Classes',
     '-D', 'USE_FILE32API',

@@ -1,5 +1,5 @@
-#ifndef _APP_DELEGATE_H_
-#define _APP_DELEGATE_H_
+#ifndef APP_DELEGATE_H_
+#define APP_DELEGATE_H_
 
 #include "cocos2d.h"
 
@@ -35,4 +35,4 @@ class AppDelegate : private cocos2d::Application {
   virtual void applicationWillEnterForeground();
 };
 
-#endif // _APP_DELEGATE_H_
+#endif // APP_DELEGATE_H_
