@@ -143,6 +143,11 @@ bool MainGameScene::init() {
   auto b = B2DebugRenderer::create(getWorld());
   addChild(b);
 
+//  SpriteBatchNode* spritesheet = SpriteBatchNode::create("Texture/Character/Player/player.png");
+//  addChild(spritesheet);
+
+//  auto spriteCache = SpriteFrameCache::getInstance();
+
   auto camPos = this->getDefaultCamera()->getPosition();
   this->getDefaultCamera()->setPosition(200, 100);
   this->getDefaultCamera()->setPositionZ(225);

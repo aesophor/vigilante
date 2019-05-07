@@ -83,10 +83,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
   register_all_packages();
 
-  // create a scene. it's an autorelease object
-  Scene* scene = MainGameScene::create();
+  // Load sprite sheets.
+  //SpriteFrameCache* spriteCache = SpriteFrameCache::getInstance();
 
-  // run
+  // Create a scene. It's an autorelease object.
+  Scene* scene = MainGameScene::create();
   director->runWithScene(scene);
 
   return true;

@@ -15,6 +15,7 @@ class Player {
  private:
   void defineBody(float x, float y);
 
+  b2Body* _body;
   b2Fixture* _bodyFixture;
 };
 
