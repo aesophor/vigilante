@@ -3,7 +3,7 @@
 #include "SimpleAudioEngine.h"
 
 #include "gl/GLESRender.h"
-#include "util/box2d/B2DebugDrawLayer.h"
+#include "util/box2d/B2DebugRenderer.h"
 #include "util/Constants.h"
 
 using vigilante::kPPM;
@@ -144,7 +144,7 @@ bool MainGameScene::init() {
   this->schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
   
   // create debugDrawNode
-  auto b = B2DebugDrawLayer::create(getWorld());
+  auto b = B2DebugRenderer::create(getWorld());
   addChild(b);
 
   return true;
