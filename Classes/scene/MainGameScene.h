@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
-#include "world/GameMapManager.h"
+#include "map/GameMapManager.h"
 
 class MainGameScene : public cocos2d::Scene {
  public:

@@ -26,21 +26,33 @@ GameMapManager::~GameMapManager() {
 void GameMapManager::load(const string& mapFileName) {
   // Release previous TMXTiledMap object.
   _map = TMXTiledMap::create(mapFileName);
+  createPolylines(_world, _map, "Ground");
+  createPolylines(_world, _map, "Wall");
+  createRectangles(_world, _map, "Platform");
+  createRectangles(_world, _map, "Portal");
 
   // _map->getLayer() to get sprite (texture) layers
   // _map->getObjectGroups() to get object layers
+}
 
-  auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-  log("scale factor: %f\n", Director::getInstance()->getContentScaleFactor());
 
-  // Extract object info from object groups.
-  TMXObjectGroup* portals = _map->getObjectGroup("Portal");
+b2World* GameMapManager::getWorld() const {
+  return _world;
+}
+
+TMXTiledMap* GameMapManager::getMap() const {
+  return _map;
+}
+
+
+void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const string& layerName) {
+  TMXObjectGroup* portals = map->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
 
   for (auto& obj : portals->getObjects()) {
     //log("%s\n", obj.getDescription().c_str());
     auto& valMap = obj.asValueMap();
-    int id = valMap["id"].asInt();
+    //int id = valMap["id"].asInt();
     float x = valMap["x"].asFloat() / 100;
     float y = valMap["y"].asFloat() / 100;
     float w = valMap["width"].asFloat() / 100;
@@ -50,7 +62,7 @@ void GameMapManager::load(const string& mapFileName) {
     b2BodyDef bdef;
     bdef.type = b2BodyType::b2_staticBody;
     bdef.position.Set(x + w / 2, y + h / 2);
-    b2Body* body = getWorld()->CreateBody(&bdef);
+    b2Body* body = world->CreateBody(&bdef);
 
     // Attach a fixture to body.
     b2PolygonShape shape;
@@ -63,9 +75,11 @@ void GameMapManager::load(const string& mapFileName) {
     //fdef.filter.categoryBits = 0;
     body->CreateFixture(&fdef);
   }
+}
 
-
-  TMXObjectGroup* ground = _map->getObjectGroup("Wall");
+void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const string& layerName) {
+  float scaleFactor = Director::getInstance()->getContentScaleFactor();
+  TMXObjectGroup* ground = map->getObjectGroup(layerName);
 
   for (auto& obj : ground->getObjects()) {
     log("%s\n", obj.getDescription().c_str());
@@ -84,7 +98,7 @@ void GameMapManager::load(const string& mapFileName) {
     b2BodyDef bdef;
     bdef.type = b2BodyType::b2_staticBody;
     bdef.position.SetZero();
-    b2Body* body = getWorld()->CreateBody(&bdef);
+    b2Body* body = world->CreateBody(&bdef);
 
     b2ChainShape shape;
     shape.CreateChain(vertices, valVec.size());
@@ -95,13 +109,5 @@ void GameMapManager::load(const string& mapFileName) {
     fdef.friction = 1;
     body->CreateFixture(&fdef);
   }
-}
 
-
-b2World* GameMapManager::getWorld() const {
-  return _world;
-}
-
-TMXTiledMap* GameMapManager::getMap() const {
-  return _map;
 }
