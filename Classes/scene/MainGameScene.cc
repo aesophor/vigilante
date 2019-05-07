@@ -42,6 +42,7 @@ bool MainGameScene::init() {
   log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
   log("origin: %f %f\n", origin.x, origin.y);
 
+
   //this->getDefaultCamera()->setViewport({1000, 1000, 1000, 1000});
 
   // Create Box2d world by calling GameMapManager's ctor.
@@ -52,6 +53,7 @@ bool MainGameScene::init() {
   // Load tiled map and add it to our scene.
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getMap(), 0);
+
 
 
   /*
@@ -149,6 +151,10 @@ bool MainGameScene::init() {
   // create debugDrawNode
   auto b = B2DebugRenderer::create(getWorld());
   addChild(b);
+
+  auto camPos = this->getDefaultCamera()->getPosition();
+  this->getDefaultCamera()->setPosition(200, 100);
+  this->getDefaultCamera()->setPositionZ(225);
 
   return true;
 }
