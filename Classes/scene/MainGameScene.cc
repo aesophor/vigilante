@@ -6,6 +6,7 @@
 #include "util/box2d/B2DebugRenderer.h"
 #include "util/Constants.h"
 
+using std::unique_ptr;
 using vigilante::kPPM;
 using vigilante::kGravity;
 using vigilante::GameMapManager;
@@ -22,10 +23,7 @@ void problemLoading(const char* filename) {
 
 } // namespace
 
-MainGameScene::~MainGameScene() { 
-  // Release class member objects.
-  delete _gameMapManager; // TODO: use unique_ptr
-}
+MainGameScene::~MainGameScene() {}
 
 
 // on "init" you need to initialize your instance
@@ -34,23 +32,16 @@ bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;
   }
-  _gameMapManager = nullptr;
 
   auto visibleSize = Director::getInstance()->getVisibleSize();
   Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
   log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
   log("origin: %f %f\n", origin.x, origin.y);
 
 
-  //this->getDefaultCamera()->setViewport({1000, 1000, 1000, 1000});
-
-  // Create Box2d world by calling GameMapManager's ctor.
-  _gameMapManager = new GameMapManager({0, kGravity});
-  getWorld()->SetAllowSleeping(true);
-  getWorld()->SetContinuousPhysics(true);
-
-  // Load tiled map and add it to our scene.
+  // Initialize GameMapManager
+  // b2World is created when GameMapManager's ctor is called.
+  _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getMap(), 0);
 

@@ -38,12 +38,12 @@ B2DebugRenderer* B2DebugRenderer::create(b2World* world) {
 B2DebugRenderer::B2DebugRenderer(b2World* world) : _world(world) {}
 
 bool B2DebugRenderer::init() {
-  mB2DebugDraw = new GLESDebugDraw( 100 );
+  mB2DebugDraw = new GLESDebugDraw(100);
   _world->SetDebugDraw(mB2DebugDraw);
   uint32 flags = 0;
   flags += b2Draw::e_shapeBit;
   flags += b2Draw::e_jointBit;
-  flags += b2Draw::e_aabbBit;
+  //flags += b2Draw::e_aabbBit;
   flags += b2Draw::e_pairBit;
   flags += b2Draw::e_centerOfMassBit;
   mB2DebugDraw->SetFlags(flags);

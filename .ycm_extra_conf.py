@@ -26,7 +26,7 @@ CPP_BASE_FLAGS = [
     '-Wno-variadic-macros',
     '-Wno-ignored-qualifiers',
     '-DUSE_CLANG_COMPLETER',
-    '-std=c++11',
+    '-std=c++14',
     '-xc++',
     '-I' + proj_root + 'cocos2d',
     '-I' + proj_root + 'cocos2d/cocos',

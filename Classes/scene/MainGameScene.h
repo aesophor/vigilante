@@ -1,6 +1,8 @@
 #ifndef VIGILANTE_MAIN_GAME_SCENE_H_
 #define VIGILANTE_MAIN_GAME_SCENE_H_
 
+#include <memory>
+
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
@@ -18,7 +20,7 @@ class MainGameScene : public cocos2d::Scene {
   b2World* getWorld() const;
 
  private:
-  vigilante::GameMapManager* _gameMapManager;
+  std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
 };
 
 #endif // VIGILANTE_MAIN_GAME_SCENE_H_

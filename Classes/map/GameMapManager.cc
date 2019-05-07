@@ -14,12 +14,28 @@ using cocos2d::TMXObjectGroup;
 using vigilante::kGround;
 using vigilante::kPlayer;
 using vigilante::kPPM;
+using vigilante::kGravity;
+using vigilante::Player;
 using vigilante::GameMapManager;
 
 USING_NS_CC;
 
+
+GameMapManager* GameMapManager::_instance = nullptr;
+
+GameMapManager* GameMapManager::getInstance() {
+  if (!_instance) {
+    _instance = new GameMapManager({0, kGravity});
+  }
+  return _instance;
+}
+
+
 GameMapManager::GameMapManager(const b2Vec2& gravity)
-    : _world(new b2World(gravity)), _map() {}
+    : _world(new b2World(gravity)), _map() {
+  _world->SetAllowSleeping(true);
+  _world->SetContinuousPhysics(true);
+}
 
 GameMapManager::~GameMapManager() {
   if (_map) {
@@ -39,35 +55,19 @@ void GameMapManager::load(const string& mapFileName) {
   //createRectangles(_world, _map, "Platform");
   //createRectangles(_world, _map, "Portal");
 
-  // Spawn player
+  Player* player = spawnPlayer();
+}
+
+
+Player* GameMapManager::spawnPlayer() {
   TMXObjectGroup* objGroup = _map->getObjectGroup("Player");
+
   auto& playerValMap = objGroup->getObjects()[0].asValueMap();
-  float playerX = playerValMap["x"].asFloat() / kPPM;
-  float playerY = playerValMap["y"].asFloat() / kPPM;
-  log("Player pos: %f %f\n", playerX, playerY);
+  float x = playerValMap["x"].asFloat() / kPPM;
+  float y = playerValMap["y"].asFloat() / kPPM;
+  log("[INFO] Spawning player at: x=%f y=%f\n", x, y);
 
-  b2BodyDef bdef;
-  bdef.type = b2BodyType::b2_dynamicBody;
-  bdef.position.Set(playerX, playerY);
-  b2Body* b2body = _world->CreateBody(&bdef);
-
-  // Create body fixture.
-  // Fixture position in box2d is relative to b2body's position.
-  b2PolygonShape bodyShape;
-  b2Vec2 vertices[4];
-  vertices[0] = b2Vec2(-5 / kPPM, 20 / kPPM);
-  vertices[1] = b2Vec2(5 / kPPM, 20 / kPPM);
-  vertices[2] = b2Vec2(-5 / kPPM, -14 / kPPM);
-  vertices[3] = b2Vec2(5 / kPPM, -14 / kPPM);
-  bodyShape.Set(vertices, 4);
-
-  b2FixtureDef fdef;
-  fdef.shape = &bodyShape;
-  fdef.filter.categoryBits = kPlayer;
-  fdef.filter.maskBits = kGround;
-  
-  b2Fixture* bodyFixture = b2body->CreateFixture(&fdef);
-  //bodyFixture->SetUserData(nullptr); // set to player's *this
+  return new Player(x, y);
 }
 
 
