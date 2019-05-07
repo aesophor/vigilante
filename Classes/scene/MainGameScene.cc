@@ -1,15 +1,11 @@
 #include "MainGameScene.h"
 
-#include <iostream>
-
 #include "SimpleAudioEngine.h"
 
 #include "gl/GLESRender.h"
 #include "util/box2d/B2DebugDrawLayer.h"
 #include "util/Constants.h"
 
-using std::cout;
-using std::endl;
 using vigilante::kPPM;
 using vigilante::kGravity;
 using vigilante::GameMapManager;
@@ -35,69 +31,15 @@ bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;
   }
-
   _gameMapManager = nullptr;
 
   auto visibleSize = Director::getInstance()->getVisibleSize();
   Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-  /*
-  // 2. add a menu item with "X" image, which is clicked to quit the program
-  //    you may modify it.
+  log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
+  log("origin: %f %f\n", origin.x, origin.y);
 
-  // add a "close" icon to exit the progress. it's an autorelease object
-  auto closeItem = MenuItemImage::create(
-      "CloseNormal.png",
-      "CloseSelected.png",
-      CC_CALLBACK_1(MainGameScene::menuCloseCallback, this));
-
-  if (!closeItem||
-      closeItem->getContentSize().width <= 0 ||
-      closeItem->getContentSize().height <= 0) {
-    problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-  } else {
-    float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-    float y = origin.y + closeItem->getContentSize().height/2;
-    closeItem->setPosition(Vec2(x,y));
-  }
-
-  // create menu, it's an autorelease object
-  auto menu = Menu::create(closeItem, NULL);
-  menu->setPosition(Vec2::ZERO);
-  addChild(menu, 1);
-  */
-
-  // 3. add your codes below...
-  // add a label shows "Hello World"
-  // create and initialize a label
-
-  auto label = Label::createWithTTF("Vigilante", "Font/HeartbitXX.ttf", 24);
-  if (!label) {
-    problemLoading("'Font/HeartbitXX.ttf'");
-  } else {
-    // position the label on the center of the screen
-    //label->setPosition(Vec2(origin.x + visibleSize.width/2,
-    //      origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    //addChild(label, 1);
-  }
-
-  // add "MainGameScene" splash screen"
-  /*
-  auto sprite = Sprite::create("MainGameScene.png");
-  if (!sprite) {
-    problemLoading("'MainGameScene.png'");
-  } else {
-    // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    addChild(sprite, 0);
-  }
-  */
-
-
+  //this->getDefaultCamera()->setViewport({1000, 1000, 1000, 1000});
 
   // Create Box2d world by calling GameMapManager's ctor.
   _gameMapManager = new GameMapManager({0, kGravity});
@@ -105,14 +47,12 @@ bool MainGameScene::init() {
   getWorld()->SetContinuousPhysics(true);
 
   // Load tiled map and add it to our scene.
-  _gameMapManager->load("Map/test.tmx");
-  //addChild(_gameMapManager->getMap(), 0);
-  
-  
-  /////////////////////////////////////////
-  
-  
-#define PTM_RATIO 100
+  _gameMapManager->load("Map/starting_point.tmx");
+  addChild(_gameMapManager->getMap(), 0);
+
+
+  /*
+  #define PTM_RATIO 100
   
   b2BodyDef groundBodyDef;
   groundBodyDef.position.Set(0,0);
@@ -160,18 +100,19 @@ bool MainGameScene::init() {
     ballShapeDef.restitution = .2f;
     b2Fixture* ballFixture = ballBody->CreateFixture(&ballShapeDef);
   }
+  */
   
+  /*
   // Rectangle shit (using polygon)
   // Create body.
-  /*
   b2BodyDef bdef;
   bdef.type = b2BodyType::b2_staticBody;
-  bdef.position.Set(583.75 / kPPM, 36.875f / kPPM);
-  b2Body* body = world_->CreateBody(&bdef);
+  bdef.position.Set(37.0f / kPPM, 50.0f / kPPM);
+  b2Body* body = getWorld()->CreateBody(&bdef);
 
   // Attach a fixture to body.
   b2PolygonShape shape;
-  shape.SetAsBox(4.375f / 2 / kPPM, 18.125f / 2 / kPPM);
+  shape.SetAsBox(33.0f / 2 / kPPM, 74.0f / 2 / kPPM);
 
   b2FixtureDef fdef;
   fdef.shape = &shape;
@@ -179,8 +120,9 @@ bool MainGameScene::init() {
   fdef.friction = 1;
   //fdef.filter.categoryBits = 0;
   body->CreateFixture(&fdef);
-*/
+  */
 
+  /*
   // Polyline shit
   // Create body.
   b2BodyDef bdef;
@@ -197,9 +139,9 @@ bool MainGameScene::init() {
   fdef.isSensor = false;
   fdef.friction = 1;
   body->CreateFixture(&fdef);
+  */
 
   this->schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
-  /////////////////////////////////////////
   
   // create debugDrawNode
   auto b = B2DebugDrawLayer::create(getWorld());
@@ -216,9 +158,8 @@ void MainGameScene::update(float delta) {
 
   for (b2Body* body = getWorld()->GetBodyList(); body; body = body->GetNext()) {
     if (body->GetUserData()) {
-
       Sprite* sprite = (Sprite*)body->GetUserData();
-      Vec2 position = Vec2( body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO) ;
+      Vec2 position = Vec2( body->GetPosition().x * kPPM, body->GetPosition().y * kPPM);
       //log("Position:%.2f,%.2f", position.x, position.y);
       sprite->setPosition(position );
       sprite->setRotation( -1 * CC_RADIANS_TO_DEGREES(body->GetAngle()) );
