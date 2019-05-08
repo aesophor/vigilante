@@ -17,6 +17,7 @@ class MainGameScene : public cocos2d::Scene {
 
   virtual bool init() override;
   virtual void update(float delta) override;
+  virtual void handleInput(float delta);
 
   b2World* getWorld() const;
 

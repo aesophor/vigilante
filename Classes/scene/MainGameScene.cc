@@ -32,9 +32,7 @@ void problemLoading(const char* filename) {
 MainGameScene::~MainGameScene() {}
 
 
-// on "init" you need to initialize your instance
 bool MainGameScene::init() {
-  // 1. super init first
   if (!Scene::init()) {
     return false;
   }
@@ -50,11 +48,16 @@ bool MainGameScene::init() {
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getMap(), 0);
+  addChild(_gameMapManager->getPlayer()->getSpritesheet(), 30);
 
   // Initialize GameInputManager
   // GameInputManager keep tracks of which keys are pressed.
   _gameInputManager = unique_ptr<GameInputManager>(GameInputManager::getInstance());
   _gameInputManager->activate(this);
+
+  // Create B2DebugRenderer
+  auto b2dr = B2DebugRenderer::create(getWorld());
+  addChild(b2dr);
 
 
   /*
@@ -107,54 +110,13 @@ bool MainGameScene::init() {
     b2Fixture* ballFixture = ballBody->CreateFixture(&ballShapeDef);
   }
   */
-  
-  /*
-  // Rectangle shit (using polygon)
-  // Create body.
-  b2BodyDef bdef;
-  bdef.type = b2BodyType::b2_staticBody;
-  bdef.position.Set(37.0f / kPPM, 50.0f / kPPM);
-  b2Body* body = getWorld()->CreateBody(&bdef);
-
-  // Attach a fixture to body.
-  b2PolygonShape shape;
-  shape.SetAsBox(33.0f / 2 / kPPM, 74.0f / 2 / kPPM);
-
-  b2FixtureDef fdef;
-  fdef.shape = &shape;
-  fdef.isSensor = false;
-  fdef.friction = 1;
-  //fdef.filter.categoryBits = 0;
-  body->CreateFixture(&fdef);
-  */
-
-  /*
-  // Polyline shit
-  // Create body.
-  b2BodyDef bdef;
-  bdef.type = b2BodyType::b2_staticBody;
-  bdef.position.SetZero();
-  b2Body* body = getWorld()->CreateBody(&bdef);
-
-  b2Vec2 vertices[2] = {{89 / kPPM, 258 / kPPM}, {133 / kPPM, 258 / kPPM}};
-  b2ChainShape shape;
-  shape.CreateChain(vertices, 2);
-
-  b2FixtureDef fdef;
-  fdef.shape = &shape;
-  fdef.isSensor = false;
-  fdef.friction = 1;
-  body->CreateFixture(&fdef);
-  */
 
   schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
   
-  // create debugDrawNode
-  auto b = B2DebugRenderer::create(getWorld());
-  addChild(b);
 
 
   // Animation
+  /*
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   string location = "Texture/Character/Player/sprites/p_attacking/";
   frameCache->addSpriteFramesWithFile(location + "p_attacking.plist");
@@ -181,40 +143,9 @@ bool MainGameScene::init() {
   spritesheet->addChild(player);
   spritesheet->setScale(1 / sf);
   spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
-
-
-  /*
-	auto keyboardEvLstnr = EventListenerKeyboard::create();
-
-  keyboardEvLstnr->onKeyPressed = [&](EventKeyboard::KeyCode keyCode, Event* event) {
-    auto b2body = _gameMapManager->getPlayer()->getBody();
-
-    switch (keyCode) {
-      case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-      case EventKeyboard::KeyCode::KEY_A:
-        b2body->ApplyLinearImpulse({-.5f, 0}, b2body->GetWorldCenter(), true);
-        cocos2d::log("left\n");
-        break;
-      case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-      case EventKeyboard::KeyCode::KEY_D:
-        b2body->ApplyLinearImpulse({.5f, 0}, b2body->GetWorldCenter(), true);
-        cocos2d::log("right\n");
-        break;
-      case EventKeyboard::KeyCode::KEY_UP_ARROW:
-      case EventKeyboard::KeyCode::KEY_W:
-        cocos2d::log("up\n");
-        break;
-      case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-      case EventKeyboard::KeyCode::KEY_S:
-        cocos2d::log("down\n");
-        break;
-      default:
-        break;
-    }
-  };
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardEvLstnr, this);
   */
-  
+
+
   auto camPos = getDefaultCamera()->getPosition();
   getDefaultCamera()->setPosition(200, 100);
   getDefaultCamera()->setPositionZ(225);
@@ -226,17 +157,10 @@ void MainGameScene::update(float delta) {
   const float kFps = 60.0f;
   const int kVelocityIterations = 6;
   const int kPositionIterations = 2;
-
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
 
-  auto player = _gameMapManager->getPlayer();
-
-  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
-    player->moveLeft();
-  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
-    player->moveRight();
-  }
-
+  handleInput(delta);
+  _gameMapManager->getPlayer()->update(delta);
   /*
   for (b2Body* body = getWorld()->GetBodyList(); body; body = body->GetNext()) {
     if (body->GetUserData()) {
@@ -248,6 +172,16 @@ void MainGameScene::update(float delta) {
     }
   }
   */
+}
+
+void MainGameScene::handleInput(float delta) {
+  auto player = _gameMapManager->getPlayer();
+
+  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
+    player->moveLeft();
+  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
+    player->moveRight();
+  }
 }
 
 
