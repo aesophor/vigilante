@@ -34,6 +34,9 @@ class Player {
   b2Body* getB2Body() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
+  bool isJumping() const;
+  void setIsJumping(bool isJumping);
+
  private:
   void defineBody(float x, float y);
   void defineTexture(float x, float y);

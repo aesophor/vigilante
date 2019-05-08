@@ -28,9 +28,14 @@ GameMapManager* GameMapManager::getInstance() {
 
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
-    : _world(new b2World(gravity)), _map() {
+    : _world(new b2World(gravity)),
+      _worldContactListener(new WorldContactListener()),
+      _map(),
+      _scene(), 
+      _player() {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
+  _world->SetContactListener(_worldContactListener.get());
 }
 
 GameMapManager::~GameMapManager() {

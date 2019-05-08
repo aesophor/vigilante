@@ -216,4 +216,12 @@ SpriteBatchNode* Player::getSpritesheet() const {
   return _spritesheet;
 }
 
+bool Player::isJumping() const {
+  return _isJumping;
+}
+
+void Player::setIsJumping(bool isJumping) {
+  _isJumping = isJumping;
+}
+
 } // namespace vigilante

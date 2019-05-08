@@ -182,7 +182,7 @@ void MainGameScene::handleInput(float delta) {
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
     player->moveRight();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_W)) {
-    //player->jump();
+    player->jump();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_S)) {
 
   }

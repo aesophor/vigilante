@@ -2,11 +2,13 @@
 #define VIGILANTE_GAMEMAP_MANAGER_H_
 
 #include <string>
+#include <memory>
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
 #include "character/Player.h"
+#include "map/WorldContactListener.h"
 
 namespace vigilante {
 
@@ -34,7 +36,8 @@ class GameMapManager {
   static void createRectangles(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
   static void createPolylines(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
 
-  b2World* _world;  
+  b2World* _world;
+  std::unique_ptr<WorldContactListener> _worldContactListener;
   cocos2d::TMXTiledMap* _map;
   cocos2d::Scene* _scene;
   Player* _player;
