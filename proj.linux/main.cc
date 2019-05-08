@@ -4,7 +4,9 @@
 #include <string>
 #include <stdexcept>
 
-USING_NS_CC;
+using std::cerr;
+using std::endl;
+using cocos2d::Application;
 
 int main(int argc, char* args[]) {
   // Create the application instance
@@ -13,7 +15,7 @@ int main(int argc, char* args[]) {
   try {
     return Application::getInstance()->run();
   } catch (const std::exception& ex) {
-    std::cerr << ex.what() << std::endl;
+    cerr << ex.what() << endl;
     return EXIT_FAILURE;
   }
 
