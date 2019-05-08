@@ -55,7 +55,7 @@ void GameMapManager::load(const string& mapFileName) {
   createRectangles(_world, _map, "Platform");
   createRectangles(_world, _map, "Portal");
 
-  Player* player = spawnPlayer();
+  _player = spawnPlayer();
 }
 
 
@@ -77,6 +77,10 @@ b2World* GameMapManager::getWorld() const {
 
 TMXTiledMap* GameMapManager::getMap() const {
   return _map;
+}
+
+Player* GameMapManager::getPlayer() const {
+  return _player;
 }
 
 

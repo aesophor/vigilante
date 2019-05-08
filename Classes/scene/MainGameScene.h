@@ -7,6 +7,7 @@
 #include "Box2D/Box2D.h"
 
 #include "map/GameMapManager.h"
+#include "input/GameInputManager.h"
 
 class MainGameScene : public cocos2d::Scene {
  public:
@@ -21,6 +22,7 @@ class MainGameScene : public cocos2d::Scene {
 
  private:
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
+  std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
 };
 
 #endif // VIGILANTE_MAIN_GAME_SCENE_H_

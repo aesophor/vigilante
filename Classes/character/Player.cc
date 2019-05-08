@@ -3,6 +3,10 @@
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
+using cocos2d::Vec2;
+using cocos2d::EventListenerKeyboard;
+using cocos2d::EventKeyboard;
+using cocos2d::Event;
 using cocos2d::Director;
 using vigilante::kPlayer;
 using vigilante::kGround;
@@ -42,4 +46,9 @@ void Player::defineBody(float x, float y) {
   
   b2Fixture* bodyFixture = _body->CreateFixture(&fdef);
   bodyFixture->SetUserData(this);
+}
+
+
+b2Body* Player::getBody() const {
+  return _body;
 }

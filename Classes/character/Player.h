@@ -12,6 +12,8 @@ class Player {
   Player(float x, float y);
   virtual ~Player();
 
+  b2Body* getBody() const;
+
  private:
   void defineBody(float x, float y);
 

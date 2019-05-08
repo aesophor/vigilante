@@ -21,6 +21,7 @@ class GameMapManager {
 
   b2World* getWorld() const;
   cocos2d::TMXTiledMap* getMap() const;
+  Player* getPlayer() const;
 
  private:
   static GameMapManager* _instance;
@@ -33,6 +34,7 @@ class GameMapManager {
 
   b2World* _world;  
   cocos2d::TMXTiledMap* _map;
+  Player* _player;
 };
 
 } // namespace vigilante
