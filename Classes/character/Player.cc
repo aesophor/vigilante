@@ -27,9 +27,11 @@ Player::Player(float x, float y)
       _bodyFixture(),
       _spritesheet(),
       _sprite(),
-      _stateTimer(0),
+      _stateTimer(),
       _isFacingRight(true),
       _isJumping(),
+      _isAttacking(),
+      _isCrouching(),
       _isKilled(),
       _isSetToKill() {
   defineBody(x, y);
@@ -44,16 +46,48 @@ Player::~Player() {
 
 
 void Player::update(float delta) {
-  //cocos2d::log("[Player::update] x=%f y=%f", _b2body->GetPosition().x, _b2body->GetPosition().y);
-  _sprite->setPosition(_b2body->GetPosition().x * kPPM, _b2body->GetPosition().y * kPPM + 5);
+  if (_isKilled) return;
+
+  _previousState = _currentState;
+  _currentState = getState();
+
+  // If there's a change in character's state, update its animation accordingly.
+  if (_previousState != _currentState) {
+    switch(_currentState) {
+      case State::RUNNING:
+        runAnimation(State::RUNNING, true);
+        break;
+      case State::JUMPING:
+        runAnimation(State::JUMPING, false);
+        break;
+      case State::FALLING:
+        runAnimation(State::FALLING, false);
+        break;
+      case State::CROUCHING:
+        runAnimation(State::CROUCHING, false);
+        break;
+      case State::ATTACKING:
+        runAnimation(State::ATTACKING, false);
+        break;
+      case State::KILLED:
+        runAnimation(State::KILLED, false);
+        break;
+      default:
+        runAnimation(State::IDLE, true);
+        break;
+    }
+  }
 
   if (!_isFacingRight && !_sprite->isFlippedX()) {
     _sprite->setFlippedX(true);
-    runAnimation(State::JUMPING, false);
   } else if (_isFacingRight && _sprite->isFlippedX()) {
     _sprite->setFlippedX(false);
-    runAnimation(State::RUNNING);
   }
+
+  _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
+
+  //cocos2d::log("[Player::update] x=%f y=%f", _b2body->GetPosition().x, _b2body->GetPosition().y);
+  _sprite->setPosition(_b2body->GetPosition().x * kPPM, _b2body->GetPosition().y * kPPM + 5);
 }
 
 void Player::defineBody(float x, float y) {
@@ -90,12 +124,15 @@ void Player::defineTexture(float x, float y) {
 
   string location = "Texture/Character/Player/sprites/";
   frameCache->addSpriteFramesWithFile(location + "player.plist");
-
   _spritesheet = SpriteBatchNode::create(location + "player.png");
 
   loadAnimation(State::IDLE, "p_idle_sheathed", 6);
   loadAnimation(State::RUNNING, "p_running_sheathed", 8);
   loadAnimation(State::JUMPING, "p_jumping_sheathed", 5);
+  loadAnimation(State::FALLING, "p_falling_sheathed", 1);
+  loadAnimation(State::ATTACKING, "p_attacking", 8);
+  loadAnimation(State::CROUCHING, "p_crouching_sheathed", 2);
+  loadAnimation(State::KILLED, "p_killed", 6);
 
   // Select a frame as default look of character's sprite.
   _sprite = Sprite::createWithSpriteFrameName("p_running_sheathed/p_running_sheathed0.png");
@@ -129,30 +166,25 @@ void Player::runAnimation(State state, bool loop) const {
   _sprite->runAction((loop) ? (Action*) RepeatForever::create(act) : (Action*) Repeat::create(act, 1));
 }
 
-/*
-Action* Player::defineFrames(const string& frameName) {
-  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  frameCache->addSpriteFramesWithFile(frameName + ".plist");
 
-  _spritesheet = SpriteBatchNode::create(frameName + ".png");
-
-  Vector<SpriteFrame*> frames;
-  for (int i = 0; i <= 7; i++) {
-    SpriteFrame* frame = frameCache->getSpriteFrameByName("p_attacking" + std::to_string(i) + ".png");
-    frames.pushBack(frame);
+Player::State Player::getState() const {
+  if (_isSetToKill) {
+    return State::KILLED;
+  } else if (_isAttacking) {
+    return State::ATTACKING;
+  } else if (_isJumping) {
+    return State::JUMPING;
+  } else if (_b2body->GetLinearVelocity().y < -.5f) {
+    return State::FALLING;
+  } else if (_isCrouching) {
+    return State::CROUCHING;
+  } else if (std::abs(_b2body->GetLinearVelocity().x) > .01f) {
+    return State::RUNNING;
+  } else {
+    return State::IDLE;
   }
-
-  Animation* animation = Animation::createWithSpriteFrames(frames, 0.1);
-  _sprite = Sprite::createWithSpriteFrameName("p_attacking0.png");
-  //_sprite->setPosition(x * kPPM, y * kPPM + 7);
-  _sprite->setScale(1.3f);
-
-  Action* action = RepeatForever::create(Animate::create(animation));
-  _sprite->runAction(action);
-  _spritesheet->addChild(_sprite);
-  _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
 }
-*/
+
 
 void Player::moveLeft() {
   _isFacingRight = false;
@@ -169,7 +201,10 @@ void Player::moveRight() {
 }
 
 void Player::jump() {
-
+  if (!_isJumping) {
+    _isJumping = true;
+    _b2body->ApplyLinearImpulse({0, 3.0}, _b2body->GetWorldCenter(), true);
+  }
 }
 
 

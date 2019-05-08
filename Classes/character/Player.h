@@ -37,8 +37,11 @@ class Player {
  private:
   void defineBody(float x, float y);
   void defineTexture(float x, float y);
+
   void loadAnimation(State state, const std::string& frameName, size_t frameCount);
   void runAnimation(State state, bool loop=true) const;
+
+  State getState() const;
 
   static const float kBaseMovingSpeed;
 
@@ -55,6 +58,8 @@ class Player {
   float _stateTimer;
   bool _isFacingRight;
   bool _isJumping;
+  bool _isAttacking;
+  bool _isCrouching;
   bool _isKilled;
   bool _isSetToKill;
 };
