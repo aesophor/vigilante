@@ -11,15 +11,11 @@ using std::string;
 using std::vector;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
-using vigilante::kGround;
-using vigilante::kPlayer;
-using vigilante::kPPM;
-using vigilante::kGravity;
-using vigilante::Player;
-using vigilante::GameMapManager;
 
 USING_NS_CC;
 
+
+namespace vigilante {
 
 GameMapManager* GameMapManager::_instance = nullptr;
 
@@ -146,3 +142,5 @@ void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const str
     body->CreateFixture(&fdef);
   }
 }
+
+} // namespace vigilante

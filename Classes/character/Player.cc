@@ -8,10 +8,8 @@ using cocos2d::EventListenerKeyboard;
 using cocos2d::EventKeyboard;
 using cocos2d::Event;
 using cocos2d::Director;
-using vigilante::kPlayer;
-using vigilante::kGround;
-using vigilante::kPPM;
-using vigilante::Player;
+
+namespace vigilante {
 
 Player::Player(float x, float y) {
   defineBody(x, y);
@@ -52,3 +50,5 @@ void Player::defineBody(float x, float y) {
 b2Body* Player::getBody() const {
   return _body;
 }
+
+} // namespace vigilante

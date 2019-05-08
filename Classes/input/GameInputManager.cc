@@ -6,8 +6,8 @@ using cocos2d::Scene;
 using cocos2d::Event;
 using cocos2d::EventKeyboard;
 using cocos2d::EventListenerKeyboard;
-using vigilante::GameInputManager;
-using vigilante::GameMapManager;
+
+namespace vigilante {
 
 GameInputManager* GameInputManager::_instance = nullptr;
 
@@ -55,3 +55,5 @@ void GameInputManager::deactivate() {
 bool GameInputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
   return _pressedKeys.find(keyCode) != _pressedKeys.end();
 }
+
+} // namespace vigilante
