@@ -41,8 +41,8 @@ void GameInputManager::activate(Scene* scene) {
   _keyboardEvLstnr->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
     _pressedKeys.erase(keyCode);
   };
-
-	_scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr, scene);
+  
+  _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr, scene);
 }
 
 void GameInputManager::deactivate() {
