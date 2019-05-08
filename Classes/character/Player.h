@@ -12,13 +12,24 @@ class Player {
   Player(float x, float y);
   virtual ~Player();
 
-  b2Body* getBody() const;
+  void moveLeft() const;
+  void moveRight() const;
+
+  b2Body* getB2Body() const;
 
  private:
   void defineBody(float x, float y);
 
-  b2Body* _body;
+  static const float kBaseMovingSpeed;
+
+  b2Body* _b2body;
   b2Fixture* _bodyFixture;
+
+  float _stateTimer;
+  bool _isFacingRight;
+  bool _isJumping;
+  bool _isKilled;
+  bool _isSetToKill;
 };
 
 } // namespace vigilante

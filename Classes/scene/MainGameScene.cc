@@ -229,16 +229,12 @@ void MainGameScene::update(float delta) {
 
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
 
-  auto b2body = _gameMapManager->getPlayer()->getBody();
+  auto player = _gameMapManager->getPlayer();
 
   if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
-    if (b2body->GetLinearVelocity().x >= -.25f * 2) {
-      b2body->ApplyLinearImpulse({-.25f, 0}, b2body->GetWorldCenter(), true);
-    }
+    player->moveLeft();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
-    if (b2body->GetLinearVelocity().x <= .25f * 2) {
-      b2body->ApplyLinearImpulse({.25f, 0}, b2body->GetWorldCenter(), true);
-    }
+    player->moveRight();
   }
 
   /*

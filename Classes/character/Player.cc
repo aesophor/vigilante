@@ -11,7 +11,16 @@ using cocos2d::Director;
 
 namespace vigilante {
 
-Player::Player(float x, float y) {
+const float Player::kBaseMovingSpeed = .25f;
+
+Player::Player(float x, float y)
+    : _b2body(),
+      _bodyFixture(),
+      _stateTimer(0),
+      _isFacingRight(true),
+      _isJumping(),
+      _isKilled(),
+      _isSetToKill() {
   defineBody(x, y);
 }
 
@@ -25,7 +34,7 @@ void Player::defineBody(float x, float y) {
   b2BodyDef bdef;
   bdef.type = b2BodyType::b2_dynamicBody;
   bdef.position.Set(x, y);
-  _body = world->CreateBody(&bdef);
+  _b2body = world->CreateBody(&bdef);
 
   // Create body fixture.
   // Fixture position in box2d is relative to b2body's position.
@@ -42,13 +51,26 @@ void Player::defineBody(float x, float y) {
   fdef.filter.categoryBits = kPlayer;
   fdef.filter.maskBits = kGround;
   
-  b2Fixture* bodyFixture = _body->CreateFixture(&fdef);
+  b2Fixture* bodyFixture = _b2body->CreateFixture(&fdef);
   bodyFixture->SetUserData(this);
 }
 
 
-b2Body* Player::getBody() const {
-  return _body;
+void Player::moveLeft() const {
+  if (_b2body->GetLinearVelocity().x >= -kBaseMovingSpeed * 2) {
+    _b2body->ApplyLinearImpulse({-kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
+  }
+}
+
+void Player::moveRight() const {
+  if (_b2body->GetLinearVelocity().x <= kBaseMovingSpeed * 2) {
+    _b2body->ApplyLinearImpulse({kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
+  }
+}
+
+
+b2Body* Player::getB2Body() const {
+  return _b2body;
 }
 
 } // namespace vigilante
