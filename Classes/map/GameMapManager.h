@@ -22,6 +22,8 @@ class GameMapManager {
   b2World* getWorld() const;
   cocos2d::TMXTiledMap* getMap() const;
   Player* getPlayer() const;
+  cocos2d::Scene* getScene() const;
+  void setScene(cocos2d::Scene* scene);
 
  private:
   static GameMapManager* _instance;
@@ -34,6 +36,7 @@ class GameMapManager {
 
   b2World* _world;  
   cocos2d::TMXTiledMap* _map;
+  cocos2d::Scene* _scene;
   Player* _player;
 };
 

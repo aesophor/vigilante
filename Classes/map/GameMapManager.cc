@@ -79,6 +79,14 @@ Player* GameMapManager::getPlayer() const {
   return _player;
 }
 
+Scene* GameMapManager::getScene() const {
+  return _scene;
+}
+
+void GameMapManager::setScene(Scene* scene) {
+  _scene = scene;
+}
+
 
 void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const string& layerName) {
   TMXObjectGroup* portals = map->getObjectGroup(layerName);

@@ -27,16 +27,18 @@ class Player {
 
   void update(float delta);
 
-  void moveLeft() const;
-  void moveRight() const;
+  void moveLeft();
+  void moveRight();
+  void jump();
 
   b2Body* getB2Body() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
  private:
   void defineBody(float x, float y);
-  void defineAnimations(float x, float y);
-  cocos2d::Action* defineFrames(const std::string& frameName);
+  void defineTexture(float x, float y);
+  void loadAnimation(State state, const std::string& frameName, size_t frameCount);
+  void runAnimation(State state, bool loop=true) const;
 
   static const float kBaseMovingSpeed;
 
@@ -45,7 +47,7 @@ class Player {
 
   cocos2d::SpriteBatchNode* _spritesheet;
   cocos2d::Sprite* _sprite;
-  cocos2d::Action* actions[State::LAST];
+  cocos2d::Animation* _animations[State::LAST];
 
   Player::State _currentState;
   Player::State _previousState;

@@ -46,9 +46,9 @@ bool MainGameScene::init() {
   // Initialize GameMapManager
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
+  _gameMapManager->setScene(this);
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getMap(), 0);
-  addChild(_gameMapManager->getPlayer()->getSpritesheet(), 30);
 
   // Initialize GameInputManager
   // GameInputManager keep tracks of which keys are pressed.
@@ -181,6 +181,10 @@ void MainGameScene::handleInput(float delta) {
     player->moveLeft();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
     player->moveRight();
+  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_W)) {
+    //player->jump();
+  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_S)) {
+
   }
 }
 

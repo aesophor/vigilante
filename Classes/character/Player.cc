@@ -1,11 +1,13 @@
 #include "Player.h"
 
+#include "map/GameMapManager.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
 using std::string;
 using cocos2d::Vector;
 using cocos2d::Director;
+using cocos2d::Repeat;
 using cocos2d::RepeatForever;
 using cocos2d::Animation;
 using cocos2d::Animate;
@@ -23,13 +25,15 @@ const float Player::kBaseMovingSpeed = .25f;
 Player::Player(float x, float y)
     : _b2body(),
       _bodyFixture(),
+      _spritesheet(),
+      _sprite(),
       _stateTimer(0),
       _isFacingRight(true),
       _isJumping(),
       _isKilled(),
       _isSetToKill() {
   defineBody(x, y);
-  defineAnimations(x, y);
+  defineTexture(x, y);
 }
 
 Player::~Player() {
@@ -40,11 +44,16 @@ Player::~Player() {
 
 
 void Player::update(float delta) {
-  auto boundingBox = _sprite->getBoundingBox();
-  float w = boundingBox.size.width;
-  float h = boundingBox.size.height;
   //cocos2d::log("[Player::update] x=%f y=%f", _b2body->GetPosition().x, _b2body->GetPosition().y);
   _sprite->setPosition(_b2body->GetPosition().x * kPPM, _b2body->GetPosition().y * kPPM + 5);
+
+  if (!_isFacingRight && !_sprite->isFlippedX()) {
+    _sprite->setFlippedX(true);
+    runAnimation(State::JUMPING, false);
+  } else if (_isFacingRight && _sprite->isFlippedX()) {
+    _sprite->setFlippedX(false);
+    runAnimation(State::RUNNING);
+  }
 }
 
 void Player::defineBody(float x, float y) {
@@ -60,10 +69,10 @@ void Player::defineBody(float x, float y) {
   // Fixture position in box2d is relative to b2body's position.
   b2PolygonShape bodyShape;
   b2Vec2 vertices[4];
-  vertices[0] = b2Vec2(-5 / scaleFactor / kPPM, 20 / scaleFactor / kPPM);
-  vertices[1] = b2Vec2(5 / scaleFactor / kPPM, 20 / scaleFactor / kPPM);
-  vertices[2] = b2Vec2(-5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM);
-  vertices[3] = b2Vec2(5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM);
+  vertices[0] = {-5 / scaleFactor / kPPM,  20 / scaleFactor / kPPM};
+  vertices[1] = { 5 / scaleFactor / kPPM,  20 / scaleFactor / kPPM};
+  vertices[2] = {-5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM};
+  vertices[3] = { 5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM};
   bodyShape.Set(vertices, 4);
 
   b2FixtureDef fdef;
@@ -75,31 +84,52 @@ void Player::defineBody(float x, float y) {
   bodyFixture->SetUserData(this);
 }
 
-void Player::defineAnimations(float x, float y) {
+void Player::defineTexture(float x, float y) {
+  cocos2d::log("[Player] loading textures");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
 
-  string location = "Texture/Character/Player/sprites/p_attacking/";
-  frameCache->addSpriteFramesWithFile(location + "p_attacking.plist");
+  string location = "Texture/Character/Player/sprites/";
+  frameCache->addSpriteFramesWithFile(location + "player.plist");
 
-  _spritesheet = SpriteBatchNode::create(location + "p_attacking.png");
+  _spritesheet = SpriteBatchNode::create(location + "player.png");
 
-  Vector<SpriteFrame*> pAttackingFrames;
-  for (int i = 0; i <= 7; i++) {
-    SpriteFrame* frame = frameCache->getSpriteFrameByName("p_attacking" + std::to_string(i) + ".png");
-    pAttackingFrames.pushBack(frame);
-  }
+  loadAnimation(State::IDLE, "p_idle_sheathed", 6);
+  loadAnimation(State::RUNNING, "p_running_sheathed", 8);
+  loadAnimation(State::JUMPING, "p_jumping_sheathed", 5);
 
-  Animation* animation = Animation::createWithSpriteFrames(pAttackingFrames, 0.1);
-  _sprite = Sprite::createWithSpriteFrameName("p_attacking0.png");
+  // Select a frame as default look of character's sprite.
+  _sprite = Sprite::createWithSpriteFrameName("p_running_sheathed/p_running_sheathed0.png");
   _sprite->setPosition(x * kPPM, y * kPPM + 7);
   _sprite->setScale(1.3f);
 
-  Action* action = RepeatForever::create(Animate::create(animation));
-  _sprite->runAction(action);
   _spritesheet->addChild(_sprite);
   _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
+
+  runAnimation(State::RUNNING);
+  GameMapManager::getInstance()->getScene()->addChild(_spritesheet, 30);
 }
 
+void Player::loadAnimation(State state, const string& frameName, size_t frameCount) {
+  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+
+  Vector<SpriteFrame*> frames;
+  for (size_t i = 0; i < frameCount; i++) {
+    string name = frameName + "/" + frameName + std::to_string(i) + ".png";
+    frames.pushBack(frameCache->getSpriteFrameByName(name));
+  }
+
+  Animation* animation = Animation::createWithSpriteFrames(frames, 0.1);
+  animation->retain();
+  _animations[state] = animation;
+}
+
+void Player::runAnimation(State state, bool loop) const {
+  _sprite->stopAllActions();
+  auto act = Animate::create(_animations[state]);
+  _sprite->runAction((loop) ? (Action*) RepeatForever::create(act) : (Action*) Repeat::create(act, 1));
+}
+
+/*
 Action* Player::defineFrames(const string& frameName) {
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   frameCache->addSpriteFramesWithFile(frameName + ".plist");
@@ -122,18 +152,24 @@ Action* Player::defineFrames(const string& frameName) {
   _spritesheet->addChild(_sprite);
   _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
 }
+*/
 
-
-void Player::moveLeft() const {
+void Player::moveLeft() {
+  _isFacingRight = false;
   if (_b2body->GetLinearVelocity().x >= -kBaseMovingSpeed * 2) {
     _b2body->ApplyLinearImpulse({-kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
   }
 }
 
-void Player::moveRight() const {
+void Player::moveRight() {
+  _isFacingRight = true;
   if (_b2body->GetLinearVelocity().x <= kBaseMovingSpeed * 2) {
     _b2body->ApplyLinearImpulse({kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
   }
+}
+
+void Player::jump() {
+
 }
 
 
