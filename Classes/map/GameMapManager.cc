@@ -51,9 +51,9 @@ void GameMapManager::load(const string& mapFileName) {
  
   // Create box2d objects from layers
   createPolylines(_world, _map, "Ground");
-  //createPolylines(_world, _map, "Wall");
-  //createRectangles(_world, _map, "Platform");
-  //createRectangles(_world, _map, "Portal");
+  createPolylines(_world, _map, "Wall");
+  createRectangles(_world, _map, "Platform");
+  createRectangles(_world, _map, "Portal");
 
   Player* player = spawnPlayer();
 }
@@ -85,14 +85,11 @@ void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const st
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
 
   for (auto& obj : portals->getObjects()) {
-    //log("%s\n", obj.getDescription().c_str());
     auto& valMap = obj.asValueMap();
-    //int id = valMap["id"].asInt();
     float x = valMap["x"].asFloat() / kPPM;
     float y = valMap["y"].asFloat() / kPPM;
     float w = valMap["width"].asFloat() / kPPM;
     float h = valMap["height"].asFloat() / kPPM;
-    //cocos2d::log("New collision volume - id: %d, x:%f, y:%f, width:%f, height:%f", id, x, y, w, h);
 
     b2BodyDef bdef;
     bdef.type = b2BodyType::b2_staticBody;
@@ -117,7 +114,6 @@ void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const str
   TMXObjectGroup* ground = map->getObjectGroup(layerName);
 
   for (auto& obj : ground->getObjects()) {
-    log("%s\n", obj.getDescription().c_str());
     auto& valMap = obj.asValueMap();
     float xRef = valMap["x"].asFloat() / kPPM;
     float yRef = valMap["y"].asFloat() / kPPM;
@@ -145,5 +141,4 @@ void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const str
     fdef.filter.categoryBits = kGround;
     body->CreateFixture(&fdef);
   }
-
 }
