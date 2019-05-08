@@ -14,5 +14,8 @@ int main(int argc, char* args[]) {
     return Application::getInstance()->run();
   } catch (const std::exception& ex) {
     std::cerr << ex.what() << std::endl;
+    return EXIT_FAILURE;
   }
+
+  return EXIT_SUCCESS;
 }
