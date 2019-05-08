@@ -1,11 +1,14 @@
 #include "MainGameScene.h"
 
+#include <string>
+
 #include "SimpleAudioEngine.h"
 
 #include "gl/GLESRender.h"
 #include "util/box2d/B2DebugRenderer.h"
 #include "util/Constants.h"
 
+using std::string;
 using std::unique_ptr;
 using vigilante::kPPM;
 using vigilante::kGravity;
@@ -143,10 +146,32 @@ bool MainGameScene::init() {
   auto b = B2DebugRenderer::create(getWorld());
   addChild(b);
 
-//  SpriteBatchNode* spritesheet = SpriteBatchNode::create("Texture/Character/Player/player.png");
-//  addChild(spritesheet);
+  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+  string location = "Texture/Character/Player/sprites/p_attacking/";
+  frameCache->addSpriteFramesWithFile(location + "p_attacking.plist");
 
-//  auto spriteCache = SpriteFrameCache::getInstance();
+  SpriteBatchNode* spritesheet = SpriteBatchNode::create(location + "p_attacking.png");
+  addChild(spritesheet);
+
+  Vector<SpriteFrame*> pAttackingFrames;
+  for (int i = 0; i <= 7; i++) {
+    SpriteFrame* frame = frameCache->getSpriteFrameByName("p_attacking" + std::to_string(i) + ".png");
+    pAttackingFrames.pushBack(frame);
+  }
+
+  Animation* animation = Animation::createWithSpriteFrames(pAttackingFrames, 0.1);
+  Sprite* player = Sprite::createWithSpriteFrameName("p_attacking0.png");
+
+  Size winsize = Director::getInstance()->getWinSize();
+  player->setPosition(150, 53);
+  player->setScale(2.0f);
+
+  auto sf = Director::getInstance()->getContentScaleFactor();
+  Action* action = RepeatForever::create(Animate::create(animation));
+  player->runAction(action);
+  spritesheet->addChild(player);
+  spritesheet->setScale(1 / sf);
+  spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
 
   auto camPos = this->getDefaultCamera()->getPosition();
   this->getDefaultCamera()->setPosition(200, 100);
