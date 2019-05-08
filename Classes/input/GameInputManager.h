@@ -16,6 +16,7 @@ class GameInputManager {
   void deactivate();
 
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
+  bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
  private:
   static GameInputManager* _instance;

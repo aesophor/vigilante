@@ -56,4 +56,12 @@ bool GameInputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
   return _pressedKeys.find(keyCode) != _pressedKeys.end();
 }
 
+bool GameInputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
+  bool isPressed = _pressedKeys.find(keyCode) != _pressedKeys.end();
+  if (isPressed) {
+    _pressedKeys.erase(keyCode);
+  }
+  return isPressed;
+}
+
 } // namespace vigilante
