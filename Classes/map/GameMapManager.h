@@ -36,7 +36,7 @@ class GameMapManager {
   static void createRectangles(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
   static void createPolylines(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
 
-  b2World* _world;
+  std::unique_ptr<b2World> _world;
   std::unique_ptr<WorldContactListener> _worldContactListener;
   cocos2d::TMXTiledMap* _map;
   cocos2d::Scene* _scene;

@@ -41,7 +41,7 @@ class Player {
   void defineBody(float x, float y);
   void defineTexture(float x, float y);
 
-  void loadAnimation(State state, const std::string& frameName, size_t frameCount);
+  void loadAnimation(State state, const std::string& frameName, size_t frameCount, float delay=0.1f);
   void runAnimation(State state, bool loop=true) const;
 
   State getState() const;

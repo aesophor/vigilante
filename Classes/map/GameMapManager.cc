@@ -42,7 +42,7 @@ GameMapManager::~GameMapManager() {
   if (_map) {
     _map->release();
   }
-  delete _world;
+  // TODO: clean up b2Bodies here?
 }
 
 
@@ -51,10 +51,10 @@ void GameMapManager::load(const string& mapFileName) {
   _map = TMXTiledMap::create(mapFileName);
  
   // Create box2d objects from layers
-  createPolylines(_world, _map, "Ground");
-  createPolylines(_world, _map, "Wall");
-  createRectangles(_world, _map, "Platform");
-  createRectangles(_world, _map, "Portal");
+  createPolylines(_world.get(), _map, "Ground");
+  createPolylines(_world.get(), _map, "Wall");
+  createRectangles(_world.get(), _map, "Platform");
+  createRectangles(_world.get(), _map, "Portal");
 
   _player = spawnPlayer();
 }
@@ -73,7 +73,7 @@ Player* GameMapManager::spawnPlayer() {
 
 
 b2World* GameMapManager::getWorld() const {
-  return _world;
+  return _world.get();
 }
 
 TMXTiledMap* GameMapManager::getMap() const {

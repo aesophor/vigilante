@@ -27,6 +27,8 @@ Player::Player(float x, float y)
       _bodyFixture(),
       _spritesheet(),
       _sprite(),
+      _currentState(State::IDLE),
+      _previousState(State::IDLE),
       _stateTimer(),
       _isFacingRight(true),
       _isJumping(),
@@ -126,27 +128,27 @@ void Player::defineTexture(float x, float y) {
   frameCache->addSpriteFramesWithFile(location + "player.plist");
   _spritesheet = SpriteBatchNode::create(location + "player.png");
 
-  loadAnimation(State::IDLE, "p_idle_sheathed", 6);
-  loadAnimation(State::RUNNING, "p_running_sheathed", 8);
-  loadAnimation(State::JUMPING, "p_jumping_sheathed", 5);
-  loadAnimation(State::FALLING, "p_falling_sheathed", 1);
-  loadAnimation(State::ATTACKING, "p_attacking", 8);
-  loadAnimation(State::CROUCHING, "p_crouching_sheathed", 2);
-  loadAnimation(State::KILLED, "p_killed", 6);
+  loadAnimation(State::IDLE, "p_idle_sheathed", 6, 10.0f / kPPM);
+  loadAnimation(State::RUNNING, "p_running_sheathed", 8, 10.0f / kPPM);
+  loadAnimation(State::JUMPING, "p_jumping_sheathed", 5, 10.0f / kPPM);
+  loadAnimation(State::FALLING, "p_falling_sheathed", 1, 10.0f / kPPM);
+  loadAnimation(State::CROUCHING, "p_crouching_sheathed", 2, 10.0f / kPPM);
+  loadAnimation(State::ATTACKING, "p_attacking", 8, 12.0f / kPPM);
+  loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPPM);
 
   // Select a frame as default look of character's sprite.
-  _sprite = Sprite::createWithSpriteFrameName("p_running_sheathed/p_running_sheathed0.png");
+  _sprite = Sprite::createWithSpriteFrameName("p_idle_sheathed/p_idle_sheathed0.png");
   _sprite->setPosition(x * kPPM, y * kPPM + 7);
   _sprite->setScale(1.3f);
 
   _spritesheet->addChild(_sprite);
   _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
-
-  runAnimation(State::RUNNING);
   GameMapManager::getInstance()->getScene()->addChild(_spritesheet, 30);
+
+  runAnimation(State::IDLE);
 }
 
-void Player::loadAnimation(State state, const string& frameName, size_t frameCount) {
+void Player::loadAnimation(State state, const string& frameName, size_t frameCount, float delay) {
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
 
   Vector<SpriteFrame*> frames;
@@ -155,7 +157,7 @@ void Player::loadAnimation(State state, const string& frameName, size_t frameCou
     frames.pushBack(frameCache->getSpriteFrameByName(name));
   }
 
-  Animation* animation = Animation::createWithSpriteFrames(frames, 0.1);
+  Animation* animation = Animation::createWithSpriteFrames(frames, delay);
   animation->retain();
   _animations[state] = animation;
 }
