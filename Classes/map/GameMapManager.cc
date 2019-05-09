@@ -52,10 +52,10 @@ void GameMapManager::load(const string& mapFileName) {
   _map = TMXTiledMap::create(mapFileName);
  
   // Create box2d objects from layers
-  createPolylines(_world.get(), _map, "Ground");
-  createPolylines(_world.get(), _map, "Wall");
-  createRectangles(_world.get(), _map, "Platform");
-  createRectangles(_world.get(), _map, "Portal");
+  createPolylines(_world.get(), _map, "Ground", category_bits::kGround, true, 2);
+  createPolylines(_world.get(), _map, "Wall", category_bits::kWall, true, 1);
+  createRectangles(_world.get(), _map, "Platform", category_bits::kPlatform, true, 2);
+  createRectangles(_world.get(), _map, "Portal", category_bits::kPortal, false, 0);
 
   _player = spawnPlayer();
 }
@@ -94,7 +94,12 @@ void GameMapManager::setScene(Scene* scene) {
 }
 
 
-void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const string& layerName) {
+void GameMapManager::createRectangles(b2World* world,
+                                      TMXTiledMap* map,
+                                      const string& layerName,
+                                      short categoryBits,
+                                      bool isCollidable,
+                                      float friction) {
   TMXObjectGroup* portals = map->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   
@@ -112,14 +117,19 @@ void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const st
       .buildBody();
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPPM)
-      .categoryBits(category_bits::kGround)
-      .setSensor(true)
-      .friction(1)
+      .categoryBits(categoryBits)
+      .setSensor(!isCollidable)
+      .friction(friction)
       .buildFixture();
   }
 }
 
-void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const string& layerName) {
+void GameMapManager::createPolylines(b2World* world,
+                                     TMXTiledMap* map,
+                                     const string& layerName,
+                                     short categoryBits,
+                                     bool isCollidable,
+                                     float friction) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
   for (auto& obj : map->getObjectGroup(layerName)->getObjects()) {
@@ -142,8 +152,9 @@ void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const str
       .buildBody();
 
     bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPPM)
-      .categoryBits(category_bits::kGround)
-      .friction(1)
+      .categoryBits(categoryBits)
+      .setSensor(!isCollidable)
+      .friction(friction)
       .buildFixture();
   }
 }

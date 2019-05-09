@@ -33,8 +33,19 @@ class GameMapManager {
 
   Player* spawnPlayer();
 
-  static void createRectangles(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
-  static void createPolylines(b2World* world, cocos2d::TMXTiledMap* map, const std::string& layerName);
+  static void createRectangles(b2World* world,
+                               cocos2d::TMXTiledMap* map,
+                               const std::string& layerName,
+                               short categoryBits,
+                               bool isCollidable,
+                               float friction);
+
+  static void createPolylines(b2World* world,
+                              cocos2d::TMXTiledMap* map,
+                              const std::string& layerName,
+                              short categoryBits,
+                              bool isCollidable,
+                              float friction);
 
   std::unique_ptr<b2World> _world;
   std::unique_ptr<WorldContactListener> _worldContactListener;

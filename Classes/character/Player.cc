@@ -232,7 +232,7 @@ void Player::moveRight() {
 void Player::jump() {
   if (!_isJumping) {
     _isJumping = true;
-    _b2body->ApplyLinearImpulse({0, 3.0}, _b2body->GetWorldCenter(), true);
+    _b2body->ApplyLinearImpulse({0, 2.5f}, _b2body->GetWorldCenter(), true);
   }
 }
 
@@ -249,8 +249,16 @@ bool Player::isJumping() const {
   return _isJumping;
 }
 
+bool Player::isOnPlatform() const {
+  return _isOnPlatform;
+}
+
 void Player::setIsJumping(bool isJumping) {
   _isJumping = isJumping;
+}
+
+void Player::setIsOnPlatform(bool isOnPlatform) {
+  _isOnPlatform = isOnPlatform;
 }
 
 } // namespace vigilante

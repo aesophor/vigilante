@@ -35,7 +35,9 @@ class Player {
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
   bool isJumping() const;
+  bool isOnPlatform() const;
   void setIsJumping(bool isJumping);
+  void setIsOnPlatform(bool isOnPlatform);
 
  private:
   void defineBody(float x, float y);
@@ -63,6 +65,7 @@ class Player {
   float _stateTimer;
   bool _isFacingRight;
   bool _isJumping;
+  bool _isOnPlatform;
   bool _isAttacking;
   bool _isCrouching;
   bool _isKilled;
