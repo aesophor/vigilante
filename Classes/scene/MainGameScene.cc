@@ -87,6 +87,10 @@ void MainGameScene::handleInput(float delta) {
     _b2DebugOn = !_b2DebugOn;
   }
 
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
+    player->attack();
+  }
+
   if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     player->moveLeft();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
@@ -101,7 +105,7 @@ void MainGameScene::handleInput(float delta) {
     }
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
     player->jump();
   }
 

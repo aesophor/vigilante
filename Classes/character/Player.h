@@ -41,6 +41,7 @@ class Player {
   void getUp();
   void sheathWeapon();
   void unsheathWeapon();
+  void attack();
 
   b2Body* getB2Body() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;

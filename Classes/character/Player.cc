@@ -196,7 +196,7 @@ void Player::defineTexture(float x, float y) {
   loadAnimation(State::SHEATHING_WEAPON, "p_weapon_sheathing", 6, 15.0f / kPPM);
   loadAnimation(State::UNSHEATHING_WEAPON, "p_weapon_unsheathing", 6, 15.0f / kPPM);
 
-  loadAnimation(State::ATTACKING, "p_attacking", 8, 12.0f / kPPM);
+  loadAnimation(State::ATTACKING, "p_attacking", 8, 5.0f / kPPM);
   loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPPM);
 
   // Select a frame as default look of character's sprite.
@@ -293,7 +293,7 @@ void Player::sheathWeapon() {
   callback_util::runAfter([&](){
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
-  }, 1.0f);
+  }, .8f);
 }
 
 void Player::unsheathWeapon() {
@@ -302,7 +302,20 @@ void Player::unsheathWeapon() {
   callback_util::runAfter([&](){
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
-  }, 1.0f);
+  }, .8f);
+}
+
+void Player::attack() {
+  if (_isWeaponSheathed) {
+    unsheathWeapon();
+    return;
+  }
+
+  _isAttacking = true;
+
+  callback_util::runAfter([&](){
+    _isAttacking = false;
+  }, .5f);
 }
 
 
