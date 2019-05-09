@@ -26,12 +26,10 @@ bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;
   }
-
   auto visibleSize = Director::getInstance()->getVisibleSize();
   Vec2 origin = Director::getInstance()->getVisibleOrigin();
   log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
   log("origin: %f %f\n", origin.x, origin.y);
-
 
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
@@ -47,8 +45,10 @@ bool MainGameScene::init() {
   _gameInputManager->activate(this);
 
   // Create b2DebugRenderer.
-  auto b2dr = b2DebugRenderer::create(getWorld());
-  addChild(b2dr);
+  _b2dr = unique_ptr<b2DebugRenderer>(b2DebugRenderer::create(getWorld()));
+  _b2dr->retain();
+  addChild(_b2dr.get());
+  _b2DebugOn = true;
 
   // Zoom game camera.
   auto camPos = getDefaultCamera()->getPosition();
@@ -70,6 +70,18 @@ void MainGameScene::update(float delta) {
 
 void MainGameScene::handleInput(float delta) {
   auto player = _gameMapManager->getPlayer();
+
+  // Toggle b2dr (b2DebugRenderer)
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
+    if (_b2DebugOn) {
+      removeChild(_b2dr.get());
+      cocos2d::log("[b2dr] is off. Ref=%d", _b2dr->getReferenceCount());
+    } else {
+      addChild(_b2dr.get());
+      cocos2d::log("[b2dr] is on. Ref=%d", _b2dr->getReferenceCount());
+    }
+    _b2DebugOn = !_b2DebugOn;
+  }
 
   if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     player->moveLeft();

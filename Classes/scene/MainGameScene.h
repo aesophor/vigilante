@@ -8,6 +8,7 @@
 
 #include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
+#include "util/box2d/b2DebugRenderer.h"
 
 class MainGameScene : public cocos2d::Scene {
  public:
@@ -22,6 +23,9 @@ class MainGameScene : public cocos2d::Scene {
   b2World* getWorld() const;
 
  private:
+  bool _b2DebugOn;
+
+  std::unique_ptr<b2DebugRenderer> _b2dr;
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
   std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
 };
