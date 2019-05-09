@@ -111,8 +111,8 @@ void Player::defineBody(float x, float y) {
   vertices[3] = { 5 / scaleFactor, -14 / scaleFactor};
 
   bodyBuilder.newPolygonFixture(vertices, 4, kPPM)
-    .categoryBits(kPlayer)
-    .maskBits(kGround)
+    .categoryBits(category_bits::kPlayer)
+    .maskBits(category_bits::kGround)
     .setUserData(this)
     .buildFixture();
 }

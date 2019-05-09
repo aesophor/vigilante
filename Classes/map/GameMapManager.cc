@@ -112,7 +112,7 @@ void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const st
       .buildBody();
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPPM)
-      .categoryBits(kGround)
+      .categoryBits(category_bits::kGround)
       .setSensor(true)
       .friction(1)
       .buildFixture();
@@ -142,7 +142,7 @@ void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const str
       .buildBody();
 
     bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPPM)
-      .categoryBits(kGround)
+      .categoryBits(category_bits::kGround)
       .friction(1)
       .buildFixture();
   }

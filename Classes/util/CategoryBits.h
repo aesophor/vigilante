@@ -3,6 +3,8 @@
 
 namespace vigilante {
 
+namespace category_bits {
+
 const short kGround = 1;
 const short kPlatform = 2;
 const short kFeet = 4;
@@ -16,8 +18,9 @@ const short kObject = 256;
 const short kItem = 512;
 const short kMeleeWeapon = 1024;
 const short kDestroyed = 2048;
-
 const short kLight = 4096;
+
+} // namespace category_bits
 
 } // namespace vigilante
 

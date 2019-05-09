@@ -12,8 +12,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 
   int cDef = fixtureA->GetFilterData().categoryBits | fixtureB->GetFilterData().categoryBits;
   switch (cDef) {
-    case kPlayer | kGround:
-      if (fixtureA->GetFilterData().categoryBits == kPlayer) {
+    case category_bits::kPlayer | category_bits::kGround:
+      if (fixtureA->GetFilterData().categoryBits == category_bits::kPlayer) {
         static_cast<Player*>(fixtureA->GetUserData())->setIsJumping(false);
       } else {
         static_cast<Player*>(fixtureB->GetUserData())->setIsJumping(false);
