@@ -50,6 +50,8 @@ class Player {
 
   b2Body* _b2body;
   b2Fixture* _bodyFixture;
+  b2Fixture* _feetFixture;
+  b2Fixture* _weaponFixture;
 
   cocos2d::SpriteBatchNode* _spritesheet;
   cocos2d::Sprite* _sprite;

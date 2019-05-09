@@ -83,8 +83,12 @@ void Player::update(float delta) {
 
   if (!_isFacingRight && !_sprite->isFlippedX()) {
     _sprite->setFlippedX(true);
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
+    shape->m_p = {-15.0f / kPPM, 0};
   } else if (_isFacingRight && _sprite->isFlippedX()) {
     _sprite->setFlippedX(false);
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
+    shape->m_p = {15.0f / kPPM, 0};
   }
 
   _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
@@ -112,7 +116,30 @@ void Player::defineBody(float x, float y) {
 
   bodyBuilder.newPolygonFixture(vertices, 4, kPPM)
     .categoryBits(category_bits::kPlayer)
-    .maskBits(category_bits::kGround)
+    .maskBits(category_bits::kPortal | category_bits::kEnemy | category_bits::kMeleeWeapon | category_bits::kItem)
+    .setUserData(this)
+    .buildFixture();
+
+
+  // Create feet fixture.
+  b2Vec2 feetVertices[4];
+  feetVertices[0] = {(-5 + 1) / scaleFactor, 0};
+  feetVertices[1] = {( 5 - 1) / scaleFactor, 0};
+  feetVertices[2] = {(-5 + 1) / scaleFactor, (-14 - 1) / scaleFactor};
+  feetVertices[3] = {( 5 - 1) / scaleFactor, (-14 - 1) / scaleFactor};
+
+  _feetFixture = bodyBuilder.newPolygonFixture(feetVertices, 4, kPPM)
+    .categoryBits(category_bits::kFeet)
+    .maskBits(category_bits::kGround | category_bits::kPlatform | category_bits::kWall)
+    .setUserData(this)
+    .buildFixture();
+
+
+  // Create weapon fixture.
+  _weaponFixture = bodyBuilder.newCircleFixture({15.0f, 0}, 15.0f, kPPM)
+    .categoryBits(category_bits::kMeleeWeapon)
+    .maskBits(category_bits::kEnemy | category_bits::kObject)
+    .setSensor(true)
     .setUserData(this)
     .buildFixture();
 }

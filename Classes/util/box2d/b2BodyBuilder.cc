@@ -7,6 +7,22 @@ namespace vigilante {
 b2BodyBuilder::b2BodyBuilder(b2World* world)
     : _world(world), _body(), _fixture(), _shape(), _userData() {}
 
+b2BodyBuilder::b2BodyBuilder(const b2BodyBuilder& bodyBuilder)
+    : _world(bodyBuilder._world),
+      _body(bodyBuilder._body),
+      _fixture(bodyBuilder._fixture),
+      _shape(bodyBuilder._shape.get()),
+      _userData(bodyBuilder._userData) {}
+
+b2BodyBuilder& b2BodyBuilder::operator= (const b2BodyBuilder& bodyBuilder) {
+  _world = bodyBuilder._world;
+  _body = bodyBuilder._body;
+  _fixture = bodyBuilder._fixture;
+  _shape = unique_ptr<b2Shape>(bodyBuilder._shape.get());
+  _userData = bodyBuilder._userData;
+  return *this;
+}
+
 
 b2BodyBuilder& b2BodyBuilder::type(b2BodyType bodyType) {
   _bdef.type = bodyType;

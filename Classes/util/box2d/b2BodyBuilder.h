@@ -10,6 +10,8 @@ namespace vigilante {
 class b2BodyBuilder {
  public:
   b2BodyBuilder(b2World* world);
+  b2BodyBuilder(const b2BodyBuilder& bodyBuilder);
+  b2BodyBuilder& operator= (const b2BodyBuilder& bodyBuilder);
   virtual ~b2BodyBuilder() = default;
 
   b2BodyBuilder& type(b2BodyType bodyType);
