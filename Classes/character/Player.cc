@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "map/GameMapManager.h"
+#include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
@@ -94,30 +95,26 @@ void Player::update(float delta) {
 
 void Player::defineBody(float x, float y) {
   b2World* world = GameMapManager::getInstance()->getWorld();
-  float scaleFactor = Director::getInstance()->getContentScaleFactor();
+  b2BodyBuilder bodyBuilder(world);
 
-  b2BodyDef bdef;
-  bdef.type = b2BodyType::b2_dynamicBody;
-  bdef.position.Set(x, y);
-  _b2body = world->CreateBody(&bdef);
+  _b2body = bodyBuilder.type(b2BodyType::b2_dynamicBody)
+    .position(x, y, 1)
+    .buildBody();
 
   // Create body fixture.
   // Fixture position in box2d is relative to b2body's position.
-  b2PolygonShape bodyShape;
+  float scaleFactor = Director::getInstance()->getContentScaleFactor();
   b2Vec2 vertices[4];
-  vertices[0] = {-5 / scaleFactor / kPPM,  20 / scaleFactor / kPPM};
-  vertices[1] = { 5 / scaleFactor / kPPM,  20 / scaleFactor / kPPM};
-  vertices[2] = {-5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM};
-  vertices[3] = { 5 / scaleFactor / kPPM, -14 / scaleFactor / kPPM};
-  bodyShape.Set(vertices, 4);
+  vertices[0] = {-5 / scaleFactor,  20 / scaleFactor};
+  vertices[1] = { 5 / scaleFactor,  20 / scaleFactor};
+  vertices[2] = {-5 / scaleFactor, -14 / scaleFactor};
+  vertices[3] = { 5 / scaleFactor, -14 / scaleFactor};
 
-  b2FixtureDef fdef;
-  fdef.shape = &bodyShape;
-  fdef.filter.categoryBits = kPlayer;
-  fdef.filter.maskBits = kGround;
-  
-  b2Fixture* bodyFixture = _b2body->CreateFixture(&fdef);
-  bodyFixture->SetUserData(this);
+  bodyBuilder.newPolygonFixture(vertices, 4, kPPM)
+    .categoryBits(kPlayer)
+    .maskBits(kGround)
+    .setUserData(this)
+    .buildFixture();
 }
 
 void Player::defineTexture(float x, float y) {
@@ -156,16 +153,19 @@ void Player::loadAnimation(State state, const string& frameName, size_t frameCou
     string name = frameName + "/" + frameName + std::to_string(i) + ".png";
     frames.pushBack(frameCache->getSpriteFrameByName(name));
   }
-
-  Animation* animation = Animation::createWithSpriteFrames(frames, delay);
-  animation->retain();
-  _animations[state] = animation;
+  _animations[state] = Animation::createWithSpriteFrames(frames, delay);
+  _animations[state]->retain();
 }
 
 void Player::runAnimation(State state, bool loop) const {
   _sprite->stopAllActions();
-  auto act = Animate::create(_animations[state]);
-  _sprite->runAction((loop) ? (Action*) RepeatForever::create(act) : (Action*) Repeat::create(act, 1));
+
+  auto animation = Animate::create(_animations[state]);
+  if (loop) {
+    _sprite->runAction(RepeatForever::create(animation));
+  } else {
+    _sprite->runAction(Repeat::create(animation, 1));
+  }
 }
 
 

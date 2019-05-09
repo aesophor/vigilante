@@ -26,10 +26,10 @@ THE SOFTWARE.
 #include "Box2D/Box2D.h"
 #include "gl/GLESRender.h"
 
-class B2DebugRenderer : public cocos2d::Sprite {
+class b2DebugRenderer : public cocos2d::Sprite {
  public:
-  B2DebugRenderer(b2World* world);
-  static B2DebugRenderer* create(b2World* world);
+  b2DebugRenderer(b2World* world);
+  static b2DebugRenderer* create(b2World* world);
 
   bool init() override;
   void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;

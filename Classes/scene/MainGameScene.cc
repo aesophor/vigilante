@@ -6,7 +6,7 @@
 
 #include "character/Player.h"
 #include "gl/GLESRender.h"
-#include "util/box2d/B2DebugRenderer.h"
+#include "util/box2d/b2DebugRenderer.h"
 #include "util/Constants.h"
 
 using std::string;
@@ -46,8 +46,8 @@ bool MainGameScene::init() {
   _gameInputManager = unique_ptr<GameInputManager>(GameInputManager::getInstance());
   _gameInputManager->activate(this);
 
-  // Create B2DebugRenderer.
-  auto b2dr = B2DebugRenderer::create(getWorld());
+  // Create b2DebugRenderer.
+  auto b2dr = b2DebugRenderer::create(getWorld());
   addChild(b2dr);
 
   // Zoom game camera.

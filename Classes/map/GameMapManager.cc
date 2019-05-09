@@ -4,6 +4,7 @@
 
 #include "Box2D/Box2D.h"
 
+#include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
@@ -66,7 +67,7 @@ Player* GameMapManager::spawnPlayer() {
   auto& playerValMap = objGroup->getObjects()[0].asValueMap();
   float x = playerValMap["x"].asFloat() / kPPM;
   float y = playerValMap["y"].asFloat() / kPPM;
-  log("[INFO] Spawning player at: x=%f y=%f\n", x, y);
+  log("[INFO] Spawning player at: x=%f y=%f", x, y);
 
   return new Player(x, y);
 }
@@ -96,63 +97,54 @@ void GameMapManager::setScene(Scene* scene) {
 void GameMapManager::createRectangles(b2World* world, TMXTiledMap* map, const string& layerName) {
   TMXObjectGroup* portals = map->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
-
+  
   for (auto& obj : portals->getObjects()) {
     auto& valMap = obj.asValueMap();
-    float x = valMap["x"].asFloat() / kPPM;
-    float y = valMap["y"].asFloat() / kPPM;
-    float w = valMap["width"].asFloat() / kPPM;
-    float h = valMap["height"].asFloat() / kPPM;
+    float x = valMap["x"].asFloat();
+    float y = valMap["y"].asFloat();
+    float w = valMap["width"].asFloat();
+    float h = valMap["height"].asFloat();
 
-    b2BodyDef bdef;
-    bdef.type = b2BodyType::b2_staticBody;
-    bdef.position.Set(x + w / 2, y + h / 2);
-    b2Body* body = world->CreateBody(&bdef);
+    b2BodyBuilder bodyBuilder(world);
 
-    // Attach a fixture to body.
-    b2PolygonShape shape;
-    shape.SetAsBox(w / 2, h / 2);
+    bodyBuilder.type(b2BodyType::b2_staticBody)
+      .position(x + w / 2, y + h / 2, kPPM)
+      .buildBody();
 
-    b2FixtureDef fdef;
-    fdef.shape = &shape;
-    fdef.isSensor = true;
-    fdef.friction = 1;
-    //fdef.filter.categoryBits = 0;
-    body->CreateFixture(&fdef);
+    bodyBuilder.newRectangleFixture(w / 2, h / 2, kPPM)
+      .categoryBits(kGround)
+      .setSensor(true)
+      .friction(1)
+      .buildFixture();
   }
 }
 
 void GameMapManager::createPolylines(b2World* world, TMXTiledMap* map, const string& layerName) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
-  TMXObjectGroup* ground = map->getObjectGroup(layerName);
 
-  for (auto& obj : ground->getObjects()) {
+  for (auto& obj : map->getObjectGroup(layerName)->getObjects()) {
     auto& valMap = obj.asValueMap();
-    float xRef = valMap["x"].asFloat() / kPPM;
-    float yRef = valMap["y"].asFloat() / kPPM;
+    float xRef = valMap["x"].asFloat();
+    float yRef = valMap["y"].asFloat();
 
     auto& valVec = valMap["polylinePoints"].asValueVector();
     b2Vec2 vertices[valVec.size()];
     for (size_t i = 0; i < valVec.size(); i++) {
-      float x = valVec[i].asValueMap()["x"].asFloat() / scaleFactor / kPPM;
-      float y = valVec[i].asValueMap()["y"].asFloat() / scaleFactor / kPPM;
+      float x = valVec[i].asValueMap()["x"].asFloat() / scaleFactor;
+      float y = valVec[i].asValueMap()["y"].asFloat() / scaleFactor;
       vertices[i] = {xRef + x, yRef - y};
     }
 
-    b2BodyDef bdef;
-    bdef.type = b2BodyType::b2_staticBody;
-    bdef.position.SetZero();
-    b2Body* body = world->CreateBody(&bdef);
+    b2BodyBuilder bodyBuilder(world);
 
-    b2ChainShape shape;
-    shape.CreateChain(vertices, valVec.size());
+    bodyBuilder.type(b2BodyType::b2_staticBody)
+      .position(0, 0, kPPM)
+      .buildBody();
 
-    b2FixtureDef fdef;
-    fdef.shape = &shape;
-    fdef.isSensor = false;
-    fdef.friction = 1;
-    fdef.filter.categoryBits = kGround;
-    body->CreateFixture(&fdef);
+    bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPPM)
+      .categoryBits(kGround)
+      .friction(1)
+      .buildFixture();
   }
 }
 

@@ -19,12 +19,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "B2DebugRenderer.h"
+#include "b2DebugRenderer.h"
 
 USING_NS_CC;
 
-B2DebugRenderer* B2DebugRenderer::create(b2World* world) {
-  B2DebugRenderer *pRet = new B2DebugRenderer(world);
+b2DebugRenderer* b2DebugRenderer::create(b2World* world) {
+  b2DebugRenderer *pRet = new b2DebugRenderer(world);
   if (pRet && pRet->init()) {
     pRet->autorelease();
     return pRet;
@@ -35,9 +35,9 @@ B2DebugRenderer* B2DebugRenderer::create(b2World* world) {
   }
 }
 
-B2DebugRenderer::B2DebugRenderer(b2World* world) : _world(world) {}
+b2DebugRenderer::b2DebugRenderer(b2World* world) : _world(world) {}
 
-bool B2DebugRenderer::init() {
+bool b2DebugRenderer::init() {
   mB2DebugDraw = new GLESDebugDraw(100);
   _world->SetDebugDraw(mB2DebugDraw);
   uint32 flags = 0;
@@ -52,14 +52,14 @@ bool B2DebugRenderer::init() {
 }
 
 
-void B2DebugRenderer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags) {
+void b2DebugRenderer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags) {
   //Sprite::draw(renderer, transform, flags);
   _customCmd.init(_globalZOrder, transform, flags);
-  _customCmd.func = CC_CALLBACK_0(B2DebugRenderer::onDraw, this, transform, flags);
+  _customCmd.func = CC_CALLBACK_0(b2DebugRenderer::onDraw, this, transform, flags);
   renderer->addCommand(&_customCmd);
 }
 
-void B2DebugRenderer::onDraw(const Mat4& transform, uint32_t flags) {
+void b2DebugRenderer::onDraw(const Mat4& transform, uint32_t flags) {
   Director* director = Director::getInstance();
   CCASSERT(director, "Director is null when seting matrix stack");
   director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
