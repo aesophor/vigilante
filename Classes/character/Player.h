@@ -25,8 +25,8 @@ class Player {
     FALLING_UNSHEATHED,
     CROUCHING_SHEATHED,
     CROUCHING_UNSHEATHED,
-    WEAPON_SHEATHING,
-    WEAPON_UNSHEATHING,
+    SHEATHING_WEAPON,
+    UNSHEATHING_WEAPON,
     ATTACKING,
     KILLED,
     LAST
@@ -39,12 +39,17 @@ class Player {
   void jump();
   void crouch();
   void getUp();
+  void sheathWeapon();
+  void unsheathWeapon();
 
   b2Body* getB2Body() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
   bool isJumping() const;
   bool isCrouching() const;
+  bool isWeaponSheathed() const;
+  bool isSheathingWeapon() const;
+  bool isUnsheathingWeapon() const;
   bool isOnPlatform() const;
 
   void setIsJumping(bool isJumping);
@@ -76,9 +81,9 @@ class Player {
 
   float _stateTimer;
   bool _isFacingRight;
-  bool _isSheathed;
-  bool _isSheathing;
-  bool _isUnsheathing;
+  bool _isWeaponSheathed;
+  bool _isSheathingWeapon;
+  bool _isUnsheathingWeapon;
   bool _isJumping;
   bool _isOnPlatform;
   bool _isAttacking;

@@ -7,6 +7,7 @@
 #include "character/Player.h"
 #include "gl/GLESRender.h"
 #include "util/box2d/b2DebugRenderer.h"
+#include "util/CallbackUtil.h"
 #include "util/Constants.h"
 
 using std::string;
@@ -31,6 +32,9 @@ bool MainGameScene::init() {
   log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
   log("origin: %f %f\n", origin.x, origin.y);
 
+  // Initialize Vigilante's CallbackUtil.
+  vigilante::callback_util::init(this);
+  
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
@@ -47,8 +51,8 @@ bool MainGameScene::init() {
   // Create b2DebugRenderer.
   _b2dr = unique_ptr<b2DebugRenderer>(b2DebugRenderer::create(getWorld()));
   _b2dr->retain();
-  addChild(_b2dr.get());
   _b2DebugOn = true;
+  addChild(_b2dr.get());
 
   // Zoom game camera.
   auto camPos = getDefaultCamera()->getPosition();
@@ -87,6 +91,14 @@ void MainGameScene::handleInput(float delta) {
     player->moveLeft();
   } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     player->moveRight();
+  }
+
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
+    if (player->isWeaponSheathed() && !player->isUnsheathingWeapon()) {
+      player->unsheathWeapon();
+    } else if (!player->isWeaponSheathed() && !player->isSheathingWeapon()) {
+      player->sheathWeapon();
+    }
   }
 
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {

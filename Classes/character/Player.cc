@@ -2,6 +2,7 @@
 
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
@@ -32,9 +33,9 @@ Player::Player(float x, float y)
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
       _isFacingRight(true),
-      _isSheathed(true),
-      _isSheathing(),
-      _isUnsheathing(),
+      _isWeaponSheathed(true),
+      _isSheathingWeapon(),
+      _isUnsheathingWeapon(),
       _isJumping(),
       _isAttacking(),
       _isCrouching(),
@@ -83,6 +84,12 @@ void Player::update(float delta) {
         break;
       case State::CROUCHING_UNSHEATHED:
         runAnimation(State::CROUCHING_UNSHEATHED, false);
+        break;
+      case State::SHEATHING_WEAPON:
+        runAnimation(State::SHEATHING_WEAPON, false);
+        break;
+      case State::UNSHEATHING_WEAPON:
+        runAnimation(State::UNSHEATHING_WEAPON, false);
         break;
       case State::ATTACKING:
         runAnimation(State::ATTACKING, false);
@@ -186,8 +193,8 @@ void Player::defineTexture(float x, float y) {
   loadAnimation(State::CROUCHING_SHEATHED, "p_crouching_sheathed", 2, 10.0f / kPPM);
   loadAnimation(State::CROUCHING_UNSHEATHED, "p_crouching_unsheathed", 2, 10.0f / kPPM);
 
-  loadAnimation(State::WEAPON_SHEATHING, "p_weapon_sheathing", 6, 10.0f / kPPM);
-  loadAnimation(State::WEAPON_UNSHEATHING, "p_weapon_unsheathing", 6, 10.0f / kPPM);
+  loadAnimation(State::SHEATHING_WEAPON, "p_weapon_sheathing", 6, 15.0f / kPPM);
+  loadAnimation(State::UNSHEATHING_WEAPON, "p_weapon_unsheathing", 6, 15.0f / kPPM);
 
   loadAnimation(State::ATTACKING, "p_attacking", 8, 12.0f / kPPM);
   loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPPM);
@@ -233,20 +240,20 @@ Player::State Player::getState() const {
     return State::KILLED;
   } else if (_isAttacking) {
     return State::ATTACKING;
-  } else if (_isSheathing) {
-    return State::WEAPON_SHEATHING;
-  } else if (_isUnsheathing) {
-    return State::WEAPON_UNSHEATHING;
+  } else if (_isSheathingWeapon) {
+    return State::SHEATHING_WEAPON;
+  } else if (_isUnsheathingWeapon) {
+    return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
-    return (_isSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
   } else if (_b2body->GetLinearVelocity().y < -.5f) {
-    return (_isSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
-    return (_isSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
   } else if (std::abs(_b2body->GetLinearVelocity().x) > .01f) {
-    return (_isSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
-    return (_isSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }
 }
 
@@ -280,6 +287,24 @@ void Player::getUp() {
   _isCrouching = false;
 }
 
+void Player::sheathWeapon() {
+  _isSheathingWeapon = true;
+
+  callback_util::runAfter([&](){
+    _isSheathingWeapon = false;
+    _isWeaponSheathed = true;
+  }, 1.0f);
+}
+
+void Player::unsheathWeapon() {
+  _isUnsheathingWeapon = true;
+
+  callback_util::runAfter([&](){
+    _isUnsheathingWeapon = false;
+    _isWeaponSheathed = false;
+  }, 1.0f);
+}
+
 
 b2Body* Player::getB2Body() const {
   return _b2body;
@@ -295,6 +320,18 @@ bool Player::isJumping() const {
 
 bool Player::isCrouching() const {
   return _isCrouching;
+}
+
+bool Player::isWeaponSheathed() const {
+  return _isWeaponSheathed;
+}
+
+bool Player::isSheathingWeapon() const {
+  return _isSheathingWeapon;
+}
+
+bool Player::isUnsheathingWeapon() const {
+  return _isUnsheathingWeapon;
 }
 
 bool Player::isOnPlatform() const {
