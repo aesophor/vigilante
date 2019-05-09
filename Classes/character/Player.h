@@ -15,11 +15,18 @@ class Player {
   virtual ~Player();
 
   enum State {
-    IDLE,
-    RUNNING,
-    JUMPING,
-    FALLING,
-    CROUCHING,
+    IDLE_SHEATHED,
+    IDLE_UNSHEATHED,
+    RUNNING_SHEATHED,
+    RUNNING_UNSHEATHED,
+    JUMPING_SHEATHED,
+    JUMPING_UNSHEATHED,
+    FALLING_SHEATHED,
+    FALLING_UNSHEATHED,
+    CROUCHING_SHEATHED,
+    CROUCHING_UNSHEATHED,
+    WEAPON_SHEATHING,
+    WEAPON_UNSHEATHING,
     ATTACKING,
     KILLED,
     LAST
@@ -30,13 +37,18 @@ class Player {
   void moveLeft();
   void moveRight();
   void jump();
+  void crouch();
+  void getUp();
 
   b2Body* getB2Body() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
   bool isJumping() const;
+  bool isCrouching() const;
   bool isOnPlatform() const;
+
   void setIsJumping(bool isJumping);
+  void setIsCrouching(bool isCrouching);
   void setIsOnPlatform(bool isOnPlatform);
 
  private:
@@ -64,6 +76,9 @@ class Player {
 
   float _stateTimer;
   bool _isFacingRight;
+  bool _isSheathed;
+  bool _isSheathing;
+  bool _isUnsheathing;
   bool _isJumping;
   bool _isOnPlatform;
   bool _isAttacking;

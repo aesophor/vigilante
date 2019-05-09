@@ -28,10 +28,13 @@ Player::Player(float x, float y)
       _bodyFixture(),
       _spritesheet(),
       _sprite(),
-      _currentState(State::IDLE),
-      _previousState(State::IDLE),
+      _currentState(State::IDLE_SHEATHED),
+      _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
       _isFacingRight(true),
+      _isSheathed(true),
+      _isSheathing(),
+      _isUnsheathing(),
       _isJumping(),
       _isAttacking(),
       _isCrouching(),
@@ -57,17 +60,29 @@ void Player::update(float delta) {
   // If there's a change in character's state, update its animation accordingly.
   if (_previousState != _currentState) {
     switch(_currentState) {
-      case State::RUNNING:
-        runAnimation(State::RUNNING, true);
+      case State::RUNNING_SHEATHED:
+        runAnimation(State::RUNNING_SHEATHED, true);
         break;
-      case State::JUMPING:
-        runAnimation(State::JUMPING, false);
+      case State::RUNNING_UNSHEATHED:
+        runAnimation(State::RUNNING_UNSHEATHED, true);
         break;
-      case State::FALLING:
-        runAnimation(State::FALLING, false);
+      case State::JUMPING_SHEATHED:
+        runAnimation(State::JUMPING_SHEATHED, false);
         break;
-      case State::CROUCHING:
-        runAnimation(State::CROUCHING, false);
+      case State::JUMPING_UNSHEATHED:
+        runAnimation(State::JUMPING_UNSHEATHED, false);
+        break;
+      case State::FALLING_SHEATHED:
+        runAnimation(State::FALLING_SHEATHED, false);
+        break;
+      case State::FALLING_UNSHEATHED:
+        runAnimation(State::FALLING_UNSHEATHED, false);
+        break;
+      case State::CROUCHING_SHEATHED:
+        runAnimation(State::CROUCHING_SHEATHED, false);
+        break;
+      case State::CROUCHING_UNSHEATHED:
+        runAnimation(State::CROUCHING_UNSHEATHED, false);
         break;
       case State::ATTACKING:
         runAnimation(State::ATTACKING, false);
@@ -75,8 +90,12 @@ void Player::update(float delta) {
       case State::KILLED:
         runAnimation(State::KILLED, false);
         break;
+      case State::IDLE_SHEATHED:
+        runAnimation(State::IDLE_SHEATHED, true);
+        break;
+      case State::IDLE_UNSHEATHED: // fall through
       default:
-        runAnimation(State::IDLE, true);
+        runAnimation(State::IDLE_UNSHEATHED, true);
         break;
     }
   }
@@ -152,11 +171,24 @@ void Player::defineTexture(float x, float y) {
   frameCache->addSpriteFramesWithFile(location + "player.plist");
   _spritesheet = SpriteBatchNode::create(location + "player.png");
 
-  loadAnimation(State::IDLE, "p_idle_sheathed", 6, 10.0f / kPPM);
-  loadAnimation(State::RUNNING, "p_running_sheathed", 8, 10.0f / kPPM);
-  loadAnimation(State::JUMPING, "p_jumping_sheathed", 5, 10.0f / kPPM);
-  loadAnimation(State::FALLING, "p_falling_sheathed", 1, 10.0f / kPPM);
-  loadAnimation(State::CROUCHING, "p_crouching_sheathed", 2, 10.0f / kPPM);
+  loadAnimation(State::IDLE_SHEATHED, "p_idle_sheathed", 6, 10.0f / kPPM);
+  loadAnimation(State::IDLE_UNSHEATHED, "p_idle_unsheathed", 6, 10.0f / kPPM);
+
+  loadAnimation(State::RUNNING_SHEATHED, "p_running_sheathed", 8, 10.0f / kPPM);
+  loadAnimation(State::RUNNING_UNSHEATHED, "p_running_unsheathed", 8, 10.0f / kPPM);
+
+  loadAnimation(State::JUMPING_SHEATHED, "p_jumping_sheathed", 5, 10.0f / kPPM);
+  loadAnimation(State::JUMPING_UNSHEATHED, "p_jumping_unsheathed", 5, 10.0f / kPPM);
+
+  loadAnimation(State::FALLING_SHEATHED, "p_falling_sheathed", 1, 10.0f / kPPM);
+  loadAnimation(State::FALLING_UNSHEATHED, "p_falling_unsheathed", 1, 10.0f / kPPM);
+
+  loadAnimation(State::CROUCHING_SHEATHED, "p_crouching_sheathed", 2, 10.0f / kPPM);
+  loadAnimation(State::CROUCHING_UNSHEATHED, "p_crouching_unsheathed", 2, 10.0f / kPPM);
+
+  loadAnimation(State::WEAPON_SHEATHING, "p_weapon_sheathing", 6, 10.0f / kPPM);
+  loadAnimation(State::WEAPON_UNSHEATHING, "p_weapon_unsheathing", 6, 10.0f / kPPM);
+
   loadAnimation(State::ATTACKING, "p_attacking", 8, 12.0f / kPPM);
   loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPPM);
 
@@ -169,7 +201,7 @@ void Player::defineTexture(float x, float y) {
   _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
   GameMapManager::getInstance()->getScene()->addChild(_spritesheet, 30);
 
-  runAnimation(State::IDLE);
+  runAnimation(State::IDLE_SHEATHED);
 }
 
 void Player::loadAnimation(State state, const string& frameName, size_t frameCount, float delay) {
@@ -201,16 +233,20 @@ Player::State Player::getState() const {
     return State::KILLED;
   } else if (_isAttacking) {
     return State::ATTACKING;
+  } else if (_isSheathing) {
+    return State::WEAPON_SHEATHING;
+  } else if (_isUnsheathing) {
+    return State::WEAPON_UNSHEATHING;
   } else if (_isJumping) {
-    return State::JUMPING;
+    return (_isSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
   } else if (_b2body->GetLinearVelocity().y < -.5f) {
-    return State::FALLING;
+    return (_isSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
-    return State::CROUCHING;
+    return (_isSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
   } else if (std::abs(_b2body->GetLinearVelocity().x) > .01f) {
-    return State::RUNNING;
+    return (_isSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
-    return State::IDLE;
+    return (_isSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }
 }
 
@@ -236,6 +272,14 @@ void Player::jump() {
   }
 }
 
+void Player::crouch() {
+  _isCrouching = true;
+}
+
+void Player::getUp() {
+  _isCrouching = false;
+}
+
 
 b2Body* Player::getB2Body() const {
   return _b2body;
@@ -249,12 +293,21 @@ bool Player::isJumping() const {
   return _isJumping;
 }
 
+bool Player::isCrouching() const {
+  return _isCrouching;
+}
+
 bool Player::isOnPlatform() const {
   return _isOnPlatform;
 }
 
+
 void Player::setIsJumping(bool isJumping) {
   _isJumping = isJumping;
+}
+
+void Player::setIsCrouching(bool isCrouching) {
+  _isCrouching = isCrouching;
 }
 
 void Player::setIsOnPlatform(bool isOnPlatform) {

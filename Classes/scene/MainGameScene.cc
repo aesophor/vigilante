@@ -71,16 +71,22 @@ void MainGameScene::update(float delta) {
 void MainGameScene::handleInput(float delta) {
   auto player = _gameMapManager->getPlayer();
 
-  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
+  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     player->moveLeft();
-  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
+  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     player->moveRight();
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_W)) {
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     player->jump();
-  } else if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_S)) {
+  }
 
+  if (player->isCrouching() && !_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    player->getUp();
+  }
+  
+  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    player->crouch();
   }
 }
 
