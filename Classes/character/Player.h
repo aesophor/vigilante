@@ -37,6 +37,7 @@ class Player {
   void moveLeft();
   void moveRight();
   void jump();
+  void jumpDown();
   void crouch();
   void getUp();
   void sheathWeapon();

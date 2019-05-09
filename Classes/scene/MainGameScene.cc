@@ -87,6 +87,13 @@ void MainGameScene::handleInput(float delta) {
     _b2DebugOn = !_b2DebugOn;
   }
 
+  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    player->crouch();
+    if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+      player->jumpDown();
+    }
+  }
+
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
     player->attack();
   }
@@ -111,10 +118,6 @@ void MainGameScene::handleInput(float delta) {
 
   if (player->isCrouching() && !_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     player->getUp();
-  }
-  
-  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-    player->crouch();
   }
 }
 

@@ -279,6 +279,16 @@ void Player::jump() {
   }
 }
 
+void Player::jumpDown() {
+  if (_isOnPlatform) {
+    _feetFixture->SetSensor(true);
+
+    callback_util::runAfter([&](){
+      _feetFixture->SetSensor(false);
+    }, .25f);
+  }
+}
+
 void Player::crouch() {
   _isCrouching = true;
 }
