@@ -90,10 +90,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     scaleX = screenRatio / virtualRatio;
     scaleY = screenRatio / virtualRatio;
   }
+  log("scaleX=%f scaleY=%f", scaleX, scaleY);
 
   // Create a scene. It's an autorelease object.
   Scene* scene = MainGameScene::create();
-  log("scaleX=%f scaleY=%f", scaleX, scaleY);
   scene->setScaleY(scaleY); // only scale Y or the screen will be squished.
   director->runWithScene(scene);
 

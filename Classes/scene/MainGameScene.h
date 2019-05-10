@@ -24,6 +24,7 @@ class MainGameScene : public cocos2d::Scene {
 
  private:
   bool _b2DebugOn;
+  cocos2d::Camera* _gameCam;
 
   std::unique_ptr<b2DebugRenderer> _b2dr;
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;

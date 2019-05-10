@@ -18,14 +18,13 @@ class GameMapManager {
  public:
   static GameMapManager* getInstance();
   virtual ~GameMapManager();
-
   void load(const std::string& mapFileName);
 
   b2World* getWorld() const;
+
+  cocos2d::Layer* getLayer() const;
   cocos2d::TMXTiledMap* getMap() const;
   Player* getPlayer() const;
-  cocos2d::Scene* getScene() const;
-  void setScene(cocos2d::Scene* scene);
 
  private:
   static GameMapManager* _instance;
@@ -49,8 +48,9 @@ class GameMapManager {
 
   std::unique_ptr<b2World> _world;
   std::unique_ptr<WorldContactListener> _worldContactListener;
+
+  cocos2d::Layer* _layer;
   cocos2d::TMXTiledMap* _map;
-  cocos2d::Scene* _scene;
   Player* _player;
 };
 

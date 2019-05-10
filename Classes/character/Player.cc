@@ -27,8 +27,8 @@ const float Player::kBaseMovingSpeed = .25f;
 Player::Player(float x, float y)
     : _b2body(),
       _bodyFixture(),
-      _spritesheet(),
       _sprite(),
+      _spritesheet(),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
@@ -206,7 +206,6 @@ void Player::defineTexture(float x, float y) {
 
   _spritesheet->addChild(_sprite);
   _spritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
-  GameMapManager::getInstance()->getScene()->addChild(_spritesheet, 30);
 
   runAnimation(State::IDLE_SHEATHED);
 }

@@ -31,9 +31,10 @@ GameMapManager* GameMapManager::getInstance() {
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _world(new b2World(gravity)),
       _worldContactListener(new WorldContactListener()),
+      _layer(Layer::create()),
       _map(),
-      _scene(), 
       _player() {
+  _layer->retain();
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
@@ -48,8 +49,14 @@ GameMapManager::~GameMapManager() {
 
 
 void GameMapManager::load(const string& mapFileName) {
+  if (_map) {
+    _layer->removeChild(_map);
+    _map = nullptr;
+  }
+
   // Release previous TMXTiledMap object.
   _map = TMXTiledMap::create(mapFileName);
+  _layer->addChild(_map, 0);
  
   // Create box2d objects from layers
   createPolylines(_world.get(), _map, "Ground", category_bits::kGround, true, 2);
@@ -58,6 +65,7 @@ void GameMapManager::load(const string& mapFileName) {
   createRectangles(_world.get(), _map, "Portal", category_bits::kPortal, false, 0);
 
   _player = spawnPlayer();
+  _layer->addChild(_player->getSpritesheet(), 30);
 }
 
 
@@ -77,20 +85,16 @@ b2World* GameMapManager::getWorld() const {
   return _world.get();
 }
 
+Layer* GameMapManager::getLayer() const {
+  return _layer;
+}
+
 TMXTiledMap* GameMapManager::getMap() const {
   return _map;
 }
 
 Player* GameMapManager::getPlayer() const {
   return _player;
-}
-
-Scene* GameMapManager::getScene() const {
-  return _scene;
-}
-
-void GameMapManager::setScene(Scene* scene) {
-  _scene = scene;
 }
 
 
