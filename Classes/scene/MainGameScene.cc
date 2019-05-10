@@ -87,7 +87,7 @@ void MainGameScene::update(float delta) {
   _gameMapManager->getPlayer()->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCam, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
-  //vigilante::camera_util::boundCamera(_gameCam, _gameMapManager->getMap());
+  vigilante::camera_util::boundCamera(_gameCam, _gameMapManager->getMap());
   _gameCam->update(delta);
 }
 
@@ -97,10 +97,10 @@ void MainGameScene::handleInput(float delta) {
   // Toggle b2dr (b2DebugRenderer)
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
     if (_b2DebugOn) {
-      removeChild(_gameMapManager->getLayer());
+      removeChild(_b2dr.get());
       cocos2d::log("[b2dr] is off. Ref=%d", _b2dr->getReferenceCount());
     } else {
-      addChild(_gameMapManager->getLayer());
+      addChild(_b2dr.get());
       cocos2d::log("[b2dr] is on. Ref=%d", _b2dr->getReferenceCount());
     }
     _b2DebugOn = !_b2DebugOn;

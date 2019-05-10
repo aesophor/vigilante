@@ -1,5 +1,7 @@
 #include "CameraUtil.h"
 
+#include "util/Constants.h"
+
 using cocos2d::Camera;
 using cocos2d::TMXTiledMap;
 using cocos2d::Vec2;
@@ -13,10 +15,10 @@ void boundCamera(Camera* camera, TMXTiledMap* map) {
   Vec2 position = camera->getPosition();
   float tileSize = map->getTileSize().width;
 
-  float startX = 600 / 2;
-  float startY = 300 / 2;
-  float endX = (map->getMapSize().width * tileSize) - 600 / 2;
-  float endY = (map->getMapSize().height * tileSize) - 300 / 2;
+  float startX = 0;
+  float startY = 0;
+  float endX = (map->getMapSize().width * tileSize) - 600;
+  float endY = (map->getMapSize().height * tileSize) - 300;
 
   if (position.x < startX) {
     position.x = startX;
@@ -37,8 +39,8 @@ void boundCamera(Camera* camera, TMXTiledMap* map) {
 
 void lerpToTarget(Camera* camera, const b2Vec2& target) {
   Vec2 position = camera->getPosition();
-  position.x = camera->getPositionX() + (target.x * 100 - camera->getPositionX()) * .1f;
-  position.y = camera->getPositionY() + (target.y * 100 - camera->getPositionY()) * .1f;
+  position.x = camera->getPositionX() + ((target.x * kPPM - 600 / 2) - camera->getPositionX()) * .1f;
+  position.y = camera->getPositionY() + ((target.y * kPPM - 300 / 2) - camera->getPositionY()) * .1f;
   camera->setPosition(position);
 }
 
