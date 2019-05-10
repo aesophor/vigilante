@@ -2,6 +2,7 @@
 #define VIGILANTE_PLAYER_H_
 
 #include <string>
+#include <vector>
 
 #include "Box2D/Box2D.h"
 
@@ -45,6 +46,7 @@ class Player {
   void attack();
 
   b2Body* getB2Body() const;
+  cocos2d::Sprite* getSprite() const;
   cocos2d::SpriteBatchNode* getSpritesheet() const;
 
   bool isJumping() const;
@@ -74,8 +76,8 @@ class Player {
   b2Fixture* _feetFixture;
   b2Fixture* _weaponFixture;
 
-  cocos2d::SpriteBatchNode* _spritesheet;
   cocos2d::Sprite* _sprite;
+  cocos2d::SpriteBatchNode* _spritesheet;
   cocos2d::Animation* _animations[State::LAST];
 
   Player::State _currentState;
@@ -92,6 +94,8 @@ class Player {
   bool _isCrouching;
   bool _isKilled;
   bool _isSetToKill;
+
+  // Combat
 };
 
 } // namespace vigilante

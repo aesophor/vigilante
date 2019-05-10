@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 
 #include "scene/MainGameScene.h"
+#include "util/Constants.h"
 
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -65,29 +66,35 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
 
-  // Set the design resolution
-  //glview->setDesignResolutionSize(1280, 800, ResolutionPolicy::EXACT_FIT);
-  glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
-  auto frameSize = glview->getFrameSize();
+  // Perform letterbox scaling (solution provided by @makalele)
+  // http://discuss.cocos2d-x.org/t/letterbox-scaling/19408/2
+  Size size = glview->getFrameSize();
+  float virtualWidth = vigilante::kVirtualWidth; // 600
+  float virtualHeight = vigilante::kVirtualHeight; // 300
+  float screenWidth = size.width;
+  float screenHeight = size.height;
+  log("screensize: %f %f", screenWidth, screenHeight);
+  float virtualRatio = virtualWidth / virtualHeight;
+  float screenRatio = screenWidth / screenHeight;
+  float scaleX = 1;
+  float scaleY = 1;
 
-  if (frameSize.height > mediumResolutionSize.height) {        
-    // if the frame's height is larger than the height of medium size.
-    director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
-  } else if (frameSize.height > smallResolutionSize.height) {        
-    // if the frame's height is larger than the height of small size.
-    director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
-  } else {        
-    // if the frame's height is smaller than the height of medium size.
-    director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
+  glview->setDesignResolutionSize(virtualWidth, virtualHeight, ResolutionPolicy::EXACT_FIT);
+
+  if (screenRatio > virtualRatio) {
+    // Left and right letterboxing
+    scaleX = virtualRatio / screenRatio;
+    scaleY = virtualRatio / screenRatio;
+  } else if (screenRatio < virtualRatio) {
+    // Up and bottom letterboxing
+    scaleX = screenRatio / virtualRatio;
+    scaleY = screenRatio / virtualRatio;
   }
-
-  register_all_packages();
-
-  // Load sprite sheets.
-  //SpriteFrameCache* spriteCache = SpriteFrameCache::getInstance();
 
   // Create a scene. It's an autorelease object.
   Scene* scene = MainGameScene::create();
+  log("scaleX=%f scaleY=%f", scaleX, scaleY);
+  scene->setScaleY(scaleY); // only scale Y or the screen will be squished.
   director->runWithScene(scene);
 
   return true;

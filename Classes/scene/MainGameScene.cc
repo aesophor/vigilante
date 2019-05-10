@@ -27,10 +27,6 @@ bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;
   }
-  auto visibleSize = Director::getInstance()->getVisibleSize();
-  Vec2 origin = Director::getInstance()->getVisibleOrigin();
-  log("visible size: %f %f\n", visibleSize.width, visibleSize.height);
-  log("origin: %f %f\n", origin.x, origin.y);
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
@@ -41,7 +37,7 @@ bool MainGameScene::init() {
   _gameMapManager->setScene(this);
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getMap(), 0);
-  schedule(CC_SCHEDULE_SELECTOR(MainGameScene::update));
+  schedule(schedule_selector(MainGameScene::update));
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
@@ -54,10 +50,17 @@ bool MainGameScene::init() {
   _b2DebugOn = true;
   addChild(_b2dr.get());
 
-  // Zoom game camera.
-  auto camPos = getDefaultCamera()->getPosition();
-  getDefaultCamera()->setPosition(200, 100);
-  getDefaultCamera()->setPositionZ(225);
+
+  // Create orthographic camera for game sprites.
+  auto winSize = Director::getInstance()->getWinSize();
+  log("winSize: w=%f h=%f", winSize.width, winSize.height);
+
+  getDefaultCamera()->initOrthographic(winSize.width, winSize.height, 1, 1000);
+
+  float mapHeight = _gameMapManager->getMap()->getMapSize().height;
+  float tileSize = _gameMapManager->getMap()->getTileSize().height;
+  float camOffsetY = (winSize.height - mapHeight * tileSize) / 2;
+  getDefaultCamera()->setPosition(0, -camOffsetY);
 
   return true;
 }

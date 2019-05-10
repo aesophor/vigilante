@@ -275,7 +275,7 @@ void Player::moveRight() {
 void Player::jump() {
   if (!_isJumping) {
     _isJumping = true;
-    _b2body->ApplyLinearImpulse({0, 2.5f}, _b2body->GetWorldCenter(), true);
+    _b2body->ApplyLinearImpulse({0, 3.0f}, _b2body->GetWorldCenter(), true);
   }
 }
 
@@ -331,6 +331,10 @@ void Player::attack() {
 
 b2Body* Player::getB2Body() const {
   return _b2body;
+}
+
+Sprite* Player::getSprite() const {
+  return _sprite;
 }
 
 SpriteBatchNode* Player::getSpritesheet() const {
