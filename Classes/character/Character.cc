@@ -375,6 +375,10 @@ bool Character::isKilled() const {
   return _isKilled;
 }
 
+bool Character::isSetToKill() const {
+  return _isSetToKill;
+}
+
 bool Character::isWeaponSheathed() const {
   return _isWeaponSheathed;
 }

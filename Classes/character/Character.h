@@ -37,6 +37,7 @@ class Character {
 	bool isCrouching() const;
   bool isInvincible() const;
   bool isKilled() const;
+  bool isSetToKill() const;
 	bool isWeaponSheathed() const;
 	bool isSheathingWeapon() const;
 	bool isUnsheathingWeapon() const;

@@ -96,7 +96,7 @@ void MainGameScene::handleInput(float delta) {
   }
 
   
-  if (player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
+  if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
     return;
   }
 
