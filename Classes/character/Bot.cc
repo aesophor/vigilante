@@ -34,7 +34,8 @@ void Bot::act(float delta) {
       if (inRangeTargets.empty()) {
         _character->setLockedOnTarget(nullptr);
       }
-    } else { // if the target isn't within attack range, move toward it until attackable
+    } else if (std::abs(_character->getB2Body()->GetPosition().x - lockedOnTarget->getB2Body()->GetPosition().x) > .25f) {
+      // If the target isn't within attack range, move toward it until attackable
       moveToTarget(lockedOnTarget);
       jumpIfStucked(delta, .1f);
     }
