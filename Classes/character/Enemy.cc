@@ -32,7 +32,7 @@ using vigilante::category_bits::kObject;
 
 namespace vigilante {
 
-Enemy::Enemy(const std::string& name, float x, float y) : Character(name, x, y) {
+Enemy::Enemy(const std::string& name, float x, float y) : Character(name, x, y), Bot(this) {
   short bodyCategoryBits = kEnemy;
   short bodyMaskBits = kPortal | kPlayer | kMeleeWeapon | kItem;
   short feetMaskBits = kGround | kPlatform | kWall;
@@ -47,6 +47,16 @@ Enemy::~Enemy() {
   }
 }
 
+
+void Enemy::update(float delta) {
+  Character::update(delta);
+  act(delta);
+}
+
+void Enemy::receiveDamage(Character* source, int damage) {
+  Character::receiveDamage(source, damage);
+  _isAlerted = true;
+}
 
 void Enemy::defineTexture(float x, float y) {
   cocos2d::log("[Enemy] loading textures");

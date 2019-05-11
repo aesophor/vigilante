@@ -6,9 +6,10 @@
 
 #include "character/Player.h"
 #include "util/box2d/b2DebugRenderer.h"
+#include "util/Constants.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
-#include "util/Constants.h"
+#include "util/RandUtil.h"
 
 using std::string;
 using std::unique_ptr;
@@ -44,6 +45,9 @@ bool MainGameScene::init() {
   
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
+
+  // Initialize Vigilante's RandUtil.
+  vigilante::rand_util::init();
   
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.

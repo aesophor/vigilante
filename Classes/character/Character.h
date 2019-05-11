@@ -48,6 +48,10 @@ class Character {
   void setIsInvincible(bool isInvincible);
 
   std::set<Character*>& getInRangeTargets();
+  Character* getLockedOnTarget() const;
+  void setLockedOnTarget(Character* target);
+  bool isAlerted() const;
+  void setIsAlerted(bool isAlerted);
 
   std::string getName() const;
   void setName(const std::string& name);
@@ -113,6 +117,8 @@ class Character {
 	bool _isSetToKill;
 
   std::set<Character*> _inRangeTargets;
+  Character* _lockedOnTarget;
+  bool _isAlerted;
 
   std::string _name;
   int _str;

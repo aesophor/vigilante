@@ -1,7 +1,5 @@
 #include "Player.h"
 
-#include "map/GameMapManager.h"
-#include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
@@ -47,6 +45,15 @@ Player::~Player() {
   }
 }
 
+
+void Player::receiveDamage(Character* source, int damage) {
+  Character::receiveDamage(source, damage);
+  _isInvincible = true;
+
+  callback_util::runAfter([&](){
+    _isInvincible = false;
+  }, 1.5f);
+}
 
 void Player::defineTexture(float x, float y) {
   cocos2d::log("[Player] loading textures");

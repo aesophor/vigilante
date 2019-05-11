@@ -15,6 +15,8 @@ class Player : public Character {
   Player(const std::string& name, float x, float y);
   virtual ~Player();
 
+  virtual void receiveDamage(Character* source, int damage) override;
+
  private:
   virtual void defineTexture(float x, float y) override;
 };

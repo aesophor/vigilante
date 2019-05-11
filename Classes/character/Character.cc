@@ -43,6 +43,8 @@ Character::Character(const string& name, float x, float y)
       _isInvincible(),
       _isKilled(),
       _isSetToKill(),
+      _lockedOnTarget(),
+      _isAlerted(),
       _name(name),
       _str(5),
       _dex(5),
@@ -321,11 +323,17 @@ void Character::attack() {
   }, .5f);
 
   if (!_inRangeTargets.empty()) {
-    Character* target = *_inRangeTargets.begin();
-    inflictDamage(target, 25);
-    float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
-    float knockBackForceY = 1.0f; // temporary
-    knockBack(target, knockBackForceX, knockBackForceY);
+    _lockedOnTarget = *_inRangeTargets.begin();
+
+    if (!_lockedOnTarget->isInvincible()) {
+      inflictDamage(_lockedOnTarget, 25);
+      _lockedOnTarget->setLockedOnTarget(this);
+      _lockedOnTarget->setIsAlerted(true);
+
+      float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
+      float knockBackForceY = 1.0f; // temporary
+      knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
+    }
   }
 }
 
@@ -339,13 +347,13 @@ void Character::inflictDamage(Character* target, int damage) {
 }
 
 void Character::receiveDamage(Character* source, int damage) {
-  // If the character is currently invincible, don't receive the damage.
   if (_isInvincible) {
     return;
   }
 
   _health -= damage;
   if (_health <= 0) {
+    source->getInRangeTargets().erase(this);
     Character::setCategoryBits(_bodyFixture, category_bits::kDestroyed);
     _isSetToKill = true;
     // TODO: play killed sound.
@@ -423,6 +431,22 @@ void Character::setIsInvincible(bool isInvincible) {
 
 set<Character*>& Character::getInRangeTargets() {
   return _inRangeTargets;
+}
+
+Character* Character::getLockedOnTarget() const {
+  return _lockedOnTarget;
+}
+
+void Character::setLockedOnTarget(Character* target) {
+  _lockedOnTarget = target;
+}
+
+bool Character::isAlerted() const {
+  return _isAlerted;
+}
+
+void Character::setIsAlerted(bool isAlerted) {
+  _isAlerted = isAlerted;
 }
 
 
