@@ -64,10 +64,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (weaponFixture && enemyFixture) {
         Player* player = static_cast<Player*>(weaponFixture->GetUserData());
         Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
-
         player->getInRangeTargets().insert(enemy);
-        enemy->setLockedOnTarget(player);
-        enemy->setIsAlerted(true);
+        //enemy->setIsAlerted(true);
       }
       break;
     }
@@ -79,9 +77,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (weaponFixture && playerFixture) {
         Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
         Player* player = static_cast<Player*>(playerFixture->GetUserData());
-
         enemy->getInRangeTargets().insert(player);
-        player->setLockedOnTarget(enemy);
       }
       break;
     }
