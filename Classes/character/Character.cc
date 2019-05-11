@@ -319,6 +319,14 @@ void Character::attack() {
   callback_util::runAfter([&](){
     _isAttacking = false;
   }, .5f);
+
+  if (!_inRangeTargets.empty()) {
+    Character* target = *_inRangeTargets.begin();
+    inflictDamage(target, 25);
+    float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
+    float knockBackForceY = 1.0f; // temporary
+    knockBack(target, knockBackForceX, knockBackForceY);
+  }
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {
