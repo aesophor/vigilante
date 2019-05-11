@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 
 #include "character/Player.h"
+#include "character/Enemy.h"
 #include "util/CategoryBits.h"
 
 
@@ -31,6 +32,21 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         player->setIsOnPlatform(true);
       }
       break;
+    }
+    // When a player bumps into an enemy, the enemy will inflict damage to the player and knock it back.
+    case category_bits::kPlayer | category_bits::kEnemy: {
+      b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+
+      if (playerFixture && enemyFixture) {
+        Player* player = static_cast<Player*>(playerFixture->GetUserData());
+        Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
+
+        enemy->inflictDamage(player, 25);
+        float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f;
+        float knockBackForceY = 1.0f;
+        enemy->knockBack(player, knockBackForceX, knockBackForceY);
+      }
     }
     default:
       break;

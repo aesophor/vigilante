@@ -8,8 +8,11 @@
 
 using std::string;
 using std::vector;
+using std::function;
 using cocos2d::Vector;
 using cocos2d::Director;
+using cocos2d::Sequence;
+using cocos2d::CallFunc;
 using cocos2d::Repeat;
 using cocos2d::RepeatForever;
 using cocos2d::Animation;
@@ -37,9 +40,17 @@ Character::Character(const string& name, float x, float y)
       _isOnPlatform(),
       _isAttacking(),
       _isCrouching(),
+      _isInvincible(),
       _isKilled(),
       _isSetToKill(),
       _name(name),
+      _str(5),
+      _dex(5),
+      _int(5),
+      _luk(5),
+      _health(100),
+      _magicka(100),
+      _stamina(100),
       _b2body(),
       _bodyFixture(),
       _feetFixture(),
@@ -97,7 +108,11 @@ void Character::update(float delta) {
         runAnimation(State::ATTACKING, false);
         break;
       case State::KILLED:
-        runAnimation(State::KILLED, false);
+        runAnimation(State::KILLED, [&](){
+          // Execute after the KILLED animation is finished.
+          GameMapManager::getInstance()->getWorld()->DestroyBody(_b2body);
+          _isKilled = true;
+        });
         break;
       case State::IDLE_SHEATHED:
         runAnimation(State::IDLE_SHEATHED, true);
@@ -106,7 +121,7 @@ void Character::update(float delta) {
       default:
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
-		}
+    }
 	}
 
   if (!_isFacingRight && !_sprite->isFlippedX()) {
@@ -148,7 +163,7 @@ void Character::defineBody(b2BodyType bodyType,
   vertices[2] = {-5 / scaleFactor, -14 / scaleFactor};
   vertices[3] = { 5 / scaleFactor, -14 / scaleFactor};
 
-  bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
+  _bodyFixture = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
     .setUserData(this)
@@ -194,11 +209,22 @@ void Character::runAnimation(State state, bool loop) const {
   _sprite->stopAllActions();
 
   auto animation = Animate::create(_animations[state]);
+  Action* action = nullptr;
   if (loop) {
-    _sprite->runAction(RepeatForever::create(animation));
+    action = RepeatForever::create(animation);
   } else {
-    _sprite->runAction(Repeat::create(animation, 1));
+    action = Repeat::create(animation, 1);
   }
+  action->setTag(state);
+  _sprite->runAction(action);
+}
+
+void Character::runAnimation(State state, const function<void ()>& func) const {
+  _sprite->stopAllActions();
+
+  auto animation = Animate::create(_animations[state]);
+  auto callback = CallFunc::create(func);
+  _sprite->runAction(Sequence::createWithTwoActions(animation, callback));
 }
 
 
@@ -295,29 +321,58 @@ void Character::attack() {
   }, .5f);
 }
 
-
-b2Body* Character::getB2Body() const {
-  return _b2body;
+void Character::knockBack(Character* target, float forceX, float forceY) const {
+  b2Body* b2body = target->getB2Body();
+  b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
-Sprite* Character::getSprite() const {
-  return _sprite;
+void Character::inflictDamage(Character* target, int damage) {
+  target->receiveDamage(this, damage);
 }
 
-SpriteBatchNode* Character::getSpritesheet() const {
-  return _spritesheet;
+void Character::receiveDamage(Character* source, int damage) {
+  // If the character is currently invincible, don't receive the damage.
+  if (_isInvincible) {
+    return;
+  }
+
+  _health -= damage;
+  if (_health <= 0) {
+    Character::setCategoryBits(_bodyFixture, category_bits::kDestroyed);
+    _isSetToKill = true;
+    // TODO: play killed sound.
+  } else {
+    // TODO: play hurt sound.
+  }
+}
+
+
+bool Character::isFacingRight() const {
+  return _isFacingRight;
 }
 
 bool Character::isJumping() const {
   return _isJumping;
 }
 
-bool Character::isCrouching() const {
-  return _isCrouching;
+bool Character::isOnPlatform() const {
+  return _isOnPlatform;
 }
 
 bool Character::isAttacking() const {
   return _isAttacking;
+}
+
+bool Character::isCrouching() const {
+  return _isCrouching;
+}
+
+bool Character::isInvincible() const {
+  return _isInvincible;
+}
+
+bool Character::isKilled() const {
+  return _isKilled;
 }
 
 bool Character::isWeaponSheathed() const {
@@ -332,25 +387,25 @@ bool Character::isUnsheathingWeapon() const {
   return _isUnsheathingWeapon;
 }
 
-bool Character::isOnPlatform() const {
-  return _isOnPlatform;
-}
-
 
 void Character::setIsJumping(bool isJumping) {
   _isJumping = isJumping;
 }
 
-void Character::setIsCrouching(bool isCrouching) {
-  _isCrouching = isCrouching;
+void Character::setIsOnPlatform(bool isOnPlatform) {
+  _isOnPlatform = isOnPlatform;
 }
 
 void Character::setIsAttacking(bool isAttacking) {
   _isAttacking = isAttacking;
 }
 
-void Character::setIsOnPlatform(bool isOnPlatform) {
-  _isOnPlatform = isOnPlatform;
+void Character::setIsCrouching(bool isCrouching) {
+  _isCrouching = isCrouching;
+}
+
+void Character::setIsInvincible(bool isInvincible) {
+  _isInvincible = isInvincible;
 }
 
 
@@ -360,6 +415,26 @@ string Character::getName() const {
 
 void Character::setName(const string& name) {
   _name = name;
+}
+
+
+b2Body* Character::getB2Body() const {
+  return _b2body;
+}
+
+Sprite* Character::getSprite() const {
+  return _sprite;
+}
+
+SpriteBatchNode* Character::getSpritesheet() const {
+  return _spritesheet;
+}
+
+
+void Character::setCategoryBits(b2Fixture* fixture, short bits) {
+  b2Filter filter;
+  filter.categoryBits = bits;
+  fixture->SetFilterData(filter);
 }
 
 } // namespace vigilante

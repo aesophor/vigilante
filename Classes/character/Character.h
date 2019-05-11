@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
@@ -25,19 +26,26 @@ class Character {
 	virtual void sheathWeapon();
 	virtual void unsheathWeapon();
 	virtual void attack();
+  virtual void knockBack(Character* target, float forceX, float forceY) const;
+  virtual void inflictDamage(Character* target, int damage);
+  virtual void receiveDamage(Character* source, int damage);
 
+  bool isFacingRight() const;
 	bool isJumping() const;
-	bool isCrouching() const;
+	bool isOnPlatform() const;
 	bool isAttacking() const;
+	bool isCrouching() const;
+  bool isInvincible() const;
+  bool isKilled() const;
 	bool isWeaponSheathed() const;
 	bool isSheathingWeapon() const;
 	bool isUnsheathingWeapon() const;
-	bool isOnPlatform() const;
 
 	void setIsJumping(bool isJumping);
-	void setIsCrouching(bool isCrouching);
-	void setIsAttacking(bool isAttacking);
 	void setIsOnPlatform(bool isOnPlatform);
+	void setIsAttacking(bool isAttacking);
+	void setIsCrouching(bool isCrouching);
+  void setIsInvincible(bool isInvincible);
 
   std::string getName() const;
   void setName(const std::string& name);
@@ -45,6 +53,8 @@ class Character {
 	b2Body* getB2Body() const;
 	cocos2d::Sprite* getSprite() const;
 	cocos2d::SpriteBatchNode* getSpritesheet() const;	
+
+  static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
 	Character(const std::string& name, float x, float y);
@@ -79,6 +89,7 @@ class Character {
 	virtual void defineTexture(float x, float y) = 0;
 	void loadAnimation(State state, const std::string& frameName, size_t frameCount, float delay=.1f);
 	void runAnimation(State state, bool loop=true) const;
+  void runAnimation(State state, const std::function<void ()>& func) const;
 
 	State getState() const;
 	static const float _kBaseMovingSpeed;
@@ -95,10 +106,18 @@ class Character {
 	bool _isOnPlatform;
 	bool _isAttacking;
 	bool _isCrouching;
+  bool _isInvincible;
 	bool _isKilled;
 	bool _isSetToKill;
 
   std::string _name;
+  int _str;
+  int _dex;
+  int _int;
+  int _luk;
+  int _health;
+  int _magicka;
+  int _stamina;
   
 	b2Body* _b2body;
 	b2Fixture* _bodyFixture;
