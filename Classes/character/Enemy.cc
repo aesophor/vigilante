@@ -25,6 +25,7 @@ using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
+using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kObject;
@@ -34,7 +35,7 @@ namespace vigilante {
 
 Enemy::Enemy(const std::string& name, float x, float y) : Character(name, x, y), Bot(this) {
   short bodyCategoryBits = kEnemy;
-  short bodyMaskBits = kPortal | kPlayer | kMeleeWeapon | kItem;
+  short bodyMaskBits = kPortal | kPlayer | kMeleeWeapon | kItem | kCliffMarker;
   short feetMaskBits = kGround | kPlatform | kWall;
   short weaponMaskBits = kPlayer | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);

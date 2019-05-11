@@ -47,6 +47,14 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         float knockBackForceY = 1.0f; // temporary
         enemy->knockBack(player, knockBackForceX, knockBackForceY);
       }
+      break;
+    }
+    case category_bits::kEnemy | category_bits::kCliffMarker: {
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+      if (enemyFixture) {
+        static_cast<Enemy*>(enemyFixture->GetUserData())->reverseDirection();
+      }
+      break;
     }
     // Set enemy as player's current target (so player can inflict damage to enemy).
     case category_bits::kMeleeWeapon | category_bits::kEnemy: {

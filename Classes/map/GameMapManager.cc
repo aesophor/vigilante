@@ -62,6 +62,7 @@ void GameMapManager::load(const string& mapFileName) {
   createPolylines(_world.get(), _map, "Wall", category_bits::kWall, true, 1);
   createRectangles(_world.get(), _map, "Platform", category_bits::kPlatform, true, 2);
   createRectangles(_world.get(), _map, "Portal", category_bits::kPortal, false, 0);
+  createPolylines(_world.get(), _map, "CliffMarker", category_bits::kCliffMarker, false, 0);
 
   // Spawn the player.
   _player = spawnPlayer();

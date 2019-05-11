@@ -103,4 +103,8 @@ void Bot::jumpIfStucked(float delta, float checkInterval) {
   }
 }
 
+void Bot::reverseDirection() {
+  _isMovingRight = !_isMovingRight;
+}
+
 } // namespace vigilante

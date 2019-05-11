@@ -25,6 +25,8 @@ class Bot {
 
   void jumpIfStucked(float delta, float checkInterval);
 
+  void reverseDirection();
+  
  private:
   Character* _character;
 
