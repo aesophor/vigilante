@@ -32,11 +32,10 @@ bool MainGameScene::init() {
   // Camera note:
   // DEFAULT (orthographic): used to render tilemaps/game objects
   // USER1 (orthographic): used to render HUD
-  auto winSize = Director::getInstance()->getWinSize();
-  log("winSize: w=%f h=%f", winSize.width, winSize.height);
- 
   // Initialize the default camera from "perspective" to "orthographic",
   // and use it as the game world camera.
+  auto winSize = Director::getInstance()->getWinSize();
+  log("winSize: w=%f h=%f", winSize.width, winSize.height);
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(0, 0);
@@ -64,32 +63,6 @@ bool MainGameScene::init() {
   addChild(_b2dr);
 
   return true;
-
-  /*
-  auto oc = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
-  oc->setDepth(2);
-  oc->setCameraFlag(CameraFlag::USER1);
-
-  const Vec3& eyePosOld = getDefaultCamera()->getPosition3D();
-  Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
-  oc->setPosition3D(eyePos);
-  oc->lookAt(eyePos);
-  oc->setPosition(0, 0);
-  addChild(oc);
-
-
-  auto hudLayer = Layer::create();
-
-  auto sprite = Sprite::create("lol.png");
-  //sprite->setScaleX(3.0f);
-  sprite->getTexture()->setAliasTexParameters();
-  //sprite->setPosition(0, 0);
-
-  hudLayer->addChild(sprite);
-  hudLayer->setCameraMask((uint16_t) CameraFlag::USER1);
-  hudLayer->setPosition(80, winSize.height - sprite->getContentSize().height / 2);
-  addChild(hudLayer);
-  */
 }
 
 void MainGameScene::update(float delta) {
