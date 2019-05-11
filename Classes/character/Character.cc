@@ -327,9 +327,6 @@ void Character::attack() {
 
     if (!_lockedOnTarget->isInvincible()) {
       inflictDamage(_lockedOnTarget, 25);
-      _lockedOnTarget->setLockedOnTarget(this);
-      _lockedOnTarget->setIsAlerted(true);
-
       float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
       float knockBackForceY = 1.0f; // temporary
       knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);

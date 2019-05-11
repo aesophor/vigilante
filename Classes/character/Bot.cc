@@ -31,14 +31,6 @@ void Bot::act(float delta) {
   if (_character->isAlerted() && lockedOnTarget && !lockedOnTarget->isSetToKill()) {
     if (!inRangeTargets.empty()) { // is target within the attack range?
       _character->attack();
-
-      if (lockedOnTarget->isSetToKill()) {
-        if (!inRangeTargets.empty()) {
-          _character->setLockedOnTarget(*inRangeTargets.begin());
-        } else {
-          _character->setLockedOnTarget(nullptr);
-        }
-      }
     } else { // if the target isn't within attack range, move toward it until attackable
       moveToTarget(lockedOnTarget);
       jumpIfStucked(delta, .1f);
