@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#include "ui/hud/Hud.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 #include "util/CategoryBits.h"
@@ -55,12 +56,13 @@ void Player::inflictDamage(Character* target, int damage) {
 void Player::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   camera_util::shake(8, .1f);
-
   _isInvincible = true;
 
   callback_util::runAfter([&](){
     _isInvincible = false;
   }, 1.5f);
+
+  Hud::getInstance()->update();
 }
 
 void Player::defineTexture(float x, float y) {

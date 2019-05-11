@@ -39,7 +39,7 @@ Hud::Hud()
 }
 
 
-void Hud::update(float delta) {
+void Hud::update() {
   _healthBar->update(_player->getHealth(), _player->getFullHealth());
   _magickaBar->update(_player->getMagicka(), _player->getFullMagicka());
   _staminaBar->update(_player->getStamina(), _player->getFullStamina());

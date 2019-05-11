@@ -15,7 +15,7 @@ class Hud {
  public:
   static Hud* getInstance();
   virtual ~Hud() = default;
-  void update(float delta);
+  void update();
 
   cocos2d::Layer* getLayer() const;
   void setPlayer(Player* player);

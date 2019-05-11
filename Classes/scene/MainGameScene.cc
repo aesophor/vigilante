@@ -84,6 +84,8 @@ bool MainGameScene::init() {
   _b2DebugOn = true;
   addChild(_b2dr);
 
+  _hud->setPlayer(_gameMapManager->getPlayer());
+
   // Tick the box2d world.
   schedule(schedule_selector(MainGameScene::update));
   return true;
