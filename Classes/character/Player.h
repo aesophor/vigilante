@@ -15,6 +15,7 @@ class Player : public Character {
   Player(const std::string& name, float x, float y);
   virtual ~Player();
 
+  virtual void inflictDamage(Character* target, int damage) override;
   virtual void receiveDamage(Character* source, int damage) override;
 
  private:

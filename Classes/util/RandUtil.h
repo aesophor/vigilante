@@ -6,7 +6,8 @@ namespace vigilante {
 namespace rand_util {
 
 void init();
-int randInt(int min, int max);
+int randInt(int min=0, int max=1);
+float randFloat(float min=0.0f, float max=1.0f);
 
 } // namespace rand_util
 

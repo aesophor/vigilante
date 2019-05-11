@@ -1,10 +1,22 @@
 #include "CameraUtil.h"
 
 #include "util/Constants.h"
+#include "util/RandUtil.h"
 
 using cocos2d::Camera;
 using cocos2d::TMXTiledMap;
 using cocos2d::Vec2;
+
+
+namespace {
+
+float duration = 0;
+float currentTime = 0;
+float power = 0;
+float currentPower = 0;
+Vec2 pos;
+
+} // namespace
 
 
 namespace vigilante {
@@ -37,11 +49,37 @@ void boundCamera(Camera* camera, TMXTiledMap* map) {
   camera->setPosition(position);
 }
 
+
 void lerpToTarget(Camera* camera, const b2Vec2& target) {
   Vec2 position = camera->getPosition();
   position.x = camera->getPositionX() + ((target.x * kPpm - 600 / 2) - camera->getPositionX()) * .1f;
   position.y = camera->getPositionY() + ((target.y * kPpm - 300 / 2) - camera->getPositionY()) * .1f;
   camera->setPosition(position);
+}
+
+
+void shake(float rumblePower, float rumbleDuration) {
+  ::power = rumblePower;
+  ::duration = rumbleDuration;
+  ::currentTime = 0;
+}
+
+void updateShake(Camera* camera, float delta) {
+  if (::duration == 0) {
+    return;
+  }
+
+  if (::currentTime <= ::duration) {
+    ::currentPower = ::power * ((::duration - ::currentTime) / ::duration);
+    ::pos.x = (rand_util::randFloat() - 0.5f) * 2 * ::currentPower; // camera offset X
+    ::pos.y = (rand_util::randFloat() - 0.5f) * 2 * ::currentPower; // camera offset Y
+    ::currentTime += delta;
+    // Translate camera
+    const Vec2& camPos = camera->getPosition();
+    camera->setPosition(camPos.x + ::pos.x, camPos.y + ::pos.y);
+  } else {
+    ::duration = 0;
+  }
 }
 
 } // namespace camera_util

@@ -73,7 +73,6 @@ bool MainGameScene::init() {
 
 void MainGameScene::update(float delta) {
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
-
   handleInput(delta);
 
   for (auto character : _gameMapManager->getCharacters()) {
@@ -82,6 +81,8 @@ void MainGameScene::update(float delta) {
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getMap());
+  vigilante::camera_util::updateShake(_gameCamera, delta);
+  //_gameCamera->update(delta);
 }
 
 void MainGameScene::handleInput(float delta) {

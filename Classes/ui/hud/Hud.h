@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 
+
 namespace vigilante {
 
 class Hud : public cocos2d::Layer {

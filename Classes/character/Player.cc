@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "util/CallbackUtil.h"
+#include "util/CameraUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
@@ -46,8 +47,15 @@ Player::~Player() {
 }
 
 
+void Player::inflictDamage(Character* target, int damage) {
+  Character::inflictDamage(target, damage);
+  camera_util::shake(8, .1f);
+}
+
 void Player::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
+  camera_util::shake(8, .1f);
+
   _isInvincible = true;
 
   callback_util::runAfter([&](){
