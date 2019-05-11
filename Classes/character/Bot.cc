@@ -10,14 +10,14 @@ using std::set;
 namespace vigilante {
 
 Bot::Bot(Character* c)
-  : _character(c),
-    _isMovingRight(),
-    _moveDuration(),
-    _moveTimer(),
-    _waitDuration(),
-    _waitTimer(),
-    _lastTraveledDistance(),
-    _calculateDistanceTimer() {}
+    : _character(c),
+      _isMovingRight(),
+      _moveDuration(),
+      _moveTimer(),
+      _waitDuration(),
+      _waitTimer(),
+      _lastTraveledDistance(),
+      _calculateDistanceTimer() {}
 
 
 void Bot::act(float delta) {
