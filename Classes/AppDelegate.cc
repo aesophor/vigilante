@@ -76,21 +76,19 @@ bool AppDelegate::applicationDidFinishLaunching() {
   log("screensize: %f %f", screenWidth, screenHeight);
   float virtualRatio = virtualWidth / virtualHeight;
   float screenRatio = screenWidth / screenHeight;
-  float scaleX = 1;
   float scaleY = 1;
 
   glview->setDesignResolutionSize(virtualWidth, virtualHeight, ResolutionPolicy::EXACT_FIT);
 
   if (screenRatio > virtualRatio) {
     // Left and right letterboxing
-    scaleX = virtualRatio / screenRatio;
     scaleY = virtualRatio / screenRatio;
   } else if (screenRatio < virtualRatio) {
     // Up and bottom letterboxing
-    scaleX = screenRatio / virtualRatio;
+    //scaleX = screenRatio / virtualRatio;
     scaleY = screenRatio / virtualRatio;
   }
-  log("scaleX=%f scaleY=%f", scaleX, scaleY);
+  log("scaleY=%f", scaleY);
 
   // Create a scene. It's an autorelease object.
   Scene* scene = MainGameScene::create();

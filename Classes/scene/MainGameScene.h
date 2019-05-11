@@ -23,10 +23,12 @@ class MainGameScene : public cocos2d::Scene {
   b2World* getWorld() const;
 
  private:
-  bool _b2DebugOn;
-  cocos2d::Camera* _gameCam;
+  cocos2d::Camera* _gameCamera;
+  cocos2d::Camera* _hudCamera;
 
-  std::unique_ptr<b2DebugRenderer> _b2dr;
+  bool _b2DebugOn;
+  b2DebugRenderer* _b2dr; // Autorelease
+
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
   std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
 };
