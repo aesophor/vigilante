@@ -136,7 +136,7 @@ void Character::defineBody(b2BodyType bodyType,
   b2BodyBuilder bodyBuilder(world);
 
   _b2body = bodyBuilder.type(bodyType)
-    .position(x, y, 1)
+    .position(x, y, kPpm)
     .buildBody();
 
   // Create body fixture.

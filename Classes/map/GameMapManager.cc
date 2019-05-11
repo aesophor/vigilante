@@ -1,9 +1,8 @@
 #include "GameMapManager.h"
 
-#include <vector>
-
 #include "Box2D/Box2D.h"
 
+#include "character/Enemy.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
@@ -64,8 +63,15 @@ void GameMapManager::load(const string& mapFileName) {
   createRectangles(_world.get(), _map, "Platform", category_bits::kPlatform, true, 2);
   createRectangles(_world.get(), _map, "Portal", category_bits::kPortal, false, 0);
 
+  // Spawn the player.
   _player = spawnPlayer();
+  _characters.push_back(_player);
   _layer->addChild(_player->getSpritesheet(), 30);
+
+  // Spawn an enemy.
+  Enemy* enemy = new Enemy("Castle Guard", 300, 100);
+  _characters.push_back(enemy);
+  _layer->addChild(enemy->getSpritesheet(), 31);
 }
 
 
@@ -73,8 +79,8 @@ Player* GameMapManager::spawnPlayer() {
   TMXObjectGroup* objGroup = _map->getObjectGroup("Player");
 
   auto& playerValMap = objGroup->getObjects()[0].asValueMap();
-  float x = playerValMap["x"].asFloat() / kPpm;
-  float y = playerValMap["y"].asFloat() / kPpm;
+  float x = playerValMap["x"].asFloat();
+  float y = playerValMap["y"].asFloat();
   log("[INFO] Spawning player at: x=%f y=%f", x, y);
 
   return new Player("Aesophor", x, y);
@@ -95,6 +101,10 @@ TMXTiledMap* GameMapManager::getMap() const {
 
 Player* GameMapManager::getPlayer() const {
   return _player;
+}
+
+vector<Character*> GameMapManager::getCharacters() const {
+  return _characters;
 }
 
 

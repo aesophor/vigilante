@@ -71,7 +71,10 @@ void MainGameScene::update(float delta) {
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
 
   handleInput(delta);
-  _gameMapManager->getPlayer()->update(delta);
+
+  for (auto character : _gameMapManager->getCharacters()) {
+    character->update(delta);
+  }
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getMap());
