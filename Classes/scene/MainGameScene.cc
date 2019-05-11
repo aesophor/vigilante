@@ -5,7 +5,6 @@
 #include "SimpleAudioEngine.h"
 
 #include "character/Player.h"
-#include "gl/GLESRender.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"

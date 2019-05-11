@@ -21,7 +21,11 @@ THE SOFTWARE.
 
 #include "b2DebugRenderer.h"
 
-USING_NS_CC;
+using cocos2d::Director;
+using cocos2d::Renderer;
+using cocos2d::Mat4;
+using cocos2d::MATRIX_STACK_TYPE;
+
 
 b2DebugRenderer* b2DebugRenderer::create(b2World* world) {
   b2DebugRenderer *pRet = new b2DebugRenderer(world);
@@ -65,7 +69,7 @@ void b2DebugRenderer::onDraw(const Mat4& transform, uint32_t flags) {
   director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
   director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
 
-  GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
+  cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
 
   _world->DrawDebugData();
 

@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
-#include "gl/GLESRender.h"
+#include "gl/GLESDebugDraw.h"
 
 class b2DebugRenderer : public cocos2d::Sprite {
  public:
