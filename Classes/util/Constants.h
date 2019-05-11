@@ -3,7 +3,11 @@
 
 namespace vigilante {
 
-const float kPPM = 100;
+const float kFps = 60.0f;
+const int kVelocityIterations = 6;
+const int kPositionIterations = 2;
+
+const float kPpm = 100;
 const int kVirtualWidth = 600;
 const int kVirtualHeight = 300;
 

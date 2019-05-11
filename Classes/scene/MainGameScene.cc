@@ -13,7 +13,10 @@
 
 using std::string;
 using std::unique_ptr;
-using vigilante::kPPM;
+using vigilante::kFps;
+using vigilante::kVelocityIterations;
+using vigilante::kPositionIterations;
+using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
 using vigilante::GameMapManager;
@@ -66,9 +69,6 @@ bool MainGameScene::init() {
 }
 
 void MainGameScene::update(float delta) {
-  const float kFps = 60.0f;
-  const int kVelocityIterations = 6;
-  const int kPositionIterations = 2;
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
 
   handleInput(delta);

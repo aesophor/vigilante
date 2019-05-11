@@ -73,8 +73,8 @@ Player* GameMapManager::spawnPlayer() {
   TMXObjectGroup* objGroup = _map->getObjectGroup("Player");
 
   auto& playerValMap = objGroup->getObjects()[0].asValueMap();
-  float x = playerValMap["x"].asFloat() / kPPM;
-  float y = playerValMap["y"].asFloat() / kPPM;
+  float x = playerValMap["x"].asFloat() / kPpm;
+  float y = playerValMap["y"].asFloat() / kPpm;
   log("[INFO] Spawning player at: x=%f y=%f", x, y);
 
   return new Player(x, y);
@@ -117,10 +117,10 @@ void GameMapManager::createRectangles(b2World* world,
     b2BodyBuilder bodyBuilder(world);
 
     bodyBuilder.type(b2BodyType::b2_staticBody)
-      .position(x + w / 2, y + h / 2, kPPM)
+      .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    bodyBuilder.newRectangleFixture(w / 2, h / 2, kPPM)
+    bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(categoryBits)
       .setSensor(!isCollidable)
       .friction(friction)
@@ -152,10 +152,10 @@ void GameMapManager::createPolylines(b2World* world,
     b2BodyBuilder bodyBuilder(world);
 
     bodyBuilder.type(b2BodyType::b2_staticBody)
-      .position(0, 0, kPPM)
+      .position(0, 0, kPpm)
       .buildBody();
 
-    bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPPM)
+    bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPpm)
       .categoryBits(categoryBits)
       .setSensor(!isCollidable)
       .friction(friction)

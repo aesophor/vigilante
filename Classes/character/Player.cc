@@ -110,17 +110,17 @@ void Player::update(float delta) {
   if (!_isFacingRight && !_sprite->isFlippedX()) {
     _sprite->setFlippedX(true);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
-    shape->m_p = {-15.0f / kPPM, 0};
+    shape->m_p = {-15.0f / kPpm, 0};
   } else if (_isFacingRight && _sprite->isFlippedX()) {
     _sprite->setFlippedX(false);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
-    shape->m_p = {15.0f / kPPM, 0};
+    shape->m_p = {15.0f / kPpm, 0};
   }
 
   _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
 
   //cocos2d::log("[Player::update] x=%f y=%f", _b2body->GetPosition().x, _b2body->GetPosition().y);
-  _sprite->setPosition(_b2body->GetPosition().x * kPPM, _b2body->GetPosition().y * kPPM + 5);
+  _sprite->setPosition(_b2body->GetPosition().x * kPpm, _b2body->GetPosition().y * kPpm + 5);
 }
 
 void Player::defineBody(float x, float y) {
@@ -140,7 +140,7 @@ void Player::defineBody(float x, float y) {
   vertices[2] = {-5 / scaleFactor, -14 / scaleFactor};
   vertices[3] = { 5 / scaleFactor, -14 / scaleFactor};
 
-  bodyBuilder.newPolygonFixture(vertices, 4, kPPM)
+  bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(category_bits::kPlayer)
     .maskBits(category_bits::kPortal | category_bits::kEnemy | category_bits::kMeleeWeapon | category_bits::kItem)
     .setUserData(this)
@@ -154,7 +154,7 @@ void Player::defineBody(float x, float y) {
   feetVertices[2] = {(-5 + 1) / scaleFactor, (-14 - 1) / scaleFactor};
   feetVertices[3] = {( 5 - 1) / scaleFactor, (-14 - 1) / scaleFactor};
 
-  _feetFixture = bodyBuilder.newPolygonFixture(feetVertices, 4, kPPM)
+  _feetFixture = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
     .categoryBits(category_bits::kFeet)
     .maskBits(category_bits::kGround | category_bits::kPlatform | category_bits::kWall)
     .setUserData(this)
@@ -162,7 +162,7 @@ void Player::defineBody(float x, float y) {
 
 
   // Create weapon fixture.
-  _weaponFixture = bodyBuilder.newCircleFixture({15.0f, 0}, 15.0f, kPPM)
+  _weaponFixture = bodyBuilder.newCircleFixture({15.0f, 0}, 15.0f, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(category_bits::kEnemy | category_bits::kObject)
     .setSensor(true)
@@ -178,30 +178,30 @@ void Player::defineTexture(float x, float y) {
   frameCache->addSpriteFramesWithFile(location + "player.plist");
   _spritesheet = SpriteBatchNode::create(location + "player.png");
 
-  loadAnimation(State::IDLE_SHEATHED, "p_idle_sheathed", 6, 10.0f / kPPM);
-  loadAnimation(State::IDLE_UNSHEATHED, "p_idle_unsheathed", 6, 10.0f / kPPM);
+  loadAnimation(State::IDLE_SHEATHED, "p_idle_sheathed", 6, 10.0f / kPpm);
+  loadAnimation(State::IDLE_UNSHEATHED, "p_idle_unsheathed", 6, 10.0f / kPpm);
 
-  loadAnimation(State::RUNNING_SHEATHED, "p_running_sheathed", 8, 10.0f / kPPM);
-  loadAnimation(State::RUNNING_UNSHEATHED, "p_running_unsheathed", 8, 10.0f / kPPM);
+  loadAnimation(State::RUNNING_SHEATHED, "p_running_sheathed", 8, 10.0f / kPpm);
+  loadAnimation(State::RUNNING_UNSHEATHED, "p_running_unsheathed", 8, 10.0f / kPpm);
 
-  loadAnimation(State::JUMPING_SHEATHED, "p_jumping_sheathed", 5, 10.0f / kPPM);
-  loadAnimation(State::JUMPING_UNSHEATHED, "p_jumping_unsheathed", 5, 10.0f / kPPM);
+  loadAnimation(State::JUMPING_SHEATHED, "p_jumping_sheathed", 5, 10.0f / kPpm);
+  loadAnimation(State::JUMPING_UNSHEATHED, "p_jumping_unsheathed", 5, 10.0f / kPpm);
 
-  loadAnimation(State::FALLING_SHEATHED, "p_falling_sheathed", 1, 10.0f / kPPM);
-  loadAnimation(State::FALLING_UNSHEATHED, "p_falling_unsheathed", 1, 10.0f / kPPM);
+  loadAnimation(State::FALLING_SHEATHED, "p_falling_sheathed", 1, 10.0f / kPpm);
+  loadAnimation(State::FALLING_UNSHEATHED, "p_falling_unsheathed", 1, 10.0f / kPpm);
 
-  loadAnimation(State::CROUCHING_SHEATHED, "p_crouching_sheathed", 2, 10.0f / kPPM);
-  loadAnimation(State::CROUCHING_UNSHEATHED, "p_crouching_unsheathed", 2, 10.0f / kPPM);
+  loadAnimation(State::CROUCHING_SHEATHED, "p_crouching_sheathed", 2, 10.0f / kPpm);
+  loadAnimation(State::CROUCHING_UNSHEATHED, "p_crouching_unsheathed", 2, 10.0f / kPpm);
 
-  loadAnimation(State::SHEATHING_WEAPON, "p_weapon_sheathing", 6, 15.0f / kPPM);
-  loadAnimation(State::UNSHEATHING_WEAPON, "p_weapon_unsheathing", 6, 15.0f / kPPM);
+  loadAnimation(State::SHEATHING_WEAPON, "p_weapon_sheathing", 6, 15.0f / kPpm);
+  loadAnimation(State::UNSHEATHING_WEAPON, "p_weapon_unsheathing", 6, 15.0f / kPpm);
 
-  loadAnimation(State::ATTACKING, "p_attacking", 8, 5.0f / kPPM);
-  loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPPM);
+  loadAnimation(State::ATTACKING, "p_attacking", 8, 5.0f / kPpm);
+  loadAnimation(State::KILLED, "p_killed", 6, 24.0f / kPpm);
 
   // Select a frame as default look of character's sprite.
   _sprite = Sprite::createWithSpriteFrameName("p_idle_sheathed/p_idle_sheathed0.png");
-  _sprite->setPosition(x * kPPM, y * kPPM + 7);
+  _sprite->setPosition(x * kPpm, y * kPpm + 7);
   _sprite->setScale(1.3f);
 
   _spritesheet->addChild(_sprite);

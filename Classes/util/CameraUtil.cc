@@ -39,8 +39,8 @@ void boundCamera(Camera* camera, TMXTiledMap* map) {
 
 void lerpToTarget(Camera* camera, const b2Vec2& target) {
   Vec2 position = camera->getPosition();
-  position.x = camera->getPositionX() + ((target.x * kPPM - 600 / 2) - camera->getPositionX()) * .1f;
-  position.y = camera->getPositionY() + ((target.y * kPPM - 300 / 2) - camera->getPositionY()) * .1f;
+  position.x = camera->getPositionX() + ((target.x * kPpm - 600 / 2) - camera->getPositionX()) * .1f;
+  position.y = camera->getPositionY() + ((target.y * kPpm - 300 / 2) - camera->getPositionY()) * .1f;
   camera->setPosition(position);
 }
 
