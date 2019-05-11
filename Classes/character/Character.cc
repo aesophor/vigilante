@@ -53,6 +53,9 @@ Character::Character(const string& name, float x, float y)
       _health(100),
       _magicka(100),
       _stamina(100),
+      _fullHealth(100),
+      _fullMagicka(100),
+      _fullStamina(100),
       _b2body(),
       _bodyFixture(),
       _feetFixture(),
@@ -64,6 +67,8 @@ Character::~Character() {
   if (_spritesheet) {
     _spritesheet->release();
   }
+
+  _b2body->GetWorld()->DestroyBody(_b2body);
 }
 
 
@@ -453,6 +458,30 @@ string Character::getName() const {
 
 void Character::setName(const string& name) {
   _name = name;
+}
+
+int Character::getHealth() const {
+  return _health;
+}
+
+int Character::getMagicka() const {
+  return _magicka;
+}
+
+int Character::getStamina() const {
+  return _stamina;
+}
+
+int Character::getFullHealth() const {
+  return _fullHealth;
+}
+
+int Character::getFullMagicka() const {
+  return _fullMagicka;
+}
+
+int Character::getFullStamina() const {
+  return _fullStamina;
 }
 
 

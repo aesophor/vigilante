@@ -6,14 +6,14 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "ui/hud/Hud.h"
 #include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
 #include "util/box2d/b2DebugRenderer.h"
 
 class MainGameScene : public cocos2d::Scene {
  public:
-  // a macro which generates the "static create()" for us
-  CREATE_FUNC(MainGameScene);
+  CREATE_FUNC(MainGameScene); // marco which generates "static create()" method
   virtual ~MainGameScene();
 
   virtual bool init() override;
@@ -29,6 +29,7 @@ class MainGameScene : public cocos2d::Scene {
   bool _b2DebugOn;
   b2DebugRenderer* _b2dr; // Autorelease
 
+  std::unique_ptr<vigilante::Hud> _hud;
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
   std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
 };

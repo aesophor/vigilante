@@ -56,6 +56,13 @@ class Character {
   std::string getName() const;
   void setName(const std::string& name);
 
+  int getHealth() const;
+  int getMagicka() const;
+  int getStamina() const;
+  int getFullHealth() const;
+  int getFullMagicka() const;
+  int getFullStamina() const;
+  
 	b2Body* getB2Body() const;
 	cocos2d::Sprite* getSprite() const;
 	cocos2d::SpriteBatchNode* getSpritesheet() const;	
@@ -128,7 +135,10 @@ class Character {
   int _health;
   int _magicka;
   int _stamina;
-  
+  int _fullHealth;
+  int _fullMagicka;
+  int _fullStamina;
+ 
 	b2Body* _b2body;
 	b2Fixture* _bodyFixture;
 	b2Fixture* _feetFixture;

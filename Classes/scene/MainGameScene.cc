@@ -19,6 +19,7 @@ using vigilante::kPositionIterations;
 using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
+using vigilante::Hud;
 using vigilante::GameMapManager;
 using vigilante::GameInputManager;
 
@@ -42,6 +43,23 @@ bool MainGameScene::init() {
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(0, 0);
+
+  // Initialize HUD camera.
+  _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
+  _hudCamera->setDepth(2);
+  _hudCamera->setCameraFlag(CameraFlag::USER1);
+  const Vec3& eyePosOld = _gameCamera->getPosition3D();
+  Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
+  _hudCamera->setPosition3D(eyePos);
+  _hudCamera->lookAt(eyePos);
+  _hudCamera->setPosition(0, 0);
+  addChild(_hudCamera);
+  
+  // Initialize HUD.
+  _hud = unique_ptr<Hud>(Hud::getInstance());
+  _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _hud->getLayer()->setPosition(40, winSize.height - 40);
+  addChild(_hud->getLayer());
   
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
@@ -82,7 +100,6 @@ void MainGameScene::update(float delta) {
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
-  //_gameCamera->update(delta);
 }
 
 void MainGameScene::handleInput(float delta) {

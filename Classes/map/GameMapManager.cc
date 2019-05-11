@@ -43,6 +43,12 @@ GameMapManager::~GameMapManager() {
   if (_map) {
     _map->release();
   }
+  if (_layer) {
+    _layer->release();
+  }
+  for (auto c : _characters) {
+    delete c;
+  }
   // TODO: clean up b2Bodies here?
 }
 
