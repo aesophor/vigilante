@@ -32,6 +32,7 @@ class GLESDebugDraw : public b2Draw {
  public:
   GLESDebugDraw();
   GLESDebugDraw(float32 ratio);
+  virtual ~GLESDebugDraw() = default;
 
   virtual void DrawPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color);
   virtual void DrawSolidPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color);
