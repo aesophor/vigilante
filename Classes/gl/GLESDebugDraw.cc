@@ -96,7 +96,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
   const float32 k_increment = 2.0f * b2_pi / k_segments;
   float32 theta = 0.0f;
 
-  GLfloat* glVertices = new GLfloat[vertexCount*2];
+  GLfloat* glVertices = new GLfloat[vertexCount * 2];
   for (int i = 0; i < k_segments; ++i) {
     b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
     glVertices[i * 2] = v.x * _ratio;
@@ -123,7 +123,7 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
   const float32 k_increment = 2.0f * b2_pi / k_segments;
   float32 theta = 0.0f;
 
-  GLfloat* glVertices = new GLfloat[vertexCount*2];
+  GLfloat* glVertices = new GLfloat[vertexCount * 2];
   for (int i = 0; i < k_segments; ++i) {
     b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
     glVertices[i * 2] = v.x * _ratio;
@@ -141,7 +141,7 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
   // Draw the axis line
   DrawSegment(center,center+radius*axis,color);
 
-  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(2,vertexCount*2);
+  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(2, vertexCount * 2);
   CHECK_GL_ERROR_DEBUG();
 
   delete[] glVertices;
