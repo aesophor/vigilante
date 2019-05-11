@@ -49,8 +49,6 @@ bool MainGameScene::init() {
   _gameMapManager->load("Map/starting_point.tmx");
   addChild(_gameMapManager->getLayer());
 
-  schedule(schedule_selector(MainGameScene::update));
-
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
   _gameInputManager = unique_ptr<GameInputManager>(GameInputManager::getInstance());
@@ -58,10 +56,12 @@ bool MainGameScene::init() {
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
-  _b2dr->retain(); // TODO: remove unique_ptr for _b2dr
+  _b2dr->retain();
   _b2DebugOn = true;
   addChild(_b2dr);
 
+  // Tick the box2d world.
+  schedule(schedule_selector(MainGameScene::update));
   return true;
 }
 
