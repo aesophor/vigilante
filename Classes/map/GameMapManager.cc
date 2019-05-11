@@ -77,7 +77,7 @@ Player* GameMapManager::spawnPlayer() {
   float y = playerValMap["y"].asFloat() / kPpm;
   log("[INFO] Spawning player at: x=%f y=%f", x, y);
 
-  return new Player(x, y);
+  return new Player("Aesophor", x, y);
 }
 
 
