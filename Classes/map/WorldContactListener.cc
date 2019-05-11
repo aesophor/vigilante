@@ -122,14 +122,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (weaponFixture && enemyFixture) {
         Player* player = static_cast<Player*>(weaponFixture->GetUserData());
         Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
-
-        auto& inRangeTargets = player->getInRangeTargets();
-        inRangeTargets.erase(enemy);
-        if (inRangeTargets.empty()) {
-          player->setLockedOnTarget(nullptr);
-        } else {
-          player->setLockedOnTarget(*inRangeTargets.begin());
-        }
+        player->getInRangeTargets().erase(enemy);
       }
       break;
     }
@@ -141,15 +134,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (weaponFixture && playerFixture) {
         Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
         Player* player = static_cast<Player*>(playerFixture->GetUserData());
-
-        auto& inRangeTargets = enemy->getInRangeTargets();
-        inRangeTargets.erase(player);
-        if (inRangeTargets.empty()) {
-          enemy->setLockedOnTarget(nullptr);
-          enemy->setIsAlerted(false);
-        } else {
-          enemy->setLockedOnTarget(*inRangeTargets.begin());
-        }
+        enemy->getInRangeTargets().erase(player);
       }
       break;
     }

@@ -31,7 +31,11 @@ void Bot::act(float delta) {
   if (_character->isAlerted() && lockedOnTarget && !lockedOnTarget->isSetToKill()) {
     if (!inRangeTargets.empty()) { // is target within the attack range?
       _character->attack();
+      if (inRangeTargets.empty()) {
+        _character->setLockedOnTarget(nullptr);
+      }
     } else { // if the target isn't within attack range, move toward it until attackable
+      cocos2d::log("moving to player...");
       moveToTarget(lockedOnTarget);
       jumpIfStucked(delta, .1f);
     }
