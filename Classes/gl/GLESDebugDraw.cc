@@ -47,7 +47,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int vertexCount, con
   _shaderProgram->setUniformsForBuiltins();
 
   b2Vec2* vertices = new b2Vec2[vertexCount];
-  for(int i = 0; i < vertexCount; i++) {
+  for (int i = 0; i < vertexCount; i++) {
     vertices[i] = old_vertices[i];
     vertices[i] *= _ratio;
   }
@@ -68,7 +68,7 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int vertexCount
   _shaderProgram->setUniformsForBuiltins();
 
   b2Vec2* vertices = new b2Vec2[vertexCount];
-  for(int i = 0; i < vertexCount; i++) {
+  for (int i = 0; i < vertexCount; i++) {
     vertices[i] = old_vertices[i];
     vertices[i] *= _ratio;
   }
