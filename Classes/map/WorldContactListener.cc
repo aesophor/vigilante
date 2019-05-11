@@ -19,7 +19,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kGround: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
-        static_cast<Player*>(feetFixture->GetUserData())->setIsJumping(false);
+        static_cast<Character*>(feetFixture->GetUserData())->setIsJumping(false);
       }
       break;
     }
@@ -27,9 +27,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kPlatform: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
-        Player* player = static_cast<Player*>(feetFixture->GetUserData());
-        player->setIsJumping(false);
-        player->setIsOnPlatform(true);
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setIsJumping(false);
+        c->setIsOnPlatform(true);
       }
       break;
     }
@@ -43,10 +43,34 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
 
         enemy->inflictDamage(player, 25);
-        float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f;
-        float knockBackForceY = 1.0f;
+        float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f; // temporary
+        float knockBackForceY = 1.0f; // temporary
         enemy->knockBack(player, knockBackForceX, knockBackForceY);
       }
+    }
+    // Set enemy as player's current target (so player can inflict damage to enemy).
+    case category_bits::kMeleeWeapon | category_bits::kEnemy: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+
+      if (weaponFixture && enemyFixture) {
+        Player* player = static_cast<Player*>(weaponFixture->GetUserData());
+        Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
+        player->getInRangeTargets().insert(enemy);
+      }
+      break;
+    }
+    // Set player as enemy's current target (so enemy can inflict damage to player).
+    case category_bits::kMeleeWeapon | category_bits::kPlayer: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
+
+      if (weaponFixture && playerFixture) {
+        Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
+        Player* player = static_cast<Player*>(playerFixture->GetUserData());
+        enemy->getInRangeTargets().insert(player);
+      }
+      break;
     }
     default:
       break;
@@ -54,7 +78,56 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 }
 
 void WorldContactListener::EndContact(b2Contact* contact) {
+  b2Fixture* fixtureA = contact->GetFixtureA();
+  b2Fixture* fixtureB = contact->GetFixtureB();
 
+  int cDef = fixtureA->GetFilterData().categoryBits | fixtureB->GetFilterData().categoryBits;
+  switch (cDef) {
+    // When a character leaves the ground, make following changes.
+    case category_bits::kFeet | category_bits::kGround: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
+        static_cast<Character*>(feetFixture->GetUserData())->setIsJumping(true);
+      }
+      break;
+    }
+    // When a character leaves the platform, make following changes.
+    case category_bits::kFeet | category_bits::kPlatform: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.5f) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setIsJumping(true);
+        c->setIsOnPlatform(false);
+      }
+      break;
+    }
+    // Clear player's current target (so player cannot inflict damage to enemy from a distance).
+    case category_bits::kMeleeWeapon | category_bits::kEnemy: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+
+      if (weaponFixture && enemyFixture) {
+        Player* player = static_cast<Player*>(weaponFixture->GetUserData());
+        Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
+        player->getInRangeTargets().erase(enemy);
+      }
+      break;
+    }
+    // Clear enemy's current target (so enemy cannot inflict damage to player from a distance).
+    case category_bits::kMeleeWeapon | category_bits::kPlayer: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
+
+      if (weaponFixture && playerFixture) {
+        Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
+        Player* player = static_cast<Player*>(playerFixture->GetUserData());
+        enemy->getInRangeTargets().erase(player);
+      }
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 void WorldContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {

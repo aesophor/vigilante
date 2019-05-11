@@ -1,8 +1,8 @@
 #ifndef VIGILANTE_CHARACTER_H_
 #define VIGILANTE_CHARACTER_H_
 
+#include <set>
 #include <string>
-#include <vector>
 #include <functional>
 
 #include "cocos2d.h"
@@ -14,7 +14,6 @@ namespace vigilante {
 class Character {
  public:
   virtual ~Character();
-
 	virtual void update(float delta);
 	
 	virtual void moveLeft();
@@ -47,6 +46,8 @@ class Character {
 	void setIsAttacking(bool isAttacking);
 	void setIsCrouching(bool isCrouching);
   void setIsInvincible(bool isInvincible);
+
+  std::set<Character*>& getInRangeTargets();
 
   std::string getName() const;
   void setName(const std::string& name);
@@ -110,6 +111,8 @@ class Character {
   bool _isInvincible;
 	bool _isKilled;
 	bool _isSetToKill;
+
+  std::set<Character*> _inRangeTargets;
 
   std::string _name;
   int _str;

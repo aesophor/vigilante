@@ -6,8 +6,8 @@
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
+using std::set;
 using std::string;
-using std::vector;
 using std::function;
 using cocos2d::Vector;
 using cocos2d::Director;
@@ -410,6 +410,11 @@ void Character::setIsCrouching(bool isCrouching) {
 
 void Character::setIsInvincible(bool isInvincible) {
   _isInvincible = isInvincible;
+}
+
+
+set<Character*>& Character::getInRangeTargets() {
+  return _inRangeTargets;
 }
 
 
