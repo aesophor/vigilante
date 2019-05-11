@@ -44,11 +44,11 @@ class GLESDebugDraw : public b2Draw {
   virtual void DrawAABB(b2AABB* aabb, const b2Color& color);
 
  private:
+  void initShader();
+
   float32 _ratio;
   cocos2d::GLProgram* _shaderProgram;
   GLint _colorLocation;
-
-  void initShader( void );
 };
 
 #endif // VIGILANTE_RENDERER_H_
