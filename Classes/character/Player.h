@@ -51,6 +51,7 @@ class Player {
 
   bool isJumping() const;
   bool isCrouching() const;
+  bool isAttacking() const;
   bool isWeaponSheathed() const;
   bool isSheathingWeapon() const;
   bool isUnsheathingWeapon() const;
@@ -58,6 +59,7 @@ class Player {
 
   void setIsJumping(bool isJumping);
   void setIsCrouching(bool isCrouching);
+  void setIsAttacking(bool isAttacking);
   void setIsOnPlatform(bool isOnPlatform);
 
  private:

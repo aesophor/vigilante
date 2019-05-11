@@ -348,6 +348,10 @@ bool Player::isCrouching() const {
   return _isCrouching;
 }
 
+bool Player::isAttacking() const {
+  return _isAttacking;
+}
+
 bool Player::isWeaponSheathed() const {
   return _isWeaponSheathed;
 }
@@ -371,6 +375,10 @@ void Player::setIsJumping(bool isJumping) {
 
 void Player::setIsCrouching(bool isCrouching) {
   _isCrouching = isCrouching;
+}
+
+void Player::setIsAttacking(bool isAttacking) {
+  _isAttacking = isAttacking;
 }
 
 void Player::setIsOnPlatform(bool isOnPlatform) {

@@ -93,6 +93,11 @@ void MainGameScene::handleInput(float delta) {
     _b2DebugOn = !_b2DebugOn;
   }
 
+  
+  if (player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
+    return;
+  }
+
   if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     player->crouch();
     if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
