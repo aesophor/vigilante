@@ -130,7 +130,9 @@ void Character::update(float delta) {
         break;
     }
 	}
+  _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
 
+  // Flip the sprite if needed.
   if (!_isFacingRight && !_sprite->isFlippedX()) {
     _sprite->setFlippedX(true);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
@@ -141,10 +143,9 @@ void Character::update(float delta) {
     shape->m_p = {15.0f / kPpm, 0};
   }
 
-  _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
-
-  //cocos2d::log("[Character::update] x=%f y=%f", _b2body->GetPosition().x, _b2body->GetPosition().y);
-  _sprite->setPosition(_b2body->GetPosition().x * kPpm, _b2body->GetPosition().y * kPpm + 5);
+  // Sync the sprite with its b2body.
+  b2Vec2 b2bodyPos = _b2body->GetPosition();
+  _sprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
 }
 
 void Character::defineBody(b2BodyType bodyType,

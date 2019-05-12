@@ -1,15 +1,16 @@
 #ifndef VIGILANTE_GAMEMAP_MANAGER_H_
 #define VIGILANTE_GAMEMAP_MANAGER_H_
 
+#include <set>
 #include <string>
-#include <vector>
 #include <memory>
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "character/Character.h"
 #include "character/Player.h"
-#include "character/Enemy.h"
+#include "item/Item.h"
 #include "map/WorldContactListener.h"
 
 namespace vigilante {
@@ -27,7 +28,9 @@ class GameMapManager {
   cocos2d::Layer* getLayer() const;
   cocos2d::TMXTiledMap* getMap() const;
   Player* getPlayer() const;
-  std::vector<Character*> getCharacters() const;
+
+  std::set<Character*>& getCharacters();
+  std::set<Item*>& getItems();
 
  private:
   static GameMapManager* _instance;
@@ -55,7 +58,9 @@ class GameMapManager {
   cocos2d::Layer* _layer;
   cocos2d::TMXTiledMap* _map;
   Player* _player;
-  std::vector<Character*> _characters;
+
+  std::set<Character*> _characters;
+  std::set<Item*> _items;
 };
 
 } // namespace vigilante

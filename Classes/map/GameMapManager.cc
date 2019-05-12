@@ -3,12 +3,13 @@
 #include "Box2D/Box2D.h"
 
 #include "character/Enemy.h"
+#include "item/Equipment.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
+using std::set;
 using std::string;
-using std::vector;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
 
@@ -40,16 +41,9 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
 }
 
 GameMapManager::~GameMapManager() {
-  if (_map) {
-    _map->release();
-  }
-  if (_layer) {
-    _layer->release();
-  }
   for (auto c : _characters) {
     delete c;
   }
-  // TODO: clean up b2Bodies here?
 }
 
 
@@ -72,13 +66,19 @@ void GameMapManager::load(const string& mapFileName) {
 
   // Spawn the player.
   _player = spawnPlayer();
-  _characters.push_back(_player);
+  _characters.insert(_player);
   _layer->addChild(_player->getSpritesheet(), 30);
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Castle Guard", 300, 100);
-  _characters.push_back(enemy);
+  _characters.insert(enemy);
   _layer->addChild(enemy->getSpritesheet(), 31);
+
+  // Spawn an item.
+  string imgLocation = "Texture/Item/RustyAxe/icon.png";
+  Item* item = new Equipment(EquipmentType::WEAPON, "Rusty Axe", "An old rusty axe", imgLocation, 200, 80);
+  _items.insert(item);
+  _layer->addChild(item->getSprite(), 32);
 }
 
 
@@ -110,8 +110,13 @@ Player* GameMapManager::getPlayer() const {
   return _player;
 }
 
-vector<Character*> GameMapManager::getCharacters() const {
+
+set<Character*>& GameMapManager::getCharacters() {
   return _characters;
+}
+
+set<Item*>& GameMapManager::getItems() {
+  return _items;
 }
 
 
