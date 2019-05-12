@@ -13,12 +13,12 @@
 
 class MainGameScene : public cocos2d::Scene {
  public:
-  CREATE_FUNC(MainGameScene); // marco which generates "static create()" method
+  CREATE_FUNC(MainGameScene);
   virtual ~MainGameScene();
 
   virtual bool init() override;
   virtual void update(float delta) override;
-  virtual void handleInput(float delta);
+  void handleInput(float delta);
 
   b2World* getWorld() const;
 

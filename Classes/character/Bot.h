@@ -5,7 +5,6 @@
 
 #include "Character.h"
 
-
 namespace vigilante {
 
 class Bot {
