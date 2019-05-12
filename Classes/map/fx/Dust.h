@@ -5,6 +5,7 @@
 
 namespace vigilante {
 
+// FIXME: a dedicated class is probably unnecessary...
 class Dust {
  public:
   Dust(cocos2d::Layer* gameMapLayer, float x, float y);

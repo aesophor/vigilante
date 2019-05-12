@@ -175,6 +175,15 @@ void MainGameScene::handleInput(float delta) {
 }
 
 
+void MainGameScene::pauseGame() {
+
+}
+
+void MainGameScene::resumeGame() {
+
+}
+
+
 b2World* MainGameScene::getWorld() const {
   return _gameMapManager->getWorld();
 }

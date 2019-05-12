@@ -13,17 +13,9 @@ class Bot {
   virtual ~Bot() = default;
 
   virtual void act(float delta);
-
   void moveToTarget(Character* target);
-
-  void moveRandomly(float delta,
-                    int minMoveDuration,
-                    int maxMoveDuration,
-                    int minWaitDuration,
-                    int maxWaitDuration);
-
+  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
-
   void reverseDirection();
   
  private:

@@ -55,11 +55,7 @@ void Bot::moveToTarget(Character* target) {
   }
 }
 
-void Bot::moveRandomly(float delta,
-                       int minMoveDuration,
-                       int maxMoveDuration,
-                       int minWaitDuration,
-                       int maxWaitDuration) {
+void Bot::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration) {
   // If the character has finished moving and waiting, regenerate random values for
   // _moveDuration and _waitDuration within the specified range.
   if (_moveTimer >= _moveDuration && _waitTimer >= _waitDuration) {
