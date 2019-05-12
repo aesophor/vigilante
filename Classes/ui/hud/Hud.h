@@ -6,6 +6,7 @@
 
 #include "cocos2d.h"
 #include "ui/UIImageView.h"
+#include "2d/CCLabel.h"
 
 #include "character/Player.h"
 #include "StatusBar.h"
@@ -27,23 +28,30 @@ class Hud {
   static Hud* _instance;
   Hud();
 
-  static const std::string _kHudLocation;
-  static const std::string _kEquippedWeaponSlotLocation;
-  static const std::string _kBarLeftPaddingLocation;
-  static const std::string _kBarRightPaddingLocation;
-  static const std::string _kHealthBarLocation;
-  static const std::string _kMagickaBarLocation;
-  static const std::string _kStaminaBarLocation;
+  // Paths to HUD resources files
+  static const std::string _kHud;
+
+  static const std::string _kBarLeftPadding;
+  static const std::string _kBarRightPadding;
+  static const std::string _kHealthBar;
+  static const std::string _kMagickaBar;
+  static const std::string _kStaminaBar;
   static const float _kBarLength;
+
+  static const std::string _kEquippedWeaponBg;
+  static const std::string _kEquippedWeaponDescBg;
+  static const std::string _kFont;
 
   cocos2d::Layer* _layer;
   Player* _player;
 
-  cocos2d::ui::ImageView* _equippedWeapon;
-  cocos2d::ui::ImageView* _equippedWeaponSlot;
   std::unique_ptr<StatusBar> _healthBar;
   std::unique_ptr<StatusBar> _magickaBar;
   std::unique_ptr<StatusBar> _staminaBar;
+  cocos2d::ui::ImageView* _equippedWeaponBg;
+  cocos2d::ui::ImageView* _equippedWeapon;
+  cocos2d::ui::ImageView* _equippedWeaponDescBg;
+  cocos2d::Label* _equippedWeaponDesc;
 };
 
 } // namespace vigilante
