@@ -129,7 +129,7 @@ void Character::update(float delta) {
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
     }
-	}
+  }
   _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
 
   // Flip the sprite if needed.
