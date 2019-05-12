@@ -7,6 +7,7 @@
 #include "util/Constants.h"
 
 using std::set;
+using std::vector;
 using std::string;
 using std::function;
 using cocos2d::Vector;
@@ -43,8 +44,6 @@ Character::Character(const string& name, float x, float y)
       _isInvincible(),
       _isKilled(),
       _isSetToKill(),
-      _lockedOnTarget(),
-      _isAlerted(),
       _name(name),
       _str(5),
       _dex(5),
@@ -56,6 +55,8 @@ Character::Character(const string& name, float x, float y)
       _fullHealth(100),
       _fullMagicka(100),
       _fullStamina(100),
+      _lockedOnTarget(),
+      _isAlerted(),
       _b2body(),
       _bodyFixture(),
       _feetFixture(),
@@ -298,6 +299,7 @@ void Character::getUp() {
   _isCrouching = false;
 }
 
+
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
@@ -369,6 +371,22 @@ void Character::receiveDamage(Character* source, int damage) {
 }
 
 
+void Character::pickupItem(Item* item) {
+  _inRangeItems.erase(item);
+  addItem(item);
+  item->getB2Body()->GetWorld()->DestroyBody(item->getB2Body());
+}
+
+void Character::addItem(Item* item) {
+  _inventory[item->getItemType()].push_back(item);
+}
+
+void Character::removeItem(Item* item) {
+  vector<Item*>& items = _inventory[item->getItemType()];
+  items.erase(std::remove(items.begin(), items.end(), item), items.end());
+}
+
+
 bool Character::isFacingRight() const {
   return _isFacingRight;
 }
@@ -435,27 +453,6 @@ void Character::setIsInvincible(bool isInvincible) {
 }
 
 
-set<Character*>& Character::getInRangeTargets() {
-  return _inRangeTargets;
-}
-
-Character* Character::getLockedOnTarget() const {
-  return _lockedOnTarget;
-}
-
-void Character::setLockedOnTarget(Character* target) {
-  _lockedOnTarget = target;
-}
-
-bool Character::isAlerted() const {
-  return _isAlerted;
-}
-
-void Character::setIsAlerted(bool isAlerted) {
-  _isAlerted = isAlerted;
-}
-
-
 string Character::getName() const {
   return _name;
 }
@@ -486,6 +483,41 @@ int Character::getFullMagicka() const {
 
 int Character::getFullStamina() const {
   return _fullStamina;
+}
+
+
+set<Character*>& Character::getInRangeTargets() {
+  return _inRangeTargets;
+}
+
+Character* Character::getLockedOnTarget() const {
+  return _lockedOnTarget;
+}
+
+void Character::setLockedOnTarget(Character* target) {
+  _lockedOnTarget = target;
+}
+
+bool Character::isAlerted() const {
+  return _isAlerted;
+}
+
+void Character::setIsAlerted(bool isAlerted) {
+  _isAlerted = isAlerted;
+}
+
+
+set<Item*>& Character::getInRangeItems() {
+  return _inRangeItems;
+}
+
+
+const Character::Inventory& Character::getInventory() const {
+  return _inventory;
+}
+
+const Character::EquipmentSlots& Character::getEquipmentSlots() const {
+  return _equipmentSlots;
 }
 
 

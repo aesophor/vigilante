@@ -76,7 +76,7 @@ void GameMapManager::load(const string& mapFileName) {
 
   // Spawn an item.
   string imgLocation = "Texture/Item/RustyAxe/icon.png";
-  Item* item = new Equipment(EquipmentType::WEAPON, "Rusty Axe", "An old rusty axe", imgLocation, 200, 80);
+  Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe", "An old rusty axe", imgLocation, 200, 80);
   _items.insert(item);
   _layer->addChild(item->getSprite(), 32);
 }

@@ -130,6 +130,7 @@ b2BodyBuilder& b2BodyBuilder::setUserData(void* userData) {
 b2Fixture* b2BodyBuilder::buildFixture() {
   _fixture = _body->CreateFixture(&_fdef);
   _fixture->SetUserData(_userData);
+  _fdef = b2FixtureDef(); // Clear _fdef data
   return _fixture;
 }
 

@@ -57,9 +57,8 @@ bool GameInputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
 }
 
 bool GameInputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
-  bool isPressed = _pressedKeys.find(keyCode) != _pressedKeys.end();
-  _pressedKeys.erase(keyCode);
-  return isPressed;
+  // std::set::erase() returns the number of elements erased.
+  return static_cast<bool>(_pressedKeys.erase(keyCode));
 }
 
 } // namespace vigilante

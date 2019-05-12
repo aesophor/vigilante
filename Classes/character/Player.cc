@@ -34,8 +34,8 @@ namespace vigilante {
 
 Player::Player(const std::string& name, float x, float y) : Character(name, x, y) {
   short bodyCategoryBits = kPlayer;
-  short bodyMaskBits = kPortal | kEnemy | kMeleeWeapon | kItem;
-  short feetMaskBits = kGround | kPlatform | kWall;
+  short bodyMaskBits = kPortal | kEnemy | kMeleeWeapon;
+  short feetMaskBits = kGround | kPlatform | kWall | kItem;
   short weaponMaskBits = kEnemy | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
   defineTexture(x, y);
@@ -56,9 +56,12 @@ void Player::inflictDamage(Character* target, int damage) {
 void Player::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   camera_util::shake(8, .1f);
+
+  _bodyFixture->SetSensor(true);
   _isInvincible = true;
 
   callback_util::runAfter([&](){
+    _bodyFixture->SetSensor(false);
     _isInvincible = false;
   }, 1.5f);
 

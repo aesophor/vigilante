@@ -4,6 +4,7 @@
 
 #include "character/Player.h"
 #include "character/Enemy.h"
+#include "item/Item.h"
 #include "util/CategoryBits.h"
 
 
@@ -19,7 +20,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kGround: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
-        static_cast<Character*>(feetFixture->GetUserData())->setIsJumping(false);
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setIsJumping(false);
+        c->setIsOnPlatform(false);
       }
       break;
     }
@@ -42,10 +45,12 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Player* player = static_cast<Player*>(playerFixture->GetUserData());
         Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
 
-        enemy->inflictDamage(player, 25);
-        float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f; // temporary
-        float knockBackForceY = 1.0f; // temporary
-        enemy->knockBack(player, knockBackForceX, knockBackForceY);
+        if (!player->isInvincible()) {
+          enemy->inflictDamage(player, 25);
+          float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f; // temporary
+          float knockBackForceY = 1.0f; // temporary
+          enemy->knockBack(player, knockBackForceX, knockBackForceY);
+        }
       }
       break;
     }
@@ -78,6 +83,18 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
         Player* player = static_cast<Player*>(playerFixture->GetUserData());
         enemy->getInRangeTargets().insert(player);
+      }
+      break;
+    }
+    // Add the item to character's _inRangeItems set (so they can pick them up).
+    case category_bits::kFeet | category_bits::kItem: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* itemFixture = GetTargetFixture(category_bits::kItem, fixtureA, fixtureB);
+
+      if (feetFixture && itemFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        Item* i = static_cast<Item*>(itemFixture->GetUserData());
+        c->getInRangeItems().insert(i);
       }
       break;
     }
@@ -131,6 +148,18 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Enemy* enemy = static_cast<Enemy*>(weaponFixture->GetUserData());
         Player* player = static_cast<Player*>(playerFixture->GetUserData());
         enemy->getInRangeTargets().erase(player);
+      }
+      break;
+    }
+    // Remove the item from character's _inRangeItems set.
+    case category_bits::kFeet | category_bits::kItem: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* itemFixture = GetTargetFixture(category_bits::kItem, fixtureA, fixtureB);
+
+      if (feetFixture && itemFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        Item* i = static_cast<Item*>(itemFixture->GetUserData());
+        c->getInRangeItems().erase(i);
       }
       break;
     }

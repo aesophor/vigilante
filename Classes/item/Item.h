@@ -8,18 +8,19 @@
 
 namespace vigilante {
 
-enum ItemType {
-  EQUIPMENT,
-  CONSUMABLE,
-  MISC
-};
-
 class Item {
  public:
-  virtual ~Item() = default;
+  enum Type {
+    EQUIPMENT,
+    CONSUMABLE,
+    MISC,
+    SIZE
+  };
+
+  virtual ~Item();
   virtual void update(float delta);
 
-  const ItemType getItemType() const;
+  const Item::Type getItemType() const;
   const std::string& getName() const;
   const std::string& getDesc() const;
 
@@ -27,7 +28,8 @@ class Item {
   cocos2d::Sprite* getSprite() const;
 
  protected:
-  Item(const ItemType itemType,
+
+  Item(const Item::Type itemType,
        const std::string& name,
        const std::string& desc,
        const std::string& imgPath,
@@ -43,7 +45,7 @@ class Item {
   static const float _kIconWidth;
   static const float _kIconHeight;
 
-  ItemType _itemType;
+  Item::Type _itemType;
   std::string _name;
   std::string _desc;
 

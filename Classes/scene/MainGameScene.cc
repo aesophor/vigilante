@@ -152,6 +152,15 @@ void MainGameScene::handleInput(float delta) {
     }
   }
 
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
+    if (!player->getInRangeItems().empty()) {
+      vigilante::Item* i = *(player->getInRangeItems().begin());
+      player->pickupItem(i);
+      _gameMapManager->getItems().erase(i);
+      _gameMapManager->getLayer()->removeChild(i->getSprite());
+    }
+  }
+
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
     player->jump();
   }

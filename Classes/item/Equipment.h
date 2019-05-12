@@ -7,20 +7,21 @@
 
 namespace vigilante {
 
-enum EquipmentType {
-  WEAPON,     // 0
-  HEADGEAR,   // 1
-  ARMOR,      // 2
-  GAUNTLETS,  // 3
-  BOOTS,      // 4
-  CAPE,       // 5
-  RING        // 6
-};
-
 class Equipment : public Item {
  public:
+  enum Type {
+    WEAPON,     // 0
+    HEADGEAR,   // 1
+    ARMOR,      // 2
+    GAUNTLETS,  // 3
+    BOOTS,      // 4
+    CAPE,       // 5
+    RING,       // 6
+    SIZE
+  };
+
   // TODO: load item properties from JSON
-  Equipment(const EquipmentType equipmentType,
+  Equipment(const Equipment::Type equipmentType,
             const std::string& name,
             const std::string& desc,
             const std::string& imgPath,
@@ -28,7 +29,7 @@ class Equipment : public Item {
             float y);
   virtual ~Equipment() = default;
 
-  const EquipmentType getEquipmentType() const;
+  const Equipment::Type getEquipmentType() const;
   int getBonusPhysicalDamage() const;
   int getBonusMagicalDamage() const;
   int getBonusStr() const;
@@ -48,7 +49,7 @@ class Equipment : public Item {
   void setBonusJumpingHeight(int val);
 
  private:
-  EquipmentType _equipmentType;
+  Equipment::Type _equipmentType;
   int _bonusPhysicalDamage;
   int _bonusMagicalDamage;
   int _bonusStr;
