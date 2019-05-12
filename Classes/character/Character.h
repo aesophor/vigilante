@@ -40,6 +40,8 @@ class Character {
   virtual void pickupItem(Item* item);
   virtual void addItem(Item* item);
   virtual void removeItem(Item* item);
+  virtual void equip(Equipment* equipment);
+  virtual void unequip(Equipment::Type equipmentType);
 
   bool isFacingRight() const;
   bool isJumping() const;

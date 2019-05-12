@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "cocos2d.h"
+#include "ui/UIImageView.h"
 
 #include "character/Player.h"
 #include "StatusBar.h"
@@ -15,7 +16,9 @@ class Hud {
  public:
   static Hud* getInstance();
   virtual ~Hud() = default;
-  void update();
+
+  void updateEquippedWeapon();
+  void updateStatusBars();
 
   cocos2d::Layer* getLayer() const;
   void setPlayer(Player* player);
@@ -25,6 +28,7 @@ class Hud {
   Hud();
 
   static const std::string _kHudLocation;
+  static const std::string _kEquippedWeaponSlotLocation;
   static const std::string _kBarLeftPaddingLocation;
   static const std::string _kBarRightPaddingLocation;
   static const std::string _kHealthBarLocation;
@@ -35,6 +39,8 @@ class Hud {
   cocos2d::Layer* _layer;
   Player* _player;
 
+  cocos2d::ui::ImageView* _equippedWeapon;
+  cocos2d::ui::ImageView* _equippedWeaponSlot;
   std::unique_ptr<StatusBar> _healthBar;
   std::unique_ptr<StatusBar> _magickaBar;
   std::unique_ptr<StatusBar> _staminaBar;

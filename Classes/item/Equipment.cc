@@ -13,4 +13,9 @@ Equipment::Equipment(const Equipment::Type equipmentType,
     : Item(Item::Type::EQUIPMENT, name, desc, imgPath, x, y),
       _equipmentType(equipmentType) {}
 
+
+const Equipment::Type Equipment::getEquipmentType() const {
+  return _equipmentType;
+}
+
 } // namespace vigilante

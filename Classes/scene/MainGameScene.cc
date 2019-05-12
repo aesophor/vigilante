@@ -20,6 +20,7 @@ using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
 using vigilante::Hud;
+using vigilante::Equipment;
 using vigilante::GameMapManager;
 using vigilante::GameInputManager;
 
@@ -58,7 +59,7 @@ bool MainGameScene::init() {
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _hud->getLayer()->setPosition(40, winSize.height - 40);
+  _hud->getLayer()->setPosition(75, winSize.height - 40);
   addChild(_hud->getLayer());
   
   // Initialize Vigilante's CallbackUtil.
@@ -155,9 +156,12 @@ void MainGameScene::handleInput(float delta) {
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
     if (!player->getInRangeItems().empty()) {
       vigilante::Item* i = *(player->getInRangeItems().begin());
-      player->pickupItem(i);
+      player->addItem(i);
+      i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
       _gameMapManager->getItems().erase(i);
       _gameMapManager->getLayer()->removeChild(i->getSprite());
+
+      player->equip(dynamic_cast<Equipment*>(i)); // temporary!!!
     }
   }
 

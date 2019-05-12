@@ -57,6 +57,8 @@ Character::Character(const string& name, float x, float y)
       _fullStamina(100),
       _lockedOnTarget(),
       _isAlerted(),
+      _inventory(),
+      _equipmentSlots(),
       _b2body(),
       _bodyFixture(),
       _feetFixture(),
@@ -384,6 +386,26 @@ void Character::addItem(Item* item) {
 void Character::removeItem(Item* item) {
   vector<Item*>& items = _inventory[item->getItemType()];
   items.erase(std::remove(items.begin(), items.end(), item), items.end());
+}
+
+void Character::equip(Equipment* equipment) {
+  // If there's already an equipment in that slot, unequip it first.
+  Equipment::Type type = equipment->getEquipmentType();
+  if (_equipmentSlots[type]) {
+    unequip(type);
+  }
+  removeItem(equipment);
+  _equipmentSlots[type] = equipment;
+}
+
+void Character::unequip(Equipment::Type equipmentType) {
+  // If there's an equipped item in the target slot,
+  // move it into character's inventory.
+  if (_equipmentSlots[equipmentType]) {
+    Equipment* e = _equipmentSlots[equipmentType];
+    _equipmentSlots[equipmentType] = nullptr;
+    addItem(e);
+  }
 }
 
 

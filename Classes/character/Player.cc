@@ -65,8 +65,19 @@ void Player::receiveDamage(Character* source, int damage) {
     _isInvincible = false;
   }, 1.5f);
 
-  Hud::getInstance()->update();
+  Hud::getInstance()->updateStatusBars();
 }
+
+void Player::equip(Equipment* equipment) {
+  Character::equip(equipment);
+  Hud::getInstance()->updateEquippedWeapon();
+}
+
+void Player::unequip(Equipment::Type equipmentType) {
+  Character::unequip(equipmentType);
+  Hud::getInstance()->updateEquippedWeapon();
+}
+
 
 void Player::defineTexture(float x, float y) {
   cocos2d::log("[Player] loading textures");

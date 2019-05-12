@@ -6,7 +6,7 @@
 #include "Box2D/Box2D.h"
 
 #include "Character.h"
-
+#include "item/Equipment.h"
 
 namespace vigilante {
 
@@ -17,6 +17,9 @@ class Player : public Character {
 
   virtual void inflictDamage(Character* target, int damage) override;
   virtual void receiveDamage(Character* source, int damage) override;
+
+  virtual void equip(Equipment* equipment) override;
+  virtual void unequip(Equipment::Type equipmentType) override;
 
  private:
   virtual void defineTexture(float x, float y) override;

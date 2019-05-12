@@ -15,9 +15,9 @@ StatusBar::StatusBar(const string& leftPaddingImgPath,
       _rightPaddingImg(ImageView::create(rightPaddingImgPath)),
       _statusBarImg(ImageView::create(statusBarImgPath)),
       _maxLength(maxLength) {
-  _leftPaddingImg->setAnchorPoint({0, 1});
-  _rightPaddingImg->setAnchorPoint({0, 1});
-  _statusBarImg->setAnchorPoint({0, 1});
+  _leftPaddingImg->setAnchorPoint({0, 0});
+  _rightPaddingImg->setAnchorPoint({0, 0});
+  _statusBarImg->setAnchorPoint({0, 0});
   _statusBarImg->setScaleX(_maxLength);
 
   _layout->setLayoutType(Layout::Type::HORIZONTAL);

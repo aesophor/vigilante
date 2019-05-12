@@ -26,14 +26,15 @@ Item::~Item() {
 Item::Item(const Item::Type itemType,
            const string& name,
            const string& desc,
-           const string& imgPath,
+           const string& iconPath,
            float x,
            float y)
     : _itemType(itemType),
       _name(name),
       _desc(desc),
+      _iconPath(iconPath),
       _b2body(),
-      _sprite(Sprite::create(imgPath)) {
+      _sprite(Sprite::create(iconPath)) {
   // Define b2body and fixture.
   short categoryBits = kItem;
   short maskBits = kGround | kPlatform | kWall;
@@ -84,6 +85,10 @@ const string& Item::getName() const {
 
 const string& Item::getDesc() const {
   return _desc;
+}
+
+const string& Item::getIconPath() const {
+  return _iconPath;
 }
 
 b2Body* Item::getB2Body() const {

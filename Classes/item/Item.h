@@ -23,6 +23,7 @@ class Item {
   const Item::Type getItemType() const;
   const std::string& getName() const;
   const std::string& getDesc() const;
+  const std::string& getIconPath() const;
 
   b2Body* getB2Body() const;
   cocos2d::Sprite* getSprite() const;
@@ -32,7 +33,7 @@ class Item {
   Item(const Item::Type itemType,
        const std::string& name,
        const std::string& desc,
-       const std::string& imgPath,
+       const std::string& iconPath,
        float x,
        float y);
 
@@ -48,6 +49,7 @@ class Item {
   Item::Type _itemType;
   std::string _name;
   std::string _desc;
+  std::string _iconPath;
 
   // When the item is dropped in the world, it needs a body and a sprite.
   b2Body* _b2body;
