@@ -20,6 +20,7 @@ using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
 using vigilante::Hud;
+using vigilante::PauseMenu;
 using vigilante::Equipment;
 using vigilante::GameMapManager;
 using vigilante::GameInputManager;
@@ -56,12 +57,19 @@ bool MainGameScene::init() {
   _hudCamera->setPosition(0, 0);
   addChild(_hudCamera);
   
+  // Initialize Pause Menu.
+  _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu());
+  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _pauseMenu->getLayer()->setVisible(false);
+  _isPaused = false;
+  addChild(_pauseMenu->getLayer(), 95);
+
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _hud->getLayer()->setPosition(75, winSize.height - 40);
-  addChild(_hud->getLayer());
-  
+  addChild(_hud->getLayer(), 90);
+
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
 
@@ -123,6 +131,17 @@ void MainGameScene::handleInput(float delta) {
     _b2DebugOn = !_b2DebugOn;
   }
 
+  // Pause/resume game.
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
+    if (!_isPaused) {
+      pauseGame();
+    } else {
+      resumeGame();
+    }
+    _isPaused = !_isPaused;
+    return;
+  }
+
   
   if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
     return;
@@ -176,11 +195,11 @@ void MainGameScene::handleInput(float delta) {
 
 
 void MainGameScene::pauseGame() {
-
+  _pauseMenu->getLayer()->setVisible(true);
 }
 
 void MainGameScene::resumeGame() {
-
+  _pauseMenu->getLayer()->setVisible(false);
 }
 
 
