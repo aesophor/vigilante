@@ -107,6 +107,9 @@ class Character {
   State getState() const;
   static const float _kBaseMovingSpeed;
 
+  // The following variables are used to determine the character's state
+  // and run the corresponding animations. Please see Character::update()
+  // for the logic.
   State _currentState;
   State _previousState;
   float _stateTimer;
@@ -123,10 +126,14 @@ class Character {
   bool _isKilled;
   bool _isSetToKill;
 
+  // The following variables are used to determine combat targets.
+  // A character can only inflict damage to another iff the target is
+  // within (attack) range.
   std::set<Character*> _inRangeTargets;
   Character* _lockedOnTarget;
   bool _isAlerted;
 
+  // Player stats.
   std::string _name;
   int _str;
   int _dex;
@@ -139,14 +146,18 @@ class Character {
   int _fullMagicka;
   int _fullStamina;
 
+  // Character's Box2D body and fixtures.
+  // The fixtures are attached to the _b2body, see map/WorldContactListener.cc
+  // for the implementation of contact handlers.
   b2Body* _b2body;
-  b2Fixture* _bodyFixture;
-  b2Fixture* _feetFixture;
-  b2Fixture* _weaponFixture;
+  b2Fixture* _bodyFixture; // used in combat (with _weaponFixture)
+  b2Fixture* _feetFixture; // used for ground/platform collision detection
+  b2Fixture* _weaponFixture; // used in combat (with _bodyFixture)
 
-  cocos2d::Sprite* _sprite;
-  cocos2d::SpriteBatchNode* _spritesheet;
-  cocos2d::Animation* _animations[State::LAST];
+  // Character's sprites and animations.
+  cocos2d::Sprite* _sprite; // child of _spritesheet
+  cocos2d::SpriteBatchNode* _spritesheet; // child of MainGameScene
+  cocos2d::Animation* _animations[State::LAST]; // animations are loaded and cahced here
 };
 
 } // namespace vigilante
