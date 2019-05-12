@@ -78,7 +78,7 @@ void Character::update(float delta) {
   _previousState = _currentState;
   _currentState = getState();
 
-  // If there's a change in character's state, update its animation accordingly.
+  // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {
     switch(_currentState) {
       case State::RUNNING_SHEATHED:
