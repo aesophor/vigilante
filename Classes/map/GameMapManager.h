@@ -23,6 +23,8 @@ class GameMapManager {
   virtual ~GameMapManager();
   void load(const std::string& mapFileName);
 
+  void createDustFx(Character* character) const;
+
   b2World* getWorld() const;
 
   cocos2d::Layer* getLayer() const;

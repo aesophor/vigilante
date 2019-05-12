@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 
+#include <string>
+
 #include "scene/MainGameScene.h"
 #include "util/Constants.h"
 
@@ -17,6 +19,8 @@ using namespace cocos2d::experimental;
 #include "audio/include/SimpleAudioEngine.h"
 using namespace CocosDenshion;
 #endif
+
+using std::string;
 
 USING_NS_CC;
 
@@ -89,6 +93,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     scaleY = screenRatio / virtualRatio;
   }
   log("scaleY=%f", scaleY);
+
+  // Load resources
+  cocos2d::log("[Dust] loading textures");
+  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+  frameCache->addSpriteFramesWithFile("Texture/FX/Dust/dust.plist");
 
   // Create a scene. It's an autorelease object.
   Scene* scene = MainGameScene::create();

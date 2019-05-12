@@ -4,12 +4,14 @@
 
 #include "character/Enemy.h"
 #include "item/Equipment.h"
+#include "map/fx/Dust.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
 using std::set;
 using std::string;
+using std::unique_ptr;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
 
@@ -79,6 +81,13 @@ void GameMapManager::load(const string& mapFileName) {
   Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe", "An old rusty axe", imgLocation, 200, 80);
   _items.insert(item);
   _layer->addChild(item->getSprite(), 32);
+}
+
+void GameMapManager::createDustFx(Character* character) const {
+	auto feetPos = character->getB2Body()->GetPosition();
+	float dustX = feetPos.x;// - 32.f / kPpm / 2;
+	float dustY = feetPos.y - .1f;// - 32.f / kPpm / .065f;
+	unique_ptr<Dust>(new Dust(_layer, dustX, dustY));
 }
 
 

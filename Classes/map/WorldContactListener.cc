@@ -5,8 +5,11 @@
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
+#include "map/GameMapManager.h"
 #include "util/CategoryBits.h"
+#include "util/Constants.h"
 
+using std::unique_ptr;
 
 namespace vigilante {
 
@@ -23,6 +26,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setIsJumping(false);
         c->setIsOnPlatform(false);
+        // Create dust effect.
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -33,6 +38,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setIsJumping(false);
         c->setIsOnPlatform(true);
+        // Create dust effect.
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -113,7 +120,10 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kGround: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
-        static_cast<Character*>(feetFixture->GetUserData())->setIsJumping(true);
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setIsJumping(true);
+        // Create dust effect.
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -124,6 +134,8 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setIsJumping(true);
         c->setIsOnPlatform(false);
+        // Create dust effect.
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
