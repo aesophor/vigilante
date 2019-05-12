@@ -115,7 +115,7 @@ void Character::update(float delta) {
         runAnimation(State::ATTACKING, false);
         break;
       case State::KILLED:
-        runAnimation(State::KILLED, [&](){
+        runAnimation(State::KILLED, [=](){
           // Execute after the KILLED animation is finished.
           GameMapManager::getInstance()->getWorld()->DestroyBody(_b2body);
           _isKilled = true;
@@ -284,7 +284,7 @@ void Character::jumpDown() {
   if (_isOnPlatform) {
     _feetFixture->SetSensor(true);
 
-    callback_util::runAfter([&](){
+    callback_util::runAfter([=](){
       _feetFixture->SetSensor(false);
     }, .25f);
   }
@@ -301,7 +301,7 @@ void Character::getUp() {
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
-  callback_util::runAfter([&](){
+  callback_util::runAfter([=](){
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
   }, .8f);
@@ -310,7 +310,7 @@ void Character::sheathWeapon() {
 void Character::unsheathWeapon() {
   _isUnsheathingWeapon = true;
 
-  callback_util::runAfter([&](){
+  callback_util::runAfter([=](){
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
@@ -324,7 +324,7 @@ void Character::attack() {
 
   _isAttacking = true;
 
-  callback_util::runAfter([&](){
+  callback_util::runAfter([=](){
     _isAttacking = false;
   }, .5f);
 

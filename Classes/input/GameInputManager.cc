@@ -58,9 +58,7 @@ bool GameInputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
 
 bool GameInputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
   bool isPressed = _pressedKeys.find(keyCode) != _pressedKeys.end();
-  if (isPressed) {
-    _pressedKeys.erase(keyCode);
-  }
+  _pressedKeys.erase(keyCode);
   return isPressed;
 }
 
