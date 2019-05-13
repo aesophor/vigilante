@@ -2,9 +2,12 @@
 #define VIGILANTE_PAUSE_MENU_H_
 
 #include <string>
+#include <memory>
 
 #include "cocos2d.h"
 #include "ui/UIImageView.h"
+
+#include "StatsPane.h"
 
 namespace vigilante {
 
@@ -20,10 +23,12 @@ class PauseMenu {
   static const std::string _kPauseMenu;
 
   static const std::string _kBackground;
+  static const std::string _kStatsBg;
 
   cocos2d::Layer* _layer;
-  
   cocos2d::ui::ImageView* _background;
+
+  std::unique_ptr<StatsPane> _statsPane;
 };
 
 } // namespace vigilante
