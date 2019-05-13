@@ -6,14 +6,25 @@ using cocos2d::ui::Layout;
 
 namespace vigilante {
 
-TableLayout::TableLayout(float tableWidth, float rowHeight)
-    : Layout(),
-      _tableWidth(tableWidth),
-      _rowHeight(rowHeight),
-      _lastAddedChild(),
-      _nextChildPosition({0, 0}) {
-  Layout::init();
-  autorelease();
+TableLayout* TableLayout::create(float tableWidth, float rowHeight) {
+  TableLayout* tableLayout = new (std::nothrow) TableLayout;
+  if (tableLayout && tableLayout->init(tableWidth, rowHeight)) {
+    tableLayout->autorelease();
+    return tableLayout;
+  }
+  CC_SAFE_DELETE(tableLayout);
+  return nullptr;
+}
+
+bool TableLayout::init(float tableWidth, float rowHeight) {
+  if (!Layout::init()) {
+    return false;
+  }
+  _tableWidth = tableWidth;
+  _rowHeight = rowHeight;
+  _lastAddedChild = nullptr;
+  _nextChildPosition = {0, 0};
+  return true;
 }
 
 

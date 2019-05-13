@@ -8,7 +8,8 @@ namespace vigilante {
 
 class TableLayout : public cocos2d::ui::Layout {
  public:
-  TableLayout(float tableWidth=100.0f, float rowHeight=8.0f);
+  static TableLayout* create(float tableWidth=100.0f, float rowHeight=8.0f);
+  virtual bool init(float tableWidth, float rowHeight);
   virtual ~TableLayout() = default;
 
   enum Direction {

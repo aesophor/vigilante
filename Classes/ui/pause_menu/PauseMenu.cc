@@ -25,7 +25,6 @@ PauseMenu::PauseMenu()
   _layer->addChild(_background, 0);
 
   // Position the stats area.
-  _statsPane->getLayout()->setAnchorPoint({0, 0});
   _statsPane->getLayout()->setPosition({50, 240});
   _layer->addChild(_statsPane->getLayout());
 }

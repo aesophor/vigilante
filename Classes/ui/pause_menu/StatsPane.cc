@@ -20,7 +20,7 @@ const float StatsPane::_kSectionHeight = 8.0f;
 
 StatsPane::StatsPane()
     : _background(ImageView::create(_kStatsBg)),
-      _layout(new TableLayout(_background->getContentSize().width, _kRowHeight)),
+      _layout(TableLayout::create(_background->getContentSize().width, _kRowHeight)),
       _name(Label::createWithTTF("Aesophor", _kFont, _kFontSize)),
       _level(Label::createWithTTF("Level 1", _kFont, _kFontSize)), 
       _health(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
@@ -46,7 +46,6 @@ StatsPane::StatsPane()
   _layout->align(TableLayout::Direction::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
   _layout->row(4.0f);
 
-  // Add health label.
   addEntry("Health", _health);
   addEntry("Magicka", _magicka);
   addEntry("Stamina", _stamina);
