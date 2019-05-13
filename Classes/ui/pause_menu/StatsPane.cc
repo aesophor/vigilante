@@ -1,5 +1,7 @@
 #include "StatsPane.h"
 
+#include "ui/Colorscheme.h"
+
 using std::string;
 using cocos2d::Label;
 using cocos2d::Layer;
@@ -41,7 +43,7 @@ StatsPane::StatsPane()
   // Add name and level label at the top.
   _layout->addChild(_name);
   _layout->align(TableLayout::Direction::LEFT)->padLeft(_kPadLeft)->padBottom(15.0f);
-  _level->setTextColor({0xb0, 0x30, 0x60, 0xff});
+  _level->setTextColor(colorscheme::kRed);
   _layout->addChild(_level);
   _layout->align(TableLayout::Direction::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
   _layout->row(4.0f);
@@ -67,7 +69,7 @@ StatsPane::StatsPane()
 void StatsPane::addEntry(const string& title, Label* label) const {
   // Create title label and disable antialiasing.
   Label* titleLabel = Label::createWithTTF(title, _kFont, _kFontSize);
-  titleLabel->setTextColor({0x93, 0x9b, 0xb0, 0xff}); // TODO: define this shit as a CONSTANT
+  titleLabel->setTextColor(colorscheme::kGrey);
   titleLabel->getFontAtlas()->setAliasTexParameters();
   label->getFontAtlas()->setAliasTexParameters();
 
