@@ -142,6 +142,9 @@ void MainGameScene::handleInput(float delta) {
     return;
   }
 
+  if (_isPaused) {
+    _pauseMenu->handleInput();
+  }
   
   if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
     return;
