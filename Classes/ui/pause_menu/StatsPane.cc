@@ -26,9 +26,6 @@ StatsPane::StatsPane()
       _health(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
       _magicka(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
       _stamina(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
-      _rhWeapon(Label::createWithTTF("Rusty Axe", _kFont, _kFontSize)),
-      _lhWeapon(Label::createWithTTF("empty", _kFont, _kFontSize)),
-      _armorRate(Label::createWithTTF("10", _kFont, _kFontSize)),
       _attackRange(Label::createWithTTF("5", _kFont, _kFontSize)),
       _attackSpeed(Label::createWithTTF("10", _kFont, _kFontSize)),
       _moveSpeed(Label::createWithTTF("100", _kFont, _kFontSize)),
@@ -44,6 +41,7 @@ StatsPane::StatsPane()
   // Add name and level label at the top.
   _layout->addChild(_name);
   _layout->align(TableLayout::Direction::LEFT)->padLeft(_kPadLeft)->padBottom(15.0f);
+  _level->setTextColor({0xb0, 0x30, 0x60, 0xff});
   _layout->addChild(_level);
   _layout->align(TableLayout::Direction::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
   _layout->row(4.0f);

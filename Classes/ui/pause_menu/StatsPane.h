@@ -5,10 +5,10 @@
 
 #include "cocos2d.h"
 #include "2d/CCLabel.h"
-//#include "ui/UILayout.h"
+#include "ui/UILayout.h"
 #include "ui/UIImageView.h"
 
-#include "TableLayout.h"
+#include "ui/TableLayout.h"
 
 namespace vigilante {
 
@@ -41,10 +41,6 @@ class StatsPane {
   cocos2d::Label* _health;
   cocos2d::Label* _magicka;
   cocos2d::Label* _stamina;
-
-  cocos2d::Label* _rhWeapon;
-  cocos2d::Label* _lhWeapon;
-  cocos2d::Label* _armorRate;
 
   cocos2d::Label* _attackRange;
   cocos2d::Label* _attackSpeed;
