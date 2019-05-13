@@ -11,6 +11,7 @@
 
 #include "HeaderPane.h"
 #include "StatsPane.h"
+#include "ui/pause_menu/inventory/InventoryPane.h"
 
 namespace vigilante {
 
@@ -36,6 +37,7 @@ class PauseMenu {
 
   std::unique_ptr<HeaderPane> _headerPane;
   std::unique_ptr<StatsPane> _statsPane;
+  std::unique_ptr<InventoryPane> _inventoryPane;
 };
 
 } // namespace vigilante
