@@ -19,8 +19,11 @@ InventoryPane::InventoryPane()
     : _layout(Layout::create()),
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("Item desc", kRegularFont, kRegularFontSize)),
-      _tabView(new TabView(kTabRegular, kTabHighlighted)) {
-  _layout->setLayoutType(Layout::Type::RELATIVE);
+      _tabView(new TabView(kTabRegular, kTabHighlighted)),
+      _itemScrollView(new ItemScrollView()) {
+  _background->setAnchorPoint({0, 1});
+
+  _layout->setLayoutType(Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
   _layout->addChild(_background);
 
@@ -30,6 +33,9 @@ InventoryPane::InventoryPane()
   _tabView->addTab("MISC");
   _tabView->selectTab(0);
   _layout->addChild(_tabView->getLayout());
+
+  // Place item scroll view.
+  _layout->addChild(_itemScrollView->getScrollView());
 
   // Place item description label.
   _itemDesc->getFontAtlas()->setAliasTexParameters();

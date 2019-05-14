@@ -46,14 +46,17 @@ TableLayout* TableLayout::align(TableLayout::Direction direction) {
     case Direction::LEFT:
       _lastAddedChild->setAnchorPoint({0, 1});
       _lastAddedChild->setPositionX(0);
+      _nextChildPosition.x = 0 + _lastAddedChild->getContentSize().width;
       break;
     case Direction::CENTER:
       _lastAddedChild->setAnchorPoint({0.5, 1});
       _lastAddedChild->setPositionX(_tableWidth / 2);
+      _nextChildPosition.x = _tableWidth / 2 + _lastAddedChild->getContentSize().width / 2;
       break;
     case Direction::RIGHT:
       _lastAddedChild->setAnchorPoint({1, 1});
       _lastAddedChild->setPositionX(_tableWidth);
+      _nextChildPosition.x = _tableWidth;
       break;
     default:
       cocos2d::log("[TableLayout] bad align value in TableLayout::align()");
@@ -109,6 +112,18 @@ TableLayout* TableLayout::padBottom(float padding) {
   // otherwise the subsequently added children will placed higher and higher.
   return this;
 }
+
+
+TableLayout* TableLayout::spaceX(float spacing) {
+  _nextChildPosition.x += spacing;
+  return this;
+}
+
+TableLayout* TableLayout::spaceY(float spacing) {
+  _nextChildPosition.y += spacing;
+  return this;
+}
+
 
 TableLayout* TableLayout::row(float height) {
   _nextChildPosition.x = 0;

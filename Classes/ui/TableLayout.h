@@ -20,10 +20,15 @@ class TableLayout : public cocos2d::ui::Layout {
 
   virtual void addChild(cocos2d::Node* child) override;
   virtual TableLayout* align(TableLayout::Direction direction); // align last added child
+
   virtual TableLayout* padLeft(float padding);
   virtual TableLayout* padRight(float padding);
   virtual TableLayout* padTop(float padding);
   virtual TableLayout* padBottom(float padding);
+
+  virtual TableLayout* spaceX(float spacing);
+  virtual TableLayout* spaceY(float spacing);
+
   virtual TableLayout* row(float height); // change row
   virtual TableLayout* row();
 
