@@ -1,12 +1,17 @@
 #ifndef VIGILANTE_INVENTORY_PANE_H_
 #define VIGILANTE_INVENTORY_PANE_H_
 
+#include <vector>
 #include <string>
+#include <memory>
 
 #include "cocos2d.h"
 #include "2d/CCLabel.h"
 #include "ui/UILayout.h"
 #include "ui/UIImageView.h"
+
+#include "item/Item.h"
+#include "ui/TabView.h"
 
 namespace vigilante {
 
@@ -15,18 +20,14 @@ class InventoryPane {
   InventoryPane();
   virtual ~InventoryPane() = default;
 
+  void selectTab(Item::Type itemType);
   cocos2d::ui::Layout* getLayout() const;
 
  private:
-  // Paths to resource files.
-  static const std::string _kPauseMenu;
-  static const std::string _kInventoryBg;
-  static const std::string _kFont;
-  static const float _kFontSize;
-
   cocos2d::ui::Layout* _layout;
   cocos2d::ui::ImageView* _background;
   cocos2d::Label* _itemDesc;
+  std::unique_ptr<TabView> _tabView;
 };
 
 } // namespace vigilante
