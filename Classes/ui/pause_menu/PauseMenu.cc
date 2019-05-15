@@ -111,6 +111,20 @@ void PauseMenu::handleInput() {
   }
 }
 
+void PauseMenu::show(Pane pane) const {
+  AbstractPane* oldPane = getCurrentPane();
+  if (oldPane) {
+    oldPane->setVisible(false);
+  }
+
+  _headerPane->select(static_cast<int>(pane));
+
+  AbstractPane* newPane = getCurrentPane();
+  if (newPane) {
+    newPane->setVisible(true);
+  }
+}
+
 
 Character* PauseMenu::getCharacter() const {
   return _character;

@@ -30,6 +30,7 @@ class EquipmentPane : public AbstractPane {
 
   void selectUp();
   void selectDown();
+  void confirm();
 
  private:
   class EquipmentItem {

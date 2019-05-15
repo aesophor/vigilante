@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "input/GameInputManager.h"
+#include "ui/pause_menu/inventory/InventoryPane.h"
 
 using std::string;
 using std::unique_ptr;
@@ -53,6 +54,8 @@ void EquipmentPane::handleInput() {
     selectUp();
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     selectDown();
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+    confirm();
   }
 }
 
@@ -70,6 +73,14 @@ void EquipmentPane::selectDown() {
   }
   _equipmentItems[_current++]->setSelected(false);
   _equipmentItems[_current]->setSelected(true);
+}
+
+void EquipmentPane::confirm() {
+  // When user hits ENTER on a equipment slot, navigate to inventory pane
+  // and switch to equipment selection mode.
+  _pauseMenu->show(PauseMenu::Pane::INVENTORY);
+  InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_pauseMenu->getCurrentPane());
+
 }
 
 

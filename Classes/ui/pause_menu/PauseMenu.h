@@ -23,11 +23,20 @@ class PauseMenuDialog;
 
 class PauseMenu {
  public:
+  enum Pane {
+    INVENTORY,
+    EQUIPMENT,
+    SKILLS,
+    QUESTS,
+    OPTIONS
+  };
+
   PauseMenu(Character* character);
   virtual ~PauseMenu() = default;
 
   void update();
   void handleInput();
+  void show(PauseMenu::Pane pane) const;
 
   Character* getCharacter() const;
   void setCharacter(Character* character);

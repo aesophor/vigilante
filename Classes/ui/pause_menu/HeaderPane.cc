@@ -69,19 +69,25 @@ void HeaderPane::handleInput() {
 
 }
 
-void HeaderPane::selectPrev() {
-  _labels[_currentIndex]->setTextColor(colorscheme::kGrey);
-  _currentIndex--;
-  if (_currentIndex < 0) {
-    _currentIndex = _kOptionCount - 1;
+void HeaderPane::select(int index) {
+  if (index < 0 || index >= _kOptionCount) {
+    return;
   }
+  _labels[_currentIndex]->setTextColor(colorscheme::kGrey);
+  _currentIndex = index;
   _labels[_currentIndex]->setTextColor(colorscheme::kWhite);
 }
 
+void HeaderPane::selectPrev() {
+  int prev = _currentIndex - 1;
+  if (prev < 0) {
+    prev = _kOptionCount - 1;
+  }
+  select(prev);
+}
+
 void HeaderPane::selectNext() {
-  _labels[_currentIndex]->setTextColor(colorscheme::kGrey);
-  _currentIndex = (_currentIndex + 1) % _kOptionCount;
-  _labels[_currentIndex]->setTextColor(colorscheme::kWhite);
+  select((_currentIndex + 1) % _kOptionCount);
 }
 
 int HeaderPane::getCurrentIndex() const {

@@ -23,6 +23,7 @@ class HeaderPane : public AbstractPane {
   virtual void update() override;
   virtual void handleInput() override;
 
+  void select(int index);
   void selectPrev();
   void selectNext();
   int getCurrentIndex() const;
