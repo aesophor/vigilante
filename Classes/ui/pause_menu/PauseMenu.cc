@@ -1,6 +1,9 @@
 #include "PauseMenu.h"
 
+#include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
+#include "ui/pause_menu/inventory/InventoryPane.h"
+#include "ui/pause_menu/equipment/EquipmentPane.h"
 
 using std::string;
 using std::unique_ptr;
@@ -46,8 +49,19 @@ PauseMenu::PauseMenu()
   _panes[0] = unique_ptr<InventoryPane>(new InventoryPane());
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());
   inventoryPane->getLayout()->setPosition({230, 240});
+  inventoryPane->setVisible(false);
   _layer->addChild(inventoryPane->getLayout());
-  cocos2d::log("train");
+
+  // Initialize EquipmentPane.
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(player));
+  EquipmentPane* equipmentPane = dynamic_cast<EquipmentPane*>(_panes[1].get());
+  equipmentPane->getLayout()->setPosition({230, 240});
+  equipmentPane->setVisible(false);
+  _layer->addChild(equipmentPane->getLayout());
+
+  // Show inventory pane by default.
+  _panes.front()->setVisible(true);
 }
 
 

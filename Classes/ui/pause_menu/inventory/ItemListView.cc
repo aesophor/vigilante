@@ -16,9 +16,10 @@ using vigilante::asset_manager::kItemHighlighted;
 
 namespace vigilante {
 
-ItemListView::ItemListView(Character* character, int visibleItemCount)
+ItemListView::ItemListView(Character* character, Label* itemDesc, int visibleItemCount)
     : _character(character),
       _layout(Layout::create()),
+      _itemDesc(itemDesc),
       _visibleItemCount(visibleItemCount),
       _firstVisibleIndex(),
       _current() {
@@ -33,17 +34,6 @@ ItemListView::ItemListView(Character* character, int visibleItemCount)
 }
 
 
-Item* ItemListView::getSelectedItem() const {
-  if (_listViewItems[_current]) {
-    return _listViewItems[_current]->getItem();
-  }
-  return nullptr;
-}
-
-Layout* ItemListView::getLayout() const {
-  return _layout;
-}
-
 void ItemListView::showItemsByType(Item::Type itemType) {
   _characterItems = &(_character->getInventory()[itemType]);
   _firstVisibleIndex = 0;
@@ -52,6 +42,9 @@ void ItemListView::showItemsByType(Item::Type itemType) {
 
   if ((*_characterItems).size() > 0) {
     _listViewItems[0]->setSelected(true);
+    _itemDesc->setString((*_characterItems)[_current]->getDesc());
+  } else {
+    _itemDesc->setString("");
   }
 }
 
@@ -67,6 +60,7 @@ void ItemListView::selectUp() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
+  _itemDesc->setString((*_characterItems)[_current]->getDesc());
 }
 
 void ItemListView::selectDown() {
@@ -81,6 +75,7 @@ void ItemListView::selectDown() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
+  _itemDesc->setString((*_characterItems)[_current]->getDesc());
 }
 
 void ItemListView::scrollUp() {
@@ -114,6 +109,18 @@ void ItemListView::showItemsFrom(int index) {
 }
 
 
+Item* ItemListView::getSelectedItem() const {
+  if (_listViewItems[_current]) {
+    return _listViewItems[_current]->getItem();
+  }
+  return nullptr;
+}
+
+Layout* ItemListView::getLayout() const {
+  return _layout;
+}
+
+
 ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal god dammit
@@ -127,7 +134,7 @@ ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
   _layout->row(1);
 
   _layout->addChild(_icon);
-  _layout->align(TableLayout::Direction::LEFT)->padLeft(5)->spaceX(5);
+  _layout->align(TableLayout::Alignment::LEFT)->padLeft(5)->spaceX(5);
 
   _label->setAnchorPoint({0, 1});
   _label->getFontAtlas()->setAliasTexParameters();
@@ -143,10 +150,6 @@ void ItemListView::ListViewItem::setVisible(bool visible) {
   _layout->setVisible(visible);
 }
 
-Layout* ItemListView::ListViewItem::getLayout() const {
-  return _layout;
-}
-
 Item* ItemListView::ListViewItem::getItem() const {
   return _item;
 }
@@ -155,6 +158,10 @@ void ItemListView::ListViewItem::setItem(Item* item) {
   _item = item;
   _icon->loadTexture(item->getIconPath());
   _label->setString(item->getName());
+}
+
+Layout* ItemListView::ListViewItem::getLayout() const {
+  return _layout;
 }
 
 } // namespace vigilante

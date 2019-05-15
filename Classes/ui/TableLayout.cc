@@ -36,24 +36,24 @@ void TableLayout::addChild(Node* child) {
   _nextChildPosition.x += child->getContentSize().width;
 }
 
-TableLayout* TableLayout::align(TableLayout::Direction direction) {
+TableLayout* TableLayout::align(TableLayout::Alignment direction) {
   // If there's no last added child node, don't do anything.
   if (!_lastAddedChild) {
     return this;
   }
 
   switch (direction) {
-    case Direction::LEFT:
+    case Alignment::LEFT:
       _lastAddedChild->setAnchorPoint({0, 1});
       _lastAddedChild->setPositionX(0);
       _nextChildPosition.x = 0 + _lastAddedChild->getContentSize().width;
       break;
-    case Direction::CENTER:
+    case Alignment::CENTER:
       _lastAddedChild->setAnchorPoint({0.5, 1});
       _lastAddedChild->setPositionX(_tableWidth / 2);
       _nextChildPosition.x = _tableWidth / 2 + _lastAddedChild->getContentSize().width / 2;
       break;
-    case Direction::RIGHT:
+    case Alignment::RIGHT:
       _lastAddedChild->setAnchorPoint({1, 1});
       _lastAddedChild->setPositionX(_tableWidth);
       _nextChildPosition.x = _tableWidth;

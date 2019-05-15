@@ -12,7 +12,6 @@
 #include "HeaderPane.h"
 #include "StatsPane.h"
 #include "AbstractPane.h"
-#include "ui/pause_menu/inventory/InventoryPane.h"
 
 namespace vigilante {
 

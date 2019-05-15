@@ -12,14 +12,14 @@ class TableLayout : public cocos2d::ui::Layout {
   virtual bool init(float tableWidth, float rowHeight);
   virtual ~TableLayout() = default;
 
-  enum Direction {
+  enum Alignment {
     LEFT,
     CENTER,
     RIGHT
   };
 
   virtual void addChild(cocos2d::Node* child) override;
-  virtual TableLayout* align(TableLayout::Direction direction); // align last added child
+  virtual TableLayout* align(TableLayout::Alignment direction); // align last added child
 
   virtual TableLayout* padLeft(float padding);
   virtual TableLayout* padRight(float padding);

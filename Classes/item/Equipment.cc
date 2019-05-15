@@ -1,8 +1,19 @@
 #include "Equipment.h"
 
+using std::array;
 using std::string;
 
 namespace vigilante {
+
+const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
+  "WEAPON",
+  "HEADGEAR",
+  "ARMOR",
+  "GAUNTLETS",
+  "BOOTS",
+  "CAPE",
+  "RING"
+}};
 
 Equipment::Equipment(const Equipment::Type equipmentType,
                      const string& name,

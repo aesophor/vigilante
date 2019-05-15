@@ -1,6 +1,7 @@
 #ifndef VIGILANTE_EQUIPMENT_H_
 #define VIGILANTE_EQUIPMENT_H_
 
+#include <array>
 #include <string>
 
 #include "Item.h"
@@ -19,6 +20,8 @@ class Equipment : public Item {
     RING,       // 6
     SIZE
   };
+
+  static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
   // TODO: load item properties from JSON
   Equipment(const Equipment::Type equipmentType,

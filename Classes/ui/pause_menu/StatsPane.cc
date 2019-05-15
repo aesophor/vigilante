@@ -48,10 +48,10 @@ StatsPane::StatsPane()
 
   // Add name and level label at the top.
   layout->addChild(_name);
-  layout->align(TableLayout::Direction::LEFT)->padLeft(_kPadLeft)->padBottom(15.0f);
+  layout->align(TableLayout::Alignment::LEFT)->padLeft(_kPadLeft)->padBottom(15.0f);
   _level->setTextColor(colorscheme::kRed);
   layout->addChild(_level);
-  layout->align(TableLayout::Direction::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
+  layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
   layout->row(4.0f);
 
   addEntry("Health", _health);
@@ -91,11 +91,11 @@ void StatsPane::addEntry(const string& title, Label* label) const {
 
   // Add title (the label on the LHS of the pane).
   layout->addChild(titleLabel);
-  layout->align(TableLayout::Direction::LEFT)->padLeft(_kPadLeft);
+  layout->align(TableLayout::Alignment::LEFT)->padLeft(_kPadLeft);
 
   // Add label (on the RHS of the pane)
   layout->addChild(label);
-  layout->align(TableLayout::Direction::RIGHT)->padRight(_kPadRight)->row();
+  layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->row();
 }
 
 } // namespace vigilante

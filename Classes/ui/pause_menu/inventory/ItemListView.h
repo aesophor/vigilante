@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "cocos2d.h"
+#include "2d/CCLabel.h"
 #include "ui/UILayout.h"
 #include "ui/UIImageView.h"
 #include "ui/UIScrollView.h"
@@ -17,7 +18,7 @@ namespace vigilante {
 
 class ItemListView {
  public:
-  ItemListView(Character* character, int visibleItemCount=5);
+  ItemListView(Character* character, cocos2d::Label* itemDesc, int visibleItemCount=5);
   virtual ~ItemListView() = default;
 
   void showItemsByType(Item::Type itemType);
@@ -57,6 +58,7 @@ class ItemListView {
 
   Character* _character;
   cocos2d::ui::Layout* _layout;
+  cocos2d::Label* _itemDesc;
 
   std::vector<std::unique_ptr<ItemListView::ListViewItem>> _listViewItems;
   const std::vector<Item*>* _characterItems;

@@ -21,9 +21,9 @@ namespace vigilante {
 InventoryPane::InventoryPane()
     : AbstractPane(),
       _background(ImageView::create(kInventoryBg)),
-      _itemDesc(Label::createWithTTF("Item desc", kRegularFont, kRegularFontSize)),
+      _itemDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),
-      _itemListView(new ItemListView(GameMapManager::getInstance()->getPlayer())) {
+      _itemListView(new ItemListView(GameMapManager::getInstance()->getPlayer(), _itemDesc)) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
