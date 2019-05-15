@@ -18,13 +18,13 @@ using vigilante::asset_manager::kTabHighlighted;
 
 namespace vigilante {
 
-InventoryPane::InventoryPane(PauseMenu* parent)
+InventoryPane::InventoryPane(PauseMenu* pauseMenu)
     : AbstractPane(),
-      _parent(parent),
+      _pauseMenu(pauseMenu),
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),
-      _itemListView(new ItemListView(GameMapManager::getInstance()->getPlayer(), _itemDesc)) {
+      _itemListView(new ItemListView(pauseMenu, _itemDesc)) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
@@ -65,6 +65,8 @@ void InventoryPane::handleInput() {
     _itemListView->selectUp();
   } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _itemListView->selectDown();
+  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+    _itemListView->confirm();
   }
 }
 

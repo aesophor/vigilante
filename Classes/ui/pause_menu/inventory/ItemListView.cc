@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
+#include "ui/pause_menu/PauseMenuDialog.h"
 
 using std::unique_ptr;
 using cocos2d::Label;
@@ -16,8 +17,8 @@ using vigilante::asset_manager::kItemHighlighted;
 
 namespace vigilante {
 
-ItemListView::ItemListView(Character* character, Label* itemDesc, int visibleItemCount)
-    : _character(character),
+ItemListView::ItemListView(PauseMenu* pauseMenu, Label* itemDesc, int visibleItemCount)
+    : _pauseMenu(pauseMenu),
       _layout(Layout::create()),
       _itemDesc(itemDesc),
       _visibleItemCount(visibleItemCount),
@@ -35,7 +36,7 @@ ItemListView::ItemListView(Character* character, Label* itemDesc, int visibleIte
 
 
 void ItemListView::showItemsByType(Item::Type itemType) {
-  _characterItems = &(_character->getInventory()[itemType]);
+  _characterItems = &(_pauseMenu->getCharacter()->getInventory()[itemType]);
   _firstVisibleIndex = 0;
   _current = 0;
   showItemsFrom(_firstVisibleIndex);
@@ -47,6 +48,7 @@ void ItemListView::showItemsByType(Item::Type itemType) {
     _itemDesc->setString("");
   }
 }
+
 
 void ItemListView::selectUp() {
   // If currently selected item is the first visible item, and we still can scroll up,
@@ -77,6 +79,21 @@ void ItemListView::selectDown() {
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
   _itemDesc->setString((*_characterItems)[_current]->getDesc());
 }
+
+void ItemListView::confirm() {
+  Item* item = getSelectedItem();
+  if (!item) {
+    return;
+  }
+
+  PauseMenuDialog* dialog = _pauseMenu->getDialog();
+  dialog->reset();
+  dialog->setMessage("What would you like to do with " + item->getName() + "?");
+  dialog->setOption(0, true, "Equip");
+  dialog->setOption(1, true, "Discard");
+  dialog->show();
+}
+
 
 void ItemListView::scrollUp() {
   if ((int) (*_characterItems).size() <= _visibleItemCount || _firstVisibleIndex == 0) {

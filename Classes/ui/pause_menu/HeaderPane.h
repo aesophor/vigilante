@@ -17,7 +17,7 @@ class PauseMenu;
 
 class HeaderPane : public AbstractPane {
  public:
-  HeaderPane(PauseMenu* parent);
+  HeaderPane(PauseMenu* pauseMenu);
   virtual ~HeaderPane() = default;
 
   virtual void update() override;
@@ -39,7 +39,7 @@ class HeaderPane : public AbstractPane {
   static const float _kOptionGap;
   static const int _kOptionCount;
 
-  PauseMenu* _parent;
+  PauseMenu* _pauseMenu;
 
   std::vector<cocos2d::Label*> _labels;
   int _currentIndex;

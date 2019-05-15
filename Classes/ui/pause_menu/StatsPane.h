@@ -18,7 +18,7 @@ class PauseMenu;
 
 class StatsPane : public AbstractPane {
  public:
-  StatsPane(PauseMenu* parent);
+  StatsPane(PauseMenu* pauseMenu);
   virtual ~StatsPane() = default;
   virtual void update() override;
   virtual void handleInput() override;
@@ -31,7 +31,7 @@ class StatsPane : public AbstractPane {
   static const float _kRowHeight;
   static const float _kSectionHeight;
 
-  PauseMenu* _parent;
+  PauseMenu* _pauseMenu;
 
   cocos2d::ui::ImageView* _background;
 

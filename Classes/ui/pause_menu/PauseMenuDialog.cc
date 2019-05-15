@@ -17,16 +17,18 @@ using vigilante::asset_manager::kDialogTriangle;
 
 namespace vigilante {
 
-PauseMenuDialog::PauseMenuDialog()
+PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
     : AbstractPane(TableLayout::create()),
-      _message(Label::createWithTTF("Some interesting quesiton?", kBoldFont, kRegularFontSize)),
+      _pauseMenu(pauseMenu),
+      _message(Label::createWithTTF("", kBoldFont, kRegularFontSize)),
       _current() {
   _message->setAnchorPoint({0, 1});
   _message->getFontAtlas()->setAliasTexParameters();
   _layout->addChild(_message);
 
-  addOption("Equip");
-  addOption("Discard");
+  addOption("option1");
+  addOption("option2");
+  addOption("option3");
 }
 
 
@@ -35,9 +37,11 @@ void PauseMenuDialog::update() {
   // Automatically position the options :-)
   int count = 1;
   for (int i = (int) _options.size() - 1; i >= 0; i--) {
+    if (!_options[i]->isVisible()) {
+      continue;
+    }
     Option* option = _options[i].get();
     float optionWidth = option->getWidth();
-    cocos2d::log("width: %f", optionWidth);
     option->getLayout()->setPositionX(winSize.width - 100 - (optionWidth + 25) * count);
     count++;
   }
@@ -76,12 +80,37 @@ void PauseMenuDialog::confirm() {
     return;
   }
   _options[_current]->getHandler()(); // invokes a std::function<void ()>
+  _options[_current]->setSelected(false);
+  _options[0]->setSelected(true);
+  setVisible(false);
 }
 
+
+void PauseMenuDialog::reset() const {
+  setMessage("");
+  for (auto& option : _options) {
+    option->setVisible(false);
+  }
+}
 
 void PauseMenuDialog::setMessage(const string& message) const {
   _message->setString(message);
 }
+
+void PauseMenuDialog::setOption(int index, bool visible, const string& text, const function<void ()>& handler) const {
+  if (index < 0 || index >= 3) {
+    return;
+  }
+  _options[index]->setVisible(visible);
+  _options[index]->setText(text);
+  _options[index]->setHandler(handler);
+}
+
+void PauseMenuDialog::show() {
+  update();
+  setVisible(true);
+}
+
 
 void PauseMenuDialog::addOption(const string& text, const function<void ()>& handler) {
   _options.push_back(unique_ptr<Option>(new Option(text, handler)));
@@ -123,12 +152,33 @@ void PauseMenuDialog::Option::setSelected(bool selected) const {
   _icon->setVisible(selected);
 }
 
+bool PauseMenuDialog::Option::isVisible() const {
+  return _layout->isVisible();
+}
+
+void PauseMenuDialog::Option::setVisible(bool visible) const {
+  _layout->setVisible(visible);
+}
+
 Layout* PauseMenuDialog::Option::getLayout() const {
   return _layout;
 }
 
+
+string PauseMenuDialog::Option::getText() const {
+  return _label->getString();
+}
+
+void PauseMenuDialog::Option::setText(const string& text) const {
+  _label->setString(text);
+}
+
 const function<void ()>& PauseMenuDialog::Option::getHandler() const {
   return _handler;
+}
+
+void PauseMenuDialog::Option::setHandler(const function<void ()>& handler) {
+  _handler = handler;
 }
 
 } // namespace vigilante

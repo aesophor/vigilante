@@ -22,14 +22,14 @@ class PauseMenu;
 
 class InventoryPane : public AbstractPane {
  public:
-  InventoryPane(PauseMenu* parent);
+  InventoryPane(PauseMenu* pauseMenu);
   virtual ~InventoryPane() = default;
 
   virtual void update() override;
   virtual void handleInput() override;
 
  private:
-  PauseMenu* _parent;
+  PauseMenu* _pauseMenu;
 
   cocos2d::ui::ImageView* _background;
   cocos2d::Label* _itemDesc;

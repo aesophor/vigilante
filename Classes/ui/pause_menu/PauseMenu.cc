@@ -1,7 +1,6 @@
 #include "PauseMenu.h"
 
 #include "GameAssetManager.h"
-#include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
@@ -23,7 +22,7 @@ PauseMenu::PauseMenu(Character* character)
       _background(ImageView::create(kPauseMenuBg)),
       _headerPane(new HeaderPane(this)),
       _statsPane(new StatsPane(this)),
-      _dialog(new PauseMenuDialog()) {
+      _dialog(new PauseMenuDialog(this)) {
   // Scale the bg image to fill the entire visible area.
   auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -42,6 +41,7 @@ PauseMenu::PauseMenu(Character* character)
 
   // Initialize PauseMenuDialog.
   _dialog->getLayout()->setPosition({50, 30});
+  _dialog->setVisible(false);
   _layer->addChild(_dialog->getLayout());
 
   // Initialize the size of _panes vector.
@@ -55,7 +55,6 @@ PauseMenu::PauseMenu(Character* character)
   _layer->addChild(inventoryPane->getLayout());
 
   // Initialize EquipmentPane.
-  Player* player = GameMapManager::getInstance()->getPlayer();
   _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(this));
   EquipmentPane* equipmentPane = dynamic_cast<EquipmentPane*>(_panes[1].get());
   equipmentPane->getLayout()->setPosition({230, 240});
@@ -75,6 +74,11 @@ void PauseMenu::update() {
 
 void PauseMenu::handleInput() {
   GameInputManager* inputMgr = GameInputManager::getInstance();
+
+  if (_dialog->isVisible()) {
+    _dialog->handleInput();
+    return;
+  }
   
   // FIXME: when all panes are implemented, this section of code
   // should be cleaned up.
@@ -105,6 +109,15 @@ void PauseMenu::handleInput() {
   }
 }
 
+
+Character* PauseMenu::getCharacter() const {
+  return _character;
+}
+
+void PauseMenu::setCharacter(Character* character) {
+  _character = character;
+}
+
 AbstractPane* PauseMenu::getCurrentPane() const {
   return _panes[_headerPane->getCurrentIndex()].get();
 }
@@ -113,12 +126,8 @@ Layer* PauseMenu::getLayer() const {
   return _layer;
 }
 
-Character* PauseMenu::getCharacter() const {
-  return _character;
-}
-
-void PauseMenu::setCharacter(Character* character) {
-  _character = character;
+PauseMenuDialog* PauseMenu::getDialog() const {
+  return _dialog.get();
 }
 
 } // namespace vigilante

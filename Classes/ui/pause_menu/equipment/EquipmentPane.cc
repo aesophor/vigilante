@@ -18,9 +18,9 @@ using vigilante::asset_manager::kEmptyItemIcon;
 
 namespace vigilante {
 
-EquipmentPane::EquipmentPane(PauseMenu* parent)
+EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     : AbstractPane(TableLayout::create(300)),
-      _character(parent->getCharacter()),
+      _pauseMenu(pauseMenu),
       _current() {
   Layout* innerLayout = Layout::create();
 
@@ -38,7 +38,7 @@ EquipmentPane::EquipmentPane(PauseMenu* parent)
 }
 
 void EquipmentPane::update() {
-  const Character::EquipmentSlots& slots = _character->getEquipmentSlots();
+  const Character::EquipmentSlots& slots = _pauseMenu->getCharacter()->getEquipmentSlots();
 
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
     Equipment* equipment = slots[i];

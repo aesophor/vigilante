@@ -22,7 +22,7 @@ class PauseMenu;
 
 class EquipmentPane : public AbstractPane {
  public:
-  EquipmentPane(PauseMenu* parent);
+  EquipmentPane(PauseMenu* pauseMenu);
   virtual ~EquipmentPane() = default;
 
   virtual void update() override;
@@ -54,8 +54,9 @@ class EquipmentPane : public AbstractPane {
     Equipment* _equipment;
   };
 
+  PauseMenu* _pauseMenu;
+
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
-  Character* _character;
   int _current;
 };
 

@@ -20,7 +20,6 @@ namespace vigilante {
 class HeaderPane;
 class StatsPane;
 class PauseMenuDialog;
-class AbstractPane;
 
 class PauseMenu {
  public:
@@ -30,10 +29,12 @@ class PauseMenu {
   void update();
   void handleInput();
 
-  AbstractPane* getCurrentPane() const;
-  cocos2d::Layer* getLayer() const;
   Character* getCharacter() const;
   void setCharacter(Character* character);
+
+  AbstractPane* getCurrentPane() const;
+  cocos2d::Layer* getLayer() const;
+  PauseMenuDialog* getDialog() const;
 
  private:
   Character* _character;
