@@ -20,6 +20,10 @@ const std::string kTabHighlighted = kPauseMenu + "tab_highlighted.png";
 const std::string kItemRegular = kPauseMenu + "item_regular.png";
 const std::string kItemHighlighted = kPauseMenu + "item_highlighted.png";
 
+// Item icons
+const std::string kItemIcons = "Texture/Item/";
+const std::string kEmptyItemIcon = kItemIcons + "Empty/icon.png";
+const std::string kRustyAxeIcon = kItemIcons + "RustyAxe/icon.png";
 
 } // namespace asset_manager
 

@@ -90,10 +90,7 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   // Initialize Pause Menu.
-  log("Help");
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu());
-  log("me");
-
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
   _isPaused = false;

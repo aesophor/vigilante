@@ -8,6 +8,7 @@ using cocos2d::Label;
 using cocos2d::ui::Layout;
 using cocos2d::ui::ImageView;
 using cocos2d::ui::ScrollView;
+using vigilante::asset_manager::kEmptyItemIcon;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
 using vigilante::asset_manager::kItemRegular;
@@ -100,7 +101,7 @@ ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal god dammit
       _background(ImageView::create(kItemRegular)),
-      _icon(ImageView::create()),
+      _icon(ImageView::create(kEmptyItemIcon)),
       _label(Label::createWithTTF("---", kRegularFont, kRegularFontSize)),
       _item() {
   _background->setAnchorPoint({0, 1});
@@ -109,7 +110,7 @@ ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
   _layout->row(1);
 
   _layout->addChild(_icon);
-  _layout->align(TableLayout::Direction::LEFT)->padLeft(5.0f)->spaceX(5.0f);
+  _layout->align(TableLayout::Direction::LEFT)->padLeft(5)->spaceX(5);
 
   _label->setAnchorPoint({0, 1});
   _label->getFontAtlas()->setAliasTexParameters();
