@@ -90,6 +90,7 @@ void PauseMenu::handleInput() {
     _headerPane->selectPrev();
     AbstractPane* newPane = getCurrentPane();
     if (newPane) {
+      newPane->update();
       newPane->setVisible(true);
     }
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
@@ -100,6 +101,7 @@ void PauseMenu::handleInput() {
     _headerPane->selectNext();
     AbstractPane* newPane = getCurrentPane();
     if (newPane) {
+      newPane->update();
       newPane->setVisible(true);
     }
   }

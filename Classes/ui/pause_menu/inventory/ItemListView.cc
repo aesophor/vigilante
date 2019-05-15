@@ -89,7 +89,10 @@ void ItemListView::confirm() {
   PauseMenuDialog* dialog = _pauseMenu->getDialog();
   dialog->reset();
   dialog->setMessage("What would you like to do with " + item->getName() + "?");
-  dialog->setOption(0, true, "Equip");
+  dialog->setOption(0, true, "Equip", [=]() {
+    _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
+    _pauseMenu->update();
+  });
   dialog->setOption(1, true, "Discard");
   dialog->show();
 }
