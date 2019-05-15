@@ -9,15 +9,16 @@
 #include "ui/UIImageView.h"
 
 #include "ui/TableLayout.h"
+#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 
-class StatsPane {
+class StatsPane : public AbstractPane {
  public:
   StatsPane();
   virtual ~StatsPane() = default;
 
-  cocos2d::ui::Layout* getLayout() const;
+  virtual void handleInput() override;
 
  private:
   void addEntry(const std::string& title, cocos2d::Label* label) const;
@@ -34,7 +35,6 @@ class StatsPane {
   static const float _kSectionHeight;
 
   cocos2d::ui::ImageView* _background;
-  TableLayout* _layout; // auto-release object
 
   cocos2d::Label* _name;
   cocos2d::Label* _level;

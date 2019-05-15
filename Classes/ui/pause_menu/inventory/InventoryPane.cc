@@ -19,7 +19,7 @@ using vigilante::asset_manager::kTabHighlighted;
 namespace vigilante {
 
 InventoryPane::InventoryPane()
-    : _layout(Layout::create()),
+    : AbstractPane(),
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("Item desc", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),
@@ -62,19 +62,6 @@ void InventoryPane::handleInput() {
   } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _itemListView->selectDown();
   }
-}
-
-/*
-void InventoryPane::selectTab(Item::Type itemType) {
-  _tabView->selectTab(static_cast<int>(itemType));
-
-  Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
-  _itemScrollView->show(selectedItemType);
-}
-*/
-
-Layout* InventoryPane::getLayout() const {
-  return _layout;
 }
 
 } // namespace vigilante

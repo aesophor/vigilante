@@ -51,7 +51,7 @@ void ItemListView::showItemsByType(Item::Type itemType) {
 void ItemListView::selectUp() {
   // If currently selected item is the first visible item, and we still can scroll up,
   // then update the selected item.
-  if (_current == 0) {
+  if (_current <= 0) {
     return;
   }
 
@@ -63,7 +63,7 @@ void ItemListView::selectUp() {
 }
 
 void ItemListView::selectDown() {
-  if (_current == (int) (*_characterItems).size() - 1) {
+  if (_current >= (int) (*_characterItems).size()) {
     return;
   }
 
@@ -96,8 +96,6 @@ void ItemListView::scrollDown() {
 
 void ItemListView::showItemsFrom(int index) {
   // Show n items starting from the given index.
-  cocos2d::log("show items from %d", index);
-
   for (int i = 0; i < _visibleItemCount; i++) {
     if (index < (int) (*_characterItems).size()) {
       _listViewItems[i]->setVisible(true);
@@ -108,7 +106,6 @@ void ItemListView::showItemsFrom(int index) {
       _listViewItems[i]->setVisible(false);
     }
   }
-  cocos2d::log("-----");
 }
 
 
