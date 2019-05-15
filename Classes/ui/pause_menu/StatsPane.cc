@@ -1,5 +1,6 @@
 #include "StatsPane.h"
 
+#include "GameAssetManager.h"
 #include "ui/Colorscheme.h"
 
 using std::string;
@@ -7,14 +8,12 @@ using cocos2d::Label;
 using cocos2d::Layer;
 using cocos2d::ui::Layout;
 using cocos2d::ui::ImageView;
+using vigilante::asset_manager::kRegularFont;
+using vigilante::asset_manager::kRegularFontSize;
+using vigilante::asset_manager::kStatsBg;
 
 namespace vigilante {
 
-const string StatsPane::_kPauseMenu = "Texture/UI/PauseMenu/";
-const string StatsPane::_kStatsBg = _kPauseMenu + "stats_bg.png";
-const string StatsPane::_kFont = "Font/HeartbitXX2Px.ttf";
-
-const float StatsPane::_kFontSize = 16.0f;
 const float StatsPane::_kPadLeft = 10.0f;
 const float StatsPane::_kPadRight = 10.0f;
 const float StatsPane::_kRowHeight = 16.0f;
@@ -22,20 +21,20 @@ const float StatsPane::_kSectionHeight = 8.0f;
 
 StatsPane::StatsPane()
     : AbstractPane(TableLayout::create()), // install TableLayout to base class
-      _background(ImageView::create(_kStatsBg)),
-      _name(Label::createWithTTF("Aesophor", _kFont, _kFontSize)),
-      _level(Label::createWithTTF("Level 1", _kFont, _kFontSize)), 
-      _health(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
-      _magicka(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
-      _stamina(Label::createWithTTF("100 / 100", _kFont, _kFontSize)),
-      _attackRange(Label::createWithTTF("5", _kFont, _kFontSize)),
-      _attackSpeed(Label::createWithTTF("10", _kFont, _kFontSize)),
-      _moveSpeed(Label::createWithTTF("100", _kFont, _kFontSize)),
-      _jumpHeight(Label::createWithTTF("100", _kFont, _kFontSize)),
-      _str(Label::createWithTTF("5", _kFont, _kFontSize)),
-      _dex(Label::createWithTTF("5", _kFont, _kFontSize)),
-      _int(Label::createWithTTF("5", _kFont, _kFontSize)),
-      _luk(Label::createWithTTF("5", _kFont, _kFontSize)) {
+      _background(ImageView::create(kStatsBg)),
+      _name(Label::createWithTTF("Aesophor", kRegularFont, kRegularFontSize)),
+      _level(Label::createWithTTF("Level 1", kRegularFont, kRegularFontSize)), 
+      _health(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
+      _magicka(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
+      _stamina(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
+      _attackRange(Label::createWithTTF("5", kRegularFont, kRegularFontSize)),
+      _attackSpeed(Label::createWithTTF("10", kRegularFont, kRegularFontSize)),
+      _moveSpeed(Label::createWithTTF("100", kRegularFont, kRegularFontSize)),
+      _jumpHeight(Label::createWithTTF("100", kRegularFont, kRegularFontSize)),
+      _str(Label::createWithTTF("5", kRegularFont, kRegularFontSize)),
+      _dex(Label::createWithTTF("5", kRegularFont, kRegularFontSize)),
+      _int(Label::createWithTTF("5", kRegularFont, kRegularFontSize)),
+      _luk(Label::createWithTTF("5", kRegularFont, kRegularFontSize)) {
   // AbstractPane::_layout is a cocos2d::ui::Layout,
   // but we know it's a TableLayout in StatsPane
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
@@ -54,21 +53,21 @@ StatsPane::StatsPane()
   layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->padBottom(15.0f);
   layout->row(4.0f);
 
-  addEntry("Health", _health);
-  addEntry("Magicka", _magicka);
-  addEntry("Stamina", _stamina);
+  addEntry("HEALTH", _health);
+  addEntry("MAGICKA", _magicka);
+  addEntry("STAMINA", _stamina);
   layout->row(_kSectionHeight);
 
-  addEntry("Attack Range", _attackRange);
-  addEntry("Attack Speed", _attackSpeed);
-  addEntry("Move Speed", _moveSpeed);
-  addEntry("Jump Height", _jumpHeight);
+  addEntry("ATTACK RANGE", _attackRange);
+  addEntry("ATTACK SPEED", _attackSpeed);
+  addEntry("MOVE SPEED", _moveSpeed);
+  addEntry("JUMP HEIGHT", _jumpHeight);
   layout->row(_kSectionHeight);
 
-  addEntry("Str", _str);
-  addEntry("Dex", _dex);
-  addEntry("Int", _int);
-  addEntry("Luk", _luk);
+  addEntry("STR", _str);
+  addEntry("DEX", _dex);
+  addEntry("INT", _int);
+  addEntry("LUK", _luk);
 }
 
 
@@ -84,7 +83,7 @@ void StatsPane::addEntry(const string& title, Label* label) const {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
 
   // Create title label and disable antialiasing.
-  Label* titleLabel = Label::createWithTTF(title, _kFont, _kFontSize);
+  Label* titleLabel = Label::createWithTTF(title, kRegularFont, kRegularFontSize);
   titleLabel->setTextColor(colorscheme::kGrey);
   titleLabel->getFontAtlas()->setAliasTexParameters();
   label->getFontAtlas()->setAliasTexParameters();

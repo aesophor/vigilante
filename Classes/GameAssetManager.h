@@ -15,6 +15,10 @@ const float kRegularFontSize = 16.0f;
 
 // PauseMenu
 const std::string kPauseMenu = "Texture/UI/PauseMenu/";
+const std::string kPauseMenuBg = kPauseMenu + "pause.png";
+
+// PauseMenu - StatsPane
+const std::string kStatsBg = kPauseMenu + "stats_bg.png";
 
 // PauseMenu - InventoryPane
 const std::string kInventoryBg = kPauseMenu + "inventory_bg.png";

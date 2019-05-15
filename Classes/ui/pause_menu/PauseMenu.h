@@ -26,13 +26,6 @@ class PauseMenu {
   cocos2d::Layer* getLayer() const;
 
  private:
-  // Paths to resource files.
-  static const std::string _kPauseMenu;
-  static const std::string _kBackground;
-  static const std::string _kStatsBg;
-  static const std::string _kFont; // header options label font
-  static const float _kFontSize; // header options label font size
-
   cocos2d::Layer* _layer;
   cocos2d::ui::ImageView* _background;
 

@@ -23,12 +23,6 @@ class StatsPane : public AbstractPane {
  private:
   void addEntry(const std::string& title, cocos2d::Label* label) const;
 
-  // Paths to resource files.
-  static const std::string _kPauseMenu;
-  static const std::string _kStatsBg;
-  static const std::string _kFont;
-
-  static const float _kFontSize;
   static const float _kPadLeft;
   static const float _kPadRight;
   static const float _kRowHeight;

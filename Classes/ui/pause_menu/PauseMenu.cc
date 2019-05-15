@@ -1,5 +1,6 @@
 #include "PauseMenu.h"
 
+#include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
@@ -12,18 +13,13 @@ using cocos2d::Label;
 using cocos2d::Layer;
 using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
+using vigilante::asset_manager::kPauseMenuBg;
 
 namespace vigilante {
 
-const string PauseMenu::_kPauseMenu = "Texture/UI/PauseMenu/";
-const string PauseMenu::_kBackground = _kPauseMenu + "pause.png";
-const string PauseMenu::_kStatsBg = _kPauseMenu + "stats_bg.png";
-const string PauseMenu::_kFont = "Font/HeartbitXX2Px.ttf";
-const float PauseMenu::_kFontSize = 16.0f;
-
 PauseMenu::PauseMenu()
     : _layer(Layer::create()),
-      _background(ImageView::create(_kBackground)),
+      _background(ImageView::create(kPauseMenuBg)),
       _headerPane(new HeaderPane()),
       _statsPane(new StatsPane()) {
   // Scale the bg image to fill the entire visible area.
