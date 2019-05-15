@@ -23,8 +23,8 @@ class ItemListView {
   void showItemsByType(Item::Type itemType);
   void selectUp();
   void selectDown();
-  bool scrollUp();
-  bool scrollDown();
+  void scrollUp();
+  void scrollDown();
   Item* getSelectedItem() const;
   cocos2d::ui::Layout* getLayout() const;
 

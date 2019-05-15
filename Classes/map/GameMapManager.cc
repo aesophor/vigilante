@@ -78,9 +78,11 @@ void GameMapManager::load(const string& mapFileName) {
 
   // Spawn an item.
   string imgLocation = "Texture/Item/RustyAxe/icon.png";
-  Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe", "An old rusty axe", imgLocation, 200, 80);
-  _items.insert(item);
-  _layer->addChild(item->getSprite(), 32);
+  for (int i = 0; i < 10; i++) {
+    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", imgLocation, 200, 80);
+    _items.insert(item);
+    _layer->addChild(item->getSprite(), 32);
+  }
 }
 
 void GameMapManager::createDustFx(Character* character) const {

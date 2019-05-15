@@ -20,8 +20,8 @@ ItemListView::ItemListView(Character* character, int visibleItemCount)
     : _character(character),
       _layout(Layout::create()),
       _visibleItemCount(visibleItemCount),
-      _firstVisibleIndex(),
-      _current() {
+      _firstVisibleIndex(-1),
+      _current(-1) {
   for (int i = 0; i < visibleItemCount; i++) {
     ItemListView* parent = this;
     float x = 5;
@@ -43,47 +43,61 @@ Layout* ItemListView::getLayout() const {
 
 void ItemListView::showItemsByType(Item::Type itemType) {
   _characterItems = &(_character->getInventory()[itemType]);
+  _firstVisibleIndex = 0;
+  _current = 0;
   showItemsFrom(_firstVisibleIndex);
 }
 
 void ItemListView::selectUp() {
   // If currently selected item is the first visible item, and we still can scroll up,
   // then update the selected item.
-  if (_current == _firstVisibleIndex && scrollUp() == true) {
-    _listViewItems[_current]->setSelected(false);
-    _listViewItems[--_current]->setSelected(true);
+  if (_current == 0) {
+    return;
   }
+
+  if (_current == _firstVisibleIndex) {
+    scrollUp();
+  }
+  _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
+  _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
 }
 
 void ItemListView::selectDown() {
+  if (_current == (int) (*_characterItems).size() - 1) {
+    return;
+  }
+
   // If currently selected item is the last visible item, and we still can scroll down,
   // then update the selected item.
-  if (_current == _firstVisibleIndex + _visibleItemCount - 1 && scrollDown() == true) {
-    _listViewItems[_current]->setSelected(false);
-    _listViewItems[++_current]->setSelected(true);
+  if (_current == _firstVisibleIndex + _visibleItemCount - 1) {
+    scrollDown();
+    _current++;
+  } else {
+    _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
+    _current++;
+    _listViewItems[_current - _firstVisibleIndex]->setSelected(true);
   }
-
 }
 
-bool ItemListView::scrollUp() {
-  if ((int) _listViewItems.size() <= _visibleItemCount || _firstVisibleIndex == 0) {
-    return false;
+void ItemListView::scrollUp() {
+  if ((int) (*_characterItems).size() <= _visibleItemCount || _firstVisibleIndex == 0) {
+    return;
   }
   showItemsFrom(--_firstVisibleIndex);
-  return true;
 }
 
-bool ItemListView::scrollDown() {
-  if ((int) _listViewItems.size() <= _visibleItemCount ||
-      (int) _listViewItems.size() <= _firstVisibleIndex + _visibleItemCount) {
-    return false;
+void ItemListView::scrollDown() {
+  if ((int) (*_characterItems).size() <= _visibleItemCount ||
+      (int) (*_characterItems).size() <= _firstVisibleIndex + _visibleItemCount) {
+    return;
   }
   showItemsFrom(++_firstVisibleIndex);
-  return true;
 }
 
 void ItemListView::showItemsFrom(int index) {
   // Show n items starting from the given index.
+  cocos2d::log("show items from %d", index);
+
   for (int i = 0; i < _visibleItemCount; i++) {
     if (index < (int) (*_characterItems).size()) {
       _listViewItems[i]->setVisible(true);
@@ -94,6 +108,7 @@ void ItemListView::showItemsFrom(int index) {
       _listViewItems[i]->setVisible(false);
     }
   }
+  cocos2d::log("-----");
 }
 
 
