@@ -65,7 +65,7 @@ void EquipmentPane::selectUp() {
 }
 
 void EquipmentPane::selectDown() {
-  if (_current == _equipmentItems.size() - 1) {
+  if (_current == (int) _equipmentItems.size() - 1) {
     return;
   }
   _equipmentItems[_current++]->setSelected(false);

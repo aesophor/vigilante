@@ -11,6 +11,7 @@
 
 #include "HeaderPane.h"
 #include "StatsPane.h"
+#include "PauseMenuDialog.h"
 #include "AbstractPane.h"
 
 namespace vigilante {
@@ -31,6 +32,7 @@ class PauseMenu {
 
   std::unique_ptr<HeaderPane> _headerPane;
   std::unique_ptr<StatsPane> _statsPane;
+  std::unique_ptr<PauseMenuDialog> _dialog;
   std::vector<std::unique_ptr<AbstractPane>> _panes;
 };
 

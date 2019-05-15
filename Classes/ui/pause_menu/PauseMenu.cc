@@ -21,7 +21,8 @@ PauseMenu::PauseMenu()
     : _layer(Layer::create()),
       _background(ImageView::create(kPauseMenuBg)),
       _headerPane(new HeaderPane()),
-      _statsPane(new StatsPane()) {
+      _statsPane(new StatsPane()),
+      _dialog(new PauseMenuDialog()) {
   // Scale the bg image to fill the entire visible area.
   auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -37,6 +38,10 @@ PauseMenu::PauseMenu()
   // Initialize StatsPane.
   _statsPane->getLayout()->setPosition({50, 240});
   _layer->addChild(_statsPane->getLayout());
+
+  // Initialize PauseMenuDialog.
+  _dialog->getLayout()->setPosition({50, 30});
+  _layer->addChild(_dialog->getLayout());
 
   // Initialize the size of _panes vector.
   _panes.resize(5);
