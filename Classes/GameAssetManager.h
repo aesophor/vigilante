@@ -10,6 +10,7 @@ namespace asset_manager {
 // Fonts
 const std::string kRegularFont = "Font/HeartbitXX.ttf";
 const std::string kBoldFont = "Font/HeartbitXX2Px.ttf";
+const std::string kTitleFont = "Font/MatchupPro.ttf";
 const float kRegularFontSize = 16.0f;
 
 // PauseMenu - InventoryPane

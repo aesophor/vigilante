@@ -1,7 +1,7 @@
 #ifndef VIGILANTE_PAUSE_MENU_H_
 #define VIGILANTE_PAUSE_MENU_H_
 
-#include <array>
+#include <vector>
 #include <string>
 #include <memory>
 
@@ -11,6 +11,7 @@
 
 #include "HeaderPane.h"
 #include "StatsPane.h"
+#include "AbstractPane.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
 namespace vigilante {
@@ -21,6 +22,7 @@ class PauseMenu {
   virtual ~PauseMenu() = default;
 
   void handleInput();
+  AbstractPane* getCurrentPane() const;
 
   cocos2d::Layer* getLayer() const;
 
@@ -37,7 +39,7 @@ class PauseMenu {
 
   std::unique_ptr<HeaderPane> _headerPane;
   std::unique_ptr<StatsPane> _statsPane;
-  std::unique_ptr<InventoryPane> _inventoryPane;
+  std::vector<std::unique_ptr<AbstractPane>> _panes;
 };
 
 } // namespace vigilante

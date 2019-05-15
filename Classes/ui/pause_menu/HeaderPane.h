@@ -8,16 +8,19 @@
 #include "2d/CCLabel.h"
 #include "ui/UILayout.h"
 
+#include "ui/pause_menu/AbstractPane.h"
+
 namespace vigilante {
 
-class HeaderPane {
+class HeaderPane : public AbstractPane {
  public:
   HeaderPane();
   virtual ~HeaderPane() = default;
+  virtual void handleInput() override;
 
-  virtual void selectPrev();
-  virtual void selectNext();
-  cocos2d::ui::Layout* getLayout() const;
+  void selectPrev();
+  void selectNext();
+  int getCurrentIndex() const;
 
  private:
   enum Options {
@@ -28,14 +31,11 @@ class HeaderPane {
     OPTIONS
   };
 
-  static const std::string _kFont;
-  static const float _kFontSize;
   static const float _kOptionGap;
   static const int _kOptionCount;
 
-  cocos2d::ui::Layout* _layout;
   std::vector<cocos2d::Label*> _labels;
-  int _current;
+  int _currentIndex;
 };
 
 } // namespace vigilante

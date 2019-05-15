@@ -11,6 +11,8 @@ class AbstractPane {
   virtual ~AbstractPane() = default;
   virtual void handleInput() = 0;
 
+  bool isVisible() const;
+  void setVisible(bool visible) const;
   cocos2d::ui::Layout* getLayout() const;
 
  protected:

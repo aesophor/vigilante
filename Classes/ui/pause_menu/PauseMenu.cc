@@ -3,6 +3,7 @@
 #include "input/GameInputManager.h"
 
 using std::string;
+using std::unique_ptr;
 using cocos2d::Director;
 using cocos2d::Label;
 using cocos2d::Layer;
@@ -21,8 +22,7 @@ PauseMenu::PauseMenu()
     : _layer(Layer::create()),
       _background(ImageView::create(_kBackground)),
       _headerPane(new HeaderPane()),
-      _statsPane(new StatsPane()),
-      _inventoryPane(new InventoryPane()) {
+      _statsPane(new StatsPane()) {
   // Scale the bg image to fill the entire visible area.
   auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -39,24 +39,52 @@ PauseMenu::PauseMenu()
   _statsPane->getLayout()->setPosition({50, 240});
   _layer->addChild(_statsPane->getLayout());
 
+  // Initialize the size of _panes vector.
+  _panes.resize(5);
+
   // Initialize InventoryPane.
-  _inventoryPane->getLayout()->setPosition({230, 240});
-  _layer->addChild(_inventoryPane->getLayout());
+  _panes[0] = unique_ptr<InventoryPane>(new InventoryPane());
+  InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());
+  inventoryPane->getLayout()->setPosition({230, 240});
+  _layer->addChild(inventoryPane->getLayout());
+  cocos2d::log("train");
 }
 
 void PauseMenu::handleInput() {
   GameInputManager* inputMgr = GameInputManager::getInstance();
   
+  // FIXME: when all panes are implemented, this section of code
+  // should be cleaned up.
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Q)) {
+    AbstractPane* oldPane = getCurrentPane();
+    if (oldPane) {
+      oldPane->setVisible(false);
+    }
     _headerPane->selectPrev();
+    AbstractPane* newPane = getCurrentPane();
+    if (newPane) {
+      newPane->setVisible(true);
+    }
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
+    AbstractPane* oldPane = getCurrentPane();
+    if (oldPane) {
+      oldPane->setVisible(false);
+    }
     _headerPane->selectNext();
+    AbstractPane* newPane = getCurrentPane();
+    if (newPane) {
+      newPane->setVisible(true);
+    }
   }
 
-  // TODO: only handle input for selected option
-  _inventoryPane->handleInput();
+  if (_panes[_headerPane->getCurrentIndex()]) {
+    _panes[_headerPane->getCurrentIndex()]->handleInput();
+  }
 }
 
+AbstractPane* PauseMenu::getCurrentPane() const {
+  return _panes[_headerPane->getCurrentIndex()].get();
+}
 
 Layer* PauseMenu::getLayer() const {
   return _layer;
