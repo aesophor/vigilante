@@ -17,11 +17,12 @@ using vigilante::asset_manager::kPauseMenuBg;
 
 namespace vigilante {
 
-PauseMenu::PauseMenu()
-    : _layer(Layer::create()),
+PauseMenu::PauseMenu(Character* character)
+    : _character(character),
+      _layer(Layer::create()),
       _background(ImageView::create(kPauseMenuBg)),
-      _headerPane(new HeaderPane()),
-      _statsPane(new StatsPane()),
+      _headerPane(new HeaderPane(this)),
+      _statsPane(new StatsPane(this)),
       _dialog(new PauseMenuDialog()) {
   // Scale the bg image to fill the entire visible area.
   auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -47,7 +48,7 @@ PauseMenu::PauseMenu()
   _panes.resize(5);
 
   // Initialize InventoryPane.
-  _panes[0] = unique_ptr<InventoryPane>(new InventoryPane());
+  _panes[0] = unique_ptr<InventoryPane>(new InventoryPane(this));
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());
   inventoryPane->getLayout()->setPosition({230, 240});
   inventoryPane->setVisible(false);
@@ -55,7 +56,7 @@ PauseMenu::PauseMenu()
 
   // Initialize EquipmentPane.
   Player* player = GameMapManager::getInstance()->getPlayer();
-  _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(player));
+  _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(this));
   EquipmentPane* equipmentPane = dynamic_cast<EquipmentPane*>(_panes[1].get());
   equipmentPane->getLayout()->setPosition({230, 240});
   equipmentPane->setVisible(false);
@@ -110,6 +111,14 @@ AbstractPane* PauseMenu::getCurrentPane() const {
 
 Layer* PauseMenu::getLayer() const {
   return _layer;
+}
+
+Character* PauseMenu::getCharacter() const {
+  return _character;
+}
+
+void PauseMenu::setCharacter(Character* character) {
+  _character = character;
 }
 
 } // namespace vigilante

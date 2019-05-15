@@ -8,14 +8,17 @@
 #include "ui/UILayout.h"
 #include "ui/UIImageView.h"
 
+#include "AbstractPane.h"
+#include "PauseMenu.h"
 #include "ui/TableLayout.h"
-#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 
+class PauseMenu;
+
 class StatsPane : public AbstractPane {
  public:
-  StatsPane();
+  StatsPane(PauseMenu* parent);
   virtual ~StatsPane() = default;
   virtual void update() override;
   virtual void handleInput() override;
@@ -27,6 +30,8 @@ class StatsPane : public AbstractPane {
   static const float _kPadRight;
   static const float _kRowHeight;
   static const float _kSectionHeight;
+
+  PauseMenu* _parent;
 
   cocos2d::ui::ImageView* _background;
 

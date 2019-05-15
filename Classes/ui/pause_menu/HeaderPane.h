@@ -8,14 +8,18 @@
 #include "2d/CCLabel.h"
 #include "ui/UILayout.h"
 
-#include "ui/pause_menu/AbstractPane.h"
+#include "AbstractPane.h"
+#include "PauseMenu.h"
 
 namespace vigilante {
 
+class PauseMenu;
+
 class HeaderPane : public AbstractPane {
  public:
-  HeaderPane();
+  HeaderPane(PauseMenu* parent);
   virtual ~HeaderPane() = default;
+
   virtual void update() override;
   virtual void handleInput() override;
 
@@ -34,6 +38,8 @@ class HeaderPane : public AbstractPane {
 
   static const float _kOptionGap;
   static const int _kOptionCount;
+
+  PauseMenu* _parent;
 
   std::vector<cocos2d::Label*> _labels;
   int _currentIndex;

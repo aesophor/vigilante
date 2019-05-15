@@ -19,8 +19,9 @@ const float StatsPane::_kPadRight = 10.0f;
 const float StatsPane::_kRowHeight = 16.0f;
 const float StatsPane::_kSectionHeight = 8.0f;
 
-StatsPane::StatsPane()
+StatsPane::StatsPane(PauseMenu* parent)
     : AbstractPane(TableLayout::create()), // install TableLayout to base class
+      _parent(parent),
       _background(ImageView::create(kStatsBg)),
       _name(Label::createWithTTF("Aesophor", kRegularFont, kRegularFontSize)),
       _level(Label::createWithTTF("Level 1", kRegularFont, kRegularFontSize)), 

@@ -13,20 +13,31 @@
 #include "StatsPane.h"
 #include "PauseMenuDialog.h"
 #include "AbstractPane.h"
+#include "character/Character.h"
 
 namespace vigilante {
 
+class HeaderPane;
+class StatsPane;
+class PauseMenuDialog;
+class AbstractPane;
+
 class PauseMenu {
  public:
-  PauseMenu();
+  PauseMenu(Character* character);
   virtual ~PauseMenu() = default;
+
   void update();
   void handleInput();
 
   AbstractPane* getCurrentPane() const;
   cocos2d::Layer* getLayer() const;
+  Character* getCharacter() const;
+  void setCharacter(Character* character);
 
  private:
+  Character* _character;
+
   cocos2d::Layer* _layer;
   cocos2d::ui::ImageView* _background;
 

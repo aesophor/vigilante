@@ -15,7 +15,10 @@ namespace vigilante {
 const float HeaderPane::_kOptionGap = 25.0f;
 const int HeaderPane::_kOptionCount = 5;
 
-HeaderPane::HeaderPane() : AbstractPane() , _currentIndex() {
+HeaderPane::HeaderPane(PauseMenu* parent)
+    : AbstractPane(),
+      _parent(parent),
+      _currentIndex() {
   _layout->setLayoutType(Layout::Type::RELATIVE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
 

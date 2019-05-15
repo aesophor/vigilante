@@ -18,9 +18,9 @@ using vigilante::asset_manager::kEmptyItemIcon;
 
 namespace vigilante {
 
-EquipmentPane::EquipmentPane(Character* character)
+EquipmentPane::EquipmentPane(PauseMenu* parent)
     : AbstractPane(TableLayout::create(300)),
-      _character(character),
+      _character(parent->getCharacter()),
       _current() {
   Layout* innerLayout = Layout::create();
 

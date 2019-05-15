@@ -18,8 +18,9 @@ using vigilante::asset_manager::kTabHighlighted;
 
 namespace vigilante {
 
-InventoryPane::InventoryPane()
+InventoryPane::InventoryPane(PauseMenu* parent)
     : AbstractPane(),
+      _parent(parent),
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),

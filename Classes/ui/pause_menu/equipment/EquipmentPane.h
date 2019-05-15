@@ -11,16 +11,20 @@
 #include "ui/UIImageView.h"
 
 #include "ui/pause_menu/AbstractPane.h"
+#include "ui/pause_menu/PauseMenu.h"
 #include "ui/TableLayout.h"
 #include "character/Character.h"
 #include "item/Equipment.h"
 
 namespace vigilante {
 
+class PauseMenu;
+
 class EquipmentPane : public AbstractPane {
  public:
-  EquipmentPane(Character* character);
+  EquipmentPane(PauseMenu* parent);
   virtual ~EquipmentPane() = default;
+
   virtual void update() override;
   virtual void handleInput() override;
 
