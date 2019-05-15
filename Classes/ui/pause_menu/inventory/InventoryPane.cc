@@ -48,15 +48,18 @@ InventoryPane::InventoryPane()
 }
 
 
+void InventoryPane::update() {
+  Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
+  _itemListView->showItemsByType(selectedItemType);
+}
+
 void InventoryPane::handleInput() {
   if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     _tabView->selectPrev();
-    Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
-    _itemListView->showItemsByType(selectedItemType);
+    update();
   } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     _tabView->selectNext();
-    Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
-    _itemListView->showItemsByType(selectedItemType);
+    update();
   } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     _itemListView->selectUp();
   } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {

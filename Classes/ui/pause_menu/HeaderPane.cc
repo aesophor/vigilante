@@ -58,6 +58,10 @@ HeaderPane::HeaderPane() : AbstractPane() , _currentIndex() {
 }
 
 
+void HeaderPane::update() {
+
+}
+
 void HeaderPane::handleInput() {
 
 }

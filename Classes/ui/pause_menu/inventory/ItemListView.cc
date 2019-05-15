@@ -20,8 +20,8 @@ ItemListView::ItemListView(Character* character, int visibleItemCount)
     : _character(character),
       _layout(Layout::create()),
       _visibleItemCount(visibleItemCount),
-      _firstVisibleIndex(-1),
-      _current(-1) {
+      _firstVisibleIndex(),
+      _current() {
   for (int i = 0; i < visibleItemCount; i++) {
     ItemListView* parent = this;
     float x = 5;
@@ -34,7 +34,10 @@ ItemListView::ItemListView(Character* character, int visibleItemCount)
 
 
 Item* ItemListView::getSelectedItem() const {
-  return _listViewItems[_current]->getItem();
+  if (_listViewItems[_current]) {
+    return _listViewItems[_current]->getItem();
+  }
+  return nullptr;
 }
 
 Layout* ItemListView::getLayout() const {
@@ -46,6 +49,10 @@ void ItemListView::showItemsByType(Item::Type itemType) {
   _firstVisibleIndex = 0;
   _current = 0;
   showItemsFrom(_firstVisibleIndex);
+
+  if ((*_characterItems).size() > 0) {
+    _listViewItems[0]->setSelected(true);
+  }
 }
 
 void ItemListView::selectUp() {
@@ -63,7 +70,7 @@ void ItemListView::selectUp() {
 }
 
 void ItemListView::selectDown() {
-  if (_current >= (int) (*_characterItems).size()) {
+  if (_current >= (int) (*_characterItems).size() - 1) {
     return;
   }
 
@@ -71,12 +78,9 @@ void ItemListView::selectDown() {
   // then update the selected item.
   if (_current == _firstVisibleIndex + _visibleItemCount - 1) {
     scrollDown();
-    _current++;
-  } else {
-    _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
-    _current++;
-    _listViewItems[_current - _firstVisibleIndex]->setSelected(true);
   }
+  _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
+  _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
 }
 
 void ItemListView::scrollUp() {
@@ -97,6 +101,7 @@ void ItemListView::scrollDown() {
 void ItemListView::showItemsFrom(int index) {
   // Show n items starting from the given index.
   for (int i = 0; i < _visibleItemCount; i++) {
+    _listViewItems[i]->setSelected(false);
     if (index < (int) (*_characterItems).size()) {
       _listViewItems[i]->setVisible(true);
       Item* item = (*_characterItems)[index];

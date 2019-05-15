@@ -215,6 +215,7 @@ void MainGameScene::handleInput(float delta) {
 
 
 void MainGameScene::pauseGame() {
+  _pauseMenu->update();
   _pauseMenu->getLayer()->setVisible(true);
 }
 

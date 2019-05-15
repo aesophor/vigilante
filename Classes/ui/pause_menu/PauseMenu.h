@@ -20,10 +20,10 @@ class PauseMenu {
  public:
   PauseMenu();
   virtual ~PauseMenu() = default;
-
+  void update();
   void handleInput();
-  AbstractPane* getCurrentPane() const;
 
+  AbstractPane* getCurrentPane() const;
   cocos2d::Layer* getLayer() const;
 
  private:

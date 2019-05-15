@@ -71,6 +71,11 @@ StatsPane::StatsPane()
   addEntry("Luk", _luk);
 }
 
+
+void StatsPane::update() {
+
+}
+
 void StatsPane::handleInput() {
 
 }

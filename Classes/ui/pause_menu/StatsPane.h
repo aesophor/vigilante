@@ -17,7 +17,7 @@ class StatsPane : public AbstractPane {
  public:
   StatsPane();
   virtual ~StatsPane() = default;
-
+  virtual void update() override;
   virtual void handleInput() override;
 
  private:

@@ -50,6 +50,13 @@ PauseMenu::PauseMenu()
   cocos2d::log("train");
 }
 
+
+void PauseMenu::update() {
+  if (_panes[_headerPane->getCurrentIndex()]) {
+    _panes[_headerPane->getCurrentIndex()]->update();
+  }
+}
+
 void PauseMenu::handleInput() {
   GameInputManager* inputMgr = GameInputManager::getInstance();
   

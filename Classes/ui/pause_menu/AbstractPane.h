@@ -9,6 +9,7 @@ namespace vigilante {
 class AbstractPane {
  public:
   virtual ~AbstractPane() = default;
+  virtual void update() = 0;
   virtual void handleInput() = 0;
 
   bool isVisible() const;
