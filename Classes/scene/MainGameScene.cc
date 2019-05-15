@@ -57,12 +57,6 @@ bool MainGameScene::init() {
   _hudCamera->setPosition(0, 0);
   addChild(_hudCamera);
   
-  // Initialize Pause Menu.
-  _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu());
-  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _pauseMenu->getLayer()->setVisible(false);
-  _isPaused = false;
-  addChild(_pauseMenu->getLayer(), 95);
 
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
@@ -95,12 +89,38 @@ bool MainGameScene::init() {
 
   _hud->setPlayer(_gameMapManager->getPlayer());
 
+  // Initialize Pause Menu.
+  log("Help");
+  _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu());
+  log("me");
+
+  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _pauseMenu->getLayer()->setVisible(false);
+  _isPaused = false;
+  addChild(_pauseMenu->getLayer(), 95);
+
   // Tick the box2d world.
   schedule(schedule_selector(MainGameScene::update));
   return true;
 }
 
 void MainGameScene::update(float delta) {
+  if (_isPaused) {
+    _pauseMenu->handleInput();
+
+    // Pause/resume game.
+    if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
+      if (!_isPaused) {
+        pauseGame();
+      } else {
+        resumeGame();
+      }
+      _isPaused = !_isPaused;
+      return;
+    }
+    return;
+  }
+
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
   handleInput(delta);
 
@@ -183,7 +203,7 @@ void MainGameScene::handleInput(float delta) {
       _gameMapManager->getItems().erase(i);
       _gameMapManager->getLayer()->removeChild(i->getSprite());
 
-      player->equip(dynamic_cast<Equipment*>(i)); // temporary!!!
+      //player->equip(dynamic_cast<Equipment*>(i)); // temporary!!!
     }
   }
 

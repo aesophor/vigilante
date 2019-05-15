@@ -46,14 +46,20 @@ void TabView::selectTab(int index) {
 }
 
 void TabView::selectPrev() {
-  _current--;
-  if (_current < 0) {
-    _current = _tabs.size() - 1;
+  int prev = _current - 1;
+  if (prev < 0) {
+    prev = _tabs.size() - 1;
   }
+  selectTab(prev);
 }
 
 void TabView::selectNext() {
-  _current = (_current + 1) % _tabs.size();
+  selectTab((_current + 1) % _tabs.size());
+}
+
+
+TabView::Tab* TabView::getSelectedTab() const {
+  return _tabs[_current].get();
 }
 
 Layout* TabView::getLayout() const {
@@ -65,7 +71,8 @@ TabView::Tab::Tab(TabView* parent, const string& text)
     : _parent(parent),
       _background(ImageView::create(parent->_regularImg)), 
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
-      _isSelected() {
+      _isSelected(),
+      _index(parent->_tabs.size()) {
   _label->getFontAtlas()->setAliasTexParameters();
 }
 
@@ -80,6 +87,10 @@ void TabView::Tab::setIsSelected(bool isSelected) {
     _background->loadTexture(_parent->_regularImg);
   }
   _isSelected = isSelected;
+}
+
+int TabView::Tab::getIndex() const {
+  return _index;
 }
 
 } // namespace vigilante

@@ -1,11 +1,14 @@
 #include "InventoryPane.h"
 
 #include "GameAssetManager.h"
+#include "input/GameInputManager.h"
+#include "map/GameMapManager.h"
 
 using std::string;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
 using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
@@ -20,7 +23,7 @@ InventoryPane::InventoryPane()
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("Item desc", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),
-      _itemScrollView(new ItemScrollView()) {
+      _itemListView(new ItemListView(GameMapManager::getInstance()->getPlayer())) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
@@ -34,8 +37,8 @@ InventoryPane::InventoryPane()
   _tabView->selectTab(0);
   _layout->addChild(_tabView->getLayout());
 
-  // Place item scroll view.
-  _layout->addChild(_itemScrollView->getScrollView());
+  // Place item list view.
+  _layout->addChild(_itemListView->getLayout());
 
   // Place item description label.
   _itemDesc->getFontAtlas()->setAliasTexParameters();
@@ -45,9 +48,30 @@ InventoryPane::InventoryPane()
 }
 
 
+void InventoryPane::handleInput() {
+  if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+    _tabView->selectPrev();
+    Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
+    _itemListView->showItemsByType(selectedItemType);
+  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+    _tabView->selectNext();
+    Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
+    _itemListView->showItemsByType(selectedItemType);
+  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+    _itemListView->selectUp();
+  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    _itemListView->selectDown();
+  }
+}
+
+/*
 void InventoryPane::selectTab(Item::Type itemType) {
   _tabView->selectTab(static_cast<int>(itemType));
+
+  Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
+  _itemScrollView->show(selectedItemType);
 }
+*/
 
 Layout* InventoryPane::getLayout() const {
   return _layout;

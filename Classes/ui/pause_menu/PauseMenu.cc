@@ -44,7 +44,6 @@ PauseMenu::PauseMenu()
   _layer->addChild(_inventoryPane->getLayout());
 }
 
-
 void PauseMenu::handleInput() {
   GameInputManager* inputMgr = GameInputManager::getInstance();
   
@@ -53,6 +52,9 @@ void PauseMenu::handleInput() {
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
     _headerPane->selectNext();
   }
+
+  // TODO: only handle input for selected option
+  _inventoryPane->handleInput();
 }
 
 

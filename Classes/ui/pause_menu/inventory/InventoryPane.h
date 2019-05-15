@@ -12,7 +12,7 @@
 
 #include "item/Item.h"
 #include "ui/TabView.h"
-#include "ItemScrollView.h"
+#include "ItemListView.h"
 
 namespace vigilante {
 
@@ -21,7 +21,7 @@ class InventoryPane {
   InventoryPane();
   virtual ~InventoryPane() = default;
 
-  void selectTab(Item::Type itemType);
+  void handleInput();
   cocos2d::ui::Layout* getLayout() const;
 
  private:
@@ -29,7 +29,7 @@ class InventoryPane {
   cocos2d::ui::ImageView* _background;
   cocos2d::Label* _itemDesc;
   std::unique_ptr<TabView> _tabView;
-  std::unique_ptr<ItemScrollView> _itemScrollView;
+  std::unique_ptr<ItemListView> _itemListView;
 };
 
 } // namespace vigilante
