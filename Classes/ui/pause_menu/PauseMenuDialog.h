@@ -61,8 +61,6 @@ class PauseMenuDialog : public AbstractPane {
   void addOption(const std::string& text, const std::function<void ()>& handler=[=](){});
   void clearOptions();
 
-  PauseMenu* _pauseMenu;
-
   cocos2d::Label* _message;
   std::vector<std::unique_ptr<PauseMenuDialog::Option>> _options;
   int _current;

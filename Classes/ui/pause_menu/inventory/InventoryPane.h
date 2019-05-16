@@ -10,16 +10,12 @@
 #include "ui/UILayout.h"
 #include "ui/UIImageView.h"
 
-#include "ItemListView.h"
 #include "ui/pause_menu/AbstractPane.h"
-#include "ui/pause_menu/PauseMenu.h"
 #include "ui/TabView.h"
-#include "item/Item.h"
 #include "item/Equipment.h"
+#include "ItemListView.h"
 
 namespace vigilante {
-
-class PauseMenu;
 
 class InventoryPane : public AbstractPane {
  public:
@@ -32,8 +28,6 @@ class InventoryPane : public AbstractPane {
   void selectEquipment(Equipment::Type equipmentType);
 
  private:
-  PauseMenu* _pauseMenu;
-
   // These two variables are necessary when
   // the inventory pane is to select a equipment.
   bool _isSelectingEquipment;

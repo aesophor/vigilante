@@ -18,8 +18,7 @@ using vigilante::asset_manager::kDialogTriangle;
 namespace vigilante {
 
 PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
-    : AbstractPane(TableLayout::create()),
-      _pauseMenu(pauseMenu),
+    : AbstractPane(pauseMenu, TableLayout::create()),
       _message(Label::createWithTTF("", kBoldFont, kRegularFontSize)),
       _current() {
   _message->setAnchorPoint({0, 1});

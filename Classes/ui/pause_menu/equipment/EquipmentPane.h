@@ -11,14 +11,12 @@
 #include "ui/UIImageView.h"
 
 #include "ui/pause_menu/AbstractPane.h"
-#include "ui/pause_menu/PauseMenu.h"
 #include "ui/TableLayout.h"
+#include "input/GameInputManager.h"
 #include "character/Character.h"
 #include "item/Equipment.h"
 
 namespace vigilante {
-
-class PauseMenu;
 
 class EquipmentPane : public AbstractPane {
  public:
@@ -58,8 +56,7 @@ class EquipmentPane : public AbstractPane {
     Equipment* _equipment;
   };
 
-  PauseMenu* _pauseMenu;
-
+  GameInputManager* _inputMgr;
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
   int _current;
 };

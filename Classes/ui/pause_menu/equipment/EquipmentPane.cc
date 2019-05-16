@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "input/GameInputManager.h"
+#include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
 using std::string;
@@ -20,8 +21,8 @@ using vigilante::asset_manager::kEmptyItemIcon;
 namespace vigilante {
 
 EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
-    : AbstractPane(TableLayout::create(300)),
-      _pauseMenu(pauseMenu),
+    : AbstractPane(pauseMenu, TableLayout::create(300)),
+      _inputMgr(GameInputManager::getInstance()),
       _current() {
   Layout* innerLayout = Layout::create();
 
@@ -48,13 +49,11 @@ void EquipmentPane::update() {
 }
 
 void EquipmentPane::handleInput() {
-  auto inputMgr = GameInputManager::getInstance();
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     selectUp();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     selectDown();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
     confirm();
   }
 }

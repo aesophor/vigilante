@@ -4,9 +4,11 @@ using cocos2d::ui::Layout;
 
 namespace vigilante {
 
-AbstractPane::AbstractPane() : _layout(Layout::create()) {}
+AbstractPane::AbstractPane(PauseMenu* pauseMenu)
+    : _pauseMenu(pauseMenu), _layout(Layout::create()) {}
 
-AbstractPane::AbstractPane(Layout* layout) : _layout(layout) {}
+AbstractPane::AbstractPane(PauseMenu* pauseMenu, Layout* layout)
+    : _pauseMenu(pauseMenu), _layout(layout) {}
 
 
 bool AbstractPane::isVisible() const {
@@ -21,6 +23,7 @@ void AbstractPane::setVisible(bool visible) const {
     _layout->setVisible(visible);
   }
 }
+
 
 Layout* AbstractPane::getLayout() const {
   return _layout;

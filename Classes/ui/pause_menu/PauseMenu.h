@@ -1,6 +1,7 @@
 #ifndef VIGILANTE_PAUSE_MENU_H_
 #define VIGILANTE_PAUSE_MENU_H_
 
+#include <array>
 #include <vector>
 #include <string>
 #include <memory>
@@ -23,13 +24,17 @@ class PauseMenuDialog;
 
 class PauseMenu {
  public:
+  // To add a new pane to the pause menu, add it to the enum below,
+  // as well as the string literal to the following static const std::array.
   enum Pane {
     INVENTORY,
     EQUIPMENT,
     SKILLS,
     QUESTS,
-    OPTIONS
+    OPTIONS,
+    SIZE
   };
+  static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
 
   PauseMenu(Character* character);
   virtual ~PauseMenu() = default;

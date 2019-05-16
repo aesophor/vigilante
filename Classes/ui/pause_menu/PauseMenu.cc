@@ -5,6 +5,7 @@
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 
+using std::array;
 using std::string;
 using std::unique_ptr;
 using cocos2d::Director;
@@ -15,6 +16,14 @@ using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kPauseMenuBg;
 
 namespace vigilante {
+
+const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
+  "INVENTORY",
+  "EQUIPMENT",
+  "SKILLS",
+  "QUESTS",
+  "OPTIONS"
+};
 
 PauseMenu::PauseMenu(Character* character)
     : _character(character),
@@ -32,7 +41,7 @@ PauseMenu::PauseMenu(Character* character)
   _layer->addChild(_background, 0);
 
   // Initialize header (Inventory/Equipment/Skills/Quest/Options).
-  _headerPane->getLayout()->setPosition({100, 280});
+  _headerPane->getLayout()->setPosition({140, 280});
   _layer->addChild(_headerPane->getLayout());
 
   // Initialize StatsPane.

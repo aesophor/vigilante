@@ -6,6 +6,11 @@
 
 namespace vigilante {
 
+// Forward declaration of PauseMenu class.
+// We only need to know its existence, so
+// we don't have to include the entire class.
+class PauseMenu;
+
 class AbstractPane {
  public:
   virtual ~AbstractPane() = default;
@@ -15,11 +20,14 @@ class AbstractPane {
 
   bool isVisible() const;
   void setVisible(bool visible) const;
+
   cocos2d::ui::Layout* getLayout() const;
 
  protected:
-  AbstractPane(); // install cocos2d's UILayout
-  AbstractPane(cocos2d::ui::Layout* layout); // install custom layout
+  AbstractPane(PauseMenu* pauseMenu); // install cocos2d's UILayout
+  AbstractPane(PauseMenu* pauseMenu, cocos2d::ui::Layout* layout); // install custom layout
+
+  PauseMenu* _pauseMenu;
   cocos2d::ui::Layout* _layout; // auto-release object
 };
 

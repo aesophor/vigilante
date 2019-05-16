@@ -9,12 +9,9 @@
 #include "ui/UIImageView.h"
 
 #include "AbstractPane.h"
-#include "PauseMenu.h"
 #include "ui/TableLayout.h"
 
 namespace vigilante {
-
-class PauseMenu;
 
 class StatsPane : public AbstractPane {
  public:
@@ -30,8 +27,6 @@ class StatsPane : public AbstractPane {
   static const float _kPadRight;
   static const float _kRowHeight;
   static const float _kSectionHeight;
-
-  PauseMenu* _pauseMenu;
 
   cocos2d::ui::ImageView* _background;
 

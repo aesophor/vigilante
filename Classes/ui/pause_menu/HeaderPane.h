@@ -9,11 +9,8 @@
 #include "ui/UILayout.h"
 
 #include "AbstractPane.h"
-#include "PauseMenu.h"
 
 namespace vigilante {
-
-class PauseMenu;
 
 class HeaderPane : public AbstractPane {
  public:
@@ -39,8 +36,6 @@ class HeaderPane : public AbstractPane {
 
   static const float _kOptionGap;
   static const int _kOptionCount;
-
-  PauseMenu* _pauseMenu;
 
   std::vector<cocos2d::Label*> _labels;
   int _currentIndex;

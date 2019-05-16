@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
+#include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
 using std::deque;
@@ -62,8 +63,8 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    _characterItems.push_front(currentEquipment);
-    _characterItems.push_front(nullptr);
+    _characterItems.push_front(currentEquipment); // currently equipped item
+    _characterItems.push_front(nullptr); // unequip
   }
 
   _firstVisibleIndex = 0;
@@ -152,10 +153,10 @@ void ItemListView::showItemsFrom(int index) {
   // Show n items starting from the given index.
   for (int i = 0; i < _visibleItemCount; i++) {
     _listViewItems[i]->setSelected(false);
+
     if (index < (int) _characterItems.size()) {
       _listViewItems[i]->setVisible(true);
-      Item* item = _characterItems[index];
-      _listViewItems[i]->setItem(item);
+      _listViewItems[i]->setItem(_characterItems[index]);
       index++;
     } else {
       _listViewItems[i]->setVisible(false);
@@ -174,7 +175,7 @@ void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
   fetchItems(Item::Type::EQUIPMENT);
 
   // Filter out any equipment other than the specified equipmentType.
-  _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](Item* i){
+  _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](Item* i) {
     return dynamic_cast<Equipment*>(i)->getEquipmentType() != equipmentType;
   }), _characterItems.end());
 }
@@ -227,14 +228,8 @@ Item* ItemListView::ListViewItem::getItem() const {
 
 void ItemListView::ListViewItem::setItem(Item* item) {
   _item = item;
-
-  if (item) {
-    _icon->loadTexture(item->getIconPath());
-    _label->setString(item->getName());
-  } else {
-    _icon->loadTexture(kEmptyItemIcon);
-    _label->setString("---");
-  }
+  _icon->loadTexture((item) ? item->getIconPath() : kEmptyItemIcon);
+  _label->setString((item) ? item->getName() : "---");
 }
 
 Layout* ItemListView::ListViewItem::getLayout() const {

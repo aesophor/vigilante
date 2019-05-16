@@ -3,6 +3,7 @@
 #include "GameAssetManager.h"
 #include "input/GameInputManager.h"
 #include "map/GameMapManager.h"
+#include "ui/pause_menu/PauseMenu.h"
 
 using std::string;
 using cocos2d::Label;
@@ -19,8 +20,7 @@ using vigilante::asset_manager::kTabHighlighted;
 namespace vigilante {
 
 InventoryPane::InventoryPane(PauseMenu* pauseMenu)
-    : AbstractPane(),
-      _pauseMenu(pauseMenu),
+    : AbstractPane(pauseMenu),
       _isSelectingEquipment(),
       _selectingEquipmentType(),
       _background(ImageView::create(kInventoryBg)),

@@ -11,13 +11,14 @@
 #include "ui/UIImageView.h"
 #include "ui/UIScrollView.h"
 
-#include "ui/pause_menu/PauseMenu.h"
 #include "ui/TableLayout.h"
 #include "character/Character.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 
 namespace vigilante {
+
+class PauseMenu;
 
 class ItemListView {
  public:
