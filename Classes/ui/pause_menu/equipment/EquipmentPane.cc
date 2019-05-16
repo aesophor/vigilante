@@ -81,6 +81,15 @@ void EquipmentPane::confirm() {
   _pauseMenu->show(PauseMenu::Pane::INVENTORY);
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_pauseMenu->getCurrentPane());
 
+  inventoryPane->selectEquipment(getSelectedEquipmentType());
+}
+
+Equipment* EquipmentPane::getSelectedEquipment() const {
+  return _equipmentItems[_current]->getEquipment();
+}
+
+Equipment::Type EquipmentPane::getSelectedEquipmentType() const {
+  return static_cast<Equipment::Type>(_current);
 }
 
 

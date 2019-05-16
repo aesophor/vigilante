@@ -4,6 +4,8 @@
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
+using std::deque;
+using std::vector;
 using std::unique_ptr;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
@@ -36,14 +38,42 @@ ItemListView::ItemListView(PauseMenu* pauseMenu, Label* itemDesc, int visibleIte
 
 
 void ItemListView::showItemsByType(Item::Type itemType) {
-  _characterItems = &(_pauseMenu->getCharacter()->getInventory()[itemType]);
+  fetchItems(itemType);
+
   _firstVisibleIndex = 0;
   _current = 0;
   showItemsFrom(_firstVisibleIndex);
 
-  if ((*_characterItems).size() > 0) {
+  // If the inventory size isn't empty, select the first item by default.
+  if (_characterItems.size() > 0) {
     _listViewItems[0]->setSelected(true);
-    _itemDesc->setString((*_characterItems)[_current]->getDesc());
+    _itemDesc->setString(_characterItems[_current]->getDesc());
+  } else {
+    _itemDesc->setString("");
+  }
+}
+
+void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
+  fetchEquipment(equipmentType);
+
+  // Currently this method is only used for selecting equipment,
+  // so here we're going to push_front two extra equipment.
+  Character* character = _pauseMenu->getCharacter();
+  Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
+
+  if (currentEquipment) {
+    _characterItems.push_front(currentEquipment);
+    _characterItems.push_front(nullptr);
+  }
+
+  _firstVisibleIndex = 0;
+  _current = 0;
+  showItemsFrom(_firstVisibleIndex);
+
+  // If the inventory size isn't empty, select the first item by default.
+  if (_characterItems.size() > 0) {
+    _listViewItems[0]->setSelected(true);
+    _itemDesc->setString("Unequip");
   } else {
     _itemDesc->setString("");
   }
@@ -62,11 +92,16 @@ void ItemListView::selectUp() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
-  _itemDesc->setString((*_characterItems)[_current]->getDesc());
+
+  if (_characterItems[_current]) {
+    _itemDesc->setString(_characterItems[_current]->getDesc());
+  } else {
+    _itemDesc->setString("Unequip");
+  }
 }
 
 void ItemListView::selectDown() {
-  if (_current >= (int) (*_characterItems).size() - 1) {
+  if (_current >= (int) _characterItems.size() - 1) {
     return;
   }
 
@@ -77,7 +112,7 @@ void ItemListView::selectDown() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
-  _itemDesc->setString((*_characterItems)[_current]->getDesc());
+  _itemDesc->setString(_characterItems[_current]->getDesc());
 }
 
 void ItemListView::confirm() {
@@ -99,15 +134,15 @@ void ItemListView::confirm() {
 
 
 void ItemListView::scrollUp() {
-  if ((int) (*_characterItems).size() <= _visibleItemCount || _firstVisibleIndex == 0) {
+  if ((int) _characterItems.size() <= _visibleItemCount || _firstVisibleIndex == 0) {
     return;
   }
   showItemsFrom(--_firstVisibleIndex);
 }
 
 void ItemListView::scrollDown() {
-  if ((int) (*_characterItems).size() <= _visibleItemCount ||
-      (int) (*_characterItems).size() <= _firstVisibleIndex + _visibleItemCount) {
+  if ((int) _characterItems.size() <= _visibleItemCount ||
+      (int) _characterItems.size() <= _firstVisibleIndex + _visibleItemCount) {
     return;
   }
   showItemsFrom(++_firstVisibleIndex);
@@ -117,15 +152,31 @@ void ItemListView::showItemsFrom(int index) {
   // Show n items starting from the given index.
   for (int i = 0; i < _visibleItemCount; i++) {
     _listViewItems[i]->setSelected(false);
-    if (index < (int) (*_characterItems).size()) {
+    if (index < (int) _characterItems.size()) {
       _listViewItems[i]->setVisible(true);
-      Item* item = (*_characterItems)[index];
+      Item* item = _characterItems[index];
       _listViewItems[i]->setItem(item);
       index++;
     } else {
       _listViewItems[i]->setVisible(false);
     }
   }
+}
+
+void ItemListView::fetchItems(Item::Type itemType) {
+  // Copy all items into local deque.
+  const vector<Item*>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
+  _characterItems = deque<Item*>(items.begin(), items.end());
+}
+
+void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
+  // Copy all equipment into local deque.
+  fetchItems(Item::Type::EQUIPMENT);
+
+  // Filter out any equipment other than the specified equipmentType.
+  _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](Item* i){
+    return dynamic_cast<Equipment*>(i)->getEquipmentType() != equipmentType;
+  }), _characterItems.end());
 }
 
 
@@ -176,8 +227,14 @@ Item* ItemListView::ListViewItem::getItem() const {
 
 void ItemListView::ListViewItem::setItem(Item* item) {
   _item = item;
-  _icon->loadTexture(item->getIconPath());
-  _label->setString(item->getName());
+
+  if (item) {
+    _icon->loadTexture(item->getIconPath());
+    _label->setString(item->getName());
+  } else {
+    _icon->loadTexture(kEmptyItemIcon);
+    _label->setString("---");
+  }
 }
 
 Layout* ItemListView::ListViewItem::getLayout() const {

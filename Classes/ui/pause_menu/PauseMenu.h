@@ -36,7 +36,7 @@ class PauseMenu {
 
   void update();
   void handleInput();
-  void show(PauseMenu::Pane pane) const;
+  void show(PauseMenu::Pane pane);
 
   Character* getCharacter() const;
   void setCharacter(Character* character);

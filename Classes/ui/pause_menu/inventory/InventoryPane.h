@@ -15,6 +15,7 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/TabView.h"
 #include "item/Item.h"
+#include "item/Equipment.h"
 
 namespace vigilante {
 
@@ -28,8 +29,15 @@ class InventoryPane : public AbstractPane {
   virtual void update() override;
   virtual void handleInput() override;
 
+  void selectEquipment(Equipment::Type equipmentType);
+
  private:
   PauseMenu* _pauseMenu;
+
+  // These two variables are necessary when
+  // the inventory pane is to select a equipment.
+  bool _isSelectingEquipment;
+  Equipment::Type _selectingEquipmentType;
 
   cocos2d::ui::ImageView* _background;
   cocos2d::Label* _itemDesc;

@@ -111,7 +111,7 @@ void PauseMenu::handleInput() {
   }
 }
 
-void PauseMenu::show(Pane pane) const {
+void PauseMenu::show(Pane pane) {
   AbstractPane* oldPane = getCurrentPane();
   if (oldPane) {
     oldPane->setVisible(false);
@@ -123,6 +123,8 @@ void PauseMenu::show(Pane pane) const {
   if (newPane) {
     newPane->setVisible(true);
   }
+
+  update();
 }
 
 

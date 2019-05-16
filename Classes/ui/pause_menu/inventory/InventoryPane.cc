@@ -21,6 +21,8 @@ namespace vigilante {
 InventoryPane::InventoryPane(PauseMenu* pauseMenu)
     : AbstractPane(),
       _pauseMenu(pauseMenu),
+      _isSelectingEquipment(),
+      _selectingEquipmentType(),
       _background(ImageView::create(kInventoryBg)),
       _itemDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
       _tabView(new TabView(kTabRegular, kTabHighlighted)),
@@ -55,19 +57,49 @@ void InventoryPane::update() {
 }
 
 void InventoryPane::handleInput() {
-  if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+  auto inputMgr = GameInputManager::getInstance();
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     _tabView->selectPrev();
     update();
-  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     _tabView->selectNext();
     update();
-  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     _itemListView->selectUp();
-  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _itemListView->selectDown();
-  } else if (GameInputManager::getInstance()->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
-    _itemListView->confirm();
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+    if (!_isSelectingEquipment) {
+      _itemListView->confirm();
+    } else {
+      // If currently the inventory pane is in equipment selection mode,
+      // get the selected item, and set it as the new equipment.
+      Equipment* equipment = dynamic_cast<Equipment*>(_itemListView->getSelectedItem());
+      if (equipment) {
+        _pauseMenu->getCharacter()->equip(equipment);
+      } else {
+        _pauseMenu->getCharacter()->unequip(_selectingEquipmentType);
+      }
+      _isSelectingEquipment = false;
+
+      // Go back to equipment pane.
+      _pauseMenu->show(PauseMenu::Pane::EQUIPMENT);
+    }
   }
+}
+
+
+void InventoryPane::selectEquipment(Equipment::Type equipmentType) {
+  _isSelectingEquipment = true;
+  _selectingEquipmentType = equipmentType;
+
+  // Switch into equipment selection mode.
+  _pauseMenu->show(PauseMenu::Pane::INVENTORY);
+
+  // Show only the corresponding equipment type.
+  _itemListView->showEquipmentByType(equipmentType);
+  cocos2d::log("show equipment by type ok");
 }
 
 } // namespace vigilante

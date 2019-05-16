@@ -32,6 +32,9 @@ class EquipmentPane : public AbstractPane {
   void selectDown();
   void confirm();
 
+  Equipment* getSelectedEquipment() const;
+  Equipment::Type getSelectedEquipmentType() const;
+
  private:
   class EquipmentItem {
    public:
