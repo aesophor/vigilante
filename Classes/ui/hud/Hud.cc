@@ -1,5 +1,6 @@
 #include "Hud.h"
 
+#include "GameAssetManager.h"
 #include "item/Equipment.h"
 
 using std::string;
@@ -78,9 +79,7 @@ void Hud::updateEquippedWeapon() {
     // Update weapon desc label
     _equippedWeaponDesc->setString(weapon->getName());
   } else {
-    _layer->removeChild(_equippedWeapon);
-    _equippedWeapon = ImageView::create();
-    _layer->addChild(_equippedWeapon);
+    _equippedWeapon->loadTexture(asset_manager::kEmptyItemIcon);
     _equippedWeaponDesc->setString("");
   }
 }

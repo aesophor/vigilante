@@ -16,10 +16,7 @@
 namespace vigilante {
 
 class Character {
- public:
-  typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
-  typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
-
+ public: 
   virtual ~Character();
   virtual void update(float delta);
 
@@ -78,12 +75,14 @@ class Character {
 
   std::set<Item*>& getInRangeItems();
 
+  typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
+  typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
   
   b2Body* getB2Body() const;
-  cocos2d::Sprite* getSprite() const;
-  cocos2d::SpriteBatchNode* getSpritesheet() const;	
+  cocos2d::Sprite* getBodySprite() const;
+  cocos2d::SpriteBatchNode* getBodySpritesheet() const;	
 
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
@@ -116,9 +115,13 @@ class Character {
                   float x,
                   float y);
 
-  // Derived class should manually implement their own defineTexture method.
-  virtual void defineTexture(float x, float y) = 0;
-  void loadAnimation(Character::State state, const std::string& frameName, size_t frameCount, float delay=.1f);
+  virtual void defineTexture(const std::string& bodySpritesheetPath, float x, float y);
+  virtual void loadBodyAnimations(const std::string& bodySpritesheetPath);
+  virtual void loadEquipmentAnimations(Equipment* equipment);
+
+  // Load the animation of the specified state into the given animation array.
+  cocos2d::Animation* createAnimation(const std::string& frameName, size_t frameCount, float delay=.1f) const;
+
   void runAnimation(Character::State state, bool loop=true) const;
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
 
@@ -181,10 +184,19 @@ class Character {
   b2Fixture* _feetFixture; // used for ground/platform collision detection
   b2Fixture* _weaponFixture; // used in combat (with _bodyFixture)
 
-  // Character's sprites and animations.
-  cocos2d::Sprite* _sprite; // child of _spritesheet
-  cocos2d::SpriteBatchNode* _spritesheet; // child of MainGameScene
-  cocos2d::Animation* _animations[Character::State::SIZE]; // animations cache
+  // Character's body and equipment sprites.
+  cocos2d::Sprite* _bodySprite; // child of _spritesheet
+  std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
+
+  // Character's body and equipment spritesheets.
+  cocos2d::SpriteBatchNode* _bodySpritesheet; // child of MainGameScene
+  std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
+
+  // Character's body and equipment animations.
+  // AnimationArray is `typedef`ed. See the beginning of this class.
+  typedef std::array<cocos2d::Animation*, Character::State::SIZE> AnimationArray;
+  AnimationArray _bodyAnimations;
+  std::array<AnimationArray, Equipment::Type::SIZE> _equipmentAnimations;
 };
 
 } // namespace vigilante

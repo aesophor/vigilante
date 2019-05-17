@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "GameAssetManager.h"
 #include "scene/MainGameScene.h"
 #include "util/Constants.h"
 
@@ -97,6 +98,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // Load resources
   cocos2d::log("[Dust] loading textures");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kPlayerSpritesheet + ".plist");
+  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeSpritesheet + ".plist");
   frameCache->addSpriteFramesWithFile("Texture/FX/Dust/dust.plist");
 
   // Create a scene. It's an autorelease object.

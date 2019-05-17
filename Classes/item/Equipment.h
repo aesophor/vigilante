@@ -27,11 +27,13 @@ class Equipment : public Item {
   Equipment(const Equipment::Type equipmentType,
             const std::string& name,
             const std::string& desc,
-            const std::string& imgPath,
+            const std::string& iconPath,
+            const std::string& spritesPath,
             float x,
             float y);
   virtual ~Equipment() = default;
 
+  std::string getSpritesPath() const;
   const Equipment::Type getEquipmentType() const;
   int getBonusPhysicalDamage() const;
   int getBonusMagicalDamage() const;
@@ -52,6 +54,7 @@ class Equipment : public Item {
   void setBonusJumpingHeight(int val);
 
  private:
+  std::string _spritesPath;
   Equipment::Type _equipmentType;
   int _bonusPhysicalDamage;
   int _bonusMagicalDamage;

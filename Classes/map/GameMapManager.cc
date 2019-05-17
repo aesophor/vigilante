@@ -2,6 +2,7 @@
 
 #include "Box2D/Box2D.h"
 
+#include "GameAssetManager.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"
 #include "map/fx/Dust.h"
@@ -69,17 +70,14 @@ void GameMapManager::load(const string& mapFileName) {
   // Spawn the player.
   _player = spawnPlayer();
   _characters.insert(_player);
-  _layer->addChild(_player->getSpritesheet(), 30);
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Castle Guard", 300, 100);
   _characters.insert(enemy);
-  _layer->addChild(enemy->getSpritesheet(), 31);
 
   // Spawn an item.
-  string imgLocation = "Texture/Item/RustyAxe/icon.png";
   for (int i = 0; i < 10; i++) {
-    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", imgLocation, 200, 80);
+    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeSpritesheet + ".png", 200, 80);
     _items.insert(item);
     _layer->addChild(item->getSprite(), 32);
   }

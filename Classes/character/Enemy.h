@@ -14,13 +14,10 @@ namespace vigilante {
 class Enemy : public Character, public Bot {
  public:
   Enemy(const std::string& name, float x, float y);
-  virtual ~Enemy();
+  virtual ~Enemy() = default;
   virtual void update(float delta) override;
 
   virtual void receiveDamage(Character* source, int damage) override;
-
- private:
-  virtual void defineTexture(float x, float y) override;
 };
 
 } // namespace vigilante

@@ -18,12 +18,18 @@ const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
 Equipment::Equipment(const Equipment::Type equipmentType,
                      const string& name,
                      const string& desc,
-                     const string& imgPath,
+                     const string& iconPath,
+                     const string& spritesPath,
                      float x,
                      float y)
-    : Item(Item::Type::EQUIPMENT, name, desc, imgPath, x, y),
+    : Item(Item::Type::EQUIPMENT, name, desc, iconPath, x, y),
+      _spritesPath(spritesPath),
       _equipmentType(equipmentType) {}
 
+
+string Equipment::getSpritesPath() const {
+  return _spritesPath;
+}
 
 const Equipment::Type Equipment::getEquipmentType() const {
   return _equipmentType;

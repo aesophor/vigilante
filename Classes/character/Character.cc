@@ -63,14 +63,10 @@ Character::Character(const string& name, float x, float y)
       _bodyFixture(),
       _feetFixture(),
       _weaponFixture(),
-      _sprite(),
-      _spritesheet() {}
+      _bodySprite(),
+      _bodySpritesheet() {}
 
 Character::~Character() {
-  if (_spritesheet) {
-    _spritesheet->release();
-  }
-
   _b2body->GetWorld()->DestroyBody(_b2body);
 }
 
@@ -118,7 +114,7 @@ void Character::update(float delta) {
         runAnimation(State::ATTACKING, false);
         break;
       case State::KILLED:
-        runAnimation(State::KILLED, [=](){
+        runAnimation(State::KILLED, [=]() {
           // Execute after the KILLED animation is finished.
           GameMapManager::getInstance()->getWorld()->DestroyBody(_b2body);
           _isKilled = true;
@@ -136,19 +132,32 @@ void Character::update(float delta) {
   _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
 
   // Flip the sprite if needed.
-  if (!_isFacingRight && !_sprite->isFlippedX()) {
-    _sprite->setFlippedX(true);
+  if (!_isFacingRight && !_bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(true);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
     shape->m_p = {-15.0f / kPpm, 0};
-  } else if (_isFacingRight && _sprite->isFlippedX()) {
-    _sprite->setFlippedX(false);
+  } else if (_isFacingRight && _bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(false);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
     shape->m_p = {15.0f / kPpm, 0};
   }
 
-  // Sync the sprite with its b2body.
+  // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _b2body->GetPosition();
-  _sprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
+  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
+
+  // Sync the equipment sprites with its b2body.
+  for (int i = 0; i < Equipment::Type::SIZE; i++) {
+    Equipment::Type type = static_cast<Equipment::Type>(i);
+    if (_equipmentSlots[type]) {
+      if (!_isFacingRight && !_equipmentSprites[type]->isFlippedX()) {
+        _equipmentSprites[type]->setFlippedX(true);
+      } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
+        _equipmentSprites[type]->setFlippedX(false);
+      }
+      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
+    }
+  }
 }
 
 void Character::defineBody(b2BodyType bodyType,
@@ -204,38 +213,121 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-void Character::loadAnimation(State state, const string& frameName, size_t frameCount, float delay) {
-  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+void Character::defineTexture(const string& spritesheetPath, float x, float y) {
+  loadBodyAnimations(spritesheetPath);
+  _bodySprite->setPosition(x * kPpm, y * kPpm + 7);
 
-  Vector<SpriteFrame*> frames;
-  for (size_t i = 0; i < frameCount; i++) {
-    string name = frameName + "/" + frameName + std::to_string(i) + ".png";
-    frames.pushBack(frameCache->getSpriteFrameByName(name));
-  }
-  _animations[state] = Animation::createWithSpriteFrames(frames, delay);
-  _animations[state]->retain();
+  runAnimation(State::IDLE_SHEATHED);
 }
 
-void Character::runAnimation(State state, bool loop) const {
-  _sprite->stopAllActions();
+void Character::loadBodyAnimations(const string& bodySpritesheetPath) {
+  _bodySpritesheet = SpriteBatchNode::create(bodySpritesheetPath);
+  //_bodySpritesheet = SpriteBatchNode::create(asset_manager::kPlayerSpritesheet + ".png");
 
-  auto animation = Animate::create(_animations[state]);
+  _bodyAnimations[State::IDLE_SHEATHED] = createAnimation("player_idle_sheathed", 6, 10.0f / kPpm);
+  _bodyAnimations[State::IDLE_UNSHEATHED] = createAnimation("player_idle_unsheathed", 6, 10.0f / kPpm);
+  _bodyAnimations[State::RUNNING_SHEATHED] = createAnimation("player_running_sheathed", 8, 10.0f / kPpm);
+  _bodyAnimations[State::RUNNING_UNSHEATHED] = createAnimation("player_running_unsheathed", 8, 10.0f / kPpm);
+  _bodyAnimations[State::JUMPING_SHEATHED] = createAnimation("player_jumping_sheathed", 5, 10.0f / kPpm);
+  _bodyAnimations[State::JUMPING_UNSHEATHED] = createAnimation("player_jumping_unsheathed", 5, 10.0f / kPpm);
+  _bodyAnimations[State::FALLING_SHEATHED] = createAnimation("player_falling_sheathed", 1, 10.0f / kPpm);
+  _bodyAnimations[State::FALLING_UNSHEATHED] = createAnimation("player_falling_unsheathed", 1, 10.0f / kPpm);
+  _bodyAnimations[State::CROUCHING_SHEATHED] = createAnimation("player_crouching_sheathed", 2, 10.0f / kPpm);
+  _bodyAnimations[State::CROUCHING_UNSHEATHED] = createAnimation("player_crouching_unsheathed", 2, 10.0f / kPpm);
+  _bodyAnimations[State::SHEATHING_WEAPON] = createAnimation("player_sheathing_weapon", 6, 15.0f / kPpm);
+  _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation("player_unsheathing_weapon", 6, 15.0f / kPpm);
+  _bodyAnimations[State::ATTACKING] = createAnimation("player_attacking", 8, 5.0f / kPpm);
+  _bodyAnimations[State::KILLED] = createAnimation("player_killed", 6, 24.0f / kPpm);
+
+  // Select a frame as default look for this sprite.
+  _bodySprite = Sprite::createWithSpriteFrameName("player_idle_sheathed/0.png");
+  _bodySprite->setScale(1.3f);
+
+  _bodySpritesheet->addChild(_bodySprite);
+  _bodySpritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
+
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet);
+}
+
+void Character::loadEquipmentAnimations(Equipment* equipment) {
+  Equipment::Type type = equipment->getEquipmentType();
+  _equipmentSpritesheets[type] = SpriteBatchNode::create(equipment->getSpritesPath());
+
+  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation("rusty_axe_idle_sheathed", 6, 10.0f / kPpm);
+  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation("rusty_axe_idle_unsheathed", 6, 10.0f / kPpm);
+  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation("rusty_axe_running_sheathed", 8, 10.0f / kPpm);
+  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation("rusty_axe_running_unsheathed", 8, 10.0f / kPpm);
+  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation("rusty_axe_jumping_sheathed", 5, 10.0f / kPpm);
+  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation("rusty_axe_jumping_unsheathed", 5, 10.0f / kPpm);
+  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation("rusty_axe_falling_sheathed", 1, 10.0f / kPpm);
+  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation("rusty_axe_falling_unsheathed", 1, 10.0f / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation("rusty_axe_crouching_sheathed", 2, 10.0f / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation("rusty_axe_crouching_unsheathed", 2, 10.0f / kPpm);
+  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation("rusty_axe_sheathing_weapon", 6, 15.0f / kPpm);
+  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation("rusty_axe_unsheathing_weapon", 6, 15.0f / kPpm);
+  _equipmentAnimations[type][State::ATTACKING] = createAnimation("rusty_axe_attacking", 8, 5.0f / kPpm);
+  _equipmentAnimations[type][State::KILLED] = createAnimation("rusty_axe_killed", 6, 24.0f / kPpm);
+
+  _equipmentSprites[type] = Sprite::createWithSpriteFrameName("rusty_axe_idle_sheathed/0.png");
+  _equipmentSprites[type]->setScale(1.3f);
+
+  _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
+  _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
+
+  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], 30);
+}
+
+Animation* Character::createAnimation(const string& frameName, size_t frameCount ,float delay) const {
+  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+  
+  Vector<SpriteFrame*> frames;
+  for (size_t i = 0; i < frameCount; i++) {
+    const string& name = frameName + "/" + std::to_string(i) + ".png";
+    frames.pushBack(frameCache->getSpriteFrameByName(name));
+  }
+  Animation* animation = Animation::createWithSpriteFrames(frames, delay);
+  animation->retain();
+  return animation;
+}
+
+
+void Character::runAnimation(State state, bool loop) const {
+  // Update body animation.
+  _bodySprite->stopAllActions();
+
+  auto animation = Animate::create(_bodyAnimations[state]);
   Action* action = nullptr;
   if (loop) {
     action = RepeatForever::create(animation);
   } else {
     action = Repeat::create(animation, 1);
   }
-  action->setTag(state);
-  _sprite->runAction(action);
+  _bodySprite->runAction(action);
+
+  // Update equipment animation.
+  for (int i = 0; i < Equipment::Type::SIZE; i++) {
+    Equipment::Type type = static_cast<Equipment::Type>(i);
+    if (_equipmentSlots[type]) {
+      _equipmentSprites[type]->stopAllActions();
+
+      auto animation = Animate::create(_equipmentAnimations[type][state]);
+      Action* action = nullptr;
+      if (loop) {
+        action = RepeatForever::create(animation);
+      } else {
+        action = Repeat::create(animation, 1);
+      }
+      _equipmentSprites[type]->runAction(action);
+    }
+  }
 }
 
 void Character::runAnimation(State state, const function<void ()>& func) const {
-  _sprite->stopAllActions();
+  _bodySprite->stopAllActions();
 
-  auto animation = Animate::create(_animations[state]);
+  auto animation = Animate::create(_bodyAnimations[state]);
   auto callback = CallFunc::create(func);
-  _sprite->runAction(Sequence::createWithTwoActions(animation, callback));
+  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
 }
 
 
@@ -287,7 +379,7 @@ void Character::jumpDown() {
   if (_isOnPlatform) {
     _feetFixture->SetSensor(true);
 
-    callback_util::runAfter([=](){
+    callback_util::runAfter([=]() {
       _feetFixture->SetSensor(false);
     }, .25f);
   }
@@ -305,7 +397,7 @@ void Character::getUp() {
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
-  callback_util::runAfter([=](){
+  callback_util::runAfter([=]() {
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
   }, .8f);
@@ -314,7 +406,7 @@ void Character::sheathWeapon() {
 void Character::unsheathWeapon() {
   _isUnsheathingWeapon = true;
 
-  callback_util::runAfter([=](){
+  callback_util::runAfter([=]() {
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
@@ -328,7 +420,7 @@ void Character::attack() {
 
   _isAttacking = true;
 
-  callback_util::runAfter([=](){
+  callback_util::runAfter([=]() {
     _isAttacking = false;
   }, .5f);
 
@@ -396,6 +488,10 @@ void Character::equip(Equipment* equipment) {
   }
   removeItem(equipment);
   _equipmentSlots[type] = equipment;
+
+  // Load equipment animations.
+  loadEquipmentAnimations(equipment);
+  //GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type]);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -405,6 +501,8 @@ void Character::unequip(Equipment::Type equipmentType) {
     Equipment* e = _equipmentSlots[equipmentType];
     _equipmentSlots[equipmentType] = nullptr;
     addItem(e);
+
+    GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
   }
 }
 
@@ -547,12 +645,12 @@ b2Body* Character::getB2Body() const {
   return _b2body;
 }
 
-Sprite* Character::getSprite() const {
-  return _sprite;
+Sprite* Character::getBodySprite() const {
+  return _bodySprite;
 }
 
-SpriteBatchNode* Character::getSpritesheet() const {
-  return _spritesheet;
+SpriteBatchNode* Character::getBodySpritesheet() const {
+  return _bodySpritesheet;
 }
 
 

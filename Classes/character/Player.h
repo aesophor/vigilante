@@ -13,16 +13,13 @@ namespace vigilante {
 class Player : public Character {
  public:
   Player(const std::string& name, float x, float y);
-  virtual ~Player();
+  virtual ~Player() = default;
 
   virtual void inflictDamage(Character* target, int damage) override;
   virtual void receiveDamage(Character* source, int damage) override;
 
   virtual void equip(Equipment* equipment) override;
   virtual void unequip(Equipment::Type equipmentType) override;
-
- private:
-  virtual void defineTexture(float x, float y) override;
 };
 
 } // namespace vigilante
