@@ -214,6 +214,8 @@ void MainGameScene::handleInput(float delta) {
       i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
       _gameMapManager->getItems().erase(i);
       _gameMapManager->removeChild(i->getSprite());
+
+      _notifications->show("Acquired item: " + i->getName() + ".");
     }
   }
 

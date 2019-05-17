@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
+#include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
@@ -52,6 +53,10 @@ void Enemy::update(float delta) {
 void Enemy::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   _isAlerted = true;
+
+  if (_isSetToKill) {
+    NotificationManager::getInstance()->show("Gained 25 exp.");
+  }
 }
 
 } // namespace vigilante
