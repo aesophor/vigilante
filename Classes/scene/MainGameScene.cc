@@ -74,7 +74,7 @@ bool MainGameScene::init() {
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
   _gameMapManager->load("Map/starting_point.tmx");
-  addChild(_gameMapManager->getLayer());
+  addChild(static_cast<Layer*>(_gameMapManager.get()));
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
@@ -121,10 +121,10 @@ void MainGameScene::update(float delta) {
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
   handleInput(delta);
 
-  for (auto character : _gameMapManager->getCharacters()) {
+  for (auto& character : _gameMapManager->getCharacters()) {
     character->update(delta);
   }
-  for (auto item : _gameMapManager->getItems()) {
+  for (auto& item : _gameMapManager->getItems()) {
     item->update(delta);
   }
 
@@ -198,9 +198,7 @@ void MainGameScene::handleInput(float delta) {
       player->addItem(i);
       i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
       _gameMapManager->getItems().erase(i);
-      _gameMapManager->getLayer()->removeChild(i->getSprite());
-
-      //player->equip(dynamic_cast<Equipment*>(i)); // temporary!!!
+      _gameMapManager->removeChild(i->getSprite());
     }
   }
 

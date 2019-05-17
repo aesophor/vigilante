@@ -68,6 +68,16 @@ Character::Character(const string& name, float x, float y)
 
 Character::~Character() {
   _b2body->GetWorld()->DestroyBody(_b2body);
+
+  // Delete all items from inventory and equipment slots.
+  for (const auto& items : _inventory) { // vector<Item*>
+    for (const auto item : items) { // Item*
+      delete item;
+    }
+  }
+  for (const auto equipment : _equipmentSlots) {
+    delete equipment;
+  }
 }
 
 
@@ -245,8 +255,6 @@ void Character::loadBodyAnimations(const string& bodySpritesheetPath) {
 
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
-
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet);
 }
 
 void Character::loadEquipmentAnimations(Equipment* equipment) {
@@ -273,8 +281,6 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
-
-  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], 30);
 }
 
 Animation* Character::createAnimation(const string& frameName, size_t frameCount ,float delay) const {
@@ -491,7 +497,7 @@ void Character::equip(Equipment* equipment) {
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  //GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type]);
+  GameMapManager::getInstance()->addChild(_equipmentSpritesheets[type]);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -502,7 +508,7 @@ void Character::unequip(Equipment::Type equipmentType) {
     _equipmentSlots[equipmentType] = nullptr;
     addItem(e);
 
-    GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
+    GameMapManager::getInstance()->removeChild(_equipmentSpritesheets[equipmentType]);
   }
 }
 

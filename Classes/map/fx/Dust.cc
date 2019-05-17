@@ -41,7 +41,7 @@ Dust::Dust(Layer* gameMapLayer, float x, float y) {
 
   // Run animation
   auto animatedAction = Animate::create(animation);
-  auto callback = CallFunc::create([=](){
+  auto callback = CallFunc::create([=]() {
     gameMapLayer->removeChild(spritesheet);
   });
   sprite->runAction(Sequence::createWithTwoActions(animatedAction, callback));

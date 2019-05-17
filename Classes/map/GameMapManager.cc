@@ -3,6 +3,7 @@
 #include "Box2D/Box2D.h"
 
 #include "GameAssetManager.h"
+#include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"
 #include "map/fx/Dust.h"
@@ -13,11 +14,10 @@
 using std::set;
 using std::string;
 using std::unique_ptr;
+using cocos2d::Director;
+using cocos2d::Layer;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
-
-USING_NS_CC;
-
 
 namespace vigilante {
 
@@ -25,40 +25,44 @@ GameMapManager* GameMapManager::_instance = nullptr;
 
 GameMapManager* GameMapManager::getInstance() {
   if (!_instance) {
-    _instance = new GameMapManager({0, kGravity});
+    _instance = new (std::nothrow) GameMapManager;
+    if (_instance && _instance->init()) {
+      _instance->autorelease();
+      return _instance;
+    }
+    CC_SAFE_DELETE(_instance);
+    return nullptr;
   }
   return _instance;
 }
 
+bool GameMapManager::init() {
+  if (!Layer::init()) {
+    return false;
+  }
+  _world = unique_ptr<b2World>(new b2World({0, kGravity}));
+  _worldContactListener = unique_ptr<WorldContactListener>(new WorldContactListener());
 
-GameMapManager::GameMapManager(const b2Vec2& gravity)
-    : _world(new b2World(gravity)),
-      _worldContactListener(new WorldContactListener()),
-      _layer(Layer::create()),
-      _map(),
-      _player() {
-  _layer->retain();
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
-}
 
-GameMapManager::~GameMapManager() {
-  for (auto c : _characters) {
-    delete c;
-  }
+  _map = nullptr;
+  _player = nullptr;
+
+  return true;
 }
 
 
 void GameMapManager::load(const string& mapFileName) {
   if (_map) {
-    _layer->removeChild(_map);
+    removeChild(_map);
     _map = nullptr;
   }
 
   // Release previous TMXTiledMap object.
   _map = TMXTiledMap::create(mapFileName);
-  _layer->addChild(_map, 0);
+  addChild(_map, 0);
  
   // Create box2d objects from layers
   createPolylines(_world.get(), _map, "Ground", category_bits::kGround, true, 2);
@@ -69,25 +73,27 @@ void GameMapManager::load(const string& mapFileName) {
 
   // Spawn the player.
   _player = spawnPlayer();
-  _characters.insert(_player);
+  _characters.insert(unique_ptr<Player>(_player));
+  addChild(_player->getBodySpritesheet());
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Castle Guard", 300, 100);
-  _characters.insert(enemy);
+  _characters.insert(unique_ptr<Enemy>(enemy));
+  addChild(enemy->getBodySpritesheet());
 
   // Spawn an item.
   for (int i = 0; i < 10; i++) {
     Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeSpritesheet + ".png", 200, 80);
     _items.insert(item);
-    _layer->addChild(item->getSprite(), 32);
+    addChild(item->getSprite(), 32);
   }
 }
 
-void GameMapManager::createDustFx(Character* character) const {
+void GameMapManager::createDustFx(Character* character) {
 	auto feetPos = character->getB2Body()->GetPosition();
 	float dustX = feetPos.x;// - 32.f / kPpm / 2;
 	float dustY = feetPos.y - .1f;// - 32.f / kPpm / .065f;
-	unique_ptr<Dust>(new Dust(_layer, dustX, dustY));
+  Dust(this, dustX, dustY);
 }
 
 
@@ -97,7 +103,7 @@ Player* GameMapManager::spawnPlayer() {
   auto& playerValMap = objGroup->getObjects()[0].asValueMap();
   float x = playerValMap["x"].asFloat();
   float y = playerValMap["y"].asFloat();
-  log("[INFO] Spawning player at: x=%f y=%f", x, y);
+  cocos2d::log("[INFO] Spawning player at: x=%f y=%f", x, y);
 
   return new Player("Aesophor", x, y);
 }
@@ -105,10 +111,6 @@ Player* GameMapManager::spawnPlayer() {
 
 b2World* GameMapManager::getWorld() const {
   return _world.get();
-}
-
-Layer* GameMapManager::getLayer() const {
-  return _layer;
 }
 
 TMXTiledMap* GameMapManager::getMap() const {
@@ -120,7 +122,7 @@ Player* GameMapManager::getPlayer() const {
 }
 
 
-set<Character*>& GameMapManager::getCharacters() {
+set<unique_ptr<Character>>& GameMapManager::getCharacters() {
   return _characters;
 }
 
