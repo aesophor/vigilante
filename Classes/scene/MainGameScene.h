@@ -9,6 +9,7 @@
 #include "map/GameMapManager.h"
 #include "input/GameInputManager.h"
 #include "ui/hud/Hud.h"
+#include "ui/notification/NotificationManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "util/box2d/b2DebugRenderer.h"
 
@@ -37,6 +38,7 @@ class MainGameScene : public cocos2d::Scene {
   std::unique_ptr<vigilante::PauseMenu> _pauseMenu;
 
   std::unique_ptr<vigilante::Hud> _hud;
+  std::unique_ptr<vigilante::NotificationManager> _notifications;
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
   std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
 };

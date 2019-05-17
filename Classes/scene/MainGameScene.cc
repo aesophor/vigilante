@@ -20,6 +20,7 @@ using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
 using vigilante::Hud;
+using vigilante::NotificationManager;
 using vigilante::PauseMenu;
 using vigilante::Equipment;
 using vigilante::GameMapManager;
@@ -63,6 +64,10 @@ bool MainGameScene::init() {
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _hud->getLayer()->setPosition(75, winSize.height - 40);
   addChild(_hud->getLayer(), 90);
+
+  // Initialize notification manager.
+  _notifications = unique_ptr<NotificationManager>(NotificationManager::getInstance());
+  _notifications->show("Notification Manager initialized!");
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
@@ -128,6 +133,8 @@ void MainGameScene::update(float delta) {
     item->update(delta);
   }
 
+  _notifications->update(delta);
+
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
@@ -140,10 +147,10 @@ void MainGameScene::handleInput(float delta) {
   if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
     if (_b2DebugOn) {
       removeChild(_b2dr);
-      cocos2d::log("[b2dr] is off. Ref=%d", _b2dr->getReferenceCount());
+      _notifications->show("[b2dr] is off. Ref=" + std::to_string(_b2dr->getReferenceCount()));
     } else {
       addChild(_b2dr);
-      cocos2d::log("[b2dr] is on. Ref=%d", _b2dr->getReferenceCount());
+      _notifications->show("[b2dr] is off. Ref=" + std::to_string(_b2dr->getReferenceCount()));
     }
     _b2DebugOn = !_b2DebugOn;
   }

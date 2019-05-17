@@ -83,7 +83,7 @@ void GameMapManager::load(const string& mapFileName) {
 
   // Spawn an item.
   for (int i = 0; i < 10; i++) {
-    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeSpritesheet + ".png", 200, 80);
+    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeSpritesheet, 200, 80);
     _items.insert(item);
     addChild(item->getSprite(), 32);
   }

@@ -1,5 +1,6 @@
 #include "Character.h"
 
+#include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
@@ -231,26 +232,26 @@ void Character::defineTexture(const string& spritesheetPath, float x, float y) {
 }
 
 void Character::loadBodyAnimations(const string& bodySpritesheetPath) {
-  _bodySpritesheet = SpriteBatchNode::create(bodySpritesheetPath);
-  //_bodySpritesheet = SpriteBatchNode::create(asset_manager::kPlayerSpritesheet + ".png");
+  _bodySpritesheet = SpriteBatchNode::create(bodySpritesheetPath + ".png");
 
-  _bodyAnimations[State::IDLE_SHEATHED] = createAnimation("player_idle_sheathed", 6, 10.0f / kPpm);
-  _bodyAnimations[State::IDLE_UNSHEATHED] = createAnimation("player_idle_unsheathed", 6, 10.0f / kPpm);
-  _bodyAnimations[State::RUNNING_SHEATHED] = createAnimation("player_running_sheathed", 8, 10.0f / kPpm);
-  _bodyAnimations[State::RUNNING_UNSHEATHED] = createAnimation("player_running_unsheathed", 8, 10.0f / kPpm);
-  _bodyAnimations[State::JUMPING_SHEATHED] = createAnimation("player_jumping_sheathed", 5, 10.0f / kPpm);
-  _bodyAnimations[State::JUMPING_UNSHEATHED] = createAnimation("player_jumping_unsheathed", 5, 10.0f / kPpm);
-  _bodyAnimations[State::FALLING_SHEATHED] = createAnimation("player_falling_sheathed", 1, 10.0f / kPpm);
-  _bodyAnimations[State::FALLING_UNSHEATHED] = createAnimation("player_falling_unsheathed", 1, 10.0f / kPpm);
-  _bodyAnimations[State::CROUCHING_SHEATHED] = createAnimation("player_crouching_sheathed", 2, 10.0f / kPpm);
-  _bodyAnimations[State::CROUCHING_UNSHEATHED] = createAnimation("player_crouching_unsheathed", 2, 10.0f / kPpm);
-  _bodyAnimations[State::SHEATHING_WEAPON] = createAnimation("player_sheathing_weapon", 6, 15.0f / kPpm);
-  _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation("player_unsheathing_weapon", 6, 15.0f / kPpm);
-  _bodyAnimations[State::ATTACKING] = createAnimation("player_attacking", 8, 5.0f / kPpm);
-  _bodyAnimations[State::KILLED] = createAnimation("player_killed", 6, 24.0f / kPpm);
+  string prefix = asset_manager::getFrameNamePrefix(bodySpritesheetPath);
+  _bodyAnimations[State::IDLE_SHEATHED] = createAnimation(prefix + "_idle_sheathed", 6, 10.0f / kPpm);
+  _bodyAnimations[State::IDLE_UNSHEATHED] = createAnimation(prefix + "_idle_unsheathed", 6, 10.0f / kPpm);
+  _bodyAnimations[State::RUNNING_SHEATHED] = createAnimation(prefix + "_running_sheathed", 8, 10.0f / kPpm);
+  _bodyAnimations[State::RUNNING_UNSHEATHED] = createAnimation(prefix + "_running_unsheathed", 8, 10.0f / kPpm);
+  _bodyAnimations[State::JUMPING_SHEATHED] = createAnimation(prefix + "_jumping_sheathed", 5, 10.0f / kPpm);
+  _bodyAnimations[State::JUMPING_UNSHEATHED] = createAnimation(prefix + "_jumping_unsheathed", 5, 10.0f / kPpm);
+  _bodyAnimations[State::FALLING_SHEATHED] = createAnimation(prefix + "_falling_sheathed", 1, 10.0f / kPpm);
+  _bodyAnimations[State::FALLING_UNSHEATHED] = createAnimation(prefix + "_falling_unsheathed", 1, 10.0f / kPpm);
+  _bodyAnimations[State::CROUCHING_SHEATHED] = createAnimation(prefix + "_crouching_sheathed", 2, 10.0f / kPpm);
+  _bodyAnimations[State::CROUCHING_UNSHEATHED] = createAnimation(prefix + "_crouching_unsheathed", 2, 10.0f / kPpm);
+  _bodyAnimations[State::SHEATHING_WEAPON] = createAnimation(prefix + "_sheathing_weapon", 6, 15.0f / kPpm);
+  _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation(prefix + "_unsheathing_weapon", 6, 15.0f / kPpm);
+  _bodyAnimations[State::ATTACKING] = createAnimation(prefix + "_attacking", 8, 5.0f / kPpm);
+  _bodyAnimations[State::KILLED] = createAnimation(prefix + "_killed", 6, 24.0f / kPpm);
 
   // Select a frame as default look for this sprite.
-  _bodySprite = Sprite::createWithSpriteFrameName("player_idle_sheathed/0.png");
+  _bodySprite = Sprite::createWithSpriteFrameName(prefix + "_idle_sheathed/0.png");
   _bodySprite->setScale(1.3f);
 
   _bodySpritesheet->addChild(_bodySprite);
@@ -259,24 +260,25 @@ void Character::loadBodyAnimations(const string& bodySpritesheetPath) {
 
 void Character::loadEquipmentAnimations(Equipment* equipment) {
   Equipment::Type type = equipment->getEquipmentType();
-  _equipmentSpritesheets[type] = SpriteBatchNode::create(equipment->getSpritesPath());
+  _equipmentSpritesheets[type] = SpriteBatchNode::create(equipment->getSpritesPath() + ".png");
 
-  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation("rusty_axe_idle_sheathed", 6, 10.0f / kPpm);
-  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation("rusty_axe_idle_unsheathed", 6, 10.0f / kPpm);
-  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation("rusty_axe_running_sheathed", 8, 10.0f / kPpm);
-  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation("rusty_axe_running_unsheathed", 8, 10.0f / kPpm);
-  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation("rusty_axe_jumping_sheathed", 5, 10.0f / kPpm);
-  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation("rusty_axe_jumping_unsheathed", 5, 10.0f / kPpm);
-  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation("rusty_axe_falling_sheathed", 1, 10.0f / kPpm);
-  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation("rusty_axe_falling_unsheathed", 1, 10.0f / kPpm);
-  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation("rusty_axe_crouching_sheathed", 2, 10.0f / kPpm);
-  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation("rusty_axe_crouching_unsheathed", 2, 10.0f / kPpm);
-  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation("rusty_axe_sheathing_weapon", 6, 15.0f / kPpm);
-  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation("rusty_axe_unsheathing_weapon", 6, 15.0f / kPpm);
-  _equipmentAnimations[type][State::ATTACKING] = createAnimation("rusty_axe_attacking", 8, 5.0f / kPpm);
-  _equipmentAnimations[type][State::KILLED] = createAnimation("rusty_axe_killed", 6, 24.0f / kPpm);
+  string prefix = asset_manager::getFrameNamePrefix(equipment->getSpritesPath());
+  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation(prefix + "_idle_sheathed", 6, 10.0f / kPpm);
+  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation(prefix + "_idle_unsheathed", 6, 10.0f / kPpm);
+  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation(prefix + "_running_sheathed", 8, 10.0f / kPpm);
+  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation(prefix + "_running_unsheathed", 8, 10.0f / kPpm);
+  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation(prefix + "_jumping_sheathed", 5, 10.0f / kPpm);
+  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation(prefix + "_jumping_unsheathed", 5, 10.0f / kPpm);
+  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation(prefix + "_falling_sheathed", 1, 10.0f / kPpm);
+  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation(prefix + "_falling_unsheathed", 1, 10.0f / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation(prefix + "_crouching_sheathed", 2, 10.0f / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation(prefix + "_crouching_unsheathed", 2, 10.0f / kPpm);
+  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation(prefix + "_sheathing_weapon", 6, 15.0f / kPpm);
+  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation(prefix + "_unsheathing_weapon", 6, 15.0f / kPpm);
+  _equipmentAnimations[type][State::ATTACKING] = createAnimation(prefix + "_attacking", 8, 5.0f / kPpm);
+  _equipmentAnimations[type][State::KILLED] = createAnimation(prefix + "_killed", 6, 24.0f / kPpm);
 
-  _equipmentSprites[type] = Sprite::createWithSpriteFrameName("rusty_axe_idle_sheathed/0.png");
+  _equipmentSprites[type] = Sprite::createWithSpriteFrameName(prefix + "_idle_sheathed/0.png");
   _equipmentSprites[type]->setScale(1.3f);
 
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);

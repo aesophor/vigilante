@@ -45,6 +45,9 @@ const std::string kPlayerSpritesheet = "Texture/Character/player/sprites/player"
 // Equipment spritesheets
 const std::string kRustyAxeSpritesheet = "Texture/Item/rusty_axe/sprites/rusty_axe";
 
+
+std::string getFrameNamePrefix(const std::string& spritesheetPath);
+
 } // namespace asset_manager
 
 } // namespace vigilante
