@@ -2,6 +2,8 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
+#include "ui/damage/FloatingDamageManager.h"
+#include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
@@ -462,6 +464,8 @@ void Character::receiveDamage(Character* source, int damage) {
   }
 
   _health -= damage;
+  FloatingDamageManager::getInstance()->show(this, damage);
+
   if (_health <= 0) {
     source->getInRangeTargets().erase(this);
     Character::setCategoryBits(_bodyFixture, category_bits::kDestroyed);

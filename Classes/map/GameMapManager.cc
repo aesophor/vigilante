@@ -93,7 +93,7 @@ void GameMapManager::createDustFx(Character* character) {
 	auto feetPos = character->getB2Body()->GetPosition();
 	float dustX = feetPos.x;// - 32.f / kPpm / 2;
 	float dustY = feetPos.y - .1f;// - 32.f / kPpm / .065f;
-  Dust(this, dustX, dustY);
+  Dust::create(this, dustX, dustY);
 }
 
 

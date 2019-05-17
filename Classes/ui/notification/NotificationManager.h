@@ -16,8 +16,9 @@ class NotificationManager {
 
   void update(float delta);
   void show(const std::string& message);
-
   void setMaxNotificationCount(int maxNotificationCount);
+
+  cocos2d::Layer* getLayer() const;
 
  private:
   struct Notification {
@@ -43,6 +44,7 @@ class NotificationManager {
 
   static const int kDefaultMaxNotificationCount;
 
+  cocos2d::Layer* _layer;
   std::deque<NotificationManager::Notification> _notificationQueue;
   int _maxNotificationCount;
 };

@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "GameAssetManager.h"
 #include "util/CallbackUtil.h"
 #include "util/Constants.h"
 
@@ -19,13 +20,15 @@ using cocos2d::SpriteFrameCache;
 
 namespace vigilante {
 
-Dust::Dust(Layer* gameMapLayer, float x, float y) {
+void Dust::create(Layer* gameMapLayer, float x, float y) {
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  SpriteBatchNode* spritesheet = SpriteBatchNode::create("Texture/FX/Dust/dust.png");
+  SpriteBatchNode* spritesheet = SpriteBatchNode::create(asset_manager::kDustSpritesheet + ".png");
  
+  string prefix = asset_manager::getFrameNamePrefix(asset_manager::kDustSpritesheet);
+
   Vector<SpriteFrame*> frames;
   for (size_t i = 0; i < 5; i++) {
-    string name = "dust" + std::to_string(i) + ".png";
+    string name = prefix + std::to_string(i) + ".png";
     frames.pushBack(frameCache->getSpriteFrameByName(name));
   }
   Animation* animation = Animation::createWithSpriteFrames(frames, .1f);

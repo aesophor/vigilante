@@ -45,6 +45,8 @@ const std::string kPlayerSpritesheet = "Texture/Character/player/sprites/player"
 // Equipment spritesheets
 const std::string kRustyAxeSpritesheet = "Texture/Item/rusty_axe/sprites/rusty_axe";
 
+// FX spritesheets
+const std::string kDustSpritesheet = "Texture/FX/dust/dust";
 
 std::string getFrameNamePrefix(const std::string& spritesheetPath);
 

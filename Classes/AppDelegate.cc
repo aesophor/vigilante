@@ -100,7 +100,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kPlayerSpritesheet + ".plist");
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeSpritesheet + ".plist");
-  frameCache->addSpriteFramesWithFile("Texture/FX/Dust/dust.plist");
+  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustSpritesheet + ".plist");
 
   // Create a scene. It's an autorelease object.
   Scene* scene = MainGameScene::create();

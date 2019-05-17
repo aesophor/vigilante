@@ -1,9 +1,9 @@
 #include "NotificationManager.h"
 
 #include "GameAssetManager.h"
-#include "ui/hud/Hud.h"
 
 using std::string;
+using cocos2d::Layer;
 using cocos2d::Label;
 using cocos2d::MoveBy;
 using cocos2d::FadeOut;
@@ -18,7 +18,7 @@ namespace vigilante {
 NotificationManager* NotificationManager::_instance = nullptr;
 
 const float NotificationManager::kStartingX = 10.0f;
-const float NotificationManager::kStartingY = 5.0f;
+const float NotificationManager::kStartingY = 10.0f;
 
 const float NotificationManager::kDeltaX = 0.0f;
 const float NotificationManager::kDeltaY = 10.0f;
@@ -35,7 +35,9 @@ NotificationManager* NotificationManager::getInstance() {
   return _instance;
 }
 
-NotificationManager::NotificationManager() : _maxNotificationCount(kDefaultMaxNotificationCount) {}
+NotificationManager::NotificationManager()
+    : _layer(Layer::create()),
+      _maxNotificationCount(kDefaultMaxNotificationCount) {}
 
 
 void NotificationManager::update(float delta) {
@@ -46,8 +48,8 @@ void NotificationManager::update(float delta) {
       notification.label->runAction(Sequence::createWithTwoActions(
         FadeOut::create(kFadeDuration),
         CallFunc::create([=]() {
-          // After the label fully fades out, remove the label from the HUD layer.
-          Hud::getInstance()->getLayer()->getParent()->removeChild(notification.label);
+          // After the label fully fades out, remove the label from _layer.
+          _layer->removeChild(notification.label);
         })
       ));
       // Also remove the notification object from _notificationQueue.
@@ -61,7 +63,7 @@ void NotificationManager::show(const string& message) {
   // If the number of notifications being displayed has surpassed kMaxNotificationCount,
   // then remove the earliest notification.
   if (_notificationQueue.size() > kDefaultMaxNotificationCount) {
-    Hud::getInstance()->getLayer()->getParent()->removeChild(_notificationQueue.front().label);
+    _layer->removeChild(_notificationQueue.front().label);
     _notificationQueue.pop_front();
   }
 
@@ -71,11 +73,15 @@ void NotificationManager::show(const string& message) {
   }
 
   // Display the new notification.
-  Notification notification = Notification(message, 5.0f);
+  Notification notification(message, 5.0f);
   notification.label->setPosition(kStartingX, kStartingY);
   notification.label->runAction(MoveBy::create(kMoveUpDuration, {kDeltaX, kDeltaY}));
   _notificationQueue.push_back(notification);
-  Hud::getInstance()->getLayer()->getParent()->addChild(notification.label);
+  _layer->addChild(notification.label);
+}
+
+Layer* NotificationManager::getLayer() const {
+  return _layer;
 }
 
 

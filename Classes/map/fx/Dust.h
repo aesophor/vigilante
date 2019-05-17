@@ -5,11 +5,11 @@
 
 namespace vigilante {
 
-// FIXME: a dedicated class is probably unnecessary...
 class Dust {
  public:
-  Dust(cocos2d::Layer* gameMapLayer, float x, float y);
-  virtual ~Dust() = default;
+  static void create(cocos2d::Layer* gameMapLayer, float x, float y);
+ private:
+  static cocos2d::Animation* _animation;
 };
 
 } // namespace vigilante

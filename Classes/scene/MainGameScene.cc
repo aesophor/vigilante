@@ -20,6 +20,7 @@ using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
 using vigilante::Hud;
+using vigilante::FloatingDamageManager;
 using vigilante::NotificationManager;
 using vigilante::PauseMenu;
 using vigilante::Equipment;
@@ -67,7 +68,13 @@ bool MainGameScene::init() {
 
   // Initialize notification manager.
   _notifications = unique_ptr<NotificationManager>(NotificationManager::getInstance());
+  _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_notifications->getLayer(), 91);
   _notifications->show("Notification Manager initialized!");
+
+  // Initialize floating damage manager.
+  _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
+  addChild(_floatingDamages->getLayer(), 89);
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
@@ -133,6 +140,7 @@ void MainGameScene::update(float delta) {
     item->update(delta);
   }
 
+  _floatingDamages->update(delta);
   _notifications->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
