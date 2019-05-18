@@ -438,7 +438,7 @@ void Character::attack() {
     _lockedOnTarget = *_inRangeTargets.begin();
 
     if (!_lockedOnTarget->isInvincible()) {
-      _lockedOnTarget->setIsAlerted(true);
+      _lockedOnTarget->setAlerted(true);
       _lockedOnTarget->setLockedOnTarget(this);
 
       inflictDamage(_lockedOnTarget, 25);
@@ -564,24 +564,24 @@ bool Character::isUnsheathingWeapon() const {
 }
 
 
-void Character::setIsJumping(bool isJumping) {
-  _isJumping = isJumping;
+void Character::setJumping(bool jumping) {
+  _isJumping = jumping;
 }
 
-void Character::setIsOnPlatform(bool isOnPlatform) {
-  _isOnPlatform = isOnPlatform;
+void Character::setOnPlatform(bool onPlatform) {
+  _isOnPlatform = onPlatform;
 }
 
-void Character::setIsAttacking(bool isAttacking) {
-  _isAttacking = isAttacking;
+void Character::setAttacking(bool attacking) {
+  _isAttacking = attacking;
 }
 
-void Character::setIsCrouching(bool isCrouching) {
-  _isCrouching = isCrouching;
+void Character::setCrouching(bool crouching) {
+  _isCrouching = crouching;
 }
 
-void Character::setIsInvincible(bool isInvincible) {
-  _isInvincible = isInvincible;
+void Character::setInvincible(bool invincible) {
+  _isInvincible = invincible;
 }
 
 
@@ -634,8 +634,8 @@ bool Character::isAlerted() const {
   return _isAlerted;
 }
 
-void Character::setIsAlerted(bool isAlerted) {
-  _isAlerted = isAlerted;
+void Character::setAlerted(bool alerted) {
+  _isAlerted = alerted;
 }
 
 

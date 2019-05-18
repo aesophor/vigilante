@@ -12,7 +12,7 @@ class GameMap {
   virtual ~GameMap();
 
  private:
-  cocos2d::TMXTiledMap _map;
+  cocos2d::TMXTiledMap* _map;
   int _width;
   int _height;
   int _tileSize;

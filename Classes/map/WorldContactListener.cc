@@ -24,8 +24,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setIsJumping(false);
-        c->setIsOnPlatform(false);
+        c->setJumping(false);
+        c->setOnPlatform(false);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
       }
@@ -36,8 +36,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setIsJumping(false);
-        c->setIsOnPlatform(true);
+        c->setJumping(false);
+        c->setOnPlatform(true);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
       }
@@ -121,7 +121,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setIsJumping(true);
+        c->setJumping(true);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
       }
@@ -132,8 +132,8 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setIsJumping(true);
-        c->setIsOnPlatform(false);
+        c->setJumping(true);
+        c->setOnPlatform(false);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
       }

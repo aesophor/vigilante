@@ -6,7 +6,6 @@
 
 using std::set;
 
-
 namespace vigilante {
 
 Bot::Bot(Character* c)

@@ -14,7 +14,7 @@ const std::string kTitleFont = "Font/MatchupPro.ttf";
 const float kRegularFontSize = 16.0f;
 
 // PauseMenu
-const std::string kPauseMenu = "Texture/UI/PauseMenu/";
+const std::string kPauseMenu = "Texture/ui/pause_menu/";
 const std::string kPauseMenuBg = kPauseMenu + "pause.png";
 
 // PauseMenu - Dialog
@@ -35,18 +35,18 @@ const std::string kEquipmentRegular = kPauseMenu + "equipment_regular.png";
 const std::string kEquipmentHighlighted = kPauseMenu + "equipment_highlighted.png";
 
 // Item icons
-const std::string kItemIcons = "Texture/Item/";
+const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyItemIcon = kItemIcons + "empty/icon.png";
 const std::string kRustyAxeIcon = kItemIcons + "rusty_axe/icon.png";
 
 // Character spritesheets
-const std::string kPlayerSpritesheet = "Texture/Character/player/sprites/player";
+const std::string kPlayerSpritesheet = "Texture/character/player/sprites/player";
 
 // Equipment spritesheets
-const std::string kRustyAxeSpritesheet = "Texture/Item/rusty_axe/sprites/rusty_axe";
+const std::string kRustyAxeSpritesheet = "Texture/item/rusty_axe/sprites/rusty_axe";
 
 // FX spritesheets
-const std::string kDustSpritesheet = "Texture/FX/dust/dust";
+const std::string kDustSpritesheet = "Texture/fx/dust/dust";
 
 std::string getFrameNamePrefix(const std::string& spritesheetPath);
 

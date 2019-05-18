@@ -52,11 +52,11 @@ class Character {
   bool isSheathingWeapon() const;
   bool isUnsheathingWeapon() const;
 
-  void setIsJumping(bool isJumping);
-  void setIsOnPlatform(bool isOnPlatform);
-  void setIsAttacking(bool isAttacking);
-  void setIsCrouching(bool isCrouching);
-  void setIsInvincible(bool isInvincible);
+  void setJumping(bool jumping);
+  void setOnPlatform(bool onPlatform);
+  void setAttacking(bool attacking);
+  void setCrouching(bool crouching);
+  void setInvincible(bool invincible);
 
   std::string getName() const;
   void setName(const std::string& name);
@@ -71,7 +71,7 @@ class Character {
   Character* getLockedOnTarget() const;
   void setLockedOnTarget(Character* target);
   bool isAlerted() const;
-  void setIsAlerted(bool isAlerted);
+  void setAlerted(bool alerted);
 
   std::set<Item*>& getInRangeItems();
 

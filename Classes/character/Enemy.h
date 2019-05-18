@@ -8,8 +8,9 @@
 #include "Character.h"
 #include "Bot.h"
 
-
 namespace vigilante {
+
+class Item;
 
 class Enemy : public Character, public Bot {
  public:
@@ -18,6 +19,7 @@ class Enemy : public Character, public Bot {
   virtual void update(float delta) override;
 
   virtual void receiveDamage(Character* source, int damage) override;
+//  virtual void dropItem(Item* item);
 };
 
 } // namespace vigilante

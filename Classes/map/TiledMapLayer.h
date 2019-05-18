@@ -1,9 +1,9 @@
-#ifndef VIGILANTE_GAMEMAP_LAYER_H_
-#define VIGILANTE_GAMEMAP_LAYER_H_
+#ifndef VIGILANTE_TILED_MAP_LAYER_H_
+#define VIGILANTE_TILED_MAP_LAYER_H_
 
 namespace vigilante {
 
-enum GameMapLayer {
+enum TiledMapLayer {
   GROUND,        // 0: Player can only jump while standing on the ground.
   PLATFORM,      // 1: Floating and one-way passthrough platforms. Player can also jump on this.
   WALL,          // 2: Verical walls or ceiling. Colliding with these wont set isJumping back to false.
@@ -16,4 +16,4 @@ enum GameMapLayer {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_GAMEMAP_LAYER_H_
+#endif // VIGILANTE_TILED_MAP_LAYER_H_
