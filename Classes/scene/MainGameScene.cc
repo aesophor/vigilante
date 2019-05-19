@@ -25,6 +25,7 @@ using vigilante::kPositionIterations;
 using vigilante::kPpm;
 using vigilante::kGravity;
 using vigilante::Player;
+using vigilante::Portal;
 using vigilante::Hud;
 using vigilante::FloatingDamageManager;
 using vigilante::NotificationManager;
@@ -195,9 +196,11 @@ void MainGameScene::handleInput(float delta) {
       _shade->runAction(Sequence::create(
         FadeIn::create(.3f),
         CallFunc::create([=]() {
-          int targetPortalId = player->getPortal()->getTargetPortalId();
-          _gameMapManager->loadGameMap(player->getPortal()->getTargetTmxMapFileName());
-          auto pos = _gameMapManager->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+          Portal* portal = player->getPortal();
+          std::string targetTmxMapFileName = portal->targetTmxMapFileName; // copy this shit here, don't use reference
+          int targetPortalId = portal->targetPortalId;
+          _gameMapManager->loadGameMap(targetTmxMapFileName);
+          auto pos = _gameMapManager->getGameMap()->getPortals().at(targetPortalId)->body->GetPosition();
           player->reposition(pos.x, pos.y);
         }),
         FadeOut::create(.5f),

@@ -7,19 +7,11 @@
 
 namespace vigilante {
 
-class Portal {
- public:
+struct Portal {
   Portal(const std::string& targetTmxMapFileName, int targetPortalId, b2Body* body);
-  virtual ~Portal() = default;
-
-  const std::string& getTargetTmxMapFileName() const;
-  int getTargetPortalId() const;
-  b2Body* getBody() const;
-
- private:
-  std::string _targetTmxMapFileName;
-  int _targetPortalId;
-  b2Body* _body;
+  std::string targetTmxMapFileName;
+  int targetPortalId;
+  b2Body* body;
 };
 
 } // namespace vigilante
