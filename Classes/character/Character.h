@@ -12,7 +12,7 @@
 
 #include "item/Item.h"
 #include "item/Equipment.h"
-#include "map/Portal.h"
+#include "map/GameMap.h"
 
 namespace vigilante {
 
@@ -77,8 +77,8 @@ class Character {
 
   std::set<Item*>& getInRangeItems();
 
-  Portal* getPortal() const;
-  void setPortal(Portal* portal);
+  GameMap::Portal* getPortal() const;
+  void setPortal(GameMap::Portal* portal);
 
   typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
@@ -182,7 +182,7 @@ class Character {
   Character::EquipmentSlots _equipmentSlots;
 
   // The portal to which this character is near.
-  Portal* _portal;
+  GameMap::Portal* _portal;
 
   // Character's Box2D body and fixtures.
   // The fixtures are attached to the _b2body, see map/WorldContactListener.cc

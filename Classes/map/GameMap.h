@@ -13,11 +13,18 @@ namespace vigilante {
 class Character;
 class Item;
 class Player;
-class Portal;
 
 class GameMap {
  public:
   friend class GameMapManager;
+
+  struct Portal {
+    Portal(const std::string& targetTmxMapFileName, int targetPortalId, b2Body* body);
+    std::string targetTmxMapFileName;
+    int targetPortalId;
+    b2Body* body;
+  };
+
   GameMap(b2World* world, const std::string& tmxMapFileName);
   virtual ~GameMap();
 
@@ -26,7 +33,7 @@ class GameMap {
 
   std::unordered_set<Character*>& getNpcs();
   std::unordered_set<Item*>& getDroppedItems();
-  const std::vector<Portal*>& getPortals() const;
+  const std::vector<GameMap::Portal*>& getPortals() const;
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
@@ -40,7 +47,7 @@ class GameMap {
 
   std::unordered_set<Character*> _npcs;
   std::unordered_set<Item*> _droppedItems;
-  std::vector<Portal*> _portals;
+  std::vector<GameMap::Portal*> _portals;
 };
 
 } // namespace vigilante

@@ -5,7 +5,6 @@
 #include "character/Enemy.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
-#include "map/Portal.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
@@ -76,7 +75,7 @@ unordered_set<Item*>& GameMap::getDroppedItems() {
   return _droppedItems;
 }
 
-const vector<Portal*>& GameMap::getPortals() const {
+const vector<GameMap::Portal*>& GameMap::getPortals() const {
   return _portals;
 }
 
@@ -178,5 +177,11 @@ Player* GameMap::createPlayer() const {
   float y = valMap["y"].asFloat();
   return new Player("Aesophor", x, y);
 }
+
+
+GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, b2Body* body)
+    : targetTmxMapFileName(targetTmxMapFileName),
+      targetPortalId(targetPortalId),
+      body(body) {}
 
 } // namespace vigilante

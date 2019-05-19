@@ -5,8 +5,8 @@
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
+#include "map/GameMap.h"
 #include "map/GameMapManager.h"
-#include "map/Portal.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
@@ -113,7 +113,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        Portal* p = static_cast<Portal*>(portalFixture->GetUserData());
+        GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
       }
     }

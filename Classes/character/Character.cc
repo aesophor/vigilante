@@ -656,11 +656,11 @@ const Character::EquipmentSlots& Character::getEquipmentSlots() const {
   return _equipmentSlots;
 }
 
-Portal* Character::getPortal() const {
+GameMap::Portal* Character::getPortal() const {
   return _portal;
 }
 
-void Character::setPortal(Portal* portal) {
+void Character::setPortal(GameMap::Portal* portal) {
   _portal = portal;
 }
 
