@@ -8,58 +8,41 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "GameMap.h"
+#include "WorldContactListener.h"
 #include "character/Character.h"
 #include "item/Item.h"
-#include "map/WorldContactListener.h"
 
 namespace vigilante {
 
 class Player;
 
-class GameMapManager : public cocos2d::Layer {
+class GameMapManager {
  public:
   static GameMapManager* getInstance();
-  virtual bool init() override;
-  virtual ~GameMapManager() = default;
+  virtual ~GameMapManager();
 
-  void load(const std::string& mapFileName);
-  void createDustFx(Character* character);
+  void update(float delta);
 
-  b2World* getWorld() const;
-  cocos2d::TMXTiledMap* getMap() const;
+  GameMap* getGameMap() const;
+  void loadGameMap(const std::string& tmxMapFileName);
+
   Player* getPlayer() const;
+  b2World* getWorld() const;
 
-  std::set<std::unique_ptr<Character>>& getCharacters();
-  std::set<Item*>& getItems();
+  cocos2d::Layer* getLayer() const;
+
+  void createDustFx(Character* character);
 
  private:
   static GameMapManager* _instance;
-  GameMapManager() = default;
+  GameMapManager(const b2Vec2& gravity);
 
-  Player* spawnPlayer();
-
-  static void createRectangles(b2World* world,
-                               cocos2d::TMXTiledMap* map,
-                               const std::string& layerName,
-                               short categoryBits,
-                               bool isCollidable,
-                               float friction);
-
-  static void createPolylines(b2World* world,
-                              cocos2d::TMXTiledMap* map,
-                              const std::string& layerName,
-                              short categoryBits,
-                              bool isCollidable,
-                              float friction);
-  
+  cocos2d::Layer* _layer;
+  GameMap* _gameMap;
+  std::unique_ptr<Player> _player;
   std::unique_ptr<b2World> _world;
   std::unique_ptr<WorldContactListener> _worldContactListener;
-
-  std::set<std::unique_ptr<Character>> _characters;
-  std::set<Item*> _items;
-
-  cocos2d::TMXTiledMap* _map;
-  Player* _player;
 };
 
 } // namespace vigilante

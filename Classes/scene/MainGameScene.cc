@@ -85,8 +85,8 @@ bool MainGameScene::init() {
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
-  _gameMapManager->load("Map/starting_point.tmx");
-  addChild(static_cast<Layer*>(_gameMapManager.get()));
+  _gameMapManager->loadGameMap("Map/starting_point.tmx");
+  addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
@@ -133,18 +133,12 @@ void MainGameScene::update(float delta) {
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
   handleInput(delta);
 
-  for (auto& character : _gameMapManager->getCharacters()) {
-    character->update(delta);
-  }
-  for (auto& item : _gameMapManager->getItems()) {
-    item->update(delta);
-  }
-
+  _gameMapManager->update(delta);
   _floatingDamages->update(delta);
   _notifications->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
-  vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getMap());
+  vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap()->getTmxTiledMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
 
@@ -212,8 +206,8 @@ void MainGameScene::handleInput(float delta) {
       vigilante::Item* i = *(player->getInRangeItems().begin());
       player->addItem(i);
       i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
-      _gameMapManager->getItems().erase(i);
-      _gameMapManager->removeChild(i->getSprite());
+      _gameMapManager->getGameMap()->getDroppedItems().erase(i);
+      _gameMapManager->getLayer()->removeChild(i->getSprite());
 
       _notifications->show("Acquired item: " + i->getName() + ".");
     }

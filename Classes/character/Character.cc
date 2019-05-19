@@ -503,7 +503,7 @@ void Character::equip(Equipment* equipment) {
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  GameMapManager::getInstance()->addChild(_equipmentSpritesheets[type]);
+  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type]);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -514,7 +514,7 @@ void Character::unequip(Equipment::Type equipmentType) {
     _equipmentSlots[equipmentType] = nullptr;
     addItem(e);
 
-    GameMapManager::getInstance()->removeChild(_equipmentSpritesheets[equipmentType]);
+    GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
   }
 }
 
