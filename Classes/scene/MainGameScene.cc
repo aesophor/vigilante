@@ -106,7 +106,7 @@ bool MainGameScene::init() {
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
-  _gameInputManager = unique_ptr<GameInputManager>(GameInputManager::getInstance());
+  _gameInputManager = GameInputManager::getInstance();
   _gameInputManager->activate(this);
 
   // Create b2DebugRenderer.

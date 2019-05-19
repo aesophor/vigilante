@@ -3,6 +3,7 @@
 #include <string>
 
 #include "GameAssetManager.h"
+#include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
 #include "util/Constants.h"
 
@@ -103,7 +104,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustSpritesheet + ".plist");
 
   // Create a scene. It's an autorelease object.
-  Scene* scene = MainGameScene::create();
+  //Scene* scene = MainGameScene::create();
+  Scene* scene = MainMenuScene::create();
   scene->setScaleY(scaleY); // only scale Y or the screen will be squished.
   director->runWithScene(scene);
 

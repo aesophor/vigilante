@@ -44,7 +44,7 @@ class MainGameScene : public cocos2d::Scene {
   std::unique_ptr<vigilante::FloatingDamageManager> _floatingDamages;
   std::unique_ptr<vigilante::NotificationManager> _notifications;
   std::unique_ptr<vigilante::GameMapManager> _gameMapManager;
-  std::unique_ptr<vigilante::GameInputManager> _gameInputManager;
+  vigilante::GameInputManager* _gameInputManager;
 };
 
 #endif // VIGILANTE_MAIN_GAME_SCENE_H_

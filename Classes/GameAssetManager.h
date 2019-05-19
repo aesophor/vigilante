@@ -13,6 +13,9 @@ const std::string kBoldFont = "Font/HeartbitXX2Px.ttf";
 const std::string kTitleFont = "Font/MatchupPro.ttf";
 const float kRegularFontSize = 16.0f;
 
+// MainMenu
+const std::string kMainMenuBg = "Texture/ui/mainmenu_bg.png";
+
 // Shade (an overlay image used for screen fadeout/fadein effects)
 const std::string kShade = "Texture/ui/shade.png";
 
