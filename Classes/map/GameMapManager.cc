@@ -66,7 +66,7 @@ GameMap* GameMapManager::getGameMap() const {
   return _gameMap;
 }
 
-void GameMapManager::loadGameMap(const string& tmxMapFileName) {
+void GameMapManager::loadGameMap(string tmxMapFileName) {
   // Clean up previous GameMap.
   if (_gameMap) {
     _layer->removeChild(_gameMap->_tmxTiledMap);
