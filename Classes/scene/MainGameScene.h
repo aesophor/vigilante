@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cocos2d.h"
+#include "ui/UIImageView.h"
 #include "Box2D/Box2D.h"
 
 #include "map/GameMapManager.h"
@@ -31,6 +32,7 @@ class MainGameScene : public cocos2d::Scene {
  private:
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
+  cocos2d::ui::ImageView* _shade; // used for screen fade during game map transitions.
 
   bool _b2DebugOn;
   b2DebugRenderer* _b2dr; // Autorelease object

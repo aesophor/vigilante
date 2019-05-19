@@ -4,6 +4,7 @@
 
 #include "SimpleAudioEngine.h"
 
+#include "GameAssetManager.h"
 #include "character/Player.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/Constants.h"
@@ -13,6 +14,11 @@
 
 using std::string;
 using std::unique_ptr;
+using cocos2d::FadeIn;
+using cocos2d::FadeOut;
+using cocos2d::CallFunc;
+using cocos2d::Sequence;
+using cocos2d::ui::ImageView;
 using vigilante::kFps;
 using vigilante::kVelocityIterations;
 using vigilante::kPositionIterations;
@@ -59,6 +65,14 @@ bool MainGameScene::init() {
   _hudCamera->setPosition(0, 0);
   addChild(_hudCamera);
   
+  // Initialize shade.
+  _shade = ImageView::create(vigilante::asset_manager::kShade); // 1px * 1px
+  _shade->setScaleX(winSize.width);
+  _shade->setScaleY(winSize.height);
+  _shade->setAnchorPoint({0, 0});
+  _shade->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _shade->runAction(FadeOut::create(.3f));
+  addChild(_shade, 100);
 
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
@@ -173,6 +187,23 @@ void MainGameScene::handleInput(float delta) {
   }
   
   if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
+    return;
+  }
+
+  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+    if (player->getPortal()) {
+      _shade->runAction(Sequence::create(
+        FadeIn::create(.3f),
+        CallFunc::create([=]() {
+          int targetPortalId = player->getPortal()->getTargetPortalId();
+          _gameMapManager->loadGameMap(player->getPortal()->getTargetTmxMapFileName());
+          auto pos = _gameMapManager->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+          player->reposition(pos.x, pos.y);
+        }),
+        FadeOut::create(.5f),
+        nullptr
+      ));
+    }
     return;
   }
 

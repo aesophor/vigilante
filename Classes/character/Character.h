@@ -21,6 +21,7 @@ class Character {
   virtual ~Character();
   virtual void update(float delta);
 
+  virtual void reposition(float x, float y);
   virtual void moveLeft();
   virtual void moveRight();
   virtual void jump();

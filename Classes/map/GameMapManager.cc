@@ -33,9 +33,9 @@ GameMapManager* GameMapManager::getInstance() {
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
       _gameMap(),
-      _player(),
+      _worldContactListener(new WorldContactListener()),
       _world(new b2World(gravity)),
-      _worldContactListener(new WorldContactListener()) {
+      _player() {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
@@ -80,14 +80,13 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
     delete _gameMap;
   }
 
-  // Load the new GameMap.
   _gameMap = new GameMap(_world.get(), tmxMapFileName);
   _layer->addChild(_gameMap->_tmxTiledMap, 0);
 
   // If the player object hasn't been created, spawn it.
   if (!_player) {
     _player = unique_ptr<Player>(_gameMap->createPlayer());
-    _layer->addChild(_player->getBodySpritesheet());
+    _layer->addChild(_player->getBodySpritesheet(), 31);
   }
 
   for (auto npc : _gameMap->_npcs) {

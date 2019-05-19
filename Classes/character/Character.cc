@@ -173,6 +173,10 @@ void Character::update(float delta) {
   }
 }
 
+void Character::reposition(float x, float y) {
+  _b2body->SetTransform({x, y}, 0);
+}
+
 void Character::defineBody(b2BodyType bodyType,
                            short bodyCategoryBits,
                            short bodyMaskBits,
@@ -657,7 +661,6 @@ Portal* Character::getPortal() const {
 }
 
 void Character::setPortal(Portal* portal) {
-  cocos2d::log("set portal!");
   _portal = portal;
 }
 

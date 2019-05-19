@@ -107,14 +107,13 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       break;
     }
     // When a character gets close to a portal, register the portal to the character.
-    case category_bits::kPlayer | category_bits::kPortal: {
+    case category_bits::kFeet | category_bits::kPortal: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
       
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        b2Body* portalBody = portalFixture->GetBody();
-        Portal* p = GameMapManager::getInstance()->getGameMap()->getPortals().at(portalBody);
+        Portal* p = static_cast<Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
       }
     }
@@ -189,7 +188,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       break;
     }
     // When a character leaves a portal, clear the portal from the character.
-    case category_bits::kPlayer | category_bits::kPortal: {
+    case category_bits::kFeet | category_bits::kPortal: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
       

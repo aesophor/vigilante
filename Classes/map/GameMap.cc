@@ -10,9 +10,9 @@
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
-using std::string;
+using std::vector;
 using std::unordered_set;
-using std::unordered_map;
+using std::string;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -53,9 +53,8 @@ GameMap::~GameMap() {
   for (auto item : _droppedItems) {
     delete item;
   }
-
-  for (auto& p : _portals) {
-    delete p.second;
+  for (auto portal : _portals) {
+    delete portal;
   }
 }
 
@@ -77,7 +76,7 @@ unordered_set<Item*>& GameMap::getDroppedItems() {
   return _droppedItems;
 }
 
-const unordered_map<b2Body*, Portal*>& GameMap::getPortals() const {
+const vector<Portal*>& GameMap::getPortals() const {
   return _portals;
 }
 
@@ -157,16 +156,19 @@ void GameMap::createPortals() {
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
+    // This portal object will be deleted at GameMap::~GameMap()
+    Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, body);
+    _portals.push_back(portal);
+
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
       .setSensor(true)
       .friction(0)
+      .setUserData(portal)
       .buildFixture();
 
     _tmxTiledMapBodies.insert(body);
-    _portals[body] = new Portal(targetTmxMapFilePath, targetPortalId);
   }
-
 }
 
 Player* GameMap::createPlayer() const {
