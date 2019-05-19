@@ -40,9 +40,9 @@ class GameMapManager {
 
   cocos2d::Layer* _layer;
   GameMap* _gameMap;
-  std::unique_ptr<Player> _player;
-  std::unique_ptr<b2World> _world;
   std::unique_ptr<WorldContactListener> _worldContactListener;
+  std::unique_ptr<b2World> _world;
+  std::unique_ptr<Player> _player;
 };
 
 } // namespace vigilante

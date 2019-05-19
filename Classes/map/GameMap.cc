@@ -5,12 +5,14 @@
 #include "character/Enemy.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
+#include "map/Portal.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
 
 using std::string;
 using std::unordered_set;
+using std::unordered_map;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -23,12 +25,15 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPolylines("Ground", category_bits::kGround, true, 2);
   createPolylines("Wall", category_bits::kWall, true, 1);
   createRectangles("Platform", category_bits::kPlatform, true, 2);
-  createRectangles("Portal", category_bits::kPortal, false, 0);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
+  createPortals();
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Castle Guard", 300, 100);
   _npcs.insert(enemy);
+
+  Enemy* enemy2 = new Enemy("Castle Guard", 250, 100);
+  _npcs.insert(enemy2);
 
   // Spawn an item.
   for (int i = 0; i < 10; i++) {
@@ -47,6 +52,10 @@ GameMap::~GameMap() {
   }
   for (auto item : _droppedItems) {
     delete item;
+  }
+
+  for (auto& p : _portals) {
+    delete p.second;
   }
 }
 
@@ -68,13 +77,17 @@ unordered_set<Item*>& GameMap::getDroppedItems() {
   return _droppedItems;
 }
 
+const unordered_map<b2Body*, Portal*>& GameMap::getPortals() const {
+  return _portals;
+}
+
 
 void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
-  TMXObjectGroup* portals = _tmxTiledMap->getObjectGroup(layerName);
+  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   
-  for (auto& obj : portals->getObjects()) {
-    auto& valMap = obj.asValueMap();
+  for (auto& rectObj : objGroup->getObjects()) {
+    auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
     float w = valMap["width"].asFloat();
@@ -99,8 +112,8 @@ void GameMap::createRectangles(const string& layerName, short categoryBits, bool
 void GameMap::createPolylines(const string& layerName, short categoryBits, bool collidable, float friction) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
-  for (auto& obj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
-    auto& valMap = obj.asValueMap();
+  for (auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
+    auto& valMap = lineObj.asValueMap();
     float xRef = valMap["x"].asFloat();
     float yRef = valMap["y"].asFloat();
 
@@ -126,6 +139,34 @@ void GameMap::createPolylines(const string& layerName, short categoryBits, bool 
 
     _tmxTiledMapBodies.insert(body);
   }
+}
+
+void GameMap::createPortals() {
+  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
+    auto& valMap = rectObj.asValueMap();
+    float x = valMap["x"].asFloat();
+    float y = valMap["y"].asFloat();
+    float w = valMap["width"].asFloat();
+    float h = valMap["height"].asFloat();
+    string targetTmxMapFilePath = valMap["targetMap"].asString();
+    int targetPortalId = valMap["targetPortalID"].asInt();
+
+    b2BodyBuilder bodyBuilder(_world);
+
+    b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
+      .position(x + w / 2, y + h / 2, kPpm)
+      .buildBody();
+
+    bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
+      .categoryBits(category_bits::kPortal)
+      .setSensor(true)
+      .friction(0)
+      .buildFixture();
+
+    _tmxTiledMapBodies.insert(body);
+    _portals[body] = new Portal(targetTmxMapFilePath, targetPortalId);
+  }
+
 }
 
 Player* GameMap::createPlayer() const {

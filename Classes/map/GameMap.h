@@ -2,6 +2,7 @@
 #define VIGILANTE_GAME_MAP_H_
 
 #include <unordered_set>
+#include <unordered_map>
 #include <string>
 
 #include "cocos2d.h"
@@ -12,6 +13,7 @@ namespace vigilante {
 class Character;
 class Item;
 class Player;
+class Portal;
 
 class GameMap {
  public:
@@ -24,10 +26,12 @@ class GameMap {
 
   std::unordered_set<Character*>& getNpcs();
   std::unordered_set<Item*>& getDroppedItems();
+  const std::unordered_map<b2Body*, Portal*>& getPortals() const;
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPolylines(const std::string& layerName, short categoryBits, bool collidable, float friction);
+  void createPortals();
   Player* createPlayer() const;
 
   b2World* _world;
@@ -36,6 +40,7 @@ class GameMap {
 
   std::unordered_set<Character*> _npcs;
   std::unordered_set<Item*> _droppedItems;
+  std::unordered_map<b2Body*, Portal*> _portals;
 };
 
 } // namespace vigilante

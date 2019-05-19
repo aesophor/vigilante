@@ -27,7 +27,6 @@ using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
 
-
 namespace vigilante {
 
 const float Character::_kBaseMovingSpeed = .25f;
@@ -62,6 +61,7 @@ Character::Character(const string& name, float x, float y)
       _isAlerted(),
       _inventory(),
       _equipmentSlots(),
+      _portal(),
       _b2body(),
       _bodyFixture(),
       _feetFixture(),
@@ -650,6 +650,15 @@ const Character::Inventory& Character::getInventory() const {
 
 const Character::EquipmentSlots& Character::getEquipmentSlots() const {
   return _equipmentSlots;
+}
+
+Portal* Character::getPortal() const {
+  return _portal;
+}
+
+void Character::setPortal(Portal* portal) {
+  cocos2d::log("set portal!");
+  _portal = portal;
 }
 
 

@@ -35,8 +35,8 @@ namespace vigilante {
 
 Player::Player(const std::string& name, float x, float y) : Character(name, x, y) {
   short bodyCategoryBits = kPlayer;
-  short bodyMaskBits = kPortal | kEnemy | kMeleeWeapon;
-  short feetMaskBits = kGround | kPlatform | kWall | kItem;
+  short bodyMaskBits = kEnemy | kMeleeWeapon;
+  short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kEnemy | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
   defineTexture(asset_manager::kPlayerSpritesheet, x, y);

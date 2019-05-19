@@ -37,8 +37,8 @@ namespace vigilante {
 
 Enemy::Enemy(const std::string& name, float x, float y) : Character(name, x, y), Bot(this) {
   short bodyCategoryBits = kEnemy;
-  short bodyMaskBits = kPortal | kPlayer | kMeleeWeapon | kCliffMarker;
-  short feetMaskBits = kGround | kPlatform | kWall | kItem;
+  short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker;
+  short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kPlayer | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
   defineTexture(asset_manager::kPlayerSpritesheet, x, y);

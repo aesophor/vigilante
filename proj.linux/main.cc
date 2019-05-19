@@ -1,8 +1,8 @@
-#include "../Classes/AppDelegate.h"
-
 #include <iostream>
 #include <string>
 #include <stdexcept>
+
+#include "../Classes/AppDelegate.h"
 
 using std::cerr;
 using std::endl;
