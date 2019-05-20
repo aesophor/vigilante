@@ -6,6 +6,7 @@
 #include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
 #include "util/Constants.h"
+#include "util/Letterbox.h"
 
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -23,6 +24,8 @@ using namespace CocosDenshion;
 #endif
 
 using std::string;
+using vigilante::kVirtualWidth;
+using vigilante::kVirtualHeight;
 
 USING_NS_CC;
 
@@ -69,32 +72,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setOpenGLView(glview);
   }
 
+  glview->setDesignResolutionSize(kVirtualWidth, kVirtualHeight, ResolutionPolicy::EXACT_FIT);
+
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
-
-  // Perform letterbox scaling (solution provided by @makalele)
-  // http://discuss.cocos2d-x.org/t/letterbox-scaling/19408/2
-  Size size = glview->getFrameSize();
-  float virtualWidth = vigilante::kVirtualWidth; // 600
-  float virtualHeight = vigilante::kVirtualHeight; // 300
-  float screenWidth = size.width;
-  float screenHeight = size.height;
-  log("screensize: %f %f", screenWidth, screenHeight);
-  float virtualRatio = virtualWidth / virtualHeight;
-  float screenRatio = screenWidth / screenHeight;
-  float scaleY = 1;
-
-  glview->setDesignResolutionSize(virtualWidth, virtualHeight, ResolutionPolicy::EXACT_FIT);
-
-  if (screenRatio > virtualRatio) {
-    // Left and right letterboxing
-    scaleY = virtualRatio / screenRatio;
-  } else if (screenRatio < virtualRatio) {
-    // Up and bottom letterboxing
-    //scaleX = screenRatio / virtualRatio;
-    scaleY = screenRatio / virtualRatio;
-  }
-  log("scaleY=%f", scaleY);
 
   // Load resources
   cocos2d::log("[Dust] loading textures");
@@ -106,7 +87,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // Create a scene. It's an autorelease object.
   //Scene* scene = MainGameScene::create();
   Scene* scene = MainMenuScene::create();
-  scene->setScaleY(scaleY); // only scale Y or the screen will be squished.
+  vigilante::letterboxScale(scene);
   director->runWithScene(scene);
 
   return true;

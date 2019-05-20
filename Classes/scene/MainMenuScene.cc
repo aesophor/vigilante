@@ -3,6 +3,7 @@
 #include "GameAssetManager.h"
 #include "MainGameScene.h"
 #include "ui/Colorscheme.h"
+#include "util/Letterbox.h"
 
 using std::array;
 using std::string;
@@ -75,9 +76,12 @@ void MainMenuScene::handleInput(float delta) {
     _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
   } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
-      case Option::NEW_GAME:
-        Director::getInstance()->pushScene(MainGameScene::create());
+      case Option::NEW_GAME: {
+        Scene* scene = MainGameScene::create();
+        vigilante::letterboxScale(scene);
+        Director::getInstance()->pushScene(scene);
         break;
+      }
       case Option::LOAD_GAME:
         break;
       case Option::OPTIONS:
