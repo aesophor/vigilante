@@ -78,7 +78,6 @@ void MainMenuScene::handleInput(float delta) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
         Scene* scene = MainGameScene::create();
-        vigilante::letterboxScale(scene);
         Director::getInstance()->pushScene(scene);
         break;
       }

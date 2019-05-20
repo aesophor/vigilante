@@ -72,7 +72,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setOpenGLView(glview);
   }
 
-  glview->setDesignResolutionSize(kVirtualWidth, kVirtualHeight, ResolutionPolicy::EXACT_FIT);
+  glview->setDesignResolutionSize(kVirtualWidth, kVirtualHeight, ResolutionPolicy::SHOW_ALL);
 
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
@@ -84,10 +84,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeSpritesheet + ".plist");
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustSpritesheet + ".plist");
 
-  // Create a scene. It's an autorelease object.
-  //Scene* scene = MainGameScene::create();
+  // Create a scene (auto-release object).
   Scene* scene = MainMenuScene::create();
-  vigilante::letterboxScale(scene);
   director->runWithScene(scene);
 
   return true;
