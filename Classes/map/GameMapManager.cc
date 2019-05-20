@@ -41,29 +41,22 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
   _world->SetContactListener(_worldContactListener.get());
 }
 
-GameMapManager::~GameMapManager() {
-  if (_gameMap) {
-    delete _gameMap;
-  }
-}
-
-
 void GameMapManager::update(float delta) {
   if (_player) {
     _player->update(delta);
   }
 
-  for (auto npc : _gameMap->getNpcs()) {
+  for (auto& npc : _gameMap->getNpcs()) {
     npc->update(delta);
   }
-  for (auto item : _gameMap->getDroppedItems()) {
+  for (auto& item : _gameMap->getDroppedItems()) {
     item->update(delta);
   }
 }
 
 
 GameMap* GameMapManager::getGameMap() const {
-  return _gameMap;
+  return _gameMap.get();
 }
 
 void GameMapManager::loadGameMap(const string& tmxMapFileName) {
@@ -71,16 +64,16 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (_gameMap) {
     _layer->removeChild(_gameMap->_tmxTiledMap);
 
-    for (auto npc : _gameMap->_npcs) {
+    for (auto& npc : _gameMap->_npcs) {
       _layer->removeChild(npc->getBodySpritesheet());
     }
-    for (auto item : _gameMap->_droppedItems) {
+    for (auto& item : _gameMap->_droppedItems) {
       _layer->removeChild(item->getSprite());
     }
-    delete _gameMap;
+    _gameMap.reset();
   }
 
-  _gameMap = new GameMap(_world.get(), tmxMapFileName);
+  _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
   _layer->addChild(_gameMap->_tmxTiledMap, 0);
 
   // If the player object hasn't been created, spawn it.
@@ -89,10 +82,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
     _layer->addChild(_player->getBodySpritesheet(), 31);
   }
 
-  for (auto npc : _gameMap->_npcs) {
+  for (auto& npc : _gameMap->_npcs) {
     _layer->addChild(npc->getBodySpritesheet());
   }
-  for (auto item : _gameMap->_droppedItems) {
+  for (auto& item : _gameMap->_droppedItems) {
     _layer->addChild(item->getSprite());
   }
 }

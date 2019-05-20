@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
@@ -31,9 +32,9 @@ class GameMap {
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
 
-  std::unordered_set<Character*>& getNpcs();
-  std::unordered_set<Item*>& getDroppedItems();
-  const std::vector<GameMap::Portal*>& getPortals() const;
+  std::unordered_set<std::unique_ptr<Character>>& getNpcs();
+  std::unordered_set<std::unique_ptr<Item>>& getDroppedItems();
+  const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const;
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
@@ -45,9 +46,9 @@ class GameMap {
   std::unordered_set<b2Body*> _tmxTiledMapBodies;
   cocos2d::TMXTiledMap* _tmxTiledMap;
 
-  std::unordered_set<Character*> _npcs;
-  std::unordered_set<Item*> _droppedItems;
-  std::vector<GameMap::Portal*> _portals;
+  std::unordered_set<std::unique_ptr<Character>> _npcs;
+  std::unordered_set<std::unique_ptr<Item>> _droppedItems;
+  std::vector<std::unique_ptr<GameMap::Portal>> _portals;
 };
 
 } // namespace vigilante

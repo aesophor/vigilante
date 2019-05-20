@@ -20,7 +20,7 @@ class Player;
 class GameMapManager {
  public:
   static GameMapManager* getInstance();
-  virtual ~GameMapManager();
+  virtual ~GameMapManager() = default;
 
   void update(float delta);
 
@@ -39,9 +39,9 @@ class GameMapManager {
   GameMapManager(const b2Vec2& gravity);
 
   cocos2d::Layer* _layer;
-  GameMap* _gameMap;
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
+  std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
 };
 

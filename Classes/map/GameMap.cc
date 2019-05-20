@@ -12,6 +12,7 @@
 using std::vector;
 using std::unordered_set;
 using std::string;
+using std::unique_ptr;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -29,31 +30,21 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Castle Guard", 300, 100);
-  _npcs.insert(enemy);
+  _npcs.insert(unique_ptr<Enemy>(enemy));
 
   Enemy* enemy2 = new Enemy("Castle Guard", 250, 100);
-  _npcs.insert(enemy2);
+  _npcs.insert(unique_ptr<Enemy>(enemy2));
 
   // Spawn an item.
   for (int i = 0; i < 10; i++) {
     Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeSpritesheet, 200, 80);
-    _droppedItems.insert(item);
+    _droppedItems.insert(unique_ptr<Item>(item));
   }
 }
 
 GameMap::~GameMap() {
   for (auto body : _tmxTiledMapBodies) {
     _world->DestroyBody(body);
-  }
-
-  for (auto npc : _npcs) {
-    delete npc;
-  }
-  for (auto item : _droppedItems) {
-    delete item;
-  }
-  for (auto portal : _portals) {
-    delete portal;
   }
 }
 
@@ -67,15 +58,15 @@ TMXTiledMap* GameMap::getTmxTiledMap() const {
 }
 
 
-unordered_set<Character*>& GameMap::getNpcs() {
+unordered_set<unique_ptr<Character>>& GameMap::getNpcs() {
   return _npcs;
 }
 
-unordered_set<Item*>& GameMap::getDroppedItems() {
+unordered_set<unique_ptr<Item>>& GameMap::getDroppedItems() {
   return _droppedItems;
 }
 
-const vector<GameMap::Portal*>& GameMap::getPortals() const {
+const vector<unique_ptr<GameMap::Portal>>& GameMap::getPortals() const {
   return _portals;
 }
 
@@ -157,7 +148,7 @@ void GameMap::createPortals() {
 
     // This portal object will be deleted at GameMap::~GameMap()
     Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, body);
-    _portals.push_back(portal);
+    _portals.push_back(unique_ptr<Portal>(portal));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)

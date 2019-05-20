@@ -10,7 +10,7 @@ namespace vigilante {
 class GameInputManager {
  public:
   static GameInputManager* getInstance();
-  virtual ~GameInputManager();
+  virtual ~GameInputManager() = default;
 
   void activate(cocos2d::Scene* scene);
   void deactivate();

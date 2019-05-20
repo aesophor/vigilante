@@ -20,13 +20,6 @@ GameInputManager* GameInputManager::getInstance() {
 
 GameInputManager::GameInputManager() : _scene(), _keyboardEvLstnr() {}
 
-GameInputManager::~GameInputManager() {
-  if (_keyboardEvLstnr) {
-    _keyboardEvLstnr->release();
-    _keyboardEvLstnr = nullptr;
-  }
-}
-
 
 void GameInputManager::activate(Scene* scene) {
   _scene = scene;
@@ -60,5 +53,6 @@ bool GameInputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
   // std::set::erase() returns the number of elements erased.
   return static_cast<bool>(_pressedKeys.erase(keyCode));
 }
+
 
 } // namespace vigilante

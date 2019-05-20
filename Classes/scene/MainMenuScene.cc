@@ -13,9 +13,10 @@ using cocos2d::Scene;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
-using vigilante::GameInputManager;
 using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
+
+namespace vigilante {
 
 const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
   "New Game",
@@ -77,6 +78,7 @@ void MainMenuScene::handleInput(float delta) {
   } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
+        _inputMgr->deactivate();
         Scene* scene = MainGameScene::create();
         Director::getInstance()->pushScene(scene);
         break;
@@ -92,3 +94,5 @@ void MainMenuScene::handleInput(float delta) {
     }
   }
 }
+
+} // namespace vigilante

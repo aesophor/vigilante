@@ -12,6 +12,8 @@
 
 #include "input/GameInputManager.h"
 
+namespace vigilante {
+
 class MainMenuScene : public cocos2d::Scene {
  public:
   CREATE_FUNC(MainMenuScene);
@@ -35,7 +37,9 @@ class MainMenuScene : public cocos2d::Scene {
   std::vector<cocos2d::Label*> _labels;
   int _current;
 
-  std::unique_ptr<vigilante::GameInputManager> _inputMgr;
+  std::unique_ptr<GameInputManager> _inputMgr;
 };
+
+} // namespace vigilante
 
 #endif // VIGILANTE_MAIN_MENU_SCENE_H_

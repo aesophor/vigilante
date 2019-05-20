@@ -6,6 +6,7 @@
 
 #include "GameAssetManager.h"
 #include "character/Player.h"
+#include "input/GameInputManager.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/Constants.h"
@@ -15,28 +16,20 @@
 
 using std::string;
 using std::unique_ptr;
+using std::shared_ptr;
+using cocos2d::Vec3;
+using cocos2d::Camera;
+using cocos2d::CameraFlag;
+using cocos2d::Director;
+using cocos2d::Layer;
 using cocos2d::FadeIn;
 using cocos2d::FadeOut;
 using cocos2d::CallFunc;
 using cocos2d::Sequence;
+using cocos2d::EventKeyboard;
 using cocos2d::ui::ImageView;
-using vigilante::kFps;
-using vigilante::kVelocityIterations;
-using vigilante::kPositionIterations;
-using vigilante::kPpm;
-using vigilante::kGravity;
-using vigilante::Player;
-using vigilante::GameMap;
-using vigilante::Hud;
-using vigilante::FloatingDamageManager;
-using vigilante::NotificationManager;
-using vigilante::PauseMenu;
-using vigilante::Equipment;
-using vigilante::GameMapManager;
-using vigilante::GameInputManager;
 
-USING_NS_CC;
-
+namespace vigilante {
 
 MainGameScene::~MainGameScene() {}
 
@@ -51,7 +44,7 @@ bool MainGameScene::init() {
   // Initialize the default camera from "perspective" to "orthographic",
   // and use it as the game world camera.
   auto winSize = Director::getInstance()->getWinSize();
-  log("winSize: w=%f h=%f", winSize.width, winSize.height);
+  cocos2d::log("winSize: w=%f h=%f", winSize.width, winSize.height);
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(0, 0);
@@ -106,13 +99,10 @@ bool MainGameScene::init() {
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
-  _gameInputManager = GameInputManager::getInstance();
-  _gameInputManager->activate(this);
+  GameInputManager::getInstance()->activate(this);
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
-  _b2dr->retain();
-  _b2DebugOn = true;
   addChild(_b2dr);
 
   _hud->setPlayer(_gameMapManager->getPlayer());
@@ -121,7 +111,6 @@ bool MainGameScene::init() {
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
-  _isPaused = false;
   addChild(_pauseMenu->getLayer(), 95);
 
   // Tick the box2d world.
@@ -130,24 +119,13 @@ bool MainGameScene::init() {
 }
 
 void MainGameScene::update(float delta) {
-  if (_isPaused) {
-    _pauseMenu->handleInput();
+  handleInput(delta);
 
-    // Pause/resume game.
-    if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
-      if (!_isPaused) {
-        pauseGame();
-      } else {
-        resumeGame();
-      }
-      _isPaused = !_isPaused;
-      return;
-    }
+  if (_pauseMenu->getLayer()->isVisible()) {
     return;
   }
 
   getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
-  handleInput(delta);
 
   _gameMapManager->update(delta);
   _floatingDamages->update(delta);
@@ -159,40 +137,34 @@ void MainGameScene::update(float delta) {
 }
 
 void MainGameScene::handleInput(float delta) {
+  auto inputMgr = GameInputManager::getInstance();
   auto player = _gameMapManager->getPlayer();
 
   // Toggle b2dr (b2DebugRenderer)
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
-    if (_b2DebugOn) {
-      removeChild(_b2dr);
-      _notifications->show("[b2dr] is off. Ref=" + std::to_string(_b2dr->getReferenceCount()));
-    } else {
-      addChild(_b2dr);
-      _notifications->show("[b2dr] is off. Ref=" + std::to_string(_b2dr->getReferenceCount()));
-    }
-    _b2DebugOn = !_b2DebugOn;
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
+    bool isVisible = _b2dr->isVisible();
+    _b2dr->setVisible(!isVisible);
+    _notifications->show("[b2dr] is " + std::to_string(!isVisible));
   }
 
-  // Pause/resume game.
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
-    if (!_isPaused) {
-      pauseGame();
-    } else {
-      resumeGame();
-    }
-    _isPaused = !_isPaused;
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
+    bool isVisible = _pauseMenu->getLayer()->isVisible();
+    _pauseMenu->getLayer()->setVisible(!isVisible);
+    _pauseMenu->update();
+    return;
+  }
+  if (_pauseMenu->getLayer()->isVisible()) {
+    _pauseMenu->handleInput();
     return;
   }
 
-  if (_isPaused) {
-    _pauseMenu->handleInput();
-  }
-  
+
   if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
     return;
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (player->getPortal()) {
       _shade->runAction(Sequence::create(
         FadeIn::create(.3f),
@@ -212,24 +184,24 @@ void MainGameScene::handleInput(float delta) {
     return;
   }
 
-  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     player->crouch();
-    if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+    if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
       player->jumpDown();
     }
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
     player->attack();
   }
 
-  if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     player->moveLeft();
-  } else if (_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+  } else if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     player->moveRight();
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
     if (player->isWeaponSheathed() && !player->isUnsheathingWeapon()) {
       player->unsheathWeapon();
     } else if (!player->isWeaponSheathed() && !player->isSheathingWeapon()) {
@@ -237,38 +209,34 @@ void MainGameScene::handleInput(float delta) {
     }
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
     if (!player->getInRangeItems().empty()) {
       vigilante::Item* i = *(player->getInRangeItems().begin());
       player->addItem(i);
       i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
-      _gameMapManager->getGameMap()->getDroppedItems().erase(i);
+      for (auto& item : _gameMapManager->getGameMap()->getDroppedItems()) {
+        if (item.get() == i) {
+          _gameMapManager->getGameMap()->getDroppedItems().erase(item);
+        }
+      }
       _gameMapManager->getLayer()->removeChild(i->getSprite());
 
       _notifications->show("Acquired item: " + i->getName() + ".");
     }
   }
 
-  if (_gameInputManager->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
     player->jump();
   }
 
-  if (player->isCrouching() && !_gameInputManager->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (player->isCrouching() && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     player->getUp();
   }
-}
-
-
-void MainGameScene::pauseGame() {
-  _pauseMenu->update();
-  _pauseMenu->getLayer()->setVisible(true);
-}
-
-void MainGameScene::resumeGame() {
-  _pauseMenu->getLayer()->setVisible(false);
 }
 
 
 b2World* MainGameScene::getWorld() const {
   return _gameMapManager->getWorld();
 }
+
+} // namespace vigilante

@@ -85,7 +85,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustSpritesheet + ".plist");
 
   // Create a scene (auto-release object).
-  Scene* scene = MainMenuScene::create();
+  Scene* scene = vigilante::MainMenuScene::create();
   director->runWithScene(scene);
 
   return true;
