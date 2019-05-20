@@ -3,7 +3,6 @@
 #include "GameAssetManager.h"
 #include "MainGameScene.h"
 #include "ui/Colorscheme.h"
-#include "util/Letterbox.h"
 
 using std::array;
 using std::string;

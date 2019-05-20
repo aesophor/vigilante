@@ -6,7 +6,6 @@
 #include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
 #include "util/Constants.h"
-#include "util/Letterbox.h"
 
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
