@@ -41,7 +41,7 @@ Player::Player(const std::string& name, float x, float y) : Character(name, x, y
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kEnemy | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(asset_manager::kPlayerTextureResPath, x, y);
+  defineTexture(_profile.textureResPath, x, y);
 }
 
 

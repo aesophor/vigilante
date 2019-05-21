@@ -158,11 +158,11 @@ void Character::update(float delta) {
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
-    shape->m_p = {-15.0f / kPpm, 0};
+    shape->m_p = {-_profile.attackRange / kPpm, 0};
   } else if (_isFacingRight && _bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(false);
     b2CircleShape* shape = static_cast<b2CircleShape*>(_weaponFixture->GetShape());
-    shape->m_p = {15.0f / kPpm, 0};
+    shape->m_p = {_profile.attackRange / kPpm, 0};
   }
 
   // Sync the body sprite with its b2body.
@@ -205,10 +205,12 @@ void Character::defineBody(b2BodyType bodyType,
   // Fixture position in box2d is relative to b2body's position.
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   b2Vec2 vertices[4];
-  vertices[0] = {-5 / scaleFactor,  20 / scaleFactor};
-  vertices[1] = { 5 / scaleFactor,  20 / scaleFactor};
-  vertices[2] = {-5 / scaleFactor, -14 / scaleFactor};
-  vertices[3] = { 5 / scaleFactor, -14 / scaleFactor};
+  float bw = _profile.bodyWidth;
+  float bh = _profile.bodyHeight;
+  vertices[0] = {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor};
+  vertices[1] = { bw / 2 / scaleFactor,  bh / 2 / scaleFactor};
+  vertices[2] = {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
+  vertices[3] = { bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
 
   _bodyFixture = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
@@ -219,10 +221,10 @@ void Character::defineBody(b2BodyType bodyType,
 
   // Create feet fixture.
   b2Vec2 feetVertices[4];
-  feetVertices[0] = {(-5 + 1) / scaleFactor, 0};
-  feetVertices[1] = {( 5 - 1) / scaleFactor, 0};
-  feetVertices[2] = {(-5 + 1) / scaleFactor, (-14 - 1) / scaleFactor};
-  feetVertices[3] = {( 5 - 1) / scaleFactor, (-14 - 1) / scaleFactor};
+  feetVertices[0] = {(-bw / 2 + 1) / scaleFactor, 0};
+  feetVertices[1] = {( bw / 2 - 1) / scaleFactor, 0};
+  feetVertices[2] = {(-bw / 2 + 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
+  feetVertices[3] = {( bw / 2 - 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
 
   _feetFixture = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
     .categoryBits(category_bits::kFeet)
@@ -232,7 +234,8 @@ void Character::defineBody(b2BodyType bodyType,
 
 
   // Create weapon fixture.
-  _weaponFixture = bodyBuilder.newCircleFixture({15.0f, 0}, 15.0f, kPpm)
+  float atkRange = _profile.attackRange;
+  _weaponFixture = bodyBuilder.newCircleFixture({atkRange, 0}, atkRange, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(weaponMaskBits)
     .setSensor(true)
@@ -268,7 +271,8 @@ void Character::loadBodyAnimations(const string& bodyTextureResPath) {
 
   // Select a frame as default look for this sprite.
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
-  _bodySprite->setScale(1.32f);
+  _bodySprite->setScaleX(_profile.spriteScaleX);
+  _bodySprite->setScaleY(_profile.spriteScaleY);
 
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
@@ -296,7 +300,8 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   string framePrefix = asset_manager::getFrameNamePrefix(equipment->getSpritesPath());
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
-  _equipmentSprites[type]->setScale(1.3f);
+  _equipmentSprites[type]->setScaleX(_profile.spriteScaleX);
+  _equipmentSprites[type]->setScaleY(_profile.spriteScaleY);
 
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();

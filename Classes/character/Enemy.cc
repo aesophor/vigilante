@@ -36,12 +36,14 @@ using vigilante::category_bits::kObject;
 namespace vigilante {
 
 Enemy::Enemy(const std::string& name, float x, float y) : Character(name, x, y), Bot(this) {
+  _profile.import("Resources/Database/player.json");
+
   short bodyCategoryBits = kEnemy;
   short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kPlayer | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(asset_manager::kPlayerTextureResPath, x, y);
+  defineTexture(_profile.textureResPath, x, y);
 }
 
 
