@@ -6,8 +6,11 @@
 
 namespace vigilante {
 
+class Character;
+
 struct CharacterProfile {
-  CharacterProfile(const std::string& jsonFileName);
+  CharacterProfile() = default;
+  void import(const std::string& jsonFileName);
 
   std::string textureResPath;
   float spriteOffsetX;

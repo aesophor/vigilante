@@ -1,6 +1,7 @@
 #include "Character.h"
 
 #include "GameAssetManager.h"
+#include "character/data/CharacterProfile.h"
 #include "map/GameMapManager.h"
 #include "ui/damage/FloatingDamageManager.h"
 #include "ui/notification/NotificationManager.h"
@@ -65,17 +66,7 @@ Character::Character(const string& name, float x, float y)
       _isInvincible(),
       _isKilled(),
       _isSetToKill(),
-      _name(name),
-      _str(5),
-      _dex(5),
-      _int(5),
-      _luk(5),
-      _health(100),
-      _magicka(100),
-      _stamina(100),
-      _fullHealth(100),
-      _fullMagicka(100),
-      _fullStamina(100),
+      _profile(),
       _lockedOnTarget(),
       _isAlerted(),
       _inventory(),
@@ -506,10 +497,10 @@ void Character::receiveDamage(Character* source, int damage) {
     return;
   }
 
-  _health -= damage;
+  _profile.health -= damage;
   FloatingDamageManager::getInstance()->show(this, damage);
 
-  if (_health <= 0) {
+  if (_profile.health <= 0) {
     source->getInRangeTargets().erase(this);
     Character::setCategoryBits(_bodyFixture, category_bits::kDestroyed);
     _isSetToKill = true;
@@ -628,36 +619,8 @@ void Character::setInvincible(bool invincible) {
 }
 
 
-string Character::getName() const {
-  return _name;
-}
-
-void Character::setName(const string& name) {
-  _name = name;
-}
-
-int Character::getHealth() const {
-  return _health;
-}
-
-int Character::getMagicka() const {
-  return _magicka;
-}
-
-int Character::getStamina() const {
-  return _stamina;
-}
-
-int Character::getFullHealth() const {
-  return _fullHealth;
-}
-
-int Character::getFullMagicka() const {
-  return _fullMagicka;
-}
-
-int Character::getFullStamina() const {
-  return _fullStamina;
+CharacterProfile& Character::getProfile() {
+  return _profile;
 }
 
 

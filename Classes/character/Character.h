@@ -10,6 +10,7 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "character/data/CharacterProfile.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "map/GameMap.h"
@@ -18,6 +19,7 @@ namespace vigilante {
 
 class Character {
  public: 
+  friend class CharacterProfile;
   virtual ~Character();
   virtual void update(float delta);
 
@@ -60,14 +62,7 @@ class Character {
   void setCrouching(bool crouching);
   void setInvincible(bool invincible);
 
-  std::string getName() const;
-  void setName(const std::string& name);
-  int getHealth() const;
-  int getMagicka() const;
-  int getStamina() const;
-  int getFullHealth() const;
-  int getFullMagicka() const;
-  int getFullStamina() const;
+  CharacterProfile& getProfile();
 
   std::set<Character*>& getInRangeTargets();
   Character* getLockedOnTarget() const;
@@ -154,18 +149,7 @@ class Character {
   bool _isKilled;
   bool _isSetToKill;
 
-  // Player stats.
-  std::string _name;
-  int _str;
-  int _dex;
-  int _int;
-  int _luk;
-  int _health;
-  int _magicka;
-  int _stamina;
-  int _fullHealth;
-  int _fullMagicka;
-  int _fullStamina;
+  CharacterProfile _profile;
 
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is

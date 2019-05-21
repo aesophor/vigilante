@@ -34,6 +34,8 @@ using vigilante::category_bits::kObject;
 namespace vigilante {
 
 Player::Player(const std::string& name, float x, float y) : Character(name, x, y) {
+  _profile.import("Resources/Database/player.json");
+
   short bodyCategoryBits = kPlayer;
   short bodyMaskBits = kEnemy | kMeleeWeapon;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;

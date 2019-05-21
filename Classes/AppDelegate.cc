@@ -1,11 +1,6 @@
 #include "AppDelegate.h"
 
 #include <string>
-#include <fstream>
-
-#include "json/document.h"
-#include "json/writer.h"
-#include "json/stringbuffer.h"
 
 #include "GameAssetManager.h"
 #include "scene/MainMenuScene.h"
@@ -80,26 +75,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
-
-  // Json test
-  std::ifstream fin("Resources/Database/items.json");
-  if (fin.is_open()) {
-    std::string content;
-    std::string line;
-    while (std::getline(fin, line)) {
-      content += line;
-    }
-    fin.close();
-    cocos2d::log("%s", content.c_str());
-
-    rapidjson::Document json;
-    json.Parse(content.c_str());
-
-    cocos2d::log("%s", json["Rusty Axe"]["name"].GetString());
-  } else {
-    cocos2d::log("failed to open file");
-  }
-
 
   // Load resources
   cocos2d::log("[Dust] loading textures");
