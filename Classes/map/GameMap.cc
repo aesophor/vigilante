@@ -20,7 +20,11 @@ using cocos2d::TMXObjectGroup;
 namespace vigilante {
 
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
-    : _world(world), _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)) {
+    : _world(world),
+      _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
+      _npcs(),
+      _droppedItems(),
+      _portals() {
   // Create box2d objects from layers
   createPolylines("Ground", category_bits::kGround, true, 2);
   createPolylines("Wall", category_bits::kWall, true, 1);

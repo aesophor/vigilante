@@ -3,12 +3,15 @@
 #include <stdexcept>
 
 #include "../Classes/AppDelegate.h"
+#include "../Classes/Stacktrace.h"
 
 using std::cerr;
 using std::endl;
 using cocos2d::Application;
 
 int main(int argc, char* args[]) {
+  segv::InstallHandler(&segv::Handle);
+
   // Create the application instance
   AppDelegate app;
 

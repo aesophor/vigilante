@@ -80,15 +80,17 @@ Character::Character(const string& name, float x, float y)
       _bodySpritesheet() {}
 
 Character::~Character() {
-  _b2body->GetWorld()->DestroyBody(_b2body);
+  if (!_isKilled) {
+    _b2body->GetWorld()->DestroyBody(_b2body);
+  }
 
   // Delete all items from inventory and equipment slots.
-  for (const auto& items : _inventory) { // vector<Item*>
+  for (auto& items : _inventory) { // vector<Item*>
     for (const auto item : items) { // Item*
       delete item;
     }
   }
-  for (const auto equipment : _equipmentSlots) {
+  for (auto equipment : _equipmentSlots) {
     delete equipment;
   }
 }
@@ -254,20 +256,20 @@ void Character::loadBodyAnimations(const string& bodyTextureResPath) {
   _bodySpritesheet = SpriteBatchNode::create(bodyTextureResPath + "/spritesheet.png");
 
   string framePrefix = asset_manager::getFrameNamePrefix(bodyTextureResPath);
-  _bodyAnimations[State::IDLE_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::IDLE_SHEATHED], 11.0f / kPpm);
-  _bodyAnimations[State::IDLE_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::IDLE_UNSHEATHED], 11.0f / kPpm);
-  _bodyAnimations[State::RUNNING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::RUNNING_SHEATHED], 8.5f / kPpm);
-  _bodyAnimations[State::RUNNING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::RUNNING_UNSHEATHED], 8.5f / kPpm);
-  _bodyAnimations[State::JUMPING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::JUMPING_SHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::JUMPING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::JUMPING_UNSHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::FALLING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::FALLING_SHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::FALLING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::FALLING_UNSHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::CROUCHING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::CROUCHING_SHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::CROUCHING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], 5.0f / kPpm);
-  _bodyAnimations[State::SHEATHING_WEAPON] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::SHEATHING_WEAPON], 13.0f / kPpm);
-  _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], 13.0f / kPpm);
-  _bodyAnimations[State::ATTACKING] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::ATTACKING], 6.5f / kPpm);
-  _bodyAnimations[State::KILLED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::KILLED], 15.0f / kPpm);
+  _bodyAnimations[State::IDLE_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::IDLE_SHEATHED], _profile.frameInterval[State::IDLE_SHEATHED] / kPpm);
+  _bodyAnimations[State::IDLE_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::IDLE_UNSHEATHED], _profile.frameInterval[State::IDLE_UNSHEATHED] / kPpm);
+  _bodyAnimations[State::RUNNING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::RUNNING_SHEATHED], _profile.frameInterval[State::RUNNING_SHEATHED] / kPpm);
+  _bodyAnimations[State::RUNNING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::RUNNING_UNSHEATHED], _profile.frameInterval[State::RUNNING_UNSHEATHED] / kPpm);
+  _bodyAnimations[State::JUMPING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::JUMPING_SHEATHED], _profile.frameInterval[State::JUMPING_SHEATHED] / kPpm);
+  _bodyAnimations[State::JUMPING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::JUMPING_UNSHEATHED], _profile.frameInterval[State::JUMPING_UNSHEATHED] / kPpm);
+  _bodyAnimations[State::FALLING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::FALLING_SHEATHED], _profile.frameInterval[State::FALLING_SHEATHED] / kPpm);
+  _bodyAnimations[State::FALLING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::FALLING_UNSHEATHED], _profile.frameInterval[State::FALLING_UNSHEATHED] / kPpm);
+  _bodyAnimations[State::CROUCHING_SHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::CROUCHING_SHEATHED], _profile.frameInterval[State::CROUCHING_SHEATHED] / kPpm);
+  _bodyAnimations[State::CROUCHING_UNSHEATHED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], _profile.frameInterval[State::CROUCHING_UNSHEATHED] / kPpm);
+  _bodyAnimations[State::SHEATHING_WEAPON] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::SHEATHING_WEAPON], _profile.frameInterval[State::SHEATHING_WEAPON] / kPpm);
+  _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], _profile.frameInterval[State::UNSHEATHING_WEAPON] / kPpm);
+  _bodyAnimations[State::ATTACKING] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::ATTACKING], _profile.frameInterval[State::ATTACKING] / kPpm);
+  _bodyAnimations[State::KILLED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::KILLED], _profile.frameInterval[State::KILLED] / kPpm);
 
   // Select a frame as default look for this sprite.
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -283,20 +285,20 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   _equipmentSpritesheets[type] = SpriteBatchNode::create(equipment->getSpritesPath() + "/spritesheet.png");
 
   const string& textureResPath = equipment->getSpritesPath();
-  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_SHEATHED], 11.0f / kPpm);
-  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_UNSHEATHED], 11.0f / kPpm);
-  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_SHEATHED], 8.5f / kPpm);
-  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_UNSHEATHED], 8.5f / kPpm);
-  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_SHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_UNSHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_SHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_UNSHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_SHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], 5.0f / kPpm);
-  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::SHEATHING_WEAPON], 13.0f / kPpm);
-  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], 13.0f / kPpm);
-  _equipmentAnimations[type][State::ATTACKING] = createAnimation(textureResPath, _kCharacterStateStr[State::ATTACKING], 6.5f / kPpm);
-  _equipmentAnimations[type][State::KILLED] = createAnimation(textureResPath, _kCharacterStateStr[State::KILLED], 15.0f / kPpm);
+  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_SHEATHED], _profile.frameInterval[State::IDLE_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_UNSHEATHED], _profile.frameInterval[State::IDLE_UNSHEATHED] / kPpm);
+  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_SHEATHED], _profile.frameInterval[State::RUNNING_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_UNSHEATHED], _profile.frameInterval[State::RUNNING_UNSHEATHED] / kPpm);
+  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_SHEATHED], _profile.frameInterval[State::JUMPING_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_UNSHEATHED], _profile.frameInterval[State::JUMPING_UNSHEATHED] / kPpm);
+  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_SHEATHED], _profile.frameInterval[State::FALLING_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_UNSHEATHED], _profile.frameInterval[State::FALLING_UNSHEATHED] / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_SHEATHED], _profile.frameInterval[State::CROUCHING_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], _profile.frameInterval[State::CROUCHING_UNSHEATHED] / kPpm);
+  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::SHEATHING_WEAPON], _profile.frameInterval[State::SHEATHING_WEAPON] / kPpm);
+  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], _profile.frameInterval[State::UNSHEATHING_WEAPON] / kPpm);
+  _equipmentAnimations[type][State::ATTACKING] = createAnimation(textureResPath, _kCharacterStateStr[State::ATTACKING], _profile.frameInterval[State::ATTACKING] / kPpm);
+  _equipmentAnimations[type][State::KILLED] = createAnimation(textureResPath, _kCharacterStateStr[State::KILLED], _profile.frameInterval[State::KILLED] / kPpm);
 
   string framePrefix = asset_manager::getFrameNamePrefix(equipment->getSpritesPath());
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -312,7 +314,8 @@ Animation* Character::createAnimation(const string& textureResPath, string frame
 
   // Texture/character/player/player_attacking/0.png
   // |______________________| |____| |_______| |___|
-  //      textureResPath  framePrefix frameName
+  //      textureResPath         |   frameName
+  //                      frameNamePrefix
 
   // frameNamePrefix is used to prevent against frame name collisions.
   string frameNamePrefix = asset_manager::getFrameNamePrefix(textureResPath);

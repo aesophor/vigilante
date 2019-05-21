@@ -28,7 +28,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setOnPlatform(false);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        //GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -40,7 +40,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setOnPlatform(true);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        //GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -135,7 +135,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setJumping(true);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        //GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -147,7 +147,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         c->setJumping(true);
         c->setOnPlatform(false);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        //GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }

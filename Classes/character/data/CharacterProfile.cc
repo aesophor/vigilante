@@ -26,7 +26,6 @@ void CharacterProfile::import(const string& jsonFileName) {
     content += line;
   }
   fin.close();
-  cocos2d::log("json: %s", content.c_str());
 
   Document json;
   json.Parse(content.c_str());
