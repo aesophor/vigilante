@@ -46,10 +46,10 @@ void GameMapManager::update(float delta) {
     _player->update(delta);
   }
 
-  for (auto& npc : _gameMap->getNpcs()) {
+  for (auto npc : _gameMap->getNpcs()) {
     npc->update(delta);
   }
-  for (auto& item : _gameMap->getDroppedItems()) {
+  for (auto item : _gameMap->getDroppedItems()) {
     item->update(delta);
   }
 }
@@ -64,10 +64,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (_gameMap) {
     _layer->removeChild(_gameMap->_tmxTiledMap);
 
-    for (auto& npc : _gameMap->_npcs) {
+    for (auto npc : _gameMap->_npcs) {
       _layer->removeChild(npc->getBodySpritesheet());
     }
-    for (auto& item : _gameMap->_droppedItems) {
+    for (auto item : _gameMap->_droppedItems) {
       _layer->removeChild(item->getSprite());
     }
     _gameMap.reset();
@@ -82,10 +82,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
     _layer->addChild(_player->getBodySpritesheet(), 31);
   }
 
-  for (auto& npc : _gameMap->_npcs) {
+  for (auto npc : _gameMap->_npcs) {
     _layer->addChild(npc->getBodySpritesheet());
   }
-  for (auto& item : _gameMap->_droppedItems) {
+  for (auto item : _gameMap->_droppedItems) {
     _layer->addChild(item->getSprite());
   }
 }

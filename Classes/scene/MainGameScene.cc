@@ -214,11 +214,7 @@ void MainGameScene::handleInput(float delta) {
       vigilante::Item* i = *(player->getInRangeItems().begin());
       player->addItem(i);
       i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
-      for (auto& item : _gameMapManager->getGameMap()->getDroppedItems()) {
-        if (item.get() == i) {
-          _gameMapManager->getGameMap()->getDroppedItems().erase(item);
-        }
-      }
+      _gameMapManager->getGameMap()->getDroppedItems().erase(i);
       _gameMapManager->getLayer()->removeChild(i->getSprite());
 
       _notifications->show("Acquired item: " + i->getName() + ".");

@@ -46,10 +46,10 @@ const std::string kEmptyItemIcon = kItemIcons + "empty/icon.png";
 const std::string kRustyAxeIcon = kItemIcons + "rusty_axe/icon.png";
 
 // Character spritesheets
-const std::string kPlayerSpritesheet = "Texture/character/player/sprites/player";
+const std::string kPlayerTextureResPath = "Texture/character/player";
 
 // Equipment spritesheets
-const std::string kRustyAxeSpritesheet = "Texture/item/rusty_axe/sprites/rusty_axe";
+const std::string kRustyAxeTextureResPath = "Texture/item/rusty_axe";
 
 // FX spritesheets
 const std::string kDustSpritesheet = "Texture/fx/dust/dust";

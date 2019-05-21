@@ -112,6 +112,8 @@ class Character {
     SIZE
   };
 
+  static const std::array<std::string, Character::State::SIZE> _kCharacterStateStr;
+
   void defineBody(b2BodyType bodyType,
                   short bodyCategoryBits,
                   short bodyMaskBits,
@@ -125,7 +127,7 @@ class Character {
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
   // Load the animation of the specified state into the given animation array.
-  cocos2d::Animation* createAnimation(const std::string& frameName, size_t frameCount, float delay=.1f) const;
+  cocos2d::Animation* createAnimation(const std::string& textureResPath, std::string frameName, float delay=.1f) const;
 
   void runAnimation(Character::State state, bool loop=true) const;
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
