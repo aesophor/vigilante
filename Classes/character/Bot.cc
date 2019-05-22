@@ -33,7 +33,7 @@ void Bot::act(float delta) {
       if (inRangeTargets.empty()) {
         _character->setLockedOnTarget(nullptr);
       }
-    } else if (std::abs(_character->getB2Body()->GetPosition().x - lockedOnTarget->getB2Body()->GetPosition().x) > .25f) {
+    } else if (std::abs(_character->getBody()->GetPosition().x - lockedOnTarget->getBody()->GetPosition().x) > .25f) {
       // If the target isn't within attack range, move toward it until attackable
       moveToTarget(lockedOnTarget);
       jumpIfStucked(delta, .1f);
@@ -44,8 +44,8 @@ void Bot::act(float delta) {
 }
 
 void Bot::moveToTarget(Character* target) {
-  b2Body* thisBody = _character->getB2Body();
-  b2Body* targetBody = target->getB2Body();
+  b2Body* thisBody = _character->getBody();
+  b2Body* targetBody = target->getBody();
 
   if (thisBody->GetPosition().x > targetBody->GetPosition().x) {
     _character->moveLeft();
@@ -80,7 +80,7 @@ void Bot::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, in
 }
 
 void Bot::jumpIfStucked(float delta, float checkInterval) {
-  b2Body* thisBody = _character->getB2Body();
+  b2Body* thisBody = _character->getBody();
 
   if (_calculateDistanceTimer > checkInterval) {
     _lastTraveledDistance = std::abs(thisBody->GetPosition().x - _lastStoppedPosition.x);

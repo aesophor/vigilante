@@ -14,7 +14,7 @@ class Item;
 
 class Enemy : public Character, public Bot {
  public:
-  Enemy(const std::string& name, float x, float y);
+  Enemy(const std::string& jsonFileName, float x, float y);
   virtual ~Enemy() = default;
   virtual void update(float delta) override;
 

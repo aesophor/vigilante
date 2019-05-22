@@ -5,6 +5,7 @@
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
+#include "spell/IceSpike.h"
 #include "map/GameMap.h"
 #include "map/GameMapManager.h"
 #include "util/CategoryBits.h"
@@ -28,7 +29,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setOnPlatform(false);
         // Create dust effect.
-        //GameMapManager::getInstance()->createDustFx(c);
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -40,7 +41,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setOnPlatform(true);
         // Create dust effect.
-        //GameMapManager::getInstance()->createDustFx(c);
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -117,6 +118,18 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setPortal(p);
       }
     }
+    // When a project tile hits an enemy, play onHitAnimation and inflict damage.
+    case category_bits::kProjectile | category_bits::kEnemy: {
+      b2Fixture* projectileFixture = GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+      
+      if (projectileFixture && enemyFixture) {
+        IceSpike* c = static_cast<IceSpike*>(projectileFixture->GetUserData());
+        Character* e = static_cast<Character*>(enemyFixture->GetUserData());
+        c->onHit();
+        c->getSpellUser()->inflictDamage(e, c->getDamage());
+      }
+    }
     default:
       break;
   }
@@ -135,7 +148,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setJumping(true);
         // Create dust effect.
-        //GameMapManager::getInstance()->createDustFx(c);
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -147,7 +160,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         c->setJumping(true);
         c->setOnPlatform(false);
         // Create dust effect.
-        //GameMapManager::getInstance()->createDustFx(c);
+        GameMapManager::getInstance()->createDustFx(c);
       }
       break;
     }

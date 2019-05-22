@@ -45,16 +45,19 @@ void CharacterProfile::import(const string& jsonFileName) {
   name = json["name"].GetString();
   level = json["level"].GetInt();
   exp = json["exp"].GetInt();
+
   fullHealth = json["fullHealth"].GetInt();
   fullStamina = json["fullStamina"].GetInt();
   fullMagicka = json["fullMagicka"].GetInt();
+
   health = json["health"].GetInt();
   stamina = json["stamina"].GetInt();
   magicka = json["magicka"].GetInt();
-  str = json["str"].GetInt();
-  dex = json["dex"].GetInt();
-  _int = json["int"].GetInt();
-  luk = json["luk"].GetInt();
+
+  strength = json["strength"].GetInt();
+  dexterity = json["dexterity"].GetInt();
+  intelligence = json["intelligence"].GetInt();
+  luck = json["luck"].GetInt();
 
   bodyWidth = json["bodyWidth"].GetInt();
   bodyHeight = json["bodyHeight"].GetInt();

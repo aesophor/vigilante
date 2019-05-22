@@ -24,16 +24,18 @@ struct CharacterProfile {
   std::string name;
   int level;
   int exp;
+
   int fullHealth;
   int fullStamina;
   int fullMagicka;
   int health;
   int stamina;
   int magicka;
-  int str;
-  int dex;
-  int _int;
-  int luk;
+
+  int strength;
+  int dexterity;
+  int intelligence;
+  int luck;
 
   int bodyWidth;
   int bodyHeight;

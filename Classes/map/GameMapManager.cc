@@ -6,6 +6,7 @@
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"
+#include "spell/IceSpike.h"
 #include "map/fx/Dust.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
@@ -32,9 +33,9 @@ GameMapManager* GameMapManager::getInstance() {
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
-      _gameMap(),
       _worldContactListener(new WorldContactListener()),
       _world(new b2World(gravity)),
+      _gameMap(),
       _player() {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
@@ -52,6 +53,9 @@ void GameMapManager::update(float delta) {
   for (auto item : _gameMap->getDroppedItems()) {
     item->update(delta);
   }
+  for (auto spell : _gameMap->getInUseSpells()) {
+    spell->update(delta);
+  }
 }
 
 
@@ -62,19 +66,19 @@ GameMap* GameMapManager::getGameMap() const {
 void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // Clean up previous GameMap.
   if (_gameMap) {
-    _layer->removeChild(_gameMap->_tmxTiledMap);
+    _layer->removeChild(_gameMap->getTmxTiledMap());
 
-    for (auto npc : _gameMap->_npcs) {
+    for (auto npc : _gameMap->getNpcs()) {
       _layer->removeChild(npc->getBodySpritesheet());
     }
-    for (auto item : _gameMap->_droppedItems) {
+    for (auto item : _gameMap->getDroppedItems()) {
       _layer->removeChild(item->getSprite());
     }
     _gameMap.reset();
   }
 
   _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
-  _layer->addChild(_gameMap->_tmxTiledMap, 0);
+  _layer->addChild(_gameMap->getTmxTiledMap(), 0);
 
   // If the player object hasn't been created, spawn it.
   if (!_player) {
@@ -82,10 +86,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
     _layer->addChild(_player->getBodySpritesheet(), 31);
   }
 
-  for (auto npc : _gameMap->_npcs) {
+  for (auto npc : _gameMap->getNpcs()) {
     _layer->addChild(npc->getBodySpritesheet());
   }
-  for (auto item : _gameMap->_droppedItems) {
+  for (auto item : _gameMap->getDroppedItems()) {
     _layer->addChild(item->getSprite());
   }
 }
@@ -105,7 +109,7 @@ Layer* GameMapManager::getLayer() const {
 
 
 void GameMapManager::createDustFx(Character* character) {
-	auto feetPos = character->getB2Body()->GetPosition();
+	auto feetPos = character->getBody()->GetPosition();
 	float dustX = feetPos.x;// - 32.f / kPpm / 2;
 	float dustY = feetPos.y - .1f;// - 32.f / kPpm / .065f;
   Dust::create(_layer, dustX, dustY);

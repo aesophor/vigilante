@@ -17,8 +17,8 @@ const short kEnemy = 128;
 const short kObject = 256;
 const short kItem = 512;
 const short kMeleeWeapon = 1024;
-const short kDestroyed = 2048;
-const short kLight = 4096;
+const short kProjectile = 2048;
+const short kDestroyed = 4096;
 
 } // namespace category_bits
 

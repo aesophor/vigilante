@@ -80,14 +80,14 @@ class Character {
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
   
-  b2Body* getB2Body() const;
+  b2Body* getBody() const;
   cocos2d::Sprite* getBodySprite() const;
   cocos2d::SpriteBatchNode* getBodySpritesheet() const;	
 
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
-  Character(const std::string& name, float x, float y);
+  Character(float x, float y);
 
   enum State {
     IDLE_SHEATHED,
@@ -117,8 +117,8 @@ class Character {
                   float x,
                   float y);
 
-  virtual void defineTexture(const std::string& bodySpritesheetPath, float x, float y);
-  virtual void loadBodyAnimations(const std::string& bodySpritesheetPath);
+  virtual void defineTexture(const std::string& bodyTextureResPath, float x, float y);
+  virtual void loadBodyAnimations(const std::string& bodyTextureResPath);
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
   // Load the animation of the specified state into the given animation array.
@@ -173,7 +173,7 @@ class Character {
   // Character's Box2D body and fixtures.
   // The fixtures are attached to the _b2body, see map/WorldContactListener.cc
   // for the implementation of contact handlers.
-  b2Body* _b2body;
+  b2Body* _body;
   b2Fixture* _bodyFixture; // used in combat (with _weaponFixture)
   b2Fixture* _feetFixture; // used for ground/platform collision detection
   b2Fixture* _weaponFixture; // used in combat (with _bodyFixture)

@@ -29,15 +29,15 @@ using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kObject;
-
+using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& name, float x, float y) : Character(name, x, y) {
+Player::Player(const std::string& jsonFileName, float x, float y) : Character(x, y) {
   _profile.import("Resources/Database/player.json");
 
   short bodyCategoryBits = kPlayer;
-  short bodyMaskBits = kEnemy | kMeleeWeapon;
+  short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kEnemy | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);

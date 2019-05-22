@@ -12,7 +12,7 @@ namespace vigilante {
 
 class Player : public Character {
  public:
-  Player(const std::string& name, float x, float y);
+  Player(const std::string& jsonFileName, float x, float y);
   virtual ~Player() = default;
 
   virtual void inflictDamage(Character* target, int damage) override;

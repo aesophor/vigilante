@@ -8,22 +8,19 @@ using std::unique_ptr;
 using cocos2d::Layer;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
+using vigilante::asset_manager::kRegularFont;
+using vigilante::asset_manager::kRegularFontSize;
+using vigilante::asset_manager::kBarLeftPadding;
+using vigilante::asset_manager::kBarRightPadding;
+using vigilante::asset_manager::kHealthBar;
+using vigilante::asset_manager::kMagickaBar;
+using vigilante::asset_manager::kStaminaBar;
+using vigilante::asset_manager::kEquippedWeaponBg;
+using vigilante::asset_manager::kEquippedWeaponDescBg;
 
 namespace vigilante {
 
-const string Hud::_kHud = "Texture/UI/HUD/";
-
-const string Hud::_kBarLeftPadding = _kHud + "bar_padding_left.png";
-const string Hud::_kBarRightPadding = _kHud + "bar_padding_right.png";
-const string Hud::_kHealthBar = _kHud + "health_bar.png";
-const string Hud::_kMagickaBar = _kHud + "magicka_bar.png";
-const string Hud::_kStaminaBar = _kHud + "stamina_bar.png";
 const float Hud::_kBarLength = 75.0f;
-
-const string Hud::_kEquippedWeaponBg = _kHud + "equipped_weapon_slot.png";
-const string Hud::_kEquippedWeaponDescBg = _kHud + "item_desc.png";
-const string Hud::_kFont = "Font/HeartbitXX.ttf";
-
 
 Hud* Hud::_instance = nullptr;
 
@@ -37,13 +34,13 @@ Hud* Hud::getInstance() {
 Hud::Hud()
     : _layer(Layer::create()),
       _player(),
-      _healthBar(new StatusBar(_kBarLeftPadding, _kBarRightPadding, _kHealthBar, _kBarLength)),
-      _magickaBar(new StatusBar(_kBarLeftPadding, _kBarRightPadding, _kMagickaBar, _kBarLength)),
-      _staminaBar(new StatusBar(_kBarLeftPadding, _kBarRightPadding, _kStaminaBar, _kBarLength)),
-      _equippedWeaponBg(ImageView::create(_kEquippedWeaponBg)),
+      _healthBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
+      _magickaBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
+      _staminaBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
+      _equippedWeaponBg(ImageView::create(kEquippedWeaponBg)),
       _equippedWeapon(ImageView::create()),
-      _equippedWeaponDescBg(ImageView::create(_kEquippedWeaponDescBg)),
-      _equippedWeaponDesc(Label::createWithTTF("", _kFont, 16)) {
+      _equippedWeaponDescBg(ImageView::create(kEquippedWeaponDescBg)),
+      _equippedWeaponDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
   _equippedWeaponBg->setAnchorPoint({0, 0});
   _equippedWeaponBg->setPosition({-40, -31});
 

@@ -85,7 +85,7 @@ void FloatingDamageManager::show(Character* character, int damage) {
 
   // Display the new floating damage label.
   FloatingDamage dmg(std::to_string(damage), 1.5f);
-  const auto& characterPos = character->getB2Body()->GetPosition();
+  const auto& characterPos = character->getBody()->GetPosition();
   float x = characterPos.x * kPpm;
   float y = characterPos.y * kPpm + 15;
   dmg.label->setPosition(x, y);

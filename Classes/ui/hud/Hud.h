@@ -28,19 +28,7 @@ class Hud {
   static Hud* _instance;
   Hud();
 
-  // Paths to HUD resources files
-  static const std::string _kHud;
-
-  static const std::string _kBarLeftPadding;
-  static const std::string _kBarRightPadding;
-  static const std::string _kHealthBar;
-  static const std::string _kMagickaBar;
-  static const std::string _kStaminaBar;
   static const float _kBarLength;
-
-  static const std::string _kEquippedWeaponBg;
-  static const std::string _kEquippedWeaponDescBg;
-  static const std::string _kFont;
 
   cocos2d::Layer* _layer;
   Player* _player;

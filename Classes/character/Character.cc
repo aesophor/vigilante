@@ -51,7 +51,7 @@ const array<string, Character::State::SIZE> Character::_kCharacterStateStr = {{
 
 const float Character::_kBaseMovingSpeed = .25f;
 
-Character::Character(const string& name, float x, float y)
+Character::Character(float x, float y)
     : _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
@@ -72,7 +72,7 @@ Character::Character(const string& name, float x, float y)
       _inventory(),
       _equipmentSlots(),
       _portal(),
-      _b2body(),
+      _body(),
       _bodyFixture(),
       _feetFixture(),
       _weaponFixture(),
@@ -81,7 +81,7 @@ Character::Character(const string& name, float x, float y)
 
 Character::~Character() {
   if (!_isKilled) {
-    _b2body->GetWorld()->DestroyBody(_b2body);
+    _body->GetWorld()->DestroyBody(_body);
   }
 
   // Delete all items from inventory and equipment slots.
@@ -141,7 +141,7 @@ void Character::update(float delta) {
       case State::KILLED:
         runAnimation(State::KILLED, [=]() {
           // Execute after the KILLED animation is finished.
-          GameMapManager::getInstance()->getWorld()->DestroyBody(_b2body);
+          GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
           _isKilled = true;
         });
         break;
@@ -168,7 +168,7 @@ void Character::update(float delta) {
   }
 
   // Sync the body sprite with its b2body.
-  b2Vec2 b2bodyPos = _b2body->GetPosition();
+  b2Vec2 b2bodyPos = _body->GetPosition();
   _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
 
   // Sync the equipment sprites with its b2body.
@@ -186,7 +186,7 @@ void Character::update(float delta) {
 }
 
 void Character::reposition(float x, float y) {
-  _b2body->SetTransform({x, y}, 0);
+  _body->SetTransform({x, y}, 0);
 }
 
 void Character::defineBody(b2BodyType bodyType,
@@ -199,7 +199,7 @@ void Character::defineBody(b2BodyType bodyType,
   b2World* world = GameMapManager::getInstance()->getWorld();
   b2BodyBuilder bodyBuilder(world);
 
-  _b2body = bodyBuilder.type(bodyType)
+  _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)
     .buildBody();
 
@@ -245,8 +245,8 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-void Character::defineTexture(const string& spritesheetPath, float x, float y) {
-  loadBodyAnimations(spritesheetPath);
+void Character::defineTexture(const string& bodyTextureResPath, float x, float y) {
+  loadBodyAnimations(bodyTextureResPath);
   _bodySprite->setPosition(x * kPpm, y * kPpm + 4);
 
   runAnimation(State::IDLE_SHEATHED);
@@ -344,9 +344,6 @@ Animation* Character::createAnimation(const string& textureResPath, string frame
 
 
 void Character::runAnimation(State state, bool loop) const {
-  // Update body animation.
-  _bodySprite->stopAllActions();
-
   auto animation = Animate::create(_bodyAnimations[state]);
   Action* action = nullptr;
   if (loop) {
@@ -354,6 +351,9 @@ void Character::runAnimation(State state, bool loop) const {
   } else {
     action = Repeat::create(animation, 1);
   }
+
+  // Update body animation.
+  _bodySprite->stopAllActions();
   _bodySprite->runAction(action);
 
   // Update equipment animation.
@@ -394,11 +394,11 @@ Character::State Character::getState() const {
     return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
     return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
-  } else if (_b2body->GetLinearVelocity().y < -.5f) {
+  } else if (_body->GetLinearVelocity().y < -.5f) {
     return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
     return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
-  } else if (std::abs(_b2body->GetLinearVelocity().x) > .01f) {
+  } else if (std::abs(_body->GetLinearVelocity().x) > .01f) {
     return (_isWeaponSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
     return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
@@ -408,22 +408,22 @@ Character::State Character::getState() const {
 
 void Character::moveLeft() {
   _isFacingRight = false;
-  if (_b2body->GetLinearVelocity().x >= -_kBaseMovingSpeed * 2) {
-    _b2body->ApplyLinearImpulse({-_kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
+  if (_body->GetLinearVelocity().x >= -_kBaseMovingSpeed * 2) {
+    _body->ApplyLinearImpulse({-_kBaseMovingSpeed, 0}, _body->GetWorldCenter(), true);
   }
 }
 
 void Character::moveRight() {
   _isFacingRight = true;
-  if (_b2body->GetLinearVelocity().x <= _kBaseMovingSpeed * 2) {
-    _b2body->ApplyLinearImpulse({_kBaseMovingSpeed, 0}, _b2body->GetWorldCenter(), true);
+  if (_body->GetLinearVelocity().x <= _kBaseMovingSpeed * 2) {
+    _body->ApplyLinearImpulse({_kBaseMovingSpeed, 0}, _body->GetWorldCenter(), true);
   }
 }
 
 void Character::jump() {
   if (!_isJumping) {
     _isJumping = true;
-    _b2body->ApplyLinearImpulse({0, 3.0f}, _b2body->GetWorldCenter(), true);
+    _body->ApplyLinearImpulse({0, 3.0f}, _body->GetWorldCenter(), true);
   }
 }
 
@@ -492,7 +492,7 @@ void Character::attack() {
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {
-  b2Body* b2body = target->getB2Body();
+  b2Body* b2body = target->getBody();
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
@@ -675,8 +675,8 @@ void Character::setPortal(GameMap::Portal* portal) {
 }
 
 
-b2Body* Character::getB2Body() const {
-  return _b2body;
+b2Body* Character::getBody() const {
+  return _body;
 }
 
 Sprite* Character::getBodySprite() const {

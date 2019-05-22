@@ -7,6 +7,7 @@
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
+#include "spell/IceSpike.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/Constants.h"
@@ -80,6 +81,7 @@ bool MainGameScene::init() {
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), 91);
   _notifications->show("Notification Manager initialized!");
+  _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
   // Initialize floating damage manager.
   _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
@@ -131,7 +133,7 @@ void MainGameScene::update(float delta) {
   _floatingDamages->update(delta);
   _notifications->update(delta);
 
-  vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getB2Body()->GetPosition());
+  vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap()->getTmxTiledMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
@@ -207,6 +209,13 @@ void MainGameScene::handleInput(float delta) {
     } else if (!player->isWeaponSheathed() && !player->isSheathingWeapon()) {
       player->sheathWeapon();
     }
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
+    IceSpike* spell = new IceSpike(player);
+    _gameMapManager->getLayer()->addChild(spell->getSpritesheet());
+    _gameMapManager->getGameMap()->getInUseSpells().insert(spell);
+    spell->activate();
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

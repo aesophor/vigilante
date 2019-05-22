@@ -33,10 +33,10 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPortals();
 
   // Spawn an enemy.
-  Enemy* enemy = new Enemy("Castle Guard", 300, 100);
+  Enemy* enemy = new Enemy("Resources/Database/slime.json", 300, 100);
   _npcs.insert(enemy);
 
-  Enemy* enemy2 = new Enemy("Castle Guard", 250, 100);
+  Enemy* enemy2 = new Enemy("Resources/Database/slime.json", 250, 100);
   _npcs.insert(enemy2);
 
   // Spawn an item.
@@ -80,10 +80,22 @@ unordered_set<Item*>& GameMap::getDroppedItems() {
   return _droppedItems;
 }
 
+unordered_set<IceSpike*>& GameMap::getInUseSpells() {
+  return _inUseSpells;
+}
+
 const vector<GameMap::Portal*>& GameMap::getPortals() const {
   return _portals;
 }
 
+
+Player* GameMap::createPlayer() const {
+  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
+  auto& valMap = objGroup->getObjects()[0].asValueMap();
+  float x = valMap["x"].asFloat();
+  float y = valMap["y"].asFloat();
+  return new Player("Aesophor", x, y);
+}
 
 void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
@@ -173,14 +185,6 @@ void GameMap::createPortals() {
 
     _tmxTiledMapBodies.insert(body);
   }
-}
-
-Player* GameMap::createPlayer() const {
-  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
-  auto& valMap = objGroup->getObjects()[0].asValueMap();
-  float x = valMap["x"].asFloat();
-  float y = valMap["y"].asFloat();
-  return new Player("Aesophor", x, y);
 }
 
 
