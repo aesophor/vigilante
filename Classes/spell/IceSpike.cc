@@ -97,14 +97,15 @@ void IceSpike::activate(float speed) {
 }
 
 void IceSpike::onHit() {
-  _body->GetWorld()->DestroyBody(_body);
-
-  auto animation = Animate::create(_onHitAnimation);
+  auto animation = Repeat::create(Animate::create(_onHitAnimation), 1);
   auto callback = CallFunc::create([=]() {
     GameMapManager::getInstance()->getLayer()->removeChild(_spritesheet);
     GameMapManager::getInstance()->getGameMap()->getInUseSpells().erase(this);
     // FIXME
     //delete this; // maybe this is not a good idea....
+    cocos2d::log("destoying body");
+    _body->SetLinearVelocity({0, 0});
+    _body->GetWorld()->DestroyBody(_body);
   });
 
   _sprite->runAction(Sequence::createWithTwoActions(animation, callback));

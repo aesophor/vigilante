@@ -49,8 +49,6 @@ const array<string, Character::State::SIZE> Character::_kCharacterStateStr = {{
   "killed"
 }};
 
-const float Character::_kBaseMovingSpeed = .25f;
-
 Character::Character(float x, float y)
     : _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
@@ -169,7 +167,7 @@ void Character::update(float delta) {
 
   // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
+  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _profile.spriteOffsetY);
 
   // Sync the equipment sprites with its b2body.
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
@@ -180,7 +178,7 @@ void Character::update(float delta) {
       } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
         _equipmentSprites[type]->setFlippedX(false);
       }
-      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + 5);
+      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _profile.spriteOffsetY);
     }
   }
 }
@@ -247,7 +245,7 @@ void Character::defineBody(b2BodyType bodyType,
 
 void Character::defineTexture(const string& bodyTextureResPath, float x, float y) {
   loadBodyAnimations(bodyTextureResPath);
-  _bodySprite->setPosition(x * kPpm, y * kPpm + 4);
+  _bodySprite->setPosition(x * kPpm, y * kPpm + _profile.spriteOffsetY);
 
   runAnimation(State::IDLE_SHEATHED);
 }
@@ -408,22 +406,22 @@ Character::State Character::getState() const {
 
 void Character::moveLeft() {
   _isFacingRight = false;
-  if (_body->GetLinearVelocity().x >= -_kBaseMovingSpeed * 2) {
-    _body->ApplyLinearImpulse({-_kBaseMovingSpeed, 0}, _body->GetWorldCenter(), true);
+  if (_body->GetLinearVelocity().x >= -_profile.moveSpeed * 2) {
+    _body->ApplyLinearImpulse({-_profile.moveSpeed, 0}, _body->GetWorldCenter(), true);
   }
 }
 
 void Character::moveRight() {
   _isFacingRight = true;
-  if (_body->GetLinearVelocity().x <= _kBaseMovingSpeed * 2) {
-    _body->ApplyLinearImpulse({_kBaseMovingSpeed, 0}, _body->GetWorldCenter(), true);
+  if (_body->GetLinearVelocity().x <= _profile.moveSpeed * 2) {
+    _body->ApplyLinearImpulse({_profile.moveSpeed, 0}, _body->GetWorldCenter(), true);
   }
 }
 
 void Character::jump() {
   if (!_isJumping) {
     _isJumping = true;
-    _body->ApplyLinearImpulse({0, 3.0f}, _body->GetWorldCenter(), true);
+    _body->ApplyLinearImpulse({0, _profile.jumpHeight}, _body->GetWorldCenter(), true);
   }
 }
 
@@ -474,7 +472,7 @@ void Character::attack() {
 
   callback_util::runAfter([=]() {
     _isAttacking = false;
-  }, .5f);
+  }, _profile.attackTime);
 
   if (!_inRangeTargets.empty()) {
     _lockedOnTarget = *_inRangeTargets.begin();

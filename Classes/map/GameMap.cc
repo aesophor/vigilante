@@ -33,7 +33,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPortals();
 
   // Spawn an enemy.
-  Enemy* enemy = new Enemy("Resources/Database/slime.json", 300, 100);
+  Enemy* enemy = new Enemy("Resources/Database/demon.json", 300, 100);
   _npcs.insert(enemy);
 
   Enemy* enemy2 = new Enemy("Resources/Database/slime.json", 250, 100);

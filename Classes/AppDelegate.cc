@@ -80,7 +80,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
   cocos2d::log("[Dust] loading textures");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kPlayerTextureResPath + "/spritesheet.plist");
+  frameCache->addSpriteFramesWithFile("Texture/character/vlad/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/slime/spritesheet.plist");
+  frameCache->addSpriteFramesWithFile("Texture/character/demon/spritesheet.plist");
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeTextureResPath + "/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/spell/ice_spike/spritesheet.plist");
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustSpritesheet + ".plist");

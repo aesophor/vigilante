@@ -128,7 +128,6 @@ class Character {
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
 
   Character::State getState() const;
-  static const float _kBaseMovingSpeed;
 
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()

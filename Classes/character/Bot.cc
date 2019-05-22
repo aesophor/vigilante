@@ -20,7 +20,7 @@ Bot::Bot(Character* c)
 
 
 void Bot::act(float delta) {
-  if (_character->isSetToKill()) {
+  if (_character->isSetToKill() || _character->isAttacking()) {
     return;
   }
 
