@@ -14,7 +14,12 @@ using cocos2d::SpriteFrameCache;
 
 namespace vigilante {
 
-Actor::Actor() : _body(), _bodySprite(), _bodySpritesheet() {}
+Actor::Actor(size_t fixturesSize, size_t animationsSize)
+    : _body(),
+      _fixtures(fixturesSize),
+      _bodySprite(),
+      _bodySpritesheet(),
+      _bodyAnimations(animationsSize) {}
 
 
 b2Body* Actor::getBody() const {
@@ -72,8 +77,8 @@ Animation* Actor::createAnimation(const string& textureResDir, string framesName
   return animation;
 }
 
-string Actor::extractTrailingDir(const string& textureResDir) {
-  return textureResDir.substr(textureResDir.find_last_of('/') + 1);
+string Actor::extractTrailingDir(const string& directory) {
+  return directory.substr(directory.find_last_of('/') + 1);
 }
 
 } // namespace vigilante

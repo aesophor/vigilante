@@ -24,7 +24,7 @@ namespace vigilante {
 
 class Actor {
  public:
-  Actor();
+  Actor(size_t fixturesSize=1, size_t animationsSize=1);
   virtual ~Actor() = default;
 
   virtual void update(float delta) = 0;
@@ -66,7 +66,7 @@ class Actor {
   // The following utility method takes in textureResPath as a parameter
   // and returns the last dirname.
   // e.g., "Texture/character/player" -> "player"
-  static std::string extractTrailingDir(const std::string& textureResDir);
+  static std::string extractTrailingDir(const std::string& directory);
 
   b2Body* _body; // users should manually destory _body in subclass!
   std::vector<b2Fixture*> _fixtures;

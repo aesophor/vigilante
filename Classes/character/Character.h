@@ -85,7 +85,7 @@ class Character : public Actor {
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
-  Character(float x, float y);
+  Character();
 
   enum State {
     IDLE_SHEATHED,
@@ -102,10 +102,10 @@ class Character : public Actor {
     UNSHEATHING_WEAPON,
     ATTACKING,
     KILLED,
-    SIZE
+    STATE_SIZE
   };
 
-  static const std::array<std::string, Character::State::SIZE> _kCharacterStateStr;
+  static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
 
   virtual void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                           short feetMaskBits, short weaponMaskBits, float x, float y);
@@ -159,22 +159,26 @@ class Character : public Actor {
   // The portal to which this character is near.
   GameMap::Portal* _portal;
 
-
-  // We have a vector of b2Fixtures (declared in the Actor abstract class).
-  // e.g., to access the weapon fixture: _fixtures[Fixture::WEAPON]
-  enum Fixture {
+  // We have a vector of b2Fixtures (declared in Actor abstract class).
+  // e.g., to access the weapon fixture: _fixtures[FixtureType::WEAPON]
+  enum FixtureType {
     BODY, // used in combat (with WEAPON fixture)
     FEET, // used for ground/platform collision detection
     WEAPON, // used in combat (with BODY fixture)
+    FIXTURE_SIZE
   };
 
+  // Extra attack animations.
+  // The first attack animations is in _bodyAnimations[State::ATTACK],
+  // and here's some extra ones.
+  std::array<cocos2d::Animation*, 1> _extraAttackAnimations;
 
-  // Besides body sprite and animations (declared in the Actor abstract class),
+  // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment
   // has their own animation!
   std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
   std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-  std::array<std::array<cocos2d::Animation*, Character::State::SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
 };
 
 } // namespace vigilante

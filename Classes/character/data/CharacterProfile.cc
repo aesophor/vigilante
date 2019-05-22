@@ -38,7 +38,7 @@ void CharacterProfile::import(const string& jsonFileName) {
   frameWidth = json["frameWidth"].GetInt();
   frameHeight = json["frameHeight"].GetInt();
 
-  for (int i = 0; i < Character::State::SIZE; i++) {
+  for (int i = 0; i < Character::State::STATE_SIZE; i++) {
     frameInterval[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
   }
 

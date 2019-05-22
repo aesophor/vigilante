@@ -9,6 +9,7 @@
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
+#include "util/RandUtil.h"
 
 using std::set;
 using std::array;
@@ -32,7 +33,7 @@ using cocos2d::FileUtils;
 
 namespace vigilante {
 
-const array<string, Character::State::SIZE> Character::_kCharacterStateStr = {{
+const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr = {{
   "idle_sheathed",
   "idle_unsheathed",
   "running_sheathed",
@@ -49,8 +50,8 @@ const array<string, Character::State::SIZE> Character::_kCharacterStateStr = {{
   "killed"
 }};
 
-Character::Character(float x, float y)
-    : Actor(),
+Character::Character()
+    : Actor(FixtureType::FIXTURE_SIZE, State::STATE_SIZE),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
@@ -70,10 +71,7 @@ Character::Character(float x, float y)
       _isAlerted(),
       _inventory(),
       _equipmentSlots(),
-      _portal() {
-  _fixtures.resize(3);
-  _bodyAnimations.resize(State::SIZE);
-}
+      _portal() {}
 
 Character::~Character() {
   if (!_isKilled) {
@@ -155,11 +153,11 @@ void Character::update(float delta) {
   // Flip the sprite if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[Fixture::WEAPON]->GetShape());
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {-_profile.attackRange / kPpm, 0};
   } else if (_isFacingRight && _bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(false);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[Fixture::WEAPON]->GetShape());
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {_profile.attackRange / kPpm, 0};
   }
 
@@ -185,13 +183,8 @@ void Character::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
-void Character::defineBody(b2BodyType bodyType,
-                           short bodyCategoryBits,
-                           short bodyMaskBits,
-                           short feetMaskBits,
-                           short weaponMaskBits,
-                           float x,
-                           float y) {
+void Character::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
+                           short feetMaskBits, short weaponMaskBits, float x, float y) {
   b2World* world = GameMapManager::getInstance()->getWorld();
   b2BodyBuilder bodyBuilder(world);
 
@@ -210,7 +203,7 @@ void Character::defineBody(b2BodyType bodyType,
   vertices[2] = {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
   vertices[3] = { bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
 
-  _fixtures[Fixture::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
+  _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
     .setUserData(this)
@@ -224,7 +217,7 @@ void Character::defineBody(b2BodyType bodyType,
   feetVertices[2] = {(-bw / 2 + 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
   feetVertices[3] = {( bw / 2 - 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
 
-  _fixtures[Fixture::FEET] = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
+  _fixtures[FixtureType::FEET] = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
     .categoryBits(category_bits::kFeet)
     .maskBits(feetMaskBits)
     .setUserData(this)
@@ -233,7 +226,7 @@ void Character::defineBody(b2BodyType bodyType,
 
   // Create weapon fixture.
   float atkRange = _profile.attackRange;
-  _fixtures[Fixture::WEAPON] = bodyBuilder.newCircleFixture({atkRange, 0}, atkRange, kPpm)
+  _fixtures[FixtureType::WEAPON] = bodyBuilder.newCircleFixture({atkRange, 0}, atkRange, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(weaponMaskBits)
     .setSensor(true)
@@ -267,6 +260,9 @@ void Character::loadBodyAnimations(const string& bodyTextureResPath) {
   _bodyAnimations[State::UNSHEATHING_WEAPON] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], _profile.frameInterval[State::UNSHEATHING_WEAPON] / kPpm, fallback);
   _bodyAnimations[State::ATTACKING] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::ATTACKING], _profile.frameInterval[State::ATTACKING] / kPpm, fallback);
   _bodyAnimations[State::KILLED] = createAnimation(bodyTextureResPath, _kCharacterStateStr[State::KILLED], _profile.frameInterval[State::KILLED] / kPpm, fallback);
+
+  // Load extra attack animations.
+  _extraAttackAnimations[0] = createAnimation(bodyTextureResPath, "attacking2", _profile.frameInterval[State::ATTACKING] / kPpm, fallback);
 
   // Select a frame as default look for this sprite.
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -309,7 +305,19 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
 
 void Character::runAnimation(State state, bool loop) const {
-  auto animation = Animate::create(_bodyAnimations[state]);
+  auto targetAnimation = _bodyAnimations[state];
+
+  int attackAnimationIdx = 0;
+  if (state == State::ATTACKING) {
+    int i = rand_util::randInt(0, 1);
+    if (i >= 1) {
+      // Pick the animation from _extraAttackAnimations array.
+      targetAnimation = _extraAttackAnimations[i - 1];
+    }
+    attackAnimationIdx = i;
+  }
+
+  auto animation = Animate::create(targetAnimation);
   Action* action = nullptr;
   if (loop) {
     action = RepeatForever::create(animation);
@@ -327,7 +335,13 @@ void Character::runAnimation(State state, bool loop) const {
     if (_equipmentSlots[type]) {
       _equipmentSprites[type]->stopAllActions();
 
-      auto animation = Animate::create(_equipmentAnimations[type][state]);
+      auto targetAnimation = _equipmentAnimations[type][state];
+      if (state == State::ATTACKING && attackAnimationIdx > 0) {
+        // FIXME: add _extraAttackEquipmentAnimations
+        //targetAnimation = _extraAttackAnimations[attackAnimationIdx];
+      }
+
+      auto animation = Animate::create(targetAnimation);
       Action* action = nullptr;
       if (loop) {
         action = RepeatForever::create(animation);
@@ -394,10 +408,10 @@ void Character::jump() {
 
 void Character::jumpDown() {
   if (_isOnPlatform) {
-    _fixtures[Fixture::FEET]->SetSensor(true);
+    _fixtures[FixtureType::FEET]->SetSensor(true);
 
     callback_util::runAfter([=]() {
-      _fixtures[Fixture::FEET]->SetSensor(false);
+      _fixtures[FixtureType::FEET]->SetSensor(false);
     }, .25f);
   }
 }
@@ -478,7 +492,7 @@ void Character::receiveDamage(Character* source, int damage) {
 
   if (_profile.health <= 0) {
     source->getInRangeTargets().erase(this);
-    Character::setCategoryBits(_fixtures[Fixture::BODY], category_bits::kDestroyed);
+    Character::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
     _isSetToKill = true;
     // TODO: play killed sound.
   } else {

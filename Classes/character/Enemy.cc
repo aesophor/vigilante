@@ -35,7 +35,7 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Enemy::Enemy(const std::string& jsonFileName, float x, float y) : Character(x, y), Bot(this) {
+Enemy::Enemy(const std::string& jsonFileName, float x, float y) : Character(), Bot(this) {
   _profile.import(jsonFileName);
 
   short bodyCategoryBits = kEnemy;

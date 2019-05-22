@@ -213,7 +213,7 @@ void MainGameScene::handleInput(float delta) {
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
     IceSpike* spell = new IceSpike(player);
-    _gameMapManager->getLayer()->addChild(spell->getSpritesheet());
+    _gameMapManager->getLayer()->addChild(spell->getBodySpritesheet());
     _gameMapManager->getGameMap()->getInUseSpells().insert(spell);
     spell->activate();
   }

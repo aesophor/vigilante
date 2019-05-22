@@ -30,18 +30,13 @@ using vigilante::category_bits::kItem;
 
 namespace vigilante {
 
-IceSpike::IceSpike(Character* spellUser)
-    : _spellUser(spellUser),
+IceSpike::IceSpike(Character* spellUser, float flyingSpeed)
+    : Actor(1, AnimationType::SIZE),
+      _spellUser(spellUser),
       _damage(50),
+      _flyingSpeed(flyingSpeed),
       _hasActivated(),
-      _body(),
-      _fixture(),
-      _spritesheet(),
-      _launchFxSprite(),
-      _sprite(),
-      _launchFxAnimation(),
-      _flyingAnimation(),
-      _onHitAnimation() {
+      _launchFxSprite() {
   short categoryBits = kProjectile;
   short maskBits = kPlayer | kEnemy | kItem;
   float x = spellUser->getBody()->GetPosition().x;
@@ -55,31 +50,31 @@ IceSpike::~IceSpike() {}
 void IceSpike::update(float delta) {
   // Sync the sprite with b2body.
   b2Vec2 bodyPos = _body->GetPosition();
-  _sprite->setPosition(bodyPos.x * kPpm, bodyPos.y * kPpm);
+  _bodySprite->setPosition(bodyPos.x * kPpm, bodyPos.y * kPpm);
 }
 
-void IceSpike::reposition(float x, float y) {
+void IceSpike::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
-void IceSpike::activate(float speed) {
+void IceSpike::activate() {
   if (_hasActivated) {
     return;
   }
 
   // Set up kinematicBody's moving speed.
-  speed = (_spellUser->isFacingRight()) ? speed : -speed;
-  _body->SetLinearVelocity({speed, 0});
+  _flyingSpeed = (_spellUser->isFacingRight()) ? _flyingSpeed : -_flyingSpeed;
+  _body->SetLinearVelocity({_flyingSpeed, 0});
 
   if (!_spellUser->isFacingRight()) {
     _launchFxSprite->setFlippedX(true);
-    _sprite->setFlippedX(true);
+    _bodySprite->setFlippedX(true);
   }
 
   // Play launch fx animation.
-  auto animation = Animate::create(_launchFxAnimation);
+  auto animation = Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]);
   auto callback = CallFunc::create([=]() {
-    _spritesheet->removeChild(_launchFxSprite, true);
+    _bodySpritesheet->removeChild(_launchFxSprite, true);
   });
   b2Vec2 spellUserBodyPos = _spellUser->getBody()->GetPosition();
   float x = spellUserBodyPos.x * kPpm;
@@ -90,16 +85,16 @@ void IceSpike::activate(float speed) {
   _launchFxSprite->runAction(Sequence::createWithTwoActions(animation, callback));
 
   // Play the spell's main animation.
-  Action* action = Repeat::create(Animate::create(_flyingAnimation), 1);
-  _sprite->runAction(action);
+  Action* action = Repeat::create(Animate::create(_bodyAnimations[AnimationType::FLYING]), 1);
+  _bodySprite->runAction(action);
 
   _hasActivated = true;
 }
 
 void IceSpike::onHit() {
-  auto animation = Repeat::create(Animate::create(_onHitAnimation), 1);
+  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
   auto callback = CallFunc::create([=]() {
-    GameMapManager::getInstance()->getLayer()->removeChild(_spritesheet);
+    GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
     GameMapManager::getInstance()->getGameMap()->getInUseSpells().erase(this);
     // FIXME
     //delete this; // maybe this is not a good idea....
@@ -108,7 +103,7 @@ void IceSpike::onHit() {
     _body->GetWorld()->DestroyBody(_body);
   });
 
-  _sprite->runAction(Sequence::createWithTwoActions(animation, callback));
+  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
 }
 
 
@@ -130,7 +125,7 @@ void IceSpike::defineBody(b2BodyType bodyType, short categoryBits, short maskBit
   vertices[2] = { 10.0f / scaleFactor,  0.0f / scaleFactor};
   vertices[3] = {  0.0f / scaleFactor,  2.0f / scaleFactor};
 
-  _fixture = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
+  _fixtures[0] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(categoryBits)
     .maskBits(maskBits)
     .setUserData(this)
@@ -138,50 +133,22 @@ void IceSpike::defineBody(b2BodyType bodyType, short categoryBits, short maskBit
 }
 
 void IceSpike::defineTexture(const string& textureResPath, float x, float y) {
-  _spritesheet = SpriteBatchNode::create(textureResPath + "/spritesheet.png");
+  _bodySpritesheet = SpriteBatchNode::create(textureResPath + "/spritesheet.png");
 
-  _launchFxAnimation = createAnimation(textureResPath, "launch", 5.0f / kPpm);
-  _flyingAnimation = createAnimation(textureResPath, "flying", 1.0f / kPpm);
-  _onHitAnimation = createAnimation(textureResPath, "onhit", 8.0f / kPpm);
+  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResPath, "launch", 5.0f / kPpm);
+  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResPath, "flying", 1.0f / kPpm);
+  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResPath, "on_hit", 8.0f / kPpm);
 
   // Select a frame as default look for this sprite.
   string frameNamePrefix = asset_manager::getFrameNamePrefix(textureResPath);
   _launchFxSprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_launch/0.png");
   _launchFxSprite->setPosition(x, y);
-  _sprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
-  _sprite->setPosition(x, y);
+  _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
+  _bodySprite->setPosition(x, y);
   
-  _spritesheet->addChild(_launchFxSprite);
-  _spritesheet->addChild(_sprite);
-  _spritesheet->getTexture()->setAliasTexParameters();
-}
-
-Animation* IceSpike::createAnimation(const string& textureResPath, string frameName, float delay) const {
-  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-
-  // Texture/character/player/player_attacking/0.png
-  // |______________________| |____| |_______| |___|
-  //      textureResPath         |   frameName
-  //                      frameNamePrefix
-
-  // frameNamePrefix is used to prevent against frame name collisions.
-  string frameNamePrefix = asset_manager::getFrameNamePrefix(textureResPath);
-
-  // Count how many frames (.png) are there in the corresponding directory.
-  // Method: we will use FileUtils to test whether a file exists starting from 0.png, 1.png, ..., n.png
-  size_t frameCount = 0;
-  while (FileUtils::getInstance()->isFileExist(textureResPath + "/" + frameNamePrefix + "_" + frameName + "/" + std::to_string(frameCount) + ".png")) {
-    frameCount++;
-  }
-
-  Vector<SpriteFrame*> frames;
-  for (size_t i = 0; i < frameCount; i++) {
-    const string& name = frameNamePrefix + "_" + frameName + "/" + std::to_string(i) + ".png";
-    frames.pushBack(frameCache->getSpriteFrameByName(name));
-  }
-  Animation* animation = Animation::createWithSpriteFrames(frames, delay);
-  animation->retain();
-  return animation;
+  _bodySpritesheet->addChild(_launchFxSprite);
+  _bodySpritesheet->addChild(_bodySprite);
+  _bodySpritesheet->getTexture()->setAliasTexParameters();
 }
 
 
@@ -189,26 +156,8 @@ Character* IceSpike::getSpellUser() const {
   return _spellUser;
 }
 
-const int IceSpike::getDamage() const {
+int IceSpike::getDamage() const {
   return _damage;
-}
-
-
-b2Body* IceSpike::getBody() const {
-  return _body;
-}
-
-b2Fixture* IceSpike::getFixture() const {
-  return _fixture;
-}
-
-
-Sprite* IceSpike::getSprite() const {
-  return _sprite;
-}
-
-SpriteBatchNode* IceSpike::getSpritesheet() const {
-  return _spritesheet;
 }
 
 } // namespace vigilante
