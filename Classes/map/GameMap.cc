@@ -36,6 +36,9 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   Enemy* enemy = new Enemy("Resources/Database/demon.json", 300, 100);
   _npcs.insert(enemy);
 
+  Enemy* enemy1 = new Enemy("Resources/Database/demon.json", 500, 100);
+  _npcs.insert(enemy1);
+
   Enemy* enemy2 = new Enemy("Resources/Database/slime.json", 250, 100);
   _npcs.insert(enemy2);
 

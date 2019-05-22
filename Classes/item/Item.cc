@@ -13,7 +13,6 @@ using vigilante::category_bits::kWall;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
 
-
 namespace vigilante {
 
 const float Item::_kIconWidth = 16.0f;

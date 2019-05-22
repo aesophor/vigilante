@@ -176,7 +176,7 @@ void MainGameScene::handleInput(float delta) {
           int targetPortalId = portal->targetPortalId;
           _gameMapManager->loadGameMap(targetTmxMapFileName);
           auto pos = _gameMapManager->getGameMap()->getPortals().at(targetPortalId)->body->GetPosition();
-          player->reposition(pos.x, pos.y);
+          player->setPosition(pos.x, pos.y);
           _gameCamera->setPosition(pos.x * kPpm - 600 / 2, pos.y * kPpm - 300 / 2);
         }),
         FadeOut::create(.5f),

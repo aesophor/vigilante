@@ -34,7 +34,7 @@ using vigilante::category_bits::kProjectile;
 namespace vigilante {
 
 Player::Player(const std::string& jsonFileName, float x, float y) : Character(x, y) {
-  _profile.import("Resources/Database/player.json");
+  _profile.import("Resources/Database/vlad.json");
 
   short bodyCategoryBits = kPlayer;
   short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
@@ -54,11 +54,11 @@ void Player::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   camera_util::shake(8, .1f);
 
-  _bodyFixture->SetSensor(true);
+  _fixtures[Fixture::BODY]->SetSensor(true);
   _isInvincible = true;
 
   callback_util::runAfter([&](){
-    _bodyFixture->SetSensor(false);
+    _fixtures[Fixture::BODY]->SetSensor(false);
     _isInvincible = false;
   }, 1.5f);
 

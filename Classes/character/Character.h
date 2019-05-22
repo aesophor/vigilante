@@ -10,6 +10,7 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "Actor.h"
 #include "character/data/CharacterProfile.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
@@ -17,13 +18,14 @@
 
 namespace vigilante {
 
-class Character {
+class Character : public Actor {
  public: 
   friend class CharacterProfile;
   virtual ~Character();
-  virtual void update(float delta);
 
-  virtual void reposition(float x, float y);
+  virtual void update(float delta) override;
+  virtual void setPosition(float x, float y) override;
+
   virtual void moveLeft();
   virtual void moveRight();
   virtual void jump();
@@ -80,10 +82,6 @@ class Character {
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
   
-  b2Body* getBody() const;
-  cocos2d::Sprite* getBodySprite() const;
-  cocos2d::SpriteBatchNode* getBodySpritesheet() const;	
-
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
@@ -109,20 +107,12 @@ class Character {
 
   static const std::array<std::string, Character::State::SIZE> _kCharacterStateStr;
 
-  void defineBody(b2BodyType bodyType,
-                  short bodyCategoryBits,
-                  short bodyMaskBits,
-                  short feetMaskBits,
-                  short weaponMaskBits,
-                  float x,
-                  float y);
-
+  virtual void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
+                          short feetMaskBits, short weaponMaskBits, float x, float y);
   virtual void defineTexture(const std::string& bodyTextureResPath, float x, float y);
+
   virtual void loadBodyAnimations(const std::string& bodyTextureResPath);
   virtual void loadEquipmentAnimations(Equipment* equipment);
-
-  // Load the animation of the specified state into the given animation array.
-  cocos2d::Animation* createAnimation(const std::string& textureResPath, std::string frameName, float delay=.1f) const;
 
   void runAnimation(Character::State state, bool loop=true) const;
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
@@ -169,27 +159,22 @@ class Character {
   // The portal to which this character is near.
   GameMap::Portal* _portal;
 
-  // Character's Box2D body and fixtures.
-  // The fixtures are attached to the _b2body, see map/WorldContactListener.cc
-  // for the implementation of contact handlers.
-  b2Body* _body;
-  b2Fixture* _bodyFixture; // used in combat (with _weaponFixture)
-  b2Fixture* _feetFixture; // used for ground/platform collision detection
-  b2Fixture* _weaponFixture; // used in combat (with _bodyFixture)
 
-  // Character's body and equipment sprites.
-  cocos2d::Sprite* _bodySprite; // child of _spritesheet
+  // We have a vector of b2Fixtures (declared in the Actor abstract class).
+  // e.g., to access the weapon fixture: _fixtures[Fixture::WEAPON]
+  enum Fixture {
+    BODY, // used in combat (with WEAPON fixture)
+    FEET, // used for ground/platform collision detection
+    WEAPON, // used in combat (with BODY fixture)
+  };
+
+
+  // Besides body sprite and animations (declared in the Actor abstract class),
+  // there is also a sprite for each equipment slots! Each equipped equipment
+  // has their own animation!
   std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
-
-  // Character's body and equipment spritesheets.
-  cocos2d::SpriteBatchNode* _bodySpritesheet; // child of MainGameScene
   std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-
-  // Character's body and equipment animations.
-  // AnimationArray is `typedef`ed. See the beginning of this class.
-  typedef std::array<cocos2d::Animation*, Character::State::SIZE> AnimationArray;
-  AnimationArray _bodyAnimations;
-  std::array<AnimationArray, Equipment::Type::SIZE> _equipmentAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
 };
 
 } // namespace vigilante
