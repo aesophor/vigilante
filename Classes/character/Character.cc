@@ -545,7 +545,7 @@ void Character::equip(Equipment* equipment) {
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type]);
+  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], 33);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {

@@ -87,10 +87,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   }
 
   for (auto npc : _gameMap->getNpcs()) {
-    _layer->addChild(npc->getBodySpritesheet());
+    _layer->addChild(npc->getBodySpritesheet(), 32);
   }
   for (auto item : _gameMap->getDroppedItems()) {
-    _layer->addChild(item->getSprite());
+    _layer->addChild(item->getSprite(), 33);
   }
 }
 
