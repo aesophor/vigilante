@@ -7,7 +7,6 @@ class Character;
 
 class Spell {
  public:
-  Spell() = default;
   virtual ~Spell() = default;
 
   virtual void activate() = 0;

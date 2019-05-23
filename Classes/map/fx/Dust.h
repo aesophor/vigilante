@@ -8,6 +8,7 @@ namespace vigilante {
 class Dust {
  public:
   static void create(cocos2d::Layer* gameMapLayer, float x, float y);
+
  private:
   static cocos2d::Animation* _animation;
 };

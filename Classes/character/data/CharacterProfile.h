@@ -4,13 +4,13 @@
 #include <string>
 #include <array>
 
+#include "Importable.h"
+
 namespace vigilante {
 
-class Character;
-
-struct CharacterProfile {
+struct CharacterProfile : public Importable {
   CharacterProfile() = default;
-  void import(const std::string& jsonFileName);
+  virtual void import(const std::string& jsonFileName) override;
 
   std::string textureResPath;
   float spriteOffsetX;

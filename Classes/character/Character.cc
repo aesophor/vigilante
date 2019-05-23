@@ -444,7 +444,10 @@ void Character::unsheathWeapon() {
 }
 
 void Character::attack() {
-  if (_isAttacking) {
+  // If character is still attacking, block this request.
+  // The latter condition prevents the character from being stucked in an
+  // attack animation when the user calls Character::attack too frequently.
+  if (_isAttacking || _currentState == State::ATTACKING) {
     return;
   }
   if (_isWeaponSheathed) {
