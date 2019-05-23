@@ -83,7 +83,7 @@ void Hud::updateEquippedWeapon() {
 
 void Hud::updateStatusBars() {
   // Update status bars.
-  CharacterProfile& profile = _player->getProfile();
+  Character::Profile& profile = _player->getProfile();
   _healthBar->update(profile.health, profile.fullHealth);
   _magickaBar->update(profile.magicka, profile.fullMagicka);
   _staminaBar->update(profile.stamina, profile.fullStamina);

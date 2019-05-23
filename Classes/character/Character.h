@@ -11,20 +11,60 @@
 #include "Box2D/Box2D.h"
 
 #include "DynamicActor.h"
-#include "character/data/CharacterProfile.h"
+#include "Importable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "map/GameMap.h"
 
 namespace vigilante {
 
-class Character : public DynamicActor {
+class Character : public DynamicActor, public Importable {
  public: 
-  friend class CharacterProfile;
+  struct Profile {
+    Profile(const std::string& jsonFileName);
+    virtual ~Profile() = default;
+
+    std::string textureResPath;
+    float spriteOffsetX;
+    float spriteOffsetY;
+    float spriteScaleX;
+    float spriteScaleY;
+    int frameWidth;
+    int frameHeight;
+    std::vector<float> frameInterval;
+
+    std::string name;
+    int level;
+    int exp;
+
+    int fullHealth;
+    int fullStamina;
+    int fullMagicka;
+    int health;
+    int stamina;
+    int magicka;
+
+    int strength;
+    int dexterity;
+    int intelligence;
+    int luck;
+
+    int bodyWidth;
+    int bodyHeight;
+    float moveSpeed;
+    float jumpHeight;
+
+    float attackForce;
+    float attackTime;
+    float attackRange;
+    int baseMeleeDamage;
+  };
+
   virtual ~Character();
 
-  virtual void update(float delta) override;
-  virtual void setPosition(float x, float y) override;
+  virtual void update(float delta) override; // DynamicActor
+  virtual void setPosition(float x, float y) override; // StaticActor
+  virtual void import(const std::string& jsonFileName) override; // Importable
 
   virtual void moveLeft();
   virtual void moveRight();
@@ -64,7 +104,7 @@ class Character : public DynamicActor {
   void setCrouching(bool crouching);
   void setInvincible(bool invincible);
 
-  CharacterProfile& getProfile();
+  Character::Profile& getProfile();
 
   std::set<Character*>& getInRangeTargets();
   Character* getLockedOnTarget() const;
@@ -85,7 +125,7 @@ class Character : public DynamicActor {
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
-  Character();
+  Character(const std::string& jsonFileName);
 
   enum State {
     IDLE_SHEATHED,
@@ -119,6 +159,9 @@ class Character : public DynamicActor {
 
   Character::State getState() const;
 
+  // Characater data.
+  Character::Profile _profile;
+
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()
   // for the logic.
@@ -137,8 +180,6 @@ class Character : public DynamicActor {
   bool _isInvincible;
   bool _isKilled;
   bool _isSetToKill;
-
-  CharacterProfile _profile;
 
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is

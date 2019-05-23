@@ -1,7 +1,10 @@
 #include "Character.h"
 
+#include <fstream>
+
+#include "json/document.h"
+
 #include "GameAssetManager.h"
-#include "character/data/CharacterProfile.h"
 #include "map/GameMapManager.h"
 #include "ui/damage/FloatingDamageManager.h"
 #include "ui/notification/NotificationManager.h"
@@ -16,6 +19,7 @@ using std::array;
 using std::vector;
 using std::string;
 using std::function;
+using std::ifstream;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Sequence;
@@ -30,6 +34,7 @@ using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
 using cocos2d::FileUtils;
+using rapidjson::Document;
 
 namespace vigilante {
 
@@ -50,8 +55,9 @@ const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr
   "killed"
 }};
 
-Character::Character()
+Character::Character(const string& jsonFileName)
     : DynamicActor(State::STATE_SIZE, FixtureType::FIXTURE_SIZE),
+      _profile(jsonFileName),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),
@@ -66,7 +72,6 @@ Character::Character()
       _isInvincible(),
       _isKilled(),
       _isSetToKill(),
-      _profile(),
       _lockedOnTarget(),
       _isAlerted(),
       _inventory(),
@@ -181,6 +186,10 @@ void Character::update(float delta) {
 
 void Character::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
+}
+
+void Character::import(const string& jsonFileName) {
+  _profile = std::move(Character::Profile(jsonFileName));
 }
 
 void Character::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
@@ -612,7 +621,7 @@ void Character::setInvincible(bool invincible) {
 }
 
 
-CharacterProfile& Character::getProfile() {
+Character::Profile& Character::getProfile() {
   return _profile;
 }
 
@@ -664,6 +673,65 @@ void Character::setCategoryBits(b2Fixture* fixture, short bits) {
   b2Filter filter;
   filter.categoryBits = bits;
   fixture->SetFilterData(filter);
+}
+
+
+Character::Profile::Profile(const string& jsonFileName) {
+  ifstream fin(jsonFileName);
+  if (!fin.is_open()) {
+    cocos2d::log("Json file not found: %s", jsonFileName.c_str());
+    return;
+  }
+
+  string content;
+  string line;
+  while (std::getline(fin, line)) {
+    content += line;
+  }
+  fin.close();
+
+  Document json;
+  json.Parse(content.c_str());
+
+  textureResPath = json["textureResPath"].GetString();
+  spriteOffsetX = json["spriteOffsetX"].GetFloat();
+  spriteOffsetY = json["spriteOffsetY"].GetFloat();
+  spriteScaleX = json["spriteScaleX"].GetFloat();
+  spriteScaleY = json["spriteScaleY"].GetFloat();
+  frameWidth = json["frameWidth"].GetInt();
+  frameHeight = json["frameHeight"].GetInt();
+
+  for (int i = 0; i < Character::State::STATE_SIZE; i++) {
+    float interval = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
+    frameInterval.push_back(interval);
+  }
+
+  name = json["name"].GetString();
+  level = json["level"].GetInt();
+  exp = json["exp"].GetInt();
+
+  fullHealth = json["fullHealth"].GetInt();
+  fullStamina = json["fullStamina"].GetInt();
+  fullMagicka = json["fullMagicka"].GetInt();
+
+  health = json["health"].GetInt();
+  stamina = json["stamina"].GetInt();
+  magicka = json["magicka"].GetInt();
+
+  strength = json["strength"].GetInt();
+  dexterity = json["dexterity"].GetInt();
+  intelligence = json["intelligence"].GetInt();
+  luck = json["luck"].GetInt();
+
+  bodyWidth = json["bodyWidth"].GetInt();
+  bodyHeight = json["bodyHeight"].GetInt();
+  moveSpeed = json["moveSpeed"].GetFloat();
+  jumpHeight = json["jumpHeight"].GetFloat();
+
+  attackForce = json["attackForce"].GetFloat();
+  attackTime = json["attackTime"].GetFloat();
+  attackRange = json["attackRange"].GetFloat();
+  baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 }
 
 } // namespace vigilante

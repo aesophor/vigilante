@@ -33,9 +33,7 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName, float x, float y) : Character() {
-  _profile.import("Resources/Database/vlad.json");
-
+Player::Player(const std::string& jsonFileName, float x, float y) : Character(jsonFileName) {
   short bodyCategoryBits = kPlayer;
   short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;

@@ -33,13 +33,13 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPortals();
 
   // Spawn an enemy.
-  Enemy* enemy = new Enemy("Resources/Database/demon.json", 300, 100);
+  Enemy* enemy = new Enemy("Resources/Database/character/demon.json", 300, 100);
   _npcs.insert(enemy);
 
-  Enemy* enemy1 = new Enemy("Resources/Database/demon.json", 500, 100);
+  Enemy* enemy1 = new Enemy("Resources/Database/character/demon.json", 500, 100);
   _npcs.insert(enemy1);
 
-  Enemy* enemy2 = new Enemy("Resources/Database/slime.json", 250, 100);
+  Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json", 250, 100);
   _npcs.insert(enemy2);
 
   // Spawn an item.
@@ -97,7 +97,7 @@ Player* GameMap::createPlayer() const {
   auto& valMap = objGroup->getObjects()[0].asValueMap();
   float x = valMap["x"].asFloat();
   float y = valMap["y"].asFloat();
-  return new Player("Aesophor", x, y);
+  return new Player("Resources/Database/character/vlad.json", x, y);
 }
 
 void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
