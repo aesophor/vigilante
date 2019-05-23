@@ -1,5 +1,7 @@
 #include "Enemy.h"
 
+#include "json/document.h"
+
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/notification/NotificationManager.h"
@@ -7,6 +9,7 @@
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
+#include "util/JsonUtil.h"
 
 using std::string;
 using cocos2d::Vector;
@@ -32,11 +35,14 @@ using vigilante::category_bits::kWall;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kObject;
 using vigilante::category_bits::kProjectile;
+using rapidjson::Document;
 
 namespace vigilante {
 
-Enemy::Enemy(const std::string& jsonFileName, float x, float y)
-    : Character(jsonFileName), Bot(this) {
+Enemy::Enemy(const string& jsonFileName, float x, float y)
+    : Character(jsonFileName),
+      Bot(this),
+      _enemyProfile(jsonFileName) {
   short bodyCategoryBits = kEnemy;
   short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
@@ -45,11 +51,16 @@ Enemy::Enemy(const std::string& jsonFileName, float x, float y)
   defineTexture(_characterProfile.textureResPath, x, y);
 }
 
-
 void Enemy::update(float delta) {
   Character::update(delta);
   act(delta);
 }
+
+void Enemy::import(const string& jsonFileName) {
+  Character::import(jsonFileName);
+  _enemyProfile = Enemy::Profile(jsonFileName);
+}
+
 
 void Enemy::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
@@ -57,6 +68,23 @@ void Enemy::receiveDamage(Character* source, int damage) {
 
   if (_isSetToKill) {
     NotificationManager::getInstance()->show("Gained 25 exp.");
+  }
+}
+
+Enemy::Profile& Enemy::getEnemyProfile() {
+  return _enemyProfile;
+}
+
+
+Enemy::Profile::Profile(const string& jsonFileName) {
+  Document json = json_util::parseJson(jsonFileName);
+  
+  const auto& dropItemsMap = json["dropItems"].GetObject();
+
+  if (!dropItemsMap.ObjectEmpty()) {
+    for (const auto& keyValue : dropItemsMap) {
+      dropItems.insert({keyValue.name.GetString(), keyValue.value.GetFloat()});
+    }
   }
 }
 

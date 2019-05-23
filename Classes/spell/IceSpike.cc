@@ -97,10 +97,9 @@ void IceSpike::onHit() {
     GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
     GameMapManager::getInstance()->getGameMap()->getInUseSpells().erase(this);
     // FIXME
-    //delete this; // maybe this is not a good idea....
-    cocos2d::log("destoying body");
     _body->SetLinearVelocity({0, 0});
     _body->GetWorld()->DestroyBody(_body);
+    delete this; // maybe this is not a good idea....
   });
 
   _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));

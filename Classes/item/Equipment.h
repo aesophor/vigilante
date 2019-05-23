@@ -42,7 +42,6 @@ class Equipment : public Item {
 
   Equipment(const std::string& jsonFileName, float x, float y);
   virtual ~Equipment() = default;
-
   virtual void import(const std::string& jsonFileName) override;
 
   Equipment::Profile& getEquipmentProfile();

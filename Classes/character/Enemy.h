@@ -2,6 +2,7 @@
 #define VIGILANTE_ENEMY_H_
 
 #include <string>
+#include <unordered_map>
 
 #include "Box2D/Box2D.h"
 
@@ -14,12 +15,25 @@ class Item;
 
 class Enemy : public Character, public Bot {
  public:
+  struct Profile {
+    Profile(const std::string& jsonFileName);
+    virtual ~Profile() = default;
+
+    std::unordered_map<std::string, float> dropItems; // Item*, chance of dropping
+  };
+
   Enemy(const std::string& jsonFileName, float x, float y);
   virtual ~Enemy() = default;
   virtual void update(float delta) override;
+  virtual void import(const std::string& jsonFileName) override;
 
   virtual void receiveDamage(Character* source, int damage) override;
-//  virtual void dropItem(Item* item);
+  //virtual void dropItem(Item* item);
+
+  Enemy::Profile& getEnemyProfile();
+  
+ private:
+  Enemy::Profile _enemyProfile;
 };
 
 } // namespace vigilante
