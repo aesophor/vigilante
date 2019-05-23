@@ -43,10 +43,11 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   _npcs.insert(enemy2);
 
   // Spawn an item.
-  for (int i = 0; i < 1; i++) {
-    Item* item = new Equipment(Equipment::Type::WEAPON, "Rusty Axe" + std::to_string(i), "An old rusty axe", asset_manager::kRustyAxeIcon, asset_manager::kRustyAxeTextureResPath, 200, 80);
-    _droppedItems.insert(item);
-  }
+  Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json", 190, 80);
+  _droppedItems.insert(item1);
+
+  Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json", 230, 80);
+  _droppedItems.insert(item2);
 }
 
 GameMap::~GameMap() {

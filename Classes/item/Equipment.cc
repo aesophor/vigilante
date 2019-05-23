@@ -1,7 +1,12 @@
 #include "Equipment.h"
 
+#include "json/document.h"
+
+#include "util/JsonUtil.h"
+
 using std::array;
 using std::string;
+using rapidjson::Document;
 
 namespace vigilante {
 
@@ -15,24 +20,34 @@ const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
   "RING"
 }};
 
-Equipment::Equipment(const Equipment::Type equipmentType,
-                     const string& name,
-                     const string& desc,
-                     const string& iconPath,
-                     const string& spritesPath,
-                     float x,
-                     float y)
-    : Item(Item::Type::EQUIPMENT, name, desc, iconPath, x, y),
-      _spritesPath(spritesPath),
-      _equipmentType(equipmentType) {}
+Equipment::Equipment(const string& jsonFileName, float x, float y)
+    : Item(jsonFileName, x, y),
+      _equipmentProfile(jsonFileName) {}
 
-
-string Equipment::getSpritesPath() const {
-  return _spritesPath;
+void Equipment::import(const string& jsonFileName) {
+  Item::import(jsonFileName);
+  _equipmentProfile = Equipment::Profile(jsonFileName);
 }
 
-const Equipment::Type Equipment::getEquipmentType() const {
-  return _equipmentType;
+Equipment::Profile& Equipment::getEquipmentProfile() {
+  return _equipmentProfile;
+}
+
+
+Equipment::Profile::Profile(const string& jsonFileName) {
+  Document json = json_util::parseJson(jsonFileName);
+
+  equipmentType = static_cast<Equipment::Type>(json["equipmentType"].GetInt());
+  bonusPhysicalDamage = json["bonusPhysicalDamage"].GetInt();
+  bonusMagicalDamage = json["bonusMagicalDamage"].GetInt();
+
+  bonusStr = json["bonusStr"].GetInt();
+  bonusDex = json["bonusDex"].GetInt();
+  bonusInt = json["bonusInt"].GetInt();
+  bonusLuk = json["bonusLuk"].GetInt();
+
+  bonusMoveSpeed = json["bonusMoveSpeed"].GetInt();
+  bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
 } // namespace vigilante

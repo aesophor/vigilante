@@ -74,7 +74,7 @@ void Hud::updateEquippedWeapon() {
     _equippedWeapon->setPosition({-36, -25});
     _equippedWeapon->setScale(_equippedWeaponBg->getLayoutSize().width / _equippedWeapon->getLayoutSize().width - .5f);
     // Update weapon desc label
-    _equippedWeaponDesc->setString(weapon->getName());
+    _equippedWeaponDesc->setString(weapon->getItemProfile().name);
   } else {
     _equippedWeapon->loadTexture(asset_manager::kEmptyItemIcon);
     _equippedWeaponDesc->setString("");
@@ -83,7 +83,7 @@ void Hud::updateEquippedWeapon() {
 
 void Hud::updateStatusBars() {
   // Update status bars.
-  Character::Profile& profile = _player->getProfile();
+  Character::Profile& profile = _player->getCharacterProfile();
   _healthBar->update(profile.health, profile.fullHealth);
   _magickaBar->update(profile.magicka, profile.fullMagicka);
   _staminaBar->update(profile.stamina, profile.fullStamina);

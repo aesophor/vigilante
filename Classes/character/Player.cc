@@ -39,7 +39,7 @@ Player::Player(const std::string& jsonFileName, float x, float y) : Character(js
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kEnemy | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(_profile.textureResPath, x, y);
+  defineTexture(_characterProfile.textureResPath, x, y);
 }
 
 

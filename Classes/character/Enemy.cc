@@ -42,7 +42,7 @@ Enemy::Enemy(const std::string& jsonFileName, float x, float y)
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
   short weaponMaskBits = kPlayer | kObject;
   defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(_profile.textureResPath, x, y);
+  defineTexture(_characterProfile.textureResPath, x, y);
 }
 
 

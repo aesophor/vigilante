@@ -79,7 +79,7 @@ void IceSpike::activate() {
   b2Vec2 spellUserBodyPos = _spellUser->getBody()->GetPosition();
   float x = spellUserBodyPos.x * kPpm;
   float y = spellUserBodyPos.y * kPpm;
-  float offset = _spellUser->getProfile().attackRange;
+  float offset = _spellUser->getCharacterProfile().attackRange;
   x += (_spellUser->isFacingRight()) ? offset : -offset;
   _launchFxSprite->setPosition(x, y);
   _launchFxSprite->runAction(Sequence::createWithTwoActions(animation, callback));
@@ -108,7 +108,7 @@ void IceSpike::onHit() {
 
 
 void IceSpike::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
-  float spellOffset = _spellUser->getProfile().attackRange / kPpm;
+  float spellOffset = _spellUser->getCharacterProfile().attackRange / kPpm;
   spellOffset = (_spellUser->isFacingRight()) ? spellOffset : -spellOffset;
 
   b2World* world = _spellUser->getBody()->GetWorld();

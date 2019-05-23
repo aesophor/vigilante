@@ -226,7 +226,7 @@ void MainGameScene::handleInput(float delta) {
       _gameMapManager->getGameMap()->getDroppedItems().erase(i);
       _gameMapManager->getLayer()->removeChild(i->getSprite());
 
-      _notifications->show("Acquired item: " + i->getName() + ".");
+      _notifications->show("Acquired item: " + i->getItemProfile().name + ".");
     }
   }
 

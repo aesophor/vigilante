@@ -104,7 +104,7 @@ class Character : public DynamicActor, public Importable {
   void setCrouching(bool crouching);
   void setInvincible(bool invincible);
 
-  Character::Profile& getProfile();
+  Character::Profile& getCharacterProfile();
 
   std::set<Character*>& getInRangeTargets();
   Character* getLockedOnTarget() const;
@@ -160,7 +160,7 @@ class Character : public DynamicActor, public Importable {
   Character::State getState() const;
 
   // Characater data.
-  Character::Profile _profile;
+  Character::Profile _characterProfile;
 
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()

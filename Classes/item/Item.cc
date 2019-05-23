@@ -1,9 +1,12 @@
 #include "Item.h"
 
+#include "json/document.h"
+
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
+#include "util/JsonUtil.h"
 
 using std::string;
 using cocos2d::Sprite;
@@ -12,35 +15,31 @@ using vigilante::category_bits::kFeet;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
+using rapidjson::Document;
 
 namespace vigilante {
 
 const float Item::_kIconWidth = 16.0f;
 const float Item::_kIconHeight = 16.0f;
 
-Item::~Item() {
-  _b2body->GetWorld()->DestroyBody(_b2body);
-}
-
-Item::Item(const Item::Type itemType,
-           const string& name,
-           const string& desc,
-           const string& iconPath,
-           float x,
-           float y)
-    : _itemType(itemType),
-      _name(name),
-      _desc(desc),
-      _iconPath(iconPath),
+Item::Item(const string& jsonFileName, float x, float y)
+    : _itemProfile(jsonFileName),
+      _isBodyExisted(),
       _b2body(),
-      _sprite(Sprite::create(iconPath)) {
+      _sprite(Sprite::create(getIconPath())) {
   // Define b2body and fixture.
   short categoryBits = kItem;
   short maskBits = kGround | kPlatform | kWall;
   defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+
   // Disable sprite antialiasing
   _sprite->getTexture()->setAliasTexParameters();
 }
+
+Item::~Item() {
+  _b2body->GetWorld()->DestroyBody(_b2body);
+}
+
 
 void Item::update(float delta) {
   // Sync the sprite with its b2body.
@@ -48,11 +47,7 @@ void Item::update(float delta) {
   _sprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
 }
 
-void Item::defineBody(b2BodyType bodyType,
-                      short categoryBits,
-                      short maskBits,
-                      float x,
-                      float y) {
+void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
   _b2body = bodyBuilder.type(bodyType)
@@ -71,24 +66,23 @@ void Item::defineBody(b2BodyType bodyType,
     .maskBits(maskBits)
     .setUserData(this)
     .buildFixture();
+
+  _isBodyExisted = true;
+}
+
+void Item::import(const string& jsonFileName) {
+  _itemProfile = Item::Profile(jsonFileName);
 }
 
 
-const Item::Type Item::getItemType() const {
-  return _itemType;
+Item::Profile& Item::getItemProfile() {
+  return _itemProfile;
 }
 
-const string& Item::getName() const {
-  return _name;
+std::string Item::getIconPath() const {
+  return _itemProfile.textureResPath + "/icon.png";
 }
 
-const string& Item::getDesc() const {
-  return _desc;
-}
-
-const string& Item::getIconPath() const {
-  return _iconPath;
-}
 
 b2Body* Item::getB2Body() const {
   return _b2body;
@@ -96,6 +90,16 @@ b2Body* Item::getB2Body() const {
 
 Sprite* Item::getSprite() const {
   return _sprite;
+}
+
+
+Item::Profile::Profile(const string& jsonFileName) {
+  Document json = json_util::parseJson(jsonFileName);
+
+  itemType = static_cast<Item::Type>(json["itemType"].GetInt());
+  textureResPath = json["textureResPath"].GetString();
+  name = json["name"].GetString();
+  desc = json["desc"].GetString();
 }
 
 } // namespace vigilante

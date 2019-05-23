@@ -48,7 +48,7 @@ void ItemListView::showItemsByType(Item::Type itemType) {
   // If the inventory size isn't empty, select the first item by default.
   if (_characterItems.size() > 0) {
     _listViewItems[0]->setSelected(true);
-    _itemDesc->setString(_characterItems[_current]->getDesc());
+    _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
   } else {
     _itemDesc->setString("");
   }
@@ -95,7 +95,7 @@ void ItemListView::selectUp() {
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
 
   if (_characterItems[_current]) {
-    _itemDesc->setString(_characterItems[_current]->getDesc());
+    _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
   } else {
     _itemDesc->setString("Unequip");
   }
@@ -113,7 +113,7 @@ void ItemListView::selectDown() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
-  _itemDesc->setString(_characterItems[_current]->getDesc());
+  _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
 }
 
 void ItemListView::confirm() {
@@ -124,7 +124,7 @@ void ItemListView::confirm() {
 
   PauseMenuDialog* dialog = _pauseMenu->getDialog();
   dialog->reset();
-  dialog->setMessage("What would you like to do with " + item->getName() + "?");
+  dialog->setMessage("What would you like to do with " + item->getItemProfile().name + "?");
   dialog->setOption(0, true, "Equip", [=]() {
     _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
     _pauseMenu->update();
@@ -176,7 +176,7 @@ void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
 
   // Filter out any equipment other than the specified equipmentType.
   _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](Item* i) {
-    return dynamic_cast<Equipment*>(i)->getEquipmentType() != equipmentType;
+    return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType != equipmentType;
   }), _characterItems.end());
 }
 
@@ -229,7 +229,7 @@ Item* ItemListView::ListViewItem::getItem() const {
 void ItemListView::ListViewItem::setItem(Item* item) {
   _item = item;
   _icon->loadTexture((item) ? item->getIconPath() : kEmptyItemIcon);
-  _label->setString((item) ? item->getName() : "---");
+  _label->setString((item) ? item->getItemProfile().name : "---");
 }
 
 Layout* ItemListView::ListViewItem::getLayout() const {

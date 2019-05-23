@@ -21,49 +21,34 @@ class Equipment : public Item {
     SIZE
   };
 
+  struct Profile {
+    Profile(const std::string& jsonFileName);
+    virtual ~Profile() = default;
+
+    Equipment::Type equipmentType;
+    int bonusPhysicalDamage;
+    int bonusMagicalDamage;
+
+    int bonusStr;
+    int bonusDex;
+    int bonusInt;
+    int bonusLuk;
+
+    int bonusMoveSpeed;
+    int bonusJumpHeight;
+  };
+
   static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
-  // TODO: load item properties from JSON
-  Equipment(const Equipment::Type equipmentType,
-            const std::string& name,
-            const std::string& desc,
-            const std::string& iconPath,
-            const std::string& spritesPath,
-            float x,
-            float y);
+  Equipment(const std::string& jsonFileName, float x, float y);
   virtual ~Equipment() = default;
 
-  std::string getSpritesPath() const;
-  const Equipment::Type getEquipmentType() const;
-  int getBonusPhysicalDamage() const;
-  int getBonusMagicalDamage() const;
-  int getBonusStr() const;
-  int getBonusDex() const;
-  int getBonusInt() const;
-  int getBonusLuk() const;
-  int getBonusMovingSpeed() const;
-  int getBonusJumpingHeight() const;
+  virtual void import(const std::string& jsonFileName) override;
 
-  void setBounsPhysicalDamage(int val);
-  void setBonusMagicalDamage(int val);
-  void setBonusStr(int val);
-  void setBonusDex(int val);
-  void setBonusInt(int val);
-  void setBonusLuk(int val);
-  void setBonusMovingSpeed(int val);
-  void setBonusJumpingHeight(int val);
+  Equipment::Profile& getEquipmentProfile();
 
  private:
-  std::string _spritesPath;
-  Equipment::Type _equipmentType;
-  int _bonusPhysicalDamage;
-  int _bonusMagicalDamage;
-  int _bonusStr;
-  int _bonusDex;
-  int _bonusInt;
-  int _bonusLuk;
-  int _bonusMovingSpeed;
-  int _bonusJumpingHeight;
+  Equipment::Profile _equipmentProfile;
 };
 
 } // namespace vigilante
