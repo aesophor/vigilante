@@ -31,7 +31,7 @@ using vigilante::category_bits::kItem;
 namespace vigilante {
 
 IceSpike::IceSpike(Character* spellUser, float flyingSpeed)
-    : Actor(1, AnimationType::SIZE),
+    : DynamicActor(AnimationType::SIZE, 1),
       _spellUser(spellUser),
       _damage(50),
       _flyingSpeed(flyingSpeed),

@@ -83,11 +83,11 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // If the player object hasn't been created, spawn it.
   if (!_player) {
     _player = unique_ptr<Player>(_gameMap->createPlayer());
-    _layer->addChild(_player->getBodySpritesheet(), 31);
+    _layer->addChild(_player->getBodySpritesheet(), 32);
   }
 
   for (auto npc : _gameMap->getNpcs()) {
-    _layer->addChild(npc->getBodySpritesheet(), 32);
+    _layer->addChild(npc->getBodySpritesheet(), 31);
   }
   for (auto item : _gameMap->getDroppedItems()) {
     _layer->addChild(item->getSprite(), 33);

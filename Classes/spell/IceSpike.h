@@ -7,14 +7,14 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
-#include "Actor.h"
+#include "DynamicActor.h"
 #include "Spell.h"
 
 namespace vigilante {
 
 class Character;
 
-class IceSpike : public Actor, public Spell {
+class IceSpike : public DynamicActor, public Spell {
  public:
   IceSpike(Character* spellUser, float flyingSpeed=2.0f);
   virtual ~IceSpike();

@@ -1,4 +1,4 @@
-#include "Actor.h"
+#include "StaticActor.h"
 
 #include <stdexcept>
 
@@ -14,29 +14,27 @@ using cocos2d::SpriteFrameCache;
 
 namespace vigilante {
 
-Actor::Actor(size_t fixturesSize, size_t animationsSize)
-    : _body(),
-      _fixtures(fixturesSize),
-      _bodySprite(),
+StaticActor::StaticActor(size_t animationsSize)
+    : _bodySprite(),
       _bodySpritesheet(),
       _bodyAnimations(animationsSize) {}
 
 
-b2Body* Actor::getBody() const {
-  return _body;
+void StaticActor::setPosition(float x, float y) {
+  _bodySprite->setPosition(x, y);
 }
 
-Sprite* Actor::getBodySprite() const {
+Sprite* StaticActor::getBodySprite() const {
   return _bodySprite;
 }
 
-SpriteBatchNode* Actor::getBodySpritesheet() const {
+SpriteBatchNode* StaticActor::getBodySpritesheet() const {
   return _bodySpritesheet;
 }
 
 
-Animation* Actor::createAnimation(const string& textureResDir, string framesName,
-                                  float interval, Animation* fallback) {
+Animation* StaticActor::createAnimation(const string& textureResDir, string framesName,
+                                        float interval, Animation* fallback) {
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
 
   // The texture resources under Resources/Texture/ has the following rules:
@@ -48,7 +46,7 @@ Animation* Actor::createAnimation(const string& textureResDir, string framesName
   //
   // As you can see, each framesName (e.g., attacking) is preceded by a prefix,
   // this is to **prevent frames name collision** in cocos2d::SpriteFrameCache!
-  string framesNamePrefix = Actor::extractTrailingDir(textureResDir);
+  string framesNamePrefix = StaticActor::extractTrailingDir(textureResDir);
 
   // Count how many frames (.png) are there in the corresponding directory.
   // Method: we will use FileUtils to test whether a file exists starting from 0.png, 1.png, ..., n.png
@@ -77,7 +75,7 @@ Animation* Actor::createAnimation(const string& textureResDir, string framesName
   return animation;
 }
 
-string Actor::extractTrailingDir(const string& directory) {
+string StaticActor::extractTrailingDir(const string& directory) {
   return directory.substr(directory.find_last_of('/') + 1);
 }
 

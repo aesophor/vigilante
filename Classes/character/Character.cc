@@ -51,7 +51,7 @@ const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr
 }};
 
 Character::Character()
-    : Actor(FixtureType::FIXTURE_SIZE, State::STATE_SIZE),
+    : DynamicActor(State::STATE_SIZE, FixtureType::FIXTURE_SIZE),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _stateTimer(),

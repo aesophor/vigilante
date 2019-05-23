@@ -10,7 +10,7 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
-#include "Actor.h"
+#include "DynamicActor.h"
 #include "character/data/CharacterProfile.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
@@ -18,7 +18,7 @@
 
 namespace vigilante {
 
-class Character : public Actor {
+class Character : public DynamicActor {
  public: 
   friend class CharacterProfile;
   virtual ~Character();
