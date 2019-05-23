@@ -28,6 +28,8 @@ class DynamicActor : public StaticActor {
   virtual ~DynamicActor() = default;
 
   virtual void update(float delta) = 0;
+  virtual void showInMap(float x, float y) = 0; // StaticActor
+  virtual void removeFromMap() override; // StaticActor
 
   b2Body* getBody() const;
 

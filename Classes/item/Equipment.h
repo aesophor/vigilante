@@ -40,9 +40,9 @@ class Equipment : public Item {
 
   static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
-  Equipment(const std::string& jsonFileName, float x, float y);
+  Equipment(const std::string& jsonFileName);
   virtual ~Equipment() = default;
-  virtual void import(const std::string& jsonFileName) override;
+  virtual void import(const std::string& jsonFileName) override; // Importable
 
   Equipment::Profile& getEquipmentProfile();
 

@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "map/GameMapManager.h"
+
 using std::string;
 using std::runtime_error;
 using cocos2d::FileUtils;
@@ -15,7 +17,8 @@ using cocos2d::SpriteFrameCache;
 namespace vigilante {
 
 StaticActor::StaticActor(size_t animationsSize)
-    : _bodySprite(),
+    : _isShownInMap(),
+      _bodySprite(),
       _bodySpritesheet(),
       _bodyAnimations(animationsSize) {}
 
@@ -23,6 +26,22 @@ StaticActor::StaticActor(size_t animationsSize)
 void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);
 }
+
+void StaticActor::showInMap(float x, float y) {
+  if (!_isShownInMap) {
+    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+    _bodySprite->setPosition(x, y);
+    _isShownInMap = true;
+  }
+}
+
+void StaticActor::removeFromMap() {
+  if (_isShownInMap) {
+    GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    _isShownInMap = false;
+  }
+}
+
 
 Sprite* StaticActor::getBodySprite() const {
   return _bodySprite;

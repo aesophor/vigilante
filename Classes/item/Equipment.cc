@@ -20,8 +20,8 @@ const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
   "RING"
 }};
 
-Equipment::Equipment(const string& jsonFileName, float x, float y)
-    : Item(jsonFileName, x, y),
+Equipment::Equipment(const string& jsonFileName)
+    : Item(jsonFileName),
       _equipmentProfile(jsonFileName) {}
 
 void Equipment::import(const string& jsonFileName) {

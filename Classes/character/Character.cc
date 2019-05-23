@@ -78,9 +78,8 @@ Character::Character(const string& jsonFileName)
       _portal() {}
 
 Character::~Character() {
-  if (!_isKilled) {
-    _body->GetWorld()->DestroyBody(_body);
-  }
+  // Remove character's b2Body and all spritesheets.
+  removeFromMap();
 
   // Delete all items from inventory and equipment slots.
   for (auto& items : _inventory) { // vector<Item*>
@@ -185,6 +184,25 @@ void Character::update(float delta) {
 
 void Character::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
+}
+
+void Character::removeFromMap() {
+  if (_isShownInMap) {
+    if (!_isKilled) {
+      _body->GetWorld()->DestroyBody(_body);
+    }
+
+    GameMapManager* gmMgr = GameMapManager::getInstance();
+    gmMgr->getLayer()->removeChild(_bodySpritesheet);
+    for (auto equipment : _equipmentSlots) {
+      if (equipment) {
+        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+        gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
+      }
+    }
+
+    _isShownInMap = false;
+  }
 }
 
 void Character::import(const string& jsonFileName) {
@@ -513,9 +531,25 @@ void Character::receiveDamage(Character* source, int damage) {
 
 
 void Character::pickupItem(Item* item) {
-  _inRangeItems.erase(item);
   addItem(item);
-  item->getB2Body()->GetWorld()->DestroyBody(item->getB2Body());
+
+  item->hide();
+  GameMapManager::getInstance()->getGameMap()->getDroppedItems().erase(item);
+ }
+
+void Character::discardItem(Item* item) {
+  // Remove the item from character's inventory if it exists.
+  vector<Item*>& items = _inventory[item->getItemProfile().itemType];
+  auto pos = std::find(items.begin(), items.end(), item);
+
+  if (pos != items.end()) {
+    items.erase(pos);
+  }
+
+  // Drop this item in the world.
+  item->show(_body->GetPosition().x, _body->GetPosition().y);
+  item->getBody()->ApplyLinearImpulse({0, .2f}, item->getBody()->GetWorldCenter(), true);
+  GameMapManager::getInstance()->getGameMap()->getDroppedItems().insert(item);
 }
 
 void Character::addItem(Item* item) {

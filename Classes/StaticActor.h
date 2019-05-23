@@ -14,15 +14,19 @@ namespace vigilante {
 
 class StaticActor {
  public:
-  StaticActor(size_t animationsSize=1);
   virtual ~StaticActor() = default;
-
   virtual void setPosition(float x, float y);
+
+  // Show and hide the sprite in the game map.
+  virtual void showInMap(float x, float y);
+  virtual void removeFromMap();
 
   cocos2d::Sprite* getBodySprite() const;
   cocos2d::SpriteBatchNode* getBodySpritesheet() const;
 
  protected:
+  StaticActor(size_t animationsSize=1);
+
   // Create animation from Texture/{category}/{entityName}/{entityName}_{frameName}
   // e.g., to create the animation of "slime" "killed", pass the following arguments
   // to this function: ("Texture/character/slime", "killed", 3.0f / kPpm).
@@ -56,6 +60,7 @@ class StaticActor {
   // e.g., "Texture/character/player" -> "player"
   static std::string extractTrailingDir(const std::string& directory);
 
+  bool _isShownInMap;
   cocos2d::Sprite* _bodySprite;
   cocos2d::SpriteBatchNode* _bodySpritesheet;
   std::vector<cocos2d::Animation*> _bodyAnimations;

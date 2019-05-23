@@ -33,20 +33,25 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPortals();
 
   // Spawn an enemy.
-  Enemy* enemy = new Enemy("Resources/Database/character/demon.json", 300, 100);
+  Enemy* enemy = new Enemy("Resources/Database/character/demon.json");
+  enemy->showInMap(300, 100);
   _npcs.insert(enemy);
 
-  Enemy* enemy1 = new Enemy("Resources/Database/character/demon.json", 500, 100);
+  Enemy* enemy1 = new Enemy("Resources/Database/character/demon.json");
+  enemy1->showInMap(500, 100);
   _npcs.insert(enemy1);
 
-  Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json", 250, 100);
+  Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json");
+  enemy2->showInMap(250, 100);
   _npcs.insert(enemy2);
 
   // Spawn an item.
-  Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json", 190, 80);
+  Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json");
+  item1->show(190, 80);
   _droppedItems.insert(item1);
 
-  Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json", 230, 80);
+  Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json");
+  item2->show(230, 80);
   _droppedItems.insert(item2);
 }
 
@@ -59,6 +64,7 @@ GameMap::~GameMap() {
     delete npc;
   }
   for (auto item : _droppedItems) {
+    item->hide();
     delete item;
   }
   for (auto portal : _portals) {
@@ -98,7 +104,9 @@ Player* GameMap::createPlayer() const {
   auto& valMap = objGroup->getObjects()[0].asValueMap();
   float x = valMap["x"].asFloat();
   float y = valMap["y"].asFloat();
-  return new Player("Resources/Database/character/vlad.json", x, y);
+  Player* player = new Player("Resources/Database/character/vlad.json");
+  player->showInMap(x, y);
+  return player;
 }
 
 void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {

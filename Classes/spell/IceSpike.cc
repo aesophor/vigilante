@@ -57,6 +57,14 @@ void IceSpike::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
+void IceSpike::showInMap(float x, float y) {
+
+}
+
+void IceSpike::removeFromMap() {
+
+}
+
 void IceSpike::activate() {
   if (_hasActivated) {
     return;

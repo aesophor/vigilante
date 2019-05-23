@@ -31,16 +31,19 @@ class Item : public Importable {
 
   virtual ~Item();
   virtual void update(float delta);
-  virtual void import(const std::string& jsonFileName) override;
+  virtual void import(const std::string& jsonFileName) override; // Importable
+
+  virtual void show(float x, float y);
+  virtual void hide();
 
   Item::Profile& getItemProfile();
   std::string getIconPath() const;
 
-  b2Body* getB2Body() const;
+  b2Body* getBody() const;
   cocos2d::Sprite* getSprite() const;
 
  protected:
-  Item(const std::string& jsonFileName, float x, float y);
+  Item(const std::string& jsonFileName);
 
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
@@ -50,8 +53,8 @@ class Item : public Importable {
   Item::Profile _itemProfile;
 
   // When the item is dropped in the world, it needs a body and a sprite.
-  bool _isBodyExisted;
-  b2Body* _b2body;
+  bool _isDroppedInWorld;
+  b2Body* _body;
   cocos2d::Sprite* _sprite;
 };
 

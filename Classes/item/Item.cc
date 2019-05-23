@@ -22,35 +22,32 @@ namespace vigilante {
 const float Item::_kIconWidth = 16.0f;
 const float Item::_kIconHeight = 16.0f;
 
-Item::Item(const string& jsonFileName, float x, float y)
+Item::Item(const string& jsonFileName)
     : _itemProfile(jsonFileName),
-      _isBodyExisted(),
-      _b2body(),
+      _isDroppedInWorld(),
+      _body(),
       _sprite(Sprite::create(getIconPath())) {
-  // Define b2body and fixture.
-  short categoryBits = kItem;
-  short maskBits = kGround | kPlatform | kWall;
-  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
-
   // Disable sprite antialiasing
   _sprite->getTexture()->setAliasTexParameters();
 }
 
 Item::~Item() {
-  _b2body->GetWorld()->DestroyBody(_b2body);
+  if (_isDroppedInWorld) {
+    _body->GetWorld()->DestroyBody(_body);
+  }
 }
 
 
 void Item::update(float delta) {
   // Sync the sprite with its b2body.
-  b2Vec2 b2bodyPos = _b2body->GetPosition();
+  b2Vec2 b2bodyPos = _body->GetPosition();
   _sprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
 }
 
 void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
-  _b2body = bodyBuilder.type(bodyType)
+  _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)
     .buildBody();
 
@@ -66,12 +63,31 @@ void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, f
     .maskBits(maskBits)
     .setUserData(this)
     .buildFixture();
-
-  _isBodyExisted = true;
 }
 
 void Item::import(const string& jsonFileName) {
   _itemProfile = Item::Profile(jsonFileName);
+}
+
+
+void Item::show(float x, float y) {
+  if (!_isDroppedInWorld) {
+    short categoryBits = kItem;
+    short maskBits = kGround | kPlatform | kWall;
+    defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+
+    GameMapManager::getInstance()->getLayer()->addChild(_sprite, 33);
+    _isDroppedInWorld = true;
+  }
+}
+
+void Item::hide() {
+  if (_isDroppedInWorld) {
+    _body->GetWorld()->DestroyBody(_body);
+
+    GameMapManager::getInstance()->getLayer()->removeChild(_sprite);
+    _isDroppedInWorld = false;
+  }
 }
 
 
@@ -84,8 +100,8 @@ std::string Item::getIconPath() const {
 }
 
 
-b2Body* Item::getB2Body() const {
-  return _b2body;
+b2Body* Item::getBody() const {
+  return _body;
 }
 
 Sprite* Item::getSprite() const {

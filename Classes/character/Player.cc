@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "GameAssetManager.h"
+#include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
@@ -33,13 +34,30 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName, float x, float y) : Character(jsonFileName) {
-  short bodyCategoryBits = kPlayer;
-  short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
-  short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
-  short weaponMaskBits = kEnemy | kObject;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(_characterProfile.textureResPath, x, y);
+Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
+
+void Player::showInMap(float x, float y) {
+  if (!_isShownInMap) {
+    // Construct b2Body and b2Fixtures
+    short bodyCategoryBits = kPlayer;
+    short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
+    short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
+    short weaponMaskBits = kEnemy | kObject;
+    defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+
+    // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
+    defineTexture(_characterProfile.textureResPath, x, y);
+    GameMapManager* gmMgr = GameMapManager::getInstance();
+    gmMgr->getLayer()->addChild(_bodySpritesheet, 32);
+    for (auto equipment : _equipmentSlots) {
+      if (equipment) {
+        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+        gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], 33);
+      }
+    }
+
+    _isShownInMap = true;
+  }
 }
 
 

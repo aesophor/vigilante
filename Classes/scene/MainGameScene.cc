@@ -220,13 +220,9 @@ void MainGameScene::handleInput(float delta) {
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
     if (!player->getInRangeItems().empty()) {
-      vigilante::Item* i = *(player->getInRangeItems().begin());
-      player->addItem(i);
-      i->getB2Body()->GetWorld()->DestroyBody(i->getB2Body());
-      _gameMapManager->getGameMap()->getDroppedItems().erase(i);
-      _gameMapManager->getLayer()->removeChild(i->getSprite());
-
-      _notifications->show("Acquired item: " + i->getItemProfile().name + ".");
+      Item* item = *player->getInRangeItems().begin();
+      player->pickupItem(item);
+      _notifications->show("Acquired item: " + item->getItemProfile().name + ".");
     }
   }
 

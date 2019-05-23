@@ -22,10 +22,12 @@ class Enemy : public Character, public Bot {
     std::unordered_map<std::string, float> dropItems; // Item*, chance of dropping
   };
 
-  Enemy(const std::string& jsonFileName, float x, float y);
+  Enemy(const std::string& jsonFileName);
   virtual ~Enemy() = default;
-  virtual void update(float delta) override;
-  virtual void import(const std::string& jsonFileName) override;
+
+  virtual void update(float delta) override; // Character
+  virtual void showInMap(float x, float y) override; // DynamicActor
+  virtual void import(const std::string& jsonFileName) override; // Importable
 
   virtual void receiveDamage(Character* source, int damage) override;
   //virtual void dropItem(Item* item);

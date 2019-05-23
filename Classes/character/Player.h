@@ -12,8 +12,10 @@ namespace vigilante {
 
 class Player : public Character {
  public:
-  Player(const std::string& jsonFileName, float x, float y);
+  Player(const std::string& jsonFileName);
   virtual ~Player() = default;
+
+  virtual void showInMap(float x, float y) override; // DynamicActor
 
   virtual void inflictDamage(Character* target, int damage) override;
   virtual void receiveDamage(Character* source, int damage) override;

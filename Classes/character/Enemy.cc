@@ -39,21 +39,38 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-Enemy::Enemy(const string& jsonFileName, float x, float y)
+Enemy::Enemy(const string& jsonFileName)
     : Character(jsonFileName),
       Bot(this),
-      _enemyProfile(jsonFileName) {
-  short bodyCategoryBits = kEnemy;
-  short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
-  short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
-  short weaponMaskBits = kPlayer | kObject;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
-  defineTexture(_characterProfile.textureResPath, x, y);
-}
+      _enemyProfile(jsonFileName) {}
 
 void Enemy::update(float delta) {
   Character::update(delta);
   act(delta);
+}
+
+void Enemy::showInMap(float x, float y) {
+  if (!_isShownInMap) {
+    // Construct b2Body and b2Fixtures.
+    short bodyCategoryBits = kEnemy;
+    short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
+    short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
+    short weaponMaskBits = kPlayer | kObject;
+    defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+
+    // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
+    defineTexture(_characterProfile.textureResPath, x, y);
+    GameMapManager* gmMgr = GameMapManager::getInstance();
+    gmMgr->getLayer()->addChild(_bodySpritesheet, 32);
+    for (auto equipment : _equipmentSlots) {
+      if (equipment) {
+        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+        gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], 33);
+      }
+    }
+
+    _isShownInMap = true;
+  }
 }
 
 void Enemy::import(const string& jsonFileName) {

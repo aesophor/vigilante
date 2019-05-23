@@ -67,14 +67,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // Clean up previous GameMap.
   if (_gameMap) {
     _layer->removeChild(_gameMap->getTmxTiledMap());
-
-    for (auto npc : _gameMap->getNpcs()) {
-      _layer->removeChild(npc->getBodySpritesheet());
-    }
-    for (auto item : _gameMap->getDroppedItems()) {
-      _layer->removeChild(item->getSprite());
-    }
-    _gameMap.reset();
+    _gameMap.reset(); // deletes the underlying GameMap object
   }
 
   _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
@@ -83,14 +76,6 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // If the player object hasn't been created, spawn it.
   if (!_player) {
     _player = unique_ptr<Player>(_gameMap->createPlayer());
-    _layer->addChild(_player->getBodySpritesheet(), 32);
-  }
-
-  for (auto npc : _gameMap->getNpcs()) {
-    _layer->addChild(npc->getBodySpritesheet(), 31);
-  }
-  for (auto item : _gameMap->getDroppedItems()) {
-    _layer->addChild(item->getSprite(), 33);
   }
 }
 
