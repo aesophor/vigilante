@@ -6,11 +6,12 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "DynamicActor.h"
 #include "Importable.h"
 
 namespace vigilante {
 
-class Item : public Importable {
+class Item : public DynamicActor, public Importable {
  public:
   enum Type {
     EQUIPMENT,
@@ -29,33 +30,23 @@ class Item : public Importable {
     std::string desc;
   };
 
-  virtual ~Item();
-  virtual void update(float delta);
+  virtual ~Item() = default;
+  virtual void update(float delta) override;
   virtual void import(const std::string& jsonFileName) override; // Importable
 
-  virtual void show(float x, float y);
-  virtual void hide();
+  virtual void showInMap(float x, float y) override;
+  virtual void removeFromMap() override;
 
   Item::Profile& getItemProfile();
   std::string getIconPath() const;
 
-  b2Body* getBody() const;
-  cocos2d::Sprite* getSprite() const;
-
  protected:
   Item(const std::string& jsonFileName);
-
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
   static const float _kIconWidth;
   static const float _kIconHeight;
-
   Item::Profile _itemProfile;
-
-  // When the item is dropped in the world, it needs a body and a sprite.
-  bool _isDroppedInWorld;
-  b2Body* _body;
-  cocos2d::Sprite* _sprite;
 };
 
 } // namespace vigilante

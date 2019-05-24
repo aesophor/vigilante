@@ -10,6 +10,7 @@
 
 #include "GameMap.h"
 #include "WorldContactListener.h"
+#include "Controllable.h"
 #include "character/Character.h"
 #include "item/Item.h"
 

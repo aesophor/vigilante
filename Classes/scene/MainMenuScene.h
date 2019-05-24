@@ -10,18 +10,19 @@
 #include "2d/CCLabel.h"
 #include "ui/UIImageView.h"
 
+#include "Controllable.h"
 #include "input/GameInputManager.h"
 
 namespace vigilante {
 
-class MainMenuScene : public cocos2d::Scene {
+class MainMenuScene : public cocos2d::Scene, public Controllable {
  public:
   CREATE_FUNC(MainMenuScene);
-  virtual ~MainMenuScene();
+  virtual ~MainMenuScene() = default;
 
-  virtual bool init() override;
-  virtual void update(float delta) override;
-  void handleInput(float delta);
+  virtual bool init() override; // cocos2d::Scene
+  virtual void update(float delta) override; // cocos2d::Scene
+  virtual void handleInput() override; // Controllable
 
  private:
   enum Option {

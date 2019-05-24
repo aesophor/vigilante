@@ -24,8 +24,6 @@ const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
   "Exit"
 }};
 
-MainMenuScene::~MainMenuScene() {}
-
 bool MainMenuScene::init() {
   if (!Scene::init()) {
     return false;
@@ -58,10 +56,10 @@ bool MainMenuScene::init() {
 }
 
 void MainMenuScene::update(float delta) {
-  handleInput(delta);
+  handleInput();
 }
 
-void MainMenuScene::handleInput(float delta) {
+void MainMenuScene::handleInput() {
   if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (_current == 0) {
       return;

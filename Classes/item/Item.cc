@@ -23,25 +23,18 @@ const float Item::_kIconWidth = 16.0f;
 const float Item::_kIconHeight = 16.0f;
 
 Item::Item(const string& jsonFileName)
-    : _itemProfile(jsonFileName),
-      _isDroppedInWorld(),
-      _body(),
-      _sprite(Sprite::create(getIconPath())) {
+    : DynamicActor(0, 1),
+      _itemProfile(jsonFileName) {
   // Disable sprite antialiasing
-  _sprite->getTexture()->setAliasTexParameters();
-}
-
-Item::~Item() {
-  if (_isDroppedInWorld) {
-    _body->GetWorld()->DestroyBody(_body);
-  }
+  _bodySprite = Sprite::create(getIconPath());
+  _bodySprite->getTexture()->setAliasTexParameters();
 }
 
 
 void Item::update(float delta) {
   // Sync the sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();
-  _sprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
+  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
 }
 
 void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
@@ -70,23 +63,23 @@ void Item::import(const string& jsonFileName) {
 }
 
 
-void Item::show(float x, float y) {
-  if (!_isDroppedInWorld) {
+void Item::showInMap(float x, float y) {
+  if (!_isShownInMap) {
     short categoryBits = kItem;
     short maskBits = kGround | kPlatform | kWall;
     defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
 
-    GameMapManager::getInstance()->getLayer()->addChild(_sprite, 33);
-    _isDroppedInWorld = true;
+    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+    _isShownInMap = true;
   }
 }
 
-void Item::hide() {
-  if (_isDroppedInWorld) {
+void Item::removeFromMap() {
+  if (_isShownInMap) {
     _body->GetWorld()->DestroyBody(_body);
 
-    GameMapManager::getInstance()->getLayer()->removeChild(_sprite);
-    _isDroppedInWorld = false;
+    GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    _isShownInMap = false;
   }
 }
 
@@ -97,15 +90,6 @@ Item::Profile& Item::getItemProfile() {
 
 std::string Item::getIconPath() const {
   return _itemProfile.textureResPath + "/icon.png";
-}
-
-
-b2Body* Item::getBody() const {
-  return _body;
-}
-
-Sprite* Item::getSprite() const {
-  return _sprite;
 }
 
 

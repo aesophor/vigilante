@@ -60,6 +60,10 @@ void Player::showInMap(float x, float y) {
   }
 }
 
+void Player::handleInput() {
+
+}
+
 
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);

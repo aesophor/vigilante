@@ -47,11 +47,11 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
 
   // Spawn an item.
   Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json");
-  item1->show(190, 80);
+  item1->showInMap(190, 80);
   _droppedItems.insert(item1);
 
   Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json");
-  item2->show(230, 80);
+  item2->showInMap(230, 80);
   _droppedItems.insert(item2);
 }
 
@@ -61,10 +61,11 @@ GameMap::~GameMap() {
   }
 
   for (auto npc : _npcs) {
+    npc->removeFromMap();
     delete npc;
   }
   for (auto item : _droppedItems) {
-    item->hide();
+    item->removeFromMap();
     delete item;
   }
   for (auto portal : _portals) {

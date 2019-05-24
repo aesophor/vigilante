@@ -78,9 +78,6 @@ Character::Character(const string& jsonFileName)
       _portal() {}
 
 Character::~Character() {
-  // Remove character's b2Body and all spritesheets.
-  removeFromMap();
-
   // Delete all items from inventory and equipment slots.
   for (auto& items : _inventory) { // vector<Item*>
     for (const auto item : items) { // Item*
@@ -533,7 +530,7 @@ void Character::receiveDamage(Character* source, int damage) {
 void Character::pickupItem(Item* item) {
   addItem(item);
 
-  item->hide();
+  item->removeFromMap();
   GameMapManager::getInstance()->getGameMap()->getDroppedItems().erase(item);
  }
 
@@ -547,7 +544,7 @@ void Character::discardItem(Item* item) {
   }
 
   // Drop this item in the world.
-  item->show(_body->GetPosition().x, _body->GetPosition().y);
+  item->showInMap(_body->GetPosition().x, _body->GetPosition().y);
   item->getBody()->ApplyLinearImpulse({0, .2f}, item->getBody()->GetWorldCenter(), true);
   GameMapManager::getInstance()->getGameMap()->getDroppedItems().insert(item);
 }

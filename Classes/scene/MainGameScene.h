@@ -7,6 +7,7 @@
 #include "ui/UIImageView.h"
 #include "Box2D/Box2D.h"
 
+#include "Controllable.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "ui/damage/FloatingDamageManager.h"
@@ -16,14 +17,14 @@
 
 namespace vigilante {
 
-class MainGameScene : public cocos2d::Scene {
+class MainGameScene : public cocos2d::Scene, public Controllable {
  public:
   CREATE_FUNC(MainGameScene);
   virtual ~MainGameScene();
 
-  virtual bool init() override;
-  virtual void update(float delta) override;
-  void handleInput(float delta);
+  virtual bool init() override; // cocos2d::Scene
+  virtual void update(float delta) override; // cocos2d::Scene
+  virtual void handleInput() override; // Controllable
 
   b2World* getWorld() const;
 

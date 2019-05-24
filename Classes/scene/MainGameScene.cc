@@ -121,7 +121,7 @@ bool MainGameScene::init() {
 }
 
 void MainGameScene::update(float delta) {
-  handleInput(delta);
+  handleInput();
 
   if (_pauseMenu->getLayer()->isVisible()) {
     return;
@@ -138,7 +138,7 @@ void MainGameScene::update(float delta) {
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
 
-void MainGameScene::handleInput(float delta) {
+void MainGameScene::handleInput() {
   auto inputMgr = GameInputManager::getInstance();
   auto player = _gameMapManager->getPlayer();
 
