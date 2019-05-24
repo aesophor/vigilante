@@ -34,7 +34,7 @@ class Item : public DynamicActor, public Importable {
   virtual void update(float delta) override;
   virtual void import(const std::string& jsonFileName) override; // Importable
 
-  virtual void showInMap(float x, float y) override;
+  virtual void showOnMap(float x, float y) override;
   virtual void removeFromMap() override;
 
   Item::Profile& getItemProfile();

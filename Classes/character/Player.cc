@@ -36,7 +36,7 @@ namespace vigilante {
 
 Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
 
-void Player::showInMap(float x, float y) {
+void Player::showOnMap(float x, float y) {
   if (!_isShownInMap) {
     // Construct b2Body and b2Fixtures
     short bodyCategoryBits = kPlayer;

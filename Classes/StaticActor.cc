@@ -27,7 +27,7 @@ void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);
 }
 
-void StaticActor::showInMap(float x, float y) {
+void StaticActor::showOnMap(float x, float y) {
   if (!_isShownInMap) {
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
     _bodySprite->setPosition(x, y);
@@ -65,7 +65,7 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
   //
   // As you can see, each framesName (e.g., attacking) is preceded by a prefix,
   // this is to **prevent frames name collision** in cocos2d::SpriteFrameCache!
-  string framesNamePrefix = StaticActor::extractTrailingDir(textureResDir);
+  string framesNamePrefix = StaticActor::getLastDirName(textureResDir);
 
   // Count how many frames (.png) are there in the corresponding directory.
   // Method: we will use FileUtils to test whether a file exists starting from 0.png, 1.png, ..., n.png
@@ -94,7 +94,7 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
   return animation;
 }
 
-string StaticActor::extractTrailingDir(const string& directory) {
+string StaticActor::getLastDirName(const string& directory) {
   return directory.substr(directory.find_last_of('/') + 1);
 }
 

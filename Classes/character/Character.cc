@@ -287,7 +287,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResPath) {
   _extraAttackAnimations[0] = createAnimation(bodyTextureResPath, "attacking2", _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
 
   // Select a frame as default look for this sprite.
-  string framePrefix = StaticActor::extractTrailingDir(bodyTextureResPath);
+  string framePrefix = StaticActor::getLastDirName(bodyTextureResPath);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _bodySprite->setScaleX(_characterProfile.spriteScaleX);
   _bodySprite->setScaleY(_characterProfile.spriteScaleY);
@@ -317,7 +317,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   _equipmentAnimations[type][State::ATTACKING] = createAnimation(textureResPath, _kCharacterStateStr[State::ATTACKING], _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
   _equipmentAnimations[type][State::KILLED] = createAnimation(textureResPath, _kCharacterStateStr[State::KILLED], _characterProfile.frameInterval[State::KILLED] / kPpm, fallback);
 
-  string framePrefix = StaticActor::extractTrailingDir(textureResPath);
+  string framePrefix = StaticActor::getLastDirName(textureResPath);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _equipmentSprites[type]->setScaleX(_characterProfile.spriteScaleX);
   _equipmentSprites[type]->setScaleY(_characterProfile.spriteScaleY);
@@ -544,7 +544,7 @@ void Character::discardItem(Item* item) {
   }
 
   // Drop this item in the world.
-  item->showInMap(_body->GetPosition().x, _body->GetPosition().y);
+  item->showOnMap(_body->GetPosition().x, _body->GetPosition().y);
   item->getBody()->ApplyLinearImpulse({0, .2f}, item->getBody()->GetWorldCenter(), true);
   GameMapManager::getInstance()->getGameMap()->getDroppedItems().insert(item);
 }

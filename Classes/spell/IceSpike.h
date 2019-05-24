@@ -21,7 +21,7 @@ class IceSpike : public DynamicActor, public Spell {
 
   virtual void update(float delta) override;
   virtual void setPosition(float x, float y) override;
-  virtual void showInMap(float x, float y) override;
+  virtual void showOnMap(float x, float y) override;
   virtual void removeFromMap() override;
 
   virtual void activate() override; // activate the spell

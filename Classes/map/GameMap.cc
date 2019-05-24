@@ -34,24 +34,24 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
 
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Resources/Database/character/demon.json");
-  enemy->showInMap(300, 100);
+  enemy->showOnMap(300, 100);
   _npcs.insert(enemy);
 
   Enemy* enemy1 = new Enemy("Resources/Database/character/demon.json");
-  enemy1->showInMap(500, 100);
+  enemy1->showOnMap(500, 100);
   _npcs.insert(enemy1);
 
   Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json");
-  enemy2->showInMap(250, 100);
+  enemy2->showOnMap(250, 100);
   _npcs.insert(enemy2);
 
   // Spawn an item.
   Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json");
-  item1->showInMap(190, 80);
+  item1->showOnMap(190, 80);
   _droppedItems.insert(item1);
 
   Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json");
-  item2->showInMap(230, 80);
+  item2->showOnMap(230, 80);
   _droppedItems.insert(item2);
 }
 
@@ -106,7 +106,7 @@ Player* GameMap::createPlayer() const {
   float x = valMap["x"].asFloat();
   float y = valMap["y"].asFloat();
   Player* player = new Player("Resources/Database/character/vlad.json");
-  player->showInMap(x, y);
+  player->showOnMap(x, y);
   return player;
 }
 

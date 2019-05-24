@@ -63,7 +63,7 @@ void Item::import(const string& jsonFileName) {
 }
 
 
-void Item::showInMap(float x, float y) {
+void Item::showOnMap(float x, float y) {
   if (!_isShownInMap) {
     short categoryBits = kItem;
     short maskBits = kGround | kPlatform | kWall;

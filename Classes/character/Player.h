@@ -16,7 +16,7 @@ class Player : public Character, public Controllable {
   Player(const std::string& jsonFileName);
   virtual ~Player() = default;
 
-  virtual void showInMap(float x, float y) override; // DynamicActor
+  virtual void showOnMap(float x, float y) override; // DynamicActor
   virtual void handleInput() override; // Controllable
 
   virtual void inflictDamage(Character* target, int damage) override;

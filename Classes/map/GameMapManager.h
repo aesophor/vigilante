@@ -10,6 +10,7 @@
 
 #include "GameMap.h"
 #include "WorldContactListener.h"
+#include "FxManager.h"
 #include "Controllable.h"
 #include "character/Character.h"
 #include "item/Item.h"
@@ -42,6 +43,7 @@ class GameMapManager {
   cocos2d::Layer* _layer;
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
+  std::unique_ptr<FxManager> _fxMgr;
   std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
 };

@@ -49,7 +49,7 @@ void Enemy::update(float delta) {
   act(delta);
 }
 
-void Enemy::showInMap(float x, float y) {
+void Enemy::showOnMap(float x, float y) {
   if (!_isShownInMap) {
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kEnemy;

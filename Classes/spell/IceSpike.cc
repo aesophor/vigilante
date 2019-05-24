@@ -57,7 +57,7 @@ void IceSpike::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
-void IceSpike::showInMap(float x, float y) {
+void IceSpike::showOnMap(float x, float y) {
 
 }
 
@@ -147,7 +147,7 @@ void IceSpike::defineTexture(const string& textureResPath, float x, float y) {
   _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResPath, "on_hit", 8.0f / kPpm);
 
   // Select a frame as default look for this sprite.
-  string frameNamePrefix = asset_manager::getFrameNamePrefix(textureResPath);
+  string frameNamePrefix = StaticActor::getLastDirName(textureResPath);
   _launchFxSprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_launch/0.png");
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");

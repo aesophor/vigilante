@@ -26,7 +26,7 @@ class Enemy : public Character, public Bot {
   virtual ~Enemy() = default;
 
   virtual void update(float delta) override; // Character
-  virtual void showInMap(float x, float y) override; // DynamicActor
+  virtual void showOnMap(float x, float y) override; // DynamicActor
   virtual void import(const std::string& jsonFileName) override; // Importable
 
   virtual void receiveDamage(Character* source, int damage) override;

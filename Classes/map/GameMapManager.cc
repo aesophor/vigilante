@@ -7,7 +7,6 @@
 #include "character/Enemy.h"
 #include "item/Equipment.h"
 #include "spell/IceSpike.h"
-#include "map/fx/Dust.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
@@ -35,6 +34,7 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
       _worldContactListener(new WorldContactListener()),
       _world(new b2World(gravity)),
+      _fxMgr(new FxManager(_layer)),
       _gameMap(),
       _player() {
   _world->SetAllowSleeping(true);
@@ -95,9 +95,9 @@ Layer* GameMapManager::getLayer() const {
 
 void GameMapManager::createDustFx(Character* character) {
 	auto feetPos = character->getBody()->GetPosition();
-	float dustX = feetPos.x;// - 32.f / kPpm / 2;
-	float dustY = feetPos.y - .1f;// - 32.f / kPpm / .065f;
-  Dust::create(_layer, dustX, dustY);
+	float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
+	float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
+  _fxMgr->createFx(asset_manager::kDustTextureResDir, "white", x, y);
 }
 
 } // namespace vigilante

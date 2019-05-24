@@ -18,14 +18,11 @@ class StaticActor {
   virtual void setPosition(float x, float y);
 
   // Show and hide the sprite in the game map.
-  virtual void showInMap(float x, float y);
+  virtual void showOnMap(float x, float y);
   virtual void removeFromMap();
 
   cocos2d::Sprite* getBodySprite() const;
   cocos2d::SpriteBatchNode* getBodySpritesheet() const;
-
- protected:
-  StaticActor(size_t animationsSize=1);
 
   // Create animation from Texture/{category}/{entityName}/{entityName}_{frameName}
   // e.g., to create the animation of "slime" "killed", pass the following arguments
@@ -58,7 +55,11 @@ class StaticActor {
   // The following utility method takes in textureResPath as a parameter
   // and returns the last dirname.
   // e.g., "Texture/character/player" -> "player"
-  static std::string extractTrailingDir(const std::string& directory);
+  static std::string getLastDirName(const std::string& directory);
+
+
+ protected:
+  StaticActor(size_t animationsSize=1);
 
   bool _isShownInMap;
   cocos2d::Sprite* _bodySprite;
