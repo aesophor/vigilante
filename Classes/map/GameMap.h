@@ -9,12 +9,11 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "DynamicActor.h"
+
 namespace vigilante {
 
-class Character;
-class Item;
 class Player;
-class IceSpike;
 
 class GameMap {
  public:
@@ -31,9 +30,7 @@ class GameMap {
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
 
-  std::unordered_set<Character*>& getNpcs();
-  std::unordered_set<Item*>& getDroppedItems();
-  std::unordered_set<IceSpike*>& getInUseSpells();
+  std::unordered_set<DynamicActor*>& getDynamicActors();
   const std::vector<GameMap::Portal*>& getPortals() const;
 
   Player* createPlayer() const;
@@ -47,9 +44,7 @@ class GameMap {
   std::unordered_set<b2Body*> _tmxTiledMapBodies;
   cocos2d::TMXTiledMap* _tmxTiledMap;
 
-  std::unordered_set<Character*> _npcs;
-  std::unordered_set<Item*> _droppedItems;
-  std::unordered_set<IceSpike*> _inUseSpells;
+  std::unordered_set<DynamicActor*> _dynamicActors;
   std::vector<GameMap::Portal*> _portals;
 };
 

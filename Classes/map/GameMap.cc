@@ -22,8 +22,7 @@ namespace vigilante {
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
-      _npcs(),
-      _droppedItems(),
+      _dynamicActors(),
       _portals() {
   // Create box2d objects from layers
   createPolylines("Ground", category_bits::kGround, true, 2);
@@ -35,24 +34,24 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   // Spawn an enemy.
   Enemy* enemy = new Enemy("Resources/Database/character/demon.json");
   enemy->showOnMap(300, 100);
-  _npcs.insert(enemy);
+  _dynamicActors.insert(enemy);
 
   Enemy* enemy1 = new Enemy("Resources/Database/character/demon.json");
   enemy1->showOnMap(500, 100);
-  _npcs.insert(enemy1);
+  _dynamicActors.insert(enemy1);
 
   Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json");
   enemy2->showOnMap(250, 100);
-  _npcs.insert(enemy2);
+  _dynamicActors.insert(enemy2);
 
   // Spawn an item.
   Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json");
   item1->showOnMap(190, 80);
-  _droppedItems.insert(item1);
+  _dynamicActors.insert(item1);
 
   Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json");
   item2->showOnMap(230, 80);
-  _droppedItems.insert(item2);
+  _dynamicActors.insert(item2);
 }
 
 GameMap::~GameMap() {
@@ -60,13 +59,9 @@ GameMap::~GameMap() {
     _world->DestroyBody(body);
   }
 
-  for (auto npc : _npcs) {
-    npc->removeFromMap();
-    delete npc;
-  }
-  for (auto item : _droppedItems) {
-    item->removeFromMap();
-    delete item;
+  for (auto actor : _dynamicActors) {
+    actor->removeFromMap();
+    delete actor;
   }
   for (auto portal : _portals) {
     delete portal;
@@ -83,16 +78,8 @@ TMXTiledMap* GameMap::getTmxTiledMap() const {
 }
 
 
-unordered_set<Character*>& GameMap::getNpcs() {
-  return _npcs;
-}
-
-unordered_set<Item*>& GameMap::getDroppedItems() {
-  return _droppedItems;
-}
-
-unordered_set<IceSpike*>& GameMap::getInUseSpells() {
-  return _inUseSpells;
+unordered_set<DynamicActor*>& GameMap::getDynamicActors() {
+  return _dynamicActors;
 }
 
 const vector<GameMap::Portal*>& GameMap::getPortals() const {

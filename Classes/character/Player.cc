@@ -37,7 +37,7 @@ namespace vigilante {
 Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
 
 void Player::showOnMap(float x, float y) {
-  if (!_isShownInMap) {
+  if (!_isShownOnMap) {
     // Construct b2Body and b2Fixtures
     short bodyCategoryBits = kPlayer;
     short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
@@ -46,7 +46,7 @@ void Player::showOnMap(float x, float y) {
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
-    defineTexture(_characterProfile.textureResPath, x, y);
+    defineTexture(_characterProfile.textureResDir, x, y);
     GameMapManager* gmMgr = GameMapManager::getInstance();
     gmMgr->getLayer()->addChild(_bodySpritesheet, 32);
     for (auto equipment : _equipmentSlots) {
@@ -56,7 +56,7 @@ void Player::showOnMap(float x, float y) {
       }
     }
 
-    _isShownInMap = true;
+    _isShownOnMap = true;
   }
 }
 

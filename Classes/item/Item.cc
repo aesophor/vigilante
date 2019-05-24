@@ -64,22 +64,22 @@ void Item::import(const string& jsonFileName) {
 
 
 void Item::showOnMap(float x, float y) {
-  if (!_isShownInMap) {
+  if (!_isShownOnMap) {
     short categoryBits = kItem;
     short maskBits = kGround | kPlatform | kWall;
     defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
 
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
-    _isShownInMap = true;
+    _isShownOnMap = true;
   }
 }
 
 void Item::removeFromMap() {
-  if (_isShownInMap) {
+  if (_isShownOnMap) {
     _body->GetWorld()->DestroyBody(_body);
 
     GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
-    _isShownInMap = false;
+    _isShownOnMap = false;
   }
 }
 
@@ -89,7 +89,7 @@ Item::Profile& Item::getItemProfile() {
 }
 
 std::string Item::getIconPath() const {
-  return _itemProfile.textureResPath + "/icon.png";
+  return _itemProfile.textureResDir + "/icon.png";
 }
 
 
@@ -97,7 +97,7 @@ Item::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
 
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());
-  textureResPath = json["textureResPath"].GetString();
+  textureResDir = json["textureResDir"].GetString();
   name = json["name"].GetString();
   desc = json["desc"].GetString();
 }

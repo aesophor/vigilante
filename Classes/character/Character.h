@@ -4,6 +4,7 @@
 #include <set>
 #include <array>
 #include <vector>
+#include <unordered_map>
 #include <string>
 #include <functional>
 
@@ -14,6 +15,7 @@
 #include "Importable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
+#include "skill/Skill.h"
 #include "map/GameMap.h"
 
 namespace vigilante {
@@ -24,7 +26,7 @@ class Character : public DynamicActor, public Importable {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
-    std::string textureResPath;
+    std::string textureResDir;
     float spriteOffsetX;
     float spriteOffsetY;
     float spriteScaleX;
@@ -77,6 +79,7 @@ class Character : public DynamicActor, public Importable {
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
   virtual void attack();
+  virtual void useSkill(Skill* skill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual void inflictDamage(Character* target, int damage);
   virtual void receiveDamage(Character* source, int damage);
@@ -158,6 +161,7 @@ class Character : public DynamicActor, public Importable {
 
   void runAnimation(Character::State state, bool loop=true) const;
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
+  void runAnimation(const std::string& framesName, float interval);
 
   Character::State getState() const;
 
@@ -178,6 +182,7 @@ class Character : public DynamicActor, public Importable {
   bool _isJumping;
   bool _isOnPlatform;
   bool _isAttacking;
+  bool _isUsingSkill;
   bool _isCrouching;
   bool _isInvincible;
   bool _isKilled;
@@ -222,6 +227,9 @@ class Character : public DynamicActor, public Importable {
   std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
   std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
   std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
+
+  // Skill animations
+  std::unordered_map<std::string, cocos2d::Animation*> _skillBodyAnimations;
 };
 
 } // namespace vigilante

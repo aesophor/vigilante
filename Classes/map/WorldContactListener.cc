@@ -2,10 +2,12 @@
 
 #include "cocos2d.h"
 
+#include "Projectile.h"
+#include "skill/Skill.h"
+#include "skill/MagicalMissile.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
-#include "spell/IceSpike.h"
 #include "map/GameMap.h"
 #include "map/GameMapManager.h"
 #include "util/CategoryBits.h"
@@ -124,10 +126,11 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
       
       if (projectileFixture && enemyFixture) {
-        IceSpike* c = static_cast<IceSpike*>(projectileFixture->GetUserData());
-        Character* e = static_cast<Character*>(enemyFixture->GetUserData());
-        c->onHit();
-        c->getSpellUser()->inflictDamage(e, c->getDamage());
+        DynamicActor* p = static_cast<DynamicActor*>(projectileFixture->GetUserData());
+        Character* c = static_cast<Character*>(enemyFixture->GetUserData());
+
+        Projectile* missile = dynamic_cast<Projectile*>(p);
+        missile->onHit(c);
       }
     }
     default:

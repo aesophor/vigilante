@@ -67,15 +67,22 @@ Character::Character(const string& jsonFileName)
       _isJumping(),
       _isOnPlatform(),
       _isAttacking(),
+      _isUsingSkill(),
       _isCrouching(),
       _isInvincible(),
       _isKilled(),
       _isSetToKill(),
+      _inRangeTargets(),
       _lockedOnTarget(),
       _isAlerted(),
       _inventory(),
       _equipmentSlots(),
-      _portal() {}
+      _portal(),
+      _extraAttackAnimations(),
+      _equipmentSprites(),
+      _equipmentSpritesheets(),
+      _equipmentAnimations(),
+      _skillBodyAnimations() {}
 
 Character::~Character() {
   // Delete all items from inventory and equipment slots.
@@ -184,7 +191,7 @@ void Character::setPosition(float x, float y) {
 }
 
 void Character::removeFromMap() {
-  if (_isShownInMap) {
+  if (_isShownOnMap) {
     if (!_isKilled) {
       _body->GetWorld()->DestroyBody(_body);
     }
@@ -198,7 +205,7 @@ void Character::removeFromMap() {
       }
     }
 
-    _isShownInMap = false;
+    _isShownOnMap = false;
   }
 }
 
@@ -298,26 +305,26 @@ void Character::loadBodyAnimations(const string& bodyTextureResPath) {
 
 void Character::loadEquipmentAnimations(Equipment* equipment) {
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-  const string& textureResPath = equipment->getItemProfile().textureResPath;
-  _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResPath + "/spritesheet.png");
+  const string& textureResDir = equipment->getItemProfile().textureResDir;
+  _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
 
-  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_SHEATHED], _characterProfile.frameInterval[State::IDLE_SHEATHED] / kPpm);
+  _equipmentAnimations[type][State::IDLE_SHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::IDLE_SHEATHED], _characterProfile.frameInterval[State::IDLE_SHEATHED] / kPpm);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
-  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::IDLE_UNSHEATHED], _characterProfile.frameInterval[State::IDLE_UNSHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_SHEATHED], _characterProfile.frameInterval[State::RUNNING_SHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::RUNNING_UNSHEATHED], _characterProfile.frameInterval[State::RUNNING_UNSHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_SHEATHED], _characterProfile.frameInterval[State::JUMPING_SHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::JUMPING_UNSHEATHED], _characterProfile.frameInterval[State::JUMPING_UNSHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_SHEATHED], _characterProfile.frameInterval[State::FALLING_SHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::FALLING_UNSHEATHED], _characterProfile.frameInterval[State::FALLING_UNSHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_SHEATHED], _characterProfile.frameInterval[State::CROUCHING_SHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation(textureResPath, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], _characterProfile.frameInterval[State::CROUCHING_UNSHEATHED] / kPpm, fallback);
-  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::SHEATHING_WEAPON], _characterProfile.frameInterval[State::SHEATHING_WEAPON] / kPpm, fallback);
-  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation(textureResPath, _kCharacterStateStr[State::UNSHEATHING_WEAPON], _characterProfile.frameInterval[State::UNSHEATHING_WEAPON] / kPpm, fallback);
-  _equipmentAnimations[type][State::ATTACKING] = createAnimation(textureResPath, _kCharacterStateStr[State::ATTACKING], _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
-  _equipmentAnimations[type][State::KILLED] = createAnimation(textureResPath, _kCharacterStateStr[State::KILLED], _characterProfile.frameInterval[State::KILLED] / kPpm, fallback);
+  _equipmentAnimations[type][State::IDLE_UNSHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::IDLE_UNSHEATHED], _characterProfile.frameInterval[State::IDLE_UNSHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::RUNNING_SHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::RUNNING_SHEATHED], _characterProfile.frameInterval[State::RUNNING_SHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::RUNNING_UNSHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::RUNNING_UNSHEATHED], _characterProfile.frameInterval[State::RUNNING_UNSHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::JUMPING_SHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::JUMPING_SHEATHED], _characterProfile.frameInterval[State::JUMPING_SHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::JUMPING_UNSHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::JUMPING_UNSHEATHED], _characterProfile.frameInterval[State::JUMPING_UNSHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::FALLING_SHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::FALLING_SHEATHED], _characterProfile.frameInterval[State::FALLING_SHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::FALLING_UNSHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::FALLING_UNSHEATHED], _characterProfile.frameInterval[State::FALLING_UNSHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::CROUCHING_SHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::CROUCHING_SHEATHED], _characterProfile.frameInterval[State::CROUCHING_SHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::CROUCHING_UNSHEATHED] = createAnimation(textureResDir, _kCharacterStateStr[State::CROUCHING_UNSHEATHED], _characterProfile.frameInterval[State::CROUCHING_UNSHEATHED] / kPpm, fallback);
+  _equipmentAnimations[type][State::SHEATHING_WEAPON] = createAnimation(textureResDir, _kCharacterStateStr[State::SHEATHING_WEAPON], _characterProfile.frameInterval[State::SHEATHING_WEAPON] / kPpm, fallback);
+  _equipmentAnimations[type][State::UNSHEATHING_WEAPON] = createAnimation(textureResDir, _kCharacterStateStr[State::UNSHEATHING_WEAPON], _characterProfile.frameInterval[State::UNSHEATHING_WEAPON] / kPpm, fallback);
+  _equipmentAnimations[type][State::ATTACKING] = createAnimation(textureResDir, _kCharacterStateStr[State::ATTACKING], _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
+  _equipmentAnimations[type][State::KILLED] = createAnimation(textureResDir, _kCharacterStateStr[State::KILLED], _characterProfile.frameInterval[State::KILLED] / kPpm, fallback);
 
-  string framePrefix = StaticActor::getLastDirName(textureResPath);
+  string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _equipmentSprites[type]->setScaleX(_characterProfile.spriteScaleX);
   _equipmentSprites[type]->setScaleY(_characterProfile.spriteScaleY);
@@ -361,15 +368,15 @@ void Character::runAnimation(State state, bool loop) const {
       auto targetAnimation = _equipmentAnimations[type][state];
       if (state == State::ATTACKING && attackAnimationIdx > 0) {
         // FIXME: add _extraAttackEquipmentAnimations
-        //targetAnimation = _extraAttackAnimations[attackAnimationIdx];
+        //targetAnimation = _extraAttackAnimations[attackAnimationIdx - 1];
       }
 
-      auto animation = Animate::create(targetAnimation);
+      auto animate = Animate::create(targetAnimation);
       Action* action = nullptr;
       if (loop) {
-        action = RepeatForever::create(animation);
+        action = RepeatForever::create(animate);
       } else {
-        action = Repeat::create(animation, 1);
+        action = Repeat::create(animate, 1);
       }
       _equipmentSprites[type]->runAction(action);
     }
@@ -379,9 +386,27 @@ void Character::runAnimation(State state, bool loop) const {
 void Character::runAnimation(State state, const function<void ()>& func) const {
   _bodySprite->stopAllActions();
 
-  auto animation = Animate::create(_bodyAnimations[state]);
+  // FIXME: update equipment animation
+  auto animate = Animate::create(_bodyAnimations[state]);
   auto callback = CallFunc::create(func);
-  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
+  _bodySprite->runAction(Sequence::createWithTwoActions(animate, callback));
+}
+
+void Character::runAnimation(const string& framesName, float interval) {
+  // Try to load the target framesName under this character's textureResDir.
+  Animation* bodyAnimation = nullptr;
+  
+  if (_skillBodyAnimations.find(framesName) == _skillBodyAnimations.end()) {
+    Animation* fallback = _bodyAnimations[State::IDLE_UNSHEATHED];
+    bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval / kPpm, fallback);
+    // Cache this skill animation (body).
+    _skillBodyAnimations.insert({framesName, bodyAnimation});
+  } else {
+    bodyAnimation = _skillBodyAnimations[framesName];
+  }
+
+  _bodySprite->stopAllActions();
+  _bodySprite->runAction(Animate::create(bodyAnimation));
 }
 
 
@@ -499,6 +524,25 @@ void Character::attack() {
   }
 }
 
+void Character::useSkill(Skill* skill) {
+  if (_isUsingSkill) {
+    return;
+  }
+
+  _isUsingSkill = true;
+
+  callback_util::runAfter([=]() {
+    _isUsingSkill = false;
+  }, skill->getSkillProfile().framesDuration);
+
+  if (skill->getSkillProfile().characterFramesName != "") {
+    Skill::Profile& skillProfile = skill->getSkillProfile();
+    runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval);
+  }
+
+  skill->activate();
+}
+
 void Character::knockBack(Character* target, float forceX, float forceY) const {
   b2Body* b2body = target->getBody();
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
@@ -531,7 +575,7 @@ void Character::pickupItem(Item* item) {
   addItem(item);
 
   item->removeFromMap();
-  GameMapManager::getInstance()->getGameMap()->getDroppedItems().erase(item);
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(item);
  }
 
 void Character::discardItem(Item* item) {
@@ -546,7 +590,7 @@ void Character::discardItem(Item* item) {
   // Drop this item in the world.
   item->showOnMap(_body->GetPosition().x, _body->GetPosition().y);
   item->getBody()->ApplyLinearImpulse({0, .2f}, item->getBody()->GetWorldCenter(), true);
-  GameMapManager::getInstance()->getGameMap()->getDroppedItems().insert(item);
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
 }
 
 void Character::addItem(Item* item) {
@@ -708,8 +752,7 @@ void Character::setCategoryBits(b2Fixture* fixture, short bits) {
 
 Character::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
-
-  textureResPath = json["textureResPath"].GetString();
+  textureResDir = json["textureResDir"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();
   spriteOffsetY = json["spriteOffsetY"].GetFloat();
   spriteScaleX = json["spriteScaleX"].GetFloat();

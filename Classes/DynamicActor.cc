@@ -11,11 +11,11 @@ DynamicActor::DynamicActor(size_t animationsSize, size_t fixturesSize)
 
 
 void DynamicActor::removeFromMap() {
-  if (_isShownInMap) {
+  if (_isShownOnMap) {
     _body->GetWorld()->DestroyBody(_body);
     GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
 
-    _isShownInMap = false;
+    _isShownOnMap = false;
   }
 }
 

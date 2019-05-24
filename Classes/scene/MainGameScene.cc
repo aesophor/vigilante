@@ -7,7 +7,8 @@
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
-#include "spell/IceSpike.h"
+#include "skill/Skill.h"
+#include "skill/MagicalMissile.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/Constants.h"
@@ -212,10 +213,8 @@ void MainGameScene::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
-    IceSpike* spell = new IceSpike(player);
-    _gameMapManager->getLayer()->addChild(spell->getBodySpritesheet());
-    _gameMapManager->getGameMap()->getInUseSpells().insert(spell);
-    spell->activate();
+    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", player);
+    player->useSkill(skill);
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

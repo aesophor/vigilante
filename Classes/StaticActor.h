@@ -61,7 +61,7 @@ class StaticActor {
  protected:
   StaticActor(size_t animationsSize=1);
 
-  bool _isShownInMap;
+  bool _isShownOnMap;
   cocos2d::Sprite* _bodySprite;
   cocos2d::SpriteBatchNode* _bodySpritesheet;
   std::vector<cocos2d::Animation*> _bodyAnimations;

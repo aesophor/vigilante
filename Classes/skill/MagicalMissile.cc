@@ -1,4 +1,4 @@
-#include "IceSpike.h"
+#include "MagicalMissile.h"
 
 #include "GameAssetManager.h"
 #include "character/Character.h"
@@ -30,51 +30,71 @@ using vigilante::category_bits::kItem;
 
 namespace vigilante {
 
-IceSpike::IceSpike(Character* spellUser, float flyingSpeed)
+MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
     : DynamicActor(AnimationType::SIZE, 1),
-      _spellUser(spellUser),
-      _damage(50),
-      _flyingSpeed(flyingSpeed),
+      Skill(),
+      Projectile(),
+      _skillProfile(jsonFileName),
+      _user(user),
       _hasActivated(),
-      _launchFxSprite() {
-  short categoryBits = kProjectile;
-  short maskBits = kPlayer | kEnemy | kItem;
-  float x = spellUser->getBody()->GetPosition().x;
-  float y = spellUser->getBody()->GetPosition().y;
-  defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
-  defineTexture("Texture/spell/ice_spike", x * kPpm, y * kPpm);
-}
+      _hasHit(),
+      _launchFxSprite() {}
 
-IceSpike::~IceSpike() {}
+MagicalMissile::~MagicalMissile() {}
 
-void IceSpike::update(float delta) {
+
+void MagicalMissile::update(float delta) {
   // Sync the sprite with b2body.
   b2Vec2 bodyPos = _body->GetPosition();
   _bodySprite->setPosition(bodyPos.x * kPpm, bodyPos.y * kPpm);
 }
 
-void IceSpike::setPosition(float x, float y) {
+void MagicalMissile::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
-void IceSpike::showOnMap(float x, float y) {
+void MagicalMissile::showOnMap(float x, float y) {
+  if (!_isShownOnMap) {
+    short categoryBits = kProjectile;
+    short maskBits = kPlayer | kEnemy | kItem;
+    defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
 
+    defineTexture(_skillProfile.textureResDir, x, y);
+    GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
+    _isShownOnMap = true;
+  }
 }
 
-void IceSpike::removeFromMap() {
+void MagicalMissile::removeFromMap() {
+  if (_isShownOnMap) {
+    _body->GetWorld()->DestroyBody(_body);
 
+    GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
+    _isShownOnMap = false;
+  }
 }
 
-void IceSpike::activate() {
+
+void MagicalMissile::import(const string& jsonFileName) {
+  _skillProfile = Skill::Profile(jsonFileName);
+}
+
+void MagicalMissile::activate() {
+  // Make sure this instance is only activated once.
   if (_hasActivated) {
     return;
   }
 
+  float x = _user->getBody()->GetPosition().x;
+  float y = _user->getBody()->GetPosition().y;
+  showOnMap(x, y);
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
   // Set up kinematicBody's moving speed.
-  _flyingSpeed = (_spellUser->isFacingRight()) ? _flyingSpeed : -_flyingSpeed;
+  _flyingSpeed = (_user->isFacingRight()) ? 2.0f : -2.0f;
   _body->SetLinearVelocity({_flyingSpeed, 0});
 
-  if (!_spellUser->isFacingRight()) {
+  if (!_user->isFacingRight()) {
     _launchFxSprite->setFlippedX(true);
     _bodySprite->setFlippedX(true);
   }
@@ -84,11 +104,11 @@ void IceSpike::activate() {
   auto callback = CallFunc::create([=]() {
     _bodySpritesheet->removeChild(_launchFxSprite, true);
   });
-  b2Vec2 spellUserBodyPos = _spellUser->getBody()->GetPosition();
-  float x = spellUserBodyPos.x * kPpm;
-  float y = spellUserBodyPos.y * kPpm;
-  float offset = _spellUser->getCharacterProfile().attackRange;
-  x += (_spellUser->isFacingRight()) ? offset : -offset;
+  b2Vec2 spellUserBodyPos = _user->getBody()->GetPosition();
+  x = spellUserBodyPos.x * kPpm;
+  y = spellUserBodyPos.y * kPpm;
+  float offset = _user->getCharacterProfile().attackRange;
+  x += (_user->isFacingRight()) ? offset : -offset;
   _launchFxSprite->setPosition(x, y);
   _launchFxSprite->runAction(Sequence::createWithTwoActions(animation, callback));
 
@@ -99,26 +119,44 @@ void IceSpike::activate() {
   _hasActivated = true;
 }
 
-void IceSpike::onHit() {
-  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
-  auto callback = CallFunc::create([=]() {
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
-    GameMapManager::getInstance()->getGameMap()->getInUseSpells().erase(this);
-    // FIXME
-    _body->SetLinearVelocity({0, 0});
-    _body->GetWorld()->DestroyBody(_body);
-    delete this; // maybe this is not a good idea....
-  });
+Skill::Profile& MagicalMissile::getSkillProfile() {
+  return _skillProfile;
+}
 
-  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
+int MagicalMissile::getDamage() const {
+  return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
+}
+
+Character* MagicalMissile::getUser() const {
+  return _user;
 }
 
 
-void IceSpike::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
-  float spellOffset = _spellUser->getCharacterProfile().attackRange / kPpm;
-  spellOffset = (_spellUser->isFacingRight()) ? spellOffset : -spellOffset;
+void MagicalMissile::onHit(Character* target) {
+  if (_hasHit) {
+    return;
+  }
 
-  b2World* world = _spellUser->getBody()->GetWorld();
+  _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
+
+  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
+  auto callback = CallFunc::create([=]() {
+    removeFromMap();
+    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+    delete this;
+  });
+  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
+
+  _user->inflictDamage(target, getDamage());
+  _hasHit = true;
+}
+
+
+void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+  float spellOffset = _user->getCharacterProfile().attackRange / kPpm;
+  spellOffset = (_user->isFacingRight()) ? spellOffset : -spellOffset;
+
+  b2World* world = _user->getBody()->GetWorld();
   b2BodyBuilder bodyBuilder(world);
 
   _body = bodyBuilder.type(bodyType)
@@ -139,15 +177,15 @@ void IceSpike::defineBody(b2BodyType bodyType, short categoryBits, short maskBit
     .buildFixture();
 }
 
-void IceSpike::defineTexture(const string& textureResPath, float x, float y) {
-  _bodySpritesheet = SpriteBatchNode::create(textureResPath + "/spritesheet.png");
+void MagicalMissile::defineTexture(const string& textureResDir, float x, float y) {
+  _bodySpritesheet = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
 
-  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResPath, "launch", 5.0f / kPpm);
-  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResPath, "flying", 1.0f / kPpm);
-  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResPath, "on_hit", 8.0f / kPpm);
+  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResDir, "launch", 5.0f / kPpm);
+  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResDir, "flying", 1.0f / kPpm);
+  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResDir, "on_hit", 8.0f / kPpm);
 
   // Select a frame as default look for this sprite.
-  string frameNamePrefix = StaticActor::getLastDirName(textureResPath);
+  string frameNamePrefix = StaticActor::getLastDirName(textureResDir);
   _launchFxSprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_launch/0.png");
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
@@ -156,15 +194,6 @@ void IceSpike::defineTexture(const string& textureResPath, float x, float y) {
   _bodySpritesheet->addChild(_launchFxSprite);
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters();
-}
-
-
-Character* IceSpike::getSpellUser() const {
-  return _spellUser;
-}
-
-int IceSpike::getDamage() const {
-  return _damage;
 }
 
 } // namespace vigilante

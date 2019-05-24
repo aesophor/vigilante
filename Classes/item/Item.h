@@ -25,7 +25,7 @@ class Item : public DynamicActor, public Importable {
     virtual ~Profile() = default;
 
     Item::Type itemType;
-    std::string textureResPath;
+    std::string textureResDir;
     std::string name;
     std::string desc;
   };

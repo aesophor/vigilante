@@ -2,11 +2,11 @@
 
 #include "Box2D/Box2D.h"
 
+#include "skill/MagicalMissile.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"
-#include "spell/IceSpike.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
@@ -47,14 +47,8 @@ void GameMapManager::update(float delta) {
     _player->update(delta);
   }
 
-  for (auto npc : _gameMap->getNpcs()) {
-    npc->update(delta);
-  }
-  for (auto item : _gameMap->getDroppedItems()) {
-    item->update(delta);
-  }
-  for (auto spell : _gameMap->getInUseSpells()) {
-    spell->update(delta);
+  for (auto actor : _gameMap->getDynamicActors()) {
+    actor->update(delta);
   }
 }
 

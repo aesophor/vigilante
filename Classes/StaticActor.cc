@@ -17,7 +17,7 @@ using cocos2d::SpriteFrameCache;
 namespace vigilante {
 
 StaticActor::StaticActor(size_t animationsSize)
-    : _isShownInMap(),
+    : _isShownOnMap(),
       _bodySprite(),
       _bodySpritesheet(),
       _bodyAnimations(animationsSize) {}
@@ -28,17 +28,17 @@ void StaticActor::setPosition(float x, float y) {
 }
 
 void StaticActor::showOnMap(float x, float y) {
-  if (!_isShownInMap) {
+  if (!_isShownOnMap) {
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
     _bodySprite->setPosition(x, y);
-    _isShownInMap = true;
+    _isShownOnMap = true;
   }
 }
 
 void StaticActor::removeFromMap() {
-  if (_isShownInMap) {
+  if (_isShownOnMap) {
     GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
-    _isShownInMap = false;
+    _isShownOnMap = false;
   }
 }
 
