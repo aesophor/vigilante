@@ -10,7 +10,7 @@ using std::endl;
 using cocos2d::Application;
 
 int main(int argc, char* args[]) {
-  segv::InstallHandler(&segv::Handle);
+  vigilante::segv::installHandler(&vigilante::segv::handle);
 
   // Create the application instance
   AppDelegate app;

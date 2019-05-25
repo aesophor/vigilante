@@ -9,15 +9,17 @@ extern "C" {
 #include <fcntl.h> // open
 }
 
+namespace vigilante {
 
 namespace segv {
 
-void InstallHandler(void (*Handler)(int),
-                    int stacktrace_function_count=10,
-                    char* stacktrace_log_location="error.log");
+void installHandler(void (*handler)(int), int numStacktraceFunctions=10,
+                    const char* logLocation="error.log");
 
-void Handle(int sig);
+void handle(int sig);
 
 } // namespace segv
 
-#endif // VIGILANTE_STACKTRACE_H_k
+} // namespace vigilante
+
+#endif // VIGILANTE_STACKTRACE_H_

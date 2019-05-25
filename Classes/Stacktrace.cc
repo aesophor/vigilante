@@ -2,28 +2,27 @@
 
 namespace {
 
-int stacktrace_function_count;
-char* stacktrace_log_location;
+int numStacktraceFunctions;
+const char* logLocation;
 
 } // namespace
 
+namespace vigilante {
 
 namespace segv {
 
-void InstallHandler(void (*Handler)(int),
-                    int stacktrace_function_count,
-                    char* stacktrace_log_location) {
-  ::stacktrace_function_count = stacktrace_function_count;
-  ::stacktrace_log_location = stacktrace_log_location;
-
-  signal(SIGSEGV, Handler);
+void installHandler(void (*handler)(int), int numStacktraceFunctions,
+                    const char* logLocation) {
+  ::numStacktraceFunctions = numStacktraceFunctions;
+  ::logLocation = logLocation;
+  signal(SIGSEGV, handler);
 }
 
-void Handle(int sig) {
+void handle(int sig) {
   void* array[10];
   size_t size = backtrace(array, 10);
 
-  int fd = open(::stacktrace_log_location, O_CREAT | O_WRONLY, 0600);
+  int fd = open(::logLocation, O_CREAT | O_WRONLY, 0600);
   backtrace_symbols_fd(array + 2, size - 2, fd);
   close(fd);
 
@@ -31,3 +30,5 @@ void Handle(int sig) {
 }
 
 } // namespace segv
+
+} // namespace vigilante
