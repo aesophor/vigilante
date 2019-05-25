@@ -6,6 +6,7 @@
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
+#include "util/CallbackUtil.h"
 
 using std::string;
 using std::function;
@@ -26,7 +27,7 @@ using cocos2d::Animation;
 using vigilante::category_bits::kProjectile;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kItem;
+using vigilante::category_bits::kWall;
 
 namespace vigilante {
 
@@ -54,7 +55,7 @@ void MagicalMissile::setPosition(float x, float y) {
 void MagicalMissile::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     short categoryBits = kProjectile;
-    short maskBits = kPlayer | kEnemy | kItem;
+    short maskBits = kPlayer | kEnemy | kWall;
     defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
 
     defineTexture(_skillProfile.textureResDir, x, y);
@@ -89,7 +90,7 @@ void MagicalMissile::activate() {
   GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
 
   // Set up kinematicBody's moving speed.
-  _flyingSpeed = (_user->isFacingRight()) ? 2.0f : -2.0f;
+  _flyingSpeed = (_user->isFacingRight()) ? 3.5f : -3.5f;
   _body->SetLinearVelocity({_flyingSpeed, 0});
 
   if (!_user->isFacingRight()) {
@@ -114,6 +115,7 @@ void MagicalMissile::activate() {
   Action* action = Repeat::create(Animate::create(_bodyAnimations[AnimationType::FLYING]), 1);
   _bodySprite->runAction(action);
 
+  // FIXME: memleak (if it doesn't hit anything)
   _hasActivated = true;
 }
 
@@ -145,7 +147,9 @@ void MagicalMissile::onHit(Character* target) {
   });
   _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
 
-  _user->inflictDamage(target, getDamage());
+  if (target) {
+    _user->inflictDamage(target, getDamage());
+  }
   _hasHit = true;
 }
 

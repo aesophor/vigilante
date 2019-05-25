@@ -24,7 +24,7 @@ namespace vigilante {
 
 class DynamicActor : public StaticActor {
  public:
-  DynamicActor(size_t animationsSize=1, size_t fixturesSize=1);
+  DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
   virtual ~DynamicActor() = default;
 
   virtual void update(float delta) = 0;

@@ -16,11 +16,11 @@ using cocos2d::SpriteFrameCache;
 
 namespace vigilante {
 
-StaticActor::StaticActor(size_t animationsSize)
+StaticActor::StaticActor(size_t numAnimations)
     : _isShownOnMap(),
       _bodySprite(),
       _bodySpritesheet(),
-      _bodyAnimations(animationsSize) {}
+      _bodyAnimations(numAnimations) {}
 
 
 void StaticActor::setPosition(float x, float y) {

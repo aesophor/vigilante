@@ -59,7 +59,7 @@ class StaticActor {
 
 
  protected:
-  StaticActor(size_t animationsSize=1);
+  StaticActor(size_t numAnimations=1);
 
   bool _isShownOnMap;
   cocos2d::Sprite* _bodySprite;

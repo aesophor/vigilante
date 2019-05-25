@@ -4,6 +4,7 @@
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
+#include "util/Constants.h"
 
 using std::deque;
 using std::vector;
@@ -196,6 +197,8 @@ Layout* ItemListView::getLayout() const {
 }
 
 
+const int ItemListView::ListViewItem::_kListViewIconSize = 16;
+
 ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal god dammit
@@ -203,6 +206,8 @@ ItemListView::ListViewItem::ListViewItem(ItemListView* parent, float x, float y)
       _icon(ImageView::create(kEmptyItemIcon)),
       _label(Label::createWithTTF("---", kRegularFont, kRegularFontSize)),
       _item() {
+  _icon->setScale((float) _kListViewIconSize / kIconSize);
+
   _background->setAnchorPoint({0, 1});
   _layout->setPosition({x, y});
   _layout->addChild(_background);

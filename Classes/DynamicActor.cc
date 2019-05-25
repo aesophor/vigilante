@@ -6,10 +6,10 @@ using std::vector;
 
 namespace vigilante {
 
-DynamicActor::DynamicActor(size_t animationsSize, size_t fixturesSize)
-    : StaticActor(animationsSize),
+DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
+    : StaticActor(numAnimations),
       _body(),
-      _fixtures(fixturesSize) {}
+      _fixtures(numFixtures) {}
 
 
 void DynamicActor::removeFromMap() {

@@ -54,6 +54,8 @@ class ItemListView {
     cocos2d::ui::Layout* getLayout() const;
 
    private:
+    static const int _kListViewIconSize;
+
     ItemListView* _parent;
     TableLayout* _layout;
     cocos2d::ui::ImageView* _background;

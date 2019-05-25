@@ -4,6 +4,7 @@
 #include "input/GameInputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
+#include "util/Constants.h"
 
 using std::string;
 using std::unique_ptr;
@@ -92,6 +93,8 @@ Equipment::Type EquipmentPane::getSelectedEquipmentType() const {
 }
 
 
+const int EquipmentPane::EquipmentItem::_kEquipmentIconSize = 16;
+
 EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string& title, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal
@@ -100,6 +103,8 @@ EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string&
       _equipmentTypeLabel(Label::createWithTTF(title, kTitleFont, kRegularFontSize)),
       _equipmentNameLabel(Label::createWithTTF("---", kBoldFont, kRegularFontSize)),
       _equipment() {
+  _icon->setScale((float) _kEquipmentIconSize / kIconSize);
+
   _background->setAnchorPoint({0, 1});
   _layout->setPosition({x, y});
   _layout->addChild(_background);

@@ -547,9 +547,6 @@ void Character::attack() {
     _lockedOnTarget = *_inRangeTargets.begin();
 
     if (!_lockedOnTarget->isInvincible()) {
-      _lockedOnTarget->setAlerted(true);
-      _lockedOnTarget->setLockedOnTarget(this);
-
       inflictDamage(_lockedOnTarget, getDamageOutput());
       float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
       float knockBackForceY = 1.0f; // temporary
@@ -568,7 +565,6 @@ void Character::useSkill(Skill* skill) {
 
   callback_util::runAfter([=]() {
     _isUsingSkill = false;
-    _currentlyUsedSkill = nullptr;
     // Set _currentState to FORCE_UPDATE so that next time in
     // Character::update the animation is guaranteed to be updated.
     _currentState = State::FORCE_UPDATE;
@@ -589,6 +585,7 @@ void Character::knockBack(Character* target, float forceX, float forceY) const {
 
 void Character::inflictDamage(Character* target, int damage) {
   target->receiveDamage(this, damage);
+  target->lockOn(this);
 }
 
 void Character::receiveDamage(Character* source, int damage) {
@@ -607,6 +604,11 @@ void Character::receiveDamage(Character* source, int damage) {
   } else {
     // TODO: play hurt sound.
   }
+}
+
+void Character::lockOn(Character* target) {
+  _isAlerted = true;
+  setLockedOnTarget(target);
 }
 
 

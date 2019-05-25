@@ -15,6 +15,8 @@ const int kGravity = -10;
 const int kGroundFriction = 2;
 const int kWallFriction = 1;
 
+const int kIconSize = 16;
+
 } // namespace vigilante
 
 #endif // VIGILANTE_CONSTANTS_H_

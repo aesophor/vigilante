@@ -44,8 +44,9 @@ class Item : public DynamicActor, public Importable {
   Item(const std::string& jsonFileName);
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
-  static const float _kIconWidth;
-  static const float _kIconHeight;
+  static const int _kNumAnimations;
+  static const int _kNumFixtures;
+
   Item::Profile _itemProfile;
 };
 

@@ -47,6 +47,8 @@ class EquipmentPane : public AbstractPane {
     cocos2d::ui::Layout* getLayout() const;
 
    private:
+    static const int _kEquipmentIconSize;
+
     EquipmentPane* _parent;
     TableLayout* _layout;
     cocos2d::ui::ImageView* _background;

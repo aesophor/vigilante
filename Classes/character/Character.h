@@ -92,6 +92,7 @@ class Character : public DynamicActor, public Importable {
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual void inflictDamage(Character* target, int damage);
   virtual void receiveDamage(Character* source, int damage);
+  virtual void lockOn(Character* target);
 
   virtual void pickupItem(Item* item);
   virtual void discardItem(Item* item);

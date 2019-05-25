@@ -2,6 +2,7 @@
 
 #include "GameAssetManager.h"
 #include "item/Equipment.h"
+#include "util/Constants.h"
 
 using std::string;
 using std::unique_ptr;
@@ -41,14 +42,11 @@ Hud::Hud()
       _equippedWeapon(ImageView::create()),
       _equippedWeaponDescBg(ImageView::create(kEquippedWeaponDescBg)),
       _equippedWeaponDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
-  _equippedWeaponBg->setAnchorPoint({0, 0});
-  _equippedWeaponBg->setPosition({-40, -31});
+  _equippedWeaponBg->setPosition({-20, -15});
+  _equippedWeaponDescBg->setPosition({33, -25});
 
-  _equippedWeaponDescBg->setAnchorPoint({0, 0});
-  _equippedWeaponDescBg->setPosition({0, -31});
-
-  _equippedWeaponDesc->setAnchorPoint({0, 0});
   _equippedWeaponDesc->getFontAtlas()->setAliasTexParameters();
+  _equippedWeaponDesc->setAnchorPoint({0, 0});
   _equippedWeaponDesc->setPosition({5.0f, -30.f});
 
   _magickaBar->getLayout()->setPositionY(_magickaBar->getLayout()->getPositionY() - 6.0f);
@@ -70,9 +68,8 @@ void Hud::updateEquippedWeapon() {
   if (weapon) {
     // Replace weapon icon
     _equippedWeapon->loadTexture(weapon->getIconPath());
-    _equippedWeapon->setAnchorPoint({0, 0});
-    _equippedWeapon->setPosition({-36, -27});
-    _equippedWeapon->setScale(_equippedWeaponBg->getLayoutSize().width / _equippedWeapon->getLayoutSize().width - .5f);
+    _equippedWeapon->setPosition(_equippedWeaponBg->getPosition());
+    _equippedWeapon->setScale(1.5);
     // Update weapon desc label
     _equippedWeaponDesc->setString(weapon->getItemProfile().name);
   } else {

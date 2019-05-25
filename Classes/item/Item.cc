@@ -19,12 +19,11 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-const float Item::_kIconWidth = 16.0f;
-const float Item::_kIconHeight = 16.0f;
+const int Item::_kNumAnimations = 1;
+const int Item::_kNumFixtures = 1;
 
 Item::Item(const string& jsonFileName)
-    : DynamicActor(0, 1),
-      _itemProfile(jsonFileName) {
+    : DynamicActor(_kNumAnimations, _kNumFixtures), _itemProfile(jsonFileName) {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
@@ -43,14 +42,14 @@ void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, f
     .position(x, y, kPpm)
     .buildBody();
 
-  bodyBuilder.newRectangleFixture(_kIconWidth / 2, _kIconHeight / 2, kPpm)
+  bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
     .categoryBits(categoryBits)
     .maskBits(maskBits | kFeet) // Enable collision detection with feet fixtures
     .setSensor(true)
     .setUserData(this)
     .buildFixture();
 
-  bodyBuilder.newRectangleFixture(_kIconWidth / 2, _kIconHeight / 2, kPpm)
+  bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
     .categoryBits(categoryBits)
     .maskBits(maskBits)
     .setUserData(this)

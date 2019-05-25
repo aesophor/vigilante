@@ -85,8 +85,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         // If player is using skill (e.g., forward slash), than inflict damage
         // when an enemy contacts player's weapon fixture.
         if (player->isUsingSkill()) {
-          //int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
-          int skillDmg = 20;
+          int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
           player->inflictDamage(enemy, player->getDamageOutput() + skillDmg);
         }
       }
@@ -126,6 +125,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
       }
+      break;
     }
     // When a project tile hits an enemy, play onHitAnimation and inflict damage.
     case category_bits::kProjectile | category_bits::kEnemy: {
@@ -139,6 +139,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Projectile* missile = dynamic_cast<Projectile*>(p);
         missile->onHit(c);
       }
+      break;
     }
     default:
       break;
@@ -219,6 +220,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setPortal(nullptr);
       }
+      break;
     }
     default:
       break;

@@ -1,6 +1,7 @@
 #include "ForwardSlash.h"
 
 #include "character/Character.h"
+#include "map/GameMapManager.h"
 #include "util/CallbackUtil.h"
 
 using std::string;
@@ -30,12 +31,10 @@ void ForwardSlash::activate() {
 
   callback_util::runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
-
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
+    delete this;
   }, _skillProfile.framesDuration);
-
-  delete this;
 }
 
 
