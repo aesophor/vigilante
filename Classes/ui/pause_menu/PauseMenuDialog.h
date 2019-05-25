@@ -27,7 +27,7 @@ class PauseMenuDialog : public AbstractPane {
   void selectRight();
   void confirm();
 
-  void reset() const;
+  void reset();
   void setMessage(const std::string& message) const;
   void setOption(int index, bool visible, const std::string& text="", const std::function<void ()>& handler=[=](){}) const;
   void show();

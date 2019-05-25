@@ -85,11 +85,14 @@ void PauseMenuDialog::confirm() {
 }
 
 
-void PauseMenuDialog::reset() const {
+void PauseMenuDialog::reset() {
   setMessage("");
   for (auto& option : _options) {
     option->setVisible(false);
   }
+  _options[_current]->setSelected(false);
+  _current = 0;
+  _options[_current]->setSelected(true);
 }
 
 void PauseMenuDialog::setMessage(const string& message) const {
