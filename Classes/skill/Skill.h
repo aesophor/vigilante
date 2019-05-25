@@ -30,9 +30,9 @@ class Skill : public Importable {
     int physicalDamage;
     int magicalDamage;
 
-    int healthDelta;
-    int magickaDelta;
-    int staminaDelta;
+    int deltaHealth;
+    int deltaMagicka;
+    int deltaStamina;
   };
 
   virtual ~Skill() = default;

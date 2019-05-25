@@ -13,6 +13,7 @@
 
 #include "DynamicActor.h"
 #include "Importable.h"
+#include "Regeneratable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "skill/Skill.h"
@@ -20,7 +21,7 @@
 
 namespace vigilante {
 
-class Character : public DynamicActor, public Importable {
+class Character : public DynamicActor, public Importable, public Regeneratable {
  public: 
   struct Profile {
     Profile(const std::string& jsonFileName);
@@ -148,6 +149,10 @@ class Character : public DynamicActor, public Importable {
  protected:
   Character(const std::string& jsonFileName);
 
+  virtual void regenHealth(int deltaHealth) override; // Regeneratable
+  virtual void regenMagicka(int deltaMagicka) override; // Regeneratable
+  virtual void regenStamina(int deltaStamina) override; // Regeneratable
+
   enum State {
     IDLE_SHEATHED,
     IDLE_UNSHEATHED,
@@ -184,6 +189,12 @@ class Character : public DynamicActor, public Importable {
 
   // Characater data.
   Character::Profile _characterProfile;
+
+  // Stats regen timer
+  float _statsRegenTimer;
+  const int _baseRegenDeltaHealth;
+  const int _baseRegenDeltaMagicka;
+  const int _baseRegenDeltaStamina;
 
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()

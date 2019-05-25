@@ -27,9 +27,9 @@ Skill::Profile::Profile(const string& jsonFileName) {
   physicalDamage = json["physicalDamage"].GetInt();
   magicalDamage = json["magicalDamage"].GetInt();
 
-  healthDelta = json["healthDelta"].GetInt();
-  magickaDelta = json["magickaDelta"].GetInt();
-  staminaDelta = json["staminaDelta"].GetInt();
+  deltaHealth = json["deltaHealth"].GetInt();
+  deltaMagicka = json["deltaMagicka"].GetInt();
+  deltaStamina = json["deltaStamina"].GetInt();
 }
 
 } // namespace vigilante

@@ -81,7 +81,7 @@ void MagicalMissile::import(const string& jsonFileName) {
 }
 
 bool MagicalMissile::canActivate() {
-  return _user->getCharacterProfile().magicka + _skillProfile.magickaDelta >= 0;
+  return _user->getCharacterProfile().magicka + _skillProfile.deltaMagicka >= 0;
 }
 
 void MagicalMissile::activate() {
@@ -91,7 +91,7 @@ void MagicalMissile::activate() {
   }
 
   // Modify character's stats.
-  _user->getCharacterProfile().magicka += _skillProfile.magickaDelta;
+  _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
   float x = _user->getBody()->GetPosition().x;
   float y = _user->getBody()->GetPosition().y;

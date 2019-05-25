@@ -58,6 +58,10 @@ const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr
 Character::Character(const string& jsonFileName)
     : DynamicActor(State::STATE_SIZE, FixtureType::FIXTURE_SIZE),
       _characterProfile(jsonFileName),
+      _statsRegenTimer(),
+      _baseRegenDeltaHealth(5),
+      _baseRegenDeltaMagicka(5),
+      _baseRegenDeltaStamina(5),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
       _isFacingRight(true),
@@ -130,6 +134,15 @@ void Character::update(float delta) {
     }
   }
 
+  // Handle stats regeneration.
+  _statsRegenTimer += delta;
+  if (_statsRegenTimer >= 5.0f) {
+    _statsRegenTimer = 0;
+    regenHealth(_baseRegenDeltaHealth);
+    regenMagicka(_baseRegenDeltaMagicka);
+    regenStamina(_baseRegenDeltaStamina);
+    Hud::getInstance()->updateStatusBars();
+  }
 
   // Don't update character's state if he/she is using skill.
   if (_isUsingSkill) {
@@ -219,6 +232,7 @@ void Character::removeFromMap() {
 void Character::import(const string& jsonFileName) {
   _characterProfile = Character::Profile(jsonFileName);
 }
+
 
 void Character::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                            short feetMaskBits, short weaponMaskBits, float x, float y) {
@@ -822,6 +836,31 @@ int Character::getDamageOutput() const {
   }
 
   return output + rand_util::randInt(-5, 5); // temporary
+}
+
+
+void Character::regenHealth(int deltaHealth) {
+  const int& fullHealth = _characterProfile.fullHealth;
+  int& health = _characterProfile.health;
+
+  health += deltaHealth;
+  health = (health > fullHealth) ? fullHealth : health;
+}
+
+void Character::regenMagicka(int deltaMagicka) {
+  const int& fullMagicka = _characterProfile.fullMagicka;
+  int& magicka = _characterProfile.magicka;
+
+  magicka += deltaMagicka;
+  magicka = (magicka > fullMagicka) ? fullMagicka : magicka;
+}
+
+void Character::regenStamina(int deltaStamina) {
+  const int& fullStamina = _characterProfile.fullStamina;
+  int& stamina = _characterProfile.stamina;
+
+  stamina += deltaStamina;
+  stamina = (stamina > fullStamina) ? fullStamina : stamina;
 }
 
 
