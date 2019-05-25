@@ -88,9 +88,9 @@ Layer* GameMapManager::getLayer() const {
 
 
 void GameMapManager::createDustFx(Character* character) {
-	auto feetPos = character->getBody()->GetPosition();
-	float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
-	float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
+  auto feetPos = character->getBody()->GetPosition();
+  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
+  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
   _fxMgr->createFx(asset_manager::kDustTextureResDir, "white", x, y);
 }
 

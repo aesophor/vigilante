@@ -29,7 +29,7 @@ class Enemy : public Character, public Bot {
   virtual void showOnMap(float x, float y) override; // DynamicActor
   virtual void import(const std::string& jsonFileName) override; // Importable
 
-  virtual void receiveDamage(Character* source, int damage) override;
+  virtual void receiveDamage(Character* source, int damage) override; // Character
 
   Enemy::Profile& getEnemyProfile();
   

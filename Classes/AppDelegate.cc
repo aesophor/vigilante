@@ -79,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   // Load resources
   cocos2d::log("[Dust] loading textures");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kPlayerTextureResDir + "/spritesheet.plist");
+  frameCache->addSpriteFramesWithFile("Texture/character/bandit/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/vlad/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/slime/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/demon/spritesheet.plist");

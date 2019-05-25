@@ -198,7 +198,11 @@ void MainGameScene::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
-    player->attack();
+    if (!player->isWeaponSheathed()) {
+      player->attack();
+    } else {
+      NotificationManager::getInstance()->show("You haven't equipped a weapon yet.");
+    }
   }
 
   if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
