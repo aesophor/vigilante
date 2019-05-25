@@ -71,7 +71,7 @@ void Hud::updateEquippedWeapon() {
     // Replace weapon icon
     _equippedWeapon->loadTexture(weapon->getIconPath());
     _equippedWeapon->setAnchorPoint({0, 0});
-    _equippedWeapon->setPosition({-36, -25});
+    _equippedWeapon->setPosition({-36, -27});
     _equippedWeapon->setScale(_equippedWeaponBg->getLayoutSize().width / _equippedWeapon->getLayoutSize().width - .5f);
     // Update weapon desc label
     _equippedWeaponDesc->setString(weapon->getItemProfile().name);

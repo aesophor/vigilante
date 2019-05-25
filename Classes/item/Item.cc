@@ -24,7 +24,10 @@ const float Item::_kIconHeight = 16.0f;
 
 Item::Item(const string& jsonFileName)
     : DynamicActor(0, 1),
-      _itemProfile(jsonFileName) {}
+      _itemProfile(jsonFileName) {
+  _bodySprite = Sprite::create(getIconPath());
+  _bodySprite->getTexture()->setAliasTexParameters();
+}
 
 
 void Item::update(float delta) {
