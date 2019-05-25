@@ -154,9 +154,9 @@ class Character : public DynamicActor, public Importable {
 
   virtual void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                           short feetMaskBits, short weaponMaskBits, float x, float y);
-  virtual void defineTexture(const std::string& bodyTextureResPath, float x, float y);
+  virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
 
-  virtual void loadBodyAnimations(const std::string& bodyTextureResPath);
+  virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
   void runAnimation(Character::State state, bool loop=true) const;
@@ -219,7 +219,8 @@ class Character : public DynamicActor, public Importable {
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],
   // and here's some extra ones.
-  std::array<cocos2d::Animation*, 1> _extraAttackAnimations;
+  std::array<cocos2d::Animation*, 1> _bodyExtraAttackAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
 
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment
