@@ -45,11 +45,11 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   _dynamicActors.insert(enemy2);
 
   // Spawn an item.
-  Item* item1 = new Equipment("Resources/Database/equipment/rusty_axe.json");
+  Item* item1 = new Equipment("Resources/Database/equipment/iron_broadsword.json");
   item1->showOnMap(190, 80);
   _dynamicActors.insert(item1);
 
-  Item* item2 = new Equipment("Resources/Database/equipment/rusty_axe.json");
+  Item* item2 = new Equipment("Resources/Database/equipment/royal_cape.json");
   item2->showOnMap(230, 80);
   _dynamicActors.insert(item2);
 }
