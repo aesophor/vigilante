@@ -208,7 +208,8 @@ void MainGameScene::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
-    if (player->isWeaponSheathed() && !player->isUnsheathingWeapon()) {
+    if (player->getEquipmentSlots()[Equipment::Type::WEAPON]
+        && player->isWeaponSheathed() && !player->isUnsheathingWeapon()) {
       player->unsheathWeapon();
     } else if (!player->isWeaponSheathed() && !player->isSheathingWeapon()) {
       player->sheathWeapon();

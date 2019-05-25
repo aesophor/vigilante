@@ -2,7 +2,6 @@
 #define VIGILANTE_MAGICAL_MISSILE_H_
 
 #include <string>
-#include <functional>
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"

@@ -673,6 +673,10 @@ void Character::unequip(Equipment::Type equipmentType) {
     addItem(e);
 
     GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
+
+    if (equipmentType == Equipment::Type::WEAPON) {
+      sheathWeapon();
+    }
   }
 }
 

@@ -1,5 +1,7 @@
 #include "MagicalMissile.h"
 
+#include <functional>
+
 #include "GameAssetManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
