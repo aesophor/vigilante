@@ -40,8 +40,6 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
       _hasHit(),
       _launchFxSprite() {}
 
-MagicalMissile::~MagicalMissile() {}
-
 
 void MagicalMissile::update(float delta) {
   // Sync the sprite with b2body.

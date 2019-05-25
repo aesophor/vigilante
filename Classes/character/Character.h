@@ -95,6 +95,7 @@ class Character : public DynamicActor, public Importable {
   bool isJumping() const;
   bool isOnPlatform() const;
   bool isAttacking() const;
+  bool isUsingSkill() const;
   bool isCrouching() const;
   bool isInvincible() const;
   bool isKilled() const;
@@ -106,6 +107,7 @@ class Character : public DynamicActor, public Importable {
   void setJumping(bool jumping);
   void setOnPlatform(bool onPlatform);
   void setAttacking(bool attacking);
+  void setUsingSkill(bool usingSkill);
   void setCrouching(bool crouching);
   void setInvincible(bool invincible);
 
@@ -149,7 +151,8 @@ class Character : public DynamicActor, public Importable {
     UNSHEATHING_WEAPON,
     ATTACKING,
     KILLED,
-    STATE_SIZE
+    STATE_SIZE,
+    FORCE_UPDATE
   };
 
   static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
@@ -175,7 +178,6 @@ class Character : public DynamicActor, public Importable {
   // for the logic.
   Character::State _currentState;
   Character::State _previousState;
-  float _stateTimer;
 
   bool _isFacingRight;
   bool _isWeaponSheathed;

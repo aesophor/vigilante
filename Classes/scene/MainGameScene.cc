@@ -8,6 +8,7 @@
 #include "character/Player.h"
 #include "input/GameInputManager.h"
 #include "skill/Skill.h"
+#include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
@@ -165,7 +166,7 @@ void MainGameScene::handleInput() {
   }
 
 
-  if (player->isSetToKill() || player->isAttacking() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
+  if (player->isSetToKill() || player->isAttacking() || player->isUsingSkill() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
     return;
   }
 
@@ -217,6 +218,8 @@ void MainGameScene::handleInput() {
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
     Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", player);
     player->useSkill(skill);
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
+    player->useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", player));
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

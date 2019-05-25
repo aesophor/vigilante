@@ -59,7 +59,6 @@ Character::Character(const string& jsonFileName)
       _characterProfile(jsonFileName),
       _currentState(State::IDLE_SHEATHED),
       _previousState(State::IDLE_SHEATHED),
-      _stateTimer(),
       _isFacingRight(true),
       _isWeaponSheathed(true),
       _isSheathingWeapon(),
@@ -101,9 +100,43 @@ Character::~Character() {
 void Character::update(float delta) {
   if (_isKilled) return;
 
+  // Flip the sprite if needed.
+  if (!_isFacingRight && !_bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(true);
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    shape->m_p = {-_characterProfile.attackRange / kPpm, 0};
+  } else if (_isFacingRight && _bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(false);
+    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    shape->m_p = {_characterProfile.attackRange / kPpm, 0};
+  }
+
+  // Sync the body sprite with its b2body.
+  b2Vec2 b2bodyPos = _body->GetPosition();
+  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
+
+  // Sync the equipment sprites with its b2body.
+  for (int i = 0; i < Equipment::Type::SIZE; i++) {
+    Equipment::Type type = static_cast<Equipment::Type>(i);
+    if (_equipmentSlots[type]) {
+      if (!_isFacingRight && !_equipmentSprites[type]->isFlippedX()) {
+        _equipmentSprites[type]->setFlippedX(true);
+      } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
+        _equipmentSprites[type]->setFlippedX(false);
+      }
+      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
+    }
+  }
+
+
+  // Don't update character's state if he/she is using skill.
+  if (_isUsingSkill) {
+    return;
+  }
+
   _previousState = _currentState;
   _currentState = getState();
-
+  
   // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {
     switch(_currentState) {
@@ -154,35 +187,6 @@ void Character::update(float delta) {
       default:
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
-    }
-  }
-  _stateTimer = (_currentState != _previousState) ? 0 : _stateTimer + delta;
-
-  // Flip the sprite if needed.
-  if (!_isFacingRight && !_bodySprite->isFlippedX()) {
-    _bodySprite->setFlippedX(true);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
-    shape->m_p = {-_characterProfile.attackRange / kPpm, 0};
-  } else if (_isFacingRight && _bodySprite->isFlippedX()) {
-    _bodySprite->setFlippedX(false);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
-    shape->m_p = {_characterProfile.attackRange / kPpm, 0};
-  }
-
-  // Sync the body sprite with its b2body.
-  b2Vec2 b2bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
-
-  // Sync the equipment sprites with its b2body.
-  for (int i = 0; i < Equipment::Type::SIZE; i++) {
-    Equipment::Type type = static_cast<Equipment::Type>(i);
-    if (_equipmentSlots[type]) {
-      if (!_isFacingRight && !_equipmentSprites[type]->isFlippedX()) {
-        _equipmentSprites[type]->setFlippedX(true);
-      } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
-        _equipmentSprites[type]->setFlippedX(false);
-      }
-      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
     }
   }
 }
@@ -387,10 +391,9 @@ void Character::runAnimation(State state, bool loop) const {
 }
 
 void Character::runAnimation(State state, const function<void ()>& func) const {
-  _bodySprite->stopAllActions();
-
   auto animate = Animate::create(_bodyAnimations[state]);
   auto callback = CallFunc::create(func);
+  _bodySprite->stopAllActions();
   _bodySprite->runAction(Sequence::createWithTwoActions(animate, callback));
 
   // Update equipment animation.
@@ -412,7 +415,7 @@ void Character::runAnimation(const string& framesName, float interval) {
   
   if (_skillBodyAnimations.find(framesName) == _skillBodyAnimations.end()) {
     Animation* fallback = _bodyAnimations[State::IDLE_UNSHEATHED];
-    bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval / kPpm, fallback);
+    bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval, fallback);
     // Cache this skill animation (body).
     _skillBodyAnimations.insert({framesName, bodyAnimation});
   } else {
@@ -420,7 +423,23 @@ void Character::runAnimation(const string& framesName, float interval) {
   }
 
   _bodySprite->stopAllActions();
-  _bodySprite->runAction(Animate::create(bodyAnimation));
+  _bodySprite->runAction(Repeat::create(Animate::create(bodyAnimation), 1));
+
+  // Update equipment animation.
+  for (int i = 0; i < Equipment::Type::SIZE; i++) {
+    Equipment::Type type = static_cast<Equipment::Type>(i);
+    if (_equipmentSlots[type]) {
+      _equipmentSprites[type]->stopAllActions();
+
+      const string& textureResDir = _equipmentSlots[type]->getItemProfile().textureResDir;
+      Animation* fallback = _equipmentAnimations[type][ATTACKING];
+
+      // TODO: cache these equipment skill animation
+      Animation* animation = createAnimation(textureResDir, framesName, interval, fallback);
+      _equipmentSprites[type]->stopAllActions();
+      _equipmentSprites[type]->runAction(Repeat::create(Animate::create(animation), 1));
+    }
+  }
 }
 
 
@@ -547,11 +566,14 @@ void Character::useSkill(Skill* skill) {
 
   callback_util::runAfter([=]() {
     _isUsingSkill = false;
+    // Set _currentState to FORCE_UPDATE so that next time in
+    // Character::update the animation is guaranteed to be updated.
+    _currentState = State::FORCE_UPDATE;
   }, skill->getSkillProfile().framesDuration);
 
   if (skill->getSkillProfile().characterFramesName != "") {
     Skill::Profile& skillProfile = skill->getSkillProfile();
-    runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval);
+    runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
   }
 
   skill->activate();
@@ -660,6 +682,10 @@ bool Character::isAttacking() const {
   return _isAttacking;
 }
 
+bool Character::isUsingSkill() const {
+  return _isUsingSkill;
+}
+
 bool Character::isCrouching() const {
   return _isCrouching;
 }
@@ -699,6 +725,10 @@ void Character::setOnPlatform(bool onPlatform) {
 
 void Character::setAttacking(bool attacking) {
   _isAttacking = attacking;
+}
+
+void Character::setUsingSkill(bool usingSkill) {
+  _isUsingSkill = usingSkill;
 }
 
 void Character::setCrouching(bool crouching) {

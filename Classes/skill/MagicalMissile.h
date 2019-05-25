@@ -18,7 +18,7 @@ class Character;
 class MagicalMissile : public DynamicActor, public Skill, public Projectile {
  public:
   MagicalMissile(const std::string& jsonFileName, Character* user);
-  virtual ~MagicalMissile();
+  virtual ~MagicalMissile() = default;
 
   virtual void update(float delta) override; // DynamicActor
   virtual void setPosition(float x, float y) override; // DynamicActor
