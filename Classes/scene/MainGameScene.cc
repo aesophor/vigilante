@@ -100,6 +100,8 @@ bool MainGameScene::init() {
   _gameMapManager->loadGameMap("Map/starting_point.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
+  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/iron_broadsword.json"));
+
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.
   GameInputManager::getInstance()->activate(this);

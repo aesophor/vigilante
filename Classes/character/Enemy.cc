@@ -4,11 +4,11 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
-#include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/CategoryBits.h"
 #include "util/Constants.h"
+#include "util/RandUtil.h"
 #include "util/JsonUtil.h"
 
 using std::string;
@@ -84,7 +84,24 @@ void Enemy::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 
   if (_isSetToKill) {
-    NotificationManager::getInstance()->show("Gained 25 exp.");
+    // Drop items.
+    for (const auto& item : _enemyProfile.dropItems) {
+      const string& itemResDir = item.first;
+      float dropChance = item.second;
+
+      float randChance = rand_util::randInt(0, 100);
+      if (randChance <= dropChance) {
+        Item* i = new Equipment(itemResDir);
+        float x = _body->GetPosition().x;
+        float y = _body->GetPosition().y;
+        i->showOnMap(x * kPpm, y * kPpm);
+        GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(i);
+
+        float offsetX = rand_util::randFloat(-.3f, .3f);
+        float offsetY = 3.0f;
+        i->getBody()->ApplyLinearImpulse({offsetX, offsetY}, i->getBody()->GetWorldCenter(), true);
+      }
+    }
   }
 }
 

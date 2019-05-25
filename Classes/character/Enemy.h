@@ -30,7 +30,6 @@ class Enemy : public Character, public Bot {
   virtual void import(const std::string& jsonFileName) override; // Importable
 
   virtual void receiveDamage(Character* source, int damage) override;
-  //virtual void dropItem(Item* item);
 
   Enemy::Profile& getEnemyProfile();
   

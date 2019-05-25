@@ -129,7 +129,10 @@ void ItemListView::confirm() {
     _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
     _pauseMenu->update();
   });
-  dialog->setOption(1, true, "Discard");
+  dialog->setOption(1, true, "Discard", [=]() {
+    _pauseMenu->getCharacter()->discardItem(item);
+    _pauseMenu->update();
+  });
   dialog->show();
 }
 

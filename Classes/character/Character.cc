@@ -530,7 +530,7 @@ void Character::attack() {
       _lockedOnTarget->setAlerted(true);
       _lockedOnTarget->setLockedOnTarget(this);
 
-      inflictDamage(_lockedOnTarget, 25);
+      inflictDamage(_lockedOnTarget, getDamageOutput());
       float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
       float knockBackForceY = 1.0f; // temporary
       knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
@@ -602,9 +602,10 @@ void Character::discardItem(Item* item) {
   }
 
   // Drop this item in the world.
-  item->showOnMap(_body->GetPosition().x, _body->GetPosition().y);
-  item->getBody()->ApplyLinearImpulse({0, .2f}, item->getBody()->GetWorldCenter(), true);
+  item->showOnMap(_body->GetPosition().x * kPpm, _body->GetPosition().y * kPpm);
   GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
+
+  item->getBody()->ApplyLinearImpulse({0, 3.0f}, item->getBody()->GetWorldCenter(), true);
 }
 
 void Character::addItem(Item* item) {
@@ -761,6 +762,17 @@ void Character::setCategoryBits(b2Fixture* fixture, short bits) {
   b2Filter filter;
   filter.categoryBits = bits;
   fixture->SetFilterData(filter);
+}
+
+int Character::getDamageOutput() const {
+  int output = _characterProfile.baseMeleeDamage;
+
+  Equipment* weapon = _equipmentSlots[Equipment::Type::WEAPON];
+  if (weapon) {
+    output += weapon->getEquipmentProfile().bonusPhysicalDamage;
+  }
+
+  return output + rand_util::randInt(-5, 5); // temporary
 }
 
 

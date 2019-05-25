@@ -24,11 +24,7 @@ const float Item::_kIconHeight = 16.0f;
 
 Item::Item(const string& jsonFileName)
     : DynamicActor(0, 1),
-      _itemProfile(jsonFileName) {
-  // Disable sprite antialiasing
-  _bodySprite = Sprite::create(getIconPath());
-  _bodySprite->getTexture()->setAliasTexParameters();
-}
+      _itemProfile(jsonFileName) {}
 
 
 void Item::update(float delta) {
@@ -69,6 +65,9 @@ void Item::showOnMap(float x, float y) {
     short maskBits = kGround | kPlatform | kWall;
     defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
 
+    _bodySprite = Sprite::create(getIconPath());
+    _bodySprite->getTexture()->setAliasTexParameters();
+
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
     _isShownOnMap = true;
   }
@@ -79,6 +78,7 @@ void Item::removeFromMap() {
     _body->GetWorld()->DestroyBody(_body);
 
     GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    _bodySprite = nullptr;
     _isShownOnMap = false;
   }
 }

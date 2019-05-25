@@ -126,6 +126,8 @@ class Character : public DynamicActor, public Importable {
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
+
+  int getDamageOutput() const;
   
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
