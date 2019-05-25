@@ -133,6 +133,8 @@ class Character : public DynamicActor, public Importable {
   GameMap::Portal* getPortal() const;
   void setPortal(GameMap::Portal* portal);
 
+  Skill* getCurrentlyUsedSkill() const;
+
   typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
@@ -219,6 +221,9 @@ class Character : public DynamicActor, public Importable {
 
   // The portal to which this character is near.
   GameMap::Portal* _portal;
+
+  // Currently used skill.
+  Skill* _currentlyUsedSkill;
 
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],

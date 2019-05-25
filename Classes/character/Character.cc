@@ -77,6 +77,7 @@ Character::Character(const string& jsonFileName)
       _inventory(),
       _equipmentSlots(),
       _portal(),
+      _currentlyUsedSkill(),
       _bodyExtraAttackAnimations(),
       _equipmentExtraAttackAnimations(),
       _equipmentSprites(),
@@ -454,7 +455,7 @@ Character::State Character::getState() const {
     return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
     return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
-  } else if (_body->GetLinearVelocity().y < -.5f) {
+  } else if (_body->GetLinearVelocity().y < -1.0f) {
     return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
     return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
@@ -563,9 +564,11 @@ void Character::useSkill(Skill* skill) {
   }
 
   _isUsingSkill = true;
+  _currentlyUsedSkill = skill;
 
   callback_util::runAfter([=]() {
     _isUsingSkill = false;
+    _currentlyUsedSkill = nullptr;
     // Set _currentState to FORCE_UPDATE so that next time in
     // Character::update the animation is guaranteed to be updated.
     _currentState = State::FORCE_UPDATE;
@@ -785,6 +788,10 @@ GameMap::Portal* Character::getPortal() const {
 
 void Character::setPortal(GameMap::Portal* portal) {
   _portal = portal;
+}
+
+Skill* Character::getCurrentlyUsedSkill() const {
+  return _currentlyUsedSkill;
 }
 
 

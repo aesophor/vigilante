@@ -84,24 +84,28 @@ void Enemy::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 
   if (_isSetToKill) {
-    // Drop items.
-    for (const auto& item : _enemyProfile.dropItems) {
-      const string& itemResDir = item.first;
-      float dropChance = item.second;
+    // Drop items. (Here we'll use a callback to drop items
+    // since creating fixtures during collision callback will crash)
+    // See: https://github.com/libgdx/libgdx/issues/2730
+    callback_util::runAfter([=]() {
+      for (const auto& item : _enemyProfile.dropItems) {
+        const string& itemResDir = item.first;
+        float dropChance = item.second;
 
-      float randChance = rand_util::randInt(0, 100);
-      if (randChance <= dropChance) {
-        Item* i = new Equipment(itemResDir);
-        float x = _body->GetPosition().x;
-        float y = _body->GetPosition().y;
-        i->showOnMap(x * kPpm, y * kPpm);
-        GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(i);
+        float randChance = rand_util::randInt(0, 100);
+        if (randChance <= dropChance) {
+          Item* i = new Equipment(itemResDir);
+          float x = _body->GetPosition().x;
+          float y = _body->GetPosition().y;
+          i->showOnMap(x * kPpm, y * kPpm);
+          GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(i);
 
-        float offsetX = rand_util::randFloat(-.3f, .3f);
-        float offsetY = 3.0f;
-        i->getBody()->ApplyLinearImpulse({offsetX, offsetY}, i->getBody()->GetWorldCenter(), true);
+          float offsetX = rand_util::randFloat(-.3f, .3f);
+          float offsetY = 3.0f;
+          i->getBody()->ApplyLinearImpulse({offsetX, offsetY}, i->getBody()->GetWorldCenter(), true);
+        }
       }
-    }
+    }, .2f);
   }
 }
 

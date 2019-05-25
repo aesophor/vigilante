@@ -81,7 +81,14 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Player* player = static_cast<Player*>(weaponFixture->GetUserData());
         Enemy* enemy = static_cast<Enemy*>(enemyFixture->GetUserData());
         player->getInRangeTargets().insert(enemy);
-        //enemy->setIsAlerted(true);
+
+        // If player is using skill (e.g., forward slash), than inflict damage
+        // when an enemy contacts player's weapon fixture.
+        if (player->isUsingSkill()) {
+          //int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
+          int skillDmg = 20;
+          player->inflictDamage(enemy, player->getDamageOutput() + skillDmg);
+        }
       }
       break;
     }
