@@ -19,7 +19,19 @@ void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
+bool ForwardSlash::canActivate() {
+  return !_user->isWeaponSheathed()
+    && _user->getCharacterProfile().stamina + _skillProfile.staminaDelta >= 0;
+}
+
 void ForwardSlash::activate() {
+  if (_hasActivated) {
+    return;
+  }
+
+  // Modify character's stats.
+  _user->getCharacterProfile().stamina += _skillProfile.staminaDelta;
+
   float rushPower = (_user->isFacingRight()) ? 5.0f : -5.0f;
   _user->getBody()->SetLinearVelocity({rushPower, 0});
 

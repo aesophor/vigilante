@@ -15,6 +15,7 @@ class ForwardSlash : public Skill {
   virtual ~ForwardSlash() = default;
 
   virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual bool canActivate() override; // Skill
   virtual void activate() override; // Skill
   virtual Skill::Profile& getSkillProfile() override; // Skill
 

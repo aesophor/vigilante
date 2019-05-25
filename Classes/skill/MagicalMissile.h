@@ -30,6 +30,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual void onHit(Character* target) override; // Projectile
 
   virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual bool canActivate() override; // Skill
   virtual void activate() override; // Skill
   virtual Skill::Profile& getSkillProfile() override; // Skill
   

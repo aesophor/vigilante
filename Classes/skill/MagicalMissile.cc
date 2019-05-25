@@ -78,11 +78,18 @@ void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
+bool MagicalMissile::canActivate() {
+  return _user->getCharacterProfile().magicka + _skillProfile.magickaDelta >= 0;
+}
+
 void MagicalMissile::activate() {
   // Make sure this instance is only activated once.
   if (_hasActivated) {
     return;
   }
+
+  // Modify character's stats.
+  _user->getCharacterProfile().magicka += _skillProfile.magickaDelta;
 
   float x = _user->getBody()->GetPosition().x;
   float y = _user->getBody()->GetPosition().y;

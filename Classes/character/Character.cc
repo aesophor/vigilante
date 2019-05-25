@@ -4,6 +4,7 @@
 
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
+#include "ui/hud/Hud.h"
 #include "ui/damage/FloatingDamageManager.h"
 #include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -556,7 +557,11 @@ void Character::attack() {
 }
 
 void Character::useSkill(Skill* skill) {
-  if (_isUsingSkill) {
+  // If this character is still using another skill, or
+  // he/she doesn't meet the criteria of activating this skill,
+  // delete skill and return at once.
+  if (_isUsingSkill || !skill->canActivate()) {
+    delete skill;
     return;
   }
 
@@ -576,6 +581,7 @@ void Character::useSkill(Skill* skill) {
   }
 
   skill->activate();
+  Hud::getInstance()->updateStatusBars();
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {

@@ -38,6 +38,7 @@ class Skill : public Importable {
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0; // Importable
 
+  virtual bool canActivate() = 0;
   virtual void activate() = 0;
   virtual Skill::Profile& getSkillProfile() = 0;
 };
