@@ -2,6 +2,8 @@
 
 #include "map/GameMapManager.h"
 
+using std::vector;
+
 namespace vigilante {
 
 DynamicActor::DynamicActor(size_t animationsSize, size_t fixturesSize)
@@ -21,6 +23,10 @@ void DynamicActor::removeFromMap() {
 
 b2Body* DynamicActor::getBody() const {
   return _body;
+}
+
+vector<b2Fixture*>& DynamicActor::getFixtures() {
+  return _fixtures;
 }
 
 } // namespace vigilante

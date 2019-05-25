@@ -414,7 +414,7 @@ void Character::runAnimation(const string& framesName, float interval) {
   Animation* bodyAnimation = nullptr;
   
   if (_skillBodyAnimations.find(framesName) == _skillBodyAnimations.end()) {
-    Animation* fallback = _bodyAnimations[State::IDLE_UNSHEATHED];
+    Animation* fallback = _bodyAnimations[State::ATTACKING];
     bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval, fallback);
     // Cache this skill animation (body).
     _skillBodyAnimations.insert({framesName, bodyAnimation});

@@ -62,6 +62,15 @@ class Character : public DynamicActor, public Importable {
     int baseMeleeDamage;
   };
 
+  // We have a vector of b2Fixtures (declared in DynamicActor abstract class).
+  // e.g., to access the weapon fixture: _fixtures[FixtureType::WEAPON]
+  enum FixtureType {
+    BODY, // used in combat (with WEAPON fixture)
+    FEET, // used for ground/platform collision detection
+    WEAPON, // used in combat (with BODY fixture)
+    FIXTURE_SIZE
+  };
+
   virtual ~Character();
 
   virtual void update(float delta) override; // DynamicActor
@@ -210,15 +219,6 @@ class Character : public DynamicActor, public Importable {
 
   // The portal to which this character is near.
   GameMap::Portal* _portal;
-
-  // We have a vector of b2Fixtures (declared in Actor abstract class).
-  // e.g., to access the weapon fixture: _fixtures[FixtureType::WEAPON]
-  enum FixtureType {
-    BODY, // used in combat (with WEAPON fixture)
-    FEET, // used for ground/platform collision detection
-    WEAPON, // used in combat (with BODY fixture)
-    FIXTURE_SIZE
-  };
 
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],

@@ -32,6 +32,7 @@ class DynamicActor : public StaticActor {
   virtual void removeFromMap() override; // StaticActor
 
   b2Body* getBody() const;
+  std::vector<b2Fixture*>& getFixtures();
 
  protected:
   b2Body* _body; // users should manually destory _body in subclass!

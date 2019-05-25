@@ -26,10 +26,13 @@ void ForwardSlash::activate() {
   _user->getBody()->SetLinearDamping(2.5f);
 
   _user->setInvincible(true);
+  _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
   callback_util::runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
+
     _user->setInvincible(false);
+    _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
   }, _skillProfile.framesDuration);
 
   delete this;
