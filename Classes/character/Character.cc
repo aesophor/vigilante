@@ -389,10 +389,21 @@ void Character::runAnimation(State state, bool loop) const {
 void Character::runAnimation(State state, const function<void ()>& func) const {
   _bodySprite->stopAllActions();
 
-  // FIXME: update equipment animation
   auto animate = Animate::create(_bodyAnimations[state]);
   auto callback = CallFunc::create(func);
   _bodySprite->runAction(Sequence::createWithTwoActions(animate, callback));
+
+  // Update equipment animation.
+  for (int i = 0; i < Equipment::Type::SIZE; i++) {
+    Equipment::Type type = static_cast<Equipment::Type>(i);
+    if (_equipmentSlots[type]) {
+      _equipmentSprites[type]->stopAllActions();
+
+      auto animate = Animate::create(_equipmentAnimations[type][state]);
+      Action* action = Repeat::create(animate, 1);
+      _equipmentSprites[type]->runAction(action);
+    }
+  }
 }
 
 void Character::runAnimation(const string& framesName, float interval) {
