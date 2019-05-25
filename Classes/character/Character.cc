@@ -871,8 +871,6 @@ Character::Profile::Profile(const string& jsonFileName) {
   spriteOffsetY = json["spriteOffsetY"].GetFloat();
   spriteScaleX = json["spriteScaleX"].GetFloat();
   spriteScaleY = json["spriteScaleY"].GetFloat();
-  frameWidth = json["frameWidth"].GetInt();
-  frameHeight = json["frameHeight"].GetInt();
 
   for (int i = 0; i < Character::State::STATE_SIZE; i++) {
     float interval = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();

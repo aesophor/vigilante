@@ -83,6 +83,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   frameCache->addSpriteFramesWithFile("Texture/character/vlad/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/slime/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/character/demon/spritesheet.plist");
+  frameCache->addSpriteFramesWithFile("Texture/character/skeleton/spritesheet.plist");
   frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeTextureResDir + "/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/item/iron_broadsword/spritesheet.plist");
   frameCache->addSpriteFramesWithFile("Texture/item/royal_cape/spritesheet.plist");

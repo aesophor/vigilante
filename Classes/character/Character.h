@@ -32,8 +32,6 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
     float spriteOffsetY;
     float spriteScaleX;
     float spriteScaleY;
-    int frameWidth;
-    int frameHeight;
     std::vector<float> frameInterval;
 
     std::string name;
