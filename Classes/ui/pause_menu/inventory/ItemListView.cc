@@ -1,10 +1,10 @@
 #include "ItemListView.h"
 
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
-#include "util/Constants.h"
 
 using std::deque;
 using std::vector;
@@ -134,6 +134,7 @@ void ItemListView::confirm() {
     _pauseMenu->getCharacter()->discardItem(item);
     _pauseMenu->update();
   });
+  dialog->setOption(2, true, "Cancel");
   dialog->show();
 }
 
@@ -186,7 +187,7 @@ void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
 
 
 Item* ItemListView::getSelectedItem() const {
-  if (_listViewItems[_current]) {
+  if (!_characterItems.empty() && _listViewItems[_current]) {
     return _listViewItems[_current]->getItem();
   }
   return nullptr;

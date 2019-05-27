@@ -4,7 +4,6 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
-
 namespace vigilante {
 
 namespace camera_util {

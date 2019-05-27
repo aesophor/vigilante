@@ -1,12 +1,12 @@
 #include "Player.h"
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 
 using std::string;
 using cocos2d::Vector;

@@ -1,13 +1,12 @@
 #include "CameraUtil.h"
 
-#include "util/Constants.h"
+#include "Constants.h"
 #include "util/RandUtil.h"
 
 using cocos2d::Director;
 using cocos2d::Camera;
 using cocos2d::TMXTiledMap;
 using cocos2d::Vec2;
-
 
 namespace {
 

@@ -2,16 +2,16 @@
 
 #include "cocos2d.h"
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "Projectile.h"
-#include "skill/Skill.h"
-#include "skill/MagicalMissile.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
 #include "map/GameMap.h"
 #include "map/GameMapManager.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
+#include "skill/Skill.h"
+#include "skill/MagicalMissile.h"
 
 using std::unique_ptr;
 

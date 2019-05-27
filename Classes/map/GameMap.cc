@@ -1,13 +1,13 @@
 #include "GameMap.h"
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 
 using std::vector;
 using std::unordered_set;

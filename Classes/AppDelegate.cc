@@ -2,10 +2,10 @@
 
 #include <string>
 
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
-#include "util/Constants.h"
 
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1

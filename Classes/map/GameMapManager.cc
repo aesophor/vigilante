@@ -2,14 +2,13 @@
 
 #include "Box2D/Box2D.h"
 
-#include "skill/MagicalMissile.h"
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"
+#include "skill/MagicalMissile.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 
 using std::set;
 using std::string;

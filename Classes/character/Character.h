@@ -16,8 +16,8 @@
 #include "Regeneratable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
-#include "skill/Skill.h"
 #include "map/GameMap.h"
+#include "skill/Skill.h"
 
 namespace vigilante {
 

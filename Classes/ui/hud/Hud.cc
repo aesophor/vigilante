@@ -1,8 +1,8 @@
 #include "Hud.h"
 
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "item/Equipment.h"
-#include "util/Constants.h"
 
 using std::string;
 using std::unique_ptr;

@@ -2,10 +2,10 @@
 
 #include "json/document.h"
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 #include "util/JsonUtil.h"
 
 using std::string;

@@ -4,6 +4,7 @@
 
 #include "SimpleAudioEngine.h"
 
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
@@ -12,7 +13,6 @@
 #include "skill/MagicalMissile.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
-#include "util/Constants.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -102,6 +102,7 @@ bool MainGameScene::init() {
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
   _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/iron_broadsword.json"));
+  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/royal_cape.json"));
 
   // Initialize GameInputManager.
   // GameInputManager keep tracks of which keys are pressed.

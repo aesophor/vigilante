@@ -2,12 +2,12 @@
 
 #include "json/document.h"
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
 

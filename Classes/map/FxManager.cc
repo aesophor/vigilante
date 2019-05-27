@@ -1,7 +1,7 @@
 #include "FxManager.h"
 
+#include "Constants.h"
 #include "StaticActor.h"
-#include "util/Constants.h"
 
 using std::string;
 using cocos2d::FileUtils;

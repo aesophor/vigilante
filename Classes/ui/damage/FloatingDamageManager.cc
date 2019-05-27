@@ -1,8 +1,8 @@
 #include "FloatingDamageManager.h"
 
+#include "Constants.h"
 #include "GameAssetManager.h"
 #include "character/Character.h"
-#include "util/Constants.h"
 
 using std::map;
 using std::deque;

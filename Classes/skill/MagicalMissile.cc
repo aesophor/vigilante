@@ -2,12 +2,12 @@
 
 #include <functional>
 
+#include "Constants.h"
+#include "CategoryBits.h"
 #include "GameAssetManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CategoryBits.h"
-#include "util/Constants.h"
 #include "util/CallbackUtil.h"
 
 using std::string;
