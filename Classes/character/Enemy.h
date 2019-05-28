@@ -11,8 +11,6 @@
 
 namespace vigilante {
 
-class Item;
-
 class Enemy : public Character, public Bot {
  public:
   struct Profile {

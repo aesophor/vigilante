@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "Npc.h"
 
 #include "json/document.h"
 
@@ -25,7 +25,7 @@ using cocos2d::Sprite;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
-using vigilante::category_bits::kPlayer;
+using vigilante::category_bits::kNpc;
 using vigilante::category_bits::kPortal;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kMeleeWeapon;
@@ -41,23 +41,23 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-Enemy::Enemy(const string& jsonFileName)
+Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
       Bot(this),
-      _enemyProfile(jsonFileName) {}
+      _npcProfile(jsonFileName) {}
 
-void Enemy::update(float delta) {
+void Npc::update(float delta) {
   Character::update(delta);
-  act(delta);
+  //act(delta);
 }
 
-void Enemy::showOnMap(float x, float y) {
+void Npc::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kEnemy;
-    short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
+    short bodyMaskBits = kNpc | kMeleeWeapon | kCliffMarker | kProjectile;
     short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
-    short weaponMaskBits = kPlayer | kObject;
+    short weaponMaskBits = kNpc | kObject;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
@@ -75,57 +75,24 @@ void Enemy::showOnMap(float x, float y) {
   }
 }
 
-void Enemy::import(const string& jsonFileName) {
+void Npc::import(const string& jsonFileName) {
   Character::import(jsonFileName);
-  _enemyProfile = Enemy::Profile(jsonFileName);
+  _npcProfile = Npc::Profile(jsonFileName);
 }
 
 
-void Enemy::receiveDamage(Character* source, int damage) {
+void Npc::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   _isAlerted = true;
-
-  if (_isSetToKill) {
-    // Drop items. (Here we'll use a callback to drop items
-    // since creating fixtures during collision callback will crash)
-    // See: https://github.com/libgdx/libgdx/issues/2730
-    callback_util::runAfter([=]() {
-      for (const auto& item : _enemyProfile.dropItems) {
-        const string& itemResDir = item.first;
-        float dropChance = item.second;
-
-        float randChance = rand_util::randInt(0, 100);
-        if (randChance <= dropChance) {
-          Item* i = new Equipment(itemResDir);
-          float x = _body->GetPosition().x;
-          float y = _body->GetPosition().y;
-          i->showOnMap(x * kPpm, y * kPpm);
-          GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(i);
-
-          float offsetX = rand_util::randFloat(-.3f, .3f);
-          float offsetY = 3.0f;
-          i->getBody()->ApplyLinearImpulse({offsetX, offsetY}, i->getBody()->GetWorldCenter(), true);
-        }
-      }
-    }, .2f);
-  }
 }
 
-Enemy::Profile& Enemy::getEnemyProfile() {
-  return _enemyProfile;
+Npc::Profile& Npc::getNpcProfile() {
+  return _npcProfile;
 }
 
 
-Enemy::Profile::Profile(const string& jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
-  
-  const auto& dropItemsMap = json["dropItems"].GetObject();
-
-  if (!dropItemsMap.ObjectEmpty()) {
-    for (const auto& keyValue : dropItemsMap) {
-      dropItems.insert({keyValue.name.GetString(), keyValue.value.GetFloat()});
-    }
-  }
+Npc::Profile::Profile(const string& jsonFileName) {
+  //Document json = json_util::parseJson(jsonFileName);
 }
 
 } // namespace vigilante

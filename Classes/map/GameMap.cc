@@ -5,6 +5,7 @@
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
+#include "character/Npc.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -31,8 +32,9 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   createPortals();
 
-  // Spawn Npcs.
+  // Spawn Npcs and enemies.
   createNpcs();
+  createEnemies();
 }
 
 GameMap::~GameMap() {
@@ -170,6 +172,19 @@ void GameMap::createPortals() {
 
 void GameMap::createNpcs() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
+    auto& valMap = rectObj.asValueMap();
+    float x = valMap["x"].asFloat();
+    float y = valMap["y"].asFloat();
+    string json = valMap["json"].asString();
+
+    Npc* npc = new Npc(json);
+    npc->showOnMap(x, y);
+    _dynamicActors.insert(npc);
+  }
+}
+
+void GameMap::createEnemies() {
+  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Enemies")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
