@@ -14,11 +14,12 @@ const short kPortal = 32;
 
 const short kPlayer = 64;
 const short kEnemy = 128;
-const short kObject = 256;
-const short kItem = 512;
-const short kMeleeWeapon = 1024;
-const short kProjectile = 2048;
-const short kDestroyed = 4096;
+const short kNpc = 256;
+const short kObject = 512;
+const short kItem = 1024;
+const short kMeleeWeapon = 2048;
+const short kProjectile = 4096;
+const short kDestroyed = 8192;
 
 } // namespace category_bits
 

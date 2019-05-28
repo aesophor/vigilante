@@ -53,16 +53,10 @@ const std::string kEquipmentHighlighted = kPauseMenu + "equipment_highlighted.pn
 // Item icons
 const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyItemIcon = kItemIcons + "empty/icon.png";
-const std::string kRustyAxeIcon = kItemIcons + "rusty_axe/icon.png";
 
-// Character spritesheets
-const std::string kPlayerTextureResDir = "Texture/character/player";
-
-// Equipment spritesheets
-const std::string kRustyAxeTextureResDir = "Texture/item/rusty_axe";
-
-// FX spritesheets
-const std::string kDustTextureResDir = "Texture/fx/dust";
+// Spritesheets
+const std::string kSpritesheets = "Resources/Texture/spritesheets.txt";
+void loadSpritesheets();
 
 } // namespace asset_manager
 

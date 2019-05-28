@@ -77,18 +77,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   director->setAnimationInterval(1.0f / 60);
 
   // Load resources
-  cocos2d::log("[Dust] loading textures");
-  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  frameCache->addSpriteFramesWithFile("Texture/character/bandit/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/character/vlad/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/character/slime/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/character/demon/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/character/skeleton/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kRustyAxeTextureResDir + "/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/item/iron_broadsword/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/item/royal_cape/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile("Texture/spell/ice_spike/spritesheet.plist");
-  frameCache->addSpriteFramesWithFile(vigilante::asset_manager::kDustTextureResDir + "/spritesheet.plist");
+  vigilante::asset_manager::loadSpritesheets();
 
   // Create a scene (auto-release object).
   Scene* scene = vigilante::MainMenuScene::create();

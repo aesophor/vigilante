@@ -39,6 +39,7 @@ class GameMap {
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPolylines(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPortals();
+  void createNpcs();
 
   b2World* _world;
   std::unordered_set<b2Body*> _tmxTiledMapBodies;

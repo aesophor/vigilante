@@ -3,6 +3,7 @@
 #include "Box2D/Box2D.h"
 
 #include "Constants.h"
+#include "GraphicalLayers.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
@@ -45,7 +46,6 @@ void GameMapManager::update(float delta) {
   if (_player) {
     _player->update(delta);
   }
-
   for (auto actor : _gameMap->getDynamicActors()) {
     actor->update(delta);
   }
@@ -64,7 +64,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   }
 
   _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
-  _layer->addChild(_gameMap->getTmxTiledMap(), 0);
+  _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
   // If the player object hasn't been created, spawn it.
   if (!_player) {
@@ -90,7 +90,7 @@ void GameMapManager::createDustFx(Character* character) {
   auto feetPos = character->getBody()->GetPosition();
   float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
   float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
-  _fxMgr->createFx(asset_manager::kDustTextureResDir, "white", x, y);
+  _fxMgr->createFx("Texture/fx/dust", "white", x, y);
 }
 
 } // namespace vigilante

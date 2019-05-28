@@ -24,25 +24,15 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
       _dynamicActors(),
       _portals() {
-  // Create box2d objects from layers
+  // Create box2d objects from layers.
   createPolylines("Ground", category_bits::kGround, true, 2);
   createPolylines("Wall", category_bits::kWall, true, 1);
   createRectangles("Platform", category_bits::kPlatform, true, 2);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   createPortals();
 
-  // Spawn an enemy.
-  Enemy* enemy = new Enemy("Resources/Database/character/bandit.json");
-  enemy->showOnMap(300, 100);
-  _dynamicActors.insert(enemy);
-
-  Enemy* enemy1 = new Enemy("Resources/Database/character/skeleton.json");
-  enemy1->showOnMap(500, 100);
-  _dynamicActors.insert(enemy1);
-
-  Enemy* enemy2 = new Enemy("Resources/Database/character/slime.json");
-  enemy2->showOnMap(250, 100);
-  _dynamicActors.insert(enemy2);
+  // Spawn Npcs.
+  createNpcs();
 }
 
 GameMap::~GameMap() {
@@ -175,6 +165,19 @@ void GameMap::createPortals() {
       .buildFixture();
 
     _tmxTiledMapBodies.insert(body);
+  }
+}
+
+void GameMap::createNpcs() {
+  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
+    auto& valMap = rectObj.asValueMap();
+    float x = valMap["x"].asFloat();
+    float y = valMap["y"].asFloat();
+    string json = valMap["json"].asString();
+
+    Enemy* enemy = new Enemy(json);
+    enemy->showOnMap(x, y);
+    _dynamicActors.insert(enemy);
   }
 }
 

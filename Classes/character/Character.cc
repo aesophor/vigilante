@@ -4,6 +4,7 @@
 
 #include "Constants.h"
 #include "CategoryBits.h"
+#include "GraphicalLayers.h"
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
@@ -675,7 +676,7 @@ void Character::equip(Equipment* equipment) {
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], 33);
+  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {

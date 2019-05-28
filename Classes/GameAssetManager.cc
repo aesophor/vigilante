@@ -1,0 +1,36 @@
+#include "GameAssetManager.h"
+
+#include <string>
+#include <fstream>
+#include <stdexcept>
+
+#include "cocos2d.h"
+
+using std::string;
+using std::ifstream;
+using std::runtime_error;
+using cocos2d::SpriteFrameCache;
+
+namespace vigilante {
+
+namespace asset_manager {
+
+void loadSpritesheets() {
+  ifstream fin(kSpritesheets);
+  if (!fin.is_open()) {
+    throw runtime_error("Failed to load spritesheets from " + kSpritesheets);
+  }
+
+  cocos2d::log("[GameAssetManager.cc] loading textures");
+  SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
+  string line;
+  while (std::getline(fin, line)) {
+    if (!line.empty()) {
+      frameCache->addSpriteFramesWithFile(line);
+    }
+  }
+}
+
+} // namespace asset_manager
+
+} // namespace vigilante

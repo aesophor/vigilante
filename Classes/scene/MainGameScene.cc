@@ -98,7 +98,7 @@ bool MainGameScene::init() {
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
-  _gameMapManager->loadGameMap("Map/starting_point.tmx");
+  _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
   _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/iron_broadsword.json"));

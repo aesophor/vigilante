@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "CategoryBits.h"
+#include "GraphicalLayers.h"
 #include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
@@ -48,11 +49,11 @@ void Player::showOnMap(float x, float y) {
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
     defineTexture(_characterProfile.textureResDir, x, y);
     GameMapManager* gmMgr = GameMapManager::getInstance();
-    gmMgr->getLayer()->addChild(_bodySpritesheet, 32);
+    gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
     for (auto equipment : _equipmentSlots) {
       if (equipment) {
         Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-        gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], 33);
+        gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
       }
     }
 

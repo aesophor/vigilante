@@ -8,10 +8,8 @@ namespace graphical_layers {
 const int kTmxTiledMap = 0;
 
 const int kEnemyBody = 25;
-const int kEnemyEquipment = 28;
-
 const int kPlayerBody = 30;
-const int kPlayerEquipment = 33;
+const int kEquipment = 40;
 
 const int kFloatingDamage = 97;
 const int kNotification = 98;

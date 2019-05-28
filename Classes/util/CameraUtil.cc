@@ -26,12 +26,14 @@ namespace camera_util {
 void boundCamera(Camera* camera, TMXTiledMap* map) {
   auto winSize = Director::getInstance()->getWinSize();
   Vec2 position = camera->getPosition();
-  float tileSize = map->getTileSize().width;
+
+  float mapWidth = map->getMapSize().width * map->getTileSize().width;
+  float mapHeight = map->getMapSize().height * map->getTileSize().height;
 
   float startX = 0;
   float startY = 0;
-  float endX = (map->getMapSize().width * tileSize) - winSize.width;
-  float endY = (map->getMapSize().height * tileSize) - winSize.height;
+  float endX = mapWidth - winSize.width;
+  float endY = mapHeight - winSize.height;
 
   if (position.x < startX) {
     position.x = startX;
@@ -45,6 +47,15 @@ void boundCamera(Camera* camera, TMXTiledMap* map) {
   }
   if (position.y > endY) {
     position.y = endY;
+  }
+
+  // If the map width is smaller than winSize.width,
+  // place the map at the center of the window.
+  if (mapWidth < winSize.width) {
+    position.x = -(winSize.width - mapWidth) / 2;
+  }
+  if (mapHeight < winSize.height) {
+    position.y = -(winSize.height - mapHeight) / 2;
   }
 
   camera->setPosition(position);
