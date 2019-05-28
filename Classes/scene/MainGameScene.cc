@@ -9,9 +9,6 @@
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
-#include "skill/Skill.h"
-#include "skill/ForwardSlash.h"
-#include "skill/MagicalMissile.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
@@ -120,6 +117,7 @@ bool MainGameScene::init() {
 }
 
 void MainGameScene::update(float delta) {
+  // REVIEW this method
   handleInput();
 
   if (_pauseMenu->getLayer()->isVisible()) {
@@ -139,7 +137,6 @@ void MainGameScene::update(float delta) {
 
 void MainGameScene::handleInput() {
   auto inputMgr = GameInputManager::getInstance();
-  auto player = _gameMapManager->getPlayer();
 
   // Toggle b2dr (b2DebugRenderer)
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
@@ -148,19 +145,20 @@ void MainGameScene::handleInput() {
     _notifications->show("[b2dr] is " + std::to_string(!isVisible));
   }
 
-
+  // Toggle PauseMenu
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
     bool isVisible = _pauseMenu->getLayer()->isVisible();
     _pauseMenu->getLayer()->setVisible(!isVisible);
     _pauseMenu->update();
     return;
   }
-  if (_pauseMenu->getLayer()->isVisible()) {
-    _pauseMenu->handleInput();
-    return;
-  }
 
-  player->handleInput();
+
+  if (_pauseMenu->getLayer()->isVisible()) {
+    _pauseMenu->handleInput(); // paused
+  } else {
+    _gameMapManager->getPlayer()->handleInput(); // not paused
+  }
 }
 
 

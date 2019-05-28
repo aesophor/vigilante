@@ -6,6 +6,9 @@
 #include "GameAssetManager.h"
 #include "input/GameInputManager.h"
 #include "map/GameMapManager.h"
+#include "skill/Skill.h"
+#include "skill/ForwardSlash.h"
+#include "skill/MagicalMissile.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/notification/NotificationManager.h"
@@ -121,10 +124,10 @@ void Player::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
-    //Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", player);
-    //useSkill(skill);
+    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", this);
+    useSkill(skill);
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
-    //useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", player));
+    useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", this));
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

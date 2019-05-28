@@ -10,6 +10,7 @@
 #include "2d/CCLabel.h"
 #include "ui/UIImageView.h"
 
+#include "Controllable.h"
 #include "HeaderPane.h"
 #include "StatsPane.h"
 #include "PauseMenuDialog.h"
@@ -22,7 +23,7 @@ class HeaderPane;
 class StatsPane;
 class PauseMenuDialog;
 
-class PauseMenu {
+class PauseMenu : public Controllable {
  public:
   // To add a new pane to the pause menu, add it to the enum below,
   // as well as the string literal to the following static const std::array.
@@ -40,7 +41,7 @@ class PauseMenu {
   virtual ~PauseMenu() = default;
 
   void update();
-  void handleInput();
+  virtual void handleInput() override;
   void show(PauseMenu::Pane pane);
 
   Character* getCharacter() const;
