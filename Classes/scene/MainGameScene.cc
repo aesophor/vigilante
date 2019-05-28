@@ -5,6 +5,7 @@
 #include "SimpleAudioEngine.h"
 
 #include "Constants.h"
+#include "GraphicalLayers.h"
 #include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
@@ -25,10 +26,6 @@ using cocos2d::Camera;
 using cocos2d::CameraFlag;
 using cocos2d::Director;
 using cocos2d::Layer;
-using cocos2d::FadeIn;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
 using cocos2d::EventKeyboard;
 using cocos2d::ui::ImageView;
 
@@ -66,24 +63,24 @@ bool MainGameScene::init() {
   // Initialize shade.
   _shade = unique_ptr<Shade>(Shade::getInstance());
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_shade->getImageView(), 100);
+  addChild(_shade->getImageView(), graphical_layers::kShade);
 
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _hud->getLayer()->setPosition(75, winSize.height - 40);
-  addChild(_hud->getLayer(), 90);
+  addChild(_hud->getLayer(), graphical_layers::kHud);
 
   // Initialize notification manager.
   _notifications = unique_ptr<NotificationManager>(NotificationManager::getInstance());
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_notifications->getLayer(), 91);
+  addChild(_notifications->getLayer(), graphical_layers::kNotification);
   _notifications->show("Notification Manager initialized!");
   _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
   // Initialize floating damage manager.
   _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
-  addChild(_floatingDamages->getLayer(), 89);
+  addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
@@ -115,7 +112,7 @@ bool MainGameScene::init() {
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
-  addChild(_pauseMenu->getLayer(), 95);
+  addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
 
   // Tick the box2d world.
   schedule(schedule_selector(MainGameScene::update));
@@ -163,78 +160,7 @@ void MainGameScene::handleInput() {
     return;
   }
 
-
-  if (player->isSetToKill() || player->isAttacking() || player->isUsingSkill() || player->isSheathingWeapon() || player->isUnsheathingWeapon()) {
-    return;
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-    if (player->getPortal()) {
-      _shade->getImageView()->runAction(Sequence::create(
-        FadeIn::create(Shade::kFadeInTime),
-        CallFunc::create([=]() {
-          GameMap::Portal* portal = player->getPortal();
-          portal->interact();
-        }),
-        FadeOut::create(Shade::kFadeOutTime),
-        nullptr
-      ));
-    }
-    return;
-  }
-
-  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-    player->crouch();
-    if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
-      player->jumpDown();
-    }
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
-    if (!player->isWeaponSheathed()) {
-      player->attack();
-    } else {
-      NotificationManager::getInstance()->show("You haven't equipped a weapon yet.");
-    }
-  }
-
-  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-    player->moveLeft();
-  } else if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
-    player->moveRight();
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
-    if (player->getEquipmentSlots()[Equipment::Type::WEAPON]
-        && player->isWeaponSheathed() && !player->isUnsheathingWeapon()) {
-      player->unsheathWeapon();
-    } else if (!player->isWeaponSheathed() && !player->isSheathingWeapon()) {
-      player->sheathWeapon();
-    }
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
-    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", player);
-    player->useSkill(skill);
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
-    player->useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", player));
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
-    if (!player->getInRangeItems().empty()) {
-      Item* item = *player->getInRangeItems().begin();
-      player->pickupItem(item);
-      _notifications->show("Acquired item: " + item->getItemProfile().name + ".");
-    }
-  }
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
-    player->jump();
-  }
-
-  if (player->isCrouching() && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-    player->getUp();
-  }
+  player->handleInput();
 }
 
 

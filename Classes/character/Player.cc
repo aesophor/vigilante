@@ -4,8 +4,11 @@
 #include "CategoryBits.h"
 #include "GraphicalLayers.h"
 #include "GameAssetManager.h"
+#include "input/GameInputManager.h"
 #include "map/GameMapManager.h"
+#include "ui/Shade.h"
 #include "ui/hud/Hud.h"
+#include "ui/notification/NotificationManager.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 
@@ -21,6 +24,11 @@ using cocos2d::Sprite;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
+using cocos2d::FadeIn;
+using cocos2d::FadeOut;
+using cocos2d::CallFunc;
+using cocos2d::Sequence;
+using cocos2d::EventKeyboard;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kPortal;
 using vigilante::category_bits::kEnemy;
@@ -62,7 +70,78 @@ void Player::showOnMap(float x, float y) {
 }
 
 void Player::handleInput() {
+  if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
+    return;
+  }
 
+  auto inputMgr = GameInputManager::getInstance();
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+    if (_portal) {
+      Shade::getInstance()->getImageView()->runAction(Sequence::create(
+        FadeIn::create(Shade::kFadeInTime),
+        CallFunc::create([=]() {
+          GameMap::Portal* portal = _portal;
+          portal->interact();
+        }),
+        FadeOut::create(Shade::kFadeOutTime),
+        nullptr
+      ));
+    }
+    return;
+  }
+
+  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    crouch();
+    if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+      jumpDown();
+    }
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
+    if (!_isWeaponSheathed) {
+      attack();
+    } else {
+      NotificationManager::getInstance()->show("You haven't equipped a weapon yet.");
+    }
+  }
+
+  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+    moveLeft();
+  } else if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+    moveRight();
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
+    if (_equipmentSlots[Equipment::Type::WEAPON]
+        && _isWeaponSheathed && !_isUnsheathingWeapon) {
+      unsheathWeapon();
+    } else if (!_isWeaponSheathed && !_isSheathingWeapon) {
+      sheathWeapon();
+    }
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
+    //Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", player);
+    //useSkill(skill);
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
+    //useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", player));
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
+    if (!_inRangeItems.empty()) {
+      Item* item = *_inRangeItems.begin();
+      pickupItem(item);
+      NotificationManager::getInstance()->show("Acquired item: " + item->getItemProfile().name + ".");
+    }
+  }
+
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+    jump();
+  }
+
+  if (_isCrouching && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+    getUp();
+  }
 }
 
 
