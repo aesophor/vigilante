@@ -9,6 +9,7 @@
 
 #include "Controllable.h"
 #include "map/GameMapManager.h"
+#include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/damage/FloatingDamageManager.h"
 #include "ui/notification/NotificationManager.h"
@@ -32,8 +33,8 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
   b2DebugRenderer* _b2dr; // autorelease object
-  cocos2d::ui::ImageView* _shade; // screen fade during map transitions
 
+  std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
   std::unique_ptr<PauseMenu> _pauseMenu;
   std::unique_ptr<FloatingDamageManager> _floatingDamages;

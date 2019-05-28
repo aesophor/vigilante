@@ -64,13 +64,9 @@ bool MainGameScene::init() {
   addChild(_hudCamera);
   
   // Initialize shade.
-  _shade = ImageView::create(vigilante::asset_manager::kShade); // 1px * 1px
-  _shade->setScaleX(winSize.width);
-  _shade->setScaleY(winSize.height);
-  _shade->setAnchorPoint({0, 0});
-  _shade->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _shade->runAction(FadeOut::create(.3f));
-  addChild(_shade, 100);
+  _shade = unique_ptr<Shade>(Shade::getInstance());
+  _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_shade->getImageView(), 100);
 
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
@@ -110,6 +106,7 @@ bool MainGameScene::init() {
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
+  _b2dr->setVisible(false);
   addChild(_b2dr);
 
   _hud->setPlayer(_gameMapManager->getPlayer());
@@ -173,18 +170,13 @@ void MainGameScene::handleInput() {
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (player->getPortal()) {
-      _shade->runAction(Sequence::create(
-        FadeIn::create(.3f),
+      _shade->getImageView()->runAction(Sequence::create(
+        FadeIn::create(Shade::kFadeInTime),
         CallFunc::create([=]() {
           GameMap::Portal* portal = player->getPortal();
-          std::string targetTmxMapFileName = portal->targetTmxMapFileName; // copy this shit here, don't use reference
-          int targetPortalId = portal->targetPortalId;
-          _gameMapManager->loadGameMap(targetTmxMapFileName);
-          auto pos = _gameMapManager->getGameMap()->getPortals().at(targetPortalId)->body->GetPosition();
-          player->setPosition(pos.x, pos.y);
-          _gameCamera->setPosition(pos.x * kPpm - 600 / 2, pos.y * kPpm - 300 / 2);
+          portal->interact();
         }),
-        FadeOut::create(.5f),
+        FadeOut::create(Shade::kFadeOutTime),
         nullptr
       ));
     }

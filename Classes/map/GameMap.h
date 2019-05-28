@@ -10,6 +10,7 @@
 #include "Box2D/Box2D.h"
 
 #include "DynamicActor.h"
+#include "Interactable.h"
 
 namespace vigilante {
 
@@ -17,11 +18,20 @@ class Player;
 
 class GameMap {
  public:
-  struct Portal {
+  class Portal : public Interactable {
+   public:
     Portal(const std::string& targetTmxMapFileName, int targetPortalId, b2Body* body);
-    std::string targetTmxMapFileName;
-    int targetPortalId;
-    b2Body* body;
+    virtual ~Portal();
+    virtual void interact() override; // Interactable
+
+    const std::string& getTargetTmxMapFileName() const;
+    int getTargetPortalId() const;
+    b2Body* getBody() const;
+
+   protected:
+    std::string _targetTmxMapFileName; // new (target) .tmx filename
+    int _targetPortalId; // the portal id in the new (target) map
+    b2Body* _body;
   };
 
   GameMap(b2World* world, const std::string& tmxMapFileName);

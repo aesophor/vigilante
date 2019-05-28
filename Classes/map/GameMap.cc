@@ -8,6 +8,8 @@
 #include "character/Npc.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
+#include "map/GameMapManager.h"
+#include "ui/Shade.h"
 #include "util/box2d/b2BodyBuilder.h"
 
 using std::vector;
@@ -38,6 +40,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
 }
 
 GameMap::~GameMap() {
+  // Destroy ground, walls, platforms and portal bodies.
   for (auto body : _tmxTiledMapBodies) {
     _world->DestroyBody(body);
   }
@@ -198,8 +201,32 @@ void GameMap::createEnemies() {
 
 
 GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, b2Body* body)
-    : targetTmxMapFileName(targetTmxMapFileName),
-      targetPortalId(targetPortalId),
-      body(body) {}
+    : _targetTmxMapFileName(targetTmxMapFileName),
+      _targetPortalId(targetPortalId),
+      _body(body) {}
+
+GameMap::Portal::~Portal() {}
+
+void GameMap::Portal::interact() {
+  string targetTmxMapFileName = _targetTmxMapFileName;
+  int targetPortalId = _targetPortalId;
+
+  auto gmMgr = GameMapManager::getInstance();
+  gmMgr->loadGameMap(targetTmxMapFileName);
+  auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+  gmMgr->getPlayer()->setPosition(pos.x, pos.y);
+}
+
+const string& GameMap::Portal::getTargetTmxMapFileName() const {
+  return _targetTmxMapFileName;
+}
+
+int GameMap::Portal::getTargetPortalId() const {
+  return _targetPortalId;
+}
+
+b2Body* GameMap::Portal::getBody() const {
+  return _body;
+}
 
 } // namespace vigilante
