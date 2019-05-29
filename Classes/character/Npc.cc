@@ -25,9 +25,10 @@ using cocos2d::Sprite;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
+using vigilante::category_bits::kPlayer;
+using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kNpc;
 using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
@@ -54,8 +55,8 @@ void Npc::update(float delta) {
 void Npc::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     // Construct b2Body and b2Fixtures.
-    short bodyCategoryBits = kEnemy;
-    short bodyMaskBits = kNpc | kMeleeWeapon | kCliffMarker | kProjectile;
+    short bodyCategoryBits = kNpc;
+    short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
     short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
     short weaponMaskBits = kNpc | kObject;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
