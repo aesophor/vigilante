@@ -2,9 +2,9 @@
 
 #include <functional>
 
+#include "AssetManager.h"
 #include "Constants.h"
 #include "CategoryBits.h"
-#include "GameAssetManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"

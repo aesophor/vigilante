@@ -1,4 +1,4 @@
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 
 #include <string>
 #include <fstream>
@@ -21,7 +21,7 @@ void loadSpritesheets() {
     throw runtime_error("Failed to load spritesheets from " + kSpritesheets);
   }
 
-  cocos2d::log("[GameAssetManager.cc] loading textures");
+  cocos2d::log("[AssetManager.cc] loading textures");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   string line;
   while (std::getline(fin, line)) {

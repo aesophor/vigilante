@@ -2,8 +2,8 @@
 
 #include <string>
 
+#include "AssetManager.h"
 #include "Constants.h"
-#include "GameAssetManager.h"
 #include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
 

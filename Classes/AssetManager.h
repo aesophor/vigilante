@@ -1,5 +1,5 @@
-#ifndef VIGILANTE_GAME_ASSET_MANAGER_H_
-#define VIGILANTE_GAME_ASSET_MANAGER_H_
+#ifndef VIGILANTE_ASSET_MANAGER_H_
+#define VIGILANTE_ASSET_MANAGER_H_
 
 #include <string>
 
@@ -62,4 +62,4 @@ void loadSpritesheets();
 
 } // namespace vigilante
 
-#endif // VIGILANTE_GAME_ASSET_MANAGER_H_
+#endif // VIGILANTE_ASSET_MANAGER_H_

@@ -1,6 +1,6 @@
 #include "HeaderPane.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 #include "ui/Colorscheme.h"
 #include "ui/pause_menu/PauseMenu.h"
 

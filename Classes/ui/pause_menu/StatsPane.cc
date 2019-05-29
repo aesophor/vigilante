@@ -1,6 +1,6 @@
 #include "StatsPane.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 #include "ui/Colorscheme.h"
 
 using std::string;

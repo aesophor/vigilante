@@ -1,7 +1,7 @@
 #include "ItemListView.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
-#include "GameAssetManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"

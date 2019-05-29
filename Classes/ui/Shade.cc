@@ -1,6 +1,6 @@
 #include "Shade.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 
 using cocos2d::Director;
 using cocos2d::FadeOut;
@@ -8,8 +8,8 @@ using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
-const float Shade::kFadeOutTime = .65f;
-const float Shade::kFadeInTime = .3f;
+const float Shade::_kFadeOutTime = .65f;
+const float Shade::_kFadeInTime = .3f;
 Shade* Shade::_instance = nullptr;
 
 Shade* Shade::getInstance() {
@@ -24,7 +24,7 @@ Shade::Shade() : _imageView(ImageView::create(asset_manager::kShade)) { // 1px *
   _imageView->setScaleX(winSize.width);
   _imageView->setScaleY(winSize.height);
   _imageView->setAnchorPoint({0, 0});
-  _imageView->runAction(FadeOut::create(kFadeOutTime));
+  _imageView->runAction(FadeOut::create(_kFadeOutTime));
 }
 
 

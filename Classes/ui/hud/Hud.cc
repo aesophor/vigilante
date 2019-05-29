@@ -1,7 +1,7 @@
 #include "Hud.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
-#include "GameAssetManager.h"
 #include "item/Equipment.h"
 
 using std::string;

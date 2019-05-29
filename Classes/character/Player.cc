@@ -1,9 +1,9 @@
 #include "Player.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
 #include "CategoryBits.h"
 #include "GraphicalLayers.h"
-#include "GameAssetManager.h"
 #include "input/GameInputManager.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
@@ -82,12 +82,12 @@ void Player::handleInput() {
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (_portal) {
       Shade::getInstance()->getImageView()->runAction(Sequence::create(
-        FadeIn::create(Shade::kFadeInTime),
+        FadeIn::create(Shade::_kFadeInTime),
         CallFunc::create([=]() {
           GameMap::Portal* portal = _portal;
           portal->interact();
         }),
-        FadeOut::create(Shade::kFadeOutTime),
+        FadeOut::create(Shade::_kFadeOutTime),
         nullptr
       ));
     }

@@ -1,7 +1,7 @@
 #include "EquipmentPane.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
-#include "GameAssetManager.h"
 #include "input/GameInputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"

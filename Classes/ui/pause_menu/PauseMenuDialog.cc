@@ -1,6 +1,6 @@
 #include "PauseMenuDialog.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 #include "input/GameInputManager.h"
 #include "ui/TableLayout.h"
 

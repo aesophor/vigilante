@@ -4,9 +4,9 @@
 
 #include "SimpleAudioEngine.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
 #include "GraphicalLayers.h"
-#include "GameAssetManager.h"
 #include "character/Player.h"
 #include "input/GameInputManager.h"
 #include "map/GameMap.h"

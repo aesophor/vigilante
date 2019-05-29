@@ -1,6 +1,6 @@
 #include "TabView.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 
 using std::vector;
 using std::string;

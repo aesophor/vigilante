@@ -11,8 +11,8 @@ class Shade {
   static Shade* getInstance();
   virtual ~Shade() = default;
 
-  static const float kFadeOutTime;
-  static const float kFadeInTime;
+  static const float _kFadeOutTime;
+  static const float _kFadeInTime;
 
   cocos2d::ui::ImageView* getImageView() const;
 

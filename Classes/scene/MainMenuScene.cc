@@ -1,6 +1,6 @@
 #include "MainMenuScene.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 #include "MainGameScene.h"
 #include "ui/Colorscheme.h"
 

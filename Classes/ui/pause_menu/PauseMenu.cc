@@ -1,6 +1,6 @@
 #include "PauseMenu.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 #include "input/GameInputManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"

@@ -1,7 +1,7 @@
 #include "FloatingDamageManager.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
-#include "GameAssetManager.h"
 #include "character/Character.h"
 
 using std::map;

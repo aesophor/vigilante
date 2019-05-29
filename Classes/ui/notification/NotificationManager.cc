@@ -1,6 +1,6 @@
 #include "NotificationManager.h"
 
-#include "GameAssetManager.h"
+#include "AssetManager.h"
 
 using std::string;
 using cocos2d::Layer;

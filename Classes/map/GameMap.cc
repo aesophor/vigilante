@@ -1,8 +1,8 @@
 #include "GameMap.h"
 
+#include "AssetManager.h"
 #include "Constants.h"
 #include "CategoryBits.h"
-#include "GameAssetManager.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "character/Npc.h"
