@@ -87,6 +87,11 @@ void Npc::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 }
 
+void Npc::interact() {
+
+}
+
+
 Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;
 }

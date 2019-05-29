@@ -5,10 +5,11 @@
 
 #include "Character.h"
 #include "Bot.h"
+#include "Interactable.h"
 
 namespace vigilante {
 
-class Npc : public Character, public Bot {
+class Npc : public Character, public Bot, public Interactable {
  public:
   struct Profile {
     Profile(const std::string& jsonFileName);
@@ -19,10 +20,11 @@ class Npc : public Character, public Bot {
   virtual ~Npc() = default;
 
   virtual void update(float delta) override; // Character
-  virtual void showOnMap(float x, float y) override; // DynamicActor
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void showOnMap(float x, float y) override; // Character
+  virtual void import(const std::string& jsonFileName) override; // Character
 
   virtual void receiveDamage(Character* source, int damage) override; // Character
+  virtual void interact() override; // Interactable
 
   Npc::Profile& getNpcProfile();
   

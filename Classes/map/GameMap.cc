@@ -213,6 +213,7 @@ void GameMap::Portal::interact() {
 
   auto gmMgr = GameMapManager::getInstance();
   gmMgr->loadGameMap(targetTmxMapFileName);
+
   auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
   gmMgr->getPlayer()->setPosition(pos.x, pos.y);
 }
