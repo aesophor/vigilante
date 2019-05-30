@@ -7,6 +7,7 @@
 #include "input/GameInputManager.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
+#include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "ui/Shade.h"
@@ -129,6 +130,8 @@ void Player::handleInput() {
     useSkill(skill);
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
     useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", this));
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_S)) {
+    useSkill(new BackDash("Resources/Database/skill/back_dash.json", this));
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

@@ -36,7 +36,7 @@ void ForwardSlash::activate() {
   _user->getBody()->SetLinearVelocity({rushPower, 0});
 
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
-  _user->getBody()->SetLinearDamping(2.5f);
+  _user->getBody()->SetLinearDamping(4.0f);
 
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);

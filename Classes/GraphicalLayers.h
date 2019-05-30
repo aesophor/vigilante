@@ -9,7 +9,7 @@ const int kTmxTiledMap = 0;
 
 const int kEnemyBody = 25;
 const int kPlayerBody = 30;
-const int kEquipment = 40;
+const int kEquipment = 33;
 
 const int kFloatingDamage = 91;
 const int kNotification = 93;
