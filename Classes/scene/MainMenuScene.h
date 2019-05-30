@@ -33,6 +33,11 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
     SIZE
   };
   static const std::array<std::string, MainMenuScene::Option::SIZE> _kOptionStr;
+  static const std::string _kCopyrightStr;
+  static const std::string _kVersionStr;
+
+  static const int _kMenuOptionGap;
+  static const int _kFooterLabelPadding;
 
   cocos2d::ui::ImageView* _background;
   std::vector<cocos2d::Label*> _labels;

@@ -24,6 +24,13 @@ const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
   "Exit"
 }};
 
+const string MainMenuScene::_kCopyrightStr = "© 2019 Aesophor Softworks";
+const string MainMenuScene::_kVersionStr = "0.0.1 Alpha";
+
+const int MainMenuScene::_kMenuOptionGap = 20;
+const int MainMenuScene::_kFooterLabelPadding = 10;
+
+
 bool MainMenuScene::init() {
   if (!Scene::init()) {
     return false;
@@ -40,12 +47,23 @@ bool MainMenuScene::init() {
   for (int i = 0; i < static_cast<int>(Option::SIZE); i++) {
     Label* label = Label::createWithTTF(_kOptionStr[i], kBoldFont, kRegularFontSize);
     label->getFontAtlas()->setAliasTexParameters();
-    label->setPosition(winSize.width / 2, winSize.height / 2 - 25 * (i + 1));
+    label->setPosition(winSize.width / 2, winSize.height / 2 - _kMenuOptionGap * (i + 1));
     addChild(label);
     _labels.push_back(label);
   }
   _current = 0;
   _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
+
+  // Initialize footer labels.
+  Label* copyrightLabel = Label::createWithTTF(_kCopyrightStr, kBoldFont, kRegularFontSize);
+  copyrightLabel->setAnchorPoint({0.5, 0});
+  copyrightLabel->setPosition(winSize.width / 2, copyrightLabel->getContentSize().height + _kFooterLabelPadding);
+  addChild(copyrightLabel);
+
+  Label* versionLabel = Label::createWithTTF(_kVersionStr, kBoldFont, kRegularFontSize);
+  versionLabel->setAnchorPoint({1, 0});
+  versionLabel->setPosition(winSize.width - _kFooterLabelPadding, versionLabel->getContentSize().height + _kFooterLabelPadding);
+  addChild(versionLabel);
 
   // Initialize GameInputManager.
   _inputMgr = unique_ptr<GameInputManager>(GameInputManager::getInstance());
@@ -85,6 +103,7 @@ void MainMenuScene::handleInput() {
       case Option::OPTIONS:
         break;
       case Option::EXIT:
+        Director::getInstance()->end();
         break;
       default:
         break;
