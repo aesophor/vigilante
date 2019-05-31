@@ -12,6 +12,7 @@
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
 #include "skill/MagicalMissile.h"
+#include "skill/ForwardSlash.h"
 
 using std::unique_ptr;
 
@@ -84,7 +85,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 
         // If player is using skill (e.g., forward slash), than inflict damage
         // when an enemy contacts player's weapon fixture.
-        if (player->isUsingSkill()) {
+        if (player->isUsingSkill() && dynamic_cast<ForwardSlash*>(player->getCurrentlyUsedSkill())) {
           int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
           player->inflictDamage(enemy, player->getDamageOutput() + skillDmg);
         }
