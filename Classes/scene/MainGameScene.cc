@@ -91,7 +91,7 @@ bool MainGameScene::init() {
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
-  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/iron_broadsword.json"));
+  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/short_sword.json"));
   _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/equipment/royal_cape.json"));
 
   // Initialize GameInputManager.
