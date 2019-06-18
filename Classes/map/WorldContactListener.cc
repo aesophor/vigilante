@@ -126,7 +126,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
-        c->setPortal(p);
+        c->setInteractableObject(p);
       }
       break;
     }
@@ -221,7 +221,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setPortal(nullptr);
+        c->setInteractableObject(nullptr);
       }
       break;
     }

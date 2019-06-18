@@ -3,10 +3,12 @@
 
 namespace vigilante {
 
+class Character;
+
 class Interactable {
  public:
   virtual ~Interactable() = default;
-  virtual void interact() = 0;
+  virtual void onInteract(Character* user) = 0;
 };
 
 } // namespace vigilante

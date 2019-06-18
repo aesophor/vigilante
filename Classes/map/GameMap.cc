@@ -3,6 +3,7 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "CategoryBits.h"
+#include "character/Character.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "character/Npc.h"
@@ -19,6 +20,10 @@ using std::unique_ptr;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
+using cocos2d::Sequence;
+using cocos2d::FadeIn;
+using cocos2d::FadeOut;
+using cocos2d::CallFunc;
 
 namespace vigilante {
 
@@ -207,15 +212,23 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, 
 
 GameMap::Portal::~Portal() {}
 
-void GameMap::Portal::interact() {
-  string targetTmxMapFileName = _targetTmxMapFileName;
-  int targetPortalId = _targetPortalId;
+void GameMap::Portal::onInteract(Character* user) {
+  Shade::getInstance()->getImageView()->runAction(Sequence::create(
+    FadeIn::create(Shade::_kFadeInTime),
+    CallFunc::create([=]() {
+      // Load target GameMap.
+      string targetTmxMapFileName = _targetTmxMapFileName;
+      int targetPortalId = _targetPortalId;
 
-  auto gmMgr = GameMapManager::getInstance();
-  gmMgr->loadGameMap(targetTmxMapFileName);
+      auto gmMgr = GameMapManager::getInstance();
+      gmMgr->loadGameMap(targetTmxMapFileName);
 
-  auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
-  gmMgr->getPlayer()->setPosition(pos.x, pos.y);
+      auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+      user->setPosition(pos.x, pos.y);
+    }),
+    FadeOut::create(Shade::_kFadeOutTime),
+    nullptr
+  ));
 }
 
 const string& GameMap::Portal::getTargetTmxMapFileName() const {

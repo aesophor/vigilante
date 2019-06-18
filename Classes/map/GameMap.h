@@ -14,6 +14,7 @@
 
 namespace vigilante {
 
+class Character;
 class Player;
 
 class GameMap {
@@ -22,7 +23,7 @@ class GameMap {
    public:
     Portal(const std::string& targetTmxMapFileName, int targetPortalId, b2Body* body);
     virtual ~Portal();
-    virtual void interact() override; // Interactable
+    virtual void onInteract(Character* user) override; // Interactable
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;

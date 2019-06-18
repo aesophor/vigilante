@@ -24,7 +24,7 @@ class Npc : public Character, public Bot, public Interactable {
   virtual void import(const std::string& jsonFileName) override; // Character
 
   virtual void receiveDamage(Character* source, int damage) override; // Character
-  virtual void interact() override; // Interactable
+  virtual void onInteract(Character* user) override; // Interactable
 
   Npc::Profile& getNpcProfile();
   

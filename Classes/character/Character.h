@@ -14,6 +14,7 @@
 #include "DynamicActor.h"
 #include "Importable.h"
 #include "Regeneratable.h"
+#include "Interactable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "map/GameMap.h"
@@ -54,6 +55,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
     int bodyHeight;
     float moveSpeed;
     float jumpHeight;
+    bool canDoubleJump;
 
     float attackForce;
     float attackTime;
@@ -99,6 +101,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void removeItem(Item* item);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);
+  virtual void interact(Interactable* target);
 
   bool isFacingRight() const;
   bool isJumping() const;
@@ -132,8 +135,8 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   std::set<Item*>& getInRangeItems();
 
-  GameMap::Portal* getPortal() const;
-  void setPortal(GameMap::Portal* portal);
+  Interactable* getInteractableObject() const;
+  void setInteractableObject(Interactable* interactableObject);
 
   Skill* getCurrentlyUsedSkill() const;
 
@@ -207,7 +210,6 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   bool _isSheathingWeapon;
   bool _isUnsheathingWeapon;
   bool _isJumping;
-  bool _canDoubleJump;
   bool _isDoubleJumping;
   bool _isOnPlatform;
   bool _isAttacking;
@@ -233,8 +235,8 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   Character::Inventory _inventory;
   Character::EquipmentSlots _equipmentSlots;
 
-  // The portal to which this character is near.
-  GameMap::Portal* _portal;
+  // The interactable object to which this character is near.
+  Interactable* _interactableObject;
 
   // Currently used skill.
   Skill* _currentlyUsedSkill;

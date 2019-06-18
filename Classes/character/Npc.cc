@@ -87,7 +87,7 @@ void Npc::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 }
 
-void Npc::interact() {
+void Npc::onInteract(Character* user) {
 
 }
 

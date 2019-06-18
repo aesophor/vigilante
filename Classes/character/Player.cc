@@ -48,9 +48,7 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {
-  _canDoubleJump = true;
-}
+Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
 
 void Player::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
@@ -83,16 +81,8 @@ void Player::handleInput() {
 
   auto inputMgr = GameInputManager::getInstance();
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-    if (_portal) {
-      Shade::getInstance()->getImageView()->runAction(Sequence::create(
-        FadeIn::create(Shade::_kFadeInTime),
-        CallFunc::create([=]() {
-          GameMap::Portal* portal = _portal;
-          portal->interact();
-        }),
-        FadeOut::create(Shade::_kFadeOutTime),
-        nullptr
-      ));
+    if (_interactableObject) {
+      interact(_interactableObject);
     }
     return;
   }

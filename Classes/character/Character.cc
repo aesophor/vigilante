@@ -70,7 +70,6 @@ Character::Character(const string& jsonFileName)
       _isSheathingWeapon(),
       _isUnsheathingWeapon(),
       _isJumping(),
-      _canDoubleJump(),
       _isDoubleJumping(),
       _isOnPlatform(),
       _isAttacking(),
@@ -84,7 +83,7 @@ Character::Character(const string& jsonFileName)
       _isAlerted(),
       _inventory(),
       _equipmentSlots(),
-      _portal(),
+      _interactableObject(),
       _currentlyUsedSkill(),
       _bodyExtraAttackAnimations(),
       _equipmentExtraAttackAnimations(),
@@ -503,7 +502,8 @@ void Character::jump() {
   // Block current jump request if:
   // 1. This character cannot double jump, and it has already jumped.
   // 2. This character can double jump, and it has already double jumped.
-  if ((!_canDoubleJump && _isJumping) || (_canDoubleJump && _isDoubleJumping)) {
+  const bool& canDoubleJump = _characterProfile.canDoubleJump;
+  if ((!canDoubleJump && _isJumping) || (canDoubleJump && _isDoubleJumping)) {
     return;
   }
 
@@ -712,6 +712,10 @@ void Character::unequip(Equipment::Type equipmentType) {
   }
 }
 
+void Character::interact(Interactable* target) {
+  target->onInteract(this);
+}
+
 
 bool Character::isFacingRight() const {
   return _isFacingRight;
@@ -834,12 +838,13 @@ const Character::EquipmentSlots& Character::getEquipmentSlots() const {
   return _equipmentSlots;
 }
 
-GameMap::Portal* Character::getPortal() const {
-  return _portal;
+
+Interactable* Character::getInteractableObject() const {
+  return _interactableObject;
 }
 
-void Character::setPortal(GameMap::Portal* portal) {
-  _portal = portal;
+void Character::setInteractableObject(Interactable* interactableObject) {
+  _interactableObject = interactableObject;
 }
 
 Skill* Character::getCurrentlyUsedSkill() const {
@@ -924,6 +929,7 @@ Character::Profile::Profile(const string& jsonFileName) {
   bodyHeight = json["bodyHeight"].GetInt();
   moveSpeed = json["moveSpeed"].GetFloat();
   jumpHeight = json["jumpHeight"].GetFloat();
+  canDoubleJump = json["canDoubleJump"].GetBool();
 
   attackForce = json["attackForce"].GetFloat();
   attackTime = json["attackTime"].GetFloat();
