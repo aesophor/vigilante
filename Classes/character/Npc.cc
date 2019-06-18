@@ -91,6 +91,10 @@ void Npc::onInteract(Character* user) {
 
 }
 
+bool Npc::willInteractOnContact() const {
+  return false;
+}
+
 
 Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;

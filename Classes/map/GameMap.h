@@ -24,10 +24,10 @@ class GameMap {
     Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body);
     virtual ~Portal();
     virtual void onInteract(Character* user) override; // Interactable
+    virtual bool willInteractOnContact() const override; // Interactable
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
-    bool willInteractOnContact() const;
     b2Body* getBody() const;
 
    protected:
