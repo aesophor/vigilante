@@ -31,11 +31,8 @@ class Item : public DynamicActor, public Importable {
   };
 
   virtual ~Item() = default;
-  virtual void update(float delta) override;
+  virtual void showOnMap(float x, float y) override; // DynamicActor
   virtual void import(const std::string& jsonFileName) override; // Importable
-
-  virtual void showOnMap(float x, float y) override;
-  virtual void removeFromMap() override;
 
   Item::Profile& getItemProfile();
   std::string getIconPath() const;

@@ -20,7 +20,7 @@ using rapidjson::Document;
 namespace vigilante {
 
 const int Item::_kNumAnimations = 1;
-const int Item::_kNumFixtures = 1;
+const int Item::_kNumFixtures = 2;
 
 Item::Item(const string& jsonFileName)
     : DynamicActor(_kNumAnimations, _kNumFixtures), _itemProfile(jsonFileName) {
@@ -29,11 +29,24 @@ Item::Item(const string& jsonFileName)
 }
 
 
-void Item::update(float delta) {
-  // Sync the sprite with its b2body.
-  b2Vec2 b2bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
+void Item::showOnMap(float x, float y) {
+  if (!_isShownOnMap) {
+    short categoryBits = kItem;
+    short maskBits = kGround | kPlatform | kWall;
+    defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+
+    _bodySprite = Sprite::create(getIconPath());
+    _bodySprite->getTexture()->setAliasTexParameters();
+
+    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+    _isShownOnMap = true;
+  }
 }
+
+void Item::import(const string& jsonFileName) {
+  _itemProfile = Item::Profile(jsonFileName);
+}
+
 
 void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
@@ -54,35 +67,6 @@ void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, f
     .maskBits(maskBits)
     .setUserData(this)
     .buildFixture();
-}
-
-void Item::import(const string& jsonFileName) {
-  _itemProfile = Item::Profile(jsonFileName);
-}
-
-
-void Item::showOnMap(float x, float y) {
-  if (!_isShownOnMap) {
-    short categoryBits = kItem;
-    short maskBits = kGround | kPlatform | kWall;
-    defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
-
-    _bodySprite = Sprite::create(getIconPath());
-    _bodySprite->getTexture()->setAliasTexParameters();
-
-    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
-    _isShownOnMap = true;
-  }
-}
-
-void Item::removeFromMap() {
-  if (_isShownOnMap) {
-    _body->GetWorld()->DestroyBody(_body);
-
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
-    _bodySprite = nullptr;
-    _isShownOnMap = false;
-  }
 }
 
 

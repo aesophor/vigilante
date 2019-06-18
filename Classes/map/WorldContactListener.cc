@@ -119,19 +119,20 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       }
       break;
     }
-    // When a character gets close to a portal, register the portal to the character.
-    case category_bits::kFeet | category_bits::kPortal: {
+    // When a character gets close to an interactable object, register it to the character.
+    case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
+      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
       
-      if (feetFixture && portalFixture) {
+      if (feetFixture && objFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
-        c->setInteractableObject(p);
+        DynamicActor* a = static_cast<DynamicActor*>(objFixture->GetUserData());
+        Interactable* obj = dynamic_cast<Interactable*>(a);
+        c->setInteractableObject(obj);
 
-        if (p->willInteractOnContact()) {
+        if (obj->willInteractOnContact()) {
           callback_util::runAfter([=]() {
-            c->interact(p);
+            c->interact(obj);
           }, .1f);
         }
       }
@@ -221,12 +222,12 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       }
       break;
     }
-    // When a character leaves a portal, clear the portal from the character.
-    case category_bits::kFeet | category_bits::kPortal: {
+    // When a character leaves an interactable object, clear it from the character.
+    case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
+      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
       
-      if (feetFixture && portalFixture) {
+      if (feetFixture && objFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setInteractableObject(nullptr);
       }

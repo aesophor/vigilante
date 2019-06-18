@@ -16,20 +16,16 @@ namespace vigilante {
 // 3. a spritesheet and several body animations
 //
 // If you need more sprites and animations (e.g., equipment displayed on top of a character),
-// then manually subclass "Actor" and declare them as the members of your subclass.
-//
-// Notes on the pure virtual methods:
-// 1. Actor::update(float delta) should "sync the sprites with its b2Body".
-// 2. <insert next item...>
+// then manually subclass "DynamicActor" and declare them as the members of your subclass.
 
 class DynamicActor : public StaticActor {
  public:
   DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
   virtual ~DynamicActor() = default;
 
-  virtual void update(float delta) = 0;
   virtual void showOnMap(float x, float y) = 0; // StaticActor
   virtual void removeFromMap() override; // StaticActor
+  virtual void update(float delta);
 
   b2Body* getBody() const;
   std::vector<b2Fixture*>& getFixtures();

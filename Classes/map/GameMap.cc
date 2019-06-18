@@ -10,6 +10,7 @@
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "map/GameMapManager.h"
+#include "map/object/Chest.h"
 #include "ui/Shade.h"
 #include "util/box2d/b2BodyBuilder.h"
 
@@ -42,6 +43,10 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   // Spawn Npcs and enemies.
   createNpcs();
   createEnemies();
+
+  Chest* chest = new Chest();
+  chest->showOnMap(150, 150);
+  _dynamicActors.insert(chest);
 }
 
 GameMap::~GameMap() {
@@ -169,13 +174,11 @@ void GameMap::createPortals() {
     _portals.push_back(portal);
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
-      .categoryBits(category_bits::kPortal)
+      .categoryBits(category_bits::kInteractableObject)
       .setSensor(true)
       .friction(0)
       .setUserData(portal)
       .buildFixture();
-
-    _tmxTiledMapBodies.insert(body);
   }
 }
 
@@ -212,7 +215,9 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, 
       _willInteractOnContact(willInteractOnContact),
       _body(body) {}
 
-GameMap::Portal::~Portal() {}
+GameMap::Portal::~Portal() {
+  _body->GetWorld()->DestroyBody(_body);
+}
 
 void GameMap::Portal::onInteract(Character* user) {
   Shade::getInstance()->getImageView()->runAction(Sequence::create(

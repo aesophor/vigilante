@@ -57,7 +57,6 @@ class StaticActor {
   // e.g., "Texture/character/player" -> "player"
   static std::string getLastDirName(const std::string& directory);
 
-
  protected:
   StaticActor(size_t numAnimations=1);
 

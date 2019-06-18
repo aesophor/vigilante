@@ -26,7 +26,6 @@ using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
 using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kPortal;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
@@ -34,8 +33,7 @@ using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kObject;
+using vigilante::category_bits::kInteractableObject;
 using vigilante::category_bits::kProjectile;
 using rapidjson::Document;
 
@@ -56,8 +54,8 @@ void Enemy::showOnMap(float x, float y) {
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kEnemy;
     short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
-    short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal;
-    short weaponMaskBits = kPlayer | kObject;
+    short feetMaskBits = kGround | kPlatform | kWall | kItem | kInteractableObject;
+    short weaponMaskBits = kPlayer;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.

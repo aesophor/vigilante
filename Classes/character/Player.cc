@@ -36,14 +36,12 @@ using cocos2d::EventKeyboard;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kNpc;
-using vigilante::category_bits::kPortal;
 using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kWall;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kObject;
+using vigilante::category_bits::kInteractableObject;
 using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
@@ -55,8 +53,8 @@ void Player::showOnMap(float x, float y) {
     // Construct b2Body and b2Fixtures
     short bodyCategoryBits = kPlayer;
     short bodyMaskBits = kEnemy | kMeleeWeapon | kProjectile;
-    short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal | kNpc;
-    short weaponMaskBits = kEnemy | kObject;
+    short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kInteractableObject;
+    short weaponMaskBits = kEnemy;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
