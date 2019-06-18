@@ -2,6 +2,8 @@
 
 #include <set>
 
+#include "cocos2d.h"
+
 #include "util/RandUtil.h"
 
 using std::set;

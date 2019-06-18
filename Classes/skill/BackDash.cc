@@ -28,8 +28,8 @@ void BackDash::activate() {
     return;
   }
 
-  float rushPower = (_user->isFacingRight()) ? -3.8f : 3.8f;
-  _user->getBody()->SetLinearVelocity({rushPower, .6f});
+  float dashPower = (_user->isFacingRight()) ? -3.8f : 3.8f;
+  _user->getBody()->SetLinearVelocity({dashPower, .6f});
 
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
   _user->getBody()->SetLinearDamping(4.0f);

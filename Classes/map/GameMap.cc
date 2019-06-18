@@ -28,9 +28,9 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _dynamicActors(),
       _portals() {
   // Create box2d objects from layers.
-  createPolylines("Ground", category_bits::kGround, true, 2);
-  createPolylines("Wall", category_bits::kWall, true, 1);
-  createRectangles("Platform", category_bits::kPlatform, true, 2);
+  createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
+  createPolylines("Wall", category_bits::kWall, true, kWallFriction);
+  createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   createPortals();
 

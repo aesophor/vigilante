@@ -87,7 +87,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
   virtual void attack();
-  virtual void useSkill(Skill* skill);
+  virtual void activateSkill(Skill* skill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual void inflictDamage(Character* target, int damage);
   virtual void receiveDamage(Character* source, int damage);
@@ -102,6 +102,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   bool isFacingRight() const;
   bool isJumping() const;
+  bool isDoubleJumping() const;
   bool isOnPlatform() const;
   bool isAttacking() const;
   bool isUsingSkill() const;
@@ -114,6 +115,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   bool isUnsheathingWeapon() const;
 
   void setJumping(bool jumping);
+  void setDoubleJumping(bool doubleJumping);
   void setOnPlatform(bool onPlatform);
   void setAttacking(bool attacking);
   void setUsingSkill(bool usingSkill);
@@ -205,6 +207,8 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   bool _isSheathingWeapon;
   bool _isUnsheathingWeapon;
   bool _isJumping;
+  bool _canDoubleJump;
+  bool _isDoubleJumping;
   bool _isOnPlatform;
   bool _isAttacking;
   bool _isUsingSkill;

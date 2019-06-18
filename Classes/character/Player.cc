@@ -48,7 +48,9 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
+Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {
+  _canDoubleJump = true;
+}
 
 void Player::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
@@ -127,11 +129,11 @@ void Player::handleInput() {
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
     Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", this);
-    useSkill(skill);
+    activateSkill(skill);
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
-    useSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", this));
+    activateSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", this));
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_S)) {
-    useSkill(new BackDash("Resources/Database/skill/back_dash.json", this));
+    activateSkill(new BackDash("Resources/Database/skill/back_dash.json", this));
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
@@ -142,7 +144,7 @@ void Player::handleInput() {
     }
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ALT)) {
     jump();
   }
 

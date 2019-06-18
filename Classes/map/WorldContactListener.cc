@@ -30,6 +30,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (feetFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setJumping(false);
+        c->setDoubleJumping(false);
         c->setOnPlatform(false);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
@@ -42,6 +43,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (feetFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setJumping(false);
+        c->setDoubleJumping(false);
         c->setOnPlatform(true);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);

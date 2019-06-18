@@ -70,6 +70,8 @@ Character::Character(const string& jsonFileName)
       _isSheathingWeapon(),
       _isUnsheathingWeapon(),
       _isJumping(),
+      _canDoubleJump(),
+      _isDoubleJumping(),
       _isOnPlatform(),
       _isAttacking(),
       _isUsingSkill(),
@@ -498,10 +500,25 @@ void Character::moveRight() {
 }
 
 void Character::jump() {
+  // Block current jump request if:
+  // 1. This character cannot double jump, and it has already jumped.
+  // 2. This character can double jump, and it has already double jumped.
+  if ((!_canDoubleJump && _isJumping) || (_canDoubleJump && _isDoubleJumping)) {
+    return;
+  }
+
   if (!_isJumping) {
     _isJumping = true;
-    _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
-  }
+  } else {
+    _isDoubleJumping = true;
+    runAnimation((_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED, false);
+    // Set velocity.y to 0.
+    b2Vec2 velocity = _body->GetLinearVelocity();
+    _body->SetLinearVelocity({velocity.x, 0});
+  } 
+
+  _isJumping = true;
+  _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
 }
 
 void Character::jumpDown() {
@@ -571,7 +588,7 @@ void Character::attack() {
   }
 }
 
-void Character::useSkill(Skill* skill) {
+void Character::activateSkill(Skill* skill) {
   // If this character is still using another skill, or
   // he/she doesn't meet the criteria of activating this skill,
   // delete skill and return at once.
@@ -704,6 +721,10 @@ bool Character::isJumping() const {
   return _isJumping;
 }
 
+bool Character::isDoubleJumping() const {
+  return _isDoubleJumping;
+}
+
 bool Character::isOnPlatform() const {
   return _isOnPlatform;
 }
@@ -747,6 +768,10 @@ bool Character::isUnsheathingWeapon() const {
 
 void Character::setJumping(bool jumping) {
   _isJumping = jumping;
+}
+
+void Character::setDoubleJumping(bool doubleJumping) {
+  _isDoubleJumping = doubleJumping;
 }
 
 void Character::setOnPlatform(bool onPlatform) {
