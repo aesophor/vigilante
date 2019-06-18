@@ -156,6 +156,7 @@ void GameMap::createPortals() {
     float h = valMap["height"].asFloat();
     string targetTmxMapFilePath = valMap["targetMap"].asString();
     int targetPortalId = valMap["targetPortalID"].asInt();
+    bool willInteractOnContact = valMap["willInteractOnContact"].asBool();
 
     b2BodyBuilder bodyBuilder(_world);
 
@@ -164,7 +165,7 @@ void GameMap::createPortals() {
       .buildBody();
 
     // This portal object will be deleted at GameMap::~GameMap()
-    Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, body);
+    Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, willInteractOnContact, body);
     _portals.push_back(portal);
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
@@ -205,9 +206,10 @@ void GameMap::createEnemies() {
 }
 
 
-GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, b2Body* body)
+GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body)
     : _targetTmxMapFileName(targetTmxMapFileName),
       _targetPortalId(targetPortalId),
+      _willInteractOnContact(willInteractOnContact),
       _body(body) {}
 
 GameMap::Portal::~Portal() {}
@@ -237,6 +239,10 @@ const string& GameMap::Portal::getTargetTmxMapFileName() const {
 
 int GameMap::Portal::getTargetPortalId() const {
   return _targetPortalId;
+}
+
+bool GameMap::Portal::willInteractOnContact() const {
+  return _willInteractOnContact;
 }
 
 b2Body* GameMap::Portal::getBody() const {

@@ -13,6 +13,7 @@
 #include "skill/Skill.h"
 #include "skill/MagicalMissile.h"
 #include "skill/ForwardSlash.h"
+#include "util/CallbackUtil.h"
 
 using std::unique_ptr;
 
@@ -127,6 +128,12 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setInteractableObject(p);
+
+        if (p->willInteractOnContact()) {
+          callback_util::runAfter([=]() {
+            c->interact(p);
+          }, .1f);
+        }
       }
       break;
     }

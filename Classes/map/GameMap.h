@@ -21,17 +21,19 @@ class GameMap {
  public:
   class Portal : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFileName, int targetPortalId, b2Body* body);
+    Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body);
     virtual ~Portal();
     virtual void onInteract(Character* user) override; // Interactable
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
+    bool willInteractOnContact() const;
     b2Body* getBody() const;
 
    protected:
     std::string _targetTmxMapFileName; // new (target) .tmx filename
     int _targetPortalId; // the portal id in the new (target) map
+    bool _willInteractOnContact; // interact with the portal on contact?
     b2Body* _body;
   };
 
