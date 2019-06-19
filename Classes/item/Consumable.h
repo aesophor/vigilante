@@ -9,16 +9,12 @@ namespace vigilante {
 
 class Consumable : public Item {
  public:
-  enum Type {
-    POTION,
-    SIZE
-  };
-
   struct Profile {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
-    Consumable::Type consumableType;
+    float duration; // sec
+
     int restoreHealth;
     int restoreMagicka;
     int restoreStamina;
@@ -35,11 +31,14 @@ class Consumable : public Item {
     int bonusJumpHeight;
   };
 
-  Consumable();
+  Consumable(const std::string& jsonFileName);
   virtual ~Consumable() = default;
+  virtual void import (const std::string& jsonFileName) override; // Importable
+
+  Consumable::Profile& getConsumableProfile();
 
  protected:
-
+  Consumable::Profile _consumableProfile;
 };
 
 } // namespace vigilante

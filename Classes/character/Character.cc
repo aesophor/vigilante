@@ -684,6 +684,30 @@ void Character::removeItem(Item* item) {
   items.erase(std::remove(items.begin(), items.end(), item), items.end());
 }
 
+void Character::useItem(Consumable* consumable) {
+  auto& profile = _characterProfile;
+  const auto& consumableProfile = consumable->getConsumableProfile();
+
+  profile.health += consumableProfile.restoreHealth;
+  if (profile.health > profile.fullHealth) profile.health = profile.fullHealth;
+
+  profile.magicka += consumableProfile.restoreMagicka;
+  if (profile.magicka > profile.fullMagicka) profile.magicka = profile.fullMagicka;
+
+  profile.stamina += consumableProfile.restoreStamina;
+  if (profile.stamina > profile.fullStamina) profile.stamina = profile.fullStamina;
+
+  profile.baseMeleeDamage += consumableProfile.bonusPhysicalDamage;
+  //profile.baseMagicalDamage += consumableProfile.bonusMagicalDamage;
+  profile.strength += consumableProfile.bonusStr;
+  profile.dexterity += consumableProfile.bonusDex;
+  profile.intelligence += consumableProfile.bonusInt;
+  profile.luck += consumableProfile.bonusLuk;
+
+  profile.moveSpeed += consumableProfile.bonusMoveSpeed;
+  profile.jumpHeight += consumableProfile.bonusJumpHeight;
+}
+
 void Character::equip(Equipment* equipment) {
   // If there's already an equipment in that slot, unequip it first.
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;

@@ -8,6 +8,7 @@
 #include "character/Enemy.h"
 #include "character/Npc.h"
 #include "item/Equipment.h"
+#include "item/Consumable.h"
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
@@ -92,7 +93,7 @@ Player* GameMap::createPlayer() const {
 }
 
 Item* GameMap::spawnItem(const string& itemJson, float x, float y) {
-  Item* item = new Equipment(itemJson);
+  Item* item = Item::create(itemJson);
   item->showOnMap(x, y);
   _dynamicActors.insert(item);
 

@@ -4,6 +4,8 @@
 
 #include "Constants.h"
 #include "CategoryBits.h"
+#include "item/Equipment.h"
+#include "item/Consumable.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
@@ -21,6 +23,16 @@ namespace vigilante {
 
 const int Item::_kNumAnimations = 0;
 const int Item::_kNumFixtures = 2;
+
+Item* Item::create(const string& jsonFileName) {
+  if (jsonFileName.find("equipment") != jsonFileName.npos) {
+    return new Equipment(jsonFileName);
+  } else if (jsonFileName.find("consumable") != jsonFileName.npos) {
+    return new Consumable(jsonFileName);
+  } else {
+    
+  }
+}
 
 Item::Item(const string& jsonFileName)
     : DynamicActor(_kNumAnimations, _kNumFixtures), _itemProfile(jsonFileName) {

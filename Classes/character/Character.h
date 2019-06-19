@@ -17,6 +17,7 @@
 #include "Interactable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
+#include "item/Consumable.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
 
@@ -99,6 +100,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void discardItem(Item* item);
   virtual void addItem(Item* item);
   virtual void removeItem(Item* item);
+  virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);
   virtual void interact(Interactable* target);
