@@ -158,6 +158,10 @@ void MagicalMissile::onHit(Character* target) {
 
   if (target) {
     _user->inflictDamage(target, getDamage());
+    bool isFacingRight = _body->GetLinearVelocity().x > 0;
+    float knockBackForceX = (isFacingRight) ? 2.0f : -2.0f;
+    float knockBackForceY = 1.0f;
+    _user->knockBack(target, knockBackForceX, knockBackForceY);
   }
   _hasHit = true;
 }
