@@ -35,13 +35,18 @@ void PauseMenuDialog::update() {
   const auto& winSize = cocos2d::Director::getInstance()->getWinSize();
   // Automatically position the options :-)
   int count = 1;
+  float optionWidth = 0;
+
+  for (const auto& option : _options) {
+    optionWidth = std::max(optionWidth, option->getWidth());
+  }
+
   for (int i = (int) _options.size() - 1; i >= 0; i--) {
     if (!_options[i]->isVisible()) {
       continue;
     }
     Option* option = _options[i].get();
-    float optionWidth = option->getWidth();
-    option->getLayout()->setPositionX(winSize.width - 100 - (optionWidth + 25) * count);
+    option->getLayout()->setPositionX(winSize.width - 110 - (optionWidth + 15) * count);
     count++;
   }
 }

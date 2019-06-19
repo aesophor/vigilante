@@ -2,6 +2,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "item/Consumable.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
@@ -126,10 +127,25 @@ void ItemListView::confirm() {
   PauseMenuDialog* dialog = _pauseMenu->getDialog();
   dialog->reset();
   dialog->setMessage("What would you like to do with " + item->getItemProfile().name + "?");
-  dialog->setOption(0, true, "Equip", [=]() {
-    _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
-    _pauseMenu->update();
-  });
+
+  switch (item->getItemProfile().itemType) {
+    case Item::Type::EQUIPMENT:
+      dialog->setOption(0, true, "Equip", [=]() {
+        _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
+        _pauseMenu->update();
+      });
+      break;
+    case Item::Type::CONSUMABLE:
+      dialog->setOption(0, true, "Use", [=]() {
+        _pauseMenu->getCharacter()->useItem(dynamic_cast<Consumable*>(item));
+        _pauseMenu->update();
+      });
+      break;
+    case Item::Type::MISC: // fall through
+    default:
+      break;
+  }
+
   dialog->setOption(1, true, "Discard", [=]() {
     _pauseMenu->getCharacter()->discardItem(item);
     _pauseMenu->update();

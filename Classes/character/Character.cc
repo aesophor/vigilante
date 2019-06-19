@@ -706,6 +706,10 @@ void Character::useItem(Consumable* consumable) {
 
   profile.moveSpeed += consumableProfile.bonusMoveSpeed;
   profile.jumpHeight += consumableProfile.bonusJumpHeight;
+
+  Hud::getInstance()->updateStatusBars();
+  this->removeItem(consumable);
+  delete consumable;
 }
 
 void Character::equip(Equipment* equipment) {
