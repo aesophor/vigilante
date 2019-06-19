@@ -29,6 +29,10 @@ const std::string kStaminaBar = kHud + "stamina_bar.png";
 const std::string kEquippedWeaponBg = kHud + "equipped_weapon_slot.png";
 const std::string kEquippedWeaponDescBg = kHud + "item_desc.png";
 
+// Dialog
+const std::string kDialog = "Texture/ui/dialog/";
+const std::string kDialogNextIcon = kDialog + "next.png";
+
 // PauseMenu
 const std::string kPauseMenu = "Texture/ui/pause_menu/";
 const std::string kPauseMenuBg = kPauseMenu + "pause.png";

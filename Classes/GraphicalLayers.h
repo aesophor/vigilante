@@ -17,6 +17,7 @@ const int kEquipment = 33;
 const int kFloatingDamage = 91;
 const int kNotification = 93;
 const int kHud = 95;
+const int kDialog = 96;
 const int kShade = 97;
 const int kPauseMenu = 99;
 

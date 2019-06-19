@@ -79,6 +79,15 @@ bool MainGameScene::init() {
   _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
+  // Initialize dialog manager.
+  _dialogManager = unique_ptr<DialogManager>(DialogManager::getInstance());
+  _dialogManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _dialogManager->add("Aesophor", "Who... are you");
+  _dialogManager->add("???", "I'm here to free you");
+  _dialogManager->add("Aesophor", "Nigga wut");
+  _dialogManager->showNextDialog();
+  addChild(_dialogManager->getLayer(), graphical_layers::kDialog);
+
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
 
@@ -129,6 +138,7 @@ void MainGameScene::update(float delta) {
   _gameMapManager->update(delta);
   _floatingDamages->update(delta);
   _notifications->update(delta);
+  _dialogManager->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap()->getTmxTiledMap());
@@ -156,6 +166,8 @@ void MainGameScene::handleInput() {
 
   if (_pauseMenu->getLayer()->isVisible()) {
     _pauseMenu->handleInput(); // paused
+  } else if (_dialogManager->getLayer()->isVisible()) {
+    _dialogManager->handleInput(); // dialog being shown
   } else {
     _gameMapManager->getPlayer()->handleInput(); // not paused
   }
