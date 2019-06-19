@@ -185,7 +185,7 @@ void GameMap::createPortals() {
     _portals.push_back(portal);
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
-      .categoryBits(category_bits::kInteractableObject)
+      .categoryBits(category_bits::kPortal)
       .setSensor(true)
       .friction(0)
       .setUserData(portal)

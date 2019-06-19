@@ -138,6 +138,9 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   Interactable* getInteractableObject() const;
   void setInteractableObject(Interactable* interactableObject);
 
+  GameMap::Portal* getPortal() const;
+  void setPortal(GameMap::Portal* portal);
+
   Skill* getCurrentlyUsedSkill() const;
 
   typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
@@ -235,8 +238,9 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   Character::Inventory _inventory;
   Character::EquipmentSlots _equipmentSlots;
 
-  // The interactable object to which this character is near.
+  // The interactable object / portal to which this character is near.
   Interactable* _interactableObject;
+  GameMap::Portal* _portal;
 
   // Currently used skill.
   Skill* _currentlyUsedSkill;

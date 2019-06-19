@@ -7,6 +7,9 @@ namespace vigilante {
 b2BodyBuilder::b2BodyBuilder(b2World* world)
     : _world(world), _body(), _fixture(), _shape(), _userData() {}
 
+b2BodyBuilder::b2BodyBuilder(b2Body* body)
+    : _world(body->GetWorld()), _body(body), _fixture(), _shape(), _userData() {}
+
 b2BodyBuilder::b2BodyBuilder(const b2BodyBuilder& bodyBuilder)
     : _world(bodyBuilder._world),
       _body(bodyBuilder._body),

@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
+#include "character/Npc.h"
 #include "item/Item.h"
 #include "map/GameMap.h"
 #include "map/GameMapManager.h"
@@ -119,7 +120,25 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       }
       break;
     }
-    // When a character gets close to an interactable object, register it to the character.
+    // When a character gets close to a portal, register it to the character.
+    case category_bits::kFeet | category_bits::kPortal: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
+      
+      if (feetFixture && portalFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
+        c->setPortal(p);
+
+        if (p->willInteractOnContact()) {
+          callback_util::runAfter([=]() {
+            c->interact(p);
+          }, .1f);
+        }
+      }
+      break;
+    }
+    // When a character gets close to an interactable object or NPC, register it to the character.
     case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
@@ -132,6 +151,24 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         if (obj->willInteractOnContact()) {
           callback_util::runAfter([=]() {
             c->interact(obj);
+          }, .1f);
+        }
+      }
+      break;
+    }
+    // When a character gets close to an NPC, register it to the character.
+    case category_bits::kFeet | category_bits::kNpc: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+      
+      if (feetFixture && npcFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        Npc* npc = static_cast<Npc*>(npcFixture->GetUserData());
+        c->setInteractableObject(npc);
+
+        if (npc->willInteractOnContact()) {
+          callback_util::runAfter([=]() {
+            c->interact(npc);
           }, .1f);
         }
       }
@@ -222,11 +259,33 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       break;
     }
     // When a character leaves an interactable object, clear it from the character.
+    case category_bits::kFeet | category_bits::kPortal: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
+      
+      if (feetFixture && portalFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setPortal(nullptr);
+      }
+      break;
+    }
+    // When a character leaves an interactable object, clear it from the character.
     case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
       
       if (feetFixture && objFixture) {
+        Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        c->setInteractableObject(nullptr);
+      }
+      break;
+    }
+    // When a character leaves an NPC, clear it from the character.
+    case category_bits::kFeet | category_bits::kNpc: {
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+      
+      if (feetFixture && npcFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setInteractableObject(nullptr);
       }

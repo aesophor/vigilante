@@ -28,12 +28,14 @@ using cocos2d::SpriteBatchNode;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kNpc;
+using vigilante::category_bits::kFeet;
 using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
+using vigilante::category_bits::kPortal;
 using vigilante::category_bits::kInteractableObject;
 using vigilante::category_bits::kProjectile;
 using rapidjson::Document;
@@ -54,15 +56,15 @@ void Npc::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kNpc;
-    short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
-    short feetMaskBits = kGround | kPlatform | kWall | kItem | kInteractableObject;
-    short weaponMaskBits = kNpc;
+    short bodyMaskBits = kFeet | kMeleeWeapon | kCliffMarker | kProjectile;
+    short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal | kInteractableObject;
+    short weaponMaskBits = kPlayer | kEnemy | kNpc;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
     // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
     defineTexture(_characterProfile.textureResDir, x, y);
     GameMapManager* gmMgr = GameMapManager::getInstance();
-    gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kEnemyBody);
+    gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
     for (auto equipment : _equipmentSlots) {
       if (equipment) {
         Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
@@ -72,6 +74,33 @@ void Npc::showOnMap(float x, float y) {
 
     _isShownOnMap = true;
   }
+}
+
+void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
+                     short feetMaskBits, short weaponMaskBits, float x, float y) {
+  Character::defineBody(bodyType, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+
+  // Besides the original fixtures created in Character::defineBody(),
+  // create one extra fixture which can collide with player's feetFixture,
+  // but make it a sensor.
+  b2BodyBuilder bodyBuilder(_body);
+
+  // Create body fixture.
+  // Fixture position in box2d is relative to b2body's position.
+  float scaleFactor = Director::getInstance()->getContentScaleFactor();
+  b2Vec2 vertices[4];
+  float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.5;
+  vertices[0] = {-sideLength / scaleFactor,  sideLength / scaleFactor};
+  vertices[1] = { sideLength / scaleFactor,  sideLength / scaleFactor};
+  vertices[2] = {-sideLength / scaleFactor, -sideLength / scaleFactor};
+  vertices[3] = { sideLength / scaleFactor, -sideLength / scaleFactor};
+
+  bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
+    .categoryBits(bodyCategoryBits)
+    .maskBits(bodyMaskBits | kFeet)
+    .setSensor(true)
+    .setUserData(this)
+    .buildFixture();
 }
 
 void Npc::import(const string& jsonFileName) {
@@ -86,7 +115,7 @@ void Npc::receiveDamage(Character* source, int damage) {
 }
 
 void Npc::onInteract(Character* user) {
-
+  cocos2d::log("interact with npc!");
 }
 
 bool Npc::willInteractOnContact() const {

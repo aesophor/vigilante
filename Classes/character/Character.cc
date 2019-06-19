@@ -84,6 +84,7 @@ Character::Character(const string& jsonFileName)
       _inventory(),
       _equipmentSlots(),
       _interactableObject(),
+      _portal(),
       _currentlyUsedSkill(),
       _bodyExtraAttackAnimations(),
       _equipmentExtraAttackAnimations(),
@@ -259,6 +260,7 @@ void Character::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bo
   _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
+    .setSensor(true)
     .setUserData(this)
     .buildFixture();
 
@@ -846,6 +848,15 @@ Interactable* Character::getInteractableObject() const {
 void Character::setInteractableObject(Interactable* interactableObject) {
   _interactableObject = interactableObject;
 }
+
+GameMap::Portal* Character::getPortal() const {
+  return _portal;
+}
+
+void Character::setPortal(GameMap::Portal* portal) {
+  _portal = portal;
+}
+
 
 Skill* Character::getCurrentlyUsedSkill() const {
   return _currentlyUsedSkill;

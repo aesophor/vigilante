@@ -27,6 +27,7 @@ using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
+using vigilante::category_bits::kFeet;
 using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
@@ -53,7 +54,7 @@ void Enemy::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kEnemy;
-    short bodyMaskBits = kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
+    short bodyMaskBits = kFeet | kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
     short feetMaskBits = kGround | kPlatform | kWall | kItem | kInteractableObject;
     short weaponMaskBits = kPlayer;
     defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);

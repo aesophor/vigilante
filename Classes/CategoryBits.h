@@ -10,15 +10,16 @@ const short kPlatform = 2;
 const short kFeet = 4;
 const short kWall = 8;
 const short kCliffMarker = 16;
-const short kInteractableObject = 32;
+const short kPortal = 32;
+const short kInteractableObject = 64;
 
-const short kPlayer = 64;
-const short kEnemy = 128;
-const short kNpc = 256;
-const short kItem = 512;
-const short kMeleeWeapon = 1024;
-const short kProjectile = 2048;
-const short kDestroyed = 4096;
+const short kPlayer = 128;
+const short kEnemy = 256;
+const short kNpc = 512;
+const short kItem = 1024;
+const short kMeleeWeapon = 2048;
+const short kProjectile = 4096;
+const short kDestroyed = 8192;
 
 } // namespace category_bits
 

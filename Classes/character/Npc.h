@@ -19,8 +19,8 @@ class Npc : public Character, public Bot, public Interactable {
   Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
 
-  virtual void update(float delta) override; // Character
   virtual void showOnMap(float x, float y) override; // Character
+  virtual void update(float delta) override; // Character
   virtual void import(const std::string& jsonFileName) override; // Character
   virtual void receiveDamage(Character* source, int damage) override; // Character
 
@@ -30,6 +30,9 @@ class Npc : public Character, public Bot, public Interactable {
   Npc::Profile& getNpcProfile();
   
  private:
+  void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
+                  short feetMaskBits, short weaponMaskBits, float x, float y) override;
+
   Npc::Profile _npcProfile;
 };
 
