@@ -13,6 +13,7 @@
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/JsonUtil.h"
 
 using std::vector;
 using std::unordered_set;
@@ -43,10 +44,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   // Spawn Npcs and enemies.
   createNpcs();
   createEnemies();
-
-  Chest* chest = new Chest();
-  chest->showOnMap(150, 150);
-  _dynamicActors.insert(chest);
+  createChests();
 }
 
 GameMap::~GameMap() {
@@ -205,6 +203,24 @@ void GameMap::createEnemies() {
     Enemy* enemy = new Enemy(json);
     enemy->showOnMap(x, y);
     _dynamicActors.insert(enemy);
+  }
+}
+
+void GameMap::createChests() {
+  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
+    auto& valMap = rectObj.asValueMap();
+    float x = valMap["x"].asFloat();
+    float y = valMap["y"].asFloat();
+    string items = valMap["items"].asString();
+
+    Chest* chest = new Chest();
+    chest->showOnMap(x, y);
+    _dynamicActors.insert(chest);
+
+    for (const auto& itemJson : json_util::splitString(items)) {
+      // The chest will delete all of the items when its destructor is called.
+      chest->getItems().push_back(new Equipment(itemJson));
+    }
   }
 }
 

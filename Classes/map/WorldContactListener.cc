@@ -126,8 +126,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       
       if (feetFixture && objFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        DynamicActor* a = static_cast<DynamicActor*>(objFixture->GetUserData());
-        Interactable* obj = dynamic_cast<Interactable*>(a);
+        Interactable* obj = static_cast<Interactable*>(objFixture->GetUserData());
         c->setInteractableObject(obj);
 
         if (obj->willInteractOnContact()) {

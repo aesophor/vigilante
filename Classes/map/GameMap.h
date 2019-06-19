@@ -54,6 +54,7 @@ class GameMap {
   void createPortals();
   void createNpcs();
   void createEnemies();
+  void createChests();
 
   b2World* _world;
   std::unordered_set<b2Body*> _tmxTiledMapBodies;

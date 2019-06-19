@@ -88,21 +88,21 @@ void Enemy::receiveDamage(Character* source, int damage) {
     // since creating fixtures during collision callback will crash)
     // See: https://github.com/libgdx/libgdx/issues/2730
     callback_util::runAfter([=]() {
-      for (const auto& item : _enemyProfile.dropItems) {
-        const string& itemResDir = item.first;
-        float dropChance = item.second;
+      for (const auto& i : _enemyProfile.droppedItems) {
+        const string& itemJson = i.first;
+        float dropChance = i.second;
 
         float randChance = rand_util::randInt(0, 100);
         if (randChance <= dropChance) {
-          Item* i = new Equipment(itemResDir);
+          Item* item = new Equipment(itemJson);
           float x = _body->GetPosition().x;
           float y = _body->GetPosition().y;
-          i->showOnMap(x * kPpm, y * kPpm);
-          GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(i);
+          item->showOnMap(x * kPpm, y * kPpm);
+          GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
 
           float offsetX = rand_util::randFloat(-.3f, .3f);
           float offsetY = 3.0f;
-          i->getBody()->ApplyLinearImpulse({offsetX, offsetY}, i->getBody()->GetWorldCenter(), true);
+          item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
         }
       }
     }, .2f);
@@ -117,11 +117,11 @@ Enemy::Profile& Enemy::getEnemyProfile() {
 Enemy::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
   
-  const auto& dropItemsMap = json["dropItems"].GetObject();
+  const auto& droppedItemsMap = json["droppedItems"].GetObject();
 
-  if (!dropItemsMap.ObjectEmpty()) {
-    for (const auto& keyValue : dropItemsMap) {
-      dropItems.insert({keyValue.name.GetString(), keyValue.value.GetFloat()});
+  if (!droppedItemsMap.ObjectEmpty()) {
+    for (const auto& keyValue : droppedItemsMap) {
+      droppedItems.insert({keyValue.name.GetString(), keyValue.value.GetFloat()});
     }
   }
 }

@@ -7,6 +7,8 @@ namespace graphical_layers {
 
 const int kTmxTiledMap = 0;
 
+const int kChest = 15;
+
 const int kEnemyBody = 25;
 const int kPlayerBody = 30;
 const int kEquipment = 33;

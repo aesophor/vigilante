@@ -1,12 +1,15 @@
 #include "JsonUtil.h"
 
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
 
 #include "cocos2d.h"
 
 using std::string;
+using std::vector;
 using std::ifstream;
+using std::stringstream;
 using std::runtime_error;
 using rapidjson::Document;
 
@@ -30,6 +33,19 @@ Document parseJson(const string& jsonFileName) {
   Document json;
   json.Parse(content.c_str());
   return json;
+}
+
+vector<string> splitString(const string& s, const char delimiter) {
+	stringstream ss(s);
+	string t;
+	vector<string> tokens;
+
+	while (std::getline(ss, t, delimiter)) {
+		if (t.length() > 0) {
+			tokens.push_back(t);
+		}
+	}
+	return tokens;
 }
 
 } // namespace json_util

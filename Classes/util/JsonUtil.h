@@ -2,6 +2,7 @@
 #define VIGILANTE_JSON_UTIL_H_
 
 #include <string>
+#include <vector>
 
 #include "json/document.h"
 
@@ -10,6 +11,7 @@ namespace vigilante {
 namespace json_util {
 
 rapidjson::Document parseJson(const std::string& jsonFileName);
+std::vector<std::string> splitString(const std::string& s, const char delimiter=',');
 
 } // namespace json_util
 
