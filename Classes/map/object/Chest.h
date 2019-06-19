@@ -25,6 +25,9 @@ class Chest : public Interactable, public DynamicActor {
  protected:
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
+  static const int _kNumAnimations;
+  static const int _kNumFixtures;
+
   std::vector<Item*> _items;
   bool _isOpened;
 };

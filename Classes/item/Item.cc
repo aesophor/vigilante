@@ -19,7 +19,7 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-const int Item::_kNumAnimations = 1;
+const int Item::_kNumAnimations = 0;
 const int Item::_kNumFixtures = 2;
 
 Item::Item(const string& jsonFileName)

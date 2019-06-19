@@ -19,7 +19,10 @@ using vigilante::category_bits::kFeet;
 
 namespace vigilante {
 
-Chest::Chest() : DynamicActor(1, 2), _isOpened() {}
+const int Chest::_kNumAnimations = 0;
+const int Chest::_kNumFixtures = 2;
+
+Chest::Chest() : DynamicActor(_kNumAnimations, _kNumFixtures), _isOpened() {}
 
 Chest::~Chest() {
   for (const auto item : _items) {
