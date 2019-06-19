@@ -11,6 +11,7 @@
 
 #include "DynamicActor.h"
 #include "Interactable.h"
+#include "item/Item.h"
 
 namespace vigilante {
 
@@ -47,6 +48,7 @@ class GameMap {
   const std::vector<GameMap::Portal*>& getPortals() const;
 
   Player* createPlayer() const;
+  Item* spawnItem(const std::string& itemJson, float x, float y);
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);

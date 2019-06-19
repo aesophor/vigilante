@@ -94,15 +94,9 @@ void Enemy::receiveDamage(Character* source, int damage) {
 
         float randChance = rand_util::randInt(0, 100);
         if (randChance <= dropChance) {
-          Item* item = new Equipment(itemJson);
           float x = _body->GetPosition().x;
           float y = _body->GetPosition().y;
-          item->showOnMap(x * kPpm, y * kPpm);
-          GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
-
-          float offsetX = rand_util::randFloat(-.3f, .3f);
-          float offsetY = 3.0f;
-          item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
+          GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm);
         }
       }
     }, .2f);

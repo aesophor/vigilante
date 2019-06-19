@@ -8,6 +8,7 @@
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 
+using std::string;
 using std::vector;
 using cocos2d::Sprite;
 using vigilante::kPpm;
@@ -23,12 +24,6 @@ const int Chest::_kNumAnimations = 0;
 const int Chest::_kNumFixtures = 2;
 
 Chest::Chest() : DynamicActor(_kNumAnimations, _kNumFixtures), _isOpened() {}
-
-Chest::~Chest() {
-  for (const auto item : _items) {
-    delete item;
-  }
-}
 
 
 void Chest::showOnMap(float x, float y) {
@@ -67,8 +62,8 @@ void Chest::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, 
 }
 
 
-vector<Item*>& Chest::getItems() {
-  return _items;
+vector<string>& Chest::getItemJsons() {
+  return _itemJsons;
 }
 
 
@@ -78,15 +73,12 @@ void Chest::onInteract(Character* user) {
     _bodySprite->getTexture()->setAliasTexParameters();
     _isOpened = true;
 
-    for (const auto item : _items) {
+    for (const auto item : _itemJsons) {
       float x = _body->GetPosition().x;
       float y = _body->GetPosition().y;
-      item->showOnMap(x * kPpm, y * kPpm);
-      GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
-
-      item->getBody()->ApplyLinearImpulse({-.3f, 3.0f}, item->getBody()->GetWorldCenter(), true);
+      GameMapManager::getInstance()->getGameMap()->spawnItem(item, x * kPpm, y * kPpm);
     }
-    _items.clear();
+    _itemJsons.clear();
   }
 }
 

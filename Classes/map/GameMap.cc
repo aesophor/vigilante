@@ -7,13 +7,13 @@
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "character/Npc.h"
-#include "item/Item.h"
 #include "item/Equipment.h"
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/RandUtil.h"
 
 using std::vector;
 using std::unordered_set;
@@ -40,11 +40,11 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   createPortals();
+  createChests();
 
   // Spawn Npcs and enemies.
   createNpcs();
   createEnemies();
-  createChests();
 }
 
 GameMap::~GameMap() {
@@ -90,6 +90,19 @@ Player* GameMap::createPlayer() const {
   player->showOnMap(x, y);
   return player;
 }
+
+Item* GameMap::spawnItem(const string& itemJson, float x, float y) {
+  Item* item = new Equipment(itemJson);
+  item->showOnMap(x, y);
+  _dynamicActors.insert(item);
+
+  float offsetX = rand_util::randFloat(-.3f, .3f);
+  float offsetY = 3.0f;
+  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
+
+  return item;
+}
+
 
 void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
@@ -219,7 +232,7 @@ void GameMap::createChests() {
 
     for (const auto& itemJson : json_util::splitString(items)) {
       // The chest will delete all of the items when its destructor is called.
-      chest->getItems().push_back(new Equipment(itemJson));
+      chest->getItemJsons().push_back(itemJson);
     }
   }
 }
