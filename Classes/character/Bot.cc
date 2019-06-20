@@ -72,7 +72,7 @@ void Bot::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, in
       _character->moveLeft();
     }
     // Make sure the character doesn't get stucked somewhere along the way.
-    jumpIfStucked(delta, .3f);
+    jumpIfStucked(delta, .5f);
     _moveTimer += delta;
   } else {
     _waitTimer += delta;

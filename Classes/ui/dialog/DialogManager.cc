@@ -133,8 +133,8 @@ void DialogManager::showNextDialog() {
 
   _currentDialog = _dialogQueue.front();
   _dialogQueue.pop();
-  _timer = 0;
   _label->setString("");
+  _timer = 0;
 }
 
 Layer* DialogManager::getLayer() const {

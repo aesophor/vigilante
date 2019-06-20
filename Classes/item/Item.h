@@ -24,6 +24,7 @@ class Item : public DynamicActor, public Importable {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
+    std::string jsonFileName;
     Item::Type itemType;
     std::string textureResDir;
     std::string name;

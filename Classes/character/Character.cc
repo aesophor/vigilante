@@ -16,6 +16,7 @@
 #include "util/JsonUtil.h"
 
 using std::set;
+using std::map;
 using std::array;
 using std::vector;
 using std::string;
@@ -96,8 +97,8 @@ Character::Character(const string& jsonFileName)
 Character::~Character() {
   // Delete all items from inventory and equipment slots.
   for (auto& items : _inventory) { // vector<Item*>
-    for (const auto item : items) { // Item*
-      delete item;
+    for (const auto itemAndCount : items) { // Item*
+      delete itemAndCount.first;
     }
   }
   for (auto equipment : _equipmentSlots) {
@@ -653,35 +654,58 @@ void Character::lockOn(Character* target) {
 
 
 void Character::pickupItem(Item* item) {
-  addItem(item);
-
   item->removeFromMap();
   GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(item);
- }
+
+  addItem(item);
+}
 
 void Character::discardItem(Item* item) {
-  // Remove the item from character's inventory if it exists.
-  vector<Item*>& items = _inventory[item->getItemProfile().itemType];
-  auto pos = std::find(items.begin(), items.end(), item);
-
-  if (pos != items.end()) {
-    items.erase(pos);
-  }
-
-  // Drop this item in the world.
-  item->showOnMap(_body->GetPosition().x * kPpm, _body->GetPosition().y * kPpm);
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(item);
-
-  item->getBody()->ApplyLinearImpulse({0, 3.0f}, item->getBody()->GetWorldCenter(), true);
+  const string& jsonFileName = item->getItemProfile().jsonFileName;
+  float x = _body->GetPosition().x;
+  float y = _body->GetPosition().y;
+  GameMapManager::getInstance()->getGameMap()->spawnItem(jsonFileName, x * kPpm, y * kPpm);
+  removeItem(item);
 }
 
 void Character::addItem(Item* item) {
-  _inventory[item->getItemProfile().itemType].push_back(item);
+  // If this item does not exist in the inventory yet, store this Item* in the map.
+  // Otherwise, we can delete this item in order to save some memory.
+  Item* existingItemObj = getExistingItemObj(item);
+
+  if (!existingItemObj) {
+    existingItemObj = item;
+    _itemMapper[item->getItemProfile().name] = item;
+  } else if (existingItemObj != item) {
+    delete item; // for each item we only keep at most one instance. delete all duplicates.
+  }
+  _inventory[item->getItemProfile().itemType][existingItemObj]++;
 }
 
 void Character::removeItem(Item* item) {
-  vector<Item*>& items = _inventory[item->getItemProfile().itemType];
-  items.erase(std::remove(items.begin(), items.end(), item), items.end());
+  map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
+  Item* existingItemObj = getExistingItemObj(item);
+  int& remainItemCount = items[existingItemObj];
+  remainItemCount--;
+
+  if (remainItemCount == 0) {
+    items.erase(existingItemObj);
+    
+    Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
+    if (!equipment || !_equipmentSlots[equipment->getEquipmentProfile().equipmentType]) {
+      _itemMapper.erase(item->getItemProfile().name);
+      delete existingItemObj;
+    }
+  }
+}
+
+Item* Character::getExistingItemObj(Item* item) const {
+  const string& itemName = item->getItemProfile().name;
+  if (_itemMapper.find(itemName) != _itemMapper.end()) {
+    return _itemMapper.at(itemName);
+  } else {
+    return nullptr;
+  }
 }
 
 void Character::useItem(Consumable* consumable) {
@@ -708,8 +732,7 @@ void Character::useItem(Consumable* consumable) {
   profile.jumpHeight += consumableProfile.bonusJumpHeight;
 
   Hud::getInstance()->updateStatusBars();
-  this->removeItem(consumable);
-  delete consumable;
+  removeItem(consumable);
 }
 
 void Character::equip(Equipment* equipment) {
@@ -718,8 +741,8 @@ void Character::equip(Equipment* equipment) {
   if (_equipmentSlots[type]) {
     unequip(type);
   }
-  removeItem(equipment);
   _equipmentSlots[type] = equipment;
+  removeItem(equipment);
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);

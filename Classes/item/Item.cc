@@ -92,7 +92,7 @@ std::string Item::getIconPath() const {
 }
 
 
-Item::Profile::Profile(const string& jsonFileName) {
+Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
 
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());

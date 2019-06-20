@@ -1,5 +1,7 @@
 #include "ItemListView.h"
 
+#include <map>
+
 #include "AssetManager.h"
 #include "Constants.h"
 #include "item/Consumable.h"
@@ -7,6 +9,8 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
+using std::map;
+using std::pair;
 using std::deque;
 using std::vector;
 using std::unique_ptr;
@@ -50,7 +54,7 @@ void ItemListView::showItemsByType(Item::Type itemType) {
   // If the inventory size isn't empty, select the first item by default.
   if (_characterItems.size() > 0) {
     _listViewItems[0]->setSelected(true);
-    _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
+    _itemDesc->setString(_characterItems[_current].first->getItemProfile().desc);
   } else {
     _itemDesc->setString("");
   }
@@ -65,8 +69,8 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    _characterItems.push_front(currentEquipment); // currently equipped item
-    _characterItems.push_front(nullptr); // unequip
+    _characterItems.push_front({currentEquipment, 1}); // currently equipped item
+    _characterItems.push_front({nullptr, 1}); // unequip
   }
 
   _firstVisibleIndex = 0;
@@ -96,8 +100,8 @@ void ItemListView::selectUp() {
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
 
-  if (_characterItems[_current]) {
-    _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
+  if (_characterItems[_current].first) {
+    _itemDesc->setString(_characterItems[_current].first->getItemProfile().desc);
   } else {
     _itemDesc->setString("Unequip");
   }
@@ -115,7 +119,7 @@ void ItemListView::selectDown() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
-  _itemDesc->setString(_characterItems[_current]->getItemProfile().desc);
+  _itemDesc->setString(_characterItems[_current].first->getItemProfile().desc);
 }
 
 void ItemListView::confirm() {
@@ -177,7 +181,9 @@ void ItemListView::showItemsFrom(int index) {
 
     if (index < (int) _characterItems.size()) {
       _listViewItems[i]->setVisible(true);
-      _listViewItems[i]->setItem(_characterItems[index]);
+      Item* item = _characterItems[index].first;
+      int count = _characterItems[index].second;
+      _listViewItems[i]->setItem(item, count);
       index++;
     } else {
       _listViewItems[i]->setVisible(false);
@@ -187,8 +193,8 @@ void ItemListView::showItemsFrom(int index) {
 
 void ItemListView::fetchItems(Item::Type itemType) {
   // Copy all items into local deque.
-  const vector<Item*>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
-  _characterItems = deque<Item*>(items.begin(), items.end());
+  const map<Item*, int>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
+  _characterItems = deque<pair<Item*, int>>(items.begin(), items.end());
 }
 
 void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
@@ -196,8 +202,8 @@ void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
   fetchItems(Item::Type::EQUIPMENT);
 
   // Filter out any equipment other than the specified equipmentType.
-  _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](Item* i) {
-    return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType != equipmentType;
+  _characterItems.erase(std::remove_if(_characterItems.begin(), _characterItems.end(), [=](pair<Item*, int> i) {
+    return dynamic_cast<Equipment*>(i.first)->getEquipmentProfile().equipmentType != equipmentType;
   }), _characterItems.end());
 }
 
@@ -251,10 +257,10 @@ Item* ItemListView::ListViewItem::getItem() const {
   return _item;
 }
 
-void ItemListView::ListViewItem::setItem(Item* item) {
+void ItemListView::ListViewItem::setItem(Item* item, int count) {
   _item = item;
   _icon->loadTexture((item) ? item->getIconPath() : kEmptyItemIcon);
-  _label->setString((item) ? item->getItemProfile().name : "---");
+  _label->setString((item) ? item->getItemProfile().name + " (" + std::to_string(count) + ")" : "---");
 }
 
 Layout* ItemListView::ListViewItem::getLayout() const {

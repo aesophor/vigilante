@@ -82,9 +82,9 @@ bool MainGameScene::init() {
   // Initialize dialog manager.
   _dialogManager = unique_ptr<DialogManager>(DialogManager::getInstance());
   _dialogManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _dialogManager->addDialog("???: I'm here to free you");
-  _dialogManager->addDialog("Aesophor: Who... are you");
-  _dialogManager->beginDialog();
+  //_dialogManager->addDialog("???: I'm here to free you");
+  //_dialogManager->addDialog("Aesophor: Who... are you");
+  //_dialogManager->beginDialog();
   addChild(_dialogManager->getLayer(), graphical_layers::kDialog);
 
   // Initialize Vigilante's CallbackUtil.
