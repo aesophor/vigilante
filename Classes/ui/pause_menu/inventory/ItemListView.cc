@@ -1,6 +1,6 @@
 #include "ItemListView.h"
 
-#include <map>
+#include <unordered_map>
 
 #include "AssetManager.h"
 #include "Constants.h"
@@ -9,10 +9,10 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
-using std::map;
 using std::pair;
 using std::deque;
 using std::vector;
+using std::unordered_map;
 using std::unique_ptr;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
@@ -193,7 +193,7 @@ void ItemListView::showItemsFrom(int index) {
 
 void ItemListView::fetchItems(Item::Type itemType) {
   // Copy all items into local deque.
-  const map<Item*, int>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
+  const unordered_map<Item*, int>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
   _characterItems = deque<pair<Item*, int>>(items.begin(), items.end());
 }
 

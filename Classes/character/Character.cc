@@ -16,9 +16,9 @@
 #include "util/JsonUtil.h"
 
 using std::set;
-using std::map;
 using std::array;
 using std::vector;
+using std::unordered_map;
 using std::string;
 using std::function;
 using std::ifstream;
@@ -686,7 +686,7 @@ void Character::addItem(Item* item) {
 }
 
 void Character::removeItem(Item* item) {
-  map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
+  unordered_map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
   Item* existingItemObj = getExistingItemObj(item);
   int& remainItemCount = items[existingItemObj];
   remainItemCount--;

@@ -2,7 +2,6 @@
 #define VIGILANTE_CHARACTER_H_
 
 #include <set>
-#include <map>
 #include <array>
 #include <vector>
 #include <unordered_map>
@@ -146,7 +145,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   Skill* getCurrentlyUsedSkill() const;
 
-  typedef std::array<std::map<Item*, int>, Item::Type::SIZE> Inventory;
+  typedef std::array<std::unordered_map<Item*, int>, Item::Type::SIZE> Inventory;
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
