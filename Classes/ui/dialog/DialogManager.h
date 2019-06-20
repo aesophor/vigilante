@@ -20,25 +20,30 @@ class DialogManager : public Controllable {
   void update(float delta);
   virtual void handleInput() override; // Controllable
 
-  void add(const std::string& speakerName, const std::string& content);
-  void showNextDialog();
+  void addDialog(const std::string& s);
+  void beginDialog();
+  void endDialog();
   cocos2d::Layer* getLayer() const;
 
  private:
   struct Dialog {
-    Dialog(const std::string& speakerName, const std::string& content);
-    std::string speakerName;
-    std::string content;
+    Dialog(const std::string& s);
+    std::string s;
   };
 
   static DialogManager* _instance;
   DialogManager();
 
+  void showNextDialog();
+
   static const float _kShowCharInterval;
+  static const int _kLetterboxHeight;
 
   cocos2d::Layer* _layer;
   cocos2d::Label* _label;
   cocos2d::ui::ImageView* _nextDialogIcon;
+  cocos2d::ui::ImageView* _upperLetterbox;
+  cocos2d::ui::ImageView* _lowerLetterbox;
 
   std::queue<DialogManager::Dialog> _dialogQueue;
   DialogManager::Dialog _currentDialog;
