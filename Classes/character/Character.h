@@ -4,6 +4,7 @@
 #include <set>
 #include <array>
 #include <vector>
+#include <map>
 #include <unordered_map>
 #include <string>
 #include <functional>
@@ -145,7 +146,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   Skill* getCurrentlyUsedSkill() const;
 
-  typedef std::array<std::unordered_map<Item*, int>, Item::Type::SIZE> Inventory;
+  typedef std::array<std::map<Item*, int>, Item::Type::SIZE> Inventory;
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
@@ -244,7 +245,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   // For each item, at most one copy of Item* is kept in memory.
   Item* getExistingItemObj(Item* item) const;
-  std::map<std::string, Item*> _itemMapper;   
+  std::unordered_map<std::string, Item*> _itemMapper;   
 
 
   // The interactable object / portal to which this character is near.

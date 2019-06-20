@@ -1,6 +1,6 @@
 #include "ItemListView.h"
 
-#include <unordered_map>
+#include <map>
 
 #include "AssetManager.h"
 #include "Constants.h"
@@ -12,7 +12,7 @@
 using std::pair;
 using std::deque;
 using std::vector;
-using std::unordered_map;
+using std::map;
 using std::unique_ptr;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
@@ -193,7 +193,7 @@ void ItemListView::showItemsFrom(int index) {
 
 void ItemListView::fetchItems(Item::Type itemType) {
   // Copy all items into local deque.
-  const unordered_map<Item*, int>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
+  const map<Item*, int>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
   _characterItems = deque<pair<Item*, int>>(items.begin(), items.end());
 }
 
@@ -260,7 +260,11 @@ Item* ItemListView::ListViewItem::getItem() const {
 void ItemListView::ListViewItem::setItem(Item* item, int count) {
   _item = item;
   _icon->loadTexture((item) ? item->getIconPath() : kEmptyItemIcon);
-  _label->setString((item) ? item->getItemProfile().name + " (" + std::to_string(count) + ")" : "---");
+  _label->setString((item) ? item->getItemProfile().name : "---");
+
+  if (count > 1) {
+    _label->setString(_label->getString() + " (" + std::to_string(count) + ")");
+  }
 }
 
 Layout* ItemListView::ListViewItem::getLayout() const {

@@ -18,6 +18,7 @@
 using std::set;
 using std::array;
 using std::vector;
+using std::map;
 using std::unordered_map;
 using std::string;
 using std::function;
@@ -686,7 +687,7 @@ void Character::addItem(Item* item) {
 }
 
 void Character::removeItem(Item* item) {
-  unordered_map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
+  map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
   Item* existingItemObj = getExistingItemObj(item);
   int& remainItemCount = items[existingItemObj];
   remainItemCount--;
