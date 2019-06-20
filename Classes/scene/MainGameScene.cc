@@ -133,7 +133,7 @@ void MainGameScene::update(float delta) {
   }
 
   // If there are no ongoing GameMap transitions, then step the box2d world.
-  if (_shade->getInstance()->getImageView()->getNumberOfRunningActions() == 0) {
+  if (_shade->getImageView()->getNumberOfRunningActions() == 0) {
     getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
   }
 

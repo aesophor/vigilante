@@ -55,23 +55,30 @@ DialogManager::DialogManager()
   _lowerLetterbox->setScaleX(winSize.width);
   _lowerLetterbox->setScaleY(_kLetterboxHeight);
 
+  _nextDialogIcon->setVisible(false);
+
   _layer->addChild(_upperLetterbox);
   _layer->addChild(_lowerLetterbox);
   _layer->addChild(_label);
-  //_layer->addChild(_nextDialogIcon);
+  _layer->addChild(_nextDialogIcon);
   _layer->setVisible(false);
 }
 
 
 void DialogManager::update(float delta) {
-  if (!_layer->isVisible() || _label->getString().size()  == _currentDialog.s.size()) {
+  if (!_layer->isVisible() || _label->getString().size()  == _currentDialog.dialog.size()) {
     return;
   }
 
   if (_timer >= _kShowCharInterval) {
     int nextCharIdx = _label->getString().size();
-    _label->setString(_label->getString() + _currentDialog.s.at(nextCharIdx));
+    _label->setString(_label->getString() + _currentDialog.dialog.at(nextCharIdx));
     _timer = 0;
+  }
+  if (_label->getString().size() == _currentDialog.dialog.size()) {
+    float x = _label->getPositionX() + _label->getContentSize().width / 2;
+    float y = _label->getPositionY();
+    _nextDialogIcon->setPosition({x + 25, y});
   }
   _timer += delta;
 }
@@ -115,8 +122,10 @@ void DialogManager::endDialog() {
 }
 
 void DialogManager::showNextDialog() {
+  _nextDialogIcon->setVisible(false);
+
   if (_dialogQueue.empty()) {
-    _currentDialog.s.clear();
+    _currentDialog.dialog.clear();
     _label->setString("");
     endDialog();
     return;
@@ -125,7 +134,7 @@ void DialogManager::showNextDialog() {
   _currentDialog = _dialogQueue.front();
   _dialogQueue.pop();
   _timer = 0;
-  _label->setString(_currentDialog.s);
+  _label->setString("");
 }
 
 Layer* DialogManager::getLayer() const {
@@ -133,6 +142,6 @@ Layer* DialogManager::getLayer() const {
 }
 
 
-DialogManager::Dialog::Dialog(const string& s) : s(s) {}
+DialogManager::Dialog::Dialog(const string& dialog) : dialog(dialog) {}
 
 } // namespace vigilante

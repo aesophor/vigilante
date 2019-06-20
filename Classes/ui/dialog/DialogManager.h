@@ -20,15 +20,15 @@ class DialogManager : public Controllable {
   void update(float delta);
   virtual void handleInput() override; // Controllable
 
-  void addDialog(const std::string& s);
+  void addDialog(const std::string& dialog);
   void beginDialog();
   void endDialog();
   cocos2d::Layer* getLayer() const;
 
  private:
   struct Dialog {
-    Dialog(const std::string& s);
-    std::string s;
+    Dialog(const std::string& dialog);
+    std::string dialog;
   };
 
   static DialogManager* _instance;
