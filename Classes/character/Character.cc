@@ -102,7 +102,9 @@ Character::~Character() {
     }
   }
   for (auto equipment : _equipmentSlots) {
-    delete equipment;
+    if (equipment) {
+      delete equipment;
+    }
   }
 }
 
@@ -665,6 +667,7 @@ void Character::discardItem(Item* item) {
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
   GameMapManager::getInstance()->getGameMap()->spawnItem(jsonFileName, x * kPpm, y * kPpm);
+
   removeItem(item);
 }
 
@@ -691,8 +694,11 @@ void Character::removeItem(Item* item) {
   if (remainItemCount == 0) {
     items.erase(existingItemObj);
     
+    // If this item is not an equipment, we can just safely delete it.
+    // If it is an equipment and the currently equipped equipment is exactly the same item,
+    // then don't delete it.
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
-    if (!equipment || !_equipmentSlots[equipment->getEquipmentProfile().equipmentType]) {
+    if (!equipment || (_equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj)) {
       _itemMapper.erase(item->getItemProfile().name);
       delete existingItemObj;
     }
