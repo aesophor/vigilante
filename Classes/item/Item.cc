@@ -6,6 +6,7 @@
 #include "CategoryBits.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
+#include "item/MiscItem.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
@@ -30,7 +31,7 @@ Item* Item::create(const string& jsonFileName) {
   } else if (jsonFileName.find("consumable") != jsonFileName.npos) {
     return new Consumable(jsonFileName);
   } else {
-    
+    return new MiscItem(jsonFileName);
   }
 }
 
