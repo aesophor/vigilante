@@ -64,7 +64,7 @@ void PauseMenuDialog::handleInput() {
 }
 
 void PauseMenuDialog::selectLeft() {
-  if (_current == 0) {
+  if (_current == 0 || !_options[_current - 1]->isVisible()) {
     return;
   }
   _options[_current]->setSelected(false);
@@ -72,7 +72,7 @@ void PauseMenuDialog::selectLeft() {
 }
 
 void PauseMenuDialog::selectRight() {
-  if (_current == (int) _options.size() - 1) {
+  if (_current == (int) _options.size() - 1 || !_options[_current + 1]->isVisible()) {
     return;
   }
   _options[_current]->setSelected(false);
@@ -96,8 +96,6 @@ void PauseMenuDialog::reset() {
     option->setVisible(false);
   }
   _options[_current]->setSelected(false);
-  _current = 0;
-  _options[_current]->setSelected(true);
 }
 
 void PauseMenuDialog::setMessage(const string& message) const {
@@ -116,6 +114,15 @@ void PauseMenuDialog::setOption(int index, bool visible, const string& text, con
 void PauseMenuDialog::show() {
   update();
   setVisible(true);
+
+  // Set the first visible option as selected.
+  for (int i = 0; i < (int) _options.size(); i++) {
+    if (_options[i]->isVisible()) {
+      _options[i]->setSelected(true);
+      _current = i;
+      break;
+    }
+  }
 }
 
 

@@ -63,6 +63,8 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
     float attackTime;
     float attackRange;
     int baseMeleeDamage;
+
+    int gold;
   };
 
   // We have a vector of b2Fixtures (declared in DynamicActor abstract class).
