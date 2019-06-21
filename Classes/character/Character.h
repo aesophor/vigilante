@@ -97,13 +97,13 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void pickupItem(Item* item);
-  virtual void discardItem(Item* item);
   virtual void addItem(Item* item);
   virtual void removeItem(Item* item);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);
+  virtual void pickupItem(Item* item);
+  virtual void discardItem(Item* item);
   virtual void interact(Interactable* target);
 
   bool isFacingRight() const;

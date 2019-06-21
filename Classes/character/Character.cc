@@ -656,32 +656,16 @@ void Character::lockOn(Character* target) {
 }
 
 
-void Character::pickupItem(Item* item) {
-  item->removeFromMap();
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(item);
-
-  addItem(item);
-}
-
-void Character::discardItem(Item* item) {
-  const string& jsonFileName = item->getItemProfile().jsonFileName;
-  float x = _body->GetPosition().x;
-  float y = _body->GetPosition().y;
-  GameMapManager::getInstance()->getGameMap()->spawnItem(jsonFileName, x * kPpm, y * kPpm);
-
-  removeItem(item);
-}
-
 void Character::addItem(Item* item) {
-  // If this item does not exist in the inventory yet, store this Item* in the map.
-  // Otherwise, we can delete this item in order to save some memory.
+  // If this Item* does not exist in Inventory or EquipmentSlots yet, store it in _itemMapper.
+  // Otherwise, simply delete it and use the existing copy instead (saves memory).
   Item* existingItemObj = getExistingItemObj(item);
 
   if (!existingItemObj) {
     existingItemObj = item;
     _itemMapper[item->getItemProfile().name] = item;
   } else if (existingItemObj != item) {
-    delete item; // for each item we only keep at most one instance. delete all duplicates.
+    delete item;
   }
   _inventory[item->getItemProfile().itemType][existingItemObj]++;
 }
@@ -689,15 +673,14 @@ void Character::addItem(Item* item) {
 void Character::removeItem(Item* item) {
   map<Item*, int>& items = _inventory[item->getItemProfile().itemType];
   Item* existingItemObj = getExistingItemObj(item);
-  int& remainItemCount = items[existingItemObj];
-  remainItemCount--;
+  int remainItemCount = --items[existingItemObj];
 
   if (remainItemCount == 0) {
     items.erase(existingItemObj);
     
-    // If this item is not an equipment, we can just safely delete it.
-    // If it is an equipment and the currently equipped equipment is exactly the same item,
-    // then don't delete it.
+    // We can safely delete this Item* if:
+    // 1. It is not an equipment, or...
+    // 2. It is an equipment, but no same item is currently equipped.
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
     if (!equipment || (_equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj)) {
       _itemMapper.erase(item->getItemProfile().name);
@@ -707,12 +690,11 @@ void Character::removeItem(Item* item) {
 }
 
 Item* Character::getExistingItemObj(Item* item) const {
-  const string& itemName = item->getItemProfile().name;
-  if (_itemMapper.find(itemName) != _itemMapper.end()) {
-    return _itemMapper.at(itemName);
-  } else {
-    return nullptr;
-  }
+  // For each instance of an item, at most one copy is kept in the memory.
+  // This copy will be stored in _itemMapper (unordered_map<string, Item*>)
+  // Search time complexity: avg O(1), worst O(n).
+  auto it = _itemMapper.find(item->getItemProfile().name);
+  return (it != _itemMapper.end()) ? (*it).second : nullptr;
 }
 
 void Character::useItem(Consumable* consumable) {
@@ -770,6 +752,22 @@ void Character::unequip(Equipment::Type equipmentType) {
       sheathWeapon();
     }
   }
+}
+
+void Character::pickupItem(Item* item) {
+  item->removeFromMap();
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(item);
+
+  addItem(item);
+}
+
+void Character::discardItem(Item* item) {
+  const string& jsonFileName = item->getItemProfile().jsonFileName;
+  float x = _body->GetPosition().x;
+  float y = _body->GetPosition().y;
+  GameMapManager::getInstance()->getGameMap()->spawnItem(jsonFileName, x * kPpm, y * kPpm);
+
+  removeItem(item);
 }
 
 void Character::interact(Interactable* target) {
