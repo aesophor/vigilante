@@ -9,7 +9,6 @@
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "ui/damage/FloatingDamageManager.h"
-#include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -965,6 +964,8 @@ void Character::regenStamina(int deltaStamina) {
   stamina += deltaStamina;
   stamina = (stamina > fullStamina) ? fullStamina : stamina;
 }
+
+
 
 
 Character::Profile::Profile(const string& jsonFileName) {

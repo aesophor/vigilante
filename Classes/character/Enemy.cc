@@ -8,6 +8,7 @@
 #include "GraphicalLayers.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
+#include "ui/notification/NotificationManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -85,6 +86,11 @@ void Enemy::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 
   if (_isSetToKill) {
+    // Give source character experience.
+    int exp = getCharacterProfile().exp;
+    source->getCharacterProfile().exp += exp;
+    NotificationManager::getInstance()->show("Acquired " + std::to_string(exp) + " exp.");
+
     // Drop items. (Here we'll use a callback to drop items
     // since creating fixtures during collision callback will crash)
     // See: https://github.com/libgdx/libgdx/issues/2730
@@ -97,7 +103,7 @@ void Enemy::receiveDamage(Character* source, int damage) {
         if (randChance <= dropChance) {
           float x = _body->GetPosition().x;
           float y = _body->GetPosition().y;
-          int amount = rand_util::randInt(i.second.minCount, i.second.maxCount);
+          int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
           GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
         }
       }
@@ -120,8 +126,8 @@ Enemy::Profile::Profile(const string& jsonFileName) {
 
       DroppedItemData droppedItemData;
       droppedItemData.chance = droppedItemDataJson["chance"].GetInt();
-      droppedItemData.minCount = droppedItemDataJson["minCount"].GetInt();
-      droppedItemData.maxCount = droppedItemDataJson["maxCount"].GetInt();
+      droppedItemData.minAmount = droppedItemDataJson["minAmount"].GetInt();
+      droppedItemData.maxAmount = droppedItemDataJson["maxAmount"].GetInt();
 
       droppedItems.insert({keyValue.name.GetString(), droppedItemData});
     }

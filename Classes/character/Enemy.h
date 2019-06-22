@@ -19,10 +19,10 @@ class Enemy : public Character, public Bot {
 
     struct DroppedItemData {
       int chance;
-      int minCount;
-      int maxCount;
+      int minAmount;
+      int maxAmount;
     };
-    std::unordered_map<std::string, DroppedItemData> droppedItems; // <json, {chance, minCount, maxCount}>
+    std::unordered_map<std::string, DroppedItemData> droppedItems; // <json, {chance, minAmount, maxAmount}>
   };
 
   Enemy(const std::string& jsonFileName);

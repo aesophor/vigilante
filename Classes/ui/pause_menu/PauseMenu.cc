@@ -76,6 +76,7 @@ PauseMenu::PauseMenu(Character* character)
 
 
 void PauseMenu::update() {
+  _statsPane->update();
   if (_panes[_headerPane->getCurrentIndex()]) {
     _panes[_headerPane->getCurrentIndex()]->update();
   }

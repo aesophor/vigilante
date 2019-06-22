@@ -138,7 +138,7 @@ void Player::handleInput() {
       string itemName = item->getItemProfile().name;
       int amount = item->getAmount();
       pickupItem(item);
-      NotificationManager::getInstance()->show("Acquired item: " + itemName + " (" + std::to_string(amount) + ")" + ".");
+      NotificationManager::getInstance()->show("Acquired item: " + itemName + ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
     }
   }
 

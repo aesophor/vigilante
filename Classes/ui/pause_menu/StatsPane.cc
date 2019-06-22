@@ -2,6 +2,7 @@
 
 #include "AssetManager.h"
 #include "ui/Colorscheme.h"
+#include "ui/pause_menu/PauseMenu.h"
 
 using std::string;
 using cocos2d::Label;
@@ -72,7 +73,22 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
 
 
 void StatsPane::update() {
+  Character::Profile& profile = _pauseMenu->getCharacter()->getCharacterProfile();
 
+  _level->setString("Level " + std::to_string(profile.level));
+  _health->setString(std::to_string(profile.health) + " / " + std::to_string(profile.fullHealth));
+  _magicka->setString(std::to_string(profile.magicka) + " / " + std::to_string(profile.fullMagicka));
+  _stamina->setString(std::to_string(profile.stamina) + " / " + std::to_string(profile.fullStamina));
+
+  _attackRange->setString(std::to_string(profile.attackRange));
+  _attackSpeed->setString(std::to_string(profile.attackTime));
+  _moveSpeed->setString(std::to_string(profile.moveSpeed));
+  _jumpHeight->setString(std::to_string(profile.jumpHeight));
+
+  _str->setString(std::to_string(profile.strength));
+  _dex->setString(std::to_string(profile.dexterity));
+  _int->setString(std::to_string(profile.intelligence));
+  _luk->setString(std::to_string(profile.luck));
 }
 
 void StatsPane::handleInput() {
