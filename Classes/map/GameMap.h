@@ -48,7 +48,7 @@ class GameMap {
   const std::vector<GameMap::Portal*>& getPortals() const;
 
   Player* createPlayer() const;
-  Item* spawnItem(const std::string& itemJson, float x, float y);
+  Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);

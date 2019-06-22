@@ -63,8 +63,6 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
     float attackTime;
     float attackRange;
     int baseMeleeDamage;
-
-    int gold;
   };
 
   // We have a vector of b2Fixtures (declared in DynamicActor abstract class).
@@ -99,13 +97,13 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(Item* item);
-  virtual void removeItem(Item* item);
+  virtual void addItem(Item* item, int amount);
+  virtual void removeItem(Item* item, int amount);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);
   virtual void pickupItem(Item* item);
-  virtual void discardItem(Item* item);
+  virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
 
   bool isFacingRight() const;
@@ -148,7 +146,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
 
   Skill* getCurrentlyUsedSkill() const;
 
-  typedef std::array<std::map<Item*, int>, Item::Type::SIZE> Inventory;
+  typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
   typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;

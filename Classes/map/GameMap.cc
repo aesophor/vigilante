@@ -92,8 +92,9 @@ Player* GameMap::createPlayer() const {
   return player;
 }
 
-Item* GameMap::spawnItem(const string& itemJson, float x, float y) {
+Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
   Item* item = Item::create(itemJson);
+  item->setAmount(amount);
   item->showOnMap(x, y);
   _dynamicActors.insert(item);
 

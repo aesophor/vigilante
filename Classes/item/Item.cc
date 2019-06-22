@@ -36,7 +36,9 @@ Item* Item::create(const string& jsonFileName) {
 }
 
 Item::Item(const string& jsonFileName)
-    : DynamicActor(_kNumAnimations, _kNumFixtures), _itemProfile(jsonFileName) {
+    : DynamicActor(_kNumAnimations, _kNumFixtures),
+      _itemProfile(jsonFileName),
+      _amount(1) {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
@@ -89,6 +91,14 @@ Item::Profile& Item::getItemProfile() {
 
 std::string Item::getIconPath() const {
   return _itemProfile.textureResDir + "/icon.png";
+}
+
+int Item::getAmount() const {
+  return _amount;
+}
+
+void Item::setAmount(int amount) {
+  _amount = amount;
 }
 
 

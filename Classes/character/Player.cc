@@ -135,8 +135,10 @@ void Player::handleInput() {
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
     if (!_inRangeItems.empty()) {
       Item* item = *_inRangeItems.begin();
+      string itemName = item->getItemProfile().name;
+      int amount = item->getAmount();
       pickupItem(item);
-      NotificationManager::getInstance()->show("Acquired item: " + item->getItemProfile().name + ".");
+      NotificationManager::getInstance()->show("Acquired item: " + itemName + " (" + std::to_string(amount) + ")" + ".");
     }
   }
 

@@ -41,6 +41,9 @@ class Item : public DynamicActor, public Importable {
   Item::Profile& getItemProfile();
   std::string getIconPath() const;
 
+  int getAmount() const;
+  void setAmount(int amount);
+
  protected:
   Item(const std::string& jsonFileName);
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
@@ -49,6 +52,7 @@ class Item : public DynamicActor, public Importable {
   static const int _kNumFixtures;
 
   Item::Profile _itemProfile;
+  int _amount;
 };
 
 } // namespace vigilante

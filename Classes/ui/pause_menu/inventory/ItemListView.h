@@ -49,7 +49,7 @@ class ItemListView {
     void setVisible(bool visible);
 
     Item* getItem() const;
-    void setItem(Item* item, int count);
+    void setItem(Item* item);
 
     cocos2d::ui::Layout* getLayout() const;
 
@@ -75,7 +75,7 @@ class ItemListView {
   cocos2d::Label* _itemDesc;
 
   std::vector<std::unique_ptr<ItemListView::ListViewItem>> _listViewItems;
-  std::deque<std::pair<Item*, int>> _characterItems;
+  std::deque<Item*> _characterItems;
   int _visibleItemCount;
   int _firstVisibleIndex;
   int _current;

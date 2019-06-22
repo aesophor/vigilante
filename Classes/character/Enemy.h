@@ -17,7 +17,12 @@ class Enemy : public Character, public Bot {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
-    std::unordered_map<std::string, float> droppedItems; // <json, drop chance>
+    struct DroppedItemData {
+      int chance;
+      int minCount;
+      int maxCount;
+    };
+    std::unordered_map<std::string, DroppedItemData> droppedItems; // <json, {chance, minCount, maxCount}>
   };
 
   Enemy(const std::string& jsonFileName);

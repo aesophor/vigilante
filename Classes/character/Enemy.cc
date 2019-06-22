@@ -91,13 +91,14 @@ void Enemy::receiveDamage(Character* source, int damage) {
     callback_util::runAfter([=]() {
       for (const auto& i : _enemyProfile.droppedItems) {
         const string& itemJson = i.first;
-        float dropChance = i.second;
+        float dropChance = i.second.chance;
 
         float randChance = rand_util::randInt(0, 100);
         if (randChance <= dropChance) {
           float x = _body->GetPosition().x;
           float y = _body->GetPosition().y;
-          GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm);
+          int amount = rand_util::randInt(i.second.minCount, i.second.maxCount);
+          GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
         }
       }
     }, .2f);
@@ -111,12 +112,18 @@ Enemy::Profile& Enemy::getEnemyProfile() {
 
 Enemy::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
-  
   const auto& droppedItemsMap = json["droppedItems"].GetObject();
 
   if (!droppedItemsMap.ObjectEmpty()) {
     for (const auto& keyValue : droppedItemsMap) {
-      droppedItems.insert({keyValue.name.GetString(), keyValue.value.GetFloat()});
+      const auto& droppedItemDataJson = keyValue.value.GetObject();
+
+      DroppedItemData droppedItemData;
+      droppedItemData.chance = droppedItemDataJson["chance"].GetInt();
+      droppedItemData.minCount = droppedItemDataJson["minCount"].GetInt();
+      droppedItemData.maxCount = droppedItemDataJson["maxCount"].GetInt();
+
+      droppedItems.insert({keyValue.name.GetString(), droppedItemData});
     }
   }
 }
