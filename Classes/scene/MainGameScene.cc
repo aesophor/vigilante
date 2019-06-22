@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "GraphicalLayers.h"
 #include "character/Player.h"
+#include "gameplay/ExpPointTable.h"
 #include "input/GameInputManager.h"
 #include "map/GameMap.h"
 #include "util/box2d/b2DebugRenderer.h"
@@ -86,6 +87,9 @@ bool MainGameScene::init() {
   //_dialogManager->addDialog("Aesophor: Who... are you");
   //_dialogManager->beginDialog();
   addChild(_dialogManager->getLayer(), graphical_layers::kDialog);
+
+  // Initialize Vigilante's exp point table.
+  exp_point_table::import(asset_manager::kExpPointTable);
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);

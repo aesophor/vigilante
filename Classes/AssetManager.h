@@ -7,6 +7,9 @@ namespace vigilante {
 
 namespace asset_manager {
 
+const std::string kExpPointTable = "Resources/Gameplay/exp_point_table.txt";
+const std::string kSpritesheetList = "Resources/Texture/spritesheets.txt";
+
 // Fonts
 const std::string kRegularFont = "Font/HeartbitXX.ttf";
 const std::string kBoldFont = "Font/HeartbitXX2Px.ttf";
@@ -59,8 +62,7 @@ const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyItemIcon = kItemIcons + "empty/icon.png";
 
 // Spritesheets
-const std::string kSpritesheets = "Resources/Texture/spritesheets.txt";
-void loadSpritesheets();
+void loadSpritesheets(const std::string& spritesheetListFileName);
 
 } // namespace asset_manager
 

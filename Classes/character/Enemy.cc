@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "CategoryBits.h"
 #include "GraphicalLayers.h"
+#include "gameplay/ExpPointTable.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 #include "ui/notification/NotificationManager.h"
@@ -86,10 +87,16 @@ void Enemy::receiveDamage(Character* source, int damage) {
   _isAlerted = true;
 
   if (_isSetToKill) {
-    // Give source character experience.
-    int exp = getCharacterProfile().exp;
-    source->getCharacterProfile().exp += exp;
-    NotificationManager::getInstance()->show("Acquired " + std::to_string(exp) + " exp.");
+    // Give source character exp point.
+    int& currentExp = source->getCharacterProfile().exp;
+    currentExp += getCharacterProfile().exp;
+    NotificationManager::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
+
+    int& currentLevel = source->getCharacterProfile().level;
+    while (currentExp >= exp_point_table::getNextLevelExp(currentLevel)) {
+      currentExp -= exp_point_table::getNextLevelExp(currentLevel);
+      currentLevel++;
+    }
 
     // Drop items. (Here we'll use a callback to drop items
     // since creating fixtures during collision callback will crash)
