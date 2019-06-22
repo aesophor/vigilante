@@ -96,6 +96,7 @@ void Enemy::receiveDamage(Character* source, int damage) {
     while (currentExp >= exp_point_table::getNextLevelExp(currentLevel)) {
       currentExp -= exp_point_table::getNextLevelExp(currentLevel);
       currentLevel++;
+      NotificationManager::getInstance()->show("Congratulations! You are now level " + std::to_string(currentLevel) + ".");
     }
 
     // Drop items. (Here we'll use a callback to drop items
