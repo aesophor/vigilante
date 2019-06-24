@@ -12,7 +12,7 @@ const int kChest = 15;
 const int kNpcBody = 24;
 const int kEnemyBody = 25;
 const int kPlayerBody = 30;
-const int kEquipment = 33;
+const int kEquipment = 37;
 
 const int kFloatingDamage = 91;
 const int kNotification = 93;
