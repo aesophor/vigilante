@@ -1,4 +1,4 @@
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 
 #include "map/GameMapManager.h"
 
@@ -9,19 +9,19 @@ using cocos2d::EventListenerKeyboard;
 
 namespace vigilante {
 
-GameInputManager* GameInputManager::_instance = nullptr;
+InputManager* InputManager::_instance = nullptr;
 
-GameInputManager* GameInputManager::getInstance() {
+InputManager* InputManager::getInstance() {
   if (!_instance) {
-    _instance = new GameInputManager();
+    _instance = new InputManager();
   }
   return _instance;
 }
 
-GameInputManager::GameInputManager() : _scene(), _keyboardEvLstnr() {}
+InputManager::InputManager() : _scene(), _keyboardEvLstnr() {}
 
 
-void GameInputManager::activate(Scene* scene) {
+void InputManager::activate(Scene* scene) {
   _scene = scene;
   _keyboardEvLstnr = EventListenerKeyboard::create();
 
@@ -38,18 +38,18 @@ void GameInputManager::activate(Scene* scene) {
   _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr, scene);
 }
 
-void GameInputManager::deactivate() {
+void InputManager::deactivate() {
   _scene->getEventDispatcher()->removeEventListener(_keyboardEvLstnr);
   _keyboardEvLstnr = nullptr;
   _scene = nullptr;
 }
 
 
-bool GameInputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
+bool InputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
   return _pressedKeys.find(keyCode) != _pressedKeys.end();
 }
 
-bool GameInputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
+bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
   // std::set::erase() returns the number of elements erased.
   return static_cast<bool>(_pressedKeys.erase(keyCode));
 }

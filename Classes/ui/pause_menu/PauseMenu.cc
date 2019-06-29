@@ -1,9 +1,10 @@
 #include "PauseMenu.h"
 
 #include "AssetManager.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
+#include "ui/pause_menu/skill/SkillPane.h"
 
 using std::array;
 using std::string;
@@ -67,6 +68,13 @@ PauseMenu::PauseMenu(Character* character)
   equipmentPane->setVisible(false);
   _layer->addChild(equipmentPane->getLayout());
 
+  // Initialize EquipmentPane.
+  _panes[2] = unique_ptr<SkillPane>(new SkillPane(this));
+  SkillPane* skillPane = dynamic_cast<SkillPane*>(_panes[2].get());
+  skillPane->getLayout()->setPosition({230, 240});
+  skillPane->setVisible(false);
+  _layer->addChild(skillPane->getLayout());
+
   // Show inventory pane by default.
   _panes.front()->setVisible(true);
 }
@@ -80,7 +88,7 @@ void PauseMenu::update() {
 }
 
 void PauseMenu::handleInput() {
-  GameInputManager* inputMgr = GameInputManager::getInstance();
+  InputManager* inputMgr = InputManager::getInstance();
 
   if (_dialog->isVisible()) {
     _dialog->handleInput();

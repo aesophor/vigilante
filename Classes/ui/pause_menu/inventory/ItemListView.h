@@ -1,10 +1,6 @@
 #ifndef VIGILANTE_ITEM_LIST_VIEW_H_
 #define VIGILANTE_ITEM_LIST_VIEW_H_
 
-#include <deque>
-#include <vector>
-#include <memory>
-
 #include "ui/ListView.h"
 #include "item/Item.h"
 #include "item/Equipment.h"

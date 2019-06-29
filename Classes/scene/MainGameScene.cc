@@ -9,8 +9,9 @@
 #include "GraphicalLayers.h"
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "map/GameMap.h"
+#include "skill/BackDash.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
@@ -106,9 +107,9 @@ bool MainGameScene::init() {
   _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/item/equipment/short_sword.json"), 1);
   _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/item/equipment/royal_cape.json"), 1);
 
-  // Initialize GameInputManager.
-  // GameInputManager keep tracks of which keys are pressed.
-  GameInputManager::getInstance()->activate(this);
+  // Initialize InputManager.
+  // InputManager keep tracks of which keys are pressed.
+  InputManager::getInstance()->activate(this);
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
@@ -116,6 +117,9 @@ bool MainGameScene::init() {
   addChild(_b2dr);
 
   _hud->setPlayer(_gameMapManager->getPlayer());
+
+  auto player = _gameMapManager->getPlayer();
+  player->getSkills().push_back(new BackDash("Resources/Database/skill/ice_spike.json", player));
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
@@ -152,13 +156,13 @@ void MainGameScene::update(float delta) {
 }
 
 void MainGameScene::handleInput() {
-  auto inputMgr = GameInputManager::getInstance();
+  auto inputMgr = InputManager::getInstance();
 
   // Toggle b2dr (b2DebugRenderer)
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
     bool isVisible = _b2dr->isVisible();
     _b2dr->setVisible(!isVisible);
-    _notifications->show("[b2dr] is " + std::to_string(!isVisible));
+    _notifications->show("Debug Mode: " + std::to_string(!isVisible));
   }
 
   // Toggle PauseMenu

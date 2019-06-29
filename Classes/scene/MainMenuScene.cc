@@ -65,8 +65,8 @@ bool MainMenuScene::init() {
   versionLabel->setPosition(winSize.width - _kFooterLabelPadding, versionLabel->getContentSize().height + _kFooterLabelPadding);
   addChild(versionLabel);
 
-  // Initialize GameInputManager.
-  _inputMgr = unique_ptr<GameInputManager>(GameInputManager::getInstance());
+  // Initialize InputManager.
+  _inputMgr = unique_ptr<InputManager>(InputManager::getInstance());
   _inputMgr->activate(this);
 
   schedule(schedule_selector(MainMenuScene::update));

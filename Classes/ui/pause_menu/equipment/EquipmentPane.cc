@@ -2,7 +2,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
@@ -23,7 +23,7 @@ namespace vigilante {
 
 EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create(300)),
-      _inputMgr(GameInputManager::getInstance()),
+      _inputMgr(InputManager::getInstance()),
       _current() {
   Layout* innerLayout = Layout::create();
 

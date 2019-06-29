@@ -1,7 +1,7 @@
 #include "DialogManager.h"
 
 #include "AssetManager.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "ui/hud/Hud.h"
 
 using std::string;
@@ -84,7 +84,7 @@ void DialogManager::update(float delta) {
 }
 
 void DialogManager::handleInput() {
-  auto inputMgr = GameInputManager::getInstance();
+  auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
     showNextDialog();

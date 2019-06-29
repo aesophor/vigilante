@@ -11,7 +11,7 @@
 #include "ui/UIImageView.h"
 
 #include "Controllable.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 
 namespace vigilante {
 
@@ -43,7 +43,7 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
   std::vector<cocos2d::Label*> _labels;
   int _current;
 
-  std::unique_ptr<GameInputManager> _inputMgr;
+  std::unique_ptr<InputManager> _inputMgr;
 };
 
 } // namespace vigilante

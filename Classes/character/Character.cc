@@ -99,6 +99,10 @@ Character::~Character() {
   for (auto item : _itemMapper) {
     delete item.second;
   }
+  // Delete all skills.
+  for (auto skill : _skills) {
+    delete skill;
+  }
 }
 
 

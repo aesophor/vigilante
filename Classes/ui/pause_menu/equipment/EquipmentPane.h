@@ -12,7 +12,7 @@
 
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/TableLayout.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "character/Character.h"
 #include "item/Equipment.h"
 
@@ -58,7 +58,7 @@ class EquipmentPane : public AbstractPane {
     Equipment* _equipment;
   };
 
-  GameInputManager* _inputMgr;
+  InputManager* _inputMgr;
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
   int _current;
 };

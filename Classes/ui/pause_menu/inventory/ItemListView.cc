@@ -1,28 +1,11 @@
 #include "ItemListView.h"
 
-#include "ui/UILayout.h"
-
-#include "AssetManager.h"
-#include "Constants.h"
-#include "character/Character.h"
 #include "item/Consumable.h"
-#include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
-using std::pair;
 using std::deque;
 using std::vector;
-using std::unique_ptr;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::ui::ScrollView;
-using vigilante::asset_manager::kEmptyItemIcon;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kItemRegular;
-using vigilante::asset_manager::kItemHighlighted;
 
 namespace vigilante {
 
@@ -38,7 +21,7 @@ void ItemListView::confirm() {
 
   PauseMenuDialog* dialog = _pauseMenu->getDialog();
   dialog->reset();
-  dialog->setMessage("What would you like to do with " + item->getItemProfile().name + "?");
+  dialog->setMessage("What would you like to do with " + item->getName() + "?");
 
   switch (item->getItemProfile().itemType) {
     case Item::Type::EQUIPMENT:
@@ -71,7 +54,7 @@ void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
 
   if (!_objects[_current]) {
-    _itemDesc->setString("Unequip");
+    _descLabel->setString("Unequip");
   }
 }
 
@@ -86,9 +69,9 @@ void ItemListView::showItemsByType(Item::Type itemType) {
   // If the inventory size isn't empty, select the first item by default.
   if (_objects.size() > 0) {
     _listViewItems[0]->setSelected(true);
-    _itemDesc->setString(_objects[_current]->getItemProfile().desc);
+    _descLabel->setString(_objects[_current]->getDesc());
   } else {
-    _itemDesc->setString("");
+    _descLabel->setString("");
   }
 }
 
@@ -112,9 +95,9 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   // If the inventory size isn't empty, select the first item by default.
   if (_objects.size() > 0) {
     _listViewItems[0]->setSelected(true);
-    _itemDesc->setString("Unequip");
+    _descLabel->setString("Unequip");
   } else {
-    _itemDesc->setString("");
+    _descLabel->setString("");
   }
 }
 

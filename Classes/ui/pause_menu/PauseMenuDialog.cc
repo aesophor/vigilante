@@ -1,7 +1,7 @@
 #include "PauseMenuDialog.h"
 
 #include "AssetManager.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "ui/TableLayout.h"
 
 using std::string;
@@ -52,7 +52,7 @@ void PauseMenuDialog::update() {
 }
 
 void PauseMenuDialog::handleInput() {
-  auto inputMgr = GameInputManager::getInstance();
+  auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     selectLeft();

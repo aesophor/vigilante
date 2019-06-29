@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include "CategoryBits.h"
 #include "GraphicalLayers.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
 #include "skill/BackDash.h"
@@ -79,7 +79,7 @@ void Player::handleInput() {
     return;
   }
 
-  auto inputMgr = GameInputManager::getInstance();
+  auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
     if (_interactableObject) {

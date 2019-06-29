@@ -1,7 +1,7 @@
 #include "InventoryPane.h"
 
 #include "AssetManager.h"
-#include "input/GameInputManager.h"
+#include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 
@@ -47,7 +47,7 @@ void InventoryPane::update() {
 }
 
 void InventoryPane::handleInput() {
-  auto inputMgr = GameInputManager::getInstance();
+  auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     _tabView->selectPrev();

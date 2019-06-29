@@ -31,6 +31,7 @@ class ListView {
   virtual void selectDown();
   virtual void scrollUp();
   virtual void scrollDown();
+  virtual void showFrom(int index); // show n ListViewItems starting from the specified index.
 
   T getSelectedObject() const;
   cocos2d::ui::Layout* getLayout() const;
@@ -60,12 +61,9 @@ class ListView {
     T _object;
   };
 
-  // Show n ListViewItems starting from the specified index.
-  virtual void showFrom(int index);
-
   PauseMenu* _pauseMenu;
   cocos2d::ui::Layout* _layout;
-  cocos2d::Label* _itemDesc;
+  cocos2d::Label* _descLabel;
 
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
@@ -80,7 +78,7 @@ template <typename T>
 ListView<T>::ListView(PauseMenu* pauseMenu, int visibleItemCount)
     : _pauseMenu(pauseMenu),
       _layout(cocos2d::ui::Layout::create()),
-      _itemDesc(cocos2d::Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
+      _descLabel(cocos2d::Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
       _visibleItemCount(visibleItemCount),
       _firstVisibleIndex(),
       _current() {
@@ -92,11 +90,11 @@ ListView<T>::ListView(PauseMenu* pauseMenu, int visibleItemCount)
     _layout->addChild(_listViewItems[i]->getLayout());
   }
 
-  _itemDesc->getFontAtlas()->setAliasTexParameters();
-  _itemDesc->setAnchorPoint({0, 1});
-  _itemDesc->setPosition({10, -137});
-  _itemDesc->enableWrap(true);
-  _layout->addChild(_itemDesc);
+  _descLabel->getFontAtlas()->setAliasTexParameters();
+  _descLabel->setAnchorPoint({0, 1});
+  _descLabel->setPosition({10, -137});
+  _descLabel->enableWrap(true);
+  _layout->addChild(_descLabel);
 }
 
 
@@ -115,9 +113,9 @@ void ListView<T>::selectUp() {
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
 
   if (_objects[_current]) {
-    _itemDesc->setString(_objects[_current]->getDesc());
+    _descLabel->setString(_objects[_current]->getDesc());
   } else {
-    _itemDesc->setString("");
+    _descLabel->setString("");
   }
 }
 
@@ -136,9 +134,9 @@ void ListView<T>::selectDown() {
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
 
   if (_objects[_current]) {
-    _itemDesc->setString(_objects[_current]->getDesc());
+    _descLabel->setString(_objects[_current]->getDesc());
   } else {
-    _itemDesc->setString("");
+    _descLabel->setString("");
   }
 }
 

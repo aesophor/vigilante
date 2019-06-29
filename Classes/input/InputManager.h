@@ -1,5 +1,5 @@
-#ifndef VIGILANTE_GAME_INPUT_MANAGER_H_
-#define VIGILANTE_GAME_INPUT_MANAGER_H_
+#ifndef VIGILANTE_INPUT_MANAGER_H_
+#define VIGILANTE_INPUT_MANAGER_H_
 
 #include <set>
 
@@ -7,10 +7,10 @@
 
 namespace vigilante {
 
-class GameInputManager {
+class InputManager {
  public:
-  static GameInputManager* getInstance();
-  virtual ~GameInputManager() = default;
+  static InputManager* getInstance();
+  virtual ~InputManager() = default;
 
   void activate(cocos2d::Scene* scene);
   void deactivate();
@@ -19,8 +19,8 @@ class GameInputManager {
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
  private:
-  static GameInputManager* _instance;
-  GameInputManager();
+  static InputManager* _instance;
+  InputManager();
 
   cocos2d::Scene* _scene;
   cocos2d::EventListenerKeyboard* _keyboardEvLstnr;
@@ -29,4 +29,4 @@ class GameInputManager {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_GAME_INPUT_MANAGER_H_
+#endif // VIGILANTE_INPUT_MANAGER_H_
