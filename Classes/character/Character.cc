@@ -85,6 +85,7 @@ Character::Character(const string& jsonFileName)
       _equipmentSlots(),
       _interactableObject(),
       _portal(),
+      _skills(),
       _currentlyUsedSkill(),
       _bodyExtraAttackAnimations(),
       _equipmentExtraAttackAnimations(),
@@ -452,7 +453,7 @@ void Character::runAnimation(const string& framesName, float interval) {
       // TODO: cache these equipment skill animation
       Animation* animation = createAnimation(textureResDir, framesName, interval, fallback);
       _equipmentSprites[type]->stopAllActions();
-      _equipmentSprites[type]->runAction(Repeat::create(Animate::create(animation), 1));
+      _equipmentSprites[type]->runAction(Animate::create(animation));
     }
   }
 }
@@ -910,6 +911,10 @@ void Character::setPortal(GameMap::Portal* portal) {
   _portal = portal;
 }
 
+
+vector<Skill*>& Character::getSkills() {
+  return _skills;
+}
 
 Skill* Character::getCurrentlyUsedSkill() const {
   return _currentlyUsedSkill;

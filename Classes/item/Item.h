@@ -39,6 +39,8 @@ class Item : public DynamicActor, public Importable {
   virtual void import(const std::string& jsonFileName) override; // Importable
 
   Item::Profile& getItemProfile();
+  const std::string& getName() const;
+  const std::string& getDesc() const;
   std::string getIconPath() const;
 
   int getAmount() const;

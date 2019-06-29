@@ -53,9 +53,6 @@ PauseMenu::PauseMenu(Character* character)
   _dialog->setVisible(false);
   _layer->addChild(_dialog->getLayout());
 
-  // Initialize the size of _panes vector.
-  _panes.resize(5);
-
   // Initialize InventoryPane.
   _panes[0] = unique_ptr<InventoryPane>(new InventoryPane(this));
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());

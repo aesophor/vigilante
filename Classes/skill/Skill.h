@@ -40,7 +40,11 @@ class Skill : public Importable {
 
   virtual bool canActivate() = 0;
   virtual void activate() = 0;
+
   virtual Skill::Profile& getSkillProfile() = 0;
+  virtual const std::string& getName() const = 0;
+  virtual const std::string& getDesc() const = 0;
+  virtual std::string getIconPath() const = 0;
 };
 
 } // namespace vigilante

@@ -54,4 +54,16 @@ Skill::Profile& ForwardSlash::getSkillProfile() {
   return _skillProfile;
 }
 
+const string& ForwardSlash::getName() const {
+  return _skillProfile.name;
+}
+
+const string& ForwardSlash::getDesc() const {
+  return _skillProfile.desc;
+}
+
+string ForwardSlash::getIconPath() const {
+  return _skillProfile.textureResDir + "/icon.png";
+}
+
 } // namespace vigilante

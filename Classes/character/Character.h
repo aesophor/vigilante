@@ -144,6 +144,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   GameMap::Portal* getPortal() const;
   void setPortal(GameMap::Portal* portal);
 
+  std::vector<Skill*>& getSkills();
   Skill* getCurrentlyUsedSkill() const;
 
   typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
@@ -253,6 +254,7 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   GameMap::Portal* _portal;
 
   // Currently used skill.
+  std::vector<Skill*> _skills;
   Skill* _currentlyUsedSkill;
 
   // Extra attack animations.

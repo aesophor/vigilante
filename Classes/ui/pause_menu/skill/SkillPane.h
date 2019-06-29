@@ -7,6 +7,7 @@
 
 #include "cocos2d.h"
 #include "2d/CCLabel.h"
+#include "ui/UILayout.h"
 #include "ui/UIImageView.h"
 
 #include "ui/pause_menu/AbstractPane.h"
@@ -33,6 +34,7 @@ class InventoryPane : public AbstractPane {
   Equipment::Type _selectingEquipmentType;
 
   cocos2d::ui::ImageView* _background;
+  cocos2d::Label* _itemDesc;
   std::unique_ptr<TabView> _tabView;
   std::unique_ptr<ItemListView> _itemListView;
 };

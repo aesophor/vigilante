@@ -45,4 +45,16 @@ Skill::Profile& BackDash::getSkillProfile() {
   return _skillProfile;
 }
 
+const string& BackDash::getName() const {
+  return _skillProfile.name;
+}
+
+const string& BackDash::getDesc() const {
+  return _skillProfile.desc;
+}
+
+string BackDash::getIconPath() const {
+  return _skillProfile.textureResDir + "/icon.png";
+}
+
 } // namespace vigilante

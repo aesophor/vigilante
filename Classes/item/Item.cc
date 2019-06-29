@@ -89,9 +89,18 @@ Item::Profile& Item::getItemProfile() {
   return _itemProfile;
 }
 
-std::string Item::getIconPath() const {
+const string& Item::getName() const {
+  return _itemProfile.name;
+}
+
+const string& Item::getDesc() const {
+  return _itemProfile.desc;
+}
+
+string Item::getIconPath() const {
   return _itemProfile.textureResDir + "/icon.png";
 }
+
 
 int Item::getAmount() const {
   return _amount;

@@ -60,7 +60,7 @@ class PauseMenu : public Controllable {
   std::unique_ptr<HeaderPane> _headerPane;
   std::unique_ptr<StatsPane> _statsPane;
   std::unique_ptr<PauseMenuDialog> _dialog;
-  std::vector<std::unique_ptr<AbstractPane>> _panes;
+  std::array<std::unique_ptr<AbstractPane>, PauseMenu::Pane::SIZE> _panes;
 };
 
 } // namespace vigilante

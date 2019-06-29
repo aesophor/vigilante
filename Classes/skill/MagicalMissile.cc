@@ -128,9 +128,23 @@ void MagicalMissile::activate() {
   _hasActivated = true;
 }
 
+
 Skill::Profile& MagicalMissile::getSkillProfile() {
   return _skillProfile;
 }
+
+const string& MagicalMissile::getName() const {
+  return _skillProfile.name;
+}
+
+const string& MagicalMissile::getDesc() const {
+  return _skillProfile.desc;
+}
+
+string MagicalMissile::getIconPath() const {
+  return _skillProfile.textureResDir + "/icon.png";
+}
+
 
 int MagicalMissile::getDamage() const {
   return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
