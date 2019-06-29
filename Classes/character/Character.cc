@@ -95,15 +95,8 @@ Character::Character(const string& jsonFileName)
 
 Character::~Character() {
   // Delete all items from inventory and equipment slots.
-  for (auto& items : _inventory) { // vector<Item*>
-    for (const auto item : items) { // Item*
-      delete item;
-    }
-  }
-  for (auto equipment : _equipmentSlots) {
-    if (equipment) {
-      delete equipment;
-    }
+  for (auto item : _itemMapper) {
+    delete item.second;
   }
 }
 
