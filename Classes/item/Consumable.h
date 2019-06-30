@@ -30,11 +30,16 @@ class Consumable : public Item, public Keybindable {
 
     int bonusMoveSpeed;
     int bonusJumpHeight;
+
+    std::string hotkey;
   };
 
   Consumable(const std::string& jsonFileName);
   virtual ~Consumable() = default;
   virtual void import (const std::string& jsonFileName) override; // Importable
+
+  virtual const std::string& getHotkey() const override; // Keybindable
+  virtual void setHotkey(const std::string& hotkey) override; // Keybindable
 
   Consumable::Profile& getConsumableProfile();
 

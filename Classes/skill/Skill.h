@@ -35,6 +35,8 @@ class Skill : public Importable, public Keybindable {
     int deltaHealth;
     int deltaMagicka;
     int deltaStamina;
+
+    std::string hotkey;
   };
 
   // Create a skill by automatically deducing its concrete type
@@ -43,6 +45,9 @@ class Skill : public Importable, public Keybindable {
 
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0; // Importable
+
+  virtual const std::string& getHotkey() const = 0; // Keybindable
+  virtual void setHotkey(const std::string& hotkey) = 0; // Keybindable
 
   virtual bool canActivate() = 0;
   virtual void activate() = 0;

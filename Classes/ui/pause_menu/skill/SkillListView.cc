@@ -1,5 +1,6 @@
 #include "SkillListView.h"
 
+#include "input/InputManager.h"
 #include "ui/UILayout.h"
 
 #include "ui/pause_menu/PauseMenu.h"
@@ -24,12 +25,15 @@ void SkillListView::confirm() {
   dialog->reset();
   dialog->setMessage("What would you like to do with " + skill->getName() + "?");
 
-  dialog->setOption(0, true, "Activate", [=]() {
-    //_pauseMenu->getCharacter()->activateSkill(skill);
-    _pauseMenu->update();
+  dialog->setOption(1, true, "Assign", [=]() {
+    dialog->reset();
+    dialog->setMessage("Press a key to assign to...");
+    dialog->setOption(2, true, "Cancel");
+    dialog->show();
+    InputManager::getInstance()->promptHotkey(skill, dialog);
   });
 
-  dialog->setOption(1, true, "Cancel");
+  dialog->setOption(2, true, "Cancel");
   dialog->show();
 }
 

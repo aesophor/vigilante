@@ -14,7 +14,6 @@
 
 #include "DynamicActor.h"
 #include "Importable.h"
-#include "Regeneratable.h"
 #include "Interactable.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
@@ -24,7 +23,7 @@
 
 namespace vigilante {
 
-class Character : public DynamicActor, public Importable, public Regeneratable {
+class Character : public DynamicActor, public Importable {
  public: 
   struct Profile {
     Profile(const std::string& jsonFileName);
@@ -160,9 +159,9 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
  protected:
   Character(const std::string& jsonFileName);
 
-  virtual void regenHealth(int deltaHealth) override; // Regeneratable
-  virtual void regenMagicka(int deltaMagicka) override; // Regeneratable
-  virtual void regenStamina(int deltaStamina) override; // Regeneratable
+  virtual void regenHealth(int deltaHealth);
+  virtual void regenMagicka(int deltaMagicka);
+  virtual void regenStamina(int deltaStamina);
 
   enum State {
     IDLE_SHEATHED,

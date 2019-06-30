@@ -613,8 +613,8 @@ void Character::activateSkill(Skill* skill) {
     runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
   }
 
-  Skill* copiedSkill = Skill::create(skill->getSkillProfile().jsonFileName, this);
-  copiedSkill->activate();
+  // Create an extra copy of this skill object and activate it.
+  Skill::create(skill->getSkillProfile().jsonFileName, this)->activate();
   Hud::getInstance()->updateStatusBars();
 }
 

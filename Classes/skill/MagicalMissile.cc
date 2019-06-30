@@ -64,18 +64,17 @@ void MagicalMissile::showOnMap(float x, float y) {
   }
 }
 
-void MagicalMissile::removeFromMap() {
-  if (_isShownOnMap) {
-    _body->GetWorld()->DestroyBody(_body);
-
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
-    _isShownOnMap = false;
-  }
-}
-
 
 void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
+}
+
+const string& MagicalMissile::getHotkey() const {
+  return _skillProfile.hotkey;
+}
+
+void MagicalMissile::setHotkey(const string& hotkey) {
+  _skillProfile.hotkey = hotkey;
 }
 
 bool MagicalMissile::canActivate() {

@@ -22,13 +22,14 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual void update(float delta) override; // DynamicActor
   virtual void setPosition(float x, float y) override; // DynamicActor
   virtual void showOnMap(float x, float y) override; // DynamicActor
-  virtual void removeFromMap() override; // DynamicActor
 
   virtual Character* getUser() const override; // Projectile
   virtual int getDamage() const override; // Projectile
   virtual void onHit(Character* target) override; // Projectile
 
   virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual const std::string& getHotkey() const override; // Skill
+  virtual void setHotkey(const std::string& hotkey) override; // Skill
   virtual bool canActivate() override; // Skill
   virtual void activate() override; // Skill
 

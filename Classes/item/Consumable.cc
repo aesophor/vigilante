@@ -17,6 +17,14 @@ void Consumable::import(const string& jsonFileName) {
   _consumableProfile = Consumable::Profile(jsonFileName);
 }
 
+const string& Consumable::getHotkey() const {
+  return _consumableProfile.hotkey;
+}
+
+void Consumable::setHotkey(const string& hotkey) {
+  _consumableProfile.hotkey = hotkey;
+}
+
 Consumable::Profile& Consumable::getConsumableProfile() {
   return _consumableProfile;
 }

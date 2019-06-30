@@ -3,12 +3,15 @@
 
 #include <set>
 #include <array>
+#include <functional>
 
 #include "cocos2d.h"
 
 #include "input/Keybindable.h"
 
 namespace vigilante {
+
+class PauseMenuDialog;
 
 class InputManager {
  public:
@@ -33,6 +36,7 @@ class InputManager {
 
   Keybindable* getHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode) const;
   void setHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
+  void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:
   static InputManager* _instance;
@@ -45,6 +49,9 @@ class InputManager {
 
   // Hotkeys (keybindings)
   std::array<Keybindable*, InputManager::Hotkey::SIZE> _hotkeys;
+  bool _isAssigningHotkey;
+  Keybindable* _keybindable;
+  PauseMenuDialog* _pauseMenuDialog;
 };
 
 } // namespace vigilante

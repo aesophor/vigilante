@@ -15,6 +15,8 @@ class BackDash : public Skill {
   virtual ~BackDash() = default;
 
   virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual const std::string& getHotkey() const override; // Skill
+  virtual void setHotkey(const std::string& hotkey) override; // Skill
   virtual bool canActivate() override; // Skill
   virtual void activate() override; // Skill
 

@@ -19,6 +19,14 @@ void BackDash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
+const string& BackDash::getHotkey() const {
+  return _skillProfile.hotkey;
+}
+
+void BackDash::setHotkey(const string& hotkey) {
+  _skillProfile.hotkey = hotkey;
+}
+
 bool BackDash::canActivate() {
   return !_user->isWeaponSheathed() && !_user->isJumping();
 }

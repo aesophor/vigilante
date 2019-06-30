@@ -19,6 +19,14 @@ void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
+const string& ForwardSlash::getHotkey() const {
+  return _skillProfile.hotkey;
+}
+
+void ForwardSlash::setHotkey(const string& hotkey) {
+  _skillProfile.hotkey = hotkey;
+}
+
 bool ForwardSlash::canActivate() {
   return !_user->isWeaponSheathed()
     && _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;

@@ -83,19 +83,19 @@ void PauseMenuDialog::confirm() {
   if (_options.size() == 0) {
     return;
   }
-  _options[_current]->getHandler()(); // invokes a std::function<void ()>
-  _options[_current]->setSelected(false);
-  _options[0]->setSelected(true);
   setVisible(false);
+  _options[0]->setSelected(true);
+  _options[_current]->setSelected(false);
+  _options[_current]->getHandler()(); // invokes a std::function<void ()>
 }
 
 
 void PauseMenuDialog::reset() {
   setMessage("");
+  _options[_current]->setSelected(false);
   for (auto& option : _options) {
     option->setVisible(false);
   }
-  _options[_current]->setSelected(false);
 }
 
 void PauseMenuDialog::setMessage(const string& message) const {

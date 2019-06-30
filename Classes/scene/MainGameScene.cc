@@ -122,9 +122,9 @@ bool MainGameScene::init() {
   player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
   player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
   player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
-  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_X, player->getSkills()[0]);
-  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_LEFT_SHIFT, player->getSkills()[1]);
-  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_C, player->getSkills()[2]);
+  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_X, player->getSkills()[0]);
+  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_LEFT_SHIFT, player->getSkills()[1]);
+  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_C, player->getSkills()[2]);
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
@@ -167,7 +167,7 @@ void MainGameScene::handleInput() {
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
     bool isVisible = _b2dr->isVisible();
     _b2dr->setVisible(!isVisible);
-    _notifications->show("Debug Mode: " + std::to_string(!isVisible));
+    _notifications->show(string("Debug Mode: ") + ((isVisible) ? "on" : "off"));
   }
 
   // Toggle PauseMenu

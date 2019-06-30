@@ -1,7 +1,10 @@
 #include "input/InputManager.h"
 
 #include "map/GameMapManager.h"
+#include "ui/pause_menu/PauseMenuDialog.h"
+#include "util/KeyCodeUtil.h"
 
+using std::set;
 using std::array;
 using cocos2d::Scene;
 using cocos2d::Event;
@@ -32,7 +35,10 @@ InputManager::InputManager()
     : _scene(),
       _keyboardEvLstnr(),
       _pressedKeys(),
-      _hotkeys() {}
+      _hotkeys(),
+      _isAssigningHotkey(),
+      _keybindable(),
+      _pauseMenuDialog() {}
 
 
 void InputManager::activate(Scene* scene) {
@@ -40,8 +46,16 @@ void InputManager::activate(Scene* scene) {
   _keyboardEvLstnr = EventListenerKeyboard::create();
 
   _keyboardEvLstnr->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-    if (_pressedKeys.find(keyCode) == _pressedKeys.end()) {
-      _pressedKeys.insert(keyCode);
+    if (!_isAssigningHotkey) {
+      if (_pressedKeys.find(keyCode) == _pressedKeys.end()) {
+        _pressedKeys.insert(keyCode);
+      }
+    } else {
+      setHotkeyAction(keyCode, _keybindable);
+      _keybindable->setHotkey(keycode_util::keyCodeToString(keyCode));
+      _isAssigningHotkey = false;
+      _keybindable = nullptr;
+      _pauseMenuDialog->setVisible(false);
     }
   };
 
@@ -85,6 +99,12 @@ void InputManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* 
       return;
     }
   }
+}
+
+void InputManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog) {
+  _isAssigningHotkey = true;
+  _keybindable = keybindable;
+  _pauseMenuDialog = pauseMenuDialog;
 }
 
 } // namespace vigilante
