@@ -37,7 +37,14 @@ void StaticActor::showOnMap(float x, float y) {
 
 void StaticActor::removeFromMap() {
   if (_isShownOnMap) {
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    if (_bodySpritesheet) {
+      // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
+      GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
+      _bodySpritesheet = nullptr;
+    } else {
+      GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    }
+
     _bodySprite = nullptr;
     _isShownOnMap = false;
   }

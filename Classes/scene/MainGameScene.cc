@@ -119,7 +119,7 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(new BackDash("Resources/Database/skill/ice_spike.json", player));
+  player->getSkills().push_back(new BackDash("Resources/Database/skill/ice_spike.json"));
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));

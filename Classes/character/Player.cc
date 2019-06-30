@@ -124,12 +124,12 @@ void Player::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
-    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json", this);
+    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json");
     activateSkill(skill);
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
-    activateSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json", this));
+    activateSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json"));
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_S)) {
-    activateSkill(new BackDash("Resources/Database/skill/back_dash.json", this));
+    activateSkill(new BackDash("Resources/Database/skill/back_dash.json"));
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

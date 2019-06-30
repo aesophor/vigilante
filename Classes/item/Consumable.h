@@ -4,6 +4,7 @@
 #include <string>
 
 #include "item/Item.h"
+#include "input/Keybindable.h"
 
 namespace vigilante {
 

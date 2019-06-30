@@ -33,14 +33,12 @@ using vigilante::category_bits::kWall;
 
 namespace vigilante {
 
-MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
+MagicalMissile::MagicalMissile(const string& jsonFileName)
     : DynamicActor(AnimationType::SIZE, 1),
-      Skill(),
-      Projectile(),
       _skillProfile(jsonFileName),
-      _user(user),
       _hasActivated(),
       _hasHit(),
+      _user(),
       _launchFxSprite() {}
 
 
@@ -66,43 +64,37 @@ void MagicalMissile::showOnMap(float x, float y) {
   }
 }
 
-void MagicalMissile::removeFromMap() {
-  if (_isShownOnMap) {
-    _body->GetWorld()->DestroyBody(_body);
-
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
-    _isShownOnMap = false;
-  }
-}
-
 
 void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
-bool MagicalMissile::canActivate() {
-  return _user->getCharacterProfile().magicka + _skillProfile.deltaMagicka >= 0;
+bool MagicalMissile::canActivate(Character* user) {
+  return user->getCharacterProfile().magicka + _skillProfile.deltaMagicka >= 0;
 }
 
-void MagicalMissile::activate() {
+void MagicalMissile::activate(Character* user) {
   // Make sure this instance is only activated once.
   if (_hasActivated) {
     return;
   }
 
-  // Modify character's stats.
-  _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
+  // Register spell user.
+  _user = user;
 
-  float x = _user->getBody()->GetPosition().x;
-  float y = _user->getBody()->GetPosition().y;
+  // Modify character's stats.
+  user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
+
+  float x = user->getBody()->GetPosition().x;
+  float y = user->getBody()->GetPosition().y;
   showOnMap(x, y);
   GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
 
   // Set up kinematicBody's moving speed.
-  _flyingSpeed = (_user->isFacingRight()) ? 3.5f : -3.5f;
-  _body->SetLinearVelocity({_flyingSpeed, 0});
+  float flyingSpeed = (user->isFacingRight()) ? 3.5f : -3.5f;
+  _body->SetLinearVelocity({flyingSpeed, 0});
 
-  if (!_user->isFacingRight()) {
+  if (!user->isFacingRight()) {
     _launchFxSprite->setFlippedX(true);
     _bodySprite->setFlippedX(true);
   }
@@ -112,17 +104,16 @@ void MagicalMissile::activate() {
   auto callback = CallFunc::create([=]() {
     _bodySpritesheet->removeChild(_launchFxSprite, true);
   });
-  b2Vec2 spellUserBodyPos = _user->getBody()->GetPosition();
+  b2Vec2 spellUserBodyPos = user->getBody()->GetPosition();
   x = spellUserBodyPos.x * kPpm;
   y = spellUserBodyPos.y * kPpm;
-  float offset = _user->getCharacterProfile().attackRange;
-  x += (_user->isFacingRight()) ? offset : -offset;
+  float offset = user->getCharacterProfile().attackRange;
+  x += (user->isFacingRight()) ? offset : -offset;
   _launchFxSprite->setPosition(x, y);
   _launchFxSprite->runAction(Sequence::createWithTwoActions(animation, callback));
 
   // Play the spell's main animation.
-  Action* action = Repeat::create(Animate::create(_bodyAnimations[AnimationType::FLYING]), 1);
-  _bodySprite->runAction(action);
+  _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
 
   // FIXME: memleak (if it doesn't hit anything)
   _hasActivated = true;
@@ -146,12 +137,12 @@ string MagicalMissile::getIconPath() const {
 }
 
 
-int MagicalMissile::getDamage() const {
-  return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
-}
-
 Character* MagicalMissile::getUser() const {
   return _user;
+}
+
+int MagicalMissile::getDamage() const {
+  return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
 }
 
 

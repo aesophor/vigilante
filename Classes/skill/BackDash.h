@@ -11,12 +11,12 @@ class Character;
 
 class BackDash : public Skill {
  public:
-  BackDash(const std::string& jsonFileName, Character* user);
+  BackDash(const std::string& jsonFileName);
   virtual ~BackDash() = default;
 
   virtual void import(const std::string& jsonFileName) override; // Skill
-  virtual bool canActivate() override; // Skill
-  virtual void activate() override; // Skill
+  virtual bool canActivate(Character* user) override; // Skill
+  virtual void activate(Character* user) override; // Skill
 
   virtual Skill::Profile& getSkillProfile() override; // Skill
   virtual const std::string& getName() const override; // Skill
@@ -25,8 +25,6 @@ class BackDash : public Skill {
 
  private:
   Skill::Profile _skillProfile;
-  Character* _user;
-
   bool _hasActivated;
 };
 

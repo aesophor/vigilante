@@ -18,7 +18,15 @@ DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
 void DynamicActor::removeFromMap() {
   if (_isShownOnMap) {
     _body->GetWorld()->DestroyBody(_body);
-    GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+
+    if (_bodySpritesheet) {
+      // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
+      GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
+      _bodySpritesheet = nullptr;
+    } else {
+      GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
+    }
+
     _bodySprite = nullptr;
     _isShownOnMap = false;
   }

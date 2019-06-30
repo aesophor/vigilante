@@ -4,13 +4,14 @@
 #include <string>
 
 #include "Importable.h"
+#include "input/Keybindable.h"
 
 namespace vigilante {
 
 class Character;
 
 // Skill interface
-class Skill : public Importable {
+class Skill : public Importable, public Keybindable {
  public:
   struct Profile {
     Profile(const std::string& jsonFileName);
@@ -38,8 +39,8 @@ class Skill : public Importable {
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0; // Importable
 
-  virtual bool canActivate() = 0;
-  virtual void activate() = 0;
+  virtual bool canActivate(Character* user) = 0; // Keybindable
+  virtual void activate(Character* user) = 0; // Keybindable
 
   virtual Skill::Profile& getSkillProfile() = 0;
   virtual const std::string& getName() const = 0;

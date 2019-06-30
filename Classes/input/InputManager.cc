@@ -51,8 +51,17 @@ bool InputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
 
 bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
   // std::set::erase() returns the number of elements erased.
-  return static_cast<bool>(_pressedKeys.erase(keyCode));
+  return _pressedKeys.erase(keyCode) > 0;
 }
 
+
+/*
+Keybindable* InputManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
+
+}
+
+void InputManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* keybindable) {
+}
+*/
 
 } // namespace vigilante
