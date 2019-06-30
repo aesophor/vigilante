@@ -36,7 +36,7 @@ void SkillListView::confirm() {
 
   if (static_cast<bool>(skill->getHotkey())) {
     dialog->setOption(1, true, "Clear", [=]() {
-      InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_NONE, skill);
+      InputManager::getInstance()->clearHotkeyAction(skill->getHotkey());
       showSkills();
     });
   }

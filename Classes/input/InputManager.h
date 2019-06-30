@@ -36,6 +36,7 @@ class InputManager {
 
   Keybindable* getHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode) const;
   void setHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
+  void clearHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode);
   void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:

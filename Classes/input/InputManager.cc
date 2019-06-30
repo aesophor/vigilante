@@ -94,8 +94,30 @@ Keybindable* InputManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const
 void InputManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* keybindable) {
   for (size_t i = 0; i < _kBindableKeys.size(); i++) {
     if (keyCode == _kBindableKeys[i]) {
-      _hotkeys[i] = (static_cast<bool>(keyCode)) ? keybindable : nullptr;
-      _keybindable->setHotkey(keyCode);
+      clearHotkeyAction(keybindable->getHotkey());
+      if (_hotkeys[i]) {
+        clearHotkeyAction(_hotkeys[i]->getHotkey());
+      }
+
+      _hotkeys[i] = keybindable;
+      keybindable->setHotkey(keyCode);
+      return;
+    }
+  }
+}
+
+void InputManager::clearHotkeyAction(EventKeyboard::KeyCode keyCode) {
+  // If keyCode == KeyCode::KEY_NONE, return at once.
+  if (!static_cast<bool>(keyCode)) {
+    return;
+  }
+
+  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
+    if (keyCode == _kBindableKeys[i]) {
+      if (_hotkeys[i]) {
+        _hotkeys[i]->setHotkey(EventKeyboard::KeyCode::KEY_NONE);
+      }
+      _hotkeys[i] = nullptr;
       return;
     }
   }
