@@ -16,20 +16,21 @@ class Character;
 
 class MagicalMissile : public DynamicActor, public Skill, public Projectile {
  public:
-  MagicalMissile(const std::string& jsonFileName);
+  MagicalMissile(const std::string& jsonFileName, Character* user);
   virtual ~MagicalMissile() = default;
 
   virtual void update(float delta) override; // DynamicActor
   virtual void setPosition(float x, float y) override; // DynamicActor
   virtual void showOnMap(float x, float y) override; // DynamicActor
+  virtual void removeFromMap() override; // DynamicActor
 
   virtual Character* getUser() const override; // Projectile
   virtual int getDamage() const override; // Projectile
   virtual void onHit(Character* target) override; // Projectile
 
   virtual void import(const std::string& jsonFileName) override; // Skill
-  virtual bool canActivate(Character* user) override; // Skill
-  virtual void activate(Character* user) override; // Skill
+  virtual bool canActivate() override; // Skill
+  virtual void activate() override; // Skill
 
   virtual Skill::Profile& getSkillProfile() override; // Skill
   virtual const std::string& getName() const override; // Skill
@@ -41,9 +42,10 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual void defineTexture(const std::string& textureResPath, float x, float y);
 
   Skill::Profile _skillProfile;
+  Character* _user;
+  float _flyingSpeed;
   bool _hasActivated;
   bool _hasHit;
-  Character* _user;
 
   cocos2d::Sprite* _launchFxSprite; // sprite of launching fx
 

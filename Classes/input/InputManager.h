@@ -2,7 +2,7 @@
 #define VIGILANTE_INPUT_MANAGER_H_
 
 #include <set>
-#include <unordered_set>
+#include <array>
 
 #include "cocos2d.h"
 
@@ -21,8 +21,18 @@ class InputManager {
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
-  //Keybindable* getHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode) const;
-  //void setHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
+  enum Hotkey {
+    LEFT_SHIFT,
+    LEFT_CTRL,
+    X,
+    C,
+    V,
+    SIZE
+  };
+  static const std::array<cocos2d::EventKeyboard::KeyCode, InputManager::Hotkey::SIZE> _kBindableKeys;
+
+  Keybindable* getHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode) const;
+  void setHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
 
  private:
   static InputManager* _instance;
@@ -34,7 +44,7 @@ class InputManager {
   std::set<cocos2d::EventKeyboard::KeyCode> _pressedKeys;
 
   // Hotkeys (keybindings)
-  //std::unordered_set<cocos2d::EventKeyboard::KeyCode, Keybindable*> _hotkeys;
+  std::array<Keybindable*, InputManager::Hotkey::SIZE> _hotkeys;
 };
 
 } // namespace vigilante

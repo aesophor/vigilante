@@ -31,8 +31,9 @@ class Item : public DynamicActor, public Importable {
     std::string desc;
   };
 
-  // Create an item by automatically deducing its concrete type.
-  static Item* create(const std::string& itemJsonFile);
+  // Create an item by automatically deducing its concrete type
+  // based on the json passed in.
+  static Item* create(const std::string& jsonFileName);
 
   virtual ~Item() = default;
   virtual void showOnMap(float x, float y) override; // DynamicActor

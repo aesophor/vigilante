@@ -98,8 +98,8 @@ class Character : public DynamicActor, public Importable, public Regeneratable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(Item* item, int amount);
-  virtual void removeItem(Item* item, int amount);
+  virtual void addItem(Item* item, int amount=1);
+  virtual void removeItem(Item* item, int amount=1);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);

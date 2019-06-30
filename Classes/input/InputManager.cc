@@ -2,6 +2,7 @@
 
 #include "map/GameMapManager.h"
 
+using std::array;
 using cocos2d::Scene;
 using cocos2d::Event;
 using cocos2d::EventKeyboard;
@@ -11,6 +12,15 @@ namespace vigilante {
 
 InputManager* InputManager::_instance = nullptr;
 
+const array<EventKeyboard::KeyCode, InputManager::Hotkey::SIZE> InputManager::_kBindableKeys = {{
+  EventKeyboard::KeyCode::KEY_LEFT_SHIFT,
+  EventKeyboard::KeyCode::KEY_LEFT_CTRL,
+  EventKeyboard::KeyCode::KEY_X,
+  EventKeyboard::KeyCode::KEY_C,
+  EventKeyboard::KeyCode::KEY_V
+}};
+
+
 InputManager* InputManager::getInstance() {
   if (!_instance) {
     _instance = new InputManager();
@@ -18,7 +28,11 @@ InputManager* InputManager::getInstance() {
   return _instance;
 }
 
-InputManager::InputManager() : _scene(), _keyboardEvLstnr() {}
+InputManager::InputManager()
+    : _scene(),
+      _keyboardEvLstnr(),
+      _pressedKeys(),
+      _hotkeys() {}
 
 
 void InputManager::activate(Scene* scene) {
@@ -55,13 +69,22 @@ bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
 }
 
 
-/*
 Keybindable* InputManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
-
+  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
+    if (keyCode == _kBindableKeys[i]) {
+      return _hotkeys[i];
+    }
+  }
+  return nullptr;
 }
 
 void InputManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* keybindable) {
+  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
+    if (keyCode == _kBindableKeys[i]) {
+      _hotkeys[i] = keybindable;
+      return;
+    }
+  }
 }
-*/
 
 } // namespace vigilante

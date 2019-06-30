@@ -11,6 +11,7 @@ Consumable::Consumable(const string& jsonFileName)
     : Item(jsonFileName),
       _consumableProfile(jsonFileName) {}
 
+
 void Consumable::import(const string& jsonFileName) {
   Item::import(jsonFileName);
   _consumableProfile = Consumable::Profile(jsonFileName);

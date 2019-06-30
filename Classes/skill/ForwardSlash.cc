@@ -8,40 +8,43 @@ using std::string;
 
 namespace vigilante {
 
-ForwardSlash::ForwardSlash(const string& jsonFileName)
-    : _skillProfile(jsonFileName), _hasActivated() {}
+ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
+    : Skill(),
+      _skillProfile(jsonFileName),
+      _user(user),
+      _hasActivated() {}
 
 
 void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
-bool ForwardSlash::canActivate(Character* user) {
-  return !user->isWeaponSheathed()
-    && user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
+bool ForwardSlash::canActivate() {
+  return !_user->isWeaponSheathed()
+    && _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
 }
 
-void ForwardSlash::activate(Character* user) {
+void ForwardSlash::activate() {
   if (_hasActivated) {
     return;
   }
 
   // Modify character's stats.
-  user->getCharacterProfile().stamina += _skillProfile.deltaStamina;
+  _user->getCharacterProfile().stamina += _skillProfile.deltaStamina;
 
-  float rushPower = (user->isFacingRight()) ? 5.0f : -5.0f;
-  user->getBody()->SetLinearVelocity({rushPower, 0});
+  float rushPower = (_user->isFacingRight()) ? 5.0f : -5.0f;
+  _user->getBody()->SetLinearVelocity({rushPower, 0});
 
-  float oldBodyDamping = user->getBody()->GetLinearDamping();
-  user->getBody()->SetLinearDamping(4.0f);
+  float oldBodyDamping = _user->getBody()->GetLinearDamping();
+  _user->getBody()->SetLinearDamping(4.0f);
 
-  user->setInvincible(true);
-  user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
+  _user->setInvincible(true);
+  _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
   callback_util::runAfter([=]() {
-    user->getBody()->SetLinearDamping(oldBodyDamping);
-    user->setInvincible(false);
-    user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
+    _user->getBody()->SetLinearDamping(oldBodyDamping);
+    _user->setInvincible(false);
+    _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
     delete this;
   }, _skillProfile.framesDuration);
 }

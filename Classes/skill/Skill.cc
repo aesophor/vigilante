@@ -3,6 +3,9 @@
 #include "cocos2d.h"
 #include "json/document.h"
 
+#include "skill/BackDash.h"
+#include "skill/ForwardSlash.h"
+#include "skill/MagicalMissile.h"
 #include "util/JsonUtil.h"
 
 using std::string;
@@ -10,7 +13,20 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-Skill::Profile::Profile(const string& jsonFileName) {
+Skill* Skill::create(const string& jsonFileName, Character* user) {
+  if (jsonFileName.find("back_dash") != jsonFileName.npos) {
+    return new BackDash(jsonFileName, user);
+  } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
+    return new ForwardSlash(jsonFileName, user);
+  } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
+    return new MagicalMissile(jsonFileName, user);
+  } else {
+    return nullptr;
+  }
+}
+
+
+Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
 
   characterFramesName = json["characterFramesName"].GetString();

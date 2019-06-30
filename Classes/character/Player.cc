@@ -5,6 +5,7 @@
 #include "CategoryBits.h"
 #include "GraphicalLayers.h"
 #include "input/InputManager.h"
+#include "input/Keybindable.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
 #include "skill/BackDash.h"
@@ -103,8 +104,6 @@ void Player::handleInput() {
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
     if (!_isWeaponSheathed) {
       attack();
-    } else {
-      NotificationManager::getInstance()->show("You haven't equipped a weapon yet.");
     }
   }
 
@@ -123,13 +122,16 @@ void Player::handleInput() {
     }
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_X)) {
-    Skill* skill = new MagicalMissile("Resources/Database/skill/ice_spike.json");
-    activateSkill(skill);
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_C)) {
-    activateSkill(new ForwardSlash("Resources/Database/skill/forward_slash.json"));
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_S)) {
-    activateSkill(new BackDash("Resources/Database/skill/back_dash.json"));
+  // Hotkeys
+  for (auto keyCode : InputManager::_kBindableKeys) {
+    Keybindable* action = inputMgr->getHotkeyAction(keyCode);
+    if (inputMgr->isKeyJustPressed(keyCode) && action) {
+      if (dynamic_cast<Skill*>(action)) {
+        activateSkill(dynamic_cast<Skill*>(action));
+      } else if (dynamic_cast<Consumable*>(action)) {
+        useItem(dynamic_cast<Consumable*>(action));
+      }
+    }
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {

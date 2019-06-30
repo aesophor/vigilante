@@ -11,7 +11,7 @@
 #include "gameplay/ExpPointTable.h"
 #include "input/InputManager.h"
 #include "map/GameMap.h"
-#include "skill/BackDash.h"
+#include "skill/Skill.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
@@ -104,8 +104,8 @@ bool MainGameScene::init() {
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
-  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/item/equipment/short_sword.json"), 1);
-  _gameMapManager->getPlayer()->addItem(new Equipment("Resources/Database/item/equipment/royal_cape.json"), 1);
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
@@ -119,7 +119,12 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(new BackDash("Resources/Database/skill/ice_spike.json"));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
+  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_X, player->getSkills()[0]);
+  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_LEFT_SHIFT, player->getSkills()[1]);
+  InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_C, player->getSkills()[2]);
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));

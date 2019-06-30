@@ -594,7 +594,7 @@ void Character::activateSkill(Skill* skill) {
   // If this character is still using another skill, or
   // he/she doesn't meet the criteria of activating this skill,
   // delete skill and return at once.
-  if (_isUsingSkill || !skill->canActivate(this)) {
+  if (_isUsingSkill || !skill->canActivate()) {
     return;
   }
 
@@ -613,7 +613,8 @@ void Character::activateSkill(Skill* skill) {
     runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
   }
 
-  skill->activate(this);
+  Skill* copiedSkill = Skill::create(skill->getSkillProfile().jsonFileName, this);
+  copiedSkill->activate();
   Hud::getInstance()->updateStatusBars();
 }
 

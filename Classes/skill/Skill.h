@@ -17,6 +17,7 @@ class Skill : public Importable, public Keybindable {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
+    std::string jsonFileName;
     std::string characterFramesName;
     float framesDuration;
     float frameInterval;
@@ -36,11 +37,15 @@ class Skill : public Importable, public Keybindable {
     int deltaStamina;
   };
 
+  // Create a skill by automatically deducing its concrete type
+  // based on the json passed in.
+  static Skill* create(const std::string& jsonFileName, Character* user);
+
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0; // Importable
 
-  virtual bool canActivate(Character* user) = 0; // Keybindable
-  virtual void activate(Character* user) = 0; // Keybindable
+  virtual bool canActivate() = 0;
+  virtual void activate() = 0;
 
   virtual Skill::Profile& getSkillProfile() = 0;
   virtual const std::string& getName() const = 0;

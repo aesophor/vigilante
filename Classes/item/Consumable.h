@@ -8,7 +8,7 @@
 
 namespace vigilante {
 
-class Consumable : public Item {
+class Consumable : public Item, public Keybindable {
  public:
   struct Profile {
     Profile(const std::string& jsonFileName);

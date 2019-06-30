@@ -3,13 +3,9 @@
 
 namespace vigilante {
 
-class Character;
-
 class Keybindable {
  public:
   virtual ~Keybindable() = default;
-  virtual bool canActivate(Character* user) = 0;
-  virtual void activate(Character* user) = 0;
 };
 
 } // namespace vigilante

@@ -8,31 +8,34 @@ using std::string;
 
 namespace vigilante {
 
-BackDash::BackDash(const string& jsonFileName)
-    : _skillProfile(jsonFileName), _hasActivated() {}
+BackDash::BackDash(const string& jsonFileName, Character* user)
+    : Skill(),
+      _skillProfile(jsonFileName),
+      _user(user),
+      _hasActivated() {}
 
 
 void BackDash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
-bool BackDash::canActivate(Character* user) {
-  return !user->isWeaponSheathed() && !user->isJumping();
+bool BackDash::canActivate() {
+  return !_user->isWeaponSheathed() && !_user->isJumping();
 }
 
-void BackDash::activate(Character* user) {
+void BackDash::activate() {
   if (_hasActivated) {
     return;
   }
 
-  float dashPower = (user->isFacingRight()) ? -3.8f : 3.8f;
-  user->getBody()->SetLinearVelocity({dashPower, .6f});
+  float dashPower = (_user->isFacingRight()) ? -3.8f : 3.8f;
+  _user->getBody()->SetLinearVelocity({dashPower, .6f});
 
-  float oldBodyDamping = user->getBody()->GetLinearDamping();
-  user->getBody()->SetLinearDamping(4.0f);
+  float oldBodyDamping = _user->getBody()->GetLinearDamping();
+  _user->getBody()->SetLinearDamping(4.0f);
 
   callback_util::runAfter([=]() {
-    user->getBody()->SetLinearDamping(oldBodyDamping);
+    _user->getBody()->SetLinearDamping(oldBodyDamping);
     delete this;
   }, _skillProfile.framesDuration);
 }
