@@ -25,6 +25,10 @@ void AbstractPane::setVisible(bool visible) const {
 }
 
 
+PauseMenu* AbstractPane::getPauseMenu() const {
+  return _pauseMenu;
+}
+
 Layout* AbstractPane::getLayout() const {
   return _layout;
 }

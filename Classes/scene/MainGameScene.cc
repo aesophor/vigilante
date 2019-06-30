@@ -15,6 +15,7 @@
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
+#include "util/KeyCodeUtil.h"
 #include "util/RandUtil.h"
 
 using std::string;
@@ -94,6 +95,9 @@ bool MainGameScene::init() {
 
   // Initialize Vigilante's CallbackUtil.
   vigilante::callback_util::init(this);
+
+  // Initialize Vigilante's KeycodeUtil.
+  vigilante::keycode_util::init();
 
   // Initialize Vigilante's RandUtil.
   vigilante::rand_util::init();

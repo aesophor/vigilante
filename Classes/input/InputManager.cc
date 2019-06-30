@@ -56,6 +56,7 @@ void InputManager::activate(Scene* scene) {
       _isAssigningHotkey = false;
       _keybindable = nullptr;
       _pauseMenuDialog->setVisible(false);
+      _pauseMenuDialog->getPauseMenu()->update();
     }
   };
 

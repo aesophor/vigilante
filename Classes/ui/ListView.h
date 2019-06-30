@@ -13,6 +13,8 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "item/Item.h"
+#include "input/Keybindable.h"
 #include "ui/TableLayout.h"
 #include "character/Character.h"
 
@@ -236,6 +238,16 @@ void ListView<T>::ListViewItem::setObject(T object) {
   _object = object;
   _icon->loadTexture((object) ? object->getIconPath() : asset_manager::kEmptyItemIcon);
   _label->setString((object) ? object->getName() : "---");
+
+  Item* item = dynamic_cast<Item*>(object);
+  if (item && item->getAmount() > 1) {
+    _label->setString(_label->getString() + " (" + std::to_string(item->getAmount()) + ")");
+  }
+
+  Keybindable* keybindable = dynamic_cast<Keybindable*>(object);
+  if (keybindable && !keybindable->getHotkey().empty()) {
+    _label->setString(_label->getString() + " [" + keybindable->getHotkey() + "]");
+  }
 }
 
 template <typename T>
