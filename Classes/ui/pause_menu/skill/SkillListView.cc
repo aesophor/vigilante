@@ -8,6 +8,7 @@
 
 using std::deque;
 using std::vector;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -25,13 +26,20 @@ void SkillListView::confirm() {
   dialog->reset();
   dialog->setMessage("What would you like to do with " + skill->getName() + "?");
 
-  dialog->setOption(1, true, "Assign", [=]() {
+  dialog->setOption(0, true, "Assign", [=]() {
     dialog->reset();
     dialog->setMessage("Press a key to assign to...");
     dialog->setOption(2, true, "Cancel");
     dialog->show();
     InputManager::getInstance()->promptHotkey(skill, dialog);
   });
+
+  if (static_cast<bool>(skill->getHotkey())) {
+    dialog->setOption(1, true, "Clear", [=]() {
+      InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_NONE, skill);
+      showSkills();
+    });
+  }
 
   dialog->setOption(2, true, "Cancel");
   dialog->show();

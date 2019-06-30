@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "cocos2d.h"
+
 #include "item/Item.h"
 #include "input/Keybindable.h"
 
@@ -31,15 +33,15 @@ class Consumable : public Item, public Keybindable {
     int bonusMoveSpeed;
     int bonusJumpHeight;
 
-    std::string hotkey;
+    cocos2d::EventKeyboard::KeyCode hotkey;
   };
 
   Consumable(const std::string& jsonFileName);
   virtual ~Consumable() = default;
   virtual void import (const std::string& jsonFileName) override; // Importable
 
-  virtual const std::string& getHotkey() const override; // Keybindable
-  virtual void setHotkey(const std::string& hotkey) override; // Keybindable
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override; // Keybindable
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override; // Keybindable
 
   Consumable::Profile& getConsumableProfile();
 

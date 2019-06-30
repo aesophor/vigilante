@@ -5,6 +5,7 @@
 #include "util/CallbackUtil.h"
 
 using std::string;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -19,11 +20,11 @@ void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
-const string& ForwardSlash::getHotkey() const {
+EventKeyboard::KeyCode ForwardSlash::getHotkey() const {
   return _skillProfile.hotkey;
 }
 
-void ForwardSlash::setHotkey(const string& hotkey) {
+void ForwardSlash::setHotkey(EventKeyboard::KeyCode hotkey) {
   _skillProfile.hotkey = hotkey;
 }
 

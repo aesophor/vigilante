@@ -2,7 +2,6 @@
 
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
-#include "util/KeyCodeUtil.h"
 
 using std::set;
 using std::array;
@@ -52,7 +51,6 @@ void InputManager::activate(Scene* scene) {
       }
     } else {
       setHotkeyAction(keyCode, _keybindable);
-      _keybindable->setHotkey(keycode_util::keyCodeToString(keyCode));
       _isAssigningHotkey = false;
       _keybindable = nullptr;
       _pauseMenuDialog->setVisible(false);
@@ -96,7 +94,8 @@ Keybindable* InputManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const
 void InputManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* keybindable) {
   for (size_t i = 0; i < _kBindableKeys.size(); i++) {
     if (keyCode == _kBindableKeys[i]) {
-      _hotkeys[i] = keybindable;
+      _hotkeys[i] = (static_cast<bool>(keyCode)) ? keybindable : nullptr;
+      _keybindable->setHotkey(keyCode);
       return;
     }
   }

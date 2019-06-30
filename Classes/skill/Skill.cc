@@ -26,7 +26,7 @@ Skill* Skill::create(const string& jsonFileName, Character* user) {
 }
 
 
-Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
+Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName), hotkey() {
   Document json = json_util::parseJson(jsonFileName);
 
   characterFramesName = json["characterFramesName"].GetString();

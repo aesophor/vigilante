@@ -16,7 +16,7 @@
 #include "item/Item.h"
 #include "input/Keybindable.h"
 #include "ui/TableLayout.h"
-#include "character/Character.h"
+#include "util/KeyCodeUtil.h"
 
 namespace vigilante {
 
@@ -245,8 +245,8 @@ void ListView<T>::ListViewItem::setObject(T object) {
   }
 
   Keybindable* keybindable = dynamic_cast<Keybindable*>(object);
-  if (keybindable && !keybindable->getHotkey().empty()) {
-    _label->setString(_label->getString() + " [" + keybindable->getHotkey() + "]");
+  if (keybindable && static_cast<bool>(keybindable->getHotkey())) {
+    _label->setString(_label->getString() + " [" + keycode_util::keyCodeToString(keybindable->getHotkey()) + "]");
   }
 }
 

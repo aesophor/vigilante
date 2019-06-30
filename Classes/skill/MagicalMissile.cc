@@ -26,6 +26,7 @@ using cocos2d::SpriteFrame;
 using cocos2d::SpriteBatchNode;
 using cocos2d::SpriteFrameCache;
 using cocos2d::Animation;
+using cocos2d::EventKeyboard;
 using vigilante::category_bits::kProjectile;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
@@ -69,11 +70,11 @@ void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
 }
 
-const string& MagicalMissile::getHotkey() const {
+EventKeyboard::KeyCode MagicalMissile::getHotkey() const {
   return _skillProfile.hotkey;
 }
 
-void MagicalMissile::setHotkey(const string& hotkey) {
+void MagicalMissile::setHotkey(EventKeyboard::KeyCode hotkey) {
   _skillProfile.hotkey = hotkey;
 }
 
