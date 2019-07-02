@@ -55,6 +55,28 @@ void MagicalMissile::showOnMap(float x, float y) {
   }
 }
 
+void MagicalMissile::update(float delta) {
+  DynamicActor::update(delta);
+  
+  // If _body goes out of map, then we can delete this object.
+  float x = _body->GetPosition().x * kPpm;
+  float y = _body->GetPosition().y * kPpm;
+  auto gameMap = GameMapManager::getInstance()->getGameMap()->getTmxTiledMap();
+  float mapWidth = gameMap->getMapSize().width * gameMap->getTileSize().width;
+  float mapHeight = gameMap->getMapSize().height * gameMap->getTileSize().height;
+
+  if (!_hasHit && (x < 0 || x > mapWidth || y < 0 || y > mapHeight)) {
+    _hasHit = true;
+    _body->SetLinearVelocity({0, 0});
+
+    callback_util::runAfter([=]() {
+      removeFromMap();
+      GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+      delete this;
+    }, .5f);
+  }
+}
+
 
 int MagicalMissile::getDamage() const {
   return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
@@ -71,7 +93,7 @@ void MagicalMissile::onHit(Character* target) {
 
   _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
 
-  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
+  auto animation = Animate::create(_bodyAnimations[AnimationType::ON_HIT]);
   auto callback = CallFunc::create([=]() {
     removeFromMap();
     GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);

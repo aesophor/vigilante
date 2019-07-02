@@ -20,6 +20,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual ~MagicalMissile() = default;
 
   virtual void showOnMap(float x, float y) override; // DynamicActor
+  virtual void update(float delta) override; // DynamicActor
 
   virtual Character* getUser() const override; // Projectile
   virtual int getDamage() const override; // Projectile
