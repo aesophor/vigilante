@@ -23,10 +23,6 @@ StaticActor::StaticActor(size_t numAnimations)
       _bodyAnimations(numAnimations) {}
 
 
-void StaticActor::setPosition(float x, float y) {
-  _bodySprite->setPosition(x, y);
-}
-
 void StaticActor::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
@@ -48,6 +44,10 @@ void StaticActor::removeFromMap() {
     _bodySprite = nullptr;
     _isShownOnMap = false;
   }
+}
+
+void StaticActor::setPosition(float x, float y) {
+  _bodySprite->setPosition(x, y);
 }
 
 

@@ -43,16 +43,6 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
       _launchFxSprite() {}
 
 
-void MagicalMissile::update(float delta) {
-  // Sync the sprite with b2body.
-  b2Vec2 bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(bodyPos.x * kPpm, bodyPos.y * kPpm);
-}
-
-void MagicalMissile::setPosition(float x, float y) {
-  _body->SetTransform({x, y}, 0);
-}
-
 void MagicalMissile::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
     short categoryBits = kProjectile;
@@ -63,6 +53,40 @@ void MagicalMissile::showOnMap(float x, float y) {
     GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
     _isShownOnMap = true;
   }
+}
+
+
+int MagicalMissile::getDamage() const {
+  return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
+}
+
+Character* MagicalMissile::getUser() const {
+  return _user;
+}
+
+void MagicalMissile::onHit(Character* target) {
+  if (_hasHit) {
+    return;
+  }
+
+  _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
+
+  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
+  auto callback = CallFunc::create([=]() {
+    removeFromMap();
+    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+    delete this;
+  });
+  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
+
+  if (target) {
+    _user->inflictDamage(target, getDamage());
+    bool isFacingRight = _body->GetLinearVelocity().x > 0;
+    float knockBackForceX = (isFacingRight) ? 2.0f : -2.0f;
+    float knockBackForceY = 1.0f;
+    _user->knockBack(target, knockBackForceX, knockBackForceY);
+  }
+  _hasHit = true;
 }
 
 
@@ -140,41 +164,6 @@ const string& MagicalMissile::getDesc() const {
 
 string MagicalMissile::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
-}
-
-
-int MagicalMissile::getDamage() const {
-  return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
-}
-
-Character* MagicalMissile::getUser() const {
-  return _user;
-}
-
-
-void MagicalMissile::onHit(Character* target) {
-  if (_hasHit) {
-    return;
-  }
-
-  _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
-
-  auto animation = Repeat::create(Animate::create(_bodyAnimations[AnimationType::ON_HIT]), 1);
-  auto callback = CallFunc::create([=]() {
-    removeFromMap();
-    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
-    delete this;
-  });
-  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
-
-  if (target) {
-    _user->inflictDamage(target, getDamage());
-    bool isFacingRight = _body->GetLinearVelocity().x > 0;
-    float knockBackForceX = (isFacingRight) ? 2.0f : -2.0f;
-    float knockBackForceY = 1.0f;
-    _user->knockBack(target, knockBackForceX, knockBackForceY);
-  }
-  _hasHit = true;
 }
 
 

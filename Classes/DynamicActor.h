@@ -25,6 +25,7 @@ class DynamicActor : public StaticActor {
 
   virtual void showOnMap(float x, float y) = 0; // StaticActor
   virtual void removeFromMap() override; // StaticActor
+  virtual void setPosition(float x, float y) override; // StaticActor
   virtual void update(float delta);
 
   b2Body* getBody() const;

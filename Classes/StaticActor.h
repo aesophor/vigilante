@@ -15,11 +15,11 @@ namespace vigilante {
 class StaticActor {
  public:
   virtual ~StaticActor() = default;
-  virtual void setPosition(float x, float y);
 
   // Show and hide the sprite in the game map.
   virtual void showOnMap(float x, float y);
   virtual void removeFromMap();
+  virtual void setPosition(float x, float y);
 
   cocos2d::Sprite* getBodySprite() const;
   cocos2d::SpriteBatchNode* getBodySpritesheet() const;

@@ -32,6 +32,10 @@ void DynamicActor::removeFromMap() {
   }
 }
 
+void DynamicActor::setPosition(float x, float y) {
+  _body->SetTransform({x, y}, 0);
+}
+
 void DynamicActor::update(float delta) {
   // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();

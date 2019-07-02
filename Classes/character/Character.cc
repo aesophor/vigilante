@@ -106,6 +106,25 @@ Character::~Character() {
 }
 
 
+void Character::removeFromMap() {
+  if (_isShownOnMap) {
+    if (!_isKilled) {
+      _body->GetWorld()->DestroyBody(_body);
+    }
+
+    GameMapManager* gmMgr = GameMapManager::getInstance();
+    gmMgr->getLayer()->removeChild(_bodySpritesheet);
+    for (auto equipment : _equipmentSlots) {
+      if (equipment) {
+        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+        gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
+      }
+    }
+
+    _isShownOnMap = false;
+  }
+}
+
 void Character::update(float delta) {
   if (_isKilled) return;
 
@@ -206,29 +225,6 @@ void Character::update(float delta) {
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
     }
-  }
-}
-
-void Character::setPosition(float x, float y) {
-  _body->SetTransform({x, y}, 0);
-}
-
-void Character::removeFromMap() {
-  if (_isShownOnMap) {
-    if (!_isKilled) {
-      _body->GetWorld()->DestroyBody(_body);
-    }
-
-    GameMapManager* gmMgr = GameMapManager::getInstance();
-    gmMgr->getLayer()->removeChild(_bodySpritesheet);
-    for (auto equipment : _equipmentSlots) {
-      if (equipment) {
-        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-        gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
-      }
-    }
-
-    _isShownOnMap = false;
   }
 }
 
