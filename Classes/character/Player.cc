@@ -52,25 +52,26 @@ namespace vigilante {
 Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
 
 void Player::showOnMap(float x, float y) {
-  if (!_isShownOnMap) {
-    _isShownOnMap = true;
+  if (_isShownOnMap) {
+    return;
+  }
+  _isShownOnMap = true;
 
-    // Construct b2Body and b2Fixtures
-    short bodyCategoryBits = kPlayer;
-    short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
-    short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
-    short weaponMaskBits = kEnemy;
-    defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+  // Construct b2Body and b2Fixtures
+  short bodyCategoryBits = kPlayer;
+  short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
+  short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
+  short weaponMaskBits = kEnemy;
+  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
-    // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
-    defineTexture(_characterProfile.textureResDir, x, y);
-    GameMapManager* gmMgr = GameMapManager::getInstance();
-    gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
-    for (auto equipment : _equipmentSlots) {
-      if (equipment) {
-        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-        gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
-      }
+  // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
+  defineTexture(_characterProfile.textureResDir, x, y);
+  GameMapManager* gmMgr = GameMapManager::getInstance();
+  gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
+  for (auto equipment : _equipmentSlots) {
+    if (equipment) {
+      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
 }

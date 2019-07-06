@@ -45,18 +45,19 @@ Item::Item(const string& jsonFileName)
 
 
 void Item::showOnMap(float x, float y) {
-  if (!_isShownOnMap) {
-    _isShownOnMap = true;
-    GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
-
-    short categoryBits = kItem;
-    short maskBits = kGround | kPlatform | kWall;
-    defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
-
-    _bodySprite = Sprite::create(getIconPath());
-    _bodySprite->getTexture()->setAliasTexParameters();
-    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+  if (_isShownOnMap) {
+    return;
   }
+  _isShownOnMap = true;
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
+  short categoryBits = kItem;
+  short maskBits = kGround | kPlatform | kWall;
+  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+
+  _bodySprite = Sprite::create(getIconPath());
+  _bodySprite->getTexture()->setAliasTexParameters();
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
 }
 
 void Item::import(const string& jsonFileName) {

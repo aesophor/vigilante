@@ -44,17 +44,18 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
 
 
 void MagicalMissile::showOnMap(float x, float y) {
-  if (!_isShownOnMap) {
-    _isShownOnMap = true;
-    GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
-
-    short categoryBits = kProjectile;
-    short maskBits = kPlayer | kEnemy | kWall;
-    defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
-
-    defineTexture(_skillProfile.textureResDir, x, y);
-    GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
+  if (_isShownOnMap) {
+    return;
   }
+  _isShownOnMap = true;
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
+  short categoryBits = kProjectile;
+  short maskBits = kPlayer | kEnemy | kWall;
+  defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
+
+  defineTexture(_skillProfile.textureResDir, x, y);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
 }
 
 void MagicalMissile::update(float delta) {

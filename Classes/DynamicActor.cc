@@ -17,20 +17,22 @@ DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
 
 
 void DynamicActor::removeFromMap() {
-  if (_isShownOnMap) {
-    _isShownOnMap = false;
-    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
-
-    // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
-    GameMapManager::getInstance()->getLayer()->removeChild(
-      (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
-    );
-    _bodySpritesheet = nullptr;
-    _bodySprite = nullptr;
-
-    _body->GetWorld()->DestroyBody(_body);
-    _body = nullptr;
+  if (!_isShownOnMap) {
+    return;
   }
+
+  _isShownOnMap = false;
+  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+
+  // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
+  GameMapManager::getInstance()->getLayer()->removeChild(
+    (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
+  );
+  _bodySpritesheet = nullptr;
+  _bodySprite = nullptr;
+
+  _body->GetWorld()->DestroyBody(_body);
+  _body = nullptr;
 }
 
 void DynamicActor::setPosition(float x, float y) {

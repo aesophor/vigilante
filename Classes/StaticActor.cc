@@ -6,6 +6,7 @@
 
 using std::string;
 using std::runtime_error;
+using cocos2d::Node;
 using cocos2d::FileUtils;
 using cocos2d::Vector;
 using cocos2d::Animation;
@@ -24,27 +25,28 @@ StaticActor::StaticActor(size_t numAnimations)
 
 
 void StaticActor::showOnMap(float x, float y) {
-  if (!_isShownOnMap) {
-    GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
-    _bodySprite->setPosition(x, y);
-    _isShownOnMap = true;
+  if (_isShownOnMap) {
+    return;
   }
+  _isShownOnMap = true;
+
+  _bodySprite->setPosition(x, y);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
 }
 
 void StaticActor::removeFromMap() {
-  if (_isShownOnMap) {
-    if (_bodySpritesheet) {
-      // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
-      GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
-      _bodySpritesheet = nullptr;
-    } else {
-      GameMapManager::getInstance()->getLayer()->removeChild(_bodySprite);
-    }
-
-    _bodySprite = nullptr;
-    _isShownOnMap = false;
+  if (!_isShownOnMap) {
+    return;
   }
-}
+  _isShownOnMap = false;
+
+  // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
+  GameMapManager::getInstance()->getLayer()->removeChild(
+    (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
+  );
+  _bodySpritesheet = nullptr;
+  _bodySprite = nullptr;
+ }
 
 void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);
