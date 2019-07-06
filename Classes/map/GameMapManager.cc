@@ -60,10 +60,12 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // Clean up previous GameMap.
   if (_gameMap) {
     _layer->removeChild(_gameMap->getTmxTiledMap());
+    _gameMap->deleteObjects();
     _gameMap.reset(); // deletes the underlying GameMap object
   }
 
   _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
+  _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
   // If the player object hasn't been created, spawn it.

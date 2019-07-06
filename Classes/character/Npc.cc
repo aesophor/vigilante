@@ -54,6 +54,9 @@ void Npc::update(float delta) {
 
 void Npc::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
+    _isShownOnMap = true;
+    GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
     // Construct b2Body and b2Fixtures.
     short bodyCategoryBits = kNpc;
     short bodyMaskBits = kFeet | kMeleeWeapon | kCliffMarker | kProjectile;
@@ -71,8 +74,6 @@ void Npc::showOnMap(float x, float y) {
         gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
       }
     }
-
-    _isShownOnMap = true;
   }
 }
 

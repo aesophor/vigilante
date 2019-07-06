@@ -34,7 +34,10 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
       _dynamicActors(),
-      _portals() {
+      _portals() {}
+
+
+void GameMap::createObjects() {
   // Create box2d objects from layers.
   createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
   createPolylines("Wall", category_bits::kWall, true, kWallFriction);
@@ -48,21 +51,21 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
   createEnemies();
 }
 
-GameMap::~GameMap() {
+void GameMap::deleteObjects() {
   // Destroy ground, walls, platforms and portal bodies.
   for (auto body : _tmxTiledMapBodies) {
     _world->DestroyBody(body);
   }
 
-  for (auto actor : _dynamicActors) {
-    actor->removeFromMap();
+  for (auto it = _dynamicActors.begin(); it != _dynamicActors.end();) {
+    DynamicActor* actor = *(it++);
+    actor->removeFromMap(); // will remove `actor` from `_dynamicActors` 
     delete actor;
   }
   for (auto portal : _portals) {
     delete portal;
   }
 }
-
 
 unordered_set<b2Body*>& GameMap::getTmxTiledMapBodies() {
   return _tmxTiledMapBodies;
@@ -81,6 +84,14 @@ const vector<GameMap::Portal*>& GameMap::getPortals() const {
   return _portals;
 }
 
+float GameMap::getWidth() const {
+  return _tmxTiledMap->getMapSize().width * _tmxTiledMap->getTileSize().width;
+}
+
+float GameMap::getHeight() const {
+  return _tmxTiledMap->getMapSize().height * _tmxTiledMap->getTileSize().height;
+}
+
 
 Player* GameMap::createPlayer() const {
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
@@ -96,7 +107,6 @@ Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
   Item* item = Item::create(itemJson);
   item->setAmount(amount);
   item->showOnMap(x, y);
-  _dynamicActors.insert(item);
 
   float offsetX = rand_util::randFloat(-.3f, .3f);
   float offsetY = 3.0f;
@@ -204,7 +214,6 @@ void GameMap::createNpcs() {
 
     Npc* npc = new Npc(json);
     npc->showOnMap(x, y);
-    _dynamicActors.insert(npc);
   }
 }
 
@@ -217,7 +226,6 @@ void GameMap::createEnemies() {
 
     Enemy* enemy = new Enemy(json);
     enemy->showOnMap(x, y);
-    _dynamicActors.insert(enemy);
   }
 }
 

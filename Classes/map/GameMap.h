@@ -39,7 +39,10 @@ class GameMap {
   };
 
   GameMap(b2World* world, const std::string& tmxMapFileName);
-  virtual ~GameMap();
+  virtual ~GameMap() = default;
+
+  void createObjects();
+  void deleteObjects();
 
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
@@ -49,6 +52,9 @@ class GameMap {
 
   Player* createPlayer() const;
   Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
+
+  float getWidth() const;
+  float getHeight() const;
 
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);

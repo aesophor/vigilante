@@ -4,12 +4,14 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 
+#include "map/GameMap.h"
+
 namespace vigilante {
 
 namespace camera_util {
 
 // Camera following a character
-void boundCamera(cocos2d::Camera* camera, cocos2d::TMXTiledMap* map);
+void boundCamera(cocos2d::Camera* camera, GameMap* gameMap);
 void lerpToTarget(cocos2d::Camera* camera, const b2Vec2& target);
 
 // Camera shake

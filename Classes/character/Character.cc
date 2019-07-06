@@ -108,6 +108,9 @@ Character::~Character() {
 
 void Character::removeFromMap() {
   if (_isShownOnMap) {
+    _isShownOnMap = false;
+    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+
     if (!_isKilled) {
       _body->GetWorld()->DestroyBody(_body);
     }
@@ -120,8 +123,6 @@ void Character::removeFromMap() {
         gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
       }
     }
-
-    _isShownOnMap = false;
   }
 }
 
@@ -754,8 +755,6 @@ void Character::unequip(Equipment::Type equipmentType) {
 
 void Character::pickupItem(Item* item) {
   item->removeFromMap();
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(item);
-
   addItem(item, item->getAmount());
 }
 

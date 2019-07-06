@@ -53,6 +53,8 @@ Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
 
 void Player::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
+    _isShownOnMap = true;
+
     // Construct b2Body and b2Fixtures
     short bodyCategoryBits = kPlayer;
     short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
@@ -70,8 +72,25 @@ void Player::showOnMap(float x, float y) {
         gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
       }
     }
+  }
+}
 
-    _isShownOnMap = true;
+void Player::removeFromMap() {
+  if (_isShownOnMap) {
+    _isShownOnMap = false;
+
+    if (!_isKilled) {
+      _body->GetWorld()->DestroyBody(_body);
+    }
+
+    GameMapManager* gmMgr = GameMapManager::getInstance();
+    gmMgr->getLayer()->removeChild(_bodySpritesheet);
+    for (auto equipment : _equipmentSlots) {
+      if (equipment) {
+        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+        gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
+      }
+    }
   }
 }
 

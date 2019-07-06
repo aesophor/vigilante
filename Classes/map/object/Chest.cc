@@ -28,15 +28,16 @@ Chest::Chest() : DynamicActor(_kNumAnimations, _kNumFixtures), _isOpened() {}
 
 void Chest::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
+    _isShownOnMap = true;
+//    GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
     short categoryBits = kInteractableObject;
     short maskBits = kGround | kPlatform | kWall;
     defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);
 
     _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
     _bodySprite->getTexture()->setAliasTexParameters();
-
     GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
-    _isShownOnMap = true;
   }
 }
 

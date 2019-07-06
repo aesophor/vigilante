@@ -23,12 +23,12 @@ namespace vigilante {
 
 namespace camera_util {
 
-void boundCamera(Camera* camera, TMXTiledMap* map) {
+void boundCamera(Camera* camera, GameMap* gameMap) {
   auto winSize = Director::getInstance()->getWinSize();
   Vec2 position = camera->getPosition();
 
-  float mapWidth = map->getMapSize().width * map->getTileSize().width;
-  float mapHeight = map->getMapSize().height * map->getTileSize().height;
+  float mapWidth = gameMap->getWidth();
+  float mapHeight = gameMap->getHeight();
 
   float startX = 0;
   float startY = 0;

@@ -45,13 +45,15 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
 
 void MagicalMissile::showOnMap(float x, float y) {
   if (!_isShownOnMap) {
+    _isShownOnMap = true;
+    GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+
     short categoryBits = kProjectile;
     short maskBits = kPlayer | kEnemy | kWall;
     defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
 
     defineTexture(_skillProfile.textureResDir, x, y);
     GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
-    _isShownOnMap = true;
   }
 }
 
@@ -61,19 +63,10 @@ void MagicalMissile::update(float delta) {
   // If _body goes out of map, then we can delete this object.
   float x = _body->GetPosition().x * kPpm;
   float y = _body->GetPosition().y * kPpm;
-  auto gameMap = GameMapManager::getInstance()->getGameMap()->getTmxTiledMap();
-  float mapWidth = gameMap->getMapSize().width * gameMap->getTileSize().width;
-  float mapHeight = gameMap->getMapSize().height * gameMap->getTileSize().height;
+  GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
 
-  if (!_hasHit && (x < 0 || x > mapWidth || y < 0 || y > mapHeight)) {
-    _hasHit = true;
-    _body->SetLinearVelocity({0, 0});
-
-    callback_util::runAfter([=]() {
-      removeFromMap();
-      GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
-      delete this;
-    }, .5f);
+  if (!_hasHit && (x < 0 || x > gameMap->getWidth() || y < 0 || y > gameMap->getHeight())) {
+    onHit(nullptr);
   }
 }
 
@@ -91,24 +84,24 @@ void MagicalMissile::onHit(Character* target) {
     return;
   }
 
+  _hasHit = true;
   _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
 
-  auto animation = Animate::create(_bodyAnimations[AnimationType::ON_HIT]);
-  auto callback = CallFunc::create([=]() {
-    removeFromMap();
-    GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
-    delete this;
-  });
-  _bodySprite->runAction(Sequence::createWithTwoActions(animation, callback));
+  _bodySprite->runAction(Sequence::createWithTwoActions(
+    Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
+    CallFunc::create([=]() {
+      removeFromMap();
+      delete this;
+    })
+  ));
 
   if (target) {
-    _user->inflictDamage(target, getDamage());
     bool isFacingRight = _body->GetLinearVelocity().x > 0;
     float knockBackForceX = (isFacingRight) ? 2.0f : -2.0f;
     float knockBackForceY = 1.0f;
     _user->knockBack(target, knockBackForceX, knockBackForceY);
+    _user->inflictDamage(target, getDamage());
   }
-  _hasHit = true;
 }
 
 
@@ -134,13 +127,14 @@ void MagicalMissile::activate() {
     return;
   }
 
+  _hasActivated = true;
+
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
   float x = _user->getBody()->GetPosition().x;
   float y = _user->getBody()->GetPosition().y;
   showOnMap(x, y);
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
 
   // Set up kinematicBody's moving speed.
   _flyingSpeed = (_user->isFacingRight()) ? 3.5f : -3.5f;
@@ -151,24 +145,23 @@ void MagicalMissile::activate() {
     _bodySprite->setFlippedX(true);
   }
 
+  // Play the magical missile body's animation.
+  _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
+
   // Play launch fx animation.
-  auto animation = Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]);
-  auto callback = CallFunc::create([=]() {
-    _bodySpritesheet->removeChild(_launchFxSprite, true);
-  });
   b2Vec2 spellUserBodyPos = _user->getBody()->GetPosition();
   x = spellUserBodyPos.x * kPpm;
   y = spellUserBodyPos.y * kPpm;
   float offset = _user->getCharacterProfile().attackRange;
   x += (_user->isFacingRight()) ? offset : -offset;
   _launchFxSprite->setPosition(x, y);
-  _launchFxSprite->runAction(Sequence::createWithTwoActions(animation, callback));
 
-  // Play the spell's main animation.
-  _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
-
-  // FIXME: memleak (if it doesn't hit anything)
-  _hasActivated = true;
+  _launchFxSprite->runAction(Sequence::createWithTwoActions(
+    Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
+    CallFunc::create([=]() {
+      _bodySpritesheet->removeChild(_launchFxSprite, true);
+    })
+  ));
 }
 
 

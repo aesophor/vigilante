@@ -17,6 +17,7 @@ class Player : public Character, public Controllable {
   virtual ~Player() = default;
 
   virtual void showOnMap(float x, float y) override; // Character
+  virtual void removeFromMap() override; // Character
   virtual void handleInput() override; // Controllable
 
   virtual void inflictDamage(Character* target, int damage) override; // Character

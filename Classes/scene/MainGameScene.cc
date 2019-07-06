@@ -160,7 +160,7 @@ void MainGameScene::update(float delta) {
   _dialogManager->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
-  vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap()->getTmxTiledMap());
+  vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
 
