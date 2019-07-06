@@ -4,8 +4,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
-#include "GraphicalLayers.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "ui/damage/FloatingDamageManager.h"

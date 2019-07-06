@@ -4,7 +4,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -55,7 +54,7 @@ void MagicalMissile::showOnMap(float x, float y) {
   defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
 
   defineTexture(_skillProfile.textureResDir, x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, 40);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
 }
 
 void MagicalMissile::update(float delta) {

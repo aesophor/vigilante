@@ -3,7 +3,6 @@
 #include "json/document.h"
 
 #include "Constants.h"
-#include "CategoryBits.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "item/MiscItem.h"

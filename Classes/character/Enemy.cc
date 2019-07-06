@@ -4,8 +4,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
-#include "GraphicalLayers.h"
 #include "gameplay/ExpPointTable.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"

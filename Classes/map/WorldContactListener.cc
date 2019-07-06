@@ -3,7 +3,6 @@
 #include "cocos2d.h"
 
 #include "Constants.h"
-#include "CategoryBits.h"
 #include "Projectile.h"
 #include "character/Player.h"
 #include "character/Enemy.h"

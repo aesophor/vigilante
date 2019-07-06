@@ -4,7 +4,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "GraphicalLayers.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
 #include "item/Equipment.h"

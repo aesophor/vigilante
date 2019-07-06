@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "Constants.h"
 #include "map/GameMapManager.h"
 
 using std::string;
@@ -31,7 +32,7 @@ void StaticActor::showOnMap(float x, float y) {
   _isShownOnMap = true;
 
   _bodySprite->setPosition(x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kDefault);
 }
 
 void StaticActor::removeFromMap() {

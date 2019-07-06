@@ -2,8 +2,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
-#include "GraphicalLayers.h"
 #include "input/InputManager.h"
 #include "input/Keybindable.h"
 #include "map/GameMapManager.h"

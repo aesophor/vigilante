@@ -6,7 +6,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "GraphicalLayers.h"
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "input/InputManager.h"

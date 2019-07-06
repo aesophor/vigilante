@@ -4,8 +4,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
-#include "GraphicalLayers.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"

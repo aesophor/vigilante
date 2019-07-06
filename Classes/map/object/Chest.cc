@@ -3,8 +3,6 @@
 #include "cocos2d.h"
 
 #include "Constants.h"
-#include "CategoryBits.h"
-#include "GraphicalLayers.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 

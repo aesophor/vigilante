@@ -2,7 +2,6 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "CategoryBits.h"
 #include "character/Character.h"
 #include "character/Player.h"
 #include "character/Enemy.h"
