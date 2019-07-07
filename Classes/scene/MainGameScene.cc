@@ -11,6 +11,7 @@
 #include "input/InputManager.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
+#include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
@@ -84,9 +85,9 @@ bool MainGameScene::init() {
   // Initialize dialog manager.
   _dialogManager = unique_ptr<DialogManager>(DialogManager::getInstance());
   _dialogManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  //_dialogManager->addDialog("???: I'm here to free you");
-  //_dialogManager->addDialog("Aesophor: Who... are you");
-  //_dialogManager->beginDialog();
+  _dialogManager->addDialog("???: Hey, you are finally awake.");
+  _dialogManager->addDialog("Aesophor: Wut?");
+  _dialogManager->beginDialog();
   addChild(_dialogManager->getLayer(), graphical_layers::kDialog);
 
   // Initialize Vigilante's exp point table.
@@ -125,9 +126,14 @@ bool MainGameScene::init() {
   player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
   player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
   player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
-  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_X, player->getSkills()[0]);
-  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_LEFT_SHIFT, player->getSkills()[1]);
-  //InputManager::getInstance()->setHotkeyAction(EventKeyboard::KeyCode::KEY_C, player->getSkills()[2]);
+
+  //player->getQuestBook().addQuest(new Quest("Resources/Database/quest/main/main01.json"));
+  Quest quest("Resources/Database/quest/main/main01.json");
+  cocos2d::log("quest title: %s", quest.getQuestProfile().title.c_str());
+  cocos2d::log("quest desc: %s", quest.getQuestProfile().title.c_str());
+  for (const auto& stage : quest.getQuestProfile().stages) {
+    cocos2d::log("stage: %s | %s", stage.objective.c_str(), stage.questDesc.c_str());
+  }
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));

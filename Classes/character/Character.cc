@@ -963,7 +963,6 @@ void Character::regenStamina(int deltaStamina) {
 
 
 
-
 Character::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
   textureResDir = json["textureResDir"].GetString();
