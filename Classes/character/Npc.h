@@ -2,6 +2,7 @@
 #define VIGILANTE_NPC_H_
 
 #include <string>
+#include <functional>
 
 #include "Character.h"
 #include "Bot.h"
@@ -28,12 +29,14 @@ class Npc : public Character, public Bot, public Interactable {
   virtual bool willInteractOnContact() const override; // Interactable
 
   Npc::Profile& getNpcProfile();
+  void setOnInteractHandler(const std::function<void ()>& onInteractHandler);
   
  private:
   void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                   short feetMaskBits, short weaponMaskBits, float x, float y) override;
 
   Npc::Profile _npcProfile;
+  std::function<void ()> _onInteractHandler;
 };
 
 } // namespace vigilante

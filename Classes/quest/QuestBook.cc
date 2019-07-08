@@ -13,4 +13,9 @@ void QuestBook::import(const string& jsonFileName) {
 
 }
 
+
+void QuestBook::startQuest(const Quest& quest) {
+
+}
+
 } // namespace vigilante

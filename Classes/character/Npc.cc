@@ -12,6 +12,7 @@
 #include "util/JsonUtil.h"
 
 using std::string;
+using std::function;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -115,7 +116,8 @@ void Npc::receiveDamage(Character* source, int damage) {
 }
 
 void Npc::onInteract(Character* user) {
-  cocos2d::log("interact with npc!");
+  cocos2d::log("interact with npc! executing _onInteractHandler...");
+  _onInteractHandler();
 }
 
 bool Npc::willInteractOnContact() const {
@@ -125,6 +127,10 @@ bool Npc::willInteractOnContact() const {
 
 Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;
+}
+
+void Npc::setOnInteractHandler(const function<void ()>& onInteractHandler) {
+  _onInteractHandler = onInteractHandler;
 }
 
 

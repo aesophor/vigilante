@@ -20,8 +20,7 @@ class QuestBook : public Importable {
   void startQuest(const Quest& quest);
 
  private:
-  std::deque<Quest> _ongoingQuests;
-  std::deque<Quest> _completedQuests;
+  std::deque<Quest> _quests;
 };
 
 } // namespace vigilante
