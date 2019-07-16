@@ -964,8 +964,9 @@ void Character::regenStamina(int deltaStamina) {
 
 
 
-Character::Profile::Profile(const string& jsonFileName) {
+Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
+
   textureResDir = json["textureResDir"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();
   spriteOffsetY = json["spriteOffsetY"].GetFloat();

@@ -30,6 +30,7 @@ class Character : public DynamicActor, public Importable {
     Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
+    std::string jsonFileName;
     std::string textureResDir;
     float spriteOffsetX;
     float spriteOffsetY;
