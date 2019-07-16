@@ -29,6 +29,8 @@ class Player : public Character, public Controllable {
   virtual void equip(Equipment* equipment) override; // Character
   virtual void unequip(Equipment::Type equipmentType) override; // Character
 
+  QuestBook& getQuestBook();
+
  private:
   QuestBook _questBook;
 };

@@ -129,6 +129,8 @@ bool MainGameScene::init() {
   player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
   player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
 
+  player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
+
   //player->getQuestBook().addQuest(new Quest("Resources/Database/quest/main/main01.json"));
   /*
   Quest quest("Resources/Database/quest/main/main01.json");

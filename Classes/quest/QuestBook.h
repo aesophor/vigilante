@@ -17,8 +17,14 @@ class QuestBook {
   virtual ~QuestBook() = default;
 
   void update(float delta);
+
+  void unlockQuest(Quest* quest);
   void startQuest(Quest* quest);
   void markCompleted(Quest* quest);
+
+  void unlockQuest(const std::string& questJsonFileName);
+  void startQuest(const std::string& questJsonFileName);
+  void markCompleted(const std::string& questJsonFileName);
 
  private:
   static std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;

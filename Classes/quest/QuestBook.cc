@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "ui/notification/NotificationManager.h"
+
 using std::string;
 using std::vector;
 using std::ifstream;
@@ -31,17 +33,22 @@ QuestBook::QuestBook(const string& questListFileName) {
 
 void QuestBook::update(float delta) {
   for (auto quest : _inProgressQuests) {
+    // If current stage has been completed, mark as completed.
+    if (quest->isCompleted()) {
+      markCompleted(quest);
+      continue;
+    }
     // If the objective of current stage has been completed,
     // advance to the next stage.
     if (quest->getCurrentStage().objective->isCompleted()) {
       quest->advanceStage();
     }
-   
-    // If current stage has been completed, mark as completed.
-    if (quest->isCompleted()) {
-      markCompleted(quest);
-    }
   }
+}
+
+
+void QuestBook::unlockQuest(Quest* quest) {
+  quest->unlock();
 }
 
 void QuestBook::startQuest(Quest* quest) {
@@ -52,6 +59,8 @@ void QuestBook::startQuest(Quest* quest) {
 
   // Add this quest to _inProgressQuests.
   qs.push_back(quest);
+
+  NotificationManager::getInstance()->show("Quest Started: " + quest->getQuestProfile().title);
 }
 
 void QuestBook::markCompleted(Quest* quest) {
@@ -64,6 +73,30 @@ void QuestBook::markCompleted(Quest* quest) {
   // and add it to _completedQuests.
   qs.erase(std::remove(qs.begin(), qs.end(), quest), qs.end());
   _completedQuests.push_back(quest);
+
+  NotificationManager::getInstance()->show("Quest Completed: " + quest->getQuestProfile().title);
+}
+
+
+void QuestBook::unlockQuest(const string& questJsonFileName) {
+  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+    return;
+  }
+  unlockQuest(_questMapper[questJsonFileName].get());
+}
+
+void QuestBook::startQuest(const string& questJsonFileName) {
+  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+    return;
+  }
+  startQuest(_questMapper[questJsonFileName].get());
+}
+
+void QuestBook::markCompleted(const string& questJsonFileName) {
+  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+    return;
+  }
+  markCompleted(_questMapper[questJsonFileName].get());
 }
 
 } // namespace vigilante

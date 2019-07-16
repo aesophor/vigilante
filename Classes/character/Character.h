@@ -148,8 +148,8 @@ class Character : public DynamicActor, public Importable {
   std::vector<Skill*>& getSkills();
   Skill* getCurrentlyUsedSkill() const;
 
-  typedef std::array<std::vector<Item*>, Item::Type::SIZE> Inventory;
-  typedef std::array<Equipment*, Equipment::Type::SIZE> EquipmentSlots;
+  using Inventory = std::array<std::vector<Item*>, Item::Type::SIZE>;
+  using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
 
@@ -239,7 +239,7 @@ class Character : public DynamicActor, public Importable {
   std::set<Item*> _inRangeItems;
 
   // Character's inventory and equipment slots.
-  // These two types are `typedef`ed. See the beginning of this class.
+  // These two types are aliased. See the beginning of this class.
   // We use an extra std::map to keep track of each item's count.
   // For each instance of Item, only one copy of Item* is stored.
   Character::Inventory _inventory;

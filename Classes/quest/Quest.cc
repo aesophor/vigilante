@@ -75,10 +75,10 @@ Quest::Stage::~Stage() {
 Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
 
-  /*
   title = json["title"].GetString();
   desc = json["desc"].GetString();
   
+  /*
   for (const auto& stageJson : json["stages"].GetArray()) {
     string objective = stageJson["objective"].GetString();
 //    Stage stage = Stage(objective);

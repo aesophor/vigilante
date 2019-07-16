@@ -211,4 +211,9 @@ void Player::unequip(Equipment::Type equipmentType) {
   Hud::getInstance()->updateEquippedWeapon();
 }
 
+
+QuestBook& Player::getQuestBook() {
+  return _questBook;
+}
+
 } // namespace vigilante
