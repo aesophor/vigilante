@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "CameraUtil.h"
 
 #include "Constants.h"

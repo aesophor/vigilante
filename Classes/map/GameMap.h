@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_GAME_MAP_H_
 #define VIGILANTE_GAME_MAP_H_
 

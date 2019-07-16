@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Consumable.h"
 
 #include "util/JsonUtil.h"

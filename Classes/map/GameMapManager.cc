@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMapManager.h"
 
 #include "Box2D/Box2D.h"

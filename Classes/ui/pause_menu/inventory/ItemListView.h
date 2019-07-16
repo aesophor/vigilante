@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ITEM_LIST_VIEW_H_
 #define VIGILANTE_ITEM_LIST_VIEW_H_
 

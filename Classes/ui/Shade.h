@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_SHADE_H_
 #define VIGILANTE_SHADE_H_
 

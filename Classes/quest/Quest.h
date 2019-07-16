@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_QUEST_H_
 #define VIGILANTE_QUEST_H_
 
@@ -13,14 +14,41 @@ class Quest : public Importable {
   Quest(const std::string& jsonFileName);
   virtual ~Quest() = default;
 
+
+  class Objective {
+   public:
+    virtual ~Objective() = default;
+
+    enum Type {
+      KILL,
+      COLLECT,
+      ESCORT,
+      DELIVERY
+    };
+
+    virtual bool isCompleted() const = 0;
+    Objective::Type getObjectiveType() const;
+    const std::string& getDesc() const;
+    Quest* getQuest() const;
+
+   protected:
+    Objective(Quest* quest, Objective::Type objectiveType, const std::string& desc);
+
+    Quest* _quest;
+    Objective::Type _objectiveType;
+    std::string _desc;
+  };
+
+
   struct Stage {
-    Stage(const std::string& objective);
-    virtual ~Stage() = default;
+    Stage(Quest::Objective* objective);
+    virtual ~Stage();
 
     bool isFinished;
-    std::string objective;
-    std::string questDesc; // optionally update quest desc when this stage is reached.
+    std::string questDesc; // optionally update quest desc when this stage is reached
+    Quest::Objective* objective;
   };
+
 
   struct Profile {
     Profile(const std::string& jsonFileName);
@@ -30,18 +58,26 @@ class Quest : public Importable {
     std::string title;
     std::string desc;
     std::vector<Quest::Stage> stages;
+    std::vector<std::string> subsequentQuests;
   };
+
 
   virtual void import(const std::string& jsonFileName) override; // Importable
   
+  void unlock();
   void advanceStage();
-  bool isCompleted() const;
-  const Quest::Profile& getQuestProfile() const;
 
+  bool isUnlocked() const;
+  bool isCompleted() const;
+
+  const Quest::Profile& getQuestProfile() const;
+  const Quest::Stage& getCurrentStage() const;
+ 
  private:
   Quest::Profile _questProfile;
+  bool _isUnlocked;
   int _currentStageIdx;
-};
+ };
 
 } // namespace vigilante
 

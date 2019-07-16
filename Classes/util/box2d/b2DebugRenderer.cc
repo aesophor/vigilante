@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 /****************************************************************************
 B2DebugRenderer.cpp
 Created by Stefan Nguyen on Oct 8, 2012.

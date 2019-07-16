@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "util/box2d/b2BodyBuilder.h"
 
 using std::unique_ptr;

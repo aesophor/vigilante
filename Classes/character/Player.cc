@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Player.h"
 
 #include "AssetManager.h"
@@ -47,7 +48,8 @@ using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName) : Character(jsonFileName) {}
+Player::Player(const std::string& jsonFileName)
+    : Character(jsonFileName), _questBook(asset_manager::kQuestList) {}
 
 void Player::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -75,22 +77,29 @@ void Player::showOnMap(float x, float y) {
 }
 
 void Player::removeFromMap() {
-  if (_isShownOnMap) {
-    _isShownOnMap = false;
+  if (!_isShownOnMap) {
+    return;
+  }
 
-    if (!_isKilled) {
-      _body->GetWorld()->DestroyBody(_body);
-    }
+  _isShownOnMap = false;
 
-    GameMapManager* gmMgr = GameMapManager::getInstance();
-    gmMgr->getLayer()->removeChild(_bodySpritesheet);
-    for (auto equipment : _equipmentSlots) {
-      if (equipment) {
-        Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-        gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
-      }
+  if (!_isKilled) {
+    _body->GetWorld()->DestroyBody(_body);
+  }
+
+  GameMapManager* gmMgr = GameMapManager::getInstance();
+  gmMgr->getLayer()->removeChild(_bodySpritesheet);
+  for (auto equipment : _equipmentSlots) {
+    if (equipment) {
+      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
+      gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
     }
   }
+}
+
+void Player::update(float delta) {
+  Character::update(delta);
+  _questBook.update(delta);
 }
 
 void Player::handleInput() {
@@ -200,11 +209,6 @@ void Player::equip(Equipment* equipment) {
 void Player::unequip(Equipment::Type equipmentType) {
   Character::unequip(equipmentType);
   Hud::getInstance()->updateEquippedWeapon();
-}
-
-
-QuestBook& Player::getQuestBook() {
-  return _questBook;
 }
 
 } // namespace vigilante

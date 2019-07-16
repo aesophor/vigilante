@@ -1,26 +1,30 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_BOOK_H_
 
 #include <string>
-#include <deque>
+#include <vector>
+#include <memory>
+#include <unordered_map>
 
-#include "Importable.h"
-#include "quest/Quest.h"
+#include "Quest.h"
 
 namespace vigilante {
 
-class QuestBook : public Importable {
+class QuestBook {
  public:
-  QuestBook() = default;
-  QuestBook(const std::string& jsonFileName);
+  QuestBook(const std::string& questListFileName);
   virtual ~QuestBook() = default;
 
-  virtual void import(const std::string& jsonFileName) override; // Importable
-
-  void startQuest(const Quest& quest);
+  void update(float delta);
+  void startQuest(Quest* quest);
+  void markCompleted(Quest* quest);
 
  private:
-  std::deque<Quest> _quests;
+  static std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;
+
+  std::vector<Quest*> _inProgressQuests;
+  std::vector<Quest*> _completedQuests;
 };
 
 } // namespace vigilante

@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_DIALOG_MANAGER_H_
 #define VIGILANTE_DIALOG_MANAGER_H_
 

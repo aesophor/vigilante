@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
 #include "json/document.h"
@@ -12,7 +13,7 @@
 #include "util/JsonUtil.h"
 
 using std::string;
-using std::function;
+using std::vector;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -117,7 +118,6 @@ void Npc::receiveDamage(Character* source, int damage) {
 
 void Npc::onInteract(Character* user) {
   cocos2d::log("interact with npc! executing _onInteractHandler...");
-  _onInteractHandler();
 }
 
 bool Npc::willInteractOnContact() const {
@@ -129,8 +129,8 @@ Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;
 }
 
-void Npc::setOnInteractHandler(const function<void ()>& onInteractHandler) {
-  _onInteractHandler = onInteractHandler;
+const vector<Quest*>& Npc::getQuests() const {
+  return _quests;
 }
 
 

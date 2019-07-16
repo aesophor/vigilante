@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_NOTIFICATION_MANAGER_H_
 #define VIGILANTE_NOTIFICATION_MANAGER_H_
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_CONTROLLABLE_H_
 #define VIGILANTE_CONTROLLABLE_H_
 

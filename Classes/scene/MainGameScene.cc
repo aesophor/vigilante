@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MainGameScene.h"
 
 #include <string>
@@ -11,7 +12,7 @@
 #include "input/InputManager.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
-#include "quest/Quest.h"
+//#include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"
@@ -108,6 +109,7 @@ bool MainGameScene::init() {
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
+
   _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
   _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
@@ -128,12 +130,14 @@ bool MainGameScene::init() {
   player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
 
   //player->getQuestBook().addQuest(new Quest("Resources/Database/quest/main/main01.json"));
+  /*
   Quest quest("Resources/Database/quest/main/main01.json");
   cocos2d::log("quest title: %s", quest.getQuestProfile().title.c_str());
   cocos2d::log("quest desc: %s", quest.getQuestProfile().title.c_str());
   for (const auto& stage : quest.getQuestProfile().stages) {
     cocos2d::log("stage: %s | %s", stage.objective.c_str(), stage.questDesc.c_str());
   }
+  */
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));

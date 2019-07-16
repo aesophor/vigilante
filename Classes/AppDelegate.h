@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef APP_DELEGATE_H_
 #define APP_DELEGATE_H_
 

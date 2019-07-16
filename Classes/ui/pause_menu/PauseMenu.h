@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_PAUSE_MENU_H_
 #define VIGILANTE_PAUSE_MENU_H_
 

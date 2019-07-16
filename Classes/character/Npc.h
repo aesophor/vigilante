@@ -1,12 +1,14 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_NPC_H_
 #define VIGILANTE_NPC_H_
 
 #include <string>
-#include <functional>
+#include <vector>
 
 #include "Character.h"
 #include "Bot.h"
 #include "Interactable.h"
+#include "quest/Quest.h"
 
 namespace vigilante {
 
@@ -29,14 +31,14 @@ class Npc : public Character, public Bot, public Interactable {
   virtual bool willInteractOnContact() const override; // Interactable
 
   Npc::Profile& getNpcProfile();
-  void setOnInteractHandler(const std::function<void ()>& onInteractHandler);
+  const std::vector<Quest*>& getQuests() const;
   
  private:
   void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                   short feetMaskBits, short weaponMaskBits, float x, float y) override;
 
   Npc::Profile _npcProfile;
-  std::function<void ()> _onInteractHandler;
+  std::vector<Quest*> _quests;
 };
 
 } // namespace vigilante

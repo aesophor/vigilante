@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_STACKTRACE_H_
 #define VIGILANTE_STACKTRACE_H_
 

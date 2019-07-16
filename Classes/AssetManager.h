@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ASSET_MANAGER_H_
 #define VIGILANTE_ASSET_MANAGER_H_
 
@@ -9,6 +10,7 @@ namespace asset_manager {
 
 const std::string kExpPointTable = "Resources/Gameplay/exp_point_table.txt";
 const std::string kSpritesheetList = "Resources/Texture/spritesheets.txt";
+const std::string kQuestList = "Resources/Gameplay/quest_list.txt";
 
 // Fonts
 const std::string kRegularFont = "Font/HeartbitXX.ttf";

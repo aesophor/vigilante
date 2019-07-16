@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_PLAYER_H_
 #define VIGILANTE_PLAYER_H_
 
@@ -8,7 +9,6 @@
 #include "Character.h"
 #include "Controllable.h"
 #include "item/Equipment.h"
-#include "quest/Quest.h"
 #include "quest/QuestBook.h"
 
 namespace vigilante {
@@ -20,6 +20,7 @@ class Player : public Character, public Controllable {
 
   virtual void showOnMap(float x, float y) override; // Character
   virtual void removeFromMap() override; // Character
+  virtual void update(float delta) override; // Character
   virtual void handleInput() override; // Controllable
 
   virtual void inflictDamage(Character* target, int damage) override; // Character
@@ -27,8 +28,6 @@ class Player : public Character, public Controllable {
 
   virtual void equip(Equipment* equipment) override; // Character
   virtual void unequip(Equipment::Type equipmentType) override; // Character
-
-  QuestBook& getQuestBook();
 
  private:
   QuestBook _questBook;

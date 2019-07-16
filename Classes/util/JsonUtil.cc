@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "JsonUtil.h"
 
 #include <fstream>
@@ -36,16 +37,16 @@ Document parseJson(const string& jsonFileName) {
 }
 
 vector<string> splitString(const string& s, const char delimiter) {
-	stringstream ss(s);
-	string t;
-	vector<string> tokens;
+  stringstream ss(s);
+  string t;
+  vector<string> tokens;
 
-	while (std::getline(ss, t, delimiter)) {
-		if (t.length() > 0) {
-			tokens.push_back(t);
-		}
-	}
-	return tokens;
+  while (std::getline(ss, t, delimiter)) {
+    if (t.length() > 0) {
+      tokens.push_back(t);
+    }
+  }
+  return tokens;
 }
 
 } // namespace json_util

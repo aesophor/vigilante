@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_EXP_POINT_TABLE_H_
 #define VIGILANTE_EXP_POINT_TABLE_H_
 

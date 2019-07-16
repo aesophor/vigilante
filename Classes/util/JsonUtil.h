@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_JSON_UTIL_H_
 #define VIGILANTE_JSON_UTIL_H_
 

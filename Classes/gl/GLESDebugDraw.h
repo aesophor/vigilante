@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 /*
 * Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
 *
