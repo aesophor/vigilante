@@ -12,7 +12,7 @@ namespace vigilante {
 class Quest : public Importable {
  public:
   Quest(const std::string& jsonFileName);
-  virtual ~Quest() = default;
+  virtual ~Quest();
 
 
   class Objective {
@@ -29,12 +29,10 @@ class Quest : public Importable {
     virtual bool isCompleted() const = 0;
     Objective::Type getObjectiveType() const;
     const std::string& getDesc() const;
-    Quest* getQuest() const;
 
    protected:
-    Objective(Quest* quest, Objective::Type objectiveType, const std::string& desc);
+    Objective(Objective::Type objectiveType, const std::string& desc);
 
-    Quest* _quest;
     Objective::Type _objectiveType;
     std::string _desc;
   };
@@ -42,7 +40,7 @@ class Quest : public Importable {
 
   struct Stage {
     Stage(Quest::Objective* objective);
-    virtual ~Stage();
+    virtual ~Stage() = default;
 
     bool isFinished;
     std::string questDesc; // optionally update quest desc when this stage is reached
@@ -58,7 +56,6 @@ class Quest : public Importable {
     std::string title;
     std::string desc;
     std::vector<Quest::Stage> stages;
-    std::vector<std::string> subsequentQuests;
   };
 
 
@@ -72,12 +69,12 @@ class Quest : public Importable {
 
   const Quest::Profile& getQuestProfile() const;
   const Quest::Stage& getCurrentStage() const;
- 
+
  private:
   Quest::Profile _questProfile;
   bool _isUnlocked;
   int _currentStageIdx;
- };
+};
 
 } // namespace vigilante
 

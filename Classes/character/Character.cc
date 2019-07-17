@@ -893,6 +893,13 @@ const Character::EquipmentSlots& Character::getEquipmentSlots() const {
   return _equipmentSlots;
 }
 
+int Character::getItemAmount(const string& itemName) const {
+  if (_itemMapper.find(itemName) == _itemMapper.end()) {
+    return 0;
+  }
+  return _itemMapper.at(itemName)->getAmount();
+}
+
 
 Interactable* Character::getInteractableObject() const {
   return _interactableObject;

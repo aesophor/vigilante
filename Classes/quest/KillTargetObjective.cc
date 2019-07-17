@@ -5,17 +5,26 @@ using std::string;
 
 namespace vigilante {
 
-KillTargetObjective::KillTargetObjective(Quest* quest, const string& desc, Character* target)
-    : Quest::Objective(quest, Quest::Objective::Type::KILL, desc),
-      _target(target) {}
+KillTargetObjective::KillTargetObjective(const string& desc,
+                                         const string& characterName,
+                                         int amount)
+    : Quest::Objective(Quest::Objective::Type::KILL, desc),
+      _characterName(characterName),
+      _amount(amount) {}
 
 
 bool KillTargetObjective::isCompleted() const {
-  return _target->isKilled();
+  // TODO: implement this
+  return false;
 }
 
-Character* KillTargetObjective::getTarget() const {
-  return _target;
+
+const string& KillTargetObjective::getCharacterName() const {
+  return _characterName;
+}
+
+int KillTargetObjective::getAmount() const {
+  return _amount;
 }
 
 } // namespace vigilante

@@ -5,21 +5,23 @@
 #include <string>
 
 #include "Quest.h"
-#include "item/Item.h"
 
 namespace vigilante {
 
 class CollectItemObjective : public Quest::Objective {
  public:
-  CollectItemObjective(Quest* quest, const std::string& desc, Item* item, int amount);
+  CollectItemObjective(const std::string& desc,
+                       const std::string& itemName,
+                       int amount=1);
   virtual ~CollectItemObjective() = default;
 
   virtual bool isCompleted() const override;
-  Item* getItem() const;
+
+  const std::string& getItemName() const;
   int getAmount() const;
 
  private:
-  Item* _item;
+  std::string _itemName;
   int _amount;
 };
 

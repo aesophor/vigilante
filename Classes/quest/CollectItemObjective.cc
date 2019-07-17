@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "character/Player.h"
+#include "item/Item.h"
 #include "map/GameMapManager.h"
 
 using std::string;
@@ -11,22 +12,20 @@ using std::vector;
 
 namespace vigilante {
 
-CollectItemObjective::CollectItemObjective(Quest* quest, const string& desc, Item* item, int amount)
-    : Quest::Objective(quest, Quest::Objective::Type::COLLECT, desc),
-      _item(item),
+CollectItemObjective::CollectItemObjective(const string& desc,
+                                           const string& itemName,
+                                           int amount)
+    : Quest::Objective(Quest::Objective::Type::COLLECT, desc),
+      _itemName(itemName),
       _amount(amount) {}
 
 
 bool CollectItemObjective::isCompleted() const {
-  Player* player = dynamic_cast<Player*>(GameMapManager::getInstance()->getPlayer());
-  const vector<Item*>& items = player->getInventory()[_item->getItemProfile().itemType];
-
-  auto it = std::find(items.begin(), items.end(), _item);
-  return it == items.end() || (*it)->getAmount() < _amount;
+  return GameMapManager::getInstance()->getPlayer()->getItemAmount(_itemName) >= _amount;
 }
 
-Item* CollectItemObjective::getItem() const {
-  return _item;
+const string& CollectItemObjective::getItemName() const {
+  return _itemName;
 }
 
 int CollectItemObjective::getAmount() const {

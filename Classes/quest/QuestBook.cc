@@ -42,6 +42,9 @@ void QuestBook::update(float delta) {
     // advance to the next stage.
     if (quest->getCurrentStage().objective->isCompleted()) {
       quest->advanceStage();
+      if (!quest->isCompleted()) {
+        NotificationManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
+      }
     }
   }
 }

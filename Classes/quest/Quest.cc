@@ -1,8 +1,9 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Quest.h"
 
-#include "json/document.h"
-
+#include <cocos2d.h>
+#include <json/document.h>
+#include "quest/CollectItemObjective.h"
 #include "util/JsonUtil.h"
 
 using std::string;
@@ -14,6 +15,12 @@ Quest::Quest(const string& jsonFileName)
     : _questProfile(jsonFileName),
       _isUnlocked(),
       _currentStageIdx() {}
+
+Quest::~Quest() {
+  for (const auto& stage : _questProfile.stages) {
+    delete stage.objective;
+  }
+}
 
 
 void Quest::import(const string& jsonFileName) {
@@ -43,12 +50,12 @@ const Quest::Profile& Quest::getQuestProfile() const {
 }
 
 const Quest::Stage& Quest::getCurrentStage() const {
-  return _questProfile.stages[_currentStageIdx];
+  return _questProfile.stages.at(_currentStageIdx);
 }
 
 
-Quest::Objective::Objective(Quest* quest, Objective::Type objectiveType, const string& desc)
-    : _quest(quest), _objectiveType(objectiveType), _desc(desc) {}
+Quest::Objective::Objective(Objective::Type objectiveType, const string& desc)
+    : _objectiveType(objectiveType), _desc(desc) {}
 
 Quest::Objective::Type Quest::Objective::getObjectiveType() const {
   return _objectiveType;
@@ -58,18 +65,8 @@ const string& Quest::Objective::getDesc() const {
   return _desc;
 }
 
-Quest* Quest::Objective::getQuest() const {
-  return _quest;
-}
-
 
 Quest::Stage::Stage(Quest::Objective* objective) : objective(objective) {}
-
-Quest::Stage::~Stage() {
-  if (objective) {
-    delete objective;
-  }
-}
 
 
 Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
@@ -78,18 +75,32 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   title = json["title"].GetString();
   desc = json["desc"].GetString();
   
-  /*
   for (const auto& stageJson : json["stages"].GetArray()) {
-    string objective = stageJson["objective"].GetString();
-//    Stage stage = Stage(objective);
-    
-    if (stageJson.HasMember("questDesc")) {
-//      stage.questDesc = stageJson["questDesc"].GetString();
-    }
+    Quest::Objective::Type objectiveType = static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
 
-//    stages.push_back(stage);
+    switch (objectiveType) {
+      case Quest::Objective::Type::KILL: {
+        break;
+      }
+      case Quest::Objective::Type::COLLECT: {
+        string objectiveDesc = stageJson["objective"]["desc"].GetString();
+        string itemName = stageJson["objective"]["itemName"].GetString();
+        int amount = stageJson["objective"]["amount"].GetInt();
+        Objective* objective = new CollectItemObjective(objectiveDesc, itemName, amount);
+        stages.push_back(Stage(objective));
+        break;
+      }
+      case Quest::Objective::Type::ESCORT: {
+        break;
+      }
+      case Quest::Objective::Type::DELIVERY: {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
-  */
 }
 
 } // namespace vigilante

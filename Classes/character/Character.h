@@ -152,6 +152,7 @@ class Character : public DynamicActor, public Importable {
   using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
+  int getItemAmount(const std::string& itemName) const;
 
   int getDamageOutput() const;
   

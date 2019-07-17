@@ -5,20 +5,24 @@
 #include <string>
 
 #include "Quest.h"
-#include "character/Character.h"
 
 namespace vigilante {
 
 class KillTargetObjective : public Quest::Objective {
  public:
-  KillTargetObjective(Quest* quest, const std::string& desc, Character* target);
+  KillTargetObjective(const std::string& desc,
+                      const std::string& characterName,
+                      int amount=1);
   virtual ~KillTargetObjective() = default;
 
   virtual bool isCompleted() const override;
-  Character* getTarget() const;
+
+  const std::string& getCharacterName() const;
+  int getAmount() const;
 
  private:
-  Character* _target;
+  std::string _characterName;
+  int _amount;
 };
 
 } // namespace vigilante
