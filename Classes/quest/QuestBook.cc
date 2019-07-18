@@ -31,18 +31,14 @@ QuestBook::QuestBook(const string& questListFileName) {
 }
 
 
-void QuestBook::update(float delta) {
+void QuestBook::update() {
   for (auto quest : _inProgressQuests) {
-    // If current stage has been completed, mark as completed.
-    if (quest->isCompleted()) {
-      markCompleted(quest);
-      continue;
-    }
-    // If the objective of current stage has been completed,
-    // advance to the next stage.
-    if (quest->getCurrentStage().objective->isCompleted()) {
+    while (!quest->isCompleted() && quest->getCurrentStage().objective->isCompleted()) {
       quest->advanceStage();
-      if (!quest->isCompleted()) {
+
+      if (quest->isCompleted()) {
+        markCompleted(quest);
+      } else {
         NotificationManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
       }
     }

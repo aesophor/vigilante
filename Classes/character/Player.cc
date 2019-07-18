@@ -97,10 +97,6 @@ void Player::removeFromMap() {
   }
 }
 
-void Player::update(float delta) {
-  Character::update(delta);
-  _questBook.update(delta);
-}
 
 void Player::handleInput() {
   if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
@@ -184,6 +180,10 @@ void Player::handleInput() {
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
   camera_util::shake(8, .1f);
+
+  if (target->isSetToKill()) {
+    _questBook.update();
+  }
 }
 
 void Player::receiveDamage(Character* source, int damage) {
@@ -209,6 +209,11 @@ void Player::equip(Equipment* equipment) {
 void Player::unequip(Equipment::Type equipmentType) {
   Character::unequip(equipmentType);
   Hud::getInstance()->updateEquippedWeapon();
+}
+
+void Player::pickupItem(Item* item) {
+  Character::pickupItem(item);
+  _questBook.update();
 }
 
 

@@ -5,6 +5,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
@@ -89,15 +90,16 @@ void Enemy::receiveDamage(Character* source, int damage) {
 
   if (_isSetToKill) {
     // Give source character exp point.
-    int& currentExp = source->getCharacterProfile().exp;
-    currentExp += getCharacterProfile().exp;
+    int& sourceCharacterExp = source->getCharacterProfile().exp;
+    int& sourceCharacterLevel = source->getCharacterProfile().level;
+
+    sourceCharacterExp += getCharacterProfile().exp;
     NotificationManager::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
 
-    int& currentLevel = source->getCharacterProfile().level;
-    while (currentExp >= exp_point_table::getNextLevelExp(currentLevel)) {
-      currentExp -= exp_point_table::getNextLevelExp(currentLevel);
-      currentLevel++;
-      NotificationManager::getInstance()->show("Congratulations! You are now level " + std::to_string(currentLevel) + ".");
+    while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
+      sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
+      sourceCharacterLevel++;
+      NotificationManager::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
     }
 
     // Drop items. (Here we'll use a callback to drop items

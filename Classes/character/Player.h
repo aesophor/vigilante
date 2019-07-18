@@ -20,7 +20,6 @@ class Player : public Character, public Controllable {
 
   virtual void showOnMap(float x, float y) override; // Character
   virtual void removeFromMap() override; // Character
-  virtual void update(float delta) override; // Character
   virtual void handleInput() override; // Controllable
 
   virtual void inflictDamage(Character* target, int damage) override; // Character
@@ -28,6 +27,7 @@ class Player : public Character, public Controllable {
 
   virtual void equip(Equipment* equipment) override; // Character
   virtual void unequip(Equipment::Type equipmentType) override; // Character
+  virtual void pickupItem(Item* item) override; // Character
 
   QuestBook& getQuestBook();
 

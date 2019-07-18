@@ -27,6 +27,7 @@ class Quest : public Importable {
     };
 
     virtual bool isCompleted() const = 0;
+
     Objective::Type getObjectiveType() const;
     const std::string& getDesc() const;
 

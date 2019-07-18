@@ -16,7 +16,7 @@ class QuestBook {
   QuestBook(const std::string& questListFileName);
   virtual ~QuestBook() = default;
 
-  void update(float delta);
+  void update();
 
   void unlockQuest(Quest* quest);
   void startQuest(Quest* quest);

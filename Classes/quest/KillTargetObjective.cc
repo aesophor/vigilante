@@ -7,10 +7,11 @@ namespace vigilante {
 
 KillTargetObjective::KillTargetObjective(const string& desc,
                                          const string& characterName,
-                                         int amount)
+                                         int targetAmount)
     : Quest::Objective(Quest::Objective::Type::KILL, desc),
       _characterName(characterName),
-      _amount(amount) {}
+      _targetAmount(targetAmount),
+      _currentAmount() {}
 
 
 bool KillTargetObjective::isCompleted() const {
@@ -23,8 +24,16 @@ const string& KillTargetObjective::getCharacterName() const {
   return _characterName;
 }
 
-int KillTargetObjective::getAmount() const {
-  return _amount;
+int KillTargetObjective::getTargetAmount() const {
+  return _targetAmount;
+}
+
+int KillTargetObjective::getCurrentAmount() const {
+  return _currentAmount;
+}
+
+void KillTargetObjective::setCurrentAmount(int amount) {
+  _currentAmount = amount;
 }
 
 } // namespace vigilante
