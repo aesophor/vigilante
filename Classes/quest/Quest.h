@@ -23,7 +23,9 @@ class Quest : public Importable {
       KILL,
       COLLECT,
       ESCORT,
-      DELIVERY
+      DELIVERY,
+      TALK_TO,
+      AD_HOC
     };
 
     virtual bool isCompleted() const = 0;

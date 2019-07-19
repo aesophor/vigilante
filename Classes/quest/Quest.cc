@@ -4,6 +4,7 @@
 #include <cocos2d.h>
 #include <json/document.h>
 #include "quest/CollectItemObjective.h"
+#include "quest/KillTargetObjective.h"
 #include "util/JsonUtil.h"
 
 using std::string;
@@ -77,13 +78,17 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   
   for (const auto& stageJson : json["stages"].GetArray()) {
     Quest::Objective::Type objectiveType = static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
+    string objectiveDesc = stageJson["objective"]["desc"].GetString();
 
     switch (objectiveType) {
       case Quest::Objective::Type::KILL: {
+        string characterName = stageJson["objective"]["characterName"].GetString();
+        int targetAmount = stageJson["objective"]["targetAmount"].GetInt();
+        Objective* objective = new KillTargetObjective(objectiveDesc, characterName, targetAmount);
+        stages.push_back(Stage(objective));
         break;
       }
       case Quest::Objective::Type::COLLECT: {
-        string objectiveDesc = stageJson["objective"]["desc"].GetString();
         string itemName = stageJson["objective"]["itemName"].GetString();
         int amount = stageJson["objective"]["amount"].GetInt();
         Objective* objective = new CollectItemObjective(objectiveDesc, itemName, amount);

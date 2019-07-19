@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "quest/KillTargetObjective.h"
 #include "ui/notification/NotificationManager.h"
 
 using std::string;
@@ -15,8 +16,6 @@ using std::unordered_map;
 using std::runtime_error;
 
 namespace vigilante {
-
-unordered_map<string, unique_ptr<Quest>> QuestBook::_questMapper;
 
 QuestBook::QuestBook(const string& questListFileName) {
   ifstream fin(questListFileName);
@@ -31,10 +30,24 @@ QuestBook::QuestBook(const string& questListFileName) {
 }
 
 
-void QuestBook::update() {
-  for (auto quest : _inProgressQuests) {
+void QuestBook::update(Quest::Objective::Type objectiveType) {
+  for (const auto quest : _inProgressQuests) {
+    if (quest->getCurrentStage().objective->getObjectiveType() != objectiveType) {
+      continue;
+    }
+
     while (!quest->isCompleted() && quest->getCurrentStage().objective->isCompleted()) {
+      KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(quest->getCurrentStage().objective);
+
+      if (objective) {
+        KillTargetObjective::removeRelatedObjective(objective->getCharacterName(), objective);
+      }
+
       quest->advanceStage();
+
+      if (objective) {
+        KillTargetObjective::addRelatedObjective(objective->getCharacterName(), objective);
+      }
 
       if (quest->isCompleted()) {
         markCompleted(quest);

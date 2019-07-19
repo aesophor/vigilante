@@ -16,7 +16,7 @@ class QuestBook {
   QuestBook(const std::string& questListFileName);
   virtual ~QuestBook() = default;
 
-  void update();
+  void update(const Quest::Objective::Type objectiveType);
 
   void unlockQuest(Quest* quest);
   void startQuest(Quest* quest);
@@ -27,8 +27,7 @@ class QuestBook {
   void markCompleted(const std::string& questJsonFileName);
 
  private:
-  static std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;
-
+  std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;
   std::vector<Quest*> _inProgressQuests;
   std::vector<Quest*> _completedQuests;
 };

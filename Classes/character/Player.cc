@@ -1,6 +1,9 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Player.h"
 
+#include <string>
+#include <vector>
+
 #include "AssetManager.h"
 #include "Constants.h"
 #include "input/InputManager.h"
@@ -10,6 +13,7 @@
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
+#include "quest/KillTargetObjective.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/notification/NotificationManager.h"
@@ -17,6 +21,7 @@
 #include "util/CameraUtil.h"
 
 using std::string;
+using std::vector;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -182,7 +187,11 @@ void Player::inflictDamage(Character* target, int damage) {
   camera_util::shake(8, .1f);
 
   if (target->isSetToKill()) {
-    _questBook.update();
+    const string& targetName = target->getCharacterProfile().name;
+    for (const auto objective : KillTargetObjective::getRelatedObjectives(targetName)) {
+      objective->incrementCurrentAmount();
+    }
+    _questBook.update(Quest::Objective::Type::KILL);
   }
 }
 
@@ -213,7 +222,7 @@ void Player::unequip(Equipment::Type equipmentType) {
 
 void Player::pickupItem(Item* item) {
   Character::pickupItem(item);
-  _questBook.update();
+  _questBook.update(Quest::Objective::Type::COLLECT);
 }
 
 
