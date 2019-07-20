@@ -17,7 +17,7 @@ using vigilante::asset_manager::kRegularFontSize;
 namespace vigilante {
 
 const float TimedLabelService::_kDeltaX = 0.0f;
-const float TimedLabelService::_kDeltaY = 10.0f;
+const float TimedLabelService::_kDeltaY = 13.0f;
 const float TimedLabelService::_kMoveUpDuration = .2f;
 const float TimedLabelService::_kFadeDuration = 1.0f;
 
