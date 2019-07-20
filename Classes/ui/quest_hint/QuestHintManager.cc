@@ -1,8 +1,10 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestHintManager.h"
 
-#define STARTING_X 300.0f
-#define STARTING_Y 200.0f
+#include "Constants.h"
+
+#define STARTING_X vigilante::kVirtualWidth / 2
+#define STARTING_Y vigilante::kVirtualHeight * .75f
 #define MAX_LABEL_COUNT 10
 #define LABEL_LIFETIME 8.0f
 #define LABEL_ALIGNMENT TimedLabelService::TimedLabel::kCenter

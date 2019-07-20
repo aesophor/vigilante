@@ -7,6 +7,7 @@
 
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hint/QuestHintManager.h"
+#include "util/StringUtil.h"
 
 using std::string;
 using std::vector;
@@ -64,8 +65,8 @@ void QuestBook::startQuest(Quest* quest) {
   qs.push_back(quest);
 
   quest->advanceStage();
-  QuestHintManager::getInstance()->show("Quest Started: " + quest->getQuestProfile().title);
-  QuestHintManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
+  QuestHintManager::getInstance()->show("Started: " + quest->getQuestProfile().title);
+  QuestHintManager::getInstance()->show(quest->getCurrentStage().objective->getDesc());
 }
 
 void QuestBook::markCompleted(Quest* quest) {
@@ -79,7 +80,7 @@ void QuestBook::markCompleted(Quest* quest) {
   qs.erase(std::remove(qs.begin(), qs.end(), quest), qs.end());
   _completedQuests.push_back(quest);
 
-  QuestHintManager::getInstance()->show("Quest Completed: " + quest->getQuestProfile().title);
+  QuestHintManager::getInstance()->show("Completed: " + quest->getQuestProfile().title);
 }
 
 
