@@ -44,7 +44,7 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
       if (quest->isCompleted()) {
         markCompleted(quest);
       } else {
-         QuestHintManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
+        QuestHintManager::getInstance()->show(quest->getCurrentStage().objective->getDesc());
       }
     }
   }
