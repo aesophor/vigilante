@@ -6,7 +6,7 @@
 #include <deque>
 #include <string>
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 namespace vigilante {
 

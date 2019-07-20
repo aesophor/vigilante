@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_ABSTRACT_PANE_H_
 #define VIGILANTE_ABSTRACT_PANE_H_
 
-#include "cocos2d.h"
-#include "ui/UILayout.h"
+#include <cocos2d.h>
+#include <ui/UILayout.h>
 
 namespace vigilante {
 

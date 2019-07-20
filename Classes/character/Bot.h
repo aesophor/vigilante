@@ -2,8 +2,7 @@
 #ifndef VIGILANTE_BOT_H_
 #define VIGILANTE_BOT_H_
 
-#include "Box2D/Box2D.h"
-
+#include <Box2D/Box2D.h>
 #include "Character.h"
 
 namespace vigilante {

@@ -6,14 +6,13 @@
 #include <string>
 #include <memory>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
-#include "ui/UIImageView.h"
-
-#include "ui/pause_menu/AbstractPane.h"
-#include "ui/TabView.h"
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UIImageView.h>
 #include "item/Equipment.h"
-#include "ItemListView.h"
+#include "ui/TabView.h"
+#include "ui/pause_menu/AbstractPane.h"
+#include "ui/pause_menu/inventory/ItemListView.h"
 
 namespace vigilante {
 

@@ -4,9 +4,9 @@
 
 #include <string>
 
-#include "cocos2d.h"
-#include "ui/UILayout.h"
-#include "ui/UIImageView.h"
+#include <cocos2d.h>
+#include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 
 namespace vigilante {
 

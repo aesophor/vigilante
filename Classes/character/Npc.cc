@@ -1,8 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
-#include "json/document.h"
-
+#include <json/document.h>
 #include "AssetManager.h"
 #include "Constants.h"
 #include "item/Item.h"

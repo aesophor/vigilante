@@ -4,9 +4,8 @@
 
 #include <string>
 
-#include "cocos2d.h"
-#include "Box2D/Box2D.h"
-
+#include <cocos2d.h>
+#include <Box2D/Box2D.h>
 #include "DynamicActor.h"
 #include "Skill.h"
 #include "Projectile.h"

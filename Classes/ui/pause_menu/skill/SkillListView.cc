@@ -1,9 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SkillListView.h"
 
+#include <ui/UIImageView.h>
 #include "input/InputManager.h"
-#include "ui/UILayout.h"
-
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 

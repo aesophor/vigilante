@@ -4,8 +4,7 @@
 
 #include <vector>
 
-#include "Box2D/Box2D.h"
-
+#include <Box2D/Box2D.h>
 #include "StaticActor.h"
 
 namespace vigilante {

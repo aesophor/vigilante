@@ -23,8 +23,8 @@ THE SOFTWARE.
 #ifndef VIGILANTE_B2_DEBUG_RENDERER_H_
 #define VIGILANTE_B2_DEBUG_RENDERER_H_
 
-#include "cocos2d.h"
-#include "Box2D/Box2D.h"
+#include <cocos2d.h>
+#include <Box2D/Box2D.h>
 #include "gl/GLESDebugDraw.h"
 
 class b2DebugRenderer : public cocos2d::Sprite {

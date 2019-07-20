@@ -4,7 +4,6 @@
 #include <ctime>
 #include <random>
 
-
 namespace vigilante {
 
 namespace rand_util {

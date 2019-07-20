@@ -5,7 +5,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 using std::string;
 using std::vector;

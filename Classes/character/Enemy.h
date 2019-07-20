@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
 
 #include "Character.h"
 #include "Bot.h"

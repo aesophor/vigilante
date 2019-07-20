@@ -1,8 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Equipment.h"
 
-#include "json/document.h"
-
+#include <json/document.h>
 #include "util/JsonUtil.h"
 
 using std::array;

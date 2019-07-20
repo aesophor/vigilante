@@ -22,8 +22,8 @@
 #ifndef VIGILANTE_RENDER_H_
 #define VIGILANTE_RENDER_H_
 
-#include "cocos2d.h"
-#include "Box2D/Box2D.h"
+#include <cocos2d.h>
+#include <Box2D/Box2D.h>
 
 struct b2AABB;
 

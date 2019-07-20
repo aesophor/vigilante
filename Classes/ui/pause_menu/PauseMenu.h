@@ -7,16 +7,15 @@
 #include <string>
 #include <memory>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
-#include "ui/UIImageView.h"
-
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UIImageView.h>
 #include "Controllable.h"
-#include "HeaderPane.h"
-#include "StatsPane.h"
-#include "PauseMenuDialog.h"
-#include "AbstractPane.h"
 #include "character/Character.h"
+#include "ui/pause_menu/HeaderPane.h"
+#include "ui/pause_menu/StatsPane.h"
+#include "ui/pause_menu/PauseMenuDialog.h"
+#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 

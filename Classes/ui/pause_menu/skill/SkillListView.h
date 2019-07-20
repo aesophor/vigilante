@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_SKILL_LIST_VIEW_H_
 #define VIGILANTE_SKILL_LIST_VIEW_H_
 
-#include "ui/ListView.h"
 #include "skill/Skill.h"
+#include "ui/ListView.h"
 
 namespace vigilante {
 

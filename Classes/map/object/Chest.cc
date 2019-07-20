@@ -1,8 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
-#include "cocos2d.h"
-
+#include <cocos2d.h>
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"

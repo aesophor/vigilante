@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_TABLE_LAYOUT_H_
 #define VIGILANTE_TABLE_LAYOUT_H_
 
-#include "cocos2d.h"
-#include "ui/UILayout.h"
+#include <cocos2d.h>
+#include <ui/UILayout.h>
 
 namespace vigilante {
 

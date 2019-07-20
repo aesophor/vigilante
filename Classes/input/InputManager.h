@@ -6,8 +6,7 @@
 #include <array>
 #include <functional>
 
-#include "cocos2d.h"
-
+#include <cocos2d.h>
 #include "input/Keybindable.h"
 
 namespace vigilante {

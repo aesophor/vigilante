@@ -4,11 +4,10 @@
 
 #include <string>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
-#include "ui/UILayout.h"
-#include "ui/UIImageView.h"
-
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 #include "AbstractPane.h"
 #include "ui/TableLayout.h"
 

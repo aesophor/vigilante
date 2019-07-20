@@ -6,12 +6,10 @@
 #include <vector>
 #include <memory>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
-#include "ui/UILayout.h"
-#include "ui/UIImageView.h"
-#include "ui/UIScrollView.h"
-
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 #include "AssetManager.h"
 #include "Constants.h"
 #include "item/Item.h"

@@ -1,9 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Skill.h"
 
-#include "cocos2d.h"
-#include "json/document.h"
-
+#include <cocos2d.h>
+#include <json/document.h>
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"

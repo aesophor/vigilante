@@ -2,7 +2,7 @@
 #ifndef VIGILANTE_WORLD_CONTACT_LISTENER_H_
 #define VIGILANTE_WORLD_CONTACT_LISTENER_H_
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
 
 namespace vigilante {
 

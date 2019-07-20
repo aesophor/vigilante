@@ -2,7 +2,7 @@
 #ifndef APP_DELEGATE_H_
 #define APP_DELEGATE_H_
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 // The cocos2d Application.
 // Private inheritance here hides part of interface from Director.

@@ -5,10 +5,9 @@
 #include <string>
 #include <memory>
 
-#include "cocos2d.h"
-#include "ui/UIImageView.h"
-#include "2d/CCLabel.h"
-
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UIImageView.h>
 #include "character/Player.h"
 #include "StatusBar.h"
 

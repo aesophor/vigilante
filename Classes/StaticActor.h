@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 namespace vigilante {
 

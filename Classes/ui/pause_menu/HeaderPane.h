@@ -5,11 +5,10 @@
 #include <vector>
 #include <string>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
-#include "ui/UILayout.h"
-
-#include "AbstractPane.h"
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
+#include <ui/UILayout.h>
+#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 

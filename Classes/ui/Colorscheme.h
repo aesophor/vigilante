@@ -2,7 +2,7 @@
 #ifndef VIGILANTE_COLORSCHEME_H_
 #define VIGILANTE_COLORSCHEME_H_
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 namespace vigilante {
 

@@ -3,8 +3,7 @@
 
 #include <string>
 
-#include "SimpleAudioEngine.h"
-
+#include <SimpleAudioEngine.h>
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -12,7 +11,7 @@
 #include "input/InputManager.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
-//#include "quest/Quest.h"
+#include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
 #include "util/CallbackUtil.h"

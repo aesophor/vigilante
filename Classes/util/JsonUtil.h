@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "json/document.h"
+#include <json/document.h>
 
 namespace vigilante {
 

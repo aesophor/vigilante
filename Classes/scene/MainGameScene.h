@@ -4,10 +4,9 @@
 
 #include <memory>
 
-#include "cocos2d.h"
-#include "ui/UIImageView.h"
-#include "Box2D/Box2D.h"
-
+#include <cocos2d.h>
+#include <ui/UIImageView.h>
+#include <Box2D/Box2D.h>
 #include "Controllable.h"
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"

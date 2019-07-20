@@ -2,9 +2,8 @@
 #ifndef VIGILANTE_CAMERA_UTIL_H_
 #define VIGILANTE_CAMERA_UTIL_H_
 
-#include "cocos2d.h"
-#include "Box2D/Box2D.h"
-
+#include <cocos2d.h>
+#include <Box2D/Box2D.h>
 #include "map/GameMap.h"
 
 namespace vigilante {

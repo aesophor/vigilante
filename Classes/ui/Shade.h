@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_SHADE_H_
 #define VIGILANTE_SHADE_H_
 
-#include "cocos2d.h"
-#include "ui/UIImageView.h"
+#include <cocos2d.h>
+#include <ui/UIImageView.h>
 
 namespace vigilante {
 

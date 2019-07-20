@@ -4,8 +4,7 @@
 
 #include <string>
 
-#include "cocos2d.h"
-
+#include <cocos2d.h>
 #include "item/Item.h"
 #include "input/Keybindable.h"
 

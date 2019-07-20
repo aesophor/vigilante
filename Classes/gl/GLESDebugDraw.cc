@@ -21,9 +21,9 @@
 
 #include "GLESDebugDraw.h"
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdarg>
+#include <cstring>
 
 using cocos2d::GLProgram;
 using cocos2d::GLProgramCache;
