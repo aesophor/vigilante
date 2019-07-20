@@ -5,8 +5,8 @@
 #include <deque>
 #include <string>
 
-#include "cocos2d.h"
-#include "2d/CCLabel.h"
+#include <cocos2d.h>
+#include <2d/CCLabel.h>
 
 namespace vigilante {
 

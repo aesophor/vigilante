@@ -189,7 +189,7 @@ void Player::inflictDamage(Character* target, int damage) {
   if (target->isSetToKill()) {
     const string& targetName = target->getCharacterProfile().name;
     for (const auto objective : KillTargetObjective::getRelatedObjectives(targetName)) {
-      objective->incrementCurrentAmount();
+      dynamic_cast<KillTargetObjective*>(objective)->incrementCurrentAmount();
     }
     _questBook.update(Quest::Objective::Type::KILL);
   }

@@ -31,23 +31,14 @@ QuestBook::QuestBook(const string& questListFileName) {
 
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
+  cocos2d::log("[QuestBook] updating quests");
   for (const auto quest : _inProgressQuests) {
     if (quest->getCurrentStage().objective->getObjectiveType() != objectiveType) {
       continue;
     }
 
     while (!quest->isCompleted() && quest->getCurrentStage().objective->isCompleted()) {
-      KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(quest->getCurrentStage().objective);
-
-      if (objective) {
-        KillTargetObjective::removeRelatedObjective(objective->getCharacterName(), objective);
-      }
-
       quest->advanceStage();
-
-      if (objective) {
-        KillTargetObjective::addRelatedObjective(objective->getCharacterName(), objective);
-      }
 
       if (quest->isCompleted()) {
         markCompleted(quest);
@@ -72,7 +63,9 @@ void QuestBook::startQuest(Quest* quest) {
   // Add this quest to _inProgressQuests.
   qs.push_back(quest);
 
+  quest->advanceStage();
   NotificationManager::getInstance()->show("Quest Started: " + quest->getQuestProfile().title);
+  NotificationManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
 }
 
 void QuestBook::markCompleted(Quest* quest) {
@@ -87,6 +80,7 @@ void QuestBook::markCompleted(Quest* quest) {
   _completedQuests.push_back(quest);
 
   NotificationManager::getInstance()->show("Quest Completed: " + quest->getQuestProfile().title);
+
 }
 
 

@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "Importable.h"
 
@@ -33,8 +34,16 @@ class Quest : public Importable {
     Objective::Type getObjectiveType() const;
     const std::string& getDesc() const;
 
+    // Provide a key and get all objectives related to this key.
+    static void addRelatedObjective(const std::string& key, Quest::Objective* objective);
+    static void removeRelatedObjective(const std::string& key, Quest::Objective* objective);
+    static const std::vector<Quest::Objective*>& getRelatedObjectives(const std::string& key);
+
    protected:
     Objective(Objective::Type objectiveType, const std::string& desc);
+
+    static std::unordered_map<std::string, std::vector<Quest::Objective*>> _relatedObjectives;
+    static const std::vector<Quest::Objective*> _kEmptyVector;
 
     Objective::Type _objectiveType;
     std::string _desc;

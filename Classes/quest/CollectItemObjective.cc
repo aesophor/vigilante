@@ -1,14 +1,11 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "CollectItemObjective.h"
 
-#include <vector>
-
 #include "character/Player.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 
 using std::string;
-using std::vector;
 
 namespace vigilante {
 

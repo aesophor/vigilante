@@ -1,17 +1,9 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "KillTargetObjective.h"
 
-#include <algorithm>
-
-#include <cocos2d.h>
-
 using std::string;
-using std::vector;
-using std::unordered_map;
 
 namespace vigilante {
-
-unordered_map<string, vector<KillTargetObjective*>> KillTargetObjective::_relatedObjectives;
 
 KillTargetObjective::KillTargetObjective(const string& desc,
                                          const string& characterName,
@@ -23,7 +15,6 @@ KillTargetObjective::KillTargetObjective(const string& desc,
 
 
 bool KillTargetObjective::isCompleted() const {
-  cocos2d::log("%d/%d", _currentAmount, _targetAmount);
   return _currentAmount >= _targetAmount;
 }
 
@@ -42,23 +33,6 @@ int KillTargetObjective::getCurrentAmount() const {
 
 void KillTargetObjective::incrementCurrentAmount() {
   _currentAmount++;
-}
-
-
-void KillTargetObjective::addRelatedObjective(const string& characterName, KillTargetObjective* objective) {
-  _relatedObjectives[characterName].push_back(objective);
-}
-
-void KillTargetObjective::removeRelatedObjective(const string& characterName, KillTargetObjective* objective) {
-  auto& objs = _relatedObjectives[characterName];
-  objs.erase(std::remove(objs.begin(), objs.end(), objective), objs.end());
-}
-
-vector<KillTargetObjective*> KillTargetObjective::getRelatedObjectives(const string& characterName) {
-  if (_relatedObjectives.find(characterName) == _relatedObjectives.end()) {
-    return {};
-  }
-  return _relatedObjectives.at(characterName);
 }
 
 } // namespace vigilante

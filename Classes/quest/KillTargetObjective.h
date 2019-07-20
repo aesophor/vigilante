@@ -3,8 +3,6 @@
 #define VIGILANTE_KILL_TARGET_OBJECTIVE_H_
 
 #include <string>
-#include <vector>
-#include <unordered_map>
 
 #include "Quest.h"
 
@@ -24,14 +22,7 @@ class KillTargetObjective : public Quest::Objective {
   int getCurrentAmount() const;
   void incrementCurrentAmount();
 
-  static void addRelatedObjective(const std::string& characterName, KillTargetObjective* objective);
-  static void removeRelatedObjective(const std::string& characterName, KillTargetObjective* objective);
-  static std::vector<KillTargetObjective*> getRelatedObjectives(const std::string& characterName);
-
  private:
-  // Maps character name to a vector of quests
-  static std::unordered_map<std::string, std::vector<KillTargetObjective*>> _relatedObjectives;
-
   std::string _characterName;
   int _targetAmount;
   int _currentAmount;
