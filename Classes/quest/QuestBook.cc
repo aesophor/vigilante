@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 #include "quest/KillTargetObjective.h"
-#include "ui/notification/NotificationManager.h"
+#include "ui/quest_hint/QuestHintManager.h"
 
 using std::string;
 using std::vector;
@@ -43,7 +43,7 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
       if (quest->isCompleted()) {
         markCompleted(quest);
       } else {
-        NotificationManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
+         QuestHintManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
       }
     }
   }
@@ -64,8 +64,8 @@ void QuestBook::startQuest(Quest* quest) {
   qs.push_back(quest);
 
   quest->advanceStage();
-  NotificationManager::getInstance()->show("Quest Started: " + quest->getQuestProfile().title);
-  NotificationManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
+  QuestHintManager::getInstance()->show("Quest Started: " + quest->getQuestProfile().title);
+  QuestHintManager::getInstance()->show("New objective: " + quest->getCurrentStage().objective->getDesc());
 }
 
 void QuestBook::markCompleted(Quest* quest) {
@@ -79,8 +79,7 @@ void QuestBook::markCompleted(Quest* quest) {
   qs.erase(std::remove(qs.begin(), qs.end(), quest), qs.end());
   _completedQuests.push_back(quest);
 
-  NotificationManager::getInstance()->show("Quest Completed: " + quest->getQuestProfile().title);
-
+  QuestHintManager::getInstance()->show("Quest Completed: " + quest->getQuestProfile().title);
 }
 
 

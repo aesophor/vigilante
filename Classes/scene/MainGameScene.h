@@ -14,6 +14,7 @@
 #include "ui/damage/FloatingDamageManager.h"
 #include "ui/dialog/DialogManager.h"
 #include "ui/notification/NotificationManager.h"
+#include "ui/quest_hint/QuestHintManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "util/box2d/b2DebugRenderer.h"
 
@@ -40,6 +41,7 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   std::unique_ptr<PauseMenu> _pauseMenu;
   std::unique_ptr<FloatingDamageManager> _floatingDamages;
   std::unique_ptr<DialogManager> _dialogManager;
+  std::unique_ptr<QuestHintManager> _questHints;
   std::unique_ptr<NotificationManager> _notifications;
   std::unique_ptr<GameMapManager> _gameMapManager;
 };

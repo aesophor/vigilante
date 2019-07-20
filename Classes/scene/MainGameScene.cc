@@ -78,6 +78,9 @@ bool MainGameScene::init() {
   _notifications->show("Notification Manager initialized!");
   _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
+  _questHints = unique_ptr<QuestHintManager>(QuestHintManager::getInstance());
+  addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
+
   // Initialize floating damage manager.
   _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
@@ -167,6 +170,7 @@ void MainGameScene::update(float delta) {
   _gameMapManager->update(delta);
   _floatingDamages->update(delta);
   _notifications->update(delta);
+  _questHints->update(delta);
   _dialogManager->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());

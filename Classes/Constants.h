@@ -55,6 +55,7 @@ const int kDefault = 50;
 
 const int kFloatingDamage = 91;
 const int kNotification = 93;
+const int kQuestHint = 94;
 const int kHud = 95;
 const int kDialog = 96;
 const int kShade = 97;
