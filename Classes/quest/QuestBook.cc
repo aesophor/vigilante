@@ -18,10 +18,10 @@ using std::runtime_error;
 
 namespace vigilante {
 
-QuestBook::QuestBook(const string& questListFileName) {
-  ifstream fin(questListFileName);
+QuestBook::QuestBook(const string& questsListFileName) {
+  ifstream fin(questsListFileName);
   if (!fin.is_open()) {
-    throw runtime_error("Failed to open quest list: " + questListFileName);
+    throw runtime_error("Failed to open quest list: " + questsListFileName);
   }
 
   string line;

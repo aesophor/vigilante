@@ -13,7 +13,7 @@ namespace vigilante {
 
 class QuestBook {
  public:
-  QuestBook(const std::string& questListFileName);
+  QuestBook(const std::string& questsListFileName);
   virtual ~QuestBook() = default;
 
   void update(const Quest::Objective::Type objectiveType);

@@ -78,7 +78,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   director->setAnimationInterval(1.0f / 60);
 
   // Load resources
-  vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetList);
+  vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetsList);
 
   // Create a scene (auto-release object).
   Scene* scene = vigilante::MainMenuScene::create();

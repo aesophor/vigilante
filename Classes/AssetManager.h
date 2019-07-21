@@ -9,8 +9,8 @@ namespace vigilante {
 namespace asset_manager {
 
 const std::string kExpPointTable = "Resources/Gameplay/exp_point_table.txt";
-const std::string kSpritesheetList = "Resources/Texture/spritesheets.txt";
-const std::string kQuestList = "Resources/Gameplay/quest_list.txt";
+const std::string kSpritesheetsList = "Resources/Texture/spritesheets.txt";
+const std::string kQuestsList = "Resources/Gameplay/quests_list.txt";
 
 // Fonts
 const std::string kRegularFont = "Font/HeartbitXX.ttf";
@@ -36,6 +36,7 @@ const std::string kEquippedWeaponDescBg = kHud + "item_desc.png";
 
 // Dialogue
 const std::string kDialogue = "Texture/ui/dialogue/";
+const std::string kDialogueMenuBg = kDialogue + "dialogue_menu_bg.png";
 const std::string kDialogueTriangle = kDialogue + "triangle.png";
 
 // PauseMenu
@@ -61,7 +62,7 @@ const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyImage = "Texture/empty.png";
 
 // Spritesheets
-void loadSpritesheets(const std::string& spritesheetListFileName);
+void loadSpritesheets(const std::string& spritesheetsListFileName);
 
 } // namespace asset_manager
 

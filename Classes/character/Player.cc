@@ -54,7 +54,7 @@ using vigilante::category_bits::kProjectile;
 namespace vigilante {
 
 Player::Player(const std::string& jsonFileName)
-    : Character(jsonFileName), _questBook(asset_manager::kQuestList) {}
+    : Character(jsonFileName), _questBook(asset_manager::kQuestsList) {}
 
 void Player::showOnMap(float x, float y) {
   if (_isShownOnMap) {

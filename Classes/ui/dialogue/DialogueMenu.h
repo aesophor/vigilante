@@ -14,7 +14,7 @@ class DialogueMenu {
   virtual ~DialogueMenu() = default;
 
  private:
-
+  cocos2d::ui::ImageView* _background;
 };
 
 } // namespace vigilante

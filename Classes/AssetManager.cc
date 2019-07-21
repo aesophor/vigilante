@@ -16,10 +16,10 @@ namespace vigilante {
 
 namespace asset_manager {
 
-void loadSpritesheets(const string& spritesheetListFileName) {
-  ifstream fin(spritesheetListFileName);
+void loadSpritesheets(const string& spritesheetsListFileName) {
+  ifstream fin(spritesheetsListFileName);
   if (!fin.is_open()) {
-    throw runtime_error("Failed to load spritesheets from " + spritesheetListFileName);
+    throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName);
   }
 
   cocos2d::log("[AssetManager.cc] loading textures");
