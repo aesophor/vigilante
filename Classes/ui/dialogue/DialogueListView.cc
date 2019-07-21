@@ -8,8 +8,9 @@
 
 namespace vigilante {
 
-DialogueListView::DialogueListView()
+DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
     : ListView<DialogueTree*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+      _dialogueMenu(dialogMenu),
       _dialogueTree() {}
 
 

@@ -44,7 +44,8 @@ namespace vigilante {
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
       Bot(this),
-      _npcProfile(jsonFileName) {}
+      _npcProfile(jsonFileName),
+      _dialogueTree(_npcProfile.dialogueTree) {}
 
 void Npc::update(float delta) {
   Character::update(delta);
@@ -128,13 +129,15 @@ Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;
 }
 
-const vector<Quest*>& Npc::getQuests() const {
-  return _quests;
+DialogueTree& Npc::getDialogueTree() {
+  return _dialogueTree;
 }
 
 
 Npc::Profile::Profile(const string& jsonFileName) {
-  //Document json = json_util::parseJson(jsonFileName);
+  Document json = json_util::parseJson(jsonFileName);
+
+  dialogueTree = json["dialogueTree"].GetString();
 }
 
 } // namespace vigilante

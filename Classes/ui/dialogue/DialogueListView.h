@@ -4,12 +4,13 @@
 
 #include "gameplay/DialogueTree.h"
 #include "ui/ListView.h"
+#include "ui/dialogue/DialogueMenu.h"
 
 namespace vigilante {
 
 class DialogueListView : ListView<DialogueTree*> {
  public:
-  DialogueListView();
+  DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
 
   virtual void confirm() override; // ListView<DialogueTree*>
@@ -17,6 +18,7 @@ class DialogueListView : ListView<DialogueTree*> {
   void showDialogue(DialogueTree* dialogueTree);
 
  private:
+  DialogueMenu* _dialogueMenu;
   DialogueTree* _dialogueTree;
 };
 

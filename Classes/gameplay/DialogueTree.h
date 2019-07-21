@@ -5,12 +5,16 @@
 #include <string>
 #include <vector>
 
+#include "Importable.h"
+
 namespace vigilante {
 
-class DialogueTree {
+class DialogueTree : public Importable {
  public:
-  DialogueTree();
-  virtual ~DialogueTree() = default;
+  DialogueTree(const std::string& jsonFileName);
+  virtual ~DialogueTree();
+
+  virtual void import(const std::string& jsonFileName) override;
 
   struct Node {
     Node(const std::string& dialog);
