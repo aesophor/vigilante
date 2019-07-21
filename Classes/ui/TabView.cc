@@ -15,12 +15,12 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-TabView::TabView(const string& regularImg, const string& highlightedImg)
+TabView::TabView(const string& regularBg, const string& highlightedBg)
     : _layout(Layout::create()),      
       _current(),
       _nextTabPos(),
-      _regularImg(regularImg),
-      _highlightedImg(highlightedImg) {
+      _regularBg(regularBg),
+      _highlightedBg(highlightedBg) {
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 0});
 }
@@ -70,7 +70,7 @@ Layout* TabView::getLayout() const {
 
 TabView::Tab::Tab(TabView* parent, const string& text)
     : _parent(parent),
-      _background(ImageView::create(parent->_regularImg)), 
+      _background(ImageView::create(parent->_regularBg)), 
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       _isSelected(),
       _index(parent->_tabs.size()) {
@@ -82,11 +82,7 @@ bool TabView::Tab::isSelected() const {
 }
 
 void TabView::Tab::setIsSelected(bool isSelected) {
-  if (isSelected) {
-    _background->loadTexture(_parent->_highlightedImg);
-  } else {
-    _background->loadTexture(_parent->_regularImg);
-  }
+  _background->loadTexture((isSelected) ? _parent->_highlightedBg : _parent->_regularBg);
   _isSelected = isSelected;
 }
 

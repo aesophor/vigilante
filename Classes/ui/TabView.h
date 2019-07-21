@@ -15,7 +15,7 @@ namespace vigilante {
 
 class TabView {
  public:
-  TabView(const std::string& regularImg, const std::string& highlightedImg);
+  TabView(const std::string& regularBg, const std::string& highlightedBg);
   virtual ~TabView() = default;
 
   class Tab {
@@ -50,8 +50,8 @@ class TabView {
   int _current;
   cocos2d::Vec2 _nextTabPos;
 
-  std::string _regularImg;
-  std::string _highlightedImg;
+  std::string _regularBg;
+  std::string _highlightedBg;
 };
 
 } // namespace vigilante
