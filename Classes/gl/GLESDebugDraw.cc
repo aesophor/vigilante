@@ -1,6 +1,6 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 /*
  * Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+ * Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>
  *
  * iPhone port by Simon Oliver - http://www.simonoliver.com - http://www.handcircus.com
  *
@@ -18,7 +18,6 @@
  * misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-
 #include "GLESDebugDraw.h"
 
 #include <cstdio>
