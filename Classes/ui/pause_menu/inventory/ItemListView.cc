@@ -42,7 +42,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
     bool hasDefinedHotkey = keybindable && static_cast<bool>(keybindable->getHotkey());
 
     if (hasDefinedHotkey) {
-      std::string&& hotkey = keycode_util::keyCodeToString(keybindable->getHotkey());
+      const string& hotkey = keycode_util::keyCodeToString(keybindable->getHotkey());
       label->setString(label->getString() + " [" + hotkey + "]");
     }
   };
