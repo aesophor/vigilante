@@ -8,6 +8,7 @@
 #include "item/Consumable.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
+#include "util/KeyCodeUtil.h"
 
 #define VISIBLE_ITEM_COUNT 5
 #define WIDTH vigilante::kVirtualWidth / 2

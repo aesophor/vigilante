@@ -15,7 +15,6 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"
-#include "util/KeyCodeUtil.h"
 
 namespace vigilante {
 
