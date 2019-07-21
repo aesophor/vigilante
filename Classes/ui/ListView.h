@@ -23,7 +23,7 @@ class PauseMenu;
 template <typename T>
 class ListView {
  public:
-  ListView(PauseMenu* pauseMenu, uint8_t visibleItemCount, uint32_t width,
+  ListView(uint8_t visibleItemCount, uint32_t width,
            const std::string& regularBg=asset_manager::kEmptyImage,
            const std::string& highlightedBg=asset_manager::kEmptyImage);
   virtual ~ListView() = default;
@@ -68,9 +68,7 @@ class ListView {
     T _object;
   };
 
-  PauseMenu* _pauseMenu;
   cocos2d::ui::Layout* _layout;
-  cocos2d::Label* _descLabel;
  
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
@@ -88,11 +86,9 @@ class ListView {
 
 
 template <typename T>
-ListView<T>::ListView(PauseMenu* pauseMenu, uint8_t visibleItemCount, uint32_t width,
+ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
                       const std::string& regularBg, const std::string& highlightedBg)
-    : _pauseMenu(pauseMenu),
-      _layout(cocos2d::ui::Layout::create()),
-      _descLabel(cocos2d::Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
+    : _layout(cocos2d::ui::Layout::create()),
       _visibleItemCount(visibleItemCount),
       _width(width),
       _regularBg(regularBg),
@@ -106,12 +102,6 @@ ListView<T>::ListView(PauseMenu* pauseMenu, uint8_t visibleItemCount, uint32_t w
     _listViewItems.back()->setVisible(false);
     _layout->addChild(_listViewItems[i]->getLayout());
   }
-
-  _descLabel->getFontAtlas()->setAliasTexParameters();
-  _descLabel->setAnchorPoint({0, 1});
-  _descLabel->setPosition({10, -137});
-  _descLabel->enableWrap(true);
-  _layout->addChild(_descLabel);
 }
 
 
@@ -128,12 +118,6 @@ void ListView<T>::selectUp() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[--_current - _firstVisibleIndex]->setSelected(true);
-
-  if (_objects[_current]) {
-    _descLabel->setString(_objects[_current]->getDesc());
-  } else {
-    _descLabel->setString("");
-  }
 }
 
 template <typename T>
@@ -149,12 +133,6 @@ void ListView<T>::selectDown() {
   }
   _listViewItems[_current - _firstVisibleIndex]->setSelected(false);
   _listViewItems[++_current - _firstVisibleIndex]->setSelected(true);
-
-  if (_objects[_current]) {
-    _descLabel->setString(_objects[_current]->getDesc());
-  } else {
-    _descLabel->setString("");
-  }
 }
 
 template <typename T>
@@ -251,8 +229,6 @@ T ListView<T>::ListViewItem::getObject() const {
 template <typename T>
 void ListView<T>::ListViewItem::setObject(T object) {
   _object = object;
-  _icon->loadTexture((object) ? object->getIconPath() : asset_manager::kEmptyImage);
-  _label->setString((object) ? object->getName() : "---");
 
   // Provide extra logic for setting _icon and _label.
   // See the ctor in ui/pause_menu/inventory/ItemListView.cc for example.

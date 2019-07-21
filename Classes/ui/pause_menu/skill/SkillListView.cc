@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SkillListView.h"
 
+#include <cassert>
+
 #include "input/InputManager.h"
 #include "input/Keybindable.h"
 #include "ui/pause_menu/PauseMenu.h"
@@ -17,16 +19,25 @@ using std::vector;
 using std::string;
 using cocos2d::Label;
 using cocos2d::EventKeyboard;
+using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
 SkillListView::SkillListView(PauseMenu* pauseMenu)
-    : ListView<Skill*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {
+    : ListView<Skill*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+      _pauseMenu(pauseMenu),
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
 
   // _onSelect is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   this->_onSelect = [](ListViewItem* listViewItem, Skill* skill) {
+    assert(skill != nullptr);
+
+    ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
+
+    icon->loadTexture(skill->getIconPath());
+    label->setString(skill->getName());
 
     // Display skill hotkey (if defined).
     // Skills are Keybindable, see skill/Skill.h
@@ -38,6 +49,12 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
       label->setString(label->getString() + " [" + hotkey + "]");
     }
   };
+
+  _descLabel->getFontAtlas()->setAliasTexParameters();
+  _descLabel->setAnchorPoint({0, 1});
+  _descLabel->setPosition({10, -137});
+  _descLabel->enableWrap(true);
+  _layout->addChild(_descLabel);
 }
 
 
@@ -68,6 +85,23 @@ void SkillListView::confirm() {
 
   dialog->setOption(2, true, "Cancel");
   dialog->show();
+}
+
+
+void SkillListView::selectUp() {
+  ListView<Skill*>::selectUp();
+
+  Skill* selectedSkill = _objects[_current];
+  assert(selectedSkill != nullptr);
+  _descLabel->setString(selectedSkill->getDesc());
+}
+
+void SkillListView::selectDown() {
+  ListView<Skill*>::selectDown();
+
+  Skill* selectedSkill = _objects[_current];
+  assert(selectedSkill != nullptr);
+  _descLabel->setString(selectedSkill->getDesc());
 }
 
 

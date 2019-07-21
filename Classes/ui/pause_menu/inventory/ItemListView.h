@@ -8,6 +8,8 @@
 
 namespace vigilante {
 
+class PauseMenu;
+
 class ItemListView : public ListView<Item*> {
  public:
   ItemListView(PauseMenu* pauseMenu);
@@ -15,12 +17,17 @@ class ItemListView : public ListView<Item*> {
 
   virtual void confirm() override; // ListView<Item*>
   virtual void selectUp() override; // ListView<Item*>
+  virtual void selectDown() override; // ListView<Item*>
 
   void showItemsByType(Item::Type itemType);
   void showEquipmentByType(Equipment::Type equipmentType);
 
   void fetchItems(Item::Type itemType);
   void fetchEquipment(Equipment::Type equipmentType);
+
+ private:
+  PauseMenu* _pauseMenu;
+  cocos2d::Label* _descLabel;
 };
 
 } // namespace vigilante

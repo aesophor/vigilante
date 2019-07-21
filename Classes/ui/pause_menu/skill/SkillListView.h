@@ -11,14 +11,22 @@
 
 namespace vigilante {
 
+class PauseMenu;
+
 class SkillListView : public ListView<Skill*> {
  public:
   SkillListView(PauseMenu* pauseMenu);
   virtual ~SkillListView() = default;
 
   virtual void confirm() override; // ListView<Skill*>
+  virtual void selectUp() override; // ListView<Skill*>
+  virtual void selectDown() override; // ListView<Skill*>
 
   void showSkills();
+
+ private:
+  PauseMenu* _pauseMenu;
+  cocos2d::Label* _descLabel;
 };
 
 } // namespace vigilante

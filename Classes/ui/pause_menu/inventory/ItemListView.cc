@@ -15,20 +15,30 @@
 #define REGULAR_BG vigilante::asset_manager::kItemRegular
 #define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
+#define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
+#define EMPTY_ITEM_NAME "---"
+
 using std::deque;
 using std::vector;
 using std::string;
 using cocos2d::Label;
+using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
 ItemListView::ItemListView(PauseMenu* pauseMenu)
-    : ListView<Item*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {
+    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+      _pauseMenu(pauseMenu),
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
 
   // _onSelect is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   this->_onSelect = [](ListViewItem* listViewItem, Item* item) {
+    ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
+
+    icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
+    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
 
     // Display item amount if amount > 1
     if (item->getAmount() > 1) {
@@ -46,6 +56,12 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
       label->setString(label->getString() + " [" + hotkey + "]");
     }
   };
+
+  _descLabel->getFontAtlas()->setAliasTexParameters();
+  _descLabel->setAnchorPoint({0, 1});
+  _descLabel->setPosition({10, -137});
+  _descLabel->enableWrap(true);
+  _layout->addChild(_descLabel);
 }
 
 
@@ -89,9 +105,15 @@ void ItemListView::confirm() {
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
 
-  if (!_objects[_current]) {
-    _descLabel->setString("Unequip");
-  }
+  Item* selectedItem = _objects[_current];
+  _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
+}
+
+void ItemListView::selectDown() {
+  ListView<Item*>::selectDown();
+
+  Item* selectedItem = _objects[_current];
+  _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
 }
 
 
