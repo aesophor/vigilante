@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
-#include "ui/floating_damage/FloatingDamages.h"
+#include "ui/floating_damages/FloatingDamages.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"

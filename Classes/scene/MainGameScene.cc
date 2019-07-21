@@ -78,7 +78,7 @@ bool MainGameScene::init() {
   _notifications->show("Notification Manager initialized!");
   _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
-  _questHints = unique_ptr<QuestHintManager>(QuestHintManager::getInstance());
+  _questHints = unique_ptr<QuestHints>(QuestHints::getInstance());
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
   // Initialize floating damage manager.
@@ -88,10 +88,10 @@ bool MainGameScene::init() {
   // Initialize dialog manager.
   _subtitles = unique_ptr<Subtitles>(Subtitles::getInstance());
   _subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _subtitles->addDialog("???: Hey, you are finally awake.");
-  _subtitles->addDialog("Aesophor: Wut?");
-  _subtitles->beginDialog();
-  addChild(_subtitles->getLayer(), graphical_layers::kDialog);
+  _subtitles->addSubtitle("???: Hey, you are finally awake.");
+  _subtitles->addSubtitle("Aesophor: Wut?");
+  _subtitles->beginSubtitles();
+  addChild(_subtitles->getLayer(), graphical_layers::kDialogue);
 
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);

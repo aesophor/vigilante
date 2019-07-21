@@ -9,7 +9,7 @@
 #include "gameplay/ExpPointTable.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
-#include "ui/notification/Notifications.h"
+#include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"

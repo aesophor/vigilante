@@ -16,7 +16,7 @@ using cocos2d::MoveBy;
 using cocos2d::Sequence;
 using cocos2d::CallFunc;
 using vigilante::asset_manager::kShade;
-using vigilante::asset_manager::kDialogNextIcon;
+using vigilante::asset_manager::kDialogueTriangle;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
 
@@ -37,10 +37,10 @@ Subtitles* Subtitles::getInstance() {
 Subtitles::Subtitles()
     : _layer(Layer::create()),
       _label(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
-      _nextDialogIcon(ImageView::create(kDialogNextIcon)),
+      _nextSubtitleIcon(ImageView::create(kDialogueTriangle)),
       _upperLetterbox(ImageView::create(kShade)),
       _lowerLetterbox(ImageView::create(kShade)),
-      _currentDialog(""),
+      _currentSubtitle(""),
       _timer() {
   auto winSize = Director::getInstance()->getWinSize();
   _label->setPosition(winSize.width / 2, 20);
@@ -56,30 +56,30 @@ Subtitles::Subtitles()
   _lowerLetterbox->setScaleX(winSize.width);
   _lowerLetterbox->setScaleY(_kLetterboxHeight);
 
-  _nextDialogIcon->setVisible(false);
+  _nextSubtitleIcon->setVisible(false);
 
   _layer->addChild(_upperLetterbox);
   _layer->addChild(_lowerLetterbox);
   _layer->addChild(_label);
-  _layer->addChild(_nextDialogIcon);
+  _layer->addChild(_nextSubtitleIcon);
   _layer->setVisible(false);
 }
 
 
 void Subtitles::update(float delta) {
-  if (!_layer->isVisible() || _label->getString().size()  == _currentDialog.dialog.size()) {
+  if (!_layer->isVisible() || _label->getString().size()  == _currentSubtitle.text.size()) {
     return;
   }
 
   if (_timer >= _kShowCharInterval) {
     int nextCharIdx = _label->getString().size();
-    _label->setString(_label->getString() + _currentDialog.dialog.at(nextCharIdx));
+    _label->setString(_label->getString() + _currentSubtitle.text.at(nextCharIdx));
     _timer = 0;
   }
-  if (_label->getString().size() == _currentDialog.dialog.size()) {
+  if (_label->getString().size() == _currentSubtitle.text.size()) {
     float x = _label->getPositionX() + _label->getContentSize().width / 2;
     float y = _label->getPositionY();
-    _nextDialogIcon->setPosition({x + 25, y});
+    _nextSubtitleIcon->setPosition({x + 25, y});
   }
   _timer += delta;
 }
@@ -88,16 +88,16 @@ void Subtitles::handleInput() {
   auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
-    showNextDialog();
+    showNextSubtitle();
   }
 }
 
-void Subtitles::addDialog(const string& s) {
-  _dialogQueue.push(Dialog(s));
+void Subtitles::addSubtitle(const string& s) {
+  _subtitleQueue.push(Subtitle(s));
 }
 
-void Subtitles::beginDialog() {
-  if (_dialogQueue.empty()) {
+void Subtitles::beginSubtitles() {
+  if (_subtitleQueue.empty()) {
     return;
   }
   Hud::getInstance()->getLayer()->setVisible(false);
@@ -106,12 +106,12 @@ void Subtitles::beginDialog() {
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(2.0f, {0, _kLetterboxHeight}),
     CallFunc::create([=]() {
-      showNextDialog();
+      showNextSubtitle();
     })
   ));
 }
 
-void Subtitles::endDialog() {
+void Subtitles::endSubtitles() {
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, _kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(2.0f, {0, -_kLetterboxHeight}),
@@ -122,18 +122,18 @@ void Subtitles::endDialog() {
   ));
 }
 
-void Subtitles::showNextDialog() {
-  _nextDialogIcon->setVisible(false);
+void Subtitles::showNextSubtitle() {
+  _nextSubtitleIcon->setVisible(false);
 
-  if (_dialogQueue.empty()) {
-    _currentDialog.dialog.clear();
+  if (_subtitleQueue.empty()) {
+    _currentSubtitle.text.clear();
     _label->setString("");
-    endDialog();
+    endSubtitles();
     return;
   }
 
-  _currentDialog = _dialogQueue.front();
-  _dialogQueue.pop();
+  _currentSubtitle = _subtitleQueue.front();
+  _subtitleQueue.pop();
   _label->setString("");
   _timer = 0;
 }
@@ -143,6 +143,6 @@ Layer* Subtitles::getLayer() const {
 }
 
 
-Subtitles::Dialog::Dialog(const string& dialog) : dialog(dialog) {}
+Subtitles::Subtitle::Subtitle(const string& text) : text(text) {}
 
 } // namespace vigilante

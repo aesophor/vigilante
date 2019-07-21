@@ -1,5 +1,5 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "QuestHintManager.h"
+#include "QuestHints.h"
 
 #include "Constants.h"
 
@@ -11,16 +11,16 @@
 
 namespace vigilante {
 
-QuestHintManager* QuestHintManager::_instance = nullptr;
+QuestHints* QuestHints::_instance = nullptr;
 
-QuestHintManager* QuestHintManager::getInstance() {
+QuestHints* QuestHints::getInstance() {
   if (!_instance) {
-    _instance = new QuestHintManager();
+    _instance = new QuestHints();
   }
   return _instance;
 }
 
-QuestHintManager::QuestHintManager()
+QuestHints::QuestHints()
     : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
 
 } // namespace vigilante

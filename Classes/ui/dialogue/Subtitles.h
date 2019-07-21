@@ -20,33 +20,33 @@ class Subtitles : public Controllable {
   void update(float delta);
   virtual void handleInput() override; // Controllable
 
-  void addDialog(const std::string& dialog);
-  void beginDialog();
-  void endDialog();
+  void addSubtitle(const std::string& subtitle);
+  void beginSubtitles();
+  void endSubtitles();
   cocos2d::Layer* getLayer() const;
 
  private:
-  struct Dialog {
-    Dialog(const std::string& dialog);
-    std::string dialog;
+  struct Subtitle {
+    Subtitle(const std::string& text);
+    std::string text;
   };
 
   static Subtitles* _instance;
   Subtitles();
 
-  void showNextDialog();
+  void showNextSubtitle();
 
   static const float _kShowCharInterval;
   static const int _kLetterboxHeight;
 
   cocos2d::Layer* _layer;
   cocos2d::Label* _label;
-  cocos2d::ui::ImageView* _nextDialogIcon;
+  cocos2d::ui::ImageView* _nextSubtitleIcon;
   cocos2d::ui::ImageView* _upperLetterbox;
   cocos2d::ui::ImageView* _lowerLetterbox;
 
-  std::queue<Subtitles::Dialog> _dialogQueue;
-  Subtitles::Dialog _currentDialog;
+  std::queue<Subtitles::Subtitle> _subtitleQueue;
+  Subtitles::Subtitle _currentSubtitle;
   float _timer;
 };
 

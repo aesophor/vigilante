@@ -6,14 +6,14 @@
 
 namespace vigilante {
 
-class QuestHintManager : public TimedLabelService {
+class QuestHints : public TimedLabelService {
  public:
-  static QuestHintManager* getInstance();
-  virtual ~QuestHintManager() = default;
+  static QuestHints* getInstance();
+  virtual ~QuestHints() = default;
 
  private:
-  static QuestHintManager* _instance;
-  QuestHintManager();
+  static QuestHints* _instance;
+  QuestHints();
 };
 
 } // namespace vigilante

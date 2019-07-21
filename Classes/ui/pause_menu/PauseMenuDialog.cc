@@ -14,7 +14,7 @@ using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kDialogTriangle;
+using vigilante::asset_manager::kDialogueTriangle;
 
 namespace vigilante {
 
@@ -143,7 +143,7 @@ void PauseMenuDialog::clearOptions() {
 
 PauseMenuDialog::Option::Option(const string& text, const function<void ()>& handler)
     : _layout(Layout::create()),
-      _icon(ImageView::create(kDialogTriangle)),
+      _icon(ImageView::create(kDialogueTriangle)),
       _label(Label::createWithTTF(text, kBoldFont, kRegularFontSize)),
       _handler(handler) {
   _icon->setAnchorPoint({0, 1});

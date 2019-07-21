@@ -16,7 +16,7 @@
 #include "quest/KillTargetObjective.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
-#include "ui/notification/Notifications.h"
+#include "ui/notifications/Notifications.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 

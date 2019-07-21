@@ -23,7 +23,6 @@ const std::string kMainMenuBg = "Texture/ui/mainmenu_bg.png";
 
 // Shade (an overlay image used for screen fadeout/fadein effects)
 const std::string kShade = "Texture/ui/shade.png";
-const std::string kDialogTriangle = "Texture/ui/triangle.png";
 
 // Hud
 const std::string kHud = "Texture/ui/hud/";
@@ -35,9 +34,9 @@ const std::string kStaminaBar = kHud + "stamina_bar.png";
 const std::string kEquippedWeaponBg = kHud + "equipped_weapon_slot.png";
 const std::string kEquippedWeaponDescBg = kHud + "item_desc.png";
 
-// Dialog
-const std::string kDialog = "Texture/ui/dialog/";
-const std::string kDialogNextIcon = kDialog + "next.png";
+// Dialogue
+const std::string kDialogue = "Texture/ui/dialogue/";
+const std::string kDialogueTriangle = kDialogue + "triangle.png";
 
 // PauseMenu
 const std::string kPauseMenu = "Texture/ui/pause_menu/";
