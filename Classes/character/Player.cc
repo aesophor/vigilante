@@ -16,7 +16,7 @@
 #include "quest/KillTargetObjective.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
-#include "ui/notification/NotificationManager.h"
+#include "ui/notification/Notifications.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 
@@ -168,7 +168,7 @@ void Player::handleInput() {
       string itemName = item->getItemProfile().name;
       int amount = item->getAmount();
       pickupItem(item);
-      NotificationManager::getInstance()->show("Acquired item: " + itemName + ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
+      Notifications::getInstance()->show("Acquired item: " + itemName + ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
     }
   }
 

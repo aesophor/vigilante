@@ -21,6 +21,7 @@ class AbstractPane {
 
   bool isVisible() const;
   void setVisible(bool visible) const;
+  void setPosition(const cocos2d::Vec2& pos) const;
 
   PauseMenu* getPauseMenu() const;
   cocos2d::ui::Layout* getLayout() const;

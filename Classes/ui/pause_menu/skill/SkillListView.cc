@@ -1,19 +1,24 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SkillListView.h"
 
-#include <ui/UIImageView.h>
 #include "input/InputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
+#define VISIBLE_ITEM_COUNT 5
+#define WIDTH vigilante::kVirtualWidth / 2
+#define REGULAR_BG vigilante::asset_manager::kItemRegular
+#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
+
 using std::deque;
 using std::vector;
+using std::string;
 using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
-SkillListView::SkillListView(PauseMenu* pauseMenu, int visibleItemCount)
-    : ListView<Skill*>(pauseMenu, visibleItemCount) {}
+SkillListView::SkillListView(PauseMenu* pauseMenu)
+    : ListView<Skill*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {}
 
 
 void SkillListView::confirm() {

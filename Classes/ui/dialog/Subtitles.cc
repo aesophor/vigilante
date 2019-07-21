@@ -1,5 +1,5 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "DialogManager.h"
+#include "Subtitles.h"
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
@@ -22,19 +22,19 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-DialogManager* DialogManager::_instance = nullptr;
+Subtitles* Subtitles::_instance = nullptr;
 
-const float DialogManager::_kShowCharInterval = .05f;
-const int DialogManager::_kLetterboxHeight = 50;
+const float Subtitles::_kShowCharInterval = .05f;
+const int Subtitles::_kLetterboxHeight = 50;
 
-DialogManager* DialogManager::getInstance() {
+Subtitles* Subtitles::getInstance() {
   if (!_instance) {
-    _instance = new DialogManager();
+    _instance = new Subtitles();
   }
   return _instance;
 }
 
-DialogManager::DialogManager()
+Subtitles::Subtitles()
     : _layer(Layer::create()),
       _label(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
       _nextDialogIcon(ImageView::create(kDialogNextIcon)),
@@ -66,7 +66,7 @@ DialogManager::DialogManager()
 }
 
 
-void DialogManager::update(float delta) {
+void Subtitles::update(float delta) {
   if (!_layer->isVisible() || _label->getString().size()  == _currentDialog.dialog.size()) {
     return;
   }
@@ -84,7 +84,7 @@ void DialogManager::update(float delta) {
   _timer += delta;
 }
 
-void DialogManager::handleInput() {
+void Subtitles::handleInput() {
   auto inputMgr = InputManager::getInstance();
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
@@ -92,11 +92,11 @@ void DialogManager::handleInput() {
   }
 }
 
-void DialogManager::addDialog(const string& s) {
+void Subtitles::addDialog(const string& s) {
   _dialogQueue.push(Dialog(s));
 }
 
-void DialogManager::beginDialog() {
+void Subtitles::beginDialog() {
   if (_dialogQueue.empty()) {
     return;
   }
@@ -111,7 +111,7 @@ void DialogManager::beginDialog() {
   ));
 }
 
-void DialogManager::endDialog() {
+void Subtitles::endDialog() {
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, _kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(2.0f, {0, -_kLetterboxHeight}),
@@ -122,7 +122,7 @@ void DialogManager::endDialog() {
   ));
 }
 
-void DialogManager::showNextDialog() {
+void Subtitles::showNextDialog() {
   _nextDialogIcon->setVisible(false);
 
   if (_dialogQueue.empty()) {
@@ -138,11 +138,11 @@ void DialogManager::showNextDialog() {
   _timer = 0;
 }
 
-Layer* DialogManager::getLayer() const {
+Layer* Subtitles::getLayer() const {
   return _layer;
 }
 
 
-DialogManager::Dialog::Dialog(const string& dialog) : dialog(dialog) {}
+Subtitles::Dialog::Dialog(const string& dialog) : dialog(dialog) {}
 
 } // namespace vigilante

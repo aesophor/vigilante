@@ -72,7 +72,7 @@ bool MainGameScene::init() {
   addChild(_hud->getLayer(), graphical_layers::kHud);
 
   // Initialize notification manager.
-  _notifications = unique_ptr<NotificationManager>(NotificationManager::getInstance());
+  _notifications = unique_ptr<Notifications>(Notifications::getInstance());
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), graphical_layers::kNotification);
   _notifications->show("Notification Manager initialized!");
@@ -82,16 +82,16 @@ bool MainGameScene::init() {
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
   // Initialize floating damage manager.
-  _floatingDamages = unique_ptr<FloatingDamageManager>(FloatingDamageManager::getInstance());
+  _floatingDamages = unique_ptr<FloatingDamages>(FloatingDamages::getInstance());
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
   // Initialize dialog manager.
-  _dialogManager = unique_ptr<DialogManager>(DialogManager::getInstance());
-  _dialogManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _dialogManager->addDialog("???: Hey, you are finally awake.");
-  _dialogManager->addDialog("Aesophor: Wut?");
-  _dialogManager->beginDialog();
-  addChild(_dialogManager->getLayer(), graphical_layers::kDialog);
+  _subtitles = unique_ptr<Subtitles>(Subtitles::getInstance());
+  _subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  _subtitles->addDialog("???: Hey, you are finally awake.");
+  _subtitles->addDialog("Aesophor: Wut?");
+  _subtitles->beginDialog();
+  addChild(_subtitles->getLayer(), graphical_layers::kDialog);
 
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
@@ -171,7 +171,7 @@ void MainGameScene::update(float delta) {
   _floatingDamages->update(delta);
   _notifications->update(delta);
   _questHints->update(delta);
-  _dialogManager->update(delta);
+  _subtitles->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
@@ -199,8 +199,8 @@ void MainGameScene::handleInput() {
 
   if (_pauseMenu->getLayer()->isVisible()) {
     _pauseMenu->handleInput(); // paused
-  } else if (_dialogManager->getLayer()->isVisible()) {
-    _dialogManager->handleInput(); // dialog being shown
+  } else if (_subtitles->getLayer()->isVisible()) {
+    _subtitles->handleInput(); // dialog being shown
   } else {
     _gameMapManager->getPlayer()->handleInput(); // not paused
   }

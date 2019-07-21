@@ -2,6 +2,10 @@
 #ifndef VIGILANTE_SKILL_LIST_VIEW_H_
 #define VIGILANTE_SKILL_LIST_VIEW_H_
 
+#include <string>
+
+#include "AssetManager.h"
+#include "Constants.h"
 #include "skill/Skill.h"
 #include "ui/ListView.h"
 
@@ -9,7 +13,7 @@ namespace vigilante {
 
 class SkillListView : public ListView<Skill*> {
  public:
-  SkillListView(PauseMenu* pauseMenu, int visibleItemCount=5);
+  SkillListView(PauseMenu* pauseMenu);
   virtual ~SkillListView() = default;
 
   virtual void confirm() override; // ListView<Skill*>

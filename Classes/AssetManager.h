@@ -23,6 +23,7 @@ const std::string kMainMenuBg = "Texture/ui/mainmenu_bg.png";
 
 // Shade (an overlay image used for screen fadeout/fadein effects)
 const std::string kShade = "Texture/ui/shade.png";
+const std::string kDialogTriangle = "Texture/ui/triangle.png";
 
 // Hud
 const std::string kHud = "Texture/ui/hud/";
@@ -42,9 +43,6 @@ const std::string kDialogNextIcon = kDialog + "next.png";
 const std::string kPauseMenu = "Texture/ui/pause_menu/";
 const std::string kPauseMenuBg = kPauseMenu + "pause.png";
 
-// PauseMenu - Dialog
-const std::string kDialogTriangle = kPauseMenu + "triangle.png";
-
 // PauseMenu - StatsPane
 const std::string kStatsBg = kPauseMenu + "stats_bg.png";
 
@@ -61,7 +59,7 @@ const std::string kEquipmentHighlighted = kPauseMenu + "equipment_highlighted.pn
 
 // Item icons
 const std::string kItemIcons = "Texture/item/";
-const std::string kEmptyItemIcon = kItemIcons + "empty/icon.png";
+const std::string kEmptyImage = "Texture/empty.png";
 
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetListFileName);

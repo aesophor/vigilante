@@ -10,7 +10,7 @@ namespace vigilante {
 
 class ItemListView : public ListView<Item*> {
  public:
-  ItemListView(PauseMenu* pauseMenu, int visibleItemCount=5);
+  ItemListView(PauseMenu* pauseMenu);
   virtual ~ItemListView() = default;
 
   virtual void confirm() override; // ListView<Item*>

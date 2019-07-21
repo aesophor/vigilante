@@ -74,7 +74,7 @@ void Hud::updateEquippedWeapon() {
     // Update weapon desc label
     _equippedWeaponDesc->setString(weapon->getItemProfile().name);
   } else {
-    _equippedWeapon->loadTexture(asset_manager::kEmptyItemIcon);
+    _equippedWeapon->loadTexture(asset_manager::kEmptyImage);
     _equippedWeaponDesc->setString("");
   }
 }

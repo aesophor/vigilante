@@ -1,5 +1,5 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "FloatingDamageManager.h"
+#include "FloatingDamages.h"
 
 #include "AssetManager.h"
 #include "Constants.h"
@@ -20,26 +20,26 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-FloatingDamageManager* FloatingDamageManager::_instance = nullptr;
+FloatingDamages* FloatingDamages::_instance = nullptr;
 
-const float FloatingDamageManager::kDeltaX = 0.0f;
-const float FloatingDamageManager::kDeltaY = 10.0f;
+const float FloatingDamages::kDeltaX = 0.0f;
+const float FloatingDamages::kDeltaY = 10.0f;
 
-const float FloatingDamageManager::kMoveUpDuration = .2f;
-const float FloatingDamageManager::kFadeDuration = .2f;
+const float FloatingDamages::kMoveUpDuration = .2f;
+const float FloatingDamages::kFadeDuration = .2f;
 
-FloatingDamageManager* FloatingDamageManager::getInstance() {
+FloatingDamages* FloatingDamages::getInstance() {
   if (!_instance) {
-    _instance = new FloatingDamageManager();
+    _instance = new FloatingDamages();
   }
   return _instance;
 }
 
-FloatingDamageManager::FloatingDamageManager() : _layer(Layer::create()) {}
+FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
 
 
-void FloatingDamageManager::update(float delta) {
-  deque<map<Character*, deque<FloatingDamage>>::iterator> trash;
+void FloatingDamages::update(float delta) {
+  deque<map<Character*, deque<DamageLabel>>::iterator> trash;
 
   auto it = _damageMap.begin();
   for (auto& characterDmgs : _damageMap) { // map<Character*, deque<FloatingDamage>>
@@ -72,7 +72,7 @@ void FloatingDamageManager::update(float delta) {
   }
 }
 
-void FloatingDamageManager::show(Character* character, int damage) {
+void FloatingDamages::show(Character* character, int damage) {
   // If _damageMap does not have a deque of FloatingDamage objects for this character,
   // then initialize it.
   if (_damageMap.find(character) == _damageMap.end()) {
@@ -85,7 +85,7 @@ void FloatingDamageManager::show(Character* character, int damage) {
   }
 
   // Display the new floating damage label.
-  FloatingDamage dmg(std::to_string(damage), 1.5f);
+  DamageLabel dmg(std::to_string(damage), 1.5f);
   const auto& characterPos = character->getBody()->GetPosition();
   float x = characterPos.x * kPpm;
   float y = characterPos.y * kPpm + 15;
@@ -96,19 +96,19 @@ void FloatingDamageManager::show(Character* character, int damage) {
   _layer->addChild(dmg.label);
 }
 
-Layer* FloatingDamageManager::getLayer() const {
+Layer* FloatingDamages::getLayer() const {
   return _layer;
 }
 
 
-FloatingDamageManager::FloatingDamage::FloatingDamage(const string& text, float lifetime)
+FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
     : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       lifetime(lifetime),
       timer() {
   label->getFontAtlas()->setAliasTexParameters();
 }
 
-bool FloatingDamageManager::FloatingDamage::operator== (const FloatingDamage& other) {
+bool FloatingDamages::DamageLabel::operator== (const DamageLabel& other) {
   return this->label == other.label;
 }
 

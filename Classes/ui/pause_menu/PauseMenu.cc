@@ -7,6 +7,11 @@
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
 
+#define HEADER_PANE_POS {140, 280}
+#define STATS_PANE_POS {50, 240}
+#define DIALOG_POS {50, 30}
+#define MAIN_PANE_POS {230, 240} // InventoryPane, EquipmentPane... etc
+
 using std::array;
 using std::string;
 using std::unique_ptr;
@@ -43,36 +48,36 @@ PauseMenu::PauseMenu(Character* character)
   _layer->addChild(_background, 0);
 
   // Initialize header (Inventory/Equipment/Skills/Quest/Options).
-  _headerPane->getLayout()->setPosition({140, 280});
+  _headerPane->getLayout()->setPosition(HEADER_PANE_POS);
   _layer->addChild(_headerPane->getLayout());
 
   // Initialize StatsPane.
-  _statsPane->getLayout()->setPosition({50, 240});
+  _statsPane->getLayout()->setPosition(STATS_PANE_POS);
   _layer->addChild(_statsPane->getLayout());
 
   // Initialize PauseMenuDialog.
-  _dialog->getLayout()->setPosition({50, 30});
+  _dialog->getLayout()->setPosition(DIALOG_POS);
   _dialog->setVisible(false);
   _layer->addChild(_dialog->getLayout());
 
   // Initialize InventoryPane.
   _panes[0] = unique_ptr<InventoryPane>(new InventoryPane(this));
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());
-  inventoryPane->getLayout()->setPosition({230, 240});
+  inventoryPane->setPosition(MAIN_PANE_POS);
   inventoryPane->setVisible(false);
   _layer->addChild(inventoryPane->getLayout());
 
   // Initialize EquipmentPane.
   _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(this));
   EquipmentPane* equipmentPane = dynamic_cast<EquipmentPane*>(_panes[1].get());
-  equipmentPane->getLayout()->setPosition({230, 240});
+  equipmentPane->setPosition(MAIN_PANE_POS);
   equipmentPane->setVisible(false);
   _layer->addChild(equipmentPane->getLayout());
 
   // Initialize EquipmentPane.
   _panes[2] = unique_ptr<SkillPane>(new SkillPane(this));
   SkillPane* skillPane = dynamic_cast<SkillPane*>(_panes[2].get());
-  skillPane->getLayout()->setPosition({230, 240});
+  skillPane->setPosition(MAIN_PANE_POS);
   skillPane->setVisible(false);
   _layer->addChild(skillPane->getLayout());
 

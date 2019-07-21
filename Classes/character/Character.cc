@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
-#include "ui/damage/FloatingDamageManager.h"
+#include "ui/floating_damage/FloatingDamages.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -630,7 +630,7 @@ void Character::receiveDamage(Character* source, int damage) {
   }
 
   _characterProfile.health -= damage;
-  FloatingDamageManager::getInstance()->show(this, damage);
+  FloatingDamages::getInstance()->show(this, damage);
 
   if (_characterProfile.health <= 0) {
     source->getInRangeTargets().erase(this);

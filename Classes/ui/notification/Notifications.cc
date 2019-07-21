@@ -1,5 +1,5 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "NotificationManager.h"
+#include "Notifications.h"
 
 #define STARTING_X 10.0f
 #define STARTING_Y 10.0f
@@ -9,16 +9,16 @@
 
 namespace vigilante {
 
-NotificationManager* NotificationManager::_instance = nullptr;
+Notifications* Notifications::_instance = nullptr;
 
-NotificationManager* NotificationManager::getInstance() {
+Notifications* Notifications::getInstance() {
   if (!_instance) {
-    _instance = new NotificationManager();
+    _instance = new Notifications();
   }
   return _instance;
 }
 
-NotificationManager::NotificationManager()
+Notifications::Notifications()
     : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
 
 } // namespace vigilante

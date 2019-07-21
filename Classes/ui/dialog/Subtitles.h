@@ -1,6 +1,6 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOG_MANAGER_H_
-#define VIGILANTE_DIALOG_MANAGER_H_
+#ifndef VIGILANTE_SUBTITLES_H_
+#define VIGILANTE_SUBTITLES_H_
 
 #include <string>
 #include <queue>
@@ -12,10 +12,10 @@
 
 namespace vigilante {
 
-class DialogManager : public Controllable {
+class Subtitles : public Controllable {
  public:
-  static DialogManager* getInstance();
-  virtual ~DialogManager() = default;
+  static Subtitles* getInstance();
+  virtual ~Subtitles() = default;
 
   void update(float delta);
   virtual void handleInput() override; // Controllable
@@ -31,8 +31,8 @@ class DialogManager : public Controllable {
     std::string dialog;
   };
 
-  static DialogManager* _instance;
-  DialogManager();
+  static Subtitles* _instance;
+  Subtitles();
 
   void showNextDialog();
 
@@ -45,11 +45,11 @@ class DialogManager : public Controllable {
   cocos2d::ui::ImageView* _upperLetterbox;
   cocos2d::ui::ImageView* _lowerLetterbox;
 
-  std::queue<DialogManager::Dialog> _dialogQueue;
-  DialogManager::Dialog _currentDialog;
+  std::queue<Subtitles::Dialog> _dialogQueue;
+  Subtitles::Dialog _currentDialog;
   float _timer;
 };
 
 } // namespace vigilante
 
-#endif // VIGILANTE_DIALOG_MANAGER_H_
+#endif // VIGILANTE_SUBTITLES_H_

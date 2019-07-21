@@ -1,17 +1,25 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ItemListView.h"
 
+#include "AssetManager.h"
+#include "Constants.h"
 #include "item/Consumable.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
+#define VISIBLE_ITEM_COUNT 5
+#define WIDTH vigilante::kVirtualWidth / 2
+#define REGULAR_BG vigilante::asset_manager::kItemRegular
+#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
+
 using std::deque;
 using std::vector;
+using std::string;
 
 namespace vigilante {
 
-ItemListView::ItemListView(PauseMenu* pauseMenu, int visibleItemCount)
-    : ListView<Item*>(pauseMenu, visibleItemCount) {}
+ItemListView::ItemListView(PauseMenu* pauseMenu)
+    : ListView<Item*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {}
 
 
 void ItemListView::confirm() {

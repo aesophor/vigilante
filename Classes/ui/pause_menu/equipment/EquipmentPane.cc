@@ -18,7 +18,7 @@ using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
 using vigilante::asset_manager::kEquipmentRegular;
 using vigilante::asset_manager::kEquipmentHighlighted;
-using vigilante::asset_manager::kEmptyItemIcon;
+using vigilante::asset_manager::kEmptyImage;
 
 namespace vigilante {
 
@@ -100,7 +100,7 @@ EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string&
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal
       _background(ImageView::create(kEquipmentRegular)),
-      _icon(ImageView::create(kEmptyItemIcon)),
+      _icon(ImageView::create(kEmptyImage)),
       _equipmentTypeLabel(Label::createWithTTF(title, kTitleFont, kRegularFontSize)),
       _equipmentNameLabel(Label::createWithTTF("---", kBoldFont, kRegularFontSize)),
       _equipment() {
@@ -136,7 +136,7 @@ void EquipmentPane::EquipmentItem::setEquipment(Equipment* equipment) {
     _icon->loadTexture(equipment->getIconPath());
     _equipmentNameLabel->setString(equipment->getItemProfile().name);
   } else {
-    _icon->loadTexture(kEmptyItemIcon);
+    _icon->loadTexture(kEmptyImage);
     _equipmentNameLabel->setString("---");
   }
 }

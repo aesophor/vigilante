@@ -9,7 +9,7 @@
 #include "gameplay/ExpPointTable.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
-#include "ui/notification/NotificationManager.h"
+#include "ui/notification/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -94,12 +94,12 @@ void Enemy::receiveDamage(Character* source, int damage) {
     int& sourceCharacterLevel = source->getCharacterProfile().level;
 
     sourceCharacterExp += getCharacterProfile().exp;
-    NotificationManager::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
+    Notifications::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
 
     while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
       sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
       sourceCharacterLevel++;
-      NotificationManager::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
+      Notifications::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
     }
 
     // Drop items. (Here we'll use a callback to drop items

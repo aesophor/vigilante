@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AbstractPane.h"
 
+using cocos2d::Vec2;
 using cocos2d::ui::Layout;
 
 namespace vigilante {
@@ -23,6 +24,10 @@ void AbstractPane::setVisible(bool visible) const {
   if (_layout) {
     _layout->setVisible(visible);
   }
+}
+
+void AbstractPane::setPosition(const Vec2& pos) const {
+  _layout->setPosition(pos);
 }
 
 

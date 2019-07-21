@@ -4,6 +4,7 @@
 
 #include <deque>
 #include <vector>
+#include <string>
 #include <memory>
 
 #include <cocos2d.h>
@@ -24,7 +25,9 @@ class PauseMenu;
 template <typename T>
 class ListView {
  public:
-  ListView(PauseMenu* pauseMenu, int visibleItemCount=5);
+  ListView(PauseMenu* pauseMenu, uint8_t visibleItemCount, uint32_t width,
+           const std::string& regularBg=asset_manager::kEmptyImage,
+           const std::string& highlightedBg=asset_manager::kEmptyImage);
   virtual ~ListView() = default;
 
   virtual void confirm() = 0;
@@ -38,6 +41,8 @@ class ListView {
   cocos2d::ui::Layout* getLayout() const;
 
  protected:
+  friend class ListViewItem;
+
   class ListViewItem {
    public:
     ListViewItem(ListView<T>* parent, float x, float y);
@@ -56,6 +61,7 @@ class ListView {
 
     ListView<T>* _parent;
     TableLayout* _layout;
+
     cocos2d::ui::ImageView* _background;
     cocos2d::ui::ImageView* _icon;
     cocos2d::Label* _label;
@@ -65,10 +71,15 @@ class ListView {
   PauseMenu* _pauseMenu;
   cocos2d::ui::Layout* _layout;
   cocos2d::Label* _descLabel;
-
+ 
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
-  int _visibleItemCount;
+
+  uint8_t _visibleItemCount;
+  uint32_t _width;
+  std::string _regularBg;
+  std::string _highlightedBg;
+
   int _firstVisibleIndex;
   int _current;
 };
@@ -76,11 +87,15 @@ class ListView {
 
 
 template <typename T>
-ListView<T>::ListView(PauseMenu* pauseMenu, int visibleItemCount)
+ListView<T>::ListView(PauseMenu* pauseMenu, uint8_t visibleItemCount, uint32_t width,
+                      const std::string& regularBg, const std::string& highlightedBg)
     : _pauseMenu(pauseMenu),
       _layout(cocos2d::ui::Layout::create()),
       _descLabel(cocos2d::Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
       _visibleItemCount(visibleItemCount),
+      _width(width),
+      _regularBg(regularBg),
+      _highlightedBg(highlightedBg),
       _firstVisibleIndex(),
       _current() {
   for (int i = 0; i < visibleItemCount; i++) {
@@ -196,9 +211,9 @@ const int ListView<T>::ListViewItem::_kListViewIconSize = 16;
 template <typename T>
 ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
     : _parent(parent),
-      _layout(TableLayout::create(300)), // FIXME: remove this literal god dammit
-      _background(cocos2d::ui::ImageView::create(asset_manager::kItemRegular)),
-      _icon(cocos2d::ui::ImageView::create(asset_manager::kEmptyItemIcon)),
+      _layout(TableLayout::create(parent->_width)),
+      _background(cocos2d::ui::ImageView::create(parent->_regularBg)),
+      _icon(cocos2d::ui::ImageView::create(asset_manager::kEmptyImage)),
       _label(cocos2d::Label::createWithTTF("---", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
       _object() {
   _icon->setScale((float) _kListViewIconSize / kIconSize);
@@ -219,7 +234,7 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
 
 template <typename T>
 void ListView<T>::ListViewItem::setSelected(bool selected) {
-  _background->loadTexture((selected) ? asset_manager::kItemHighlighted : asset_manager::kItemRegular);
+  _background->loadTexture((selected) ? _parent->_highlightedBg : _parent->_regularBg);
 }
 
 template <typename T>
@@ -235,7 +250,7 @@ T ListView<T>::ListViewItem::getObject() const {
 template <typename T>
 void ListView<T>::ListViewItem::setObject(T object) {
   _object = object;
-  _icon->loadTexture((object) ? object->getIconPath() : asset_manager::kEmptyItemIcon);
+  _icon->loadTexture((object) ? object->getIconPath() : asset_manager::kEmptyImage);
   _label->setString((object) ? object->getName() : "---");
 
   Item* item = dynamic_cast<Item*>(object);

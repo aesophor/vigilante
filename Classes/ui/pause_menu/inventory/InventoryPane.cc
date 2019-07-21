@@ -2,6 +2,7 @@
 #include "InventoryPane.h"
 
 #include "AssetManager.h"
+#include "Constants.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
