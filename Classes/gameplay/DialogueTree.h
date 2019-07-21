@@ -1,16 +1,16 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOG_TREE_H_
-#define VIGILANTE_DIALOG_TREE_H_
+#ifndef VIGILANTE_DIALOGUE_TREE_H_
+#define VIGILANTE_DIALOGUE_TREE_H_
 
 #include <string>
 #include <vector>
 
 namespace vigilante {
 
-class DialogTree {
+class DialogueTree {
  public:
-  DialogTree();
-  virtual ~DialogTree() = default;
+  DialogueTree();
+  virtual ~DialogueTree() = default;
 
   struct Node {
     Node(const std::string& dialog);
@@ -18,15 +18,15 @@ class DialogTree {
     std::string dialog;
   };
 
-  DialogTree::Node* getRootNode() const;
-  DialogTree::Node* getCurrentNode() const;
+  DialogueTree::Node* getRootNode() const;
+  DialogueTree::Node* getCurrentNode() const;
   void resetCurrentNode();
 
  private:
-  DialogTree::Node* _rootNode;
-  DialogTree::Node* _currentNode;
+  DialogueTree::Node* _rootNode;
+  DialogueTree::Node* _currentNode;
 };
 
 } // namespace vigilante
 
-#endif // VIGILANTE_DIALOG_TREE_H_
+#endif // VIGILANTE_DIALOGUE_TREE_H_

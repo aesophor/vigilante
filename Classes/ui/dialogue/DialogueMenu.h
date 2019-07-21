@@ -1,6 +1,6 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOG_MENU_H_
-#define VIGILANTE_DIALOG_MENU_H_
+#ifndef VIGILANTE_DIALOGUE_MENU_H_
+#define VIGILANTE_DIALOGUE_MENU_H_
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
@@ -8,15 +8,15 @@
 
 namespace vigilante {
 
-class DialogMenu {
+class DialogueMenu {
  public:
-  DialogMenu();
-  virtual ~DialogMenu() = default;
+  DialogueMenu();
+  virtual ~DialogueMenu() = default;
 
  private:
-  
+
 };
 
 } // namespace vigilante
 
-#endif // VIGILANTE_DIALOG_MENU_H_
+#endif // VIGILANTE_DIALOGUE_MENU_H_
