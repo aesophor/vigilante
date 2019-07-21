@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <functional>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
@@ -13,8 +14,6 @@
 #include <ui/UIImageView.h>
 #include "AssetManager.h"
 #include "Constants.h"
-#include "item/Item.h"
-#include "input/Keybindable.h"
 #include "ui/TableLayout.h"
 #include "util/KeyCodeUtil.h"
 
@@ -55,6 +54,8 @@ class ListView {
     void setObject(T object);
 
     cocos2d::ui::Layout* getLayout() const;
+    cocos2d::ui::ImageView* getIcon() const;
+    cocos2d::Label* getLabel() const;
 
    private:
     static const int _kListViewIconSize;
@@ -74,6 +75,7 @@ class ListView {
  
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
+  std::function<void (ListViewItem*, T)> _onSelect; // called at the end of ListViewItem::setObject()
 
   uint8_t _visibleItemCount;
   uint32_t _width;
@@ -253,20 +255,24 @@ void ListView<T>::ListViewItem::setObject(T object) {
   _icon->loadTexture((object) ? object->getIconPath() : asset_manager::kEmptyImage);
   _label->setString((object) ? object->getName() : "---");
 
-  Item* item = dynamic_cast<Item*>(object);
-  if (item && item->getAmount() > 1) {
-    _label->setString(_label->getString() + " (" + std::to_string(item->getAmount()) + ")");
-  }
-
-  Keybindable* keybindable = dynamic_cast<Keybindable*>(object);
-  if (keybindable && static_cast<bool>(keybindable->getHotkey())) {
-    _label->setString(_label->getString() + " [" + keycode_util::keyCodeToString(keybindable->getHotkey()) + "]");
-  }
+  // Provide extra logic for setting _icon and _label.
+  // See the ctor in ui/pause_menu/inventory/ItemListView.cc for example.
+  _parent->_onSelect(this, object);
 }
 
 template <typename T>
 cocos2d::ui::Layout* ListView<T>::ListViewItem::getLayout() const {
   return _layout;
+}
+
+template <typename T>
+cocos2d::ui::ImageView* ListView<T>::ListViewItem::getIcon() const {
+  return _icon;
+}
+
+template <typename T>
+cocos2d::Label* ListView<T>::ListViewItem::getLabel() const {
+  return _label;
 }
 
 } // namespace vigilante

@@ -68,30 +68,36 @@ bool MainGameScene::init() {
   // Initialize HUD.
   _hud = unique_ptr<Hud>(Hud::getInstance());
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _hud->getLayer()->setPosition(75, winSize.height - 40);
   addChild(_hud->getLayer(), graphical_layers::kHud);
+  _hud->getLayer()->setPosition(75, winSize.height - 40);
 
-  // Initialize notification manager.
+  // Initialize notifications.
   _notifications = unique_ptr<Notifications>(Notifications::getInstance());
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), graphical_layers::kNotification);
-  _notifications->show("Notification Manager initialized!");
+  _notifications->show("Notifications Initialized!");
   _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
+  // Initialize quest hints.
   _questHints = unique_ptr<QuestHints>(QuestHints::getInstance());
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
-  // Initialize floating damage manager.
+  // Initialize floating damages.
   _floatingDamages = unique_ptr<FloatingDamages>(FloatingDamages::getInstance());
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
-  // Initialize dialog manager.
+  // Initialize subtitles.
   _subtitles = unique_ptr<Subtitles>(Subtitles::getInstance());
   _subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_subtitles->getLayer(), graphical_layers::kDialogue);
   _subtitles->addSubtitle("???: Hey, you are finally awake.");
   _subtitles->addSubtitle("Aesophor: Wut?");
   _subtitles->beginSubtitles();
-  addChild(_subtitles->getLayer(), graphical_layers::kDialogue);
+
+  // Initialize dialogue menu.
+  _dialogueMenu = unique_ptr<DialogueMenu>(DialogueMenu::getInstance());
+  addChild(_dialogueMenu->getLayer(), graphical_layers::kDialogue);
+//  _dialogueMenu->setVisible(true);
 
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);

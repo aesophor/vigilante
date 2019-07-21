@@ -5,6 +5,10 @@
 #include "input/InputManager.h"
 #include "ui/hud/Hud.h"
 
+#define SHOW_CHAR_INTERVAL .05f
+#define LETTERBOX_HEIGHT 50
+#define SUBTITLES_Y 38
+
 using std::string;
 using std::queue;
 using cocos2d::Director;
@@ -24,9 +28,6 @@ namespace vigilante {
 
 Subtitles* Subtitles::_instance = nullptr;
 
-const float Subtitles::_kShowCharInterval = .05f;
-const int Subtitles::_kLetterboxHeight = 50;
-
 Subtitles* Subtitles::getInstance() {
   if (!_instance) {
     _instance = new Subtitles();
@@ -43,18 +44,18 @@ Subtitles::Subtitles()
       _currentSubtitle(""),
       _timer() {
   auto winSize = Director::getInstance()->getWinSize();
-  _label->setPosition(winSize.width / 2, 20);
+  _label->setPosition(winSize.width / 2, SUBTITLES_Y);
   _label->getFontAtlas()->setAliasTexParameters();
 
   _upperLetterbox->setAnchorPoint({0, 0});
   _upperLetterbox->setPositionY(winSize.height);
   _upperLetterbox->setScaleX(winSize.width);
-  _upperLetterbox->setScaleY(_kLetterboxHeight);
+  _upperLetterbox->setScaleY(LETTERBOX_HEIGHT);
 
   _lowerLetterbox->setAnchorPoint({0, 0});
-  _lowerLetterbox->setPositionY(-_kLetterboxHeight);
+  _lowerLetterbox->setPositionY(-LETTERBOX_HEIGHT);
   _lowerLetterbox->setScaleX(winSize.width);
-  _lowerLetterbox->setScaleY(_kLetterboxHeight);
+  _lowerLetterbox->setScaleY(LETTERBOX_HEIGHT);
 
   _nextSubtitleIcon->setVisible(false);
 
@@ -71,7 +72,7 @@ void Subtitles::update(float delta) {
     return;
   }
 
-  if (_timer >= _kShowCharInterval) {
+  if (_timer >= SHOW_CHAR_INTERVAL) {
     int nextCharIdx = _label->getString().size();
     _label->setString(_label->getString() + _currentSubtitle.text.at(nextCharIdx));
     _timer = 0;
@@ -102,9 +103,9 @@ void Subtitles::beginSubtitles() {
   }
   Hud::getInstance()->getLayer()->setVisible(false);
   _layer->setVisible(true);
-  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, -_kLetterboxHeight}));
+  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(2.0f, {0, _kLetterboxHeight}),
+    MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
       showNextSubtitle();
     })
@@ -112,9 +113,9 @@ void Subtitles::beginSubtitles() {
 }
 
 void Subtitles::endSubtitles() {
-  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, _kLetterboxHeight}));
+  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(2.0f, {0, -_kLetterboxHeight}),
+    MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
       Hud::getInstance()->getLayer()->setVisible(true);
       _layer->setVisible(false);

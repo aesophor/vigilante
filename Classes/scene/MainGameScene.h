@@ -12,6 +12,7 @@
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/dialogue/Subtitles.h"
+#include "ui/dialogue/DialogueMenu.h"
 #include "ui/floating_damages/FloatingDamages.h"
 #include "ui/notifications/Notifications.h"
 #include "ui/quest_hints/QuestHints.h"
@@ -41,6 +42,7 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   std::unique_ptr<PauseMenu> _pauseMenu;
   std::unique_ptr<FloatingDamages> _floatingDamages;
   std::unique_ptr<Subtitles> _subtitles;
+  std::unique_ptr<DialogueMenu> _dialogueMenu;
   std::unique_ptr<QuestHints> _questHints;
   std::unique_ptr<Notifications> _notifications;
   std::unique_ptr<GameMapManager> _gameMapManager;

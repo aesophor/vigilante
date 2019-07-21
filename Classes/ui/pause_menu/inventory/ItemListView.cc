@@ -3,6 +3,8 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "input/Keybindable.h"
+#include "item/Item.h"
 #include "item/Consumable.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
@@ -15,11 +17,35 @@
 using std::deque;
 using std::vector;
 using std::string;
+using cocos2d::Label;
 
 namespace vigilante {
 
 ItemListView::ItemListView(PauseMenu* pauseMenu)
-    : ListView<Item*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {}
+    : ListView<Item*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {
+
+  // _onSelect is called at the end of ListView<T>::ListViewItem::setObject()
+  // see ui/ListView.h
+  this->_onSelect = [](ListViewItem* listViewItem, Item* item) {
+    Label* label = listViewItem->getLabel();
+
+    // Display item amount if amount > 1
+    if (item->getAmount() > 1) {
+      Label* label = listViewItem->getLabel();
+      label->setString(label->getString() + " (" + std::to_string(item->getAmount()) + ")");
+    }
+
+    // Display consumable's hotkey (if defined).
+    // Consumables are Keybindable, see item/Consumable.h
+    Keybindable* keybindable = dynamic_cast<Keybindable*>(item);
+    bool hasDefinedHotkey = keybindable && static_cast<bool>(keybindable->getHotkey());
+
+    if (hasDefinedHotkey) {
+      std::string&& hotkey = keycode_util::keyCodeToString(keybindable->getHotkey());
+      label->setString(label->getString() + " [" + hotkey + "]");
+    }
+  };
+}
 
 
 void ItemListView::confirm() {

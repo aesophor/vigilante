@@ -2,6 +2,7 @@
 #include "SkillListView.h"
 
 #include "input/InputManager.h"
+#include "input/Keybindable.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 
@@ -13,12 +14,30 @@
 using std::deque;
 using std::vector;
 using std::string;
+using cocos2d::Label;
 using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
 SkillListView::SkillListView(PauseMenu* pauseMenu)
-    : ListView<Skill*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {}
+    : ListView<Skill*>(pauseMenu, VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG) {
+
+  // _onSelect is called at the end of ListView<T>::ListViewItem::setObject()
+  // see ui/ListView.h
+  this->_onSelect = [](ListViewItem* listViewItem, Skill* skill) {
+    Label* label = listViewItem->getLabel();
+
+    // Display skill hotkey (if defined).
+    // Skills are Keybindable, see skill/Skill.h
+    Keybindable* keybindable = dynamic_cast<Keybindable*>(skill);
+    bool hasDefinedHotkey = keybindable && static_cast<bool>(keybindable->getHotkey());
+
+    if (hasDefinedHotkey) {
+      std::string&& hotkey = keycode_util::keyCodeToString(keybindable->getHotkey());
+      label->setString(label->getString() + " [" + hotkey + "]");
+    }
+  };
+}
 
 
 void SkillListView::confirm() {

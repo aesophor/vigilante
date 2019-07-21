@@ -5,16 +5,27 @@
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
+#include "Controllable.h"
 
 namespace vigilante {
 
-class DialogueMenu {
+class DialogueMenu : public Controllable {
  public:
-  DialogueMenu();
+  static DialogueMenu* getInstance();
   virtual ~DialogueMenu() = default;
 
+  virtual void handleInput() override; // Controllable
+
+  bool isVisible() const;
+  void setVisible(bool visible);
+
+  cocos2d::Layer* getLayer() const;
+
  private:
-  cocos2d::ui::ImageView* _background;
+  static DialogueMenu* _instance;
+  DialogueMenu();
+
+  cocos2d::Layer* _layer;
 };
 
 } // namespace vigilante

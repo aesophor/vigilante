@@ -36,9 +36,6 @@ class Subtitles : public Controllable {
 
   void showNextSubtitle();
 
-  static const float _kShowCharInterval;
-  static const int _kLetterboxHeight;
-
   cocos2d::Layer* _layer;
   cocos2d::Label* _label;
   cocos2d::ui::ImageView* _nextSubtitleIcon;
