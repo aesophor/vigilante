@@ -17,9 +17,9 @@ class DialogueTree : public Importable {
   virtual void import(const std::string& jsonFileName) override;
 
   struct Node {
-    Node(const std::string& dialog);
-    std::vector<std::pair<std::string, Node*>> children;
-    std::string dialog;
+    Node(const std::string& dialogue);
+    std::string dialogue;
+    std::vector<Node*> children;
   };
 
   DialogueTree::Node* getRootNode() const;
@@ -27,6 +27,8 @@ class DialogueTree : public Importable {
   void resetCurrentNode();
 
  private:
+  void dfsDeleteNodes(DialogueTree::Node* node) const;
+
   DialogueTree::Node* _rootNode;
   DialogueTree::Node* _currentNode;
 };
