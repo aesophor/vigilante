@@ -38,7 +38,7 @@ void DialogueTree::dfsDeleteNodes(DialogueTree::Node* node) const {
 
 
 void DialogueTree::import(const string& jsonFileName) {
-  cocos2d::log("[%s] Importing dialogue tree...", __FILE__);
+  cocos2d::log("[DialogueTree.cc] Importing dialogue tree...");
   Document json = json_util::parseJson(jsonFileName);
 
   // Deserialize json into runtime DialogueTree using tree DFS.
@@ -65,6 +65,9 @@ void DialogueTree::import(const string& jsonFileName) {
       st.push({child.GetObject(), _currentNode});
     }
   }
+
+  // Set _currentNode to _rootNode for later use (UI)
+  _currentNode = _rootNode;
 }
 
 DialogueTree::Node* DialogueTree::getRootNode() const {
