@@ -66,6 +66,7 @@ SpriteBatchNode* StaticActor::getBodySpritesheet() const {
 
 Animation* StaticActor::createAnimation(const string& textureResDir, string framesName,
                                         float interval, Animation* fallback) {
+  FileUtils* fileUtils = FileUtils::getInstance();
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
 
   // The texture resources under Resources/Texture/ has the following rules:
@@ -83,9 +84,11 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
   // Method: we will use FileUtils to test whether a file exists starting from 0.png, 1.png, ..., n.png
   string dir = textureResDir + "/" + framesNamePrefix + "_" + framesName;
   size_t frameCount = 0;
-  while (FileUtils::getInstance()->isFileExist(dir + "/" + std::to_string(frameCount) + ".png")) {
+  fileUtils->setPopupNotify(false); // disable CCLOG
+  while (fileUtils->isFileExist(dir + "/" + std::to_string(frameCount) + ".png")) {
     frameCount++;
   }
+  fileUtils->setPopupNotify(true); // re-enable CCLOG
 
   // If there are no frames in the corresponding directory, fallback to IDLE_SHEATHED.
   if (frameCount == 0) {

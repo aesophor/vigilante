@@ -32,7 +32,6 @@ using cocos2d::Sprite;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
-using cocos2d::FileUtils;
 using rapidjson::Document;
 
 namespace vigilante {
