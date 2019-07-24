@@ -21,7 +21,7 @@ class DialogueTree : public Importable {
     std::string dialogue;
     std::vector<Node*> children;
   };
-
+ 
   DialogueTree::Node* getRootNode() const;
   DialogueTree::Node* getCurrentNode() const;
   void resetCurrentNode();
@@ -32,6 +32,10 @@ class DialogueTree : public Importable {
   DialogueTree::Node* _rootNode;
   DialogueTree::Node* _currentNode;
 };
+
+
+// This alias improves code readability in ui/pause_menu/DialogueListView.cc
+using Dialogue = DialogueTree::Node;
 
 } // namespace vigilante
 

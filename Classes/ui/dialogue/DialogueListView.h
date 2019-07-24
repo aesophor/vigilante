@@ -8,7 +8,10 @@
 
 namespace vigilante {
 
-class DialogueListView : ListView<DialogueTree*> {
+// using Dialogue = DialogueTree::Node
+// See gameplay/DialogueTree.h for this alias.
+
+class DialogueListView : ListView<Dialogue*> {
  public:
   DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
