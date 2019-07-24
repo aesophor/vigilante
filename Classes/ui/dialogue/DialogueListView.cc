@@ -6,12 +6,19 @@
 #define REGULAR_BG vigilante::asset_manager::kEmptyImage
 #define HIGHLIGHTED_BG vigilante::asset_manager::kEmptyImage
 
+using cocos2d::Label;
+
 namespace vigilante {
 
 DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
-    : ListView<DialogueTree*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _dialogueMenu(dialogMenu),
-      _dialogueTree() {}
+      _dialogueTree() {
+
+  this->_onSelect = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
+    listViewItem->getLabel()->setString(dialogue->dialogue); // FIXME: rename this shit...?
+  };
+}
 
 
 void DialogueListView::confirm() {
@@ -19,7 +26,7 @@ void DialogueListView::confirm() {
 }
 
 void DialogueListView::showDialogue(DialogueTree* dialogueTree) {
-
+  _dialogueTree = dialogueTree;
 }
 
 } // namespace vigilante

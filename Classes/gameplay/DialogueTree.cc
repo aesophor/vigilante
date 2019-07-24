@@ -44,7 +44,7 @@ void DialogueTree::import(const string& jsonFileName) {
   // Deserialize json into runtime DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD
   stack<pair<rapidjson::Value::Object, Node*>> st; // <jsonObject, parent>
-  st.push({json["root"].GetObject(), nullptr});
+  st.push({json.GetObject(), nullptr});
 
   while (!st.empty()) {
     rapidjson::Value::Object node = st.top().first;
@@ -53,6 +53,7 @@ void DialogueTree::import(const string& jsonFileName) {
 
     // Construct this node.
     _currentNode = new Node(node["dialogue"].GetString());
+    cocos2d::log("%s", node["dialogue"].GetString());
     if (!_rootNode) {
       _rootNode = _currentNode;
     }
