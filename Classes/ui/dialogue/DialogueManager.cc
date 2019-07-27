@@ -2,6 +2,7 @@
 #include "DialogueManager.h"
 
 using std::unique_ptr;
+using cocos2d::Layer;
 
 namespace vigilante {
 
@@ -15,8 +16,12 @@ DialogueManager* DialogueManager::getInstance() {
 }
 
 DialogueManager::DialogueManager()
-    : _subtitles(new Subtitles()),
-      _dialogueMenu(new DialogueMenu()) {}
+    : _layer(Layer::create()),
+      _subtitles(new Subtitles()),
+      _dialogueMenu(new DialogueMenu()) {
+  _layer->addChild(_subtitles->getLayer());
+  _layer->addChild(_dialogueMenu->getLayer());
+}
 
 
 void DialogueManager::update(float delta) {
@@ -31,6 +36,10 @@ void DialogueManager::handleInput() {
   }
 }
 
+
+Layer* DialogueManager::getLayer() const {
+  return _layer;
+}
 
 Npc* DialogueManager::getTargetNpc() const {
   return _targetNpc;

@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include <cocos2d.h>
 #include "Controllable.h"
 #include "character/Npc.h"
 #include "ui/dialogue/Subtitles.h"
@@ -19,6 +20,8 @@ class DialogueManager : public Controllable {
   void update(float delta);
   virtual void handleInput() override;
 
+  cocos2d::Layer* getLayer() const;
+
   Npc* getTargetNpc() const;
   Subtitles* getSubtitles() const;
   DialogueMenu* getDialogueMenu() const;
@@ -30,6 +33,8 @@ class DialogueManager : public Controllable {
  private:
   static DialogueManager* _instance;
   DialogueManager();
+
+  cocos2d::Layer* _layer;
 
   Npc* _targetNpc;
   std::unique_ptr<Subtitles> _subtitles;

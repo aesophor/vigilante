@@ -88,19 +88,9 @@ bool MainGameScene::init() {
 
   // Initialize dialogue manager.
   _dialogueManager = unique_ptr<DialogueManager>(DialogueManager::getInstance());
-  DialogueMenu* dialogueMenu = _dialogueManager->getDialogueMenu();
-  Subtitles* subtitles = _dialogueManager->getSubtitles();
-  dialogueMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(dialogueMenu->getLayer(), graphical_layers::kDialogue + 1);
-  addChild(subtitles->getLayer(), graphical_layers::kDialogue);
-  
-  /*
-  _subtitles->addSubtitle("???: Hey, you are finally awake.");
-  _subtitles->addSubtitle("Aesophor: Wut?");
-  _subtitles->beginSubtitles();
-  */
-
+  _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
+ 
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
 
