@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include <cocos2d.h>
+#include "util/Logger.h"
 
 using std::string;
 using std::ifstream;
@@ -22,7 +23,7 @@ void loadSpritesheets(const string& spritesheetsListFileName) {
     throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName);
   }
 
-  cocos2d::log("[AssetManager.cc] loading textures");
+  VGLOG(LOG_INFO, "Loading textures...");
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
   string line;
   while (std::getline(fin, line)) {

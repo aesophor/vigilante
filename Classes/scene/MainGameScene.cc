@@ -17,6 +17,7 @@
 #include "util/CallbackUtil.h"
 #include "util/KeyCodeUtil.h"
 #include "util/RandUtil.h"
+#include "util/Logger.h"
 
 using std::string;
 using std::unique_ptr;
@@ -44,7 +45,7 @@ bool MainGameScene::init() {
   // Initialize the default camera from "perspective" to "orthographic",
   // and use it as the game world camera.
   auto winSize = Director::getInstance()->getWinSize();
-  cocos2d::log("winSize: w=%f h=%f", winSize.width, winSize.height);
+  VGLOG(LOG_INFO, "winSize: w=%f h=%f", winSize.width, winSize.height);
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(0, 0);

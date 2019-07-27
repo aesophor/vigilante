@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include <cocos2d.h>
+#include "util/Logger.h"
 
 using std::string;
 using std::array;
@@ -29,7 +30,7 @@ void import(const string& tableFileName) {
     throw runtime_error("Failed to import exp point table from: " + tableFileName);
   }
 
-  cocos2d::log("[ExpPointTable.cc] imporing exp point table");
+  VGLOG(LOG_INFO, "Loading exp point table...");
   for (int i = 0; i < levelCap - 1; i++) {
     int level;
     int exp;

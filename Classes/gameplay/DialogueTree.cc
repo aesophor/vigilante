@@ -5,6 +5,7 @@
 
 #include <cocos2d.h>
 #include "util/JsonUtil.h"
+#include "util/Logger.h"
 
 using std::pair;
 using std::stack;
@@ -39,7 +40,7 @@ void DialogueTree::dfsDeleteNodes(DialogueTree::Node* node) const {
 
 
 void DialogueTree::import(const string& jsonFileName) {
-  cocos2d::log("[DialogueTree.cc] Importing dialogue tree...");
+  VGLOG(LOG_INFO, "Loading dialogue tree...");
   Document json = json_util::parseJson(jsonFileName);
 
   // Deserialize json into runtime DialogueTree using tree DFS.

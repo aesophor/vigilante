@@ -8,6 +8,7 @@
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hints/QuestHints.h"
 #include "util/StringUtil.h"
+#include "util/Logger.h"
 
 using std::string;
 using std::vector;
@@ -32,7 +33,7 @@ QuestBook::QuestBook(const string& questsListFileName) {
 
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
-  cocos2d::log("[QuestBook] updating quests");
+  VGLOG(LOG_INFO, "Updating quests");
   for (const auto quest : _inProgressQuests) {
     if (quest->getCurrentStage().objective->getObjectiveType() != objectiveType) {
       continue;

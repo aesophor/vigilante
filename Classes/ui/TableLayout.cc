@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TableLayout.h"
 
+#include "util/Logger.h"
+
 using cocos2d::Vec2;
 using cocos2d::Node;
 using cocos2d::ui::Layout;
@@ -60,7 +62,7 @@ TableLayout* TableLayout::align(TableLayout::Alignment direction) {
       _nextChildPosition.x = _tableWidth;
       break;
     default:
-      cocos2d::log("[TableLayout] bad align value in TableLayout::align()");
+      VGLOG(LOG_ERR, "Bad align value: %d", static_cast<int>(direction));
       break;
   }
   return this;
