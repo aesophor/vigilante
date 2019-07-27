@@ -94,13 +94,9 @@ bool MainGameScene::init() {
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
 
-  // Initialize Vigilante's CallbackUtil.
+  // Initialize Vigilante's utils.
   vigilante::callback_util::init(this);
-
-  // Initialize Vigilante's KeycodeUtil.
   vigilante::keycode_util::init();
-
-  // Initialize Vigilante's RandUtil.
   vigilante::rand_util::init();
   
   // Initialize GameMapManager.
@@ -131,15 +127,6 @@ bool MainGameScene::init() {
 
   player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
 
-  //player->getQuestBook().addQuest(new Quest("Resources/Database/quest/main/main01.json"));
-  /*
-  Quest quest("Resources/Database/quest/main/main01.json");
-  cocos2d::log("quest title: %s", quest.getQuestProfile().title.c_str());
-  cocos2d::log("quest desc: %s", quest.getQuestProfile().title.c_str());
-  for (const auto& stage : quest.getQuestProfile().stages) {
-    cocos2d::log("stage: %s | %s", stage.objective.c_str(), stage.questDesc.c_str());
-  }
-  */
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
