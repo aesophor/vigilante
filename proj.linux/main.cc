@@ -4,14 +4,15 @@
 #include <stdexcept>
 
 #include "../Classes/AppDelegate.h"
-#include "../Classes/Stacktrace.h"
+#include "../Classes/util/Logger.h"
 
 using std::cerr;
 using std::endl;
 using cocos2d::Application;
 
 int main(int argc, char* args[]) {
-  vigilante::segv::installHandler(&vigilante::segv::handle);
+  // Install SIGSEGV handler. See util/Logger.cc
+  signal(SIGSEGV, &vigilante::logger::segvHandler);
 
   // Create the application instance
   AppDelegate app;
