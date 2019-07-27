@@ -17,13 +17,14 @@ class DialogueTree : public Importable {
   virtual void import(const std::string& jsonFileName) override;
 
   struct Node {
-    Node(const std::string& dialogue);
-    std::string dialogue;
+    Node(const std::string& text);
+    std::string text;
     std::vector<Node*> children;
   };
  
   DialogueTree::Node* getRootNode() const;
   DialogueTree::Node* getCurrentNode() const;
+  void setCurrentNode(DialogueTree::Node* node);
   void resetCurrentNode();
 
  private:

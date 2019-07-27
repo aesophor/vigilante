@@ -2,30 +2,31 @@
 #ifndef VIGILANTE_DIALOGUE_MENU_H_
 #define VIGILANTE_DIALOGUE_MENU_H_
 
+#include <memory>
+
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
+#include "ui/dialogue/DialogueListView.h"
 
 namespace vigilante {
 
+class Npc;
+
 class DialogueMenu : public Controllable {
  public:
-  static DialogueMenu* getInstance();
+  DialogueMenu();
   virtual ~DialogueMenu() = default;
 
   virtual void handleInput() override; // Controllable
 
-  bool isVisible() const;
-  void setVisible(bool visible);
-
   cocos2d::Layer* getLayer() const;
+  DialogueListView* getDialogueListView() const;
 
  private:
-  static DialogueMenu* _instance;
-  DialogueMenu();
-
   cocos2d::Layer* _layer;
+  std::unique_ptr<DialogueListView> _dialogueListView;
 };
 
 } // namespace vigilante

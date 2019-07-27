@@ -86,18 +86,22 @@ bool MainGameScene::init() {
   _floatingDamages = unique_ptr<FloatingDamages>(FloatingDamages::getInstance());
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
-  // Initialize subtitles.
-  _subtitles = unique_ptr<Subtitles>(Subtitles::getInstance());
-  _subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_subtitles->getLayer(), graphical_layers::kDialogue);
+  // Initialize dialogue manager.
+  _dialogueManager = unique_ptr<DialogueManager>(DialogueManager::getInstance());
+  DialogueMenu* dialogueMenu = _dialogueManager->getDialogueMenu();
+  Subtitles* subtitles = _dialogueManager->getSubtitles();
+  dialogueMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(dialogueMenu->getLayer(), graphical_layers::kDialogue + 1);
+  addChild(subtitles->getLayer(), graphical_layers::kDialogue);
+  dialogueMenu->getLayer()->setVisible(false);
+  subtitles->getLayer()->setVisible(false);
+
+  /*
   _subtitles->addSubtitle("???: Hey, you are finally awake.");
   _subtitles->addSubtitle("Aesophor: Wut?");
   _subtitles->beginSubtitles();
-
-  // Initialize dialogue menu.
-  _dialogueMenu = unique_ptr<DialogueMenu>(DialogueMenu::getInstance());
-  addChild(_dialogueMenu->getLayer(), graphical_layers::kDialogue);
-//  _dialogueMenu->setVisible(true);
+  */
 
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
@@ -177,7 +181,7 @@ void MainGameScene::update(float delta) {
   _floatingDamages->update(delta);
   _notifications->update(delta);
   _questHints->update(delta);
-  _subtitles->update(delta);
+  _dialogueManager->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
@@ -189,8 +193,8 @@ void MainGameScene::handleInput() {
 
   // Toggle b2dr (b2DebugRenderer)
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
-    bool isVisible = _b2dr->isVisible();
-    _b2dr->setVisible(!isVisible);
+    bool isVisible = !_b2dr->isVisible();
+    _b2dr->setVisible(isVisible);
     _notifications->show(string("Debug Mode: ") + ((isVisible) ? "on" : "off"));
   }
 
@@ -205,8 +209,9 @@ void MainGameScene::handleInput() {
 
   if (_pauseMenu->getLayer()->isVisible()) {
     _pauseMenu->handleInput(); // paused
-  } else if (_subtitles->getLayer()->isVisible()) {
-    _subtitles->handleInput(); // dialog being shown
+  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible()
+      || _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
+    _dialogueManager->handleInput();
   } else {
     _gameMapManager->getPlayer()->handleInput(); // not paused
   }

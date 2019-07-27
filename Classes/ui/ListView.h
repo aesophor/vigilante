@@ -33,7 +33,10 @@ class ListView {
   virtual void selectDown();
   virtual void scrollUp();
   virtual void scrollDown();
+
   virtual void showFrom(int index); // show n ListViewItems starting from the specified index.
+  virtual void setObjects(const std::vector<T>& objects);
+  virtual void setObjects(const std::deque<T>& objects);
 
   T getSelectedObject() const;
   cocos2d::ui::Layout* getLayout() const;
@@ -169,6 +172,35 @@ void ListView<T>::showFrom(int index) {
     }
   }
 }
+
+template <typename T>
+void ListView<T>::setObjects(const std::vector<T>& objects) {
+  // Copy all items into local deque.
+  _objects = std::deque<T>(objects.begin(), objects.end());
+
+  _firstVisibleIndex = 0;
+  _current = 0;
+  showFrom(_firstVisibleIndex);
+
+  if (_objects.size() > 0) {
+    _listViewItems[0]->setSelected(true);
+  }
+}
+
+template <typename T>
+void ListView<T>::setObjects(const std::deque<T>& objects) {
+  // Copy all items into local deque.
+  _objects = std::deque<T>(objects);
+
+  _firstVisibleIndex = 0;
+  _current = 0;
+  showFrom(_firstVisibleIndex);
+
+  if (_objects.size() > 0) {
+    _listViewItems[0]->setSelected(true);
+  }
+}
+
 
 template <typename T>
 T ListView<T>::getSelectedObject() const {

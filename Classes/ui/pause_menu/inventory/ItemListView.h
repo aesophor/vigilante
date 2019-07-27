@@ -22,9 +22,6 @@ class ItemListView : public ListView<Item*> {
   void showItemsByType(Item::Type itemType);
   void showEquipmentByType(Equipment::Type equipmentType);
 
-  void fetchItems(Item::Type itemType);
-  void fetchEquipment(Equipment::Type equipmentType);
-
  private:
   PauseMenu* _pauseMenu;
   cocos2d::Label* _descLabel;

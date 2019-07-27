@@ -106,21 +106,11 @@ void SkillListView::selectDown() {
 
 
 void SkillListView::showSkills() {
-  // Copy all skills into local deque.
-  const vector<Skill*>& skills = _pauseMenu->getCharacter()->getSkills();
-  _objects = deque<Skill*>(skills.begin(), skills.end());
+  // Show player skills in SkillListView.
+  setObjects(_pauseMenu->getCharacter()->getSkills());
 
-  _firstVisibleIndex = 0;
-  _current = 0;
-  showFrom(_firstVisibleIndex);
-
-  // If the inventory size isn't empty, select the first item by default.
-  if (_objects.size() > 0) {
-    _listViewItems[0]->setSelected(true);
-    _descLabel->setString(_objects[_current]->getDesc());
-  } else {
-    _descLabel->setString("");
-  }
+  // Update description label.
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
 } // namespace vigilante

@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
+#include "ui/dialogue/DialogueManager.h"
 #include "ui/hud/Hud.h"
 
 #define SHOW_CHAR_INTERVAL .05f
@@ -26,15 +27,6 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-Subtitles* Subtitles::_instance = nullptr;
-
-Subtitles* Subtitles::getInstance() {
-  if (!_instance) {
-    _instance = new Subtitles();
-  }
-  return _instance;
-}
-
 Subtitles::Subtitles()
     : _layer(Layer::create()),
       _label(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
@@ -42,6 +34,7 @@ Subtitles::Subtitles()
       _upperLetterbox(ImageView::create(kShade)),
       _lowerLetterbox(ImageView::create(kShade)),
       _currentSubtitle(""),
+      _isTransitioning(),
       _timer() {
   auto winSize = Director::getInstance()->getWinSize();
   _label->setPosition(winSize.width / 2, SUBTITLES_Y);
@@ -98,25 +91,34 @@ void Subtitles::addSubtitle(const string& s) {
 }
 
 void Subtitles::beginSubtitles() {
-  if (_subtitleQueue.empty()) {
+  if (_isTransitioning || _subtitleQueue.empty()) {
     return;
   }
+
+  _isTransitioning = true;
   Hud::getInstance()->getLayer()->setVisible(false);
   _layer->setVisible(true);
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
+      _isTransitioning = false;
       showNextSubtitle();
     })
   ));
 }
 
 void Subtitles::endSubtitles() {
+  if (_isTransitioning) {
+    return;
+  }
+
+  _isTransitioning = true;
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
+      _isTransitioning = false;
       Hud::getInstance()->getLayer()->setVisible(true);
       _layer->setVisible(false);
     })
@@ -126,18 +128,32 @@ void Subtitles::endSubtitles() {
 void Subtitles::showNextSubtitle() {
   _nextSubtitleIcon->setVisible(false);
 
-  if (_subtitleQueue.empty()) {
-    _currentSubtitle.text.clear();
+  if (!_subtitleQueue.empty()) {
+    _currentSubtitle = _subtitleQueue.front();
+    _subtitleQueue.pop();
     _label->setString("");
-    endSubtitles();
+    _timer = 0;
     return;
   }
 
-  _currentSubtitle = _subtitleQueue.front();
-  _subtitleQueue.pop();
+  _currentSubtitle.text.clear();
   _label->setString("");
-  _timer = 0;
+
+  // If all subtitles has been displayed, show DialogueMenu if possible.
+  DialogueManager* dialogueMgr = DialogueManager::getInstance();
+  DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
+  Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
+
+  if (currentDialogue->children.empty()) { // end of dialogue
+    endSubtitles();
+    dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
+  } else { // still has children dialogue
+    dialogueMenu->getDialogueListView()->setObjects(currentDialogue->children);
+    dialogueMenu->getLayer()->setVisible(true);
+  }
+  return;
 }
+
 
 Layer* Subtitles::getLayer() const {
   return _layer;

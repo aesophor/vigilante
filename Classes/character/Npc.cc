@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
+#include "ui/dialogue/DialogueManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
@@ -117,7 +118,10 @@ void Npc::receiveDamage(Character* source, int damage) {
 }
 
 void Npc::onInteract(Character* user) {
-  cocos2d::log("interact with npc! executing _onInteractHandler...");
+  auto dialogueMgr = DialogueManager::getInstance();
+  dialogueMgr->setTargetNpc(this);
+  dialogueMgr->getSubtitles()->addSubtitle(_dialogueTree.getRootNode()->text);
+  dialogueMgr->getSubtitles()->beginSubtitles();
 }
 
 bool Npc::willInteractOnContact() const {

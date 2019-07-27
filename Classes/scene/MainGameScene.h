@@ -11,12 +11,11 @@
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
-#include "ui/dialogue/Subtitles.h"
-#include "ui/dialogue/DialogueMenu.h"
+#include "ui/dialogue/DialogueManager.h"
 #include "ui/floating_damages/FloatingDamages.h"
 #include "ui/notifications/Notifications.h"
-#include "ui/quest_hints/QuestHints.h"
 #include "ui/pause_menu/PauseMenu.h"
+#include "ui/quest_hints/QuestHints.h"
 #include "util/box2d/b2DebugRenderer.h"
 
 namespace vigilante {
@@ -40,9 +39,8 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
   std::unique_ptr<PauseMenu> _pauseMenu;
+  std::unique_ptr<DialogueManager> _dialogueManager;
   std::unique_ptr<FloatingDamages> _floatingDamages;
-  std::unique_ptr<Subtitles> _subtitles;
-  std::unique_ptr<DialogueMenu> _dialogueMenu;
   std::unique_ptr<QuestHints> _questHints;
   std::unique_ptr<Notifications> _notifications;
   std::unique_ptr<GameMapManager> _gameMapManager;

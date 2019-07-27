@@ -4,25 +4,26 @@
 
 #include "gameplay/DialogueTree.h"
 #include "ui/ListView.h"
-#include "ui/dialogue/DialogueMenu.h"
 
 namespace vigilante {
+
+// Forward declaration
+class DialogueMenu;
 
 // using Dialogue = DialogueTree::Node
 // See gameplay/DialogueTree.h for this alias.
 
-class DialogueListView : ListView<Dialogue*> {
+using Dialogue = DialogueTree::Node;
+
+class DialogueListView : public ListView<Dialogue*> {
  public:
   DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
 
-  virtual void confirm() override; // ListView<DialogueTree*>
-  
-  void showDialogue(DialogueTree* dialogueTree);
+  virtual void confirm() override;
 
  private:
   DialogueMenu* _dialogueMenu;
-  DialogueTree* _dialogueTree;
 };
 
 } // namespace vigilante

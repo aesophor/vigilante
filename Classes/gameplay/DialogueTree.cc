@@ -52,8 +52,8 @@ void DialogueTree::import(const string& jsonFileName) {
     st.pop();
 
     // Construct this node.
-    _currentNode = new Node(node["dialogue"].GetString());
-    cocos2d::log("%s", node["dialogue"].GetString());
+    _currentNode = new Node(node["text"].GetString());
+    cocos2d::log("%s", node["text"].GetString());
     if (!_rootNode) {
       _rootNode = _currentNode;
     }
@@ -61,9 +61,10 @@ void DialogueTree::import(const string& jsonFileName) {
       parent->children.push_back(_currentNode);
     }
    
-    // Push this node's children onto the stack.
-    for (auto& child : node["children"].GetArray()) {
-      st.push({child.GetObject(), _currentNode});
+    // Push this node's children onto the stack in reverse order.
+    const auto children = node["children"].GetArray();
+    for (int i = children.Size() - 1; i >= 0; i--) {
+      st.push({children[i].GetObject(), _currentNode});
     }
   }
 
@@ -79,11 +80,15 @@ DialogueTree::Node* DialogueTree::getCurrentNode() const {
   return _currentNode;
 }
 
+void DialogueTree::setCurrentNode(DialogueTree::Node* node) {
+  _currentNode = node;
+}
+
 void DialogueTree::resetCurrentNode() {
   _currentNode = _rootNode;
 }
 
 
-DialogueTree::Node::Node(const string& dialogue) : dialogue(dialogue), children() {}
+DialogueTree::Node::Node(const string& text) : text(text), children() {}
 
 } // namespace vigilante

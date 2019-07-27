@@ -14,7 +14,7 @@ namespace vigilante {
 
 class Subtitles : public Controllable {
  public:
-  static Subtitles* getInstance();
+  Subtitles();
   virtual ~Subtitles() = default;
 
   void update(float delta);
@@ -23,6 +23,8 @@ class Subtitles : public Controllable {
   void addSubtitle(const std::string& subtitle);
   void beginSubtitles();
   void endSubtitles();
+  void showNextSubtitle();
+
   cocos2d::Layer* getLayer() const;
 
  private:
@@ -30,11 +32,6 @@ class Subtitles : public Controllable {
     Subtitle(const std::string& text);
     std::string text;
   };
-
-  static Subtitles* _instance;
-  Subtitles();
-
-  void showNextSubtitle();
 
   cocos2d::Layer* _layer;
   cocos2d::Label* _label;
@@ -44,6 +41,7 @@ class Subtitles : public Controllable {
 
   std::queue<Subtitles::Subtitle> _subtitleQueue;
   Subtitles::Subtitle _currentSubtitle;
+  bool _isTransitioning;
   float _timer;
 };
 

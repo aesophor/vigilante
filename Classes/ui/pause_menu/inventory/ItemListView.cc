@@ -40,6 +40,10 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
     icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
     label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
 
+    if (!item) {
+      return;
+    }
+
     // Display item amount if amount > 1
     if (item->getAmount() > 1) {
       Label* label = listViewItem->getLabel();
@@ -118,23 +122,21 @@ void ItemListView::selectDown() {
 
 
 void ItemListView::showItemsByType(Item::Type itemType) {
-  fetchItems(itemType);
+  // Show items of the specified type in ItemListView.
+  setObjects(_pauseMenu->getCharacter()->getInventory()[itemType]);
 
-  _firstVisibleIndex = 0;
-  _current = 0;
-  showFrom(_firstVisibleIndex);
-
-  // If the inventory size isn't empty, select the first item by default.
-  if (_objects.size() > 0) {
-    _listViewItems[0]->setSelected(true);
-    _descLabel->setString(_objects[_current]->getDesc());
-  } else {
-    _descLabel->setString("");
-  }
+  // Update description label.
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
 void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
-  fetchEquipment(equipmentType);
+  const vector<Item*> equipments = _pauseMenu->getCharacter()->getInventory()[Item::Type::EQUIPMENT];
+  deque<Item*> objects(equipments.begin(), equipments.end());
+
+  // Filter out any equipment other than the specified equipmentType.
+  objects.erase(std::remove_if(objects.begin(), objects.end(), [=](Item* i) {
+    return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType != equipmentType;
+  }), objects.end());
 
   // Currently this method is only used for selecting equipment,
   // so here we're going to push_front two extra equipment.
@@ -142,38 +144,16 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    _objects.push_front(currentEquipment); // currently equipped item
-    _objects.push_front(nullptr); // unequip
+    objects.push_front(currentEquipment); // currently equipped item
+    objects.push_front(nullptr); // unequip
   }
 
-  _firstVisibleIndex = 0;
-  _current = 0;
-  showFrom(_firstVisibleIndex);
+  // Show equipments of the specified type in ItemListView.
+  setObjects(objects);
 
-  // If the inventory size isn't empty, select the first item by default.
-  if (_objects.size() > 0) {
-    _listViewItems[0]->setSelected(true);
-    _descLabel->setString("Unequip");
-  } else {
-    _descLabel->setString("");
-  }
-}
-
-
-void ItemListView::fetchItems(Item::Type itemType) {
-  // Copy all items into local deque.
-  const vector<Item*>& items = _pauseMenu->getCharacter()->getInventory()[itemType];
-  _objects = deque<Item*>(items.begin(), items.end());
-}
-
-void ItemListView::fetchEquipment(Equipment::Type equipmentType) {
-  // Copy all equipment into local deque.
-  fetchItems(Item::Type::EQUIPMENT);
-
-  // Filter out any equipment other than the specified equipmentType.
-  _objects.erase(std::remove_if(_objects.begin(), _objects.end(), [=](Item* i) {
-    return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType != equipmentType;
-  }), _objects.end());
+  // Update description label. The first item is an empty item,
+  // Selecting it will unequip current equipment.
+  _descLabel->setString((_objects.size() > 0) ? "Unequip" : "");
 }
 
 } // namespace vigilante
