@@ -31,6 +31,7 @@ SkillPane::SkillPane(PauseMenu* pauseMenu)
   _layout->addChild(_background);
 
   // Place item list view.
+  _skillListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_skillListView->getLayout());
 }
 

@@ -94,9 +94,7 @@ bool MainGameScene::init() {
   subtitles->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(dialogueMenu->getLayer(), graphical_layers::kDialogue + 1);
   addChild(subtitles->getLayer(), graphical_layers::kDialogue);
-  dialogueMenu->getLayer()->setVisible(false);
-  subtitles->getLayer()->setVisible(false);
-
+  
   /*
   _subtitles->addSubtitle("???: Hey, you are finally awake.");
   _subtitles->addSubtitle("Aesophor: Wut?");

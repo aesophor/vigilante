@@ -75,7 +75,8 @@ class ListView {
  
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
-  std::function<void (ListViewItem*, T)> _onSelect; // called at the end of ListViewItem::setObject()
+  std::function<void (ListViewItem*, bool)> _setSelectedCallback; // called at the end of ListViewItem::setSelected()
+  std::function<void (ListViewItem*, T)> _setObjectCallback; // called at the end of ListViewItem::setObject()
 
   uint8_t _visibleItemCount;
   uint32_t _width;
@@ -99,8 +100,8 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
       _firstVisibleIndex(),
       _current() {
   for (int i = 0; i < visibleItemCount; i++) {
-    float x = 5;
-    float y = -5.0f - i * 25;
+    float x = 0;
+    float y = -i * 25;
     _listViewItems.push_back(std::unique_ptr<ListViewItem>(new ListViewItem(this, x, y)));
     _listViewItems.back()->setVisible(false);
     _layout->addChild(_listViewItems[i]->getLayout());
@@ -216,6 +217,7 @@ cocos2d::ui::Layout* ListView<T>::getLayout() const {
 }
 
 
+
 template <typename T>
 const int ListView<T>::ListViewItem::_kListViewIconSize = 16;
 
@@ -243,9 +245,14 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
   _layout->padTop(1);
 }
 
+
 template <typename T>
 void ListView<T>::ListViewItem::setSelected(bool selected) {
   _background->loadTexture((selected) ? _parent->_highlightedBg : _parent->_regularBg);
+
+  if (_parent->_setSelectedCallback) {
+    _parent->_setSelectedCallback(this, selected);
+  }
 }
 
 template <typename T>
@@ -262,9 +269,9 @@ template <typename T>
 void ListView<T>::ListViewItem::setObject(T object) {
   _object = object;
 
-  // Provide extra logic for setting _icon and _label.
-  // See the ctor in ui/pause_menu/inventory/ItemListView.cc for example.
-  _parent->_onSelect(this, object);
+  if (_parent->_setObjectCallback) {
+    _parent->_setObjectCallback(this, object);
+  }
 }
 
 template <typename T>

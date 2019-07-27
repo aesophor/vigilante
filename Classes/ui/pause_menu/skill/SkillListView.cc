@@ -28,9 +28,9 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
       _pauseMenu(pauseMenu),
       _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
 
-  // _onSelect is called at the end of ListView<T>::ListViewItem::setObject()
+  // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
-  this->_onSelect = [](ListViewItem* listViewItem, Skill* skill) {
+  this->_setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
     assert(skill != nullptr);
 
     ImageView* icon = listViewItem->getIcon();

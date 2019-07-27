@@ -39,6 +39,7 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
   _layout->addChild(_tabView->getLayout());
 
   // Place item list view.
+  _itemListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_itemListView->getLayout());
 }
 

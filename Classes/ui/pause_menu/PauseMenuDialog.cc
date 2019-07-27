@@ -147,7 +147,6 @@ PauseMenuDialog::Option::Option(const string& text, const function<void ()>& han
       _label(Label::createWithTTF(text, kBoldFont, kRegularFontSize)),
       _handler(handler) {
   _icon->setAnchorPoint({0, 1});
-  _icon->setPositionY(-2);
   _icon->setVisible(false);
 
   _label->setAnchorPoint({0, 1});
