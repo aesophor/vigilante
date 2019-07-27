@@ -120,7 +120,9 @@ void Npc::receiveDamage(Character* source, int damage) {
 void Npc::onInteract(Character* user) {
   auto dialogueMgr = DialogueManager::getInstance();
   dialogueMgr->setTargetNpc(this);
-  dialogueMgr->getSubtitles()->addSubtitle(_dialogueTree.getRootNode()->text);
+  for (const auto& line : _dialogueTree.getCurrentNode()->lines) {
+    dialogueMgr->getSubtitles()->addSubtitle(line);
+  }
   dialogueMgr->getSubtitles()->beginSubtitles();
 }
 

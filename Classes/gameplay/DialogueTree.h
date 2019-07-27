@@ -17,8 +17,8 @@ class DialogueTree : public Importable {
   virtual void import(const std::string& jsonFileName) override;
 
   struct Node {
-    Node(const std::string& text);
-    std::string text;
+    Node(const std::vector<std::string>& lines);
+    std::vector<std::string> lines;
     std::vector<Node*> children;
   };
  

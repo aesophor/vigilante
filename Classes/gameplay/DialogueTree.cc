@@ -9,6 +9,7 @@
 using std::pair;
 using std::stack;
 using std::string;
+using std::vector;
 using rapidjson::Document;
 
 namespace vigilante {
@@ -52,8 +53,12 @@ void DialogueTree::import(const string& jsonFileName) {
     st.pop();
 
     // Construct this node.
-    _currentNode = new Node(node["text"].GetString());
-    cocos2d::log("%s", node["text"].GetString());
+    vector<string> lines;
+    for (auto& line : node["lines"].GetArray()) {
+      lines.push_back(line.GetString());
+    }
+    _currentNode = new Node(lines);
+
     if (!_rootNode) {
       _rootNode = _currentNode;
     }
@@ -89,6 +94,6 @@ void DialogueTree::resetCurrentNode() {
 }
 
 
-DialogueTree::Node::Node(const string& text) : text(text), children() {}
+DialogueTree::Node::Node(const vector<string>& lines) : lines(lines), children() {}
 
 } // namespace vigilante

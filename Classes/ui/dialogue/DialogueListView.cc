@@ -22,7 +22,7 @@ DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
   };
 
   this->_setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
-    listViewItem->getLabel()->setString(dialogue->text);
+    listViewItem->getLabel()->setString(dialogue->lines.front());
   };
 }
 
@@ -33,7 +33,9 @@ void DialogueListView::confirm() {
   auto subtitles = dialogueMgr->getSubtitles();
   
   Dialogue* nextDialogue = getSelectedObject()->children.front();
-  subtitles->addSubtitle(nextDialogue->text);
+  for (const auto& line : nextDialogue->lines) {
+    subtitles->addSubtitle(line);
+  }
   subtitles->showNextSubtitle();
   dialogueMenu->getLayer()->setVisible(false);
 
