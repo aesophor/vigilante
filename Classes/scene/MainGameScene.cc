@@ -74,6 +74,9 @@ bool MainGameScene::init() {
 
   // Initialize console.
   _console = unique_ptr<Console>(Console::getInstance());
+  _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_console->getLayer(), graphical_layers::kConsole);
+  _console->getLayer()->setPosition(10, 10);
 
   // Initialize notifications.
   _notifications = unique_ptr<Notifications>(Notifications::getInstance());
@@ -161,6 +164,7 @@ void MainGameScene::update(float delta) {
   _notifications->update(delta);
   _questHints->update(delta);
   _dialogueManager->update(delta);
+  _console->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
@@ -175,19 +179,29 @@ void MainGameScene::handleInput() {
     bool isVisible = !_b2dr->isVisible();
     _b2dr->setVisible(isVisible);
     _notifications->show(string("Debug Mode: ") + ((isVisible) ? "on" : "off"));
+    return;
   }
 
   // Toggle PauseMenu
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
-    bool isVisible = _pauseMenu->getLayer()->isVisible();
-    _pauseMenu->getLayer()->setVisible(!isVisible);
+    bool isVisible = !_pauseMenu->getLayer()->isVisible();
+    _pauseMenu->getLayer()->setVisible(isVisible);
     _pauseMenu->update();
+    return;
+  }
+
+  // Toggle Console
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_GRAVE)) {
+    bool isVisible = !_console->getLayer()->isVisible();
+    _console->getLayer()->setVisible(isVisible);
     return;
   }
 
 
   if (_pauseMenu->getLayer()->isVisible()) {
     _pauseMenu->handleInput(); // paused
+  } else if (_console->getLayer()->isVisible()) {
+    _console->handleInput();
   } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible()
       || _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
     _dialogueManager->handleInput();

@@ -2,6 +2,8 @@
 #ifndef VIGILANTE_TEXT_FIELD_H_
 #define VIGILANTE_TEXT_FIELD_H_
 
+#include <string>
+
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
@@ -14,13 +16,22 @@ class TextField : public Controllable {
   TextField();
   virtual ~TextField() = default;
 
+  virtual void update(float delta);
   virtual void handleInput() override;
+  virtual void clear();
 
   cocos2d::ui::Layout* getLayout() const;
 
  private:
+  virtual void toggleCursor();
+
   cocos2d::ui::Layout* _layout;
   cocos2d::Label* _label;
+  std::string _buffer;
+
+  float _timer;
+  bool _isRecevingInput;
+  bool _isCursorVisible;
 };
 
 } // namespace vigilante

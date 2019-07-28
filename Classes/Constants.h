@@ -60,6 +60,7 @@ const int kHud = 95;
 const int kDialogue = 96;
 const int kShade = 97;
 const int kPauseMenu = 99;
+const int kConsole = 100;
 
 } // namespace graphical_layers
 

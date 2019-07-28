@@ -83,36 +83,59 @@ void init() {
   ::keyMap[EventKeyboard::KeyCode::KEY_CAPITAL_Y] = "Y";
   ::keyMap[EventKeyboard::KeyCode::KEY_CAPITAL_Z] = "Z";
 
-  ::keyMap[EventKeyboard::KeyCode::KEY_A] = "A";
-  ::keyMap[EventKeyboard::KeyCode::KEY_B] = "B";
-  ::keyMap[EventKeyboard::KeyCode::KEY_C] = "C";
-  ::keyMap[EventKeyboard::KeyCode::KEY_D] = "D";
-  ::keyMap[EventKeyboard::KeyCode::KEY_E] = "E";
-  ::keyMap[EventKeyboard::KeyCode::KEY_F] = "F";
-  ::keyMap[EventKeyboard::KeyCode::KEY_G] = "G";
-  ::keyMap[EventKeyboard::KeyCode::KEY_H] = "H";
-  ::keyMap[EventKeyboard::KeyCode::KEY_I] = "I";
-  ::keyMap[EventKeyboard::KeyCode::KEY_J] = "J";
-  ::keyMap[EventKeyboard::KeyCode::KEY_K] = "K";
-  ::keyMap[EventKeyboard::KeyCode::KEY_L] = "L";
-  ::keyMap[EventKeyboard::KeyCode::KEY_M] = "M";
-  ::keyMap[EventKeyboard::KeyCode::KEY_N] = "N";
-  ::keyMap[EventKeyboard::KeyCode::KEY_O] = "O";
-  ::keyMap[EventKeyboard::KeyCode::KEY_P] = "P";
-  ::keyMap[EventKeyboard::KeyCode::KEY_Q] = "Q";
-  ::keyMap[EventKeyboard::KeyCode::KEY_R] = "R";
-  ::keyMap[EventKeyboard::KeyCode::KEY_S] = "S";
-  ::keyMap[EventKeyboard::KeyCode::KEY_T] = "T";
-  ::keyMap[EventKeyboard::KeyCode::KEY_U] = "U";
-  ::keyMap[EventKeyboard::KeyCode::KEY_V] = "V";
-  ::keyMap[EventKeyboard::KeyCode::KEY_W] = "W";
-  ::keyMap[EventKeyboard::KeyCode::KEY_X] = "X";
-  ::keyMap[EventKeyboard::KeyCode::KEY_Y] = "Y";
-  ::keyMap[EventKeyboard::KeyCode::KEY_Z] = "Z";
+  ::keyMap[EventKeyboard::KeyCode::KEY_A] = "a";
+  ::keyMap[EventKeyboard::KeyCode::KEY_B] = "b";
+  ::keyMap[EventKeyboard::KeyCode::KEY_C] = "c";
+  ::keyMap[EventKeyboard::KeyCode::KEY_D] = "d";
+  ::keyMap[EventKeyboard::KeyCode::KEY_E] = "e";
+  ::keyMap[EventKeyboard::KeyCode::KEY_F] = "f";
+  ::keyMap[EventKeyboard::KeyCode::KEY_G] = "g";
+  ::keyMap[EventKeyboard::KeyCode::KEY_H] = "h";
+  ::keyMap[EventKeyboard::KeyCode::KEY_I] = "i";
+  ::keyMap[EventKeyboard::KeyCode::KEY_J] = "j";
+  ::keyMap[EventKeyboard::KeyCode::KEY_K] = "k";
+  ::keyMap[EventKeyboard::KeyCode::KEY_L] = "l";
+  ::keyMap[EventKeyboard::KeyCode::KEY_M] = "m";
+  ::keyMap[EventKeyboard::KeyCode::KEY_N] = "n";
+  ::keyMap[EventKeyboard::KeyCode::KEY_O] = "o";
+  ::keyMap[EventKeyboard::KeyCode::KEY_P] = "p";
+  ::keyMap[EventKeyboard::KeyCode::KEY_Q] = "q";
+  ::keyMap[EventKeyboard::KeyCode::KEY_R] = "r";
+  ::keyMap[EventKeyboard::KeyCode::KEY_S] = "s";
+  ::keyMap[EventKeyboard::KeyCode::KEY_T] = "t";
+  ::keyMap[EventKeyboard::KeyCode::KEY_U] = "u";
+  ::keyMap[EventKeyboard::KeyCode::KEY_V] = "v";
+  ::keyMap[EventKeyboard::KeyCode::KEY_W] = "w";
+  ::keyMap[EventKeyboard::KeyCode::KEY_X] = "x";
+  ::keyMap[EventKeyboard::KeyCode::KEY_Y] = "y";
+  ::keyMap[EventKeyboard::KeyCode::KEY_Z] = "z";
 }
 
 string keyCodeToString(EventKeyboard::KeyCode keyCode) {
   return ::keyMap[keyCode];
+}
+
+char keyCodeToAscii(EventKeyboard::KeyCode keyCode) {
+  if ((keyCode >= EventKeyboard::KeyCode::KEY_0 && keyCode <= EventKeyboard::KeyCode::KEY_9)
+    || (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z)
+    || (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
+    return keyCodeToString(keyCode).front();
+  }
+
+  switch (keyCode) {
+    case EventKeyboard::KeyCode::KEY_SPACE:
+      return ' ';
+    case EventKeyboard::KeyCode::KEY_COMMA:
+      return ',';
+    case EventKeyboard::KeyCode::KEY_PERIOD:
+      return '.';
+    case EventKeyboard::KeyCode::KEY_SLASH:
+      return '/';
+    case EventKeyboard::KeyCode::KEY_UNDERSCORE:
+      return '_';
+    default:
+      return 0x00;
+  }
 }
 
 } // namespace keycode_util

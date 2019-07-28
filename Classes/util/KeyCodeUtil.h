@@ -11,7 +11,9 @@ namespace vigilante {
 namespace keycode_util {
 
 void init();
+
 std::string keyCodeToString(cocos2d::EventKeyboard::KeyCode keyCode);
+char keyCodeToAscii(cocos2d::EventKeyboard::KeyCode keyCode);
 
 } // namespace keycode_util
 
