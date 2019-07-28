@@ -11,6 +11,7 @@
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
+#include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/floating_damages/FloatingDamages.h"
 #include "ui/notifications/Notifications.h"
@@ -38,6 +39,7 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
 
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
+  std::unique_ptr<Console> _console;
   std::unique_ptr<PauseMenu> _pauseMenu;
   std::unique_ptr<DialogueManager> _dialogueManager;
   std::unique_ptr<FloatingDamages> _floatingDamages;

@@ -72,6 +72,9 @@ bool MainGameScene::init() {
   addChild(_hud->getLayer(), graphical_layers::kHud);
   _hud->getLayer()->setPosition(75, winSize.height - 40);
 
+  // Initialize console.
+  _console = unique_ptr<Console>(Console::getInstance());
+
   // Initialize notifications.
   _notifications = unique_ptr<Notifications>(Notifications::getInstance());
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));

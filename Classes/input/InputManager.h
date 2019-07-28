@@ -3,7 +3,7 @@
 #define VIGILANTE_INPUT_MANAGER_H_
 
 #include <set>
-#include <array>
+#include <stack>
 #include <functional>
 
 #include <cocos2d.h>
@@ -24,35 +24,26 @@ class InputManager {
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
-  enum Hotkey {
-    LEFT_SHIFT,
-    LEFT_CTRL,
-    X,
-    C,
-    V,
-    SIZE
-  };
-  static const std::array<cocos2d::EventKeyboard::KeyCode, InputManager::Hotkey::SIZE> _kBindableKeys;
-
-  Keybindable* getHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode) const;
-  void setHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
-  void clearHotkeyAction(cocos2d::EventKeyboard::KeyCode keyCode);
-  void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
+  using OnKeyPressedEvLstnr = std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
+  void pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr);
+  void popEvLstnr();
 
  private:
   static InputManager* _instance;
   InputManager();
 
-  // Used by isKeyPressed(), isKeyJustPressed()
   cocos2d::Scene* _scene;
   cocos2d::EventListenerKeyboard* _keyboardEvLstnr;
+
+  // Pressed Keys are stored in this set.
+  // Relevant method: isKeyPressed(), isKeyJustPressed()
   std::set<cocos2d::EventKeyboard::KeyCode> _pressedKeys;
 
-  // Hotkeys (keybindings)
-  std::array<Keybindable*, InputManager::Hotkey::SIZE> _hotkeys;
-  bool _isAssigningHotkey;
-  Keybindable* _keybindable;
-  PauseMenuDialog* _pauseMenuDialog;
+  // The functor at the top of the stack will be called whenever
+  // an onKeyPressed Event arrives.
+  // Relevant method: pushEvLstnr(), popEvLstnr()
+  std::stack<OnKeyPressedEvLstnr> _onKeyPressedEvLstnrs;
+  bool _hasScheduledPopEvLstnr;
 };
 
 } // namespace vigilante

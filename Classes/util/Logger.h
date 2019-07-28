@@ -15,7 +15,7 @@
 
 // Example usage: VGLOG(LOG_INFO, __FILE__, "test msg %d", 5);
 #define VGLOG(severity, format, ...)\
-  cocos2d::log("[%s | %s: %d] " format,\
+  cocos2d::log("[%s] [%s: %d] " format,\
       (vigilante::logger::_kSeverityStr[severity].c_str()),\
       (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__),\
       (__LINE__),\

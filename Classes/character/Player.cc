@@ -7,6 +7,7 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "input/InputManager.h"
+#include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
@@ -151,8 +152,8 @@ void Player::handleInput() {
   }
 
   // Hotkeys
-  for (auto keyCode : InputManager::_kBindableKeys) {
-    Keybindable* action = inputMgr->getHotkeyAction(keyCode);
+  for (auto keyCode : HotkeyManager::_kBindableKeys) {
+    Keybindable* action = HotkeyManager::getInstance()->getHotkeyAction(keyCode);
     if (inputMgr->isKeyJustPressed(keyCode) && action) {
       if (dynamic_cast<Skill*>(action)) {
         activateSkill(dynamic_cast<Skill*>(action));

@@ -3,8 +3,8 @@
 
 #include <cassert>
 
-#include "input/InputManager.h"
 #include "input/Keybindable.h"
+#include "input/HotkeyManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/KeyCodeUtil.h"
@@ -73,12 +73,12 @@ void SkillListView::confirm() {
     dialog->setMessage("Press a key to assign to...");
     dialog->setOption(2, true, "Cancel");
     dialog->show();
-    InputManager::getInstance()->promptHotkey(skill, dialog);
+    HotkeyManager::getInstance()->promptHotkey(skill, dialog);
   });
 
   if (static_cast<bool>(skill->getHotkey())) {
     dialog->setOption(1, true, "Clear", [=]() {
-      InputManager::getInstance()->clearHotkeyAction(skill->getHotkey());
+      HotkeyManager::getInstance()->clearHotkeyAction(skill->getHotkey());
       showSkills();
     });
   }
