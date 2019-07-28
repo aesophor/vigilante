@@ -120,9 +120,11 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
     || (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z)
     || (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
     char c = keyCodeToString(keyCode).front();
+
     if (isCapsLocked) {
       c -= 'a' - 'A';
     }
+
     if (isShiftPressed) {
       if (c >= 'A' && c <= 'Z') {
         c += 'a' - 'A';
@@ -130,6 +132,7 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
         c -= 'a' - 'A';
       }
     }
+
     return c;
   }
 
@@ -137,13 +140,15 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
     case EventKeyboard::KeyCode::KEY_SPACE:
       return ' ';
     case EventKeyboard::KeyCode::KEY_COMMA:
-      return ',';
+      return (isShiftPressed) ? '<' : ',';
     case EventKeyboard::KeyCode::KEY_PERIOD:
-      return '.';
+      return (isShiftPressed) ? '>' : '.';
     case EventKeyboard::KeyCode::KEY_SLASH:
-      return '/';
-    case EventKeyboard::KeyCode::KEY_UNDERSCORE:
-      return '_';
+      return (isShiftPressed) ? '?' : '/';
+    case EventKeyboard::KeyCode::KEY_MINUS:
+      return (isShiftPressed) ? '_' : '-';
+    case EventKeyboard::KeyCode::KEY_EQUAL:
+      return (isShiftPressed) ? '+' : '=';
     default:
       return 0x00;
   }
