@@ -28,6 +28,9 @@ class InputManager {
   void pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr);
   void popEvLstnr();
 
+  bool isCapsLocked() const;
+  bool isShiftPressed() const;
+
  private:
   static InputManager* _instance;
   InputManager();
@@ -43,7 +46,8 @@ class InputManager {
   // an onKeyPressed Event arrives.
   // Relevant method: pushEvLstnr(), popEvLstnr()
   std::stack<OnKeyPressedEvLstnr> _onKeyPressedEvLstnrs;
-  bool _hasScheduledPopEvLstnr;
+
+  bool _isCapsLocked;
 };
 
 } // namespace vigilante

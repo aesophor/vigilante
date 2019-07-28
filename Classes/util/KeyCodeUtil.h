@@ -13,7 +13,7 @@ namespace keycode_util {
 void init();
 
 std::string keyCodeToString(cocos2d::EventKeyboard::KeyCode keyCode);
-char keyCodeToAscii(cocos2d::EventKeyboard::KeyCode keyCode);
+char keyCodeToAscii(cocos2d::EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed);
 
 } // namespace keycode_util
 

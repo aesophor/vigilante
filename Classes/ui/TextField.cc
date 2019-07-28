@@ -5,6 +5,7 @@
 #include "input/InputManager.h"
 #include "ui/console/Console.h"
 #include "util/KeyCodeUtil.h"
+#include "util/Logger.h"
 
 #define CURSOR_CHAR "|"
 #define CURSOR_BLINK_INTERVAL 0.7f
@@ -45,11 +46,10 @@ void TextField::handleInput() {
     if (keyCode == EventKeyboard::KeyCode::KEY_GRAVE) {
       _isRecevingInput = false;
       InputManager::getInstance()->popEvLstnr();
-      Console::getInstance()->getLayer()->setVisible(false);
       return;
     }
 
-    if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_ENTER && !_buffer.empty()) {
       Console::getInstance()->executeCmd(_buffer);
       clear();
       return;
@@ -61,7 +61,8 @@ void TextField::handleInput() {
       return;
     }
 
-    char c = keycode_util::keyCodeToAscii(keyCode);
+    auto inputMgr = InputManager::getInstance();
+    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(), inputMgr->isShiftPressed());
     if (c != 0x00) {
       _buffer += c;
       _label->setString(_buffer + CURSOR_CHAR);

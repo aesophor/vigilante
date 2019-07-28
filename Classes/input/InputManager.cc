@@ -21,12 +21,7 @@ InputManager* InputManager::getInstance() {
 }
 
 InputManager::InputManager()
-    : _scene(), _keyboardEvLstnr(), _pressedKeys(), _hasScheduledPopEvLstnr() {
-  // Push the default OnKeyPressedEvLstnr.
-  pushEvLstnr([=](EventKeyboard::KeyCode keyCode, Event*) {
-    _pressedKeys.insert(keyCode);
-  });
-}
+    : _scene(), _keyboardEvLstnr(), _pressedKeys(), _isCapsLocked() {}
 
 
 void InputManager::activate(Scene* scene) {
@@ -35,7 +30,16 @@ void InputManager::activate(Scene* scene) {
 
   // Capture "this" by value.
   _keyboardEvLstnr->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* e) {
-    _onKeyPressedEvLstnrs.top()(keyCode, e);
+    _pressedKeys.insert(keyCode);
+
+    if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
+      _isCapsLocked = !_isCapsLocked;
+    }
+
+    // Execute additional OnKeyPressedEvLstnrs.
+    if (!_onKeyPressedEvLstnrs.empty()) {
+      _onKeyPressedEvLstnrs.top()(keyCode, e);
+    }
   };
 
   _keyboardEvLstnr->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event*) {
@@ -67,10 +71,18 @@ void InputManager::pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr) {
 }
 
 void InputManager::popEvLstnr() {
-  // Do not pop the default OnKeyPressedEvLstnr.
-  if (_onKeyPressedEvLstnrs.size() > 1) {
+  if (!_onKeyPressedEvLstnrs.empty()) {
     _onKeyPressedEvLstnrs.pop();
   }
+}
+
+
+bool InputManager::isCapsLocked() const {
+  return _isCapsLocked;
+}
+
+bool InputManager::isShiftPressed() const {
+  return isKeyPressed(EventKeyboard::KeyCode::KEY_SHIFT);
 }
 
 } // namespace vigilante

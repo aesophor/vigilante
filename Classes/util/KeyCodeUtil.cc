@@ -115,11 +115,22 @@ string keyCodeToString(EventKeyboard::KeyCode keyCode) {
   return ::keyMap[keyCode];
 }
 
-char keyCodeToAscii(EventKeyboard::KeyCode keyCode) {
+char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed) {
   if ((keyCode >= EventKeyboard::KeyCode::KEY_0 && keyCode <= EventKeyboard::KeyCode::KEY_9)
     || (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z)
     || (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
-    return keyCodeToString(keyCode).front();
+    char c = keyCodeToString(keyCode).front();
+    if (isCapsLocked) {
+      c -= 'a' - 'A';
+    }
+    if (isShiftPressed) {
+      if (c >= 'A' && c <= 'Z') {
+        c += 'a' - 'A';
+      } else { // c >= 'a' && c <= 'z'
+        c -= 'a' - 'A';
+      }
+    }
+    return c;
   }
 
   switch (keyCode) {

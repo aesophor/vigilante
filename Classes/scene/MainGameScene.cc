@@ -133,7 +133,7 @@ bool MainGameScene::init() {
   player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
 
   //player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
-  _console->executeCmd("startquest Resources/Database/quest/main/main01.json");
+  //_console->executeCmd("startquest Resources/Database/quest/main/main01.json");
 
 
   // Initialize Pause Menu.
