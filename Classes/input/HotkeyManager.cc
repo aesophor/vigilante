@@ -73,7 +73,6 @@ void HotkeyManager::clearHotkeyAction(EventKeyboard::KeyCode keyCode) {
 }
 
 void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog) {
-
   auto onKeyPressedEvLstnr = [=](EventKeyboard::KeyCode keyCode, Event*) {
     setHotkeyAction(keyCode, keybindable);
     pauseMenuDialog->setVisible(false);
