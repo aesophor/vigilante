@@ -35,8 +35,7 @@ void InputManager::activate(Scene* scene) {
 
   // Capture "this" by value.
   _keyboardEvLstnr->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* e) {
-    const auto& evLstnr = _onKeyPressedEvLstnrs.top();
-    evLstnr(keyCode, e);
+    _onKeyPressedEvLstnrs.top()(keyCode, e);
   };
 
   _keyboardEvLstnr->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event*) {
