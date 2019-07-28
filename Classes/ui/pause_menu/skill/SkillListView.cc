@@ -14,6 +14,9 @@
 #define REGULAR_BG vigilante::asset_manager::kItemRegular
 #define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
+#define DESC_LABEL_X 5
+#define DESC_LABEL_Y -132
+
 using std::deque;
 using std::vector;
 using std::string;
@@ -52,7 +55,7 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
 
   _descLabel->getFontAtlas()->setAliasTexParameters();
   _descLabel->setAnchorPoint({0, 1});
-  _descLabel->setPosition({10, -137});
+  _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
