@@ -3,4 +3,4 @@
 * Cocos Console 2.3
 
 # Copyright
-Copyright (c) 2019 Marco Wang <m.aesophor(at)gmail.com>
+Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
