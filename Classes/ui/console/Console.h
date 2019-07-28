@@ -8,6 +8,7 @@
 #include <cocos2d.h>
 #include "Controllable.h"
 #include "ui/TextField.h"
+#include "ui/console/CommandParser.h"
 
 namespace vigilante {
 
@@ -28,6 +29,8 @@ class Console : public Controllable {
 
   cocos2d::Layer* _layer;
   std::unique_ptr<TextField> _textField;
+
+  CommandParser _commandParser;
 };
 
 } // namespace vigilante

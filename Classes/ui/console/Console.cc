@@ -39,6 +39,7 @@ void Console::handleInput() {
 
 void Console::executeCmd(const string& cmd) {
   VGLOG(LOG_INFO, "Executing: %s", cmd.c_str());
+  _commandParser.parse(cmd);
 }
 
 

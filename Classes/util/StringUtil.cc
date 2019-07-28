@@ -9,7 +9,7 @@ namespace vigilante {
 
 namespace string_util {
 
-vector<string> Split(const string& s, const char delimiter) {
+vector<string> split(const string& s, const char delimiter) {
   std::stringstream ss(s);
   string t;
   vector<string> tokens;
@@ -49,6 +49,15 @@ string& toUpper(string& s) {
   for (auto& c : s) {
     if (c >= 'a' && c <= 'z') {
       c -= 'a' - 'A';
+    }
+  }
+  return s;
+}
+
+string& toLower(string& s) {
+  for (auto& c : s) {
+    if (c >= 'A' && c <= 'Z') {
+      c += 'a' - 'A';
     }
   }
   return s;
