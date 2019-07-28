@@ -23,7 +23,7 @@ InputManager* InputManager::getInstance() {
 InputManager::InputManager()
     : _scene(), _keyboardEvLstnr(), _pressedKeys(), _hasScheduledPopEvLstnr() {
   // Push the default OnKeyPressedEvLstnr.
-  pushEvLstnr([&](EventKeyboard::KeyCode keyCode, Event*) {
+  pushEvLstnr([=](EventKeyboard::KeyCode keyCode, Event*) {
     _pressedKeys.insert(keyCode);
   });
 }

@@ -38,9 +38,6 @@ class HotkeyManager {
   HotkeyManager();
 
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
-  bool _isAssigningHotkey;
-  Keybindable* _keybindable;
-  PauseMenuDialog* _pauseMenuDialog;
 };
 
 } // namespace vigilante

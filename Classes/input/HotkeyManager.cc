@@ -28,8 +28,7 @@ HotkeyManager* HotkeyManager::getInstance() {
   return _instance;
 }
 
-HotkeyManager::HotkeyManager()
-    : _hotkeys(), _isAssigningHotkey(), _keybindable(), _pauseMenuDialog() {}
+HotkeyManager::HotkeyManager() : _hotkeys() {}
 
 
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
@@ -74,18 +73,16 @@ void HotkeyManager::clearHotkeyAction(EventKeyboard::KeyCode keyCode) {
 }
 
 void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog) {
-  _isAssigningHotkey = true;
-  _keybindable = keybindable;
-  _pauseMenuDialog = pauseMenuDialog;
 
-  static auto onKeyPressedEvLstnr = [=](EventKeyboard::KeyCode keyCode, Event*) {
+  auto onKeyPressedEvLstnr = [=](EventKeyboard::KeyCode keyCode, Event*) {
+    setHotkeyAction(keyCode, keybindable);
+    pauseMenuDialog->setVisible(false);
+    pauseMenuDialog->getPauseMenu()->update();
+    
+    // Everything done. Now it is safe to pop this functor off the stack.
     InputManager::getInstance()->popEvLstnr();
-
-    setHotkeyAction(keyCode, _keybindable);
-    _keybindable = nullptr;
-    _pauseMenuDialog->setVisible(false);
-    _pauseMenuDialog->getPauseMenu()->update();
   };
+
   InputManager::getInstance()->pushEvLstnr(onKeyPressedEvLstnr);
 }
 
