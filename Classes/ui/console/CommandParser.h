@@ -3,15 +3,27 @@
 #define VIGILANTE_COMMAND_PARSER_H_
 
 #include <string>
+#include <vector>
 
 namespace vigilante {
 
 class CommandParser {
  public:
-  CommandParser() = default;
+  CommandParser();
   virtual ~CommandParser() = default;
 
-  void parse(const std::string& cmd) const;
+  void parse(const std::string& cmd);
+
+ private:
+  void setSuccess();
+  void setError(const std::string& errMsg);
+
+  // Command handlers.
+  void startQuest(const std::vector<std::string>& args);
+  void addItem(const std::vector<std::string>& args);
+
+  bool _success;
+  std::string _errMsg;
 };
 
 } // namespace vigilante
