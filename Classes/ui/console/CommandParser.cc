@@ -10,6 +10,7 @@
 
 #define DEFAULT_ERR_MSG "unable to parse this line"
 
+using std::pair;
 using std::string;
 using std::vector;
 
@@ -23,14 +24,18 @@ void CommandParser::parse(const string& cmd) {
   _success = false;
   _errMsg = DEFAULT_ERR_MSG;
 
-  // Call the corresponding command handler.
-  if (args.front() == "startquest") {
-    startQuest(args);
-  } else if (args.front() == "additem") {
-    addItem(args);
-  } else if (args.front() == "removeitem") {
-    removeItem(args);
+  static pair<string, void (CommandParser::*)(const vector<string>&)> cmdTable[] = {
+    {"startquest", &CommandParser::startQuest},
+    {"additem",    &CommandParser::addItem   },
+    {"removeitem", &CommandParser::removeItem},
+  };
+
+  for (const auto& cmdPair: cmdTable) {
+    if (cmdPair.first == args[0]) {
+      (this->*cmdPair.second)(args);
+    }
   }
+
 
   if (!_success) {
     _errMsg = args[0] + ": " + _errMsg;
