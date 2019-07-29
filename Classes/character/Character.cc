@@ -648,6 +648,10 @@ void Character::lockOn(Character* target) {
 
 
 void Character::addItem(Item* item, int amount) {
+  if (!item) {
+    return;
+  }
+
   // If this Item* does not exist in Inventory or EquipmentSlots yet, store it in _itemMapper.
   // Otherwise, simply delete it and use the existing copy instead (saves memory).
   Item* existingItemObj = getExistingItemObj(item);
@@ -655,11 +659,13 @@ void Character::addItem(Item* item, int amount) {
   if (!existingItemObj) {
     existingItemObj = item;
     _itemMapper[item->getItemProfile().name] = item;
+    existingItemObj->setAmount(amount);
   } else {
     existingItemObj->setAmount(existingItemObj->getAmount() + amount);
-    if (item != existingItemObj) {
-      delete item;
-    }
+  }
+
+  if (item != existingItemObj) {
+    delete item;
   }
 
   vector<Item*>& items = _inventory[item->getItemProfile().itemType];
