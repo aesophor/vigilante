@@ -13,24 +13,24 @@
 using std::pair;
 using std::string;
 using std::vector;
+using CmdTable = pair<string, void (vigilante::CommandParser::*)(const vector<string>&)>;
 
 namespace vigilante {
 
 CommandParser::CommandParser() : _success(), _errMsg() {}
 
-
 void CommandParser::parse(const string& cmd) {
   const vector<string>& args = string_util::split(cmd);
   _success = false;
   _errMsg = DEFAULT_ERR_MSG;
-
-  static pair<string, void (CommandParser::*)(const vector<string>&)> cmdTable[] = {
+ 
+  static CmdTable cmdTable[] = {
     {"startquest", &CommandParser::startQuest},
     {"additem",    &CommandParser::addItem   },
     {"removeitem", &CommandParser::removeItem},
   };
 
-  for (const auto& cmdPair: cmdTable) {
+  for (const auto& cmdPair : cmdTable) {
     if (cmdPair.first == args[0]) {
       (this->*cmdPair.second)(args);
     }
