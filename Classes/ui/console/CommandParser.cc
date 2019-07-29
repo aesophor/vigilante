@@ -8,7 +8,7 @@
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
-#define DEFAULT_ERR_MSG "Unable to parse this line"
+#define DEFAULT_ERR_MSG "unable to parse this line"
 
 using std::string;
 using std::vector;
@@ -33,6 +33,7 @@ void CommandParser::parse(const string& cmd) {
   }
 
   if (!_success) {
+    _errMsg = args[0] + ": " + _errMsg;
     VGLOG(LOG_ERR, "%s", _errMsg.c_str());
   }
   Notifications::getInstance()->show((_success) ? cmd : _errMsg);
