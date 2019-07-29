@@ -21,6 +21,7 @@ class CommandParser {
   // Command handlers.
   void startQuest(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);
+  void removeItem(const std::vector<std::string>& args);
 
   bool _success;
   std::string _errMsg;

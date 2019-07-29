@@ -28,6 +28,8 @@ void CommandParser::parse(const string& cmd) {
     startQuest(args);
   } else if (args.front() == "additem") {
     addItem(args);
+  } else if (args.front() == "removeitem") {
+    removeItem(args);
   }
 
   if (!_success) {
@@ -49,7 +51,7 @@ void CommandParser::setError(const string& errMsg) {
 
 void CommandParser::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("startquest: missing parameter `quest`");
+    setError("missing parameter `quest`");
     return;
   }
 
@@ -60,7 +62,7 @@ void CommandParser::startQuest(const vector<string>& args) {
 
 void CommandParser::addItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("additem: missing parameter `itemName`");
+    setError("missing parameter `itemName`");
     return;
   }
 
@@ -69,18 +71,55 @@ void CommandParser::addItem(const vector<string>& args) {
     try {
       amount = std::stoi(args[2]);
     } catch (const std::invalid_argument& ex) {
-      setError("additem: invalid argument `amount`");
+      setError("invalid argument `amount`");
       return;
     } catch (const std::out_of_range& ex) {
-      setError("additem: `amount` is too large");
+      setError("`amount` is too large");
       return;
     } catch (...) {
-      setError("additem: unknown error");
+      setError("unknown error");
       return;
     }
   }
 
+  if (amount <= 0) {
+    setError("`amount` has to be at least 1");
+    return;
+  }
+
   GameMapManager::getInstance()->getPlayer()->addItem(Item::create(args[1]), amount);
+  setSuccess();
+}
+
+
+void CommandParser::removeItem(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("missing parameter `itemName`");
+    return;
+  }
+
+  int amount = 1;
+  if (args.size() >= 3) {
+    try {
+      amount = std::stoi(args[2]);
+    } catch (const std::invalid_argument& ex) {
+      setError("invalid argument `amount`");
+      return;
+    } catch (const std::out_of_range& ex) {
+      setError("`amount` is too large");
+      return;
+    } catch (...) {
+      setError("unknown error");
+      return;
+    }
+  }
+
+  if (amount <= 0) {
+    setError("`amount` has to be at least 1");
+    return;
+  }
+
+  GameMapManager::getInstance()->getPlayer()->removeItem(Item::create(args[1]), amount);
   setSuccess();
 }
 
