@@ -679,7 +679,7 @@ void Character::removeItem(Item* item, int amount) {
   Item* existingItemObj = getExistingItemObj(item);
   existingItemObj->setAmount(existingItemObj->getAmount() - amount);
 
-  if (existingItemObj->getAmount() == 0) {
+  if (existingItemObj->getAmount() <= 0) {
     items.erase(std::remove(items.begin(), items.end(), existingItemObj), items.end());
     // We can safely delete this Item* if:
     // 1. It is not an equipment, or...
