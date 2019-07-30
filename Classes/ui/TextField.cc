@@ -10,6 +10,7 @@
 #define CURSOR_CHAR "|"
 #define CURSOR_BLINK_INTERVAL 0.7f
 
+using std::string;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
 using cocos2d::Event;
@@ -75,9 +76,18 @@ void TextField::handleInput() {
   }
 }
 
+
+const string& TextField::getString() const {
+  return _buffer;
+}
+
+void TextField::setString(const string& s) {
+  _buffer = s;
+  _label->setString(_buffer + CURSOR_CHAR);
+}
+
 void TextField::clear() {
-  _buffer.clear();
-  _label->setString(CURSOR_CHAR);
+  setString("");
 }
 
 void TextField::toggleCursor() {

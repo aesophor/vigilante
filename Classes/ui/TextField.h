@@ -18,6 +18,9 @@ class TextField : public Controllable {
 
   virtual void update(float delta);
   virtual void handleInput() override;
+
+  virtual const std::string& getString() const;
+  virtual void setString(const std::string& s);
   virtual void clear();
 
   cocos2d::ui::Layout* getLayout() const;

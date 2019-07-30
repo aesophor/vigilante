@@ -2,13 +2,14 @@
 #ifndef VIGILANTE_CONSOLE_H_
 #define VIGILANTE_CONSOLE_H_
 
+#include <deque>
 #include <string>
-#include <memory>
 
 #include <cocos2d.h>
 #include "Controllable.h"
 #include "ui/TextField.h"
 #include "ui/console/CommandParser.h"
+#include "util/CircularBuffer.h"
 
 namespace vigilante {
 
@@ -27,10 +28,27 @@ class Console : public Controllable {
   static Console* _instance;
   Console();
 
-  cocos2d::Layer* _layer;
-  std::unique_ptr<TextField> _textField;
+  class CommandHistory : public CircularBuffer<std::string> {
+   public:
+    friend class Console;
+    CommandHistory();
+    virtual ~CommandHistory() = default;
 
-  CommandParser _commandParser;
+    bool canGoBack() const;
+    bool canGoForward() const;
+    void goBack();
+    void goForward();
+    const std::string& getCurrentLine() const;
+
+   private:
+    int _current;
+  };
+
+  cocos2d::Layer* _layer;
+
+  TextField _textField;
+  CommandParser _cmdParser;
+  CommandHistory _cmdHistory;
 };
 
 } // namespace vigilante
