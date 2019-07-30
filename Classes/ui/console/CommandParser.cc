@@ -30,7 +30,7 @@ void CommandParser::parse(const string& cmd) {
   _errMsg = DEFAULT_ERR_MSG;
 
   // Command handler table.
-  static CmdTable const cmdTable = {
+  static const CmdTable cmdTable = {
     {"startquest", &CommandParser::startQuest},
     {"additem",    &CommandParser::addItem   },
     {"removeitem", &CommandParser::removeItem}
