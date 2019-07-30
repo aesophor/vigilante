@@ -12,32 +12,34 @@
 
 using std::string;
 using std::vector;
+using std::out_of_range;
+using std::invalid_argument;
+using CmdTable = std::unordered_map<std::string, void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
 
 namespace vigilante {
 
-CommandParser::CmdTable CommandParser::_cmdTable = {
-  {"startquest", &CommandParser::startQuest},
-  {"additem",    &CommandParser::addItem   },
-  {"removeitem", &CommandParser::removeItem},
-};
-
 CommandParser::CommandParser() : _success(), _errMsg() {}
-
 
 void CommandParser::parse(const string& cmd) {
   vector<string> args;
-  
   if (cmd.empty() || (args = string_util::split(cmd)).empty()) {
     return;
   }
 
   _success = false;
   _errMsg = DEFAULT_ERR_MSG;
+
+  // Command handler table.
+  static CmdTable const cmdTable = {
+    {"startquest", &CommandParser::startQuest},
+    {"additem",    &CommandParser::addItem   },
+    {"removeitem", &CommandParser::removeItem}
+  };
  
   // Execute the corresponding command handler from _cmdTable.
   // The obtained value from _cmdTable is a class member function pointer.
-  CmdTable::iterator it = _cmdTable.find(args[0]);
-  if (it != _cmdTable.end()) {
+  CmdTable::const_iterator it = cmdTable.find(args[0]);
+  if (it != cmdTable.end()) {
     (this->*((*it).second))(args);
   }
 
@@ -56,7 +58,6 @@ void CommandParser::setError(const string& errMsg) {
   _success = false;
   _errMsg = errMsg;
 }
-
 
 
 void CommandParser::startQuest(const vector<string>& args) {
@@ -80,10 +81,10 @@ void CommandParser::addItem(const vector<string>& args) {
   if (args.size() >= 3) {
     try {
       amount = std::stoi(args[2]);
-    } catch (const std::invalid_argument& ex) {
+    } catch (const invalid_argument& ex) {
       setError("invalid argument `amount`");
       return;
-    } catch (const std::out_of_range& ex) {
+    } catch (const out_of_range& ex) {
       setError("`amount` is too large");
       return;
     } catch (...) {
@@ -112,10 +113,10 @@ void CommandParser::removeItem(const vector<string>& args) {
   if (args.size() >= 3) {
     try {
       amount = std::stoi(args[2]);
-    } catch (const std::invalid_argument& ex) {
+    } catch (const invalid_argument& ex) {
       setError("invalid argument `amount`");
       return;
-    } catch (const std::out_of_range& ex) {
+    } catch (const out_of_range& ex) {
       setError("`amount` is too large");
       return;
     } catch (...) {
