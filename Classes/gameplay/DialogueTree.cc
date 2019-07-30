@@ -54,11 +54,13 @@ void DialogueTree::import(const string& jsonFileName) {
     st.pop();
 
     // Construct this node.
-    vector<string> lines;
-    for (auto& line : node["lines"].GetArray()) {
-      lines.push_back(line.GetString());
+    _currentNode = new Node();
+    for (const auto& line : node["lines"].GetArray()) {
+      _currentNode->lines.push_back(line.GetString());
     }
-    _currentNode = new Node(lines);
+    for (const auto& cmd : node["exec"].GetArray()) {
+      _currentNode->cmds.push_back(cmd.GetString());
+    }
 
     if (!_rootNode) {
       _rootNode = _currentNode;
@@ -68,7 +70,7 @@ void DialogueTree::import(const string& jsonFileName) {
     }
    
     // Push this node's children onto the stack in reverse order.
-    const auto children = node["children"].GetArray();
+    const auto& children = node["children"].GetArray();
     for (int i = children.Size() - 1; i >= 0; i--) {
       st.push({children[i].GetObject(), _currentNode});
     }
@@ -93,8 +95,5 @@ void DialogueTree::setCurrentNode(DialogueTree::Node* node) {
 void DialogueTree::resetCurrentNode() {
   _currentNode = _rootNode;
 }
-
-
-DialogueTree::Node::Node(const vector<string>& lines) : lines(lines), children() {}
 
 } // namespace vigilante
