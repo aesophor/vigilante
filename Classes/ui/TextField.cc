@@ -51,7 +51,8 @@ void TextField::handleInput() {
     }
 
     if (keyCode == EventKeyboard::KeyCode::KEY_ENTER && !_buffer.empty()) {
-      Console::getInstance()->executeCmd(_buffer);
+      bool showNotification = true;
+      Console::getInstance()->executeCmd(_buffer, showNotification);
       clear();
       return;
     }

@@ -13,7 +13,7 @@ class CommandParser {
   CommandParser();
   virtual ~CommandParser() = default;
 
-  void parse(const std::string& cmd);
+  void parse(const std::string& cmd, bool showNotification);
 
  private:
   void setSuccess();

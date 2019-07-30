@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "gameplay/DialogueTree.h"
+#include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/dialogue/DialogueListView.h"
 
@@ -31,6 +32,10 @@ void DialogueListView::confirm() {
   auto dialogueMgr = DialogueManager::getInstance();
   auto dialogueMenu = dialogueMgr->getDialogueMenu();
   auto subtitles = dialogueMgr->getSubtitles();
+
+  for (const auto& cmd : getSelectedObject()->cmds) {
+    Console::getInstance()->executeCmd(cmd);
+  }
   
   Dialogue* nextDialogue = getSelectedObject()->children.front();
   for (const auto& line : nextDialogue->lines) {

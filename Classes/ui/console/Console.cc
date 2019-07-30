@@ -55,9 +55,9 @@ void Console::handleInput() {
   }
 }
 
-void Console::executeCmd(const string& cmd) {
+void Console::executeCmd(const string& cmd, bool showNotification) {
   VGLOG(LOG_INFO, "Executing: %s", cmd.c_str());
-  _cmdParser.parse(cmd);
+  _cmdParser.parse(cmd, showNotification);
   _cmdHistory.push(cmd);
   _cmdHistory._current = _cmdHistory._tail;
 }

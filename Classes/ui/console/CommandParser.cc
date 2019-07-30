@@ -20,7 +20,7 @@ namespace vigilante {
 
 CommandParser::CommandParser() : _success(), _errMsg() {}
 
-void CommandParser::parse(const string& cmd) {
+void CommandParser::parse(const string& cmd, bool showNotification) {
   vector<string> args;
   if (cmd.empty() || (args = string_util::split(cmd)).empty()) {
     return;
@@ -47,7 +47,10 @@ void CommandParser::parse(const string& cmd) {
     _errMsg = args[0] + ": " + _errMsg;
     VGLOG(LOG_ERR, "%s", _errMsg.c_str());
   }
-  Notifications::getInstance()->show((_success) ? cmd : _errMsg);
+
+  if (showNotification) {
+    Notifications::getInstance()->show((_success) ? cmd : _errMsg);
+  }
 }
 
 void CommandParser::setSuccess() {

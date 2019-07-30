@@ -20,7 +20,7 @@ class Console : public Controllable {
 
   virtual void update(float delta);
   virtual void handleInput() override;
-  virtual void executeCmd(const std::string& cmd);
+  virtual void executeCmd(const std::string& cmd, bool showNotification=false);
 
   cocos2d::Layer* getLayer() const;
 
