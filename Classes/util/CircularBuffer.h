@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-#define DEFAULT_CAPACITY 5
+#define DEFAULT_CAPACITY 32
 
 template <typename T>
 class CircularBuffer {
