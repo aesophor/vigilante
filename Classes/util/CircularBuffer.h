@@ -7,6 +7,8 @@
 
 #define DEFAULT_CAPACITY 32
 
+namespace vigilante {
+
 template <typename T>
 class CircularBuffer {
  public:
@@ -104,5 +106,7 @@ template <typename T>
 T CircularBuffer<T>::back() const {
   return _data[(_tail - 1 < 0) ? _capacity - 1 : _tail - 1];
 }
+
+} // namespace vigilante
 
 #endif // VIGILANTE_CIRCULAR_BUFFER_H_
