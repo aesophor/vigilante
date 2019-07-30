@@ -10,32 +10,36 @@
 
 #define DEFAULT_ERR_MSG "unable to parse this line"
 
-using std::pair;
 using std::string;
 using std::vector;
-using CmdTable = pair<string, void (vigilante::CommandParser::*)(const vector<string>&)>;
 
 namespace vigilante {
 
+CommandParser::CmdTable CommandParser::_cmdTable = {
+  {"startquest", &CommandParser::startQuest},
+  {"additem",    &CommandParser::addItem   },
+  {"removeitem", &CommandParser::removeItem},
+};
+
 CommandParser::CommandParser() : _success(), _errMsg() {}
 
+
 void CommandParser::parse(const string& cmd) {
-  const vector<string>& args = string_util::split(cmd);
+  vector<string> args;
+  
+  if (cmd.empty() || (args = string_util::split(cmd)).empty()) {
+    return;
+  }
+
   _success = false;
   _errMsg = DEFAULT_ERR_MSG;
  
-  static CmdTable cmdTable[] = {
-    {"startquest", &CommandParser::startQuest},
-    {"additem",    &CommandParser::addItem   },
-    {"removeitem", &CommandParser::removeItem},
-  };
-
-  for (const auto& cmdPair : cmdTable) {
-    if (cmdPair.first == args[0]) {
-      (this->*cmdPair.second)(args);
-    }
+  // Execute the corresponding command handler from _cmdTable.
+  // The obtained value from _cmdTable is a class member function pointer.
+  CmdTable::iterator it = _cmdTable.find(args[0]);
+  if (it != _cmdTable.end()) {
+    (this->*((*it).second))(args);
   }
-
 
   if (!_success) {
     _errMsg = args[0] + ": " + _errMsg;

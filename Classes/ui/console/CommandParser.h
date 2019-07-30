@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace vigilante {
 
@@ -22,6 +23,9 @@ class CommandParser {
   void startQuest(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);
   void removeItem(const std::vector<std::string>& args);
+
+  using CmdTable = std::unordered_map<std::string, void (CommandParser::*)(const std::vector<std::string>&)>;
+  static CommandParser::CmdTable _cmdTable;
 
   bool _success;
   std::string _errMsg;
