@@ -38,7 +38,7 @@ class GameMapManager {
 
  private:
   static GameMapManager* _instance;
-  GameMapManager(const b2Vec2& gravity);
+  explicit GameMapManager(const b2Vec2& gravity);
 
   cocos2d::Layer* _layer;
   std::unique_ptr<WorldContactListener> _worldContactListener;

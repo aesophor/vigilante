@@ -10,7 +10,7 @@ namespace vigilante {
 
 class MiscItem : public Item {
  public:
-  MiscItem(const std::string& jsonFileName);
+  explicit MiscItem(const std::string& jsonFileName);
   virtual ~MiscItem() = default;
 };
 

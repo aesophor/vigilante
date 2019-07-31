@@ -11,7 +11,7 @@ namespace vigilante {
 
 class FxManager {
  public:
-  FxManager(cocos2d::Layer* gameMapLayer);
+  explicit FxManager(cocos2d::Layer* gameMapLayer);
   virtual ~FxManager() = default;
 
   void createFx(const std::string& textureResDir, const std::string& framesName,

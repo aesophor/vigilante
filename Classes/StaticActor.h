@@ -59,7 +59,7 @@ class StaticActor {
   static std::string getLastDirName(const std::string& directory);
 
  protected:
-  StaticActor(size_t numAnimations=1);
+  explicit StaticActor(size_t numAnimations=1);
 
   bool _isShownOnMap;
   cocos2d::Sprite* _bodySprite;

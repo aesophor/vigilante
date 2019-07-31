@@ -17,7 +17,7 @@ namespace vigilante {
 
 class SkillPane : public AbstractPane {
  public:
-  SkillPane(PauseMenu* pauseMenu);
+  explicit SkillPane(PauseMenu* pauseMenu);
   virtual ~SkillPane() = default;
 
   virtual void update() override;

@@ -20,7 +20,7 @@ namespace vigilante {
 
 class DynamicActor : public StaticActor {
  public:
-  DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
+  explicit DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
   virtual ~DynamicActor() = default;
 
   virtual void showOnMap(float x, float y) = 0; // StaticActor

@@ -27,7 +27,7 @@ class AbstractPane {
   cocos2d::ui::Layout* getLayout() const;
 
  protected:
-  AbstractPane(PauseMenu* pauseMenu); // install cocos2d's UILayout
+  explicit AbstractPane(PauseMenu* pauseMenu); // install cocos2d's UILayout
   AbstractPane(PauseMenu* pauseMenu, cocos2d::ui::Layout* layout); // install custom layout
 
   PauseMenu* _pauseMenu;

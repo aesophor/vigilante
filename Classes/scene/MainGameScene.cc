@@ -32,8 +32,6 @@ using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
-MainGameScene::~MainGameScene() {}
-
 bool MainGameScene::init() {
   if (!Scene::init()) {
     return false;

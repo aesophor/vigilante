@@ -17,7 +17,7 @@ using Dialogue = DialogueTree::Node;
 
 class DialogueListView : public ListView<Dialogue*> {
  public:
-  DialogueListView(DialogueMenu* dialogueMenu);
+  explicit DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
 
   virtual void confirm() override;

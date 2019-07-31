@@ -37,7 +37,7 @@ class PauseMenu : public Controllable {
   };
   static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
 
-  PauseMenu(Character* character);
+  explicit PauseMenu(Character* character);
   virtual ~PauseMenu() = default;
 
   void update();

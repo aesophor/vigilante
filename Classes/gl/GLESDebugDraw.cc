@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
- * Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>
+ * Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
  *
  * iPhone port by Simon Oliver - http://www.simonoliver.com - http://www.handcircus.com
  *
@@ -194,12 +194,6 @@ void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& colo
 
   CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,1);
   CHECK_GL_ERROR_DEBUG();
-}
-
-void GLESDebugDraw::DrawString(int x, int y, const char* string, ...) {
-  // NSLog(@"DrawString: unsupported: %s", string);
-  // printf(string);
-  /* Unsupported as yet. Could replace with bitmap font renderer at a later date */
 }
 
 void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color) {

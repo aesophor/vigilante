@@ -15,7 +15,7 @@ namespace vigilante {
 
 class StatsPane : public AbstractPane {
  public:
-  StatsPane(PauseMenu* pauseMenu);
+  explicit StatsPane(PauseMenu* pauseMenu);
   virtual ~StatsPane() = default;
   virtual void update() override;
   virtual void handleInput() override;

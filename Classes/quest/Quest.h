@@ -12,7 +12,7 @@ namespace vigilante {
 
 class Quest : public Importable {
  public:
-  Quest(const std::string& jsonFileName);
+  explicit Quest(const std::string& jsonFileName);
   virtual ~Quest();
 
 
@@ -51,7 +51,7 @@ class Quest : public Importable {
 
 
   struct Stage {
-    Stage(Quest::Objective* objective);
+    explicit Stage(Quest::Objective* objective);
     virtual ~Stage() = default;
 
     bool isFinished;
@@ -61,7 +61,7 @@ class Quest : public Importable {
 
 
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     std::string jsonFileName;

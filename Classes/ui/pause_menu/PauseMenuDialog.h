@@ -18,7 +18,7 @@ namespace vigilante {
 
 class PauseMenuDialog : public AbstractPane {
  public:
-  PauseMenuDialog(PauseMenu* pauseMenu);
+  explicit PauseMenuDialog(PauseMenu* pauseMenu);
   virtual ~PauseMenuDialog() = default;
 
   virtual void update() override;
@@ -36,7 +36,7 @@ class PauseMenuDialog : public AbstractPane {
  private:
   class Option {
    public:
-    Option(const std::string& text, const std::function<void ()>& handler=[=](){});
+    explicit Option(const std::string& text, const std::function<void ()>& handler=[=](){});
     virtual ~Option() = default;
 
     float getWidth() const;

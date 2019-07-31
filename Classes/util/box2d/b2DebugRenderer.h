@@ -28,7 +28,7 @@
 
 class b2DebugRenderer : public cocos2d::Sprite {
  public:
-  b2DebugRenderer(b2World* world);
+  explicit b2DebugRenderer(b2World* world);
   static b2DebugRenderer* create(b2World* world);
 
   bool init() override;

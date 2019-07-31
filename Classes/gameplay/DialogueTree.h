@@ -11,7 +11,7 @@ namespace vigilante {
 
 class DialogueTree : public Importable {
  public:
-  DialogueTree(const std::string& jsonFileName);
+  explicit DialogueTree(const std::string& jsonFileName);
   virtual ~DialogueTree();
 
   virtual void import(const std::string& jsonFileName) override;

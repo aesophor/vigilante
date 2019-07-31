@@ -23,7 +23,7 @@ class Equipment : public Item {
   };
 
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     Equipment::Type equipmentType;
@@ -41,7 +41,7 @@ class Equipment : public Item {
 
   static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
-  Equipment(const std::string& jsonFileName);
+  explicit Equipment(const std::string& jsonFileName);
   virtual ~Equipment() = default;
   virtual void import(const std::string& jsonFileName) override; // Importable
 

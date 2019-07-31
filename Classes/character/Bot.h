@@ -9,7 +9,7 @@ namespace vigilante {
 
 class Bot {
  public:
-  Bot(Character* c);
+  explicit Bot(Character* c);
   virtual ~Bot() = default;
 
   virtual void act(float delta);

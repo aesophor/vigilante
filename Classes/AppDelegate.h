@@ -8,19 +8,19 @@
 // Private inheritance here hides part of interface from Director.
 class AppDelegate : private cocos2d::Application {
  public:
-  AppDelegate();
+  AppDelegate() = default;
   virtual ~AppDelegate();
 
-  virtual void initGLContextAttrs();
+  virtual void initGLContextAttrs() override;
 
   // Implement Director and Scene init here.
-  virtual bool applicationDidFinishLaunching();
+  virtual bool applicationDidFinishLaunching() override;
 
   // Called when the application is moved to the background.
-  virtual void applicationDidEnterBackground();
+  virtual void applicationDidEnterBackground() override;
 
   // Called when the application reenters the foreground.
-  virtual void applicationWillEnterForeground();
+  virtual void applicationWillEnterForeground() override;
 };
 
 #endif // APP_DELEGATE_H_

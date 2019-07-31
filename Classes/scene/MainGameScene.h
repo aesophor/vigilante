@@ -24,7 +24,7 @@ namespace vigilante {
 class MainGameScene : public cocos2d::Scene, public Controllable {
  public:
   CREATE_FUNC(MainGameScene);
-  virtual ~MainGameScene();
+  virtual ~MainGameScene() = default;
 
   virtual bool init() override; // cocos2d::Scene
   virtual void update(float delta) override; // cocos2d::Scene

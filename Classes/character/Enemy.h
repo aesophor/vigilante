@@ -15,7 +15,7 @@ namespace vigilante {
 class Enemy : public Character, public Bot {
  public:
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     struct DroppedItemData {
@@ -26,7 +26,7 @@ class Enemy : public Character, public Bot {
     std::unordered_map<std::string, DroppedItemData> droppedItems; // <json, {chance, minAmount, maxAmount}>
   };
 
-  Enemy(const std::string& jsonFileName);
+  explicit Enemy(const std::string& jsonFileName);
   virtual ~Enemy() = default;
 
   virtual void update(float delta) override; // Character

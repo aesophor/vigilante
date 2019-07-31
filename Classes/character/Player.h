@@ -14,7 +14,7 @@ namespace vigilante {
 
 class Player : public Character, public Controllable {
  public:
-  Player(const std::string& jsonFileName);
+  explicit Player(const std::string& jsonFileName);
   virtual ~Player() = default;
 
   virtual void showOnMap(float x, float y) override; // Character

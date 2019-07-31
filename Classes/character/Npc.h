@@ -15,12 +15,12 @@ namespace vigilante {
 class Npc : public Character, public Bot, public Interactable {
  public:
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
 
     std::string dialogueTree;
   };
 
-  Npc(const std::string& jsonFileName);
+  explicit Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
 
   virtual void showOnMap(float x, float y) override; // Character

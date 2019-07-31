@@ -20,7 +20,7 @@ namespace vigilante {
 
 class EquipmentPane : public AbstractPane {
  public:
-  EquipmentPane(PauseMenu* pauseMenu);
+  explicit EquipmentPane(PauseMenu* pauseMenu);
   virtual ~EquipmentPane() = default;
 
   virtual void update() override;

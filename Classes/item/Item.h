@@ -21,7 +21,7 @@ class Item : public DynamicActor, public Importable {
   };
 
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     std::string jsonFileName;
@@ -48,7 +48,7 @@ class Item : public DynamicActor, public Importable {
   void setAmount(int amount);
 
  protected:
-  Item(const std::string& jsonFileName);
+  explicit Item(const std::string& jsonFileName);
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
   static const int _kNumAnimations;

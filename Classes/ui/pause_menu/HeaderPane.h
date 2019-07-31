@@ -14,7 +14,7 @@ namespace vigilante {
 
 class HeaderPane : public AbstractPane {
  public:
-  HeaderPane(PauseMenu* pauseMenu);
+  explicit HeaderPane(PauseMenu* pauseMenu);
   virtual ~HeaderPane() = default;
 
   virtual void update() override;

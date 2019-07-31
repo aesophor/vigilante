@@ -13,7 +13,7 @@ namespace vigilante {
 class Consumable : public Item, public Keybindable {
  public:
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     float duration; // sec
@@ -36,7 +36,7 @@ class Consumable : public Item, public Keybindable {
     cocos2d::EventKeyboard::KeyCode hotkey;
   };
 
-  Consumable(const std::string& jsonFileName);
+  explicit Consumable(const std::string& jsonFileName);
   virtual ~Consumable() = default;
   virtual void import (const std::string& jsonFileName) override; // Importable
 

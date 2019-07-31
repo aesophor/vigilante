@@ -10,7 +10,7 @@ namespace vigilante {
 
 class TalkToTargetObjective : public Quest::Objective {
  public:
-  TalkToTargetObjective(const std::string& desc);
+  explicit TalkToTargetObjective(const std::string& desc);
   virtual ~TalkToTargetObjective() = default;
 
   virtual bool isCompleted() const override;

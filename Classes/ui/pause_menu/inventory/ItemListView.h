@@ -12,7 +12,7 @@ class PauseMenu;
 
 class ItemListView : public ListView<Item*> {
  public:
-  ItemListView(PauseMenu* pauseMenu);
+  explicit ItemListView(PauseMenu* pauseMenu);
   virtual ~ItemListView() = default;
 
   virtual void confirm() override; // ListView<Item*>

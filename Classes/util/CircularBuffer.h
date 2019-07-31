@@ -12,7 +12,7 @@ namespace vigilante {
 template <typename T>
 class CircularBuffer {
  public:
-  CircularBuffer(int capacity=DEFAULT_CAPACITY);
+  explicit CircularBuffer(int capacity=DEFAULT_CAPACITY);
   virtual ~CircularBuffer() = default;
   T& operator[] (size_t i);
 

@@ -26,7 +26,7 @@ namespace vigilante {
 class Character : public DynamicActor, public Importable {
  public: 
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     std::string jsonFileName;
@@ -158,7 +158,7 @@ class Character : public DynamicActor, public Importable {
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
-  Character(const std::string& jsonFileName);
+  explicit Character(const std::string& jsonFileName);
 
   virtual void regenHealth(int deltaHealth);
   virtual void regenMagicka(int deltaMagicka);

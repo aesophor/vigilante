@@ -15,7 +15,7 @@ class PauseMenu;
 
 class SkillListView : public ListView<Skill*> {
  public:
-  SkillListView(PauseMenu* pauseMenu);
+  explicit SkillListView(PauseMenu* pauseMenu);
   virtual ~SkillListView() = default;
 
   virtual void confirm() override; // ListView<Skill*>

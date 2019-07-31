@@ -16,7 +16,7 @@ class Character;
 class Skill : public Importable, public Keybindable {
  public:
   struct Profile {
-    Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     std::string jsonFileName;
