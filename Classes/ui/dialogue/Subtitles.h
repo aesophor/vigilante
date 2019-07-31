@@ -29,7 +29,7 @@ class Subtitles : public Controllable {
 
  private:
   struct Subtitle {
-    Subtitle(const std::string& text);
+    explicit Subtitle(const std::string& text);
     std::string text;
   };
 

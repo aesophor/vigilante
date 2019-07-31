@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
+#include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/hud/Hud.h"
 
@@ -144,6 +145,10 @@ void Subtitles::showNextSubtitle() {
   DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
   Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
 
+  for (const auto& cmd : currentDialogue->cmds) {
+    Console::getInstance()->executeCmd(cmd);
+  }
+
   if (currentDialogue->children.empty()) { // end of dialogue
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
@@ -151,7 +156,6 @@ void Subtitles::showNextSubtitle() {
     dialogueMenu->getDialogueListView()->setObjects(currentDialogue->children);
     dialogueMenu->getLayer()->setVisible(true);
   }
-  return;
 }
 
 
