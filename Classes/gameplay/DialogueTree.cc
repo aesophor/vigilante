@@ -21,9 +21,6 @@ DialogueTree::DialogueTree(const string& jsonFileName)
 }
 
 DialogueTree::~DialogueTree() {
-  if (!_rootNode) {
-    return;
-  }
   dfsDeleteNodes(_rootNode);
 }
 
