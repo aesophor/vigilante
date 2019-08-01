@@ -3,9 +3,7 @@
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
-#include "ui/console/Console.h"
 #include "util/KeyCodeUtil.h"
-#include "util/Logger.h"
 
 #define CURSOR_CHAR "|"
 #define CURSOR_BLINK_INTERVAL 0.7f
