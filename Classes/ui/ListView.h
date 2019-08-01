@@ -103,7 +103,7 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
       _highlightedBg(highlightedBg),
       _firstVisibleIndex(),
       _current() {
-  _scrollBar->setPosition({width - 11.5f, 0});
+  _scrollBar->setPosition({width - 10.5f, 0});
   _scrollBar->setAnchorPoint({0, 1});
   _scrollBar->setScaleY(SCROLL_BAR_MAX_SCALE_Y);
   _layout->addChild(_scrollBar);
