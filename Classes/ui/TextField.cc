@@ -11,6 +11,7 @@
 #define CURSOR_BLINK_INTERVAL 0.7f
 
 using std::string;
+using std::function;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
 using cocos2d::Event;
@@ -24,6 +25,7 @@ TextField::TextField()
     : _layout(Layout::create()),
       _label(Label::createWithTTF(CURSOR_CHAR, kRegularFont, kRegularFontSize)),
       _buffer(),
+      _onSubmit(),
       _timer(),
       _isRecevingInput(),
       _isCursorVisible() {
@@ -51,8 +53,9 @@ void TextField::handleInput() {
     }
 
     if (keyCode == EventKeyboard::KeyCode::KEY_ENTER && !_buffer.empty()) {
-      bool showNotification = true;
-      Console::getInstance()->executeCmd(_buffer, showNotification);
+      if (_onSubmit) {
+        _onSubmit();
+      }
       clear();
       return;
     }
@@ -89,6 +92,10 @@ void TextField::setString(const string& s) {
 
 void TextField::clear() {
   setString("");
+}
+
+void TextField::setOnSubmit(const function<void ()>& onSubmit) {
+  _onSubmit = onSubmit;
 }
 
 void TextField::toggleCursor() {

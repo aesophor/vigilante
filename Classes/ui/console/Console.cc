@@ -26,6 +26,11 @@ Console::Console()
       _textField(),
       _cmdParser(),
       _cmdHistory() {
+  _textField.setOnSubmit([this]() {
+    bool showNotification = true;
+    executeCmd(this->_textField.getString(), showNotification);
+  });
+
   _layer->setVisible(false);
   _layer->addChild(_textField.getLayout());
 }
