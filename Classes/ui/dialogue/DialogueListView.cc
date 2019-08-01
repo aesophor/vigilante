@@ -18,13 +18,15 @@ DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
     : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _dialogueMenu(dialogMenu) {
 
-  this->_setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {
+  _setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {
     listViewItem->getIcon()->loadTexture((selected) ? asset_manager::kDialogueTriangle : asset_manager::kEmptyImage);
   };
 
-  this->_setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
+  _setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
     listViewItem->getLabel()->setString(dialogue->lines.front());
   };
+
+  hideScrollBar();
 }
 
 

@@ -33,7 +33,7 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
 
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
-  this->_setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
+  _setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
     assert(skill != nullptr);
 
     ImageView* icon = listViewItem->getIcon();

@@ -40,6 +40,9 @@ class ListView {
   virtual void setObjects(const std::vector<T>& objects);
   virtual void setObjects(const std::deque<T>& objects);
 
+  virtual void showScrollBar();
+  virtual void hideScrollBar();
+
   T getSelectedObject() const;
   cocos2d::ui::Layout* getLayout() const;
 
@@ -88,6 +91,8 @@ class ListView {
 
   int _firstVisibleIndex;
   int _current;
+
+  bool _showScrollBar;
 };
 
 
@@ -102,7 +107,8 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
       _regularBg(regularBg),
       _highlightedBg(highlightedBg),
       _firstVisibleIndex(),
-      _current() {
+      _current(),
+      _showScrollBar(true) {
   _scrollBar->setPosition({width - 10.5f, 0});
   _scrollBar->setAnchorPoint({0, 1});
   _scrollBar->setScaleY(SCROLL_BAR_MAX_SCALE_Y);
@@ -182,12 +188,14 @@ void ListView<T>::showFrom(int index) {
   }
 
   // Update scroll bar scale and positionY.
-  if (_objects.size() <= _visibleItemCount) {
-    _scrollBar->setVisible(false);
-  } else {
-    _scrollBar->setScaleY(((float) _visibleItemCount / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
-    _scrollBar->setPositionY(((float) -index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
-    _scrollBar->setVisible(true);
+  if (_showScrollBar) {
+    if (_objects.size() <= _visibleItemCount) {
+      _scrollBar->setVisible(false);
+    } else {
+      _scrollBar->setScaleY(((float) _visibleItemCount / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
+      _scrollBar->setPositionY(((float) -index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
+      _scrollBar->setVisible(true);
+    }
   }
 }
 
@@ -217,6 +225,18 @@ void ListView<T>::setObjects(const std::deque<T>& objects) {
   if (_objects.size() > 0) {
     _listViewItems[0]->setSelected(true);
   }
+}
+
+template <typename T>
+void ListView<T>::showScrollBar() {
+  _showScrollBar = true;
+  _scrollBar->setVisible(true);
+}
+
+template <typename T>
+void ListView<T>::hideScrollBar() {
+  _showScrollBar = false;
+  _scrollBar->setVisible(false);
 }
 
 

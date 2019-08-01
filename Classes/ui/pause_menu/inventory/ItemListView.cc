@@ -36,7 +36,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
 
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
-  this->_setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
+  _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
     ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
