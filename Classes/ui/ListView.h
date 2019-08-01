@@ -16,6 +16,8 @@
 #include "Constants.h"
 #include "ui/TableLayout.h"
 
+#define SCROLL_BAR_MAX_SCALE_Y 120
+
 namespace vigilante {
 
 class PauseMenu;
@@ -72,6 +74,7 @@ class ListView {
   };
 
   cocos2d::ui::Layout* _layout;
+  cocos2d::ui::ImageView* _scrollBar;
  
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
@@ -93,12 +96,18 @@ template <typename T>
 ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
                       const std::string& regularBg, const std::string& highlightedBg)
     : _layout(cocos2d::ui::Layout::create()),
+      _scrollBar(cocos2d::ui::ImageView::create(asset_manager::kScrollBar)),
       _visibleItemCount(visibleItemCount),
       _width(width),
       _regularBg(regularBg),
       _highlightedBg(highlightedBg),
       _firstVisibleIndex(),
       _current() {
+  _scrollBar->setPosition({width - 11.5f, 0});
+  _scrollBar->setAnchorPoint({0, 1});
+  _scrollBar->setScaleY(SCROLL_BAR_MAX_SCALE_Y);
+  _layout->addChild(_scrollBar);
+
   for (int i = 0; i < visibleItemCount; i++) {
     float x = 0;
     float y = -i * 25;
@@ -163,14 +172,22 @@ void ListView<T>::showFrom(int index) {
   for (int i = 0; i < _visibleItemCount; i++) {
     _listViewItems[i]->setSelected(false);
 
-    if (index < (int) _objects.size()) {
+    if (index + i < (int) _objects.size()) {
       _listViewItems[i]->setVisible(true);
-      T object = _objects[index];
+      T object = _objects[index + i];
       _listViewItems[i]->setObject(object);
-      index++;
     } else {
       _listViewItems[i]->setVisible(false);
     }
+  }
+
+  // Update scroll bar scale and positionY.
+  if (_objects.size() <= _visibleItemCount) {
+    _scrollBar->setVisible(false);
+  } else {
+    _scrollBar->setScaleY(((float) _visibleItemCount / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
+    _scrollBar->setPositionY(((float) -index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
+    _scrollBar->setVisible(true);
   }
 }
 

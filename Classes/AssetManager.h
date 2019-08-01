@@ -52,6 +52,7 @@ const std::string kTabRegular = kPauseMenu + "tab_regular.png";
 const std::string kTabHighlighted = kPauseMenu + "tab_highlighted.png";
 const std::string kItemRegular = kPauseMenu + "item_regular.png";
 const std::string kItemHighlighted = kPauseMenu + "item_highlighted.png";
+const std::string kScrollBar = "Texture/ui/scroll_bar.png";
 
 // PauseMenu - EquipmentPane
 const std::string kEquipmentRegular = kPauseMenu + "equipment_regular.png";
