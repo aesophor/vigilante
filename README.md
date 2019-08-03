@@ -11,6 +11,7 @@ Vigilante is a metroidvania game which I've been working on for several months.
 * [box2d](https://box2d.org/) - 2D Physics Engine
 * [rapidjson](http://rapidjson.org/) - serialization
 * g++ (Gentoo 8.3.0-r1 p1.1) 8.3.0
+<br>
 
 ## Characters
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/character.jpg)
@@ -47,6 +48,7 @@ virtual void pickupItem(Item* item);
 virtual void discardItem(Item* item, int amount);
 virtual void interact(Interactable* target);
 ```
+<br>
 
 ## Items and Equipment
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/item.png)
@@ -57,6 +59,8 @@ Vigilante's **[Item](https://github.com/aesophor/Vigilante/blob/master/Classes/i
 * **[Misc Item](https://github.com/aesophor/Vigilante/blob/master/Classes/item/MiscItem.h)** (e.g., gold coins)
 
 Items can be acquired by opening a chest or looting from enemies. Also, the items equipped **will be reflected on player's appearance**! 
+
+<br>
 
 ## Inventory and Equipment
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/inventory_equipment.gif)
@@ -72,6 +76,8 @@ Items and equipment can be accessed via **[PauseMenu](https://github.com/aesopho
 > [2] [TabView](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/TabView.h)    
 > [3] [PauseMenuDialog](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/pause_menu/PauseMenuDialog.h)    
 
+<br>
+
 ## Combat and Loot
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/combat.gif)
 
@@ -81,6 +87,8 @@ Vigilante's **Combat System** mainly consists of the following:
 * **special skills** (e.g., ice spike, forward slash, back dash)
 
 When an enemy dies, it will give **exp point** to the character who kills it (could be the Player or an ally NPC), and then drop some items (defined in enemy's json file). See [`Enemy::receiveDamage`]([https://github.com/aesophor/Vigilante/blob/master/Classes/character/Enemy.cc#L87](https://github.com/aesophor/Vigilante/blob/master/Classes/character/Enemy.cc#L87)).
+
+<br>
 
 ## Skills and Hotkeys
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/skill.png)
@@ -92,6 +100,8 @@ Vigilante's **[Skill](https://github.com/aesophor/Vigilante/blob/master/Classes/
 * more skills will be added
 
 The **[Hotkey Manager](https://github.com/aesophor/Vigilante/blob/master/Classes/input/HotkeyManager.h)** allows you to bind **Skills and Consumables** to a certain keystroke so that the gameplay can have less interruption.
+
+<br>
 
 ## Quests, Dialogues and Story
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/dialogue_quest.gif)
@@ -115,6 +125,8 @@ Note that **certain lines of Dialogue can invoke special events**, such as start
 #### Story
 Now that we have quests and dialogue system, the story can be created!
 
+<br>
+
 ## Game UI
 The UI classes can be located in [Classes/ui/](https://github.com/aesophor/Vigilante/tree/master/Classes/ui/). It consists of the following subsystems:
 * HUD
@@ -134,8 +146,12 @@ For now, there are only a few commands available, but more of them will be added
 * removeitem \<item_json\> [amount]
 * ...
 
+<br>
+
 ## Resources?
 I'm sorry, but I really cannot upload the resources folder (directory) **since it contains spritesheets/sprites which was purchased from other pixel artists.** Thanks for your understanding.
+
+<br>
 
 ## Copyright
 Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
