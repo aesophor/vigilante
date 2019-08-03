@@ -6,7 +6,6 @@
 # Overview
 Vigilante is a metroidvania game which I've been working on for several months.
 
-# Development
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
 * [box2d](https://box2d.org/) - 2D Physics Engine
 * [rapidjson](http://rapidjson.org/) - serialization
