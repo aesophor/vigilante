@@ -51,6 +51,7 @@ virtual void interact(Interactable* target);
 
 # Items and Equipment
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/item.png)
+
 Vigilante's **[Item](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Item.h)** has the following concrete subclasses:
 * **[Equipment](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Equipment.h)** (e.g., leather armor, leather boots, short sword)
 * **[Consumable](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Consumable.h)** (e.g., potions)
@@ -59,6 +60,7 @@ Vigilante's **[Item](https://github.com/aesophor/Vigilante/blob/master/Classes/i
 Items can be acquired by opening a chest or looting from enemies. Also, the items equipped **will be reflected on player's appearance**! 
 
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/pausemenu_item.png)
+
 Items and equipment can be accessed via **[PauseMenu](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/pause_menu/PauseMenu.h)**. Depending on the item's type, there are different actions to perform:
 * Equipment - **equip**, discard, cancel
 * Consumable - **use**, discard, cancel
@@ -71,6 +73,7 @@ Some UI classes worth looking at:
 
 # Combat and Item Dropping
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/combat.gif)
+
 Vigilante's **Combat System** mainly consists of the following:
 * **melee** regular attack (e.g., sword, axe)
 * **distant** regular attack  (e.g., bow, staff) -- not implemented
@@ -80,6 +83,7 @@ When an enemy dies, it will give **exp point** to the character who kills it (co
 
 # Inventory and Equipment
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/inventoryequipment.gif)
+
 Vigilante's **Inventory and Equipment System** is just like those which can be found in regular RPG.
 
 # Copyright
