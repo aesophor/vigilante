@@ -13,6 +13,8 @@ In the following context I'll give you an overview on each subsystem of this gam
 * g++ (Gentoo 8.3.0-r1 p1.1) 8.3.0
 
 ## Character
+![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/character.jpg)
+
 **[Character](https://github.com/aesophor/Vigilante/blob/master/Classes/character/Character.h)** is an abstract base class which you cannot directly instatiate. It has the following concrete derived classes:
 * **Player**
 * **Enemy**
