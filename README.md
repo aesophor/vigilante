@@ -22,7 +22,6 @@ Vigilante's **[Character](https://github.com/aesophor/Vigilante/blob/master/Clas
 
 It is probably one of the most complicated class in this game. Let's have a look at some Character's important methods:
 ```
-// Trimmed
 virtual void moveLeft();
 virtual void moveRight();
 virtual void jump();
