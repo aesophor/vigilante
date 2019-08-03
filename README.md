@@ -7,12 +7,9 @@
 In the following context I'll give you an overview on each subsystem of this game.
 
 ## Development
-Framework and Libraries:
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
 * [box2d](https://box2d.org/) - 2D Physics Engine
 * [rapidjson](http://rapidjson.org/) - serialization
-
-Compiler:
 * g++ (Gentoo 8.3.0-r1 p1.1) 8.3.0
 
 ## Character
