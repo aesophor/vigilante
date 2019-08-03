@@ -8,8 +8,7 @@ In the following context I'll give you an overview on each subsystem of this gam
 
 ## Development
 Framework and Libraries:
-* cocos2d-x-3.17.1 ([Download](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1))
-* Cocos Console 2.3
+* cocos2d-x-3.17.1 ([Download](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)), Cocos Console 2.3
 * [rapidjson](http://rapidjson.org/)
 
 Compiler:
