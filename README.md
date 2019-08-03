@@ -3,10 +3,10 @@
 <img src="/.meta/combat.gif">
 </div>
 
-## Overview
+# Overview
 Vigilante is a metroidvania game which I've been working on for several months.
 
-## Development
+# Development
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
 * [box2d](https://box2d.org/) - 2D Physics Engine
 * [rapidjson](http://rapidjson.org/) - serialization
@@ -66,10 +66,11 @@ Items and equipment can be accessed via **[PauseMenu](https://github.com/aesopho
 * Consumable - **use**, discard, cancel
 * Misc Item - discard, cancel
 
-Some UI classes worth looking at:
-[1] [ListView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/ListView.h) - ItemListView, SkillListView, DialogueListView...
-[2] [TabView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/TabView.h)
-[3] [PauseMenuDialog](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/pause_menu/PauseMenuDialog.h)
+> Some UI classes worth looking at:
+> 
+> [1] [ListView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/ListView.h) - ItemListView, SkillListView, DialogueListView...    
+> [2] [TabView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/TabView.h)    
+> [3] [PauseMenuDialog](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/pause_menu/PauseMenuDialog.h)    
 
 # Combat and Item Dropping
 ![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/combat.gif)
