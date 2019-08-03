@@ -4,7 +4,7 @@
 </div>
 
 ## Overview
-In the following context I'll give you an overview on each subsystem of this game.
+Vigilante is a metroidvania game which I've been working on for several months.
 
 ## Development
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
