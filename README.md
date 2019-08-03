@@ -13,7 +13,7 @@ Vigilante is a metroidvania game which I've been working on for several months.
 * g++ (Gentoo 8.3.0-r1 p1.1) 8.3.0
 
 # Characters
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/character.jpg)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/character.jpg)
 
 Vigilante's **[Character](https://github.com/aesophor/Vigilante/blob/master/Classes/character/Character.h)** has the following concrete subclasses:
 * **[Player](https://github.com/aesophor/Vigilante/blob/master/Classes/character/Player.h)**
@@ -50,7 +50,7 @@ virtual void interact(Interactable* target);
 ```
 
 # Items and Equipment
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/item.png)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/item.png)
 
 Vigilante's **[Item](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Item.h)** has the following concrete subclasses:
 * **[Equipment](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Equipment.h)** (e.g., leather armor, leather boots, short sword)
@@ -60,31 +60,31 @@ Vigilante's **[Item](https://github.com/aesophor/Vigilante/blob/master/Classes/i
 Items can be acquired by opening a chest or looting from enemies. Also, the items equipped **will be reflected on player's appearance**! 
 
 # Inventory and Equipment
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/inventory_equipment.gif)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/inventory_equipment.gif)
 
-Items and equipment can be accessed via **[PauseMenu](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/pause_menu/PauseMenu.h)**. Depending on the item's type, there are different actions to perform:
+Items and equipment can be accessed via **[PauseMenu](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/pause_menu/PauseMenu.h)**. Depending on the item's type, there are different actions to perform:
 * Equipment - **equip**, discard, cancel
 * Consumable - **use**, discard, cancel
 * Misc Item - discard, cancel
 
 > Some UI classes worth looking at:
 > 
-> [1] [ListView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/ListView.h) - ItemListView, SkillListView, DialogueListView...    
-> [2] [TabView](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/TabView.h)    
-> [3] [PauseMenuDialog](https://github.com/aesophor/Vigilante/blob/readme/Classes/ui/pause_menu/PauseMenuDialog.h)    
+> [1] [ListView](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/ListView.h) - ItemListView, SkillListView, DialogueListView...    
+> [2] [TabView](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/TabView.h)    
+> [3] [PauseMenuDialog](https://github.com/aesophor/Vigilante/blob/master/Classes/ui/pause_menu/PauseMenuDialog.h)    
 
 # Combat and Loot
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/combat.gif)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/combat.gif)
 
 Vigilante's **Combat System** mainly consists of the following:
 * **melee regular attack** (e.g., sword, axe)
 * **distant regular attack**  (e.g., bow, staff) -- not implemented
 * **special skills** (e.g., ice spike, forward slash, back dash)
 
-When an enemy dies, it will give **exp point** to the character who kills it (could be the Player or an ally NPC), and then drop some items (defined in enemy's json file). See [`Enemy::receiveDamage`]([https://github.com/aesophor/Vigilante/blob/readme/Classes/character/Enemy.cc#L87](https://github.com/aesophor/Vigilante/blob/readme/Classes/character/Enemy.cc#L87)).
+When an enemy dies, it will give **exp point** to the character who kills it (could be the Player or an ally NPC), and then drop some items (defined in enemy's json file). See [`Enemy::receiveDamage`]([https://github.com/aesophor/Vigilante/blob/master/Classes/character/Enemy.cc#L87](https://github.com/aesophor/Vigilante/blob/master/Classes/character/Enemy.cc#L87)).
 
 # Skills and Hotkeys
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/skill.png)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/skill.png)
 
 Vigilante's **[Skill](https://github.com/aesophor/Vigilante/blob/master/Classes/item/Item.h)** has the following concrete subclasses:
 * **[Magical Missile](https://github.com/aesophor/Vigilante/blob/master/Classes/skill/MagicalMissile.h)** - e.g., ice spike. Fireball can use this class too
@@ -92,15 +92,15 @@ Vigilante's **[Skill](https://github.com/aesophor/Vigilante/blob/master/Classes/
 * **[Back Dash](https://github.com/aesophor/Vigilante/blob/master/Classes/skill/BackDash.h)** - castlevania like back dash
 * more skills will be added
 
-The **[Hotkey Manager](https://github.com/aesophor/Vigilante/blob/readme/Classes/input/HotkeyManager.h)** allows you to bind **Skills and Consumables** to a certain keystroke so that the gameplay can have less interruption.
+The **[Hotkey Manager](https://github.com/aesophor/Vigilante/blob/master/Classes/input/HotkeyManager.h)** allows you to bind **Skills and Consumables** to a certain keystroke so that the gameplay can have less interruption.
 
 # Quests, Dialogues and Story
-![](https://raw.githubusercontent.com/aesophor/Vigilante/readme/.meta/dialogue_quest.gif)
+![](https://raw.githubusercontent.com/aesophor/Vigilante/master/.meta/dialogue_quest.gif)
 
 ### Quests
-In Vigilante, a [Quest](https://github.com/aesophor/Vigilante/tree/readme/Classes/quest) usually contains multiple [Objectives](https://github.com/aesophor/Vigilante/blob/readme/Classes/quest/Quest.h#L19), where an objective can be one of the following:
-* [Kill](https://github.com/aesophor/Vigilante/blob/readme/Classes/quest/KillTargetObjective.h)
-* [Collect](https://github.com/aesophor/Vigilante/blob/readme/Classes/quest/CollectItemObjective.h)
+In Vigilante, a [Quest](https://github.com/aesophor/Vigilante/tree/master/Classes/quest) usually contains multiple [Objectives](https://github.com/aesophor/Vigilante/blob/master/Classes/quest/Quest.h#L19), where an objective can be one of the following:
+* [Kill](https://github.com/aesophor/Vigilante/blob/master/Classes/quest/KillTargetObjective.h)
+* [Collect](https://github.com/aesophor/Vigilante/blob/master/Classes/quest/CollectItemObjective.h)
 * Escort (not added)
 * Delivery (not added)
 * Talk to (not added)
@@ -117,7 +117,7 @@ Note that **certain lines of Dialogue can invoke special events**, such as start
 Now that we have quests and dialogue system, the story can be created!
 
 # Game UI
-The UI classes can be located in [Classes/ui/](https://github.com/aesophor/Vigilante/tree/readme/Classes/ui/). It consists of the following subsystems:
+The UI classes can be located in [Classes/ui/](https://github.com/aesophor/Vigilante/tree/master/Classes/ui/). It consists of the following subsystems:
 * HUD
 * Dialogue (Subtitles and DialogueMenu)
 * Console (Let user or other subsystems execute commands)
