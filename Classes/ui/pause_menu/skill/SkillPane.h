@@ -2,13 +2,9 @@
 #ifndef VIGILANTE_SKILL_PANE_H_
 #define VIGILANTE_SKILL_PANE_H_
 
-#include <vector>
-#include <string>
 #include <memory>
 
 #include <cocos2d.h>
-#include <2d/CCLabel.h>
-#include <ui/UILayout.h>
 #include <ui/UIImageView.h>
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/skill/SkillListView.h"

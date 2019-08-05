@@ -4,8 +4,6 @@
 
 #include <string>
 
-#include "AssetManager.h"
-#include "Constants.h"
 #include "skill/Skill.h"
 #include "ui/ListView.h"
 

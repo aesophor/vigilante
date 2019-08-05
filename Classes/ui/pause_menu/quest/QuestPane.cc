@@ -3,26 +3,16 @@
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
-#include "map/GameMapManager.h"
-#include "ui/pause_menu/PauseMenu.h"
 
-using std::string;
-using cocos2d::Label;
 using cocos2d::ui::Layout;
 using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kInventoryBg;
-using vigilante::asset_manager::kTabRegular;
-using vigilante::asset_manager::kTabHighlighted;
 
 namespace vigilante {
 
 QuestPane::QuestPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _background(ImageView::create(kInventoryBg)),
+      _background(ImageView::create(asset_manager::kInventoryBg)),
       _questListView(new QuestListView(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 

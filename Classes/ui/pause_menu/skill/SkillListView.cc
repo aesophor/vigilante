@@ -18,11 +18,8 @@
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-using std::deque;
-using std::vector;
 using std::string;
 using cocos2d::Label;
-using cocos2d::EventKeyboard;
 using cocos2d::ui::ImageView;
 
 namespace vigilante {

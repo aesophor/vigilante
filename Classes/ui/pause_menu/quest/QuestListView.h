@@ -4,8 +4,6 @@
 
 #include <string>
 
-#include "AssetManager.h"
-#include "Constants.h"
 #include "quest/Quest.h"
 #include "ui/ListView.h"
 

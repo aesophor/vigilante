@@ -10,7 +10,6 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
-#include "character/Character.h"
 #include "input/InputManager.h"
 #include "item/Equipment.h"
 #include "ui/pause_menu/AbstractPane.h"
