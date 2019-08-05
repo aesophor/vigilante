@@ -1,8 +1,9 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "SkillListView.h"
+#include "QuestListView.h"
 
 #include <cassert>
 
+#include "character/Player.h"
 #include "input/Keybindable.h"
 #include "input/HotkeyManager.h"
 #include "ui/pause_menu/PauseMenu.h"
@@ -26,47 +27,36 @@ using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
-SkillListView::SkillListView(PauseMenu* pauseMenu)
-    : ListView<Skill*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+QuestListView::QuestListView(PauseMenu* pauseMenu)
+    : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu),
       _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
 
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
-  _setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
-    assert(skill != nullptr);
+  _setObjectCallback = [](ListViewItem* listViewItem, Quest* quest) {
+    assert(quest != nullptr);
 
-    ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
-
-    icon->loadTexture(skill->getIconPath());
-    label->setString(skill->getName());
-
-    // Display skill hotkey (if defined).
-    // Skills are Keybindable, see skill/Skill.h
-    Keybindable* keybindable = dynamic_cast<Keybindable*>(skill);
-    bool hasDefinedHotkey = keybindable && static_cast<bool>(keybindable->getHotkey());
-
-    if (hasDefinedHotkey) {
-      const string& hotkey = keycode_util::keyCodeToString(keybindable->getHotkey());
-      label->setString(label->getString() + " [" + hotkey + "]");
-    }
+    label->setString(quest->getQuestProfile().title);
   };
 
   _descLabel->getFontAtlas()->setAliasTexParameters();
   _descLabel->setAnchorPoint({0, 1});
   _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
+  _descLabel->setWidth(WIDTH - DESC_LABEL_X * 2);
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
 
 
-void SkillListView::confirm() {
-  Skill* skill = getSelectedObject();
-  if (!skill) {
+void QuestListView::confirm() {
+  Quest* quest = getSelectedObject();
+  if (!quest) {
     return;
   }
 
+  /*
   PauseMenuDialog* dialog = _pauseMenu->getDialog();
   dialog->reset();
   dialog->setMessage("What would you like to do with " + skill->getName() + "?");
@@ -82,46 +72,49 @@ void SkillListView::confirm() {
   if (static_cast<bool>(skill->getHotkey())) {
     dialog->setOption(1, true, "Clear", [=]() {
       HotkeyManager::getInstance()->clearHotkeyAction(skill->getHotkey());
-      showSkills();
+      showQuests();
     });
   }
 
   dialog->setOption(2, true, "Cancel");
   dialog->show();
+  */
 }
 
 
-void SkillListView::selectUp() {
-  ListView<Skill*>::selectUp();
+void QuestListView::selectUp() {
+  ListView<Quest*>::selectUp();
 
   if (_current <= 0) {
     return;
   }
 
-  Skill* selectedSkill = _objects[_current];
-  assert(selectedSkill != nullptr);
-  _descLabel->setString(selectedSkill->getDesc());
+  Quest* selectedQuest = _objects[_current];
+  assert(selectedQuest != nullptr);
+  _descLabel->setString(selectedQuest->getQuestProfile().desc);
 }
 
-void SkillListView::selectDown() {
-  ListView<Skill*>::selectDown();
+void QuestListView::selectDown() {
+  ListView<Quest*>::selectDown();
 
   if (_current >= (int) _objects.size() - 1) {
     return;
   }
 
-  Skill* selectedSkill = _objects[_current];
-  assert(selectedSkill != nullptr);
-  _descLabel->setString(selectedSkill->getDesc());
+  Quest* selectedQuest = _objects[_current];
+  assert(selectedQuest != nullptr);
+  _descLabel->setString(selectedQuest->getQuestProfile().desc);
 }
 
 
-void SkillListView::showSkills() {
-  // Show player skills in SkillListView.
-  setObjects(_pauseMenu->getCharacter()->getSkills());
+void QuestListView::showQuests() {
+  // Show player skills in QuestListView.
+  // FIXME: rename PauseMenu::getCharacter() to getPlayer()
+  Player* player = dynamic_cast<Player*>(_pauseMenu->getCharacter());
+  setObjects(player->getQuestBook().getAllQuests());
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
 }
 
 } // namespace vigilante

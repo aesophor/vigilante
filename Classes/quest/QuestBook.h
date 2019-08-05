@@ -26,6 +26,10 @@ class QuestBook {
   void startQuest(const std::string& questJsonFileName);
   void markCompleted(const std::string& questJsonFileName);
 
+  std::vector<Quest*> getAllQuests() const;
+  const std::vector<Quest*>& getInProgressQuests() const;
+  const std::vector<Quest*>& getCompletedQuests() const;
+
  private:
   std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;
   std::vector<Quest*> _inProgressQuests;

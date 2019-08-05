@@ -111,6 +111,10 @@ void ItemListView::confirm() {
 
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
+  
+  if (_current <= 0) {
+    return;
+  }
 
   Item* selectedItem = _objects[_current];
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
@@ -118,6 +122,10 @@ void ItemListView::selectUp() {
 
 void ItemListView::selectDown() {
   ListView<Item*>::selectDown();
+
+  if (_current >= (int) _objects.size() - 1) {
+    return;
+  }
 
   Item* selectedItem = _objects[_current];
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");

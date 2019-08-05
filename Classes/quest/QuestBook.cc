@@ -106,4 +106,19 @@ void QuestBook::markCompleted(const string& questJsonFileName) {
   markCompleted(_questMapper[questJsonFileName].get());
 }
 
+
+vector<Quest*> QuestBook::getAllQuests() const {
+  vector<Quest*> allQuests(_inProgressQuests.begin(), _inProgressQuests.end());
+  allQuests.insert(allQuests.end(), _completedQuests.begin(), _completedQuests.end());
+  return allQuests;
+}
+
+const vector<Quest*>& QuestBook::getInProgressQuests() const {
+  return _inProgressQuests;
+}
+
+const vector<Quest*>& QuestBook::getCompletedQuests() const {
+  return _completedQuests;
+}
+
 } // namespace vigilante

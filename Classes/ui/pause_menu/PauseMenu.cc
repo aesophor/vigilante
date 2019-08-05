@@ -6,6 +6,7 @@
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
+#include "ui/pause_menu/quest/QuestPane.h"
 
 #define HEADER_PANE_POS {140, 280}
 #define STATS_PANE_POS {50, 240}
@@ -80,6 +81,13 @@ PauseMenu::PauseMenu(Character* character)
   skillPane->setPosition(MAIN_PANE_POS);
   skillPane->setVisible(false);
   _layer->addChild(skillPane->getLayout());
+
+  // Initialize QuestPane.
+  _panes[3] = unique_ptr<QuestPane>(new QuestPane(this));
+  QuestPane* questPane = dynamic_cast<QuestPane*>(_panes[3].get());
+  questPane->setPosition(MAIN_PANE_POS);
+  questPane->setVisible(false);
+  _layer->addChild(questPane->getLayout());
 
   // Show inventory pane by default.
   _panes.front()->setVisible(true);
