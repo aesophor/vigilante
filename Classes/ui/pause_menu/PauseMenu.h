@@ -11,7 +11,6 @@
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
-#include "character/Character.h"
 #include "ui/pause_menu/HeaderPane.h"
 #include "ui/pause_menu/StatsPane.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
@@ -19,6 +18,7 @@
 
 namespace vigilante {
 
+class Player;
 class HeaderPane;
 class StatsPane;
 class PauseMenuDialog;
@@ -37,22 +37,22 @@ class PauseMenu : public Controllable {
   };
   static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
 
-  explicit PauseMenu(Character* character);
+  explicit PauseMenu(Player* character);
   virtual ~PauseMenu() = default;
 
   void update();
   virtual void handleInput() override;
   void show(PauseMenu::Pane pane);
 
-  Character* getCharacter() const;
-  void setCharacter(Character* character);
+  Player* getPlayer() const;
+  void setPlayer(Player* character);
 
   AbstractPane* getCurrentPane() const;
   cocos2d::Layer* getLayer() const;
   PauseMenuDialog* getDialog() const;
 
  private:
-  Character* _character;
+  Player* _player;
 
   cocos2d::Layer* _layer;
   cocos2d::ui::ImageView* _background;

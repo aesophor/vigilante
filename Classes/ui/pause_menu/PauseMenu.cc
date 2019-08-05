@@ -33,8 +33,8 @@ const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
   "OPTIONS"
 };
 
-PauseMenu::PauseMenu(Character* character)
-    : _character(character),
+PauseMenu::PauseMenu(Player* player)
+    : _player(player),
       _layer(Layer::create()),
       _background(ImageView::create(kPauseMenuBg)),
       _headerPane(new HeaderPane(this)),
@@ -157,12 +157,12 @@ void PauseMenu::show(Pane pane) {
 }
 
 
-Character* PauseMenu::getCharacter() const {
-  return _character;
+Player* PauseMenu::getPlayer() const {
+  return _player;
 }
 
-void PauseMenu::setCharacter(Character* character) {
-  _character = character;
+void PauseMenu::setPlayer(Player* player) {
+  _player = player;
 }
 
 AbstractPane* PauseMenu::getCurrentPane() const {

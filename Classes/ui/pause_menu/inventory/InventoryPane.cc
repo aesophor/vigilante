@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
@@ -70,9 +71,9 @@ void InventoryPane::handleInput() {
       // get the selected item, and set it as the new equipment.
       Equipment* equipment = dynamic_cast<Equipment*>(_itemListView->getSelectedObject());
       if (equipment) {
-        _pauseMenu->getCharacter()->equip(equipment);
+        _pauseMenu->getPlayer()->equip(equipment);
       } else {
-        _pauseMenu->getCharacter()->unequip(_selectingEquipmentType);
+        _pauseMenu->getPlayer()->unequip(_selectingEquipmentType);
       }
       _isSelectingEquipment = false;
 

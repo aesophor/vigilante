@@ -2,6 +2,7 @@
 #include "StatsPane.h"
 
 #include "AssetManager.h"
+#include "character/Player.h"
 #include "ui/Colorscheme.h"
 #include "ui/pause_menu/PauseMenu.h"
 
@@ -74,7 +75,7 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
 
 
 void StatsPane::update() {
-  Character::Profile& profile = _pauseMenu->getCharacter()->getCharacterProfile();
+  Character::Profile& profile = _pauseMenu->getPlayer()->getCharacterProfile();
 
   _level->setString("Level " + std::to_string(profile.level));
   _health->setString(std::to_string(profile.health) + " / " + std::to_string(profile.fullHealth));

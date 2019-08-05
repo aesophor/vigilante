@@ -109,8 +109,7 @@ void QuestListView::selectDown() {
 
 void QuestListView::showQuests() {
   // Show player skills in QuestListView.
-  // FIXME: rename PauseMenu::getCharacter() to getPlayer()
-  Player* player = dynamic_cast<Player*>(_pauseMenu->getCharacter());
+  Player* player = _pauseMenu->getPlayer();
   setObjects(player->getQuestBook().getAllQuests());
 
   // Update description label.

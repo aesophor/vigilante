@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "input/Keybindable.h"
 #include "item/Item.h"
 #include "item/Consumable.h"
@@ -85,13 +86,13 @@ void ItemListView::confirm() {
   switch (item->getItemProfile().itemType) {
     case Item::Type::EQUIPMENT:
       dialog->setOption(0, true, "Equip", [=]() {
-        _pauseMenu->getCharacter()->equip(dynamic_cast<Equipment*>(item));
+        _pauseMenu->getPlayer()->equip(dynamic_cast<Equipment*>(item));
         _pauseMenu->update();
       });
       break;
     case Item::Type::CONSUMABLE:
       dialog->setOption(0, true, "Use", [=]() {
-        _pauseMenu->getCharacter()->useItem(dynamic_cast<Consumable*>(item));
+        _pauseMenu->getPlayer()->useItem(dynamic_cast<Consumable*>(item));
         _pauseMenu->update();
       });
       break;
@@ -101,7 +102,7 @@ void ItemListView::confirm() {
   }
 
   dialog->setOption(1, true, "Discard", [=]() {
-    _pauseMenu->getCharacter()->discardItem(item, 1);
+    _pauseMenu->getPlayer()->discardItem(item, 1);
     _pauseMenu->update();
   });
   dialog->setOption(2, true, "Cancel");
@@ -134,14 +135,14 @@ void ItemListView::selectDown() {
 
 void ItemListView::showItemsByType(Item::Type itemType) {
   // Show items of the specified type in ItemListView.
-  setObjects(_pauseMenu->getCharacter()->getInventory()[itemType]);
+  setObjects(_pauseMenu->getPlayer()->getInventory()[itemType]);
 
   // Update description label.
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
 void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
-  const vector<Item*> equipments = _pauseMenu->getCharacter()->getInventory()[Item::Type::EQUIPMENT];
+  const vector<Item*> equipments = _pauseMenu->getPlayer()->getInventory()[Item::Type::EQUIPMENT];
   deque<Item*> objects(equipments.begin(), equipments.end());
 
   // Filter out any equipment other than the specified equipmentType.
@@ -151,7 +152,7 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
 
   // Currently this method is only used for selecting equipment,
   // so here we're going to push_front two extra equipment.
-  Character* character = _pauseMenu->getCharacter();
+  Character* character = _pauseMenu->getPlayer();
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {

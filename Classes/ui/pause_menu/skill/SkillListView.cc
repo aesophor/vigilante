@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+#include "character/Player.h"
 #include "input/Keybindable.h"
 #include "input/HotkeyManager.h"
 #include "ui/pause_menu/PauseMenu.h"
@@ -118,7 +119,7 @@ void SkillListView::selectDown() {
 
 void SkillListView::showSkills() {
   // Show player skills in SkillListView.
-  setObjects(_pauseMenu->getCharacter()->getSkills());
+  setObjects(_pauseMenu->getPlayer()->getSkills());
 
   // Update description label.
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");

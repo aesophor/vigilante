@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "input/InputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
@@ -42,7 +43,7 @@ EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
 }
 
 void EquipmentPane::update() {
-  const Character::EquipmentSlots& slots = _pauseMenu->getCharacter()->getEquipmentSlots();
+  const Character::EquipmentSlots& slots = _pauseMenu->getPlayer()->getEquipmentSlots();
 
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
     Equipment* equipment = slots[i];
