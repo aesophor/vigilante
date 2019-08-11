@@ -16,10 +16,10 @@
 #endif
 
 #if USE_AUDIO_ENGINE
-#include "audio/include/AudioEngine.h"
+#include <AudioEngine.h>
 using namespace cocos2d::experimental;
 #elif USE_SIMPLE_AUDIO_ENGINE
-#include "audio/include/SimpleAudioEngine.h"
+#include <SimpleAudioEngine.h>
 using namespace CocosDenshion;
 #endif
 
