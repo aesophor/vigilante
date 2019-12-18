@@ -30,13 +30,13 @@ class PauseMenuDialog : public AbstractPane {
 
   void reset();
   void setMessage(const std::string& message) const;
-  void setOption(int index, bool visible, const std::string& text="", const std::function<void ()>& handler=[=](){}) const;
+  void setOption(int index, bool visible, const std::string& text="", const std::function<void ()>& handler=[](){}) const;
   void show();
 
  private:
   class Option {
    public:
-    explicit Option(const std::string& text, const std::function<void ()>& handler=[=](){});
+    explicit Option(const std::string& text, const std::function<void ()>& handler=[](){});
     virtual ~Option() = default;
 
     float getWidth() const;
@@ -58,8 +58,8 @@ class PauseMenuDialog : public AbstractPane {
     std::function<void ()> _handler;
   };
 
-  // Reserved for future use. Currently there's only three options at most.
-  void addOption(const std::string& text, const std::function<void ()>& handler=[=](){});
+  // Reserved for future use. Currently there are only three options at most.
+  void addOption(const std::string& text, const std::function<void ()>& handler=[](){});
   void clearOptions();
 
   cocos2d::Label* _message;
