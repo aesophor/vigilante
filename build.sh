@@ -9,7 +9,7 @@ export PATH=$COCOS_CONSOLE_ROOT:$PATH
 export COCOS_TEMPLATES_ROOT="/home/aesophor/Code/cocos2d-x-3.17.1/templates"
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
-project_root="/home/aesophor/Code/Vigilante/"
+project_root="/home/aesophor/Code/vigilante/"
 spritesheets_list="Resources/Texture/spritesheets.txt"
 quests_list="Resources/Gameplay/quests_list.txt"
 
