@@ -25,8 +25,6 @@ script:
   # Check versions of gcc, g++, cmake and ld
   - gcc -v && g++ -v && cmake --version && ld --version
 
-  # Download cocos2d-x-3.17.1
-  - wget -O cocos2d-x-3.17.1.tar.gz https://digitalocean.cocos2d-x.org/Cocos2D-X/cocos2d-x-3.17.1.zip
-  - unzip cocos2d-x-3.17.1.tar.gz
-  # Build the project
+  # Setup dependencies and build the project
+  - ./setup.sh
   - yes | cocos2d-x-3.17.1/tools/cocos2d-console/bin/cocos compile -p linux
