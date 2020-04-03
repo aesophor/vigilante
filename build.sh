@@ -20,6 +20,4 @@ cd $proj_root/res && find Texture -type f | grep plist > $proj_root/$spritesheet
 # Generate res/Gameplay/quest_list.txt
 cd $proj_root && find res -type f | grep quest | grep json > $proj_root/$quests_list
 
-# Lint
-./lint.sh
 cocos run -p linux
