@@ -8,20 +8,24 @@
 #include "quest/KillTargetObjective.h"
 #include "util/JsonUtil.h"
 
-using rapidjson::Document;
 using std::string;
-using std::unordered_map;
 using std::vector;
+using std::unordered_map;
+using rapidjson::Document;
 
 namespace vigilante {
 
-Quest::Quest(const string& jsonFileName) : _questProfile(jsonFileName), _isUnlocked(), _currentStageIdx(-1) {}
+Quest::Quest(const string& jsonFileName)
+    : _questProfile(jsonFileName),
+      _isUnlocked(),
+      _currentStageIdx(-1) {}
 
 Quest::~Quest() {
   for (const auto& stage : _questProfile.stages) {
     delete stage.objective;
   }
 }
+
 
 void Quest::import(const string& jsonFileName) {
   _questProfile = Quest::Profile(jsonFileName);
@@ -35,7 +39,7 @@ void Quest::advanceStage() {
   if (isCompleted()) {
     return;
   }
-
+ 
   if (_currentStageIdx >= 0) {
     switch (getCurrentStage().objective->getObjectiveType()) {
       case Quest::Objective::Type::KILL: {
@@ -70,7 +74,7 @@ bool Quest::isUnlocked() const {
 }
 
 bool Quest::isCompleted() const {
-  return _currentStageIdx == (int)_questProfile.stages.size();
+  return _currentStageIdx == (int) _questProfile.stages.size();
 }
 
 const Quest::Profile& Quest::getQuestProfile() const {
@@ -80,6 +84,9 @@ const Quest::Profile& Quest::getQuestProfile() const {
 const Quest::Stage& Quest::getCurrentStage() const {
   return _questProfile.stages.at(_currentStageIdx);
 }
+
+
+
 
 unordered_map<string, vector<Quest::Objective*>> Quest::Objective::_relatedObjectives;
 const vector<Quest::Objective*> Quest::Objective::_kEmptyVector(0);
@@ -111,17 +118,20 @@ const vector<Quest::Objective*>& Quest::Objective::getRelatedObjectives(const st
   return _relatedObjectives.at(key);
 }
 
+
+
+
 Quest::Stage::Stage(Quest::Objective* objective) : objective(objective) {}
+
 
 Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
 
   title = json["title"].GetString();
   desc = json["desc"].GetString();
-
+  
   for (const auto& stageJson : json["stages"].GetArray()) {
-    Quest::Objective::Type objectiveType =
-        static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
+    Quest::Objective::Type objectiveType = static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
     string objectiveDesc = stageJson["objective"]["desc"].GetString();
 
     switch (objectiveType) {
@@ -155,4 +165,4 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   }
 }
 
-}  // namespace vigilante
+} // namespace vigilante

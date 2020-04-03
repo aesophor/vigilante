@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_FX_MANAGER_H_
 #define VIGILANTE_FX_MANAGER_H_
 
-#include <string>
 #include <unordered_map>
+#include <string>
 
 #include <cocos2d.h>
 
@@ -14,7 +14,8 @@ class FxManager {
   explicit FxManager(cocos2d::Layer* gameMapLayer);
   virtual ~FxManager() = default;
 
-  void createFx(const std::string& textureResDir, const std::string& framesName, float x, float y);
+  void createFx(const std::string& textureResDir, const std::string& framesName,
+                float x, float y);
 
  private:
   static std::string getSpritesheetFileName(const std::string& textureResDir);
@@ -23,6 +24,6 @@ class FxManager {
   std::unordered_map<std::string, cocos2d::Animation*> _animationCache;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_FX_MANAGER_H_
+#endif // VIGILANTE_FX_MANAGER_H_

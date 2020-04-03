@@ -5,15 +5,17 @@
 #include <string>
 
 #include <cocos2d.h>
-#include <ui/UIImageView.h>
 #include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 
 namespace vigilante {
 
 class StatusBar {
  public:
-  StatusBar(const std::string& leftPaddingImgPath, const std::string& rightPaddingImgPath,
-            const std::string& statusBarImgPath, float maxLength);
+  StatusBar(const std::string& leftPaddingImgPath,
+            const std::string& rightPaddingImgPath,
+            const std::string& statusBarImgPath,
+            float maxLength);
   virtual ~StatusBar() = default;
   void update(int currentVal, int fullVal);
 
@@ -27,6 +29,6 @@ class StatusBar {
   const float _maxLength;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_STATUS_BAR_H_
+#endif // VIGILANTE_STATUS_BAR_H_

@@ -19,6 +19,7 @@ Bot::Bot(Character* c)
       _lastTraveledDistance(),
       _calculateDistanceTimer() {}
 
+
 void Bot::act(float delta) {
   if (_character->isKilled() || _character->isSetToKill() || _character->isAttacking()) {
     return;
@@ -28,13 +29,12 @@ void Bot::act(float delta) {
   Character* lockedOnTarget = _character->getLockedOnTarget();
 
   if (_character->isAlerted() && lockedOnTarget && !lockedOnTarget->isSetToKill()) {
-    if (!inRangeTargets.empty()) {  // is target within the attack range?
+    if (!inRangeTargets.empty()) { // is target within the attack range?
       _character->attack();
       if (inRangeTargets.empty()) {
         _character->setLockedOnTarget(nullptr);
       }
-    } else if (std::abs(_character->getBody()->GetPosition().x - lockedOnTarget->getBody()->GetPosition().x) >
-               .25f) {
+    } else if (std::abs(_character->getBody()->GetPosition().x - lockedOnTarget->getBody()->GetPosition().x) > .25f) {
       // If the target isn't within attack range, move toward it until attackable
       moveToTarget(lockedOnTarget);
       jumpIfStucked(delta, .1f);
@@ -55,8 +55,7 @@ void Bot::moveToTarget(Character* target) {
   }
 }
 
-void Bot::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration,
-                       int maxWaitDuration) {
+void Bot::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration) {
   // If the character has finished moving and waiting, regenerate random values for
   // _moveDuration and _waitDuration within the specified range.
   if (_moveTimer >= _moveDuration && _waitTimer >= _waitDuration) {
@@ -100,4 +99,4 @@ void Bot::reverseDirection() {
   _isMovingRight = !_isMovingRight;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

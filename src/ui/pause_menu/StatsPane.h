@@ -4,10 +4,10 @@
 
 #include <string>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
-#include <ui/UIImageView.h>
+#include <2d/CCLabel.h>
 #include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 #include "AbstractPane.h"
 #include "ui/TableLayout.h"
 
@@ -47,6 +47,6 @@ class StatsPane : public AbstractPane {
   cocos2d::Label* _luk;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_STATS_PANE_H_
+#endif // VIGILANTE_STATS_PANE_H_

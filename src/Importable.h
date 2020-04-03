@@ -12,6 +12,6 @@ class Importable {
   virtual void import(const std::string& jsonFileName) = 0;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_IMPORTABLE_H_
+#endif // VIGILANTE_IMPORTABLE_H_

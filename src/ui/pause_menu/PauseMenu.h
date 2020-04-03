@@ -3,18 +3,18 @@
 #define VIGILANTE_PAUSE_MENU_H_
 
 #include <array>
-#include <memory>
-#include <string>
 #include <vector>
+#include <string>
+#include <memory>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
+#include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
-#include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/HeaderPane.h"
-#include "ui/pause_menu/PauseMenuDialog.h"
 #include "ui/pause_menu/StatsPane.h"
+#include "ui/pause_menu/PauseMenuDialog.h"
+#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 
@@ -27,7 +27,14 @@ class PauseMenu : public Controllable {
  public:
   // To add a new pane to the pause menu, add it to the enum below,
   // as well as the string literal to the following static const std::array.
-  enum Pane { INVENTORY, EQUIPMENT, SKILLS, QUESTS, OPTIONS, SIZE };
+  enum Pane {
+    INVENTORY,
+    EQUIPMENT,
+    SKILLS,
+    QUESTS,
+    OPTIONS,
+    SIZE
+  };
   static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
 
   explicit PauseMenu(Player* character);
@@ -56,6 +63,6 @@ class PauseMenu : public Controllable {
   std::array<std::unique_ptr<AbstractPane>, PauseMenu::Pane::SIZE> _panes;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_PAUSE_MENU_H_
+#endif // VIGILANTE_PAUSE_MENU_H_

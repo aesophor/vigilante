@@ -22,8 +22,8 @@
 #ifndef VIGILANTE_B2_DEBUG_RENDERER_H_
 #define VIGILANTE_B2_DEBUG_RENDERER_H_
 
-#include <Box2D/Box2D.h>
 #include <cocos2d.h>
+#include <Box2D/Box2D.h>
 #include "gl/GLESDebugDraw.h"
 
 class b2DebugRenderer : public cocos2d::Sprite {
@@ -32,8 +32,7 @@ class b2DebugRenderer : public cocos2d::Sprite {
   static b2DebugRenderer* create(b2World* world);
 
   bool init() override;
-  void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform,
-            uint32_t flags) override;
+  void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
   void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 
  private:
@@ -42,4 +41,4 @@ class b2DebugRenderer : public cocos2d::Sprite {
   cocos2d::CustomCommand _customCmd;
 };
 
-#endif  // VIGILANTE_B2_DEBUG_RENDERER_H_
+#endif // VIGILANTE_B2_DEBUG_RENDERER_H_

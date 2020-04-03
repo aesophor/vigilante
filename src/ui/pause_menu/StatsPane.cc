@@ -6,11 +6,11 @@
 #include "ui/Colorscheme.h"
 #include "ui/pause_menu/PauseMenu.h"
 
+using std::string;
 using cocos2d::Label;
 using cocos2d::Layer;
-using cocos2d::ui::ImageView;
 using cocos2d::ui::Layout;
-using std::string;
+using cocos2d::ui::ImageView;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
 using vigilante::asset_manager::kStatsBg;
@@ -23,10 +23,10 @@ const float StatsPane::_kRowHeight = 16.0f;
 const float StatsPane::_kSectionHeight = 8.0f;
 
 StatsPane::StatsPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu, TableLayout::create()),  // install TableLayout to base class
+    : AbstractPane(pauseMenu, TableLayout::create()), // install TableLayout to base class
       _background(ImageView::create(kStatsBg)),
       _name(Label::createWithTTF("Aesophor", kRegularFont, kRegularFontSize)),
-      _level(Label::createWithTTF("Level 1", kRegularFont, kRegularFontSize)),
+      _level(Label::createWithTTF("Level 1", kRegularFont, kRegularFontSize)), 
       _health(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
       _magicka(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
       _stamina(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
@@ -43,7 +43,7 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
 
   layout->setLayoutType(Layout::Type::RELATIVE);
-  layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
+  layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
   layout->addChild(_background);
   layout->setTableWidth(_background->getContentSize().width);
   layout->setRowHeight(_kRowHeight);
@@ -73,16 +73,14 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
   addEntry("LUK", _luk);
 }
 
+
 void StatsPane::update() {
   Character::Profile& profile = _pauseMenu->getPlayer()->getCharacterProfile();
 
   _level->setString("Level " + std::to_string(profile.level));
-  _health->setString(std::to_string(profile.health) + " / " +
-                     std::to_string(profile.fullHealth));
-  _magicka->setString(std::to_string(profile.magicka) + " / " +
-                      std::to_string(profile.fullMagicka));
-  _stamina->setString(std::to_string(profile.stamina) + " / " +
-                      std::to_string(profile.fullStamina));
+  _health->setString(std::to_string(profile.health) + " / " + std::to_string(profile.fullHealth));
+  _magicka->setString(std::to_string(profile.magicka) + " / " + std::to_string(profile.fullMagicka));
+  _stamina->setString(std::to_string(profile.stamina) + " / " + std::to_string(profile.fullStamina));
 
   _attackRange->setString(std::to_string(profile.attackRange));
   _attackSpeed->setString(std::to_string(profile.attackTime));
@@ -95,7 +93,9 @@ void StatsPane::update() {
   _luk->setString(std::to_string(profile.luck));
 }
 
-void StatsPane::handleInput() {}
+void StatsPane::handleInput() {
+
+}
 
 void StatsPane::addEntry(const string& title, Label* label) const {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
@@ -115,4 +115,4 @@ void StatsPane::addEntry(const string& title, Label* label) const {
   layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->row();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

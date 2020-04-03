@@ -5,27 +5,32 @@
 #include "MainGameScene.h"
 #include "ui/Colorscheme.h"
 
-using cocos2d::Director;
-using cocos2d::EventKeyboard;
-using cocos2d::Label;
-using cocos2d::Scene;
-using cocos2d::ui::ImageView;
 using std::array;
 using std::string;
 using std::unique_ptr;
+using cocos2d::Director;
+using cocos2d::Scene;
+using cocos2d::Label;
+using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {
-    {"New Game", "Load Game", "Options", "Exit"}};
+const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
+  "New Game",
+  "Load Game",
+  "Options",
+  "Exit"
+}};
 
 const string MainMenuScene::_kCopyrightStr = "© 2019 Aesophor Softworks";
 const string MainMenuScene::_kVersionStr = "0.0.1 Alpha";
 
 const int MainMenuScene::_kMenuOptionGap = 20;
 const int MainMenuScene::_kFooterLabelPadding = 10;
+
 
 bool MainMenuScene::init() {
   if (!Scene::init()) {
@@ -53,14 +58,12 @@ bool MainMenuScene::init() {
   // Initialize footer labels.
   Label* copyrightLabel = Label::createWithTTF(_kCopyrightStr, kBoldFont, kRegularFontSize);
   copyrightLabel->setAnchorPoint({0.5, 0});
-  copyrightLabel->setPosition(winSize.width / 2,
-                              copyrightLabel->getContentSize().height + _kFooterLabelPadding);
+  copyrightLabel->setPosition(winSize.width / 2, copyrightLabel->getContentSize().height + _kFooterLabelPadding);
   addChild(copyrightLabel);
 
   Label* versionLabel = Label::createWithTTF(_kVersionStr, kBoldFont, kRegularFontSize);
   versionLabel->setAnchorPoint({1, 0});
-  versionLabel->setPosition(winSize.width - _kFooterLabelPadding,
-                            versionLabel->getContentSize().height + _kFooterLabelPadding);
+  versionLabel->setPosition(winSize.width - _kFooterLabelPadding, versionLabel->getContentSize().height + _kFooterLabelPadding);
   addChild(versionLabel);
 
   // Initialize InputManager.
@@ -109,4 +112,4 @@ void MainMenuScene::handleInput() {
   }
 }
 
-}  // namespace vigilante
+} // namespace vigilante

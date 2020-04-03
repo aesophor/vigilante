@@ -2,7 +2,7 @@
 #!/usr/bin/env sh
 
 # Run clang-format
-clang-format -i src/**/*.{cc,h}
+#clang-format -i src/**/*.{cc,h}
 
 # Update copyright line
 year_begin=2018

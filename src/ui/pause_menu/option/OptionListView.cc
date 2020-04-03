@@ -21,6 +21,7 @@ namespace vigilante {
 OptionListView::OptionListView(PauseMenu* pauseMenu)
     : ListView<Option*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu) {
+
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Option* option) {
@@ -29,9 +30,10 @@ OptionListView::OptionListView(PauseMenu* pauseMenu)
   };
 }
 
+
 void OptionListView::confirm() {
   const auto& optionHandler = getSelectedObject()->second;
   optionHandler();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

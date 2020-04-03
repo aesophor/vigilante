@@ -33,7 +33,7 @@ bool contains(const string& s, const string& keyword) {
 void replace(string& s, const string& keyword, const string& newword) {
   string::size_type pos = s.find(keyword);
 
-  while (pos != std::string::npos) {
+  while(pos != std::string::npos) {
     s.replace(pos, keyword.size(), newword);
     pos = s.find(keyword, pos + newword.size());
   }
@@ -63,6 +63,6 @@ string& toLower(string& s) {
   return s;
 }
 
-}  // namespace string_util
+} // namespace string_util
 
-}  // namespace vigilante
+} // namespace vigilante

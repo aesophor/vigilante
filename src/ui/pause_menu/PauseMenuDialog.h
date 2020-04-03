@@ -2,15 +2,15 @@
 #ifndef VIGILANTE_PAUSE_MENU_DIALOG_H_
 #define VIGILANTE_PAUSE_MENU_DIALOG_H_
 
-#include <functional>
-#include <memory>
 #include <string>
 #include <vector>
+#include <memory>
+#include <functional>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
-#include <ui/UIImageView.h>
+#include <2d/CCLabel.h>
 #include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/PauseMenu.h"
 
@@ -30,16 +30,13 @@ class PauseMenuDialog : public AbstractPane {
 
   void reset();
   void setMessage(const std::string& message) const;
-  void setOption(
-      int index, bool visible, const std::string& text = "",
-      const std::function<void()>& handler = []() {}) const;
+  void setOption(int index, bool visible, const std::string& text="", const std::function<void ()>& handler=[](){}) const;
   void show();
 
  private:
   class Option {
    public:
-    explicit Option(
-        const std::string& text, const std::function<void()>& handler = []() {});
+    explicit Option(const std::string& text, const std::function<void ()>& handler=[](){});
     virtual ~Option() = default;
 
     float getWidth() const;
@@ -51,19 +48,18 @@ class PauseMenuDialog : public AbstractPane {
     std::string getText() const;
     void setText(const std::string& text) const;
 
-    const std::function<void()>& getHandler() const;
-    void setHandler(const std::function<void()>& handler);
+    const std::function<void ()>& getHandler() const;
+    void setHandler(const std::function<void ()>& handler);
 
    private:
     cocos2d::ui::Layout* _layout;
     cocos2d::ui::ImageView* _icon;
     cocos2d::Label* _label;
-    std::function<void()> _handler;
+    std::function<void ()> _handler;
   };
 
-  // Reserved for future use. Currently there are only three options at most.
-  void addOption(
-      const std::string& text, const std::function<void()>& handler = []() {});
+  // Reserved for future use. Currently there's only three options at most.
+  void addOption(const std::string& text, const std::function<void ()>& handler=[](){});
   void clearOptions();
 
   cocos2d::Label* _message;
@@ -71,6 +67,6 @@ class PauseMenuDialog : public AbstractPane {
   int _current;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_PAUSE_MENU_DIALOG_H_
+#endif // VIGILANTE_PAUSE_MENU_DIALOG_H_

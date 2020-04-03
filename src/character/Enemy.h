@@ -7,8 +7,8 @@
 
 #include <Box2D/Box2D.h>
 
-#include "Bot.h"
 #include "Character.h"
+#include "Bot.h"
 
 namespace vigilante {
 
@@ -23,24 +23,24 @@ class Enemy : public Character, public Bot {
       int minAmount;
       int maxAmount;
     };
-    std::unordered_map<std::string, DroppedItemData> droppedItems;  // <json, {chance, minAmount, maxAmount}>
+    std::unordered_map<std::string, DroppedItemData> droppedItems; // <json, {chance, minAmount, maxAmount}>
   };
 
   explicit Enemy(const std::string& jsonFileName);
   virtual ~Enemy() = default;
 
-  virtual void update(float delta) override;                      // Character
-  virtual void showOnMap(float x, float y) override;              // Character
-  virtual void import(const std::string& jsonFileName) override;  // Character
+  virtual void update(float delta) override; // Character
+  virtual void showOnMap(float x, float y) override; // Character
+  virtual void import(const std::string& jsonFileName) override; // Character
 
-  virtual void receiveDamage(Character* source, int damage) override;  // Character
+  virtual void receiveDamage(Character* source, int damage) override; // Character
 
   Enemy::Profile& getEnemyProfile();
-
+  
  private:
   Enemy::Profile _enemyProfile;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_ENEMY_H_
+#endif // VIGILANTE_ENEMY_H_

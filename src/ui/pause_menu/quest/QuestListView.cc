@@ -22,8 +22,8 @@ namespace vigilante {
 QuestListView::QuestListView(PauseMenu* pauseMenu)
     : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont,
-                                      asset_manager::kRegularFontSize)) {
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
+
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Quest* quest) {
@@ -40,6 +40,7 @@ QuestListView::QuestListView(PauseMenu* pauseMenu)
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
+
 
 void QuestListView::confirm() {
   Quest* quest = getSelectedObject();
@@ -72,6 +73,7 @@ void QuestListView::confirm() {
   */
 }
 
+
 void QuestListView::selectUp() {
   ListView<Quest*>::selectUp();
 
@@ -87,7 +89,7 @@ void QuestListView::selectUp() {
 void QuestListView::selectDown() {
   ListView<Quest*>::selectDown();
 
-  if (_current >= (int)_objects.size() - 1) {
+  if (_current >= (int) _objects.size() - 1) {
     return;
   }
 
@@ -96,14 +98,14 @@ void QuestListView::selectDown() {
   _descLabel->setString(selectedQuest->getQuestProfile().desc);
 }
 
+
 void QuestListView::showQuests() {
   // Show player skills in QuestListView.
   Player* player = _pauseMenu->getPlayer();
   setObjects(player->getQuestBook().getAllQuests());
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc
-                                              : "");
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
 }
 
-}  // namespace vigilante
+} // namespace vigilante

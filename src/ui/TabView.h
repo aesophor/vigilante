@@ -2,14 +2,14 @@
 #ifndef VIGILANTE_TABVIEW_H_
 #define VIGILANTE_TABVIEW_H_
 
-#include <memory>
-#include <string>
 #include <vector>
+#include <string>
+#include <memory>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
-#include <ui/UIImageView.h>
+#include <2d/CCLabel.h>
 #include <ui/UILayout.h>
+#include <ui/UIImageView.h>
 
 namespace vigilante {
 
@@ -54,6 +54,6 @@ class TabView {
   std::string _highlightedBg;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_TABVIEW_H_
+#endif // VIGILANTE_TABVIEW_H_

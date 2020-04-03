@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
+#include <2d/CCLabel.h>
 
 namespace vigilante {
 
@@ -17,8 +17,9 @@ class TimedLabelService {
     static const Alignment kCenter;
     static const Alignment kRight;
 
-    TimedLabel(const std::string& text, float lifetime, TimedLabel::Alignment alignment);
-    bool operator==(const TimedLabel& other);
+    TimedLabel(const std::string& text, float lifetime,
+               TimedLabel::Alignment alignment);
+    bool operator== (const TimedLabel& other);
 
     cocos2d::Label* label;
     float lifetime;
@@ -32,14 +33,15 @@ class TimedLabelService {
   cocos2d::Layer* getLayer() const;
 
  protected:
-  TimedLabelService(int startingX, int startingY, uint8_t maxLabelCount, uint8_t labelLifetime,
+  TimedLabelService(int startingX, int startingY,
+                    uint8_t maxLabelCount, uint8_t labelLifetime,
                     TimedLabelService::TimedLabel::Alignment alignment);
 
   static const float _kMoveUpDuration;
   static const float _kFadeDuration;
   static const float _kDeltaX;
   static const float _kDeltaY;
-
+ 
   cocos2d::Layer* _layer;
   std::deque<TimedLabelService::TimedLabel> _labelQueue;
 
@@ -50,6 +52,6 @@ class TimedLabelService {
   const TimedLabelService::TimedLabel::Alignment _kAlignment;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_TIMED_LABEL_SERVICE_H_
+#endif // VIGILANTE_TIMED_LABEL_SERVICE_H_

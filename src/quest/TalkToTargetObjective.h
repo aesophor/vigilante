@@ -16,6 +16,6 @@ class TalkToTargetObjective : public Quest::Objective {
   virtual bool isCompleted() const override;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_TALK_TO_TARGET_OBJECTIVE_H_
+#endif // VIGILANTE_TALK_TO_TARGET_OBJECTIVE_H_

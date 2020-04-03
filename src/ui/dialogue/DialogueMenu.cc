@@ -9,8 +9,8 @@
 #define DIALOGUE_MENU_Y 45
 
 using cocos2d::Director;
-using cocos2d::EventKeyboard;
 using cocos2d::Layer;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -24,6 +24,7 @@ DialogueMenu::DialogueMenu()
   _layer->setVisible(false);
 }
 
+
 void DialogueMenu::handleInput() {
   auto inputMgr = InputManager::getInstance();
 
@@ -36,6 +37,7 @@ void DialogueMenu::handleInput() {
   }
 }
 
+
 Layer* DialogueMenu::getLayer() const {
   return _layer;
 }
@@ -44,4 +46,4 @@ DialogueListView* DialogueMenu::getDialogueListView() const {
   return _dialogueListView.get();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

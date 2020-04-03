@@ -23,4 +23,4 @@ class AppDelegate : private cocos2d::Application {
   virtual void applicationWillEnterForeground() override;
 };
 
-#endif  // APP_DELEGATE_H_
+#endif // APP_DELEGATE_H_

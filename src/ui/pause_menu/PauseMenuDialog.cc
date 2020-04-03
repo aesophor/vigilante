@@ -5,16 +5,16 @@
 #include "input/InputManager.h"
 #include "ui/TableLayout.h"
 
-using cocos2d::EventKeyboard;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
-using cocos2d::ui::Layout;
-using std::function;
 using std::string;
 using std::unique_ptr;
+using std::function;
+using cocos2d::Label;
+using cocos2d::ui::Layout;
+using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kDialogueTriangle;
 using vigilante::asset_manager::kRegularFontSize;
+using vigilante::asset_manager::kDialogueTriangle;
 
 namespace vigilante {
 
@@ -31,6 +31,7 @@ PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
   addOption("option3");
 }
 
+
 void PauseMenuDialog::update() {
   const auto& winSize = cocos2d::Director::getInstance()->getWinSize();
   // Automatically position the options :-)
@@ -41,7 +42,7 @@ void PauseMenuDialog::update() {
     optionWidth = std::max(optionWidth, option->getWidth());
   }
 
-  for (int i = (int)_options.size() - 1; i >= 0; i--) {
+  for (int i = (int) _options.size() - 1; i >= 0; i--) {
     if (!_options[i]->isVisible()) {
       continue;
     }
@@ -72,7 +73,7 @@ void PauseMenuDialog::selectLeft() {
 }
 
 void PauseMenuDialog::selectRight() {
-  if (_current == (int)_options.size() - 1 || !_options[_current + 1]->isVisible()) {
+  if (_current == (int) _options.size() - 1 || !_options[_current + 1]->isVisible()) {
     return;
   }
   _options[_current]->setSelected(false);
@@ -86,8 +87,9 @@ void PauseMenuDialog::confirm() {
   setVisible(false);
   _options[0]->setSelected(true);
   _options[_current]->setSelected(false);
-  _options[_current]->getHandler()();  // invokes a std::function<void ()>
+  _options[_current]->getHandler()(); // invokes a std::function<void ()>
 }
+
 
 void PauseMenuDialog::reset() {
   setMessage("");
@@ -101,8 +103,7 @@ void PauseMenuDialog::setMessage(const string& message) const {
   _message->setString(message);
 }
 
-void PauseMenuDialog::setOption(int index, bool visible, const string& text,
-                                const function<void()>& handler) const {
+void PauseMenuDialog::setOption(int index, bool visible, const string& text, const function<void ()>& handler) const {
   if (index < 0 || index >= 3) {
     return;
   }
@@ -116,7 +117,7 @@ void PauseMenuDialog::show() {
   setVisible(true);
 
   // Set the first visible option as selected.
-  for (int i = 0; i < (int)_options.size(); i++) {
+  for (int i = 0; i < (int) _options.size(); i++) {
     if (_options[i]->isVisible()) {
       _options[i]->setSelected(true);
       _current = i;
@@ -125,7 +126,8 @@ void PauseMenuDialog::show() {
   }
 }
 
-void PauseMenuDialog::addOption(const string& text, const function<void()>& handler) {
+
+void PauseMenuDialog::addOption(const string& text, const function<void ()>& handler) {
   _options.push_back(unique_ptr<Option>(new Option(text, handler)));
   _layout->addChild(_options.back()->getLayout());
   update();
@@ -138,7 +140,8 @@ void PauseMenuDialog::clearOptions() {
   }
 }
 
-PauseMenuDialog::Option::Option(const string& text, const function<void()>& handler)
+
+PauseMenuDialog::Option::Option(const string& text, const function<void ()>& handler)
     : _layout(Layout::create()),
       _icon(ImageView::create(kDialogueTriangle)),
       _label(Label::createWithTTF(text, kBoldFont, kRegularFontSize)),
@@ -148,7 +151,7 @@ PauseMenuDialog::Option::Option(const string& text, const function<void()>& hand
 
   _label->setAnchorPoint({0, 1});
   _label->getFontAtlas()->setAliasTexParameters();
-  _label->setPositionX(_icon->getContentSize().width + 5);  // 5 is gap between icon and label
+  _label->setPositionX(_icon->getContentSize().width + 5); // 5 is gap between icon and label
 
   _layout->setAnchorPoint({0, 1});
   _layout->addChild(_icon);
@@ -175,6 +178,7 @@ Layout* PauseMenuDialog::Option::getLayout() const {
   return _layout;
 }
 
+
 string PauseMenuDialog::Option::getText() const {
   return _label->getString();
 }
@@ -183,12 +187,12 @@ void PauseMenuDialog::Option::setText(const string& text) const {
   _label->setString(text);
 }
 
-const function<void()>& PauseMenuDialog::Option::getHandler() const {
+const function<void ()>& PauseMenuDialog::Option::getHandler() const {
   return _handler;
 }
 
-void PauseMenuDialog::Option::setHandler(const function<void()>& handler) {
+void PauseMenuDialog::Option::setHandler(const function<void ()>& handler) {
   _handler = handler;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

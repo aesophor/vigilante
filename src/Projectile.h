@@ -16,6 +16,6 @@ class Projectile {
   virtual void onHit(Character* target) = 0;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_PROJECTILE_H_
+#endif // VIGILANTE_PROJECTILE_H_

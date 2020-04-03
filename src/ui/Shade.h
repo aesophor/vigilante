@@ -24,6 +24,6 @@ class Shade {
   cocos2d::ui::ImageView* _imageView;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_SHADE_H_
+#endif // VIGILANTE_SHADE_H_

@@ -7,12 +7,12 @@
 
 #include <cocos2d.h>
 
-using rapidjson::Document;
-using std::ifstream;
-using std::runtime_error;
 using std::string;
-using std::stringstream;
 using std::vector;
+using std::ifstream;
+using std::stringstream;
+using std::runtime_error;
+using rapidjson::Document;
 
 namespace vigilante {
 
@@ -49,6 +49,6 @@ vector<string> splitString(const string& s, const char delimiter) {
   return tokens;
 }
 
-}  // namespace json_util
+} // namespace json_util
 
-}  // namespace vigilante
+} // namespace vigilante

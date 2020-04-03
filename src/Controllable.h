@@ -10,6 +10,6 @@ class Controllable {
   virtual void handleInput() = 0;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_CONTROLLABLE_H_
+#endif // VIGILANTE_CONTROLLABLE_H_

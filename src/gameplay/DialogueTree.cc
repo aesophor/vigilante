@@ -7,15 +7,16 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
-using rapidjson::Document;
 using std::pair;
 using std::stack;
 using std::string;
 using std::vector;
+using rapidjson::Document;
 
 namespace vigilante {
 
-DialogueTree::DialogueTree(const string& jsonFileName) : _rootNode(), _currentNode() {
+DialogueTree::DialogueTree(const string& jsonFileName)
+    : _rootNode(), _currentNode() {
   import(jsonFileName);
 }
 
@@ -27,12 +28,13 @@ void DialogueTree::dfsDeleteNodes(DialogueTree::Node* node) const {
   if (!node) {
     return;
   }
-
+  
   for (auto child : node->children) {
     dfsDeleteNodes(child);
   }
   delete node;
 }
+
 
 void DialogueTree::import(const string& jsonFileName) {
   VGLOG(LOG_INFO, "Loading dialogue tree...");
@@ -40,7 +42,7 @@ void DialogueTree::import(const string& jsonFileName) {
 
   // Deserialize json into runtime DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD
-  stack<pair<rapidjson::Value::Object, Node*>> st;  // <jsonObject, parent>
+  stack<pair<rapidjson::Value::Object, Node*>> st; // <jsonObject, parent>
   st.push({json.GetObject(), nullptr});
 
   while (!st.empty()) {
@@ -63,7 +65,7 @@ void DialogueTree::import(const string& jsonFileName) {
     if (parent) {
       parent->children.push_back(_currentNode);
     }
-
+   
     // Push this node's children onto the stack in reverse order.
     const auto& children = node["children"].GetArray();
     for (int i = children.Size() - 1; i >= 0; i--) {
@@ -91,4 +93,4 @@ void DialogueTree::resetCurrentNode() {
   _currentNode = _rootNode;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

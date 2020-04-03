@@ -1,21 +1,21 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestBook.h"
 
-#include <algorithm>
 #include <fstream>
+#include <algorithm>
 #include <stdexcept>
 
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hints/QuestHints.h"
-#include "util/Logger.h"
 #include "util/StringUtil.h"
+#include "util/Logger.h"
 
-using std::ifstream;
-using std::runtime_error;
 using std::string;
+using std::vector;
+using std::ifstream;
 using std::unique_ptr;
 using std::unordered_map;
-using std::vector;
+using std::runtime_error;
 
 namespace vigilante {
 
@@ -30,6 +30,7 @@ QuestBook::QuestBook(const string& questsListFileName) {
     _questMapper[line] = unique_ptr<Quest>(new Quest(line));
   }
 }
+
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
   VGLOG(LOG_INFO, "Updating quests");
@@ -49,6 +50,7 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
     }
   }
 }
+
 
 void QuestBook::unlockQuest(Quest* quest) {
   quest->unlock();
@@ -82,6 +84,7 @@ void QuestBook::markCompleted(Quest* quest) {
   QuestHints::getInstance()->show("Completed: " + quest->getQuestProfile().title);
 }
 
+
 void QuestBook::unlockQuest(const string& questJsonFileName) {
   if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
     return;
@@ -103,6 +106,7 @@ void QuestBook::markCompleted(const string& questJsonFileName) {
   markCompleted(_questMapper[questJsonFileName].get());
 }
 
+
 vector<Quest*> QuestBook::getAllQuests() const {
   vector<Quest*> allQuests(_inProgressQuests.begin(), _inProgressQuests.end());
   allQuests.insert(allQuests.end(), _completedQuests.begin(), _completedQuests.end());
@@ -117,4 +121,4 @@ const vector<Quest*>& QuestBook::getCompletedQuests() const {
   return _completedQuests;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

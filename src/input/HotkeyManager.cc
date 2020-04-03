@@ -5,17 +5,21 @@
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/Logger.h"
 
+using std::array;
 using cocos2d::Event;
 using cocos2d::EventKeyboard;
-using std::array;
 
 namespace vigilante {
 
 HotkeyManager* HotkeyManager::_instance = nullptr;
 
-const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyManager::_kBindableKeys = {
-    {EventKeyboard::KeyCode::KEY_LEFT_SHIFT, EventKeyboard::KeyCode::KEY_LEFT_CTRL,
-     EventKeyboard::KeyCode::KEY_X, EventKeyboard::KeyCode::KEY_C, EventKeyboard::KeyCode::KEY_V}};
+const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyManager::_kBindableKeys = {{
+  EventKeyboard::KeyCode::KEY_LEFT_SHIFT,
+  EventKeyboard::KeyCode::KEY_LEFT_CTRL,
+  EventKeyboard::KeyCode::KEY_X,
+  EventKeyboard::KeyCode::KEY_C,
+  EventKeyboard::KeyCode::KEY_V
+}};
 
 HotkeyManager* HotkeyManager::getInstance() {
   if (!_instance) {
@@ -25,6 +29,7 @@ HotkeyManager* HotkeyManager::getInstance() {
 }
 
 HotkeyManager::HotkeyManager() : _hotkeys() {}
+
 
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
   for (size_t i = 0; i < _kBindableKeys.size(); i++) {
@@ -72,7 +77,7 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
     setHotkeyAction(keyCode, keybindable);
     pauseMenuDialog->setVisible(false);
     pauseMenuDialog->getPauseMenu()->update();
-
+    
     // Everything done. Now it is safe to pop this functor off the stack.
     InputManager::getInstance()->popEvLstnr();
   };
@@ -80,4 +85,4 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
   InputManager::getInstance()->pushEvLstnr(onKeyPressedEvLstnr);
 }
 
-}  // namespace vigilante
+} // namespace vigilante

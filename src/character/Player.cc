@@ -6,51 +6,51 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "input/HotkeyManager.h"
 #include "input/InputManager.h"
+#include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
 #include "map/GameMapManager.h"
-#include "quest/KillTargetObjective.h"
+#include "skill/Skill.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
-#include "skill/Skill.h"
+#include "quest/KillTargetObjective.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 
-using cocos2d::Action;
-using cocos2d::Animate;
-using cocos2d::Animation;
-using cocos2d::CallFunc;
-using cocos2d::Director;
-using cocos2d::EventKeyboard;
-using cocos2d::FadeIn;
-using cocos2d::FadeOut;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Sequence;
-using cocos2d::Sprite;
-using cocos2d::SpriteBatchNode;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteFrameCache;
-using cocos2d::Vector;
 using std::string;
 using std::vector;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kInteractableObject;
-using vigilante::category_bits::kItem;
-using vigilante::category_bits::kMeleeWeapon;
-using vigilante::category_bits::kNpc;
-using vigilante::category_bits::kPlatform;
+using cocos2d::Vector;
+using cocos2d::Director;
+using cocos2d::Repeat;
+using cocos2d::RepeatForever;
+using cocos2d::Animation;
+using cocos2d::Animate;
+using cocos2d::Action;
+using cocos2d::Sprite;
+using cocos2d::SpriteFrame;
+using cocos2d::SpriteFrameCache;
+using cocos2d::SpriteBatchNode;
+using cocos2d::FadeIn;
+using cocos2d::FadeOut;
+using cocos2d::CallFunc;
+using cocos2d::Sequence;
+using cocos2d::EventKeyboard;
 using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kProjectile;
+using vigilante::category_bits::kEnemy;
+using vigilante::category_bits::kNpc;
+using vigilante::category_bits::kFeet;
+using vigilante::category_bits::kMeleeWeapon;
+using vigilante::category_bits::kItem;
+using vigilante::category_bits::kGround;
+using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kWall;
+using vigilante::category_bits::kPortal;
+using vigilante::category_bits::kInteractableObject;
+using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
 
@@ -103,6 +103,7 @@ void Player::removeFromMap() {
   }
 }
 
+
 void Player::handleInput() {
   if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
     return;
@@ -142,7 +143,8 @@ void Player::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
-    if (_equipmentSlots[Equipment::Type::WEAPON] && _isWeaponSheathed && !_isUnsheathingWeapon) {
+    if (_equipmentSlots[Equipment::Type::WEAPON]
+        && _isWeaponSheathed && !_isUnsheathingWeapon) {
       unsheathWeapon();
     } else if (!_isWeaponSheathed && !_isSheathingWeapon) {
       sheathWeapon();
@@ -167,8 +169,7 @@ void Player::handleInput() {
       string itemName = item->getItemProfile().name;
       int amount = item->getAmount();
       pickupItem(item);
-      Notifications::getInstance()->show("Acquired item: " + itemName +
-                                         ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
+      Notifications::getInstance()->show("Acquired item: " + itemName + ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
     }
   }
 
@@ -180,6 +181,7 @@ void Player::handleInput() {
     getUp();
   }
 }
+
 
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
@@ -201,12 +203,10 @@ void Player::receiveDamage(Character* source, int damage) {
   _fixtures[FixtureType::BODY]->SetSensor(true);
   _isInvincible = true;
 
-  callback_util::runAfter(
-      [&]() {
-        _fixtures[FixtureType::BODY]->SetSensor(false);
-        _isInvincible = false;
-      },
-      1.5f);
+  callback_util::runAfter([&](){
+    _fixtures[FixtureType::BODY]->SetSensor(false);
+    _isInvincible = false;
+  }, 1.5f);
 
   Hud::getInstance()->updateStatusBars();
 }
@@ -226,8 +226,9 @@ void Player::pickupItem(Item* item) {
   _questBook.update(Quest::Objective::Type::COLLECT);
 }
 
+
 QuestBook& Player::getQuestBook() {
   return _questBook;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

@@ -6,9 +6,9 @@
 
 #define DEFAULT_HISTORY_SIZE 32
 
-using cocos2d::EventKeyboard;
-using cocos2d::Layer;
 using std::string;
+using cocos2d::Layer;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -21,7 +21,11 @@ Console* Console::getInstance() {
   return _instance;
 }
 
-Console::Console() : _layer(Layer::create()), _textField(), _cmdParser(), _cmdHistory() {
+Console::Console()
+    : _layer(Layer::create()),
+      _textField(),
+      _cmdParser(),
+      _cmdHistory() {
   _textField.setOnSubmit([this]() {
     bool showNotification = true;
     executeCmd(this->_textField.getString(), showNotification);
@@ -30,6 +34,7 @@ Console::Console() : _layer(Layer::create()), _textField(), _cmdParser(), _cmdHi
   _layer->setVisible(false);
   _layer->addChild(_textField.getLayout());
 }
+
 
 void Console::update(float delta) {
   if (!_layer->isVisible()) {
@@ -44,12 +49,10 @@ void Console::handleInput() {
   }
 
   auto inputMgr = InputManager::getInstance();
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW) &&
-      _cmdHistory.canGoBack()) {
+  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW) && _cmdHistory.canGoBack()) {
     _cmdHistory.goBack();
     _textField.setString(_cmdHistory.getCurrentLine());
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) &&
-             _cmdHistory.canGoForward()) {
+  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) && _cmdHistory.canGoForward()) {
     _cmdHistory.goForward();
     _textField.setString(_cmdHistory.getCurrentLine());
   } else {
@@ -64,9 +67,11 @@ void Console::executeCmd(const string& cmd, bool showNotification) {
   _cmdHistory._current = _cmdHistory._tail;
 }
 
+
 Layer* Console::getLayer() const {
   return _layer;
 }
+
 
 Console::CommandHistory::CommandHistory()
     : CircularBuffer<std::string>(DEFAULT_HISTORY_SIZE), _current(_tail) {}
@@ -88,7 +93,7 @@ void Console::CommandHistory::goBack() {
 
 void Console::CommandHistory::goForward() {
   _current++;
-  if (_current >= (int)capacity()) {
+  if (_current >= (int) capacity()) {
     _current = 0;
   }
 }
@@ -97,4 +102,4 @@ const string& Console::CommandHistory::getCurrentLine() const {
   return _data[_current];
 }
 
-}  // namespace vigilante
+} // namespace vigilante

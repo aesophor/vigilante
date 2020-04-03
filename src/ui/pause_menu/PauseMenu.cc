@@ -3,35 +3,36 @@
 
 #include "AssetManager.h"
 #include "input/InputManager.h"
-#include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
-#include "ui/pause_menu/option/OptionPane.h"
-#include "ui/pause_menu/quest/QuestPane.h"
+#include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
+#include "ui/pause_menu/quest/QuestPane.h"
+#include "ui/pause_menu/option/OptionPane.h"
 
-#define HEADER_PANE_POS \
-  { 140, 280 }
-#define STATS_PANE_POS \
-  { 50, 240 }
-#define DIALOG_POS \
-  { 50, 30 }
-#define MAIN_PANE_POS \
-  { 230, 240 }  // InventoryPane, EquipmentPane... etc
+#define HEADER_PANE_POS {140, 280}
+#define STATS_PANE_POS {50, 240}
+#define DIALOG_POS {50, 30}
+#define MAIN_PANE_POS {230, 240} // InventoryPane, EquipmentPane... etc
 
-using cocos2d::Director;
-using cocos2d::EventKeyboard;
-using cocos2d::Label;
-using cocos2d::Layer;
-using cocos2d::ui::ImageView;
 using std::array;
 using std::string;
 using std::unique_ptr;
+using cocos2d::Director;
+using cocos2d::Label;
+using cocos2d::Layer;
+using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kPauseMenuBg;
 
 namespace vigilante {
 
 const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
-    "INVENTORY", "EQUIPMENT", "SKILLS", "QUESTS", "OPTIONS"};
+  "INVENTORY",
+  "EQUIPMENT",
+  "SKILLS",
+  "QUESTS",
+  "OPTIONS"
+};
 
 PauseMenu::PauseMenu(Player* player)
     : _player(player),
@@ -96,9 +97,11 @@ PauseMenu::PauseMenu(Player* player)
   optionPane->setVisible(false);
   _layer->addChild(optionPane->getLayout());
 
+
   // Show inventory pane by default.
   _panes.front()->setVisible(true);
 }
+
 
 void PauseMenu::update() {
   _statsPane->update();
@@ -114,7 +117,7 @@ void PauseMenu::handleInput() {
     _dialog->handleInput();
     return;
   }
-
+  
   // FIXME: when all panes are implemented, this section of code
   // should be cleaned up.
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Q)) {
@@ -162,6 +165,7 @@ void PauseMenu::show(Pane pane) {
   update();
 }
 
+
 Player* PauseMenu::getPlayer() const {
   return _player;
 }
@@ -182,4 +186,4 @@ PauseMenuDialog* PauseMenu::getDialog() const {
   return _dialog.get();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_CIRCULAR_BUFFER_H_
 #define VIGILANTE_CIRCULAR_BUFFER_H_
 
-#include <memory>
 #include <string>
+#include <memory>
 
 #define DEFAULT_CAPACITY 32
 
@@ -12,9 +12,9 @@ namespace vigilante {
 template <typename T>
 class CircularBuffer {
  public:
-  explicit CircularBuffer(int capacity = DEFAULT_CAPACITY);
+  explicit CircularBuffer(int capacity=DEFAULT_CAPACITY);
   virtual ~CircularBuffer() = default;
-  T& operator[](size_t i);
+  T& operator[] (size_t i);
 
   void push(T val);
   void pop();
@@ -35,19 +35,22 @@ class CircularBuffer {
   const size_t _capacity;
 };
 
+
+
 template <typename T>
 CircularBuffer<T>::CircularBuffer(int capacity)
     : _data(new T[capacity]), _head(), _tail(), _size(), _capacity(capacity) {}
 
 template <typename T>
-T& CircularBuffer<T>::operator[](size_t i) {
+T& CircularBuffer<T>::operator[] (size_t i) {
   return _data[i];
 }
+
 
 template <typename T>
 void CircularBuffer<T>::push(T val) {
   _data[_tail] = val;
-
+  
   if (full()) {
     _head = (_head + 1) % _capacity;
   }
@@ -73,6 +76,7 @@ void CircularBuffer<T>::clear() {
   _head = 0;
 }
 
+
 template <typename T>
 size_t CircularBuffer<T>::size() const {
   return _size;
@@ -90,7 +94,7 @@ bool CircularBuffer<T>::empty() const {
 
 template <typename T>
 bool CircularBuffer<T>::full() const {
-  return (_tail + 1) % (int)_capacity == _head;
+  return (_tail + 1) % (int) _capacity == _head;
 }
 
 template <typename T>
@@ -103,6 +107,6 @@ T CircularBuffer<T>::back() const {
   return _data[(_tail - 1 < 0) ? _capacity - 1 : _tail - 1];
 }
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_CIRCULAR_BUFFER_H_
+#endif // VIGILANTE_CIRCULAR_BUFFER_H_

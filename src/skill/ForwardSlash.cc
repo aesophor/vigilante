@@ -5,13 +5,17 @@
 #include "map/GameMapManager.h"
 #include "util/CallbackUtil.h"
 
-using cocos2d::EventKeyboard;
 using std::string;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
 ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
-    : Skill(), _skillProfile(jsonFileName), _user(user), _hasActivated() {}
+    : Skill(),
+      _skillProfile(jsonFileName),
+      _user(user),
+      _hasActivated() {}
+
 
 void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
@@ -26,7 +30,8 @@ void ForwardSlash::setHotkey(EventKeyboard::KeyCode hotkey) {
 }
 
 bool ForwardSlash::canActivate() {
-  return !_user->isWeaponSheathed() && _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
+  return !_user->isWeaponSheathed()
+    && _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
 }
 
 void ForwardSlash::activate() {
@@ -46,15 +51,14 @@ void ForwardSlash::activate() {
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
-  callback_util::runAfter(
-      [=]() {
-        _user->getBody()->SetLinearDamping(oldBodyDamping);
-        _user->setInvincible(false);
-        _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
-        delete this;
-      },
-      _skillProfile.framesDuration);
+  callback_util::runAfter([=]() {
+    _user->getBody()->SetLinearDamping(oldBodyDamping);
+    _user->setInvincible(false);
+    _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
+    delete this;
+  }, _skillProfile.framesDuration);
 }
+
 
 Skill::Profile& ForwardSlash::getSkillProfile() {
   return _skillProfile;
@@ -72,4 +76,4 @@ string ForwardSlash::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
 }
 
-}  // namespace vigilante
+} // namespace vigilante

@@ -3,12 +3,12 @@
 #define VIGILANTE_MAIN_MENU_SCENE_H_
 
 #include <array>
-#include <memory>
-#include <string>
 #include <vector>
+#include <string>
+#include <memory>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
+#include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
 #include "input/InputManager.h"
@@ -20,12 +20,18 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
   CREATE_FUNC(MainMenuScene);
   virtual ~MainMenuScene() = default;
 
-  virtual bool init() override;               // cocos2d::Scene
-  virtual void update(float delta) override;  // cocos2d::Scene
-  virtual void handleInput() override;        // Controllable
+  virtual bool init() override; // cocos2d::Scene
+  virtual void update(float delta) override; // cocos2d::Scene
+  virtual void handleInput() override; // Controllable
 
  private:
-  enum Option { NEW_GAME, LOAD_GAME, OPTIONS, EXIT, SIZE };
+  enum Option {
+    NEW_GAME,
+    LOAD_GAME,
+    OPTIONS,
+    EXIT,
+    SIZE
+  };
   static const std::array<std::string, MainMenuScene::Option::SIZE> _kOptionStr;
   static const std::string _kCopyrightStr;
   static const std::string _kVersionStr;
@@ -40,6 +46,6 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
   std::unique_ptr<InputManager> _inputMgr;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_MAIN_MENU_SCENE_H_
+#endif // VIGILANTE_MAIN_MENU_SCENE_H_

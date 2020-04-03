@@ -4,27 +4,29 @@
 #include "Constants.h"
 #include "StaticActor.h"
 
-using cocos2d::Animate;
-using cocos2d::Animation;
-using cocos2d::CallFunc;
+using std::string;
 using cocos2d::FileUtils;
-using cocos2d::FiniteTimeAction;
 using cocos2d::Layer;
+using cocos2d::Vector;
+using cocos2d::Sequence;
+using cocos2d::CallFunc;
+using cocos2d::FiniteTimeAction;
 using cocos2d::Repeat;
 using cocos2d::RepeatForever;
-using cocos2d::Sequence;
+using cocos2d::Animate;
+using cocos2d::Animation;
 using cocos2d::Sprite;
 using cocos2d::SpriteBatchNode;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
-using cocos2d::Vector;
-using std::string;
 
 namespace vigilante {
 
 FxManager::FxManager(Layer* gameMapLayer) : _gameMapLayer(gameMapLayer) {}
 
-void FxManager::createFx(const string& textureResDir, const string& framesName, float x, float y) {
+
+void FxManager::createFx(const string& textureResDir, const string& framesName,
+                         float x, float y) {
   // If the cocos2d::Animation* is not present in cache, then create one
   // and cache this animation object.
   //
@@ -53,7 +55,9 @@ void FxManager::createFx(const string& textureResDir, const string& framesName, 
   // Run animation.
   FiniteTimeAction* animate = nullptr;
   animate = Repeat::create(Animate::create(_animationCache[cacheKey]), 1);
-  auto cleanup = CallFunc::create([=]() { _gameMapLayer->removeChild(spritesheet); });
+  auto cleanup = CallFunc::create([=]() {
+    _gameMapLayer->removeChild(spritesheet);
+  });
   sprite->runAction(Sequence::createWithTwoActions(animate, cleanup));
 }
 
@@ -64,4 +68,4 @@ string FxManager::getSpritesheetFileName(const string& textureResDir) {
   return textureResDir + "/spritesheet.png";
 }
 
-}  // namespace vigilante
+} // namespace vigilante

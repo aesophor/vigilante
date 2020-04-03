@@ -21,8 +21,8 @@
 #ifndef VIGILANTE_RENDER_H_
 #define VIGILANTE_RENDER_H_
 
-#include <Box2D/Box2D.h>
 #include <cocos2d.h>
+#include <Box2D/Box2D.h>
 
 struct b2AABB;
 
@@ -37,8 +37,7 @@ class GLESDebugDraw : public b2Draw {
   virtual void DrawPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color) override;
   virtual void DrawSolidPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color) override;
   virtual void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) override;
-  virtual void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis,
-                               const b2Color& color) override;
+  virtual void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) override;
   virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
   virtual void DrawTransform(const b2Transform& xf) override;
   virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
@@ -52,4 +51,4 @@ class GLESDebugDraw : public b2Draw {
   GLint _colorLocation;
 };
 
-#endif  // VIGILANTE_RENDERER_H_
+#endif // VIGILANTE_RENDERER_H_

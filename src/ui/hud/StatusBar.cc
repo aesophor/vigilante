@@ -1,14 +1,16 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StatusBar.h"
 
-using cocos2d::ui::ImageView;
-using cocos2d::ui::Layout;
 using std::string;
+using cocos2d::ui::Layout;
+using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
-StatusBar::StatusBar(const string& leftPaddingImgPath, const string& rightPaddingImgPath,
-                     const string& statusBarImgPath, float maxLength)
+StatusBar::StatusBar(const string& leftPaddingImgPath,
+                     const string& rightPaddingImgPath,
+                     const string& statusBarImgPath,
+                     float maxLength)
     : _layout(Layout::create()),
       _leftPaddingImg(ImageView::create(leftPaddingImgPath)),
       _rightPaddingImg(ImageView::create(rightPaddingImgPath)),
@@ -25,14 +27,15 @@ StatusBar::StatusBar(const string& leftPaddingImgPath, const string& rightPaddin
   _layout->addChild(_rightPaddingImg);
 }
 
+
 void StatusBar::update(int currentVal, int fullVal) {
   _statusBarImg->setScaleX(_maxLength * currentVal / fullVal);
-  _rightPaddingImg->setPositionX(_statusBarImg->getPositionX() +
-                                 _maxLength * currentVal / fullVal);
+  _rightPaddingImg->setPositionX(_statusBarImg->getPositionX() + _maxLength * currentVal / fullVal);
 }
+
 
 Layout* StatusBar::getLayout() const {
   return _layout;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

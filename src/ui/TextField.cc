@@ -8,12 +8,12 @@
 #define CURSOR_CHAR "|"
 #define CURSOR_BLINK_INTERVAL 0.7f
 
-using cocos2d::Event;
-using cocos2d::EventKeyboard;
+using std::string;
+using std::function;
 using cocos2d::Label;
 using cocos2d::ui::Layout;
-using std::function;
-using std::string;
+using cocos2d::Event;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
 
@@ -30,6 +30,7 @@ TextField::TextField()
   _label->setAnchorPoint({0, 0});
   _layout->addChild(_label);
 }
+
 
 void TextField::update(float delta) {
   _timer += delta;
@@ -77,6 +78,7 @@ void TextField::handleInput() {
   }
 }
 
+
 const string& TextField::getString() const {
   return _buffer;
 }
@@ -90,7 +92,7 @@ void TextField::clear() {
   setString("");
 }
 
-void TextField::setOnSubmit(const function<void()>& onSubmit) {
+void TextField::setOnSubmit(const function<void ()>& onSubmit) {
   _onSubmit = onSubmit;
 }
 
@@ -99,8 +101,9 @@ void TextField::toggleCursor() {
   _isCursorVisible = !_isCursorVisible;
 }
 
+
 Layout* TextField::getLayout() const {
   return _layout;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

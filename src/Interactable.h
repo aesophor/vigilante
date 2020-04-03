@@ -13,6 +13,6 @@ class Interactable {
   virtual bool willInteractOnContact() const = 0;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_INTERACTABLE_H_
+#endif // VIGILANTE_INTERACTABLE_H_

@@ -16,6 +16,6 @@ class Keybindable {
   virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) = 0;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_KEYBINDABLE_H_
+#endif // VIGILANTE_KEYBINDABLE_H_

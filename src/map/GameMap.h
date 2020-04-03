@@ -2,13 +2,13 @@
 #ifndef VIGILANTE_GAME_MAP_H_
 #define VIGILANTE_GAME_MAP_H_
 
-#include <memory>
-#include <string>
 #include <unordered_set>
 #include <vector>
+#include <string>
+#include <memory>
 
-#include <Box2D/Box2D.h>
 #include <cocos2d.h>
+#include <Box2D/Box2D.h>
 #include "DynamicActor.h"
 #include "Interactable.h"
 #include "item/Item.h"
@@ -22,20 +22,19 @@ class GameMap {
  public:
   class Portal : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact,
-           b2Body* body);
+    Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body);
     virtual ~Portal();
-    virtual void onInteract(Character* user) override;    // Interactable
-    virtual bool willInteractOnContact() const override;  // Interactable
+    virtual void onInteract(Character* user) override; // Interactable
+    virtual bool willInteractOnContact() const override; // Interactable
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
     b2Body* getBody() const;
 
    protected:
-    std::string _targetTmxMapFileName;  // new (target) .tmx filename
-    int _targetPortalId;                // the portal id in the new (target) map
-    bool _willInteractOnContact;        // interact with the portal on contact?
+    std::string _targetTmxMapFileName; // new (target) .tmx filename
+    int _targetPortalId; // the portal id in the new (target) map
+    bool _willInteractOnContact; // interact with the portal on contact?
     b2Body* _body;
   };
 
@@ -52,7 +51,7 @@ class GameMap {
   const std::vector<GameMap::Portal*>& getPortals() const;
 
   Player* createPlayer() const;
-  Item* spawnItem(const std::string& itemJson, float x, float y, int amount = 1);
+  Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
 
   float getWidth() const;
   float getHeight() const;
@@ -73,6 +72,6 @@ class GameMap {
   std::vector<GameMap::Portal*> _portals;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_GAME_MAP_H_
+#endif // VIGILANTE_GAME_MAP_H_

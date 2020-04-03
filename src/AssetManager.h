@@ -65,8 +65,8 @@ const std::string kEmptyImage = "Texture/empty.png";
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);
 
-}  // namespace asset_manager
+} // namespace asset_manager
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_ASSET_MANAGER_H_
+#endif // VIGILANTE_ASSET_MANAGER_H_

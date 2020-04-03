@@ -24,6 +24,6 @@ class QuestPane : public AbstractPane {
   std::unique_ptr<QuestListView> _questListView;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_PANE_H_
+#endif // VIGILANTE_QUEST_PANE_H_

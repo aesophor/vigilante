@@ -2,10 +2,10 @@
 #ifndef VIGILANTE_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_BOOK_H_
 
-#include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <memory>
+#include <unordered_map>
 
 #include "Quest.h"
 
@@ -36,6 +36,6 @@ class QuestBook {
   std::vector<Quest*> _completedQuests;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_BOOK_H_
+#endif // VIGILANTE_QUEST_BOOK_H_

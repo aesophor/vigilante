@@ -4,8 +4,8 @@
 #include <cassert>
 
 #include "character/Player.h"
-#include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
+#include "input/HotkeyManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/KeyCodeUtil.h"
@@ -18,17 +18,17 @@
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
+using std::string;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
-using std::string;
 
 namespace vigilante {
 
 SkillListView::SkillListView(PauseMenu* pauseMenu)
     : ListView<Skill*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont,
-                                      asset_manager::kRegularFontSize)) {
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
+
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
@@ -57,6 +57,7 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
+
 
 void SkillListView::confirm() {
   Skill* skill = getSelectedObject();
@@ -87,6 +88,7 @@ void SkillListView::confirm() {
   dialog->show();
 }
 
+
 void SkillListView::selectUp() {
   ListView<Skill*>::selectUp();
 
@@ -102,7 +104,7 @@ void SkillListView::selectUp() {
 void SkillListView::selectDown() {
   ListView<Skill*>::selectDown();
 
-  if (_current >= (int)_objects.size() - 1) {
+  if (_current >= (int) _objects.size() - 1) {
     return;
   }
 
@@ -110,6 +112,7 @@ void SkillListView::selectDown() {
   assert(selectedSkill != nullptr);
   _descLabel->setString(selectedSkill->getDesc());
 }
+
 
 void SkillListView::showSkills() {
   // Show player skills in SkillListView.
@@ -119,4 +122,4 @@ void SkillListView::showSkills() {
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
-}  // namespace vigilante
+} // namespace vigilante

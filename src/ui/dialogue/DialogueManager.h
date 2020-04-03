@@ -7,8 +7,8 @@
 #include <cocos2d.h>
 #include "Controllable.h"
 #include "character/Npc.h"
-#include "ui/dialogue/DialogueMenu.h"
 #include "ui/dialogue/Subtitles.h"
+#include "ui/dialogue/DialogueMenu.h"
 
 namespace vigilante {
 
@@ -41,6 +41,6 @@ class DialogueManager : public Controllable {
   std::unique_ptr<DialogueMenu> _dialogueMenu;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_MANAGER_H_
+#endif // VIGILANTE_DIALOGUE_MANAGER_H_

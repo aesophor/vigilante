@@ -10,39 +10,42 @@
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 #include "ui/notifications/Notifications.h"
-#include "util/CallbackUtil.h"
-#include "util/JsonUtil.h"
-#include "util/RandUtil.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/CallbackUtil.h"
+#include "util/RandUtil.h"
+#include "util/JsonUtil.h"
 
-using cocos2d::Action;
-using cocos2d::Animate;
-using cocos2d::Animation;
+using std::string;
+using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
 using cocos2d::RepeatForever;
+using cocos2d::Animation;
+using cocos2d::Animate;
+using cocos2d::Action;
 using cocos2d::Sprite;
-using cocos2d::SpriteBatchNode;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
-using cocos2d::Vector;
-using rapidjson::Document;
-using std::string;
-using vigilante::category_bits::kCliffMarker;
+using cocos2d::SpriteBatchNode;
+using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kInteractableObject;
-using vigilante::category_bits::kItem;
 using vigilante::category_bits::kMeleeWeapon;
+using vigilante::category_bits::kItem;
+using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
-using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kProjectile;
+using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
+using vigilante::category_bits::kInteractableObject;
+using vigilante::category_bits::kProjectile;
+using rapidjson::Document;
 
 namespace vigilante {
 
-Enemy::Enemy(const string& jsonFileName) : Character(jsonFileName), Bot(this), _enemyProfile(jsonFileName) {}
+Enemy::Enemy(const string& jsonFileName)
+    : Character(jsonFileName),
+      Bot(this),
+      _enemyProfile(jsonFileName) {}
 
 void Enemy::update(float delta) {
   Character::update(delta);
@@ -80,6 +83,7 @@ void Enemy::import(const string& jsonFileName) {
   _enemyProfile = Enemy::Profile(jsonFileName);
 }
 
+
 void Enemy::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   _isAlerted = true;
@@ -95,35 +99,33 @@ void Enemy::receiveDamage(Character* source, int damage) {
     while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
       sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
       sourceCharacterLevel++;
-      Notifications::getInstance()->show("Congratulations! You are now level " +
-                                         std::to_string(sourceCharacterLevel) + ".");
+      Notifications::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
     }
 
     // Drop items. (Here we'll use a callback to drop items
     // since creating fixtures during collision callback will crash)
     // See: https://github.com/libgdx/libgdx/issues/2730
-    callback_util::runAfter(
-        [=]() {
-          for (const auto& i : _enemyProfile.droppedItems) {
-            const string& itemJson = i.first;
-            float dropChance = i.second.chance;
+    callback_util::runAfter([=]() {
+      for (const auto& i : _enemyProfile.droppedItems) {
+        const string& itemJson = i.first;
+        float dropChance = i.second.chance;
 
-            float randChance = rand_util::randInt(0, 100);
-            if (randChance <= dropChance) {
-              float x = _body->GetPosition().x;
-              float y = _body->GetPosition().y;
-              int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-              GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
-            }
-          }
-        },
-        .2f);
+        float randChance = rand_util::randInt(0, 100);
+        if (randChance <= dropChance) {
+          float x = _body->GetPosition().x;
+          float y = _body->GetPosition().y;
+          int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
+          GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
+        }
+      }
+    }, .2f);
   }
 }
 
 Enemy::Profile& Enemy::getEnemyProfile() {
   return _enemyProfile;
 }
+
 
 Enemy::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
@@ -143,4 +145,4 @@ Enemy::Profile::Profile(const string& jsonFileName) {
   }
 }
 
-}  // namespace vigilante
+} // namespace vigilante

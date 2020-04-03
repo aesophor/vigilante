@@ -4,8 +4,8 @@
 
 #include <memory>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
+#include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
 #include "ui/dialogue/DialogueListView.h"
@@ -19,7 +19,7 @@ class DialogueMenu : public Controllable {
   DialogueMenu();
   virtual ~DialogueMenu() = default;
 
-  virtual void handleInput() override;  // Controllable
+  virtual void handleInput() override; // Controllable
 
   cocos2d::Layer* getLayer() const;
   DialogueListView* getDialogueListView() const;
@@ -29,6 +29,6 @@ class DialogueMenu : public Controllable {
   std::unique_ptr<DialogueListView> _dialogueListView;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_MENU_H_
+#endif // VIGILANTE_DIALOGUE_MENU_H_

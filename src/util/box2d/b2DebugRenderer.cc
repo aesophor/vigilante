@@ -22,12 +22,13 @@
 #include "b2DebugRenderer.h"
 
 using cocos2d::Director;
+using cocos2d::Renderer;
 using cocos2d::Mat4;
 using cocos2d::MATRIX_STACK_TYPE;
-using cocos2d::Renderer;
+
 
 b2DebugRenderer* b2DebugRenderer::create(b2World* world) {
-  b2DebugRenderer* pRet = new b2DebugRenderer(world);
+  b2DebugRenderer *pRet = new b2DebugRenderer(world);
   if (pRet && pRet->init()) {
     pRet->autorelease();
     return pRet;
@@ -46,16 +47,17 @@ bool b2DebugRenderer::init() {
   uint32 flags = 0;
   flags += b2Draw::e_shapeBit;
   flags += b2Draw::e_jointBit;
-  // flags += b2Draw::e_aabbBit;
+  //flags += b2Draw::e_aabbBit;
   flags += b2Draw::e_pairBit;
   flags += b2Draw::e_centerOfMassBit;
   mB2DebugDraw->SetFlags(flags);
-
+  
   return true;
 }
 
+
 void b2DebugRenderer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags) {
-  // Sprite::draw(renderer, transform, flags);
+  //Sprite::draw(renderer, transform, flags);
   _customCmd.init(_globalZOrder, transform, flags);
   _customCmd.func = CC_CALLBACK_0(b2DebugRenderer::onDraw, this, transform, flags);
   renderer->addCommand(&_customCmd);

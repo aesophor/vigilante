@@ -18,6 +18,7 @@ const int kWallFriction = 0;
 
 const int kIconSize = 16;
 
+
 namespace category_bits {
 
 const short kGround = 1;
@@ -36,7 +37,8 @@ const short kMeleeWeapon = 2048;
 const short kProjectile = 4096;
 const short kDestroyed = 8192;
 
-}  // namespace category_bits
+} // namespace category_bits
+
 
 namespace graphical_layers {
 
@@ -60,8 +62,8 @@ const int kShade = 97;
 const int kPauseMenu = 99;
 const int kConsole = 100;
 
-}  // namespace graphical_layers
+} // namespace graphical_layers
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_CONSTANTS_H_
+#endif // VIGILANTE_CONSTANTS_H_

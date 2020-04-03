@@ -16,9 +16,9 @@ class QuestListView : public ListView<Quest*> {
   explicit QuestListView(PauseMenu* pauseMenu);
   virtual ~QuestListView() = default;
 
-  virtual void confirm() override;     // ListView<Quest*>
-  virtual void selectUp() override;    // ListView<Quest*>
-  virtual void selectDown() override;  // ListView<Quest*>
+  virtual void confirm() override; // ListView<Quest*>
+  virtual void selectUp() override; // ListView<Quest*>
+  virtual void selectDown() override; // ListView<Quest*>
 
   void showQuests();
 
@@ -27,6 +27,6 @@ class QuestListView : public ListView<Quest*> {
   cocos2d::Label* _descLabel;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_LIST_VIEW_H_
+#endif // VIGILANTE_QUEST_LIST_VIEW_H_

@@ -14,11 +14,10 @@ class Bot {
 
   virtual void act(float delta);
   void moveToTarget(Character* target);
-  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration,
-                    int maxWaitDuration);
+  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
   void reverseDirection();
-
+  
  private:
   Character* _character;
 
@@ -35,6 +34,6 @@ class Bot {
   float _calculateDistanceTimer;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_BOT_H_
+#endif // VIGILANTE_BOT_H_

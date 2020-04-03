@@ -8,8 +8,8 @@
 #include "skill/MagicalMissile.h"
 #include "util/JsonUtil.h"
 
-using rapidjson::Document;
 using std::string;
+using rapidjson::Document;
 
 namespace vigilante {
 
@@ -24,6 +24,7 @@ Skill* Skill::create(const string& jsonFileName, Character* user) {
     return nullptr;
   }
 }
+
 
 Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName), hotkey() {
   Document json = json_util::parseJson(jsonFileName);
@@ -47,4 +48,4 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   deltaStamina = json["deltaStamina"].GetInt();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

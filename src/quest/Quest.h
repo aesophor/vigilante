@@ -3,8 +3,8 @@
 #define VIGILANTE_QUEST_H_
 
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
 
 #include "Importable.h"
 
@@ -15,11 +15,19 @@ class Quest : public Importable {
   explicit Quest(const std::string& jsonFileName);
   virtual ~Quest();
 
+
   class Objective {
    public:
     virtual ~Objective() = default;
 
-    enum Type { KILL, COLLECT, ESCORT, DELIVERY, TALK_TO, AD_HOC };
+    enum Type {
+      KILL,
+      COLLECT,
+      ESCORT,
+      DELIVERY,
+      TALK_TO,
+      AD_HOC
+    };
 
     virtual bool isCompleted() const = 0;
 
@@ -41,14 +49,16 @@ class Quest : public Importable {
     std::string _desc;
   };
 
+
   struct Stage {
     explicit Stage(Quest::Objective* objective);
     virtual ~Stage() = default;
 
     bool isFinished;
-    std::string questDesc;  // optionally update quest desc when this stage is reached
+    std::string questDesc; // optionally update quest desc when this stage is reached
     Quest::Objective* objective;
   };
+
 
   struct Profile {
     explicit Profile(const std::string& jsonFileName);
@@ -60,8 +70,9 @@ class Quest : public Importable {
     std::vector<Quest::Stage> stages;
   };
 
-  virtual void import(const std::string& jsonFileName) override;  // Importable
 
+  virtual void import(const std::string& jsonFileName) override; // Importable
+  
   void unlock();
   void advanceStage();
 
@@ -77,6 +88,6 @@ class Quest : public Importable {
   int _currentStageIdx;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_H_
+#endif // VIGILANTE_QUEST_H_

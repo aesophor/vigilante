@@ -3,8 +3,8 @@
 
 #include "util/Logger.h"
 
-using cocos2d::Node;
 using cocos2d::Vec2;
+using cocos2d::Node;
 using cocos2d::ui::Layout;
 
 namespace vigilante {
@@ -29,6 +29,7 @@ bool TableLayout::init(float tableWidth, float rowHeight) {
   _nextChildPosition = {0, 0};
   return true;
 }
+
 
 void TableLayout::addChild(Node* child) {
   Layout::addChild(child);
@@ -115,6 +116,7 @@ TableLayout* TableLayout::padBottom(float padding) {
   return this;
 }
 
+
 TableLayout* TableLayout::spaceX(float spacing) {
   _nextChildPosition.x += spacing;
   return this;
@@ -125,6 +127,7 @@ TableLayout* TableLayout::spaceY(float spacing) {
   return this;
 }
 
+
 TableLayout* TableLayout::row(float height) {
   _nextChildPosition.x = 0;
   _nextChildPosition.y -= height;
@@ -134,6 +137,7 @@ TableLayout* TableLayout::row(float height) {
 TableLayout* TableLayout::row() {
   return row(_rowHeight);
 }
+
 
 float TableLayout::getTableWidth() const {
   return _tableWidth;
@@ -155,6 +159,7 @@ float TableLayout::getNextChildPositionY() const {
   return _nextChildPosition.y;
 }
 
+
 void TableLayout::setTableWidth(float tableWidth) {
   _tableWidth = tableWidth;
 }
@@ -175,4 +180,4 @@ void TableLayout::setNextChildPositionY(float y) {
   _nextChildPosition.y = y;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

@@ -8,18 +8,18 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
-using cocos2d::EventKeyboard;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
-using cocos2d::ui::Layout;
 using std::string;
 using std::unique_ptr;
-using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kEmptyImage;
-using vigilante::asset_manager::kEquipmentHighlighted;
-using vigilante::asset_manager::kEquipmentRegular;
-using vigilante::asset_manager::kRegularFontSize;
+using cocos2d::Label;
+using cocos2d::ui::Layout;
+using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using vigilante::asset_manager::kTitleFont;
+using vigilante::asset_manager::kBoldFont;
+using vigilante::asset_manager::kRegularFontSize;
+using vigilante::asset_manager::kEquipmentRegular;
+using vigilante::asset_manager::kEquipmentHighlighted;
+using vigilante::asset_manager::kEmptyImage;
 
 namespace vigilante {
 
@@ -34,8 +34,7 @@ EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     const string& title = Equipment::_kEquipmentTypeStr[i];
     float x = 0;
     float y = -30.0f * i;
-    _equipmentItems.push_back(
-        unique_ptr<EquipmentItem>(new EquipmentItem(parent, title, x, y)));
+    _equipmentItems.push_back(unique_ptr<EquipmentItem>(new EquipmentItem(parent, title, x, y)));
     innerLayout->addChild(_equipmentItems[i]->getLayout());
   }
   _equipmentItems.front()->setSelected(true);
@@ -71,7 +70,7 @@ void EquipmentPane::selectUp() {
 }
 
 void EquipmentPane::selectDown() {
-  if (_current == (int)_equipmentItems.size() - 1) {
+  if (_current == (int) _equipmentItems.size() - 1) {
     return;
   }
   _equipmentItems[_current++]->setSelected(false);
@@ -95,18 +94,18 @@ Equipment::Type EquipmentPane::getSelectedEquipmentType() const {
   return static_cast<Equipment::Type>(_current);
 }
 
+
 const int EquipmentPane::EquipmentItem::_kEquipmentIconSize = 16;
 
-EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string& title,
-                                            float x, float y)
+EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string& title, float x, float y)
     : _parent(parent),
-      _layout(TableLayout::create(300)),  // FIXME: remove this literal
+      _layout(TableLayout::create(300)), // FIXME: remove this literal
       _background(ImageView::create(kEquipmentRegular)),
       _icon(ImageView::create(kEmptyImage)),
       _equipmentTypeLabel(Label::createWithTTF(title, kTitleFont, kRegularFontSize)),
       _equipmentNameLabel(Label::createWithTTF("---", kBoldFont, kRegularFontSize)),
       _equipment() {
-  _icon->setScale((float)_kEquipmentIconSize / kIconSize);
+  _icon->setScale((float) _kEquipmentIconSize / kIconSize);
 
   _background->setAnchorPoint({0, 1});
   _layout->setPosition({x, y});
@@ -151,4 +150,4 @@ Layout* EquipmentPane::EquipmentItem::getLayout() const {
   return _layout;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

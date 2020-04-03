@@ -2,11 +2,11 @@
 #ifndef VIGILANTE_HEADER_PANE_H_
 #define VIGILANTE_HEADER_PANE_H_
 
-#include <string>
 #include <vector>
+#include <string>
 
-#include <2d/CCLabel.h>
 #include <cocos2d.h>
+#include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include "ui/pause_menu/AbstractPane.h"
 
@@ -26,7 +26,13 @@ class HeaderPane : public AbstractPane {
   int getCurrentIndex() const;
 
  private:
-  enum Options { INVENTORY, EQUIPMENT, SKILLS, QUESTS, OPTIONS };
+  enum Options {
+    INVENTORY,
+    EQUIPMENT,
+    SKILLS,
+    QUESTS,
+    OPTIONS
+  };
 
   static const float _kOptionGap;
   static const int _kOptionCount;
@@ -35,6 +41,6 @@ class HeaderPane : public AbstractPane {
   int _currentIndex;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_HEADER_PANE_H_
+#endif // VIGILANTE_HEADER_PANE_H_

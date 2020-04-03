@@ -10,7 +10,9 @@ namespace vigilante {
 
 class CollectItemObjective : public Quest::Objective {
  public:
-  CollectItemObjective(const std::string& desc, const std::string& itemName, int amount = 1);
+  CollectItemObjective(const std::string& desc,
+                       const std::string& itemName,
+                       int amount=1);
   virtual ~CollectItemObjective() = default;
 
   virtual bool isCompleted() const override;
@@ -23,6 +25,6 @@ class CollectItemObjective : public Quest::Objective {
   int _amount;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
+#endif // VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_

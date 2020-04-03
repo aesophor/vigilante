@@ -17,7 +17,14 @@ class HotkeyManager {
   static HotkeyManager* getInstance();
   virtual ~HotkeyManager() = default;
 
-  enum BindableKeys { LEFT_SHIFT, LEFT_CTRL, X, C, V, SIZE };
+  enum BindableKeys {
+    LEFT_SHIFT,
+    LEFT_CTRL,
+    X,
+    C,
+    V,
+    SIZE
+  };
 
   static const std::array<cocos2d::EventKeyboard::KeyCode, BindableKeys::SIZE> _kBindableKeys;
 
@@ -33,6 +40,6 @@ class HotkeyManager {
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_HOTKEY_MANAGER
+#endif // VIGILANTE_HOTKEY_MANAGER

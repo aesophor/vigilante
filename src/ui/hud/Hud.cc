@@ -5,20 +5,20 @@
 #include "Constants.h"
 #include "item/Equipment.h"
 
-using cocos2d::Label;
-using cocos2d::Layer;
-using cocos2d::ui::ImageView;
 using std::string;
 using std::unique_ptr;
-using vigilante::asset_manager::kBarLeftPadding;
-using vigilante::asset_manager::kBarRightPadding;
-using vigilante::asset_manager::kEquippedWeaponBg;
-using vigilante::asset_manager::kEquippedWeaponDescBg;
-using vigilante::asset_manager::kHealthBar;
-using vigilante::asset_manager::kMagickaBar;
+using cocos2d::Layer;
+using cocos2d::Label;
+using cocos2d::ui::ImageView;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
+using vigilante::asset_manager::kBarLeftPadding;
+using vigilante::asset_manager::kBarRightPadding;
+using vigilante::asset_manager::kHealthBar;
+using vigilante::asset_manager::kMagickaBar;
 using vigilante::asset_manager::kStaminaBar;
+using vigilante::asset_manager::kEquippedWeaponBg;
+using vigilante::asset_manager::kEquippedWeaponDescBg;
 
 namespace vigilante {
 
@@ -62,6 +62,7 @@ Hud::Hud()
   _layer->addChild(_equippedWeaponDesc);
 }
 
+
 void Hud::updateEquippedWeapon() {
   // Update equipped weapon.
   Equipment* weapon = _player->getEquipmentSlots()[Equipment::Type::WEAPON];
@@ -86,6 +87,7 @@ void Hud::updateStatusBars() {
   _staminaBar->update(profile.stamina, profile.fullStamina);
 }
 
+
 Layer* Hud::getLayer() const {
   return _layer;
 }
@@ -94,4 +96,4 @@ void Hud::setPlayer(Player* player) {
   _player = player;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

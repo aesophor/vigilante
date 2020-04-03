@@ -11,20 +11,20 @@
 #define LETTERBOX_HEIGHT 50
 #define SUBTITLES_Y 38
 
-using cocos2d::CallFunc;
+using std::string;
+using std::queue;
 using cocos2d::Director;
-using cocos2d::EventKeyboard;
-using cocos2d::Label;
 using cocos2d::Layer;
+using cocos2d::Label;
+using cocos2d::ui::ImageView;
+using cocos2d::EventKeyboard;
 using cocos2d::MoveBy;
 using cocos2d::Sequence;
-using cocos2d::ui::ImageView;
-using std::queue;
-using std::string;
+using cocos2d::CallFunc;
+using vigilante::asset_manager::kShade;
 using vigilante::asset_manager::kDialogueTriangle;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kShade;
 
 namespace vigilante {
 
@@ -60,8 +60,9 @@ Subtitles::Subtitles()
   _layer->setVisible(false);
 }
 
+
 void Subtitles::update(float delta) {
-  if (!_layer->isVisible() || _label->getString().size() == _currentSubtitle.text.size()) {
+  if (!_layer->isVisible() || _label->getString().size()  == _currentSubtitle.text.size()) {
     return;
   }
 
@@ -100,10 +101,12 @@ void Subtitles::beginSubtitles() {
   _layer->setVisible(true);
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-      MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}), CallFunc::create([=]() {
-        _isTransitioning = false;
-        showNextSubtitle();
-      })));
+    MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}),
+    CallFunc::create([=]() {
+      _isTransitioning = false;
+      showNextSubtitle();
+    })
+  ));
 }
 
 void Subtitles::endSubtitles() {
@@ -114,11 +117,13 @@ void Subtitles::endSubtitles() {
   _isTransitioning = true;
   _upperLetterbox->runAction(MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-      MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}), CallFunc::create([=]() {
-        _isTransitioning = false;
-        Hud::getInstance()->getLayer()->setVisible(true);
-        _layer->setVisible(false);
-      })));
+    MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}),
+    CallFunc::create([=]() {
+      _isTransitioning = false;
+      Hud::getInstance()->getLayer()->setVisible(true);
+      _layer->setVisible(false);
+    })
+  ));
 }
 
 void Subtitles::showNextSubtitle() {
@@ -144,19 +149,21 @@ void Subtitles::showNextSubtitle() {
     Console::getInstance()->executeCmd(cmd);
   }
 
-  if (currentDialogue->children.empty()) {  // end of dialogue
+  if (currentDialogue->children.empty()) { // end of dialogue
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
-  } else {  // still has children dialogue
+  } else { // still has children dialogue
     dialogueMenu->getDialogueListView()->setObjects(currentDialogue->children);
     dialogueMenu->getLayer()->setVisible(true);
   }
 }
 
+
 Layer* Subtitles::getLayer() const {
   return _layer;
 }
 
+
 Subtitles::Subtitle::Subtitle(const string& text) : text(text) {}
 
-}  // namespace vigilante
+} // namespace vigilante

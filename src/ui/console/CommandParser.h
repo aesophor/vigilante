@@ -3,8 +3,8 @@
 #define VIGILANTE_COMMAND_PARSER_H_
 
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
 
 namespace vigilante {
 
@@ -28,6 +28,6 @@ class CommandParser {
   std::string _errMsg;
 };
 
-}  // namespace vigilante
+} // namespace vigilante
 
-#endif  // VIGILANTE_COMMAND_PARSER_H_
+#endif // VIGILANTE_COMMAND_PARSER_H_

@@ -9,8 +9,13 @@ using std::string;
 
 namespace vigilante {
 
-CollectItemObjective::CollectItemObjective(const string& desc, const string& itemName, int amount)
-    : Quest::Objective(Quest::Objective::Type::COLLECT, desc), _itemName(itemName), _amount(amount) {}
+CollectItemObjective::CollectItemObjective(const string& desc,
+                                           const string& itemName,
+                                           int amount)
+    : Quest::Objective(Quest::Objective::Type::COLLECT, desc),
+      _itemName(itemName),
+      _amount(amount) {}
+
 
 bool CollectItemObjective::isCompleted() const {
   return GameMapManager::getInstance()->getPlayer()->getItemAmount(_itemName) >= _amount;
@@ -24,4 +29,4 @@ int CollectItemObjective::getAmount() const {
   return _amount;
 }
 
-}  // namespace vigilante
+} // namespace vigilante

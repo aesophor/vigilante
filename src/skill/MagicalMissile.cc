@@ -7,29 +7,29 @@
 #include "Constants.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
-#include "util/CallbackUtil.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/CallbackUtil.h"
 
+using std::string;
+using std::function;
+using cocos2d::FileUtils;
+using cocos2d::Vector;
+using cocos2d::Director;
 using cocos2d::Action;
 using cocos2d::Animate;
-using cocos2d::Animation;
 using cocos2d::CallFunc;
-using cocos2d::Director;
-using cocos2d::EventKeyboard;
-using cocos2d::FileUtils;
+using cocos2d::Sequence;
 using cocos2d::Repeat;
 using cocos2d::RepeatForever;
-using cocos2d::Sequence;
 using cocos2d::Sprite;
-using cocos2d::SpriteBatchNode;
 using cocos2d::SpriteFrame;
+using cocos2d::SpriteBatchNode;
 using cocos2d::SpriteFrameCache;
-using cocos2d::Vector;
-using std::function;
-using std::string;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kPlayer;
+using cocos2d::Animation;
+using cocos2d::EventKeyboard;
 using vigilante::category_bits::kProjectile;
+using vigilante::category_bits::kPlayer;
+using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kWall;
 
 namespace vigilante {
@@ -41,6 +41,7 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
       _hasActivated(),
       _hasHit(),
       _launchFxSprite() {}
+
 
 void MagicalMissile::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -59,7 +60,7 @@ void MagicalMissile::showOnMap(float x, float y) {
 
 void MagicalMissile::update(float delta) {
   DynamicActor::update(delta);
-
+  
   // If _body goes out of map, then we can delete this object.
   float x = _body->GetPosition().x * kPpm;
   float y = _body->GetPosition().y * kPpm;
@@ -69,6 +70,7 @@ void MagicalMissile::update(float delta) {
     onHit(nullptr);
   }
 }
+
 
 int MagicalMissile::getDamage() const {
   return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
@@ -87,10 +89,12 @@ void MagicalMissile::onHit(Character* target) {
   _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
 
   _bodySprite->runAction(Sequence::createWithTwoActions(
-      Animate::create(_bodyAnimations[AnimationType::ON_HIT]), CallFunc::create([=]() {
-        removeFromMap();
-        delete this;
-      })));
+    Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
+    CallFunc::create([=]() {
+      removeFromMap();
+      delete this;
+    })
+  ));
 
   if (target) {
     bool isFacingRight = _body->GetLinearVelocity().x > 0;
@@ -100,6 +104,7 @@ void MagicalMissile::onHit(Character* target) {
     _user->inflictDamage(target, getDamage());
   }
 }
+
 
 void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
@@ -153,9 +158,13 @@ void MagicalMissile::activate() {
   _launchFxSprite->setPosition(x, y);
 
   _launchFxSprite->runAction(Sequence::createWithTwoActions(
-      Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
-      CallFunc::create([=]() { _bodySpritesheet->removeChild(_launchFxSprite, true); })));
+    Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
+    CallFunc::create([=]() {
+      _bodySpritesheet->removeChild(_launchFxSprite, true);
+    })
+  ));
 }
+
 
 Skill::Profile& MagicalMissile::getSkillProfile() {
   return _skillProfile;
@@ -173,6 +182,7 @@ string MagicalMissile::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
 }
 
+
 void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   float spellOffset = _user->getCharacterProfile().attackRange / kPpm;
   spellOffset = (_user->isFacingRight()) ? spellOffset : -spellOffset;
@@ -180,20 +190,22 @@ void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short m
   b2World* world = _user->getBody()->GetWorld();
   b2BodyBuilder bodyBuilder(world);
 
-  _body = bodyBuilder.type(bodyType).position(x + spellOffset, y, 1).buildBody();
+  _body = bodyBuilder.type(bodyType)
+    .position(x + spellOffset, y, 1)
+    .buildBody();
 
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   b2Vec2 vertices[4];
-  vertices[0] = {-10.0f / scaleFactor, 0.0f / scaleFactor};
-  vertices[1] = {0.0f / scaleFactor, -2.0f / scaleFactor};
-  vertices[2] = {10.0f / scaleFactor, 0.0f / scaleFactor};
-  vertices[3] = {0.0f / scaleFactor, 2.0f / scaleFactor};
+  vertices[0] = {-10.0f / scaleFactor,  0.0f / scaleFactor};
+  vertices[1] = {  0.0f / scaleFactor, -2.0f / scaleFactor};
+  vertices[2] = { 10.0f / scaleFactor,  0.0f / scaleFactor};
+  vertices[3] = {  0.0f / scaleFactor,  2.0f / scaleFactor};
 
   _fixtures[0] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
-                     .categoryBits(categoryBits)
-                     .maskBits(maskBits)
-                     .setUserData(this)
-                     .buildFixture();
+    .categoryBits(categoryBits)
+    .maskBits(maskBits)
+    .setUserData(this)
+    .buildFixture();
 }
 
 void MagicalMissile::defineTexture(const string& textureResDir, float x, float y) {
@@ -209,10 +221,10 @@ void MagicalMissile::defineTexture(const string& textureResDir, float x, float y
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
   _bodySprite->setPosition(x, y);
-
+  
   _bodySpritesheet->addChild(_launchFxSprite);
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters();
 }
 
-}  // namespace vigilante
+} // namespace vigilante

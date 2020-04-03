@@ -2,11 +2,11 @@
 #include "Logger.h"
 
 extern "C" {
-#include <execinfo.h>  // backtrace*
-#include <fcntl.h>     // open
-#include <signal.h>    // signal
-#include <stdlib.h>    // exit
-#include <unistd.h>    // close
+#include <execinfo.h> // backtrace*
+#include <signal.h> // signal
+#include <stdlib.h> // exit
+#include <unistd.h> // close
+#include <fcntl.h> // open
 }
 
 #define NUM_STACKTRACE_FUNC 10
@@ -27,6 +27,6 @@ void segvHandler(int) {
   exit(EXIT_FAILURE);
 }
 
-}  // namespace logger
+} // namespace logger
 
-}  // namespace vigilante
+} // namespace vigilante
