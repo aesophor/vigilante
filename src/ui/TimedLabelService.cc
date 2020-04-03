@@ -36,11 +36,11 @@ void TimedLabelService::update(float delta) {
     notification.timer += delta;
 
     if (notification.timer >= notification.lifetime) {
-      notification.label->runAction(Sequence::createWithTwoActions(
-          FadeOut::create(_kFadeDuration), CallFunc::create([=]() {
-            // After the label fully fades out, remove the label from _layer.
-            _layer->removeChild(notification.label);
-          })));
+      notification.label->runAction(
+          Sequence::createWithTwoActions(FadeOut::create(_kFadeDuration), CallFunc::create([=]() {
+                                           // After the label fully fades out, remove the label from _layer.
+                                           _layer->removeChild(notification.label);
+                                         })));
       // Also remove the notification object from _labelQueue.
       auto& q = _labelQueue;
       q.erase(std::remove(q.begin(), q.end(), notification), q.end());
@@ -74,15 +74,11 @@ Layer* TimedLabelService::getLayer() const {
 }
 
 const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kLeft = {0, 1};
-const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kCenter = {0.5,
-                                                                                         1};
+const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kCenter = {0.5, 1};
 const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kRight = {1, 1};
 
-TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime,
-                                          TimedLabel::Alignment alignment)
-    : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
-      lifetime(lifetime),
-      timer() {
+TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime, TimedLabel::Alignment alignment)
+    : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)), lifetime(lifetime), timer() {
   label->setAnchorPoint(alignment);
   label->getFontAtlas()->setAliasTexParameters();
   label->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));

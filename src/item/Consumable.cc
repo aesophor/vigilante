@@ -9,8 +9,7 @@ using std::string;
 
 namespace vigilante {
 
-Consumable::Consumable(const string& jsonFileName)
-    : Item(jsonFileName), _consumableProfile(jsonFileName) {}
+Consumable::Consumable(const string& jsonFileName) : Item(jsonFileName), _consumableProfile(jsonFileName) {}
 
 void Consumable::import(const string& jsonFileName) {
   Item::import(jsonFileName);

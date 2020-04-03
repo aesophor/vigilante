@@ -38,8 +38,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual std::string getIconPath() const override;     // Skill
 
  private:
-  virtual void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x,
-                          float y);
+  virtual void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
   virtual void defineTexture(const std::string& textureResPath, float x, float y);
 
   Skill::Profile _skillProfile;

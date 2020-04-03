@@ -64,8 +64,7 @@ void TextField::handleInput() {
     }
 
     auto inputMgr = InputManager::getInstance();
-    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(),
-                                          inputMgr->isShiftPressed());
+    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(), inputMgr->isShiftPressed());
     if (c != 0x00) {
       _buffer += c;
       _label->setString(_buffer + CURSOR_CHAR);

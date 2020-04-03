@@ -79,8 +79,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     }
     // Set enemy as player's current target (so player can inflict damage to enemy).
     case category_bits::kMeleeWeapon | category_bits::kEnemy: {
-      b2Fixture* weaponFixture =
-          GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (weaponFixture && enemyFixture) {
@@ -90,8 +89,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 
         // If player is using skill (e.g., forward slash), than inflict damage
         // when an enemy contacts player's weapon fixture.
-        if (player->isUsingSkill() &&
-            dynamic_cast<ForwardSlash*>(player->getCurrentlyUsedSkill())) {
+        if (player->isUsingSkill() && dynamic_cast<ForwardSlash*>(player->getCurrentlyUsedSkill())) {
           int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
           player->inflictDamage(enemy, player->getDamageOutput() + skillDmg);
         }
@@ -100,8 +98,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     }
     // Set player as enemy's current target (so enemy can inflict damage to player).
     case category_bits::kMeleeWeapon | category_bits::kPlayer: {
-      b2Fixture* weaponFixture =
-          GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
       b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
 
       if (weaponFixture && playerFixture) {
@@ -143,8 +140,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     // character.
     case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* objFixture =
-          GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
+      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
 
       if (feetFixture && objFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
@@ -175,8 +171,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     }
     // When a project tile hits an enemy, play onHitAnimation and inflict damage.
     case category_bits::kProjectile | category_bits::kEnemy: {
-      b2Fixture* projectileFixture =
-          GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
+      b2Fixture* projectileFixture = GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (projectileFixture && enemyFixture) {
@@ -225,8 +220,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     // Clear player's current target (so player cannot inflict damage to enemy from a
     // distance).
     case category_bits::kMeleeWeapon | category_bits::kEnemy: {
-      b2Fixture* weaponFixture =
-          GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (weaponFixture && enemyFixture) {
@@ -238,8 +232,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     }
     // Clear enemy's current target (so enemy cannot inflict damage to player from a distance).
     case category_bits::kMeleeWeapon | category_bits::kPlayer: {
-      b2Fixture* weaponFixture =
-          GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
       b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
 
       if (weaponFixture && playerFixture) {
@@ -275,8 +268,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     // When a character leaves an interactable object, clear it from the character.
     case category_bits::kFeet | category_bits::kInteractableObject: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* objFixture =
-          GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
+      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
 
       if (feetFixture && objFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());

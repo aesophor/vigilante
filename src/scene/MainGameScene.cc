@@ -110,10 +110,8 @@ bool MainGameScene::init() {
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
-  _gameMapManager->getPlayer()->addItem(
-      Item::create("Resources/Database/item/equipment/short_sword.json"));
-  _gameMapManager->getPlayer()->addItem(
-      Item::create("Resources/Database/item/equipment/royal_cape.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
@@ -127,12 +125,9 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(
-      Skill::create("Resources/Database/skill/back_dash.json", player));
-  player->getSkills().push_back(
-      Skill::create("Resources/Database/skill/forward_slash.json", player));
-  player->getSkills().push_back(
-      Skill::create("Resources/Database/skill/ice_spike.json", player));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
+  player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
 
   // player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
   //_console->executeCmd("startquest Resources/Database/quest/main/main01.json");
@@ -168,8 +163,7 @@ void MainGameScene::update(float delta) {
   _dialogueManager->update(delta);
   _console->update(delta);
 
-  vigilante::camera_util::lerpToTarget(_gameCamera,
-                                       _gameMapManager->getPlayer()->getBody()->GetPosition());
+  vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }

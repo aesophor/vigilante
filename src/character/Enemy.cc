@@ -42,8 +42,7 @@ using vigilante::category_bits::kWall;
 
 namespace vigilante {
 
-Enemy::Enemy(const string& jsonFileName)
-    : Character(jsonFileName), Bot(this), _enemyProfile(jsonFileName) {}
+Enemy::Enemy(const string& jsonFileName) : Character(jsonFileName), Bot(this), _enemyProfile(jsonFileName) {}
 
 void Enemy::update(float delta) {
   Character::update(delta);
@@ -62,8 +61,7 @@ void Enemy::showOnMap(float x, float y) {
   short bodyMaskBits = kFeet | kPlayer | kMeleeWeapon | kCliffMarker | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kInteractableObject;
   short weaponMaskBits = kPlayer;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits,
-             weaponMaskBits, x, y);
+  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
@@ -72,8 +70,7 @@ void Enemy::showOnMap(float x, float y) {
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
       Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type],
-                                  graphical_layers::kEquipment - type);
+      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
 }
@@ -93,8 +90,7 @@ void Enemy::receiveDamage(Character* source, int damage) {
     int& sourceCharacterLevel = source->getCharacterProfile().level;
 
     sourceCharacterExp += getCharacterProfile().exp;
-    Notifications::getInstance()->show("Acquired " +
-                                       std::to_string(getCharacterProfile().exp) + " exp.");
+    Notifications::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
 
     while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
       sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
@@ -117,8 +113,7 @@ void Enemy::receiveDamage(Character* source, int damage) {
               float x = _body->GetPosition().x;
               float y = _body->GetPosition().y;
               int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-              GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm,
-                                                                     y * kPpm, amount);
+              GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
             }
           }
         },

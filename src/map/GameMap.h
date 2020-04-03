@@ -22,8 +22,8 @@ class GameMap {
  public:
   class Portal : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFileName, int targetPortalId,
-           bool willInteractOnContact, b2Body* body);
+    Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact,
+           b2Body* body);
     virtual ~Portal();
     virtual void onInteract(Character* user) override;    // Interactable
     virtual bool willInteractOnContact() const override;  // Interactable
@@ -58,10 +58,8 @@ class GameMap {
   float getHeight() const;
 
  private:
-  void createRectangles(const std::string& layerName, short categoryBits, bool collidable,
-                        float friction);
-  void createPolylines(const std::string& layerName, short categoryBits, bool collidable,
-                       float friction);
+  void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
+  void createPolylines(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPortals();
   void createNpcs();
   void createEnemies();

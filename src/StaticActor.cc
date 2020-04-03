@@ -84,7 +84,7 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
   }
   fileUtils->setPopupNotify(true);  // re-enable CCLOG
 
-  // If there are no frames in the corresponding directory, fallback to IDLE_SHEATHED.
+  // If there are no frames in the corresponding directory, fallback to the given animation.
   if (frameCount == 0) {
     if (fallback) {
       return fallback;

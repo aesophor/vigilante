@@ -64,10 +64,10 @@ void boundCamera(Camera* camera, GameMap* gameMap) {
 void lerpToTarget(Camera* camera, const b2Vec2& target) {
   auto winSize = Director::getInstance()->getWinSize();
   Vec2 position = camera->getPosition();
-  position.x = camera->getPositionX() +
-      ((target.x * kPpm - winSize.width / 2) - camera->getPositionX()) * .1f;
-  position.y = camera->getPositionY() +
-      ((target.y * kPpm - winSize.height / 2) - camera->getPositionY()) * .1f;
+  position.x =
+      camera->getPositionX() + ((target.x * kPpm - winSize.width / 2) - camera->getPositionX()) * .1f;
+  position.y =
+      camera->getPositionY() + ((target.y * kPpm - winSize.height / 2) - camera->getPositionY()) * .1f;
   camera->setPosition(position);
 }
 

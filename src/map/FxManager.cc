@@ -24,8 +24,7 @@ namespace vigilante {
 
 FxManager::FxManager(Layer* gameMapLayer) : _gameMapLayer(gameMapLayer) {}
 
-void FxManager::createFx(const string& textureResDir, const string& framesName, float x,
-                         float y) {
+void FxManager::createFx(const string& textureResDir, const string& framesName, float x, float y) {
   // If the cocos2d::Animation* is not present in cache, then create one
   // and cache this animation object.
   //
@@ -37,14 +36,12 @@ void FxManager::createFx(const string& textureResDir, const string& framesName, 
   string cacheKey = textureResDir + "/" + framesNamePrefix + "_" + framesName;
 
   if (_animationCache.find(cacheKey) == _animationCache.end()) {
-    Animation* animation =
-        StaticActor::createAnimation(textureResDir, framesName, 10.0f / kPpm);
+    Animation* animation = StaticActor::createAnimation(textureResDir, framesName, 10.0f / kPpm);
     _animationCache.insert({cacheKey, animation});
   }
 
   // Select the first frame (e.g., dust_white/0.png) as the default look of the sprite.
-  Sprite* sprite =
-      Sprite::createWithSpriteFrameName(framesNamePrefix + "_" + framesName + "/0.png");
+  Sprite* sprite = Sprite::createWithSpriteFrameName(framesNamePrefix + "_" + framesName + "/0.png");
   sprite->setPosition(x, y);
 
   string spritesheetFileName = FxManager::getSpritesheetFileName(textureResDir);

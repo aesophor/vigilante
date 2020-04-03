@@ -44,8 +44,7 @@ void InputManager::activate(Scene* scene) {
     _pressedKeys.erase(keyCode);
   };
 
-  _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr,
-                                                                       scene);
+  _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr, scene);
 }
 
 void InputManager::deactivate() {

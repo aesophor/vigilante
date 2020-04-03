@@ -54,8 +54,7 @@ void MagicalMissile::showOnMap(float x, float y) {
   defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
 
   defineTexture(_skillProfile.textureResDir, x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet,
-                                                      graphical_layers::kSpell);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
 }
 
 void MagicalMissile::update(float delta) {
@@ -174,8 +173,7 @@ string MagicalMissile::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
 }
 
-void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short maskBits,
-                                float x, float y) {
+void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   float spellOffset = _user->getCharacterProfile().attackRange / kPpm;
   spellOffset = (_user->isFacingRight()) ? spellOffset : -spellOffset;
 
@@ -201,12 +199,9 @@ void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short m
 void MagicalMissile::defineTexture(const string& textureResDir, float x, float y) {
   _bodySpritesheet = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
 
-  _bodyAnimations[AnimationType::LAUNCH_FX] =
-      createAnimation(textureResDir, "launch", 5.0f / kPpm);
-  _bodyAnimations[AnimationType::FLYING] =
-      createAnimation(textureResDir, "flying", 1.0f / kPpm);
-  _bodyAnimations[AnimationType::ON_HIT] =
-      createAnimation(textureResDir, "on_hit", 8.0f / kPpm);
+  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResDir, "launch", 5.0f / kPpm);
+  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResDir, "flying", 1.0f / kPpm);
+  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResDir, "on_hit", 8.0f / kPpm);
 
   // Select a frame as default look for this sprite.
   string frameNamePrefix = StaticActor::getLastDirName(textureResDir);

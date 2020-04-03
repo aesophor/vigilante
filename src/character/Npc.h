@@ -35,8 +35,8 @@ class Npc : public Character, public Bot, public Interactable {
   DialogueTree& getDialogueTree();
 
  private:
-  void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
-                  short feetMaskBits, short weaponMaskBits, float x, float y) override;
+  void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits, short feetMaskBits,
+                  short weaponMaskBits, float x, float y) override;
 
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;

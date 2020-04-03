@@ -60,8 +60,7 @@ void Item::import(const string& jsonFileName) {
   _itemProfile = Item::Profile(jsonFileName);
 }
 
-void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x,
-                      float y) {
+void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
   _body = bodyBuilder.type(bodyType).position(x, y, kPpm).buildBody();

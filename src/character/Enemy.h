@@ -23,8 +23,7 @@ class Enemy : public Character, public Bot {
       int minAmount;
       int maxAmount;
     };
-    std::unordered_map<std::string, DroppedItemData>
-        droppedItems;  // <json, {chance, minAmount, maxAmount}>
+    std::unordered_map<std::string, DroppedItemData> droppedItems;  // <json, {chance, minAmount, maxAmount}>
   };
 
   explicit Enemy(const std::string& jsonFileName);

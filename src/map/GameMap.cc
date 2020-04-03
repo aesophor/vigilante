@@ -31,10 +31,7 @@ using std::vector;
 namespace vigilante {
 
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
-    : _world(world),
-      _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
-      _dynamicActors(),
-      _portals() {}
+    : _world(world), _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)), _dynamicActors(), _portals() {}
 
 void GameMap::createObjects() {
   // Create box2d objects from layers.
@@ -107,14 +104,12 @@ Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
 
   float offsetX = rand_util::randFloat(-.3f, .3f);
   float offsetY = 3.0f;
-  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(),
-                                      true);
+  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
 
   return item;
 }
 
-void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable,
-                               float friction) {
+void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
   // log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
 
@@ -127,9 +122,8 @@ void GameMap::createRectangles(const string& layerName, short categoryBits, bool
 
     b2BodyBuilder bodyBuilder(_world);
 
-    b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
-                       .position(x + w / 2, y + h / 2, kPpm)
-                       .buildBody();
+    b2Body* body =
+        bodyBuilder.type(b2BodyType::b2_staticBody).position(x + w / 2, y + h / 2, kPpm).buildBody();
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
         .categoryBits(categoryBits)
@@ -141,8 +135,7 @@ void GameMap::createRectangles(const string& layerName, short categoryBits, bool
   }
 }
 
-void GameMap::createPolylines(const string& layerName, short categoryBits, bool collidable,
-                              float friction) {
+void GameMap::createPolylines(const string& layerName, short categoryBits, bool collidable, float friction) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
   for (auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
@@ -160,8 +153,7 @@ void GameMap::createPolylines(const string& layerName, short categoryBits, bool 
 
     b2BodyBuilder bodyBuilder(_world);
 
-    b2Body* body =
-        bodyBuilder.type(b2BodyType::b2_staticBody).position(0, 0, kPpm).buildBody();
+    b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody).position(0, 0, kPpm).buildBody();
 
     bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPpm)
         .categoryBits(categoryBits)
@@ -186,13 +178,11 @@ void GameMap::createPortals() {
 
     b2BodyBuilder bodyBuilder(_world);
 
-    b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
-                       .position(x + w / 2, y + h / 2, kPpm)
-                       .buildBody();
+    b2Body* body =
+        bodyBuilder.type(b2BodyType::b2_staticBody).position(x + w / 2, y + h / 2, kPpm).buildBody();
 
     // This portal object will be deleted at GameMap::~GameMap()
-    Portal* portal =
-        new Portal(targetTmxMapFilePath, targetPortalId, willInteractOnContact, body);
+    Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, willInteractOnContact, body);
     _portals.push_back(portal);
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
@@ -246,8 +236,8 @@ void GameMap::createChests() {
   }
 }
 
-GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
-                        bool willInteractOnContact, b2Body* body)
+GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact,
+                        b2Body* body)
     : _targetTmxMapFileName(targetTmxMapFileName),
       _targetPortalId(targetPortalId),
       _willInteractOnContact(willInteractOnContact),
@@ -267,8 +257,7 @@ void GameMap::Portal::onInteract(Character* user) {
         auto gmMgr = GameMapManager::getInstance();
         gmMgr->loadGameMap(targetTmxMapFileName);
 
-        auto pos =
-            gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+        auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
         user->setPosition(pos.x, pos.y);
       }),
       FadeOut::create(Shade::_kFadeOutTime), nullptr));

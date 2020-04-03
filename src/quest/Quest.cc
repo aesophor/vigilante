@@ -15,8 +15,7 @@ using std::vector;
 
 namespace vigilante {
 
-Quest::Quest(const string& jsonFileName)
-    : _questProfile(jsonFileName), _isUnlocked(), _currentStageIdx(-1) {}
+Quest::Quest(const string& jsonFileName) : _questProfile(jsonFileName), _isUnlocked(), _currentStageIdx(-1) {}
 
 Quest::~Quest() {
   for (const auto& stage : _questProfile.stages) {
@@ -40,8 +39,7 @@ void Quest::advanceStage() {
   if (_currentStageIdx >= 0) {
     switch (getCurrentStage().objective->getObjectiveType()) {
       case Quest::Objective::Type::KILL: {
-        KillTargetObjective* objective =
-            dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
+        KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
         KillTargetObjective::removeRelatedObjective(objective->getCharacterName(), objective);
         break;
       }
@@ -56,8 +54,7 @@ void Quest::advanceStage() {
   if (!isCompleted()) {
     switch (getCurrentStage().objective->getObjectiveType()) {
       case Quest::Objective::Type::KILL: {
-        KillTargetObjective* objective =
-            dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
+        KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
         KillTargetObjective::addRelatedObjective(objective->getCharacterName(), objective);
         break;
       }
@@ -131,8 +128,7 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
       case Quest::Objective::Type::KILL: {
         string characterName = stageJson["objective"]["characterName"].GetString();
         int targetAmount = stageJson["objective"]["targetAmount"].GetInt();
-        Objective* objective =
-            new KillTargetObjective(objectiveDesc, characterName, targetAmount);
+        Objective* objective = new KillTargetObjective(objectiveDesc, characterName, targetAmount);
         stages.push_back(Stage(objective));
         break;
       }

@@ -83,8 +83,7 @@ class ListView {
   std::deque<T> _objects;
   std::function<void(ListViewItem*, bool)>
       _setSelectedCallback;  // called at the end of ListViewItem::setSelected()
-  std::function<void(ListViewItem*, T)>
-      _setObjectCallback;  // called at the end of ListViewItem::setObject()
+  std::function<void(ListViewItem*, T)> _setObjectCallback;  // called at the end of ListViewItem::setObject()
 
   uint8_t _visibleItemCount;
   uint32_t _width;
@@ -190,8 +189,7 @@ void ListView<T>::showFrom(int index) {
     if (_objects.size() <= _visibleItemCount) {
       _scrollBar->setVisible(false);
     } else {
-      _scrollBar->setScaleY(((float)_visibleItemCount / _objects.size()) *
-                            SCROLL_BAR_MAX_SCALE_Y);
+      _scrollBar->setScaleY(((float)_visibleItemCount / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
       _scrollBar->setPositionY(((float)-index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
       _scrollBar->setVisible(true);
     }
@@ -260,8 +258,8 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
       _layout(TableLayout::create(parent->_width)),
       _background(cocos2d::ui::ImageView::create(parent->_regularBg)),
       _icon(cocos2d::ui::ImageView::create(asset_manager::kEmptyImage)),
-      _label(cocos2d::Label::createWithTTF("---", asset_manager::kRegularFont,
-                                           asset_manager::kRegularFontSize)),
+      _label(
+          cocos2d::Label::createWithTTF("---", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
       _object() {
   _icon->setScale((float)_kListViewIconSize / kIconSize);
 

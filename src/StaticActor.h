@@ -44,7 +44,7 @@ class StaticActor {
                                              std::string framesName, float interval,
                                              cocos2d::Animation* fallback = nullptr);
 
-  // The texture resources under Resources/Texture/ has the following rules:
+  // The texture resources under res/Texture/ has the following rules:
   //
   // Texture/character/player/player_attacking/0.png
   // |______________________| |____| |_______| |___|

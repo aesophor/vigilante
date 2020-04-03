@@ -65,8 +65,7 @@ void Npc::showOnMap(float x, float y) {
   short bodyMaskBits = kFeet | kMeleeWeapon | kCliffMarker | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kPortal | kInteractableObject;
   short weaponMaskBits = kPlayer | kEnemy | kNpc;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits,
-             weaponMaskBits, x, y);
+  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
@@ -75,16 +74,14 @@ void Npc::showOnMap(float x, float y) {
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
       Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type],
-                                  graphical_layers::kEquipment - type);
+      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
 }
 
-void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
-                     short feetMaskBits, short weaponMaskBits, float x, float y) {
-  Character::defineBody(bodyType, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits,
-                        x, y);
+void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits, short feetMaskBits,
+                     short weaponMaskBits, float x, float y) {
+  Character::defineBody(bodyType, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
   // Besides the original fixtures created in Character::defineBody(),
   // create one extra fixture which can collide with player's feetFixture,

@@ -14,8 +14,7 @@ class FxManager {
   explicit FxManager(cocos2d::Layer* gameMapLayer);
   virtual ~FxManager() = default;
 
-  void createFx(const std::string& textureResDir, const std::string& framesName, float x,
-                float y);
+  void createFx(const std::string& textureResDir, const std::string& framesName, float x, float y);
 
  private:
   static std::string getSpritesheetFileName(const std::string& textureResDir);

@@ -24,8 +24,7 @@ class InputManager {
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
-  using OnKeyPressedEvLstnr =
-      std::function<void(cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
+  using OnKeyPressedEvLstnr = std::function<void(cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
   void pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr);
   void popEvLstnr();
 

@@ -66,11 +66,9 @@ void Player::showOnMap(float x, float y) {
   // Construct b2Body and b2Fixtures
   short bodyCategoryBits = kPlayer;
   short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
-  short feetMaskBits =
-      kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
+  short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
   short weaponMaskBits = kEnemy;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits,
-             weaponMaskBits, x, y);
+  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
@@ -79,8 +77,7 @@ void Player::showOnMap(float x, float y) {
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
       Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type],
-                                  graphical_layers::kEquipment - type);
+      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
 }
@@ -107,8 +104,7 @@ void Player::removeFromMap() {
 }
 
 void Player::handleInput() {
-  if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon ||
-      _isUnsheathingWeapon) {
+  if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
     return;
   }
 
@@ -146,8 +142,7 @@ void Player::handleInput() {
   }
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
-    if (_equipmentSlots[Equipment::Type::WEAPON] && _isWeaponSheathed &&
-        !_isUnsheathingWeapon) {
+    if (_equipmentSlots[Equipment::Type::WEAPON] && _isWeaponSheathed && !_isUnsheathingWeapon) {
       unsheathWeapon();
     } else if (!_isWeaponSheathed && !_isSheathingWeapon) {
       sheathWeapon();
@@ -172,9 +167,8 @@ void Player::handleInput() {
       string itemName = item->getItemProfile().name;
       int amount = item->getAmount();
       pickupItem(item);
-      Notifications::getInstance()->show(
-          "Acquired item: " + itemName +
-          ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
+      Notifications::getInstance()->show("Acquired item: " + itemName +
+                                         ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
     }
   }
 

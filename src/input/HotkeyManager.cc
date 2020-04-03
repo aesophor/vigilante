@@ -13,11 +13,9 @@ namespace vigilante {
 
 HotkeyManager* HotkeyManager::_instance = nullptr;
 
-const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE>
-    HotkeyManager::_kBindableKeys = {
-        {EventKeyboard::KeyCode::KEY_LEFT_SHIFT, EventKeyboard::KeyCode::KEY_LEFT_CTRL,
-         EventKeyboard::KeyCode::KEY_X, EventKeyboard::KeyCode::KEY_C,
-         EventKeyboard::KeyCode::KEY_V}};
+const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyManager::_kBindableKeys = {
+    {EventKeyboard::KeyCode::KEY_LEFT_SHIFT, EventKeyboard::KeyCode::KEY_LEFT_CTRL,
+     EventKeyboard::KeyCode::KEY_X, EventKeyboard::KeyCode::KEY_C, EventKeyboard::KeyCode::KEY_V}};
 
 HotkeyManager* HotkeyManager::getInstance() {
   if (!_instance) {
