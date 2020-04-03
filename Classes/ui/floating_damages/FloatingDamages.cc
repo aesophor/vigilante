@@ -5,15 +5,15 @@
 #include "Constants.h"
 #include "character/Character.h"
 
-using std::map;
-using std::deque;
-using std::string;
-using cocos2d::Layer;
-using cocos2d::Label;
-using cocos2d::MoveBy;
-using cocos2d::FadeOut;
 using cocos2d::CallFunc;
+using cocos2d::FadeOut;
+using cocos2d::Label;
+using cocos2d::Layer;
+using cocos2d::MoveBy;
 using cocos2d::Sequence;
+using std::deque;
+using std::map;
+using std::string;
 using vigilante::kPpm;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
@@ -37,23 +37,22 @@ FloatingDamages* FloatingDamages::getInstance() {
 
 FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
 
-
 void FloatingDamages::update(float delta) {
   deque<map<Character*, deque<DamageLabel>>::iterator> trash;
 
   auto it = _damageMap.begin();
-  for (auto& characterDmgs : _damageMap) { // map<Character*, deque<FloatingDamage>>
-    for (auto& dmg : characterDmgs.second) { // FloatingDamage
+  for (auto& characterDmgs : _damageMap) {    // map<Character*, deque<FloatingDamage>>
+    for (auto& dmg : characterDmgs.second) {  // FloatingDamage
       dmg.timer += delta;
 
       if (dmg.timer >= dmg.lifetime) {
-        dmg.label->runAction(Sequence::createWithTwoActions(
-          FadeOut::create(kFadeDuration),
-          CallFunc::create([=]() {
-            // After the label fully fades out, remove the label from _layer.
-            _layer->removeChild(dmg.label);
-          })
-        ));
+        dmg.label->runAction(Sequence::createWithTwoActions(FadeOut::create(kFadeDuration),
+                                                            CallFunc::create([=]() {
+                                                              // After the label fully fades
+                                                              // out, remove the label from
+                                                              // _layer.
+                                                              _layer->removeChild(dmg.label);
+                                                            })));
         // Also remove the FloatingDamage object from _damageMap.
         auto& q = _damageMap[characterDmgs.first];
         q.erase(std::remove(q.begin(), q.end(), dmg), q.end());
@@ -100,7 +99,6 @@ Layer* FloatingDamages::getLayer() const {
   return _layer;
 }
 
-
 FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
     : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       lifetime(lifetime),
@@ -108,8 +106,8 @@ FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
   label->getFontAtlas()->setAliasTexParameters();
 }
 
-bool FloatingDamages::DamageLabel::operator== (const DamageLabel& other) {
+bool FloatingDamages::DamageLabel::operator==(const DamageLabel& other) {
   return this->label == other.label;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

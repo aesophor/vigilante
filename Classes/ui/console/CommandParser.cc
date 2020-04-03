@@ -5,16 +5,18 @@
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 #include "ui/notifications/Notifications.h"
-#include "util/StringUtil.h"
 #include "util/Logger.h"
+#include "util/StringUtil.h"
 
 #define DEFAULT_ERR_MSG "unable to parse this line"
 
+using std::invalid_argument;
+using std::out_of_range;
 using std::string;
 using std::vector;
-using std::out_of_range;
-using std::invalid_argument;
-using CmdTable = std::unordered_map<std::string, void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
+using CmdTable =
+    std::unordered_map<std::string,
+                       void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
 
 namespace vigilante {
 
@@ -30,12 +32,10 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
   _errMsg = DEFAULT_ERR_MSG;
 
   // Command handler table.
-  static const CmdTable cmdTable = {
-    {"startquest", &CommandParser::startQuest},
-    {"additem",    &CommandParser::addItem   },
-    {"removeitem", &CommandParser::removeItem}
-  };
- 
+  static const CmdTable cmdTable = {{"startquest", &CommandParser::startQuest},
+                                    {"additem", &CommandParser::addItem},
+                                    {"removeitem", &CommandParser::removeItem}};
+
   // Execute the corresponding command handler from _cmdTable.
   // The obtained value from _cmdTable is a class member function pointer.
   CmdTable::const_iterator it = cmdTable.find(args[0]);
@@ -62,7 +62,6 @@ void CommandParser::setError(const string& errMsg) {
   _errMsg = errMsg;
 }
 
-
 void CommandParser::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
     setError("missing parameter `quest`");
@@ -72,7 +71,6 @@ void CommandParser::startQuest(const vector<string>& args) {
   GameMapManager::getInstance()->getPlayer()->getQuestBook().startQuest(args[1]);
   setSuccess();
 }
-
 
 void CommandParser::addItem(const vector<string>& args) {
   if (args.size() < 2) {
@@ -105,7 +103,6 @@ void CommandParser::addItem(const vector<string>& args) {
   setSuccess();
 }
 
-
 void CommandParser::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
     setError("missing parameter `itemName`");
@@ -137,4 +134,4 @@ void CommandParser::removeItem(const vector<string>& args) {
   setSuccess();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

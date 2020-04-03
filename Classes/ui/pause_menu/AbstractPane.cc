@@ -12,7 +12,6 @@ AbstractPane::AbstractPane(PauseMenu* pauseMenu)
 AbstractPane::AbstractPane(PauseMenu* pauseMenu, Layout* layout)
     : _pauseMenu(pauseMenu), _layout(layout) {}
 
-
 bool AbstractPane::isVisible() const {
   if (_layout) {
     return _layout->isVisible();
@@ -30,7 +29,6 @@ void AbstractPane::setPosition(const Vec2& pos) const {
   _layout->setPosition(pos);
 }
 
-
 PauseMenu* AbstractPane::getPauseMenu() const {
   return _pauseMenu;
 }
@@ -39,4 +37,4 @@ Layout* AbstractPane::getLayout() const {
   return _layout;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

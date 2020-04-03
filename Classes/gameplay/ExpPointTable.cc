@@ -8,10 +8,10 @@
 #include <cocos2d.h>
 #include "util/Logger.h"
 
-using std::string;
 using std::array;
 using std::ifstream;
 using std::runtime_error;
+using std::string;
 
 namespace vigilante {
 
@@ -19,8 +19,7 @@ namespace {
 
 array<int, exp_point_table::levelCap> levelUpExp;
 
-} // namespace
-
+}  // namespace
 
 namespace exp_point_table {
 
@@ -43,6 +42,6 @@ int getNextLevelExp(int currentLevel) {
   return levelUpExp[currentLevel];
 }
 
-} // namespace exp_point_table
+}  // namespace exp_point_table
 
-} // namespace vigilante
+}  // namespace vigilante

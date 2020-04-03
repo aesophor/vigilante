@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ASSET_MANAGER_H_
 #define VIGILANTE_ASSET_MANAGER_H_
 
@@ -65,8 +65,8 @@ const std::string kEmptyImage = "Texture/empty.png";
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);
 
-} // namespace asset_manager
+}  // namespace asset_manager
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ASSET_MANAGER_H_
+#endif  // VIGILANTE_ASSET_MANAGER_H_

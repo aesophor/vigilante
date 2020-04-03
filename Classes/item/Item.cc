@@ -3,21 +3,21 @@
 
 #include <json/document.h>
 #include "Constants.h"
-#include "item/Equipment.h"
 #include "item/Consumable.h"
+#include "item/Equipment.h"
 #include "item/MiscItem.h"
 #include "map/GameMapManager.h"
-#include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/box2d/b2BodyBuilder.h"
 
-using std::string;
 using cocos2d::Sprite;
-using vigilante::category_bits::kItem;
-using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kWall;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kPlatform;
 using rapidjson::Document;
+using std::string;
+using vigilante::category_bits::kFeet;
+using vigilante::category_bits::kGround;
+using vigilante::category_bits::kItem;
+using vigilante::category_bits::kPlatform;
+using vigilante::category_bits::kWall;
 
 namespace vigilante {
 
@@ -35,13 +35,10 @@ Item* Item::create(const string& jsonFileName) {
 }
 
 Item::Item(const string& jsonFileName)
-    : DynamicActor(_kNumAnimations, _kNumFixtures),
-      _itemProfile(jsonFileName),
-      _amount(1) {
+    : DynamicActor(_kNumAnimations, _kNumFixtures), _itemProfile(jsonFileName), _amount(1) {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
-
 
 void Item::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -52,7 +49,7 @@ void Item::showOnMap(float x, float y) {
 
   short categoryBits = kItem;
   short maskBits = kGround | kPlatform | kWall;
-  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
@@ -63,28 +60,25 @@ void Item::import(const string& jsonFileName) {
   _itemProfile = Item::Profile(jsonFileName);
 }
 
-
-void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x,
+                      float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
-  _body = bodyBuilder.type(bodyType)
-    .position(x, y, kPpm)
-    .buildBody();
+  _body = bodyBuilder.type(bodyType).position(x, y, kPpm).buildBody();
 
   bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
-    .categoryBits(categoryBits)
-    .maskBits(maskBits | kFeet) // Enable collision detection with feet fixtures
-    .setSensor(true)
-    .setUserData(this)
-    .buildFixture();
+      .categoryBits(categoryBits)
+      .maskBits(maskBits | kFeet)  // Enable collision detection with feet fixtures
+      .setSensor(true)
+      .setUserData(this)
+      .buildFixture();
 
   bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
-    .categoryBits(categoryBits)
-    .maskBits(maskBits)
-    .setUserData(this)
-    .buildFixture();
+      .categoryBits(categoryBits)
+      .maskBits(maskBits)
+      .setUserData(this)
+      .buildFixture();
 }
-
 
 Item::Profile& Item::getItemProfile() {
   return _itemProfile;
@@ -102,7 +96,6 @@ string Item::getIconPath() const {
   return _itemProfile.textureResDir + "/icon.png";
 }
 
-
 int Item::getAmount() const {
   return _amount;
 }
@@ -110,7 +103,6 @@ int Item::getAmount() const {
 void Item::setAmount(int amount) {
   _amount = amount;
 }
-
 
 Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
@@ -121,4 +113,4 @@ Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) 
   desc = json["desc"].GetString();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

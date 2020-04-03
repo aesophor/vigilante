@@ -10,25 +10,25 @@
 #include "gameplay/ExpPointTable.h"
 #include "input/InputManager.h"
 #include "map/GameMap.h"
-#include "skill/Skill.h"
 #include "quest/Quest.h"
-#include "util/box2d/b2DebugRenderer.h"
-#include "util/CameraUtil.h"
+#include "skill/Skill.h"
 #include "util/CallbackUtil.h"
+#include "util/CameraUtil.h"
 #include "util/KeyCodeUtil.h"
-#include "util/RandUtil.h"
 #include "util/Logger.h"
+#include "util/RandUtil.h"
+#include "util/box2d/b2DebugRenderer.h"
 
-using std::string;
-using std::unique_ptr;
-using std::shared_ptr;
-using cocos2d::Vec3;
 using cocos2d::Camera;
 using cocos2d::CameraFlag;
 using cocos2d::Director;
-using cocos2d::Layer;
 using cocos2d::EventKeyboard;
+using cocos2d::Layer;
+using cocos2d::Vec3;
 using cocos2d::ui::ImageView;
+using std::shared_ptr;
+using std::string;
+using std::unique_ptr;
 
 namespace vigilante {
 
@@ -58,7 +58,7 @@ bool MainGameScene::init() {
   _hudCamera->lookAt(eyePos);
   _hudCamera->setPosition(0, 0);
   addChild(_hudCamera);
-  
+
   // Initialize shade.
   _shade = unique_ptr<Shade>(Shade::getInstance());
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -95,7 +95,7 @@ bool MainGameScene::init() {
   _dialogueManager = unique_ptr<DialogueManager>(DialogueManager::getInstance());
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
- 
+
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
 
@@ -103,16 +103,17 @@ bool MainGameScene::init() {
   vigilante::callback_util::init(this);
   vigilante::keycode_util::init();
   vigilante::rand_util::init();
-  
+
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
-
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
+  _gameMapManager->getPlayer()->addItem(
+      Item::create("Resources/Database/item/equipment/short_sword.json"));
+  _gameMapManager->getPlayer()->addItem(
+      Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
@@ -126,13 +127,15 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
+  player->getSkills().push_back(
+      Skill::create("Resources/Database/skill/back_dash.json", player));
+  player->getSkills().push_back(
+      Skill::create("Resources/Database/skill/forward_slash.json", player));
+  player->getSkills().push_back(
+      Skill::create("Resources/Database/skill/ice_spike.json", player));
 
-  //player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
+  // player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
   //_console->executeCmd("startquest Resources/Database/quest/main/main01.json");
-
 
   // Initialize Pause Menu.
   _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
@@ -165,7 +168,8 @@ void MainGameScene::update(float delta) {
   _dialogueManager->update(delta);
   _console->update(delta);
 
-  vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
+  vigilante::camera_util::lerpToTarget(_gameCamera,
+                                       _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
@@ -196,22 +200,20 @@ void MainGameScene::handleInput() {
     return;
   }
 
-
   if (_pauseMenu->getLayer()->isVisible()) {
-    _pauseMenu->handleInput(); // paused
+    _pauseMenu->handleInput();  // paused
   } else if (_console->getLayer()->isVisible()) {
     _console->handleInput();
-  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible()
-      || _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
+  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible() ||
+             _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
     _dialogueManager->handleInput();
   } else {
-    _gameMapManager->getPlayer()->handleInput(); // not paused
+    _gameMapManager->getPlayer()->handleInput();  // not paused
   }
 }
-
 
 b2World* MainGameScene::getWorld() const {
   return _gameMapManager->getWorld();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

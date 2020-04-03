@@ -27,13 +27,13 @@ class AbstractPane {
   cocos2d::ui::Layout* getLayout() const;
 
  protected:
-  explicit AbstractPane(PauseMenu* pauseMenu); // install cocos2d's UILayout
-  AbstractPane(PauseMenu* pauseMenu, cocos2d::ui::Layout* layout); // install custom layout
+  explicit AbstractPane(PauseMenu* pauseMenu);  // install cocos2d's UILayout
+  AbstractPane(PauseMenu* pauseMenu, cocos2d::ui::Layout* layout);  // install custom layout
 
   PauseMenu* _pauseMenu;
-  cocos2d::ui::Layout* _layout; // auto-release object
+  cocos2d::ui::Layout* _layout;  // auto-release object
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ABSTRACT_PANE_H_
+#endif  // VIGILANTE_ABSTRACT_PANE_H_

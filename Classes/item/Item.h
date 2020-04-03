@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
 #include "DynamicActor.h"
 #include "Importable.h"
 
@@ -13,12 +13,7 @@ namespace vigilante {
 
 class Item : public DynamicActor, public Importable {
  public:
-  enum Type {
-    EQUIPMENT,
-    CONSUMABLE,
-    MISC,
-    SIZE
-  };
+  enum Type { EQUIPMENT, CONSUMABLE, MISC, SIZE };
 
   struct Profile {
     explicit Profile(const std::string& jsonFileName);
@@ -36,8 +31,8 @@ class Item : public DynamicActor, public Importable {
   static Item* create(const std::string& jsonFileName);
 
   virtual ~Item() = default;
-  virtual void showOnMap(float x, float y) override; // DynamicActor
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void showOnMap(float x, float y) override;              // DynamicActor
+  virtual void import(const std::string& jsonFileName) override;  // Importable
 
   Item::Profile& getItemProfile();
   const std::string& getName() const;
@@ -58,6 +53,6 @@ class Item : public DynamicActor, public Importable {
   int _amount;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ITEM_H_
+#endif  // VIGILANTE_ITEM_H_

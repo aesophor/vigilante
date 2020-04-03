@@ -13,7 +13,7 @@ class b2BodyBuilder {
   explicit b2BodyBuilder(b2World* world);
   explicit b2BodyBuilder(b2Body* body);
   explicit b2BodyBuilder(const b2BodyBuilder& bodyBuilder);
-  b2BodyBuilder& operator= (const b2BodyBuilder& bodyBuilder);
+  b2BodyBuilder& operator=(const b2BodyBuilder& bodyBuilder);
   virtual ~b2BodyBuilder() = default;
 
   b2BodyBuilder& type(b2BodyType bodyType);
@@ -46,6 +46,6 @@ class b2BodyBuilder {
   void* _userData;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_B2_BODY_BUILDER_H_
+#endif  // VIGILANTE_B2_BODY_BUILDER_H_

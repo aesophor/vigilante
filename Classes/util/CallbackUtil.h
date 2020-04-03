@@ -11,10 +11,10 @@ namespace vigilante {
 namespace callback_util {
 
 void init(cocos2d::Scene* scene);
-void runAfter(const std::function<void ()>& func, float delay);
+void runAfter(const std::function<void()>& func, float delay);
 
-} // namespace callback_tuil
+}  // namespace callback_util
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CALLBACK_UTIL_H_
+#endif  // VIGILANTE_CALLBACK_UTIL_H_

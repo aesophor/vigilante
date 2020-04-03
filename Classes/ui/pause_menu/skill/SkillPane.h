@@ -24,6 +24,6 @@ class SkillPane : public AbstractPane {
   std::unique_ptr<SkillListView> _skillListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SKILL_PANE_H_
+#endif  // VIGILANTE_SKILL_PANE_H_

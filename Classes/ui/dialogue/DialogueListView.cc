@@ -4,8 +4,8 @@
 #include "AssetManager.h"
 #include "gameplay/DialogueTree.h"
 #include "ui/console/Console.h"
-#include "ui/dialogue/DialogueManager.h"
 #include "ui/dialogue/DialogueListView.h"
+#include "ui/dialogue/DialogueManager.h"
 
 #define VISIBLE_ITEM_COUNT 3
 #define WIDTH vigilante::kVirtualWidth / 2
@@ -17,9 +17,9 @@ namespace vigilante {
 DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
     : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _dialogueMenu(dialogMenu) {
-
   _setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {
-    listViewItem->getIcon()->loadTexture((selected) ? asset_manager::kDialogueTriangle : asset_manager::kEmptyImage);
+    listViewItem->getIcon()->loadTexture((selected) ? asset_manager::kDialogueTriangle
+                                                    : asset_manager::kEmptyImage);
   };
 
   _setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
@@ -29,7 +29,6 @@ DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
   hideScrollBar();
 }
 
-
 void DialogueListView::confirm() {
   auto dialogueMgr = DialogueManager::getInstance();
   auto dialogueMenu = dialogueMgr->getDialogueMenu();
@@ -38,7 +37,7 @@ void DialogueListView::confirm() {
   for (const auto& cmd : getSelectedObject()->cmds) {
     Console::getInstance()->executeCmd(cmd);
   }
-  
+
   Dialogue* nextDialogue = getSelectedObject()->children.front();
   for (const auto& line : nextDialogue->lines) {
     subtitles->addSubtitle(line);
@@ -49,4 +48,4 @@ void DialogueListView::confirm() {
   dialogueMgr->setCurrentDialogue(nextDialogue);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

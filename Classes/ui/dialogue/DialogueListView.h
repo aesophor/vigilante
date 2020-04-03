@@ -26,6 +26,6 @@ class DialogueListView : public ListView<Dialogue*> {
   DialogueMenu* _dialogueMenu;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_DIALOGUE_LISTVIEW_H_
+#endif  // VIGILANTE_DIALOGUE_LISTVIEW_H_

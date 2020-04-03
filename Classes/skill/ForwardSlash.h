@@ -15,16 +15,16 @@ class ForwardSlash : public Skill {
   ForwardSlash(const std::string& jsonFileName, Character* user);
   virtual ~ForwardSlash() = default;
 
-  virtual void import(const std::string& jsonFileName) override; // Skill
-  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override; // Skill
-  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override; // Skill
-  virtual bool canActivate() override; // Skill
-  virtual void activate() override; // Skill
+  virtual void import(const std::string& jsonFileName) override;            // Skill
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override;       // Skill
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override;  // Skill
+  virtual bool canActivate() override;                                      // Skill
+  virtual void activate() override;                                         // Skill
 
-  virtual Skill::Profile& getSkillProfile() override; // Skill
-  virtual const std::string& getName() const override; // Skill
-  virtual const std::string& getDesc() const override; // Skill
-  virtual std::string getIconPath() const override; // Skill
+  virtual Skill::Profile& getSkillProfile() override;   // Skill
+  virtual const std::string& getName() const override;  // Skill
+  virtual const std::string& getDesc() const override;  // Skill
+  virtual std::string getIconPath() const override;     // Skill
 
  private:
   Skill::Profile _skillProfile;
@@ -33,6 +33,6 @@ class ForwardSlash : public Skill {
   bool _hasActivated;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_FORWARD_SLASH_H_
+#endif  // VIGILANTE_FORWARD_SLASH_H_

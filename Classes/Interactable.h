@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_INTERACTABLE_H_
 #define VIGILANTE_INTERACTABLE_H_
 
@@ -13,6 +13,6 @@ class Interactable {
   virtual bool willInteractOnContact() const = 0;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_INTERACTABLE_H_
+#endif  // VIGILANTE_INTERACTABLE_H_

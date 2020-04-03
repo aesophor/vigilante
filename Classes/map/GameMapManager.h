@@ -2,16 +2,16 @@
 #ifndef VIGILANTE_GAMEMAP_MANAGER_H_
 #define VIGILANTE_GAMEMAP_MANAGER_H_
 
+#include <memory>
 #include <set>
 #include <string>
-#include <memory>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
+#include "Controllable.h"
+#include "FxManager.h"
 #include "GameMap.h"
 #include "WorldContactListener.h"
-#include "FxManager.h"
-#include "Controllable.h"
 #include "character/Character.h"
 #include "item/Item.h"
 
@@ -48,6 +48,6 @@ class GameMapManager {
   std::unique_ptr<Player> _player;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_GAMEMAP_MANAGER_H_
+#endif  // VIGILANTE_GAMEMAP_MANAGER_H_

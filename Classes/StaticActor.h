@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_STATIC_ACTOR_H_
 #define VIGILANTE_STATIC_ACTOR_H_
 
@@ -40,8 +40,9 @@ class StaticActor {
   // @param interval: the interval between each frame
   // @param fallback: the fallback animation (if the target animation cannot be created)
   // @return: an pointer to the instance of cocos2d::Animation
-  static cocos2d::Animation* createAnimation(const std::string& textureResDir, std::string framesName,
-                                             float interval, cocos2d::Animation* fallback=nullptr);
+  static cocos2d::Animation* createAnimation(const std::string& textureResDir,
+                                             std::string framesName, float interval,
+                                             cocos2d::Animation* fallback = nullptr);
 
   // The texture resources under Resources/Texture/ has the following rules:
   //
@@ -59,7 +60,7 @@ class StaticActor {
   static std::string getLastDirName(const std::string& directory);
 
  protected:
-  explicit StaticActor(size_t numAnimations=1);
+  explicit StaticActor(size_t numAnimations = 1);
 
   bool _isShownOnMap;
   cocos2d::Sprite* _bodySprite;
@@ -67,6 +68,6 @@ class StaticActor {
   std::vector<cocos2d::Animation*> _bodyAnimations;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_STATIC_ACTOR_H_
+#endif  // VIGILANTE_STATIC_ACTOR_H_

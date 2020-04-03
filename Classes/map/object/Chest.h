@@ -15,10 +15,10 @@ class Chest : public Interactable, public DynamicActor {
  public:
   Chest();
   virtual ~Chest() = default;
-  virtual void showOnMap(float x, float y) override; // DynamicActor
+  virtual void showOnMap(float x, float y) override;  // DynamicActor
 
-  virtual void onInteract(Character* user) override; // Interactable
-  virtual bool willInteractOnContact() const override; // Interactable
+  virtual void onInteract(Character* user) override;    // Interactable
+  virtual bool willInteractOnContact() const override;  // Interactable
 
   std::vector<std::string>& getItemJsons();
 
@@ -32,6 +32,6 @@ class Chest : public Interactable, public DynamicActor {
   bool _isOpened;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CHEST_H_
+#endif  // VIGILANTE_CHEST_H_

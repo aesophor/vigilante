@@ -20,13 +20,12 @@
  */
 #include "GLESDebugDraw.h"
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 #include <cstring>
 
 using cocos2d::GLProgram;
 using cocos2d::GLProgramCache;
-
 
 GLESDebugDraw::GLESDebugDraw() : _ratio(1.0f) {
   initShader();
@@ -36,13 +35,14 @@ GLESDebugDraw::GLESDebugDraw(float32 ratio) : _ratio(ratio) {
   initShader();
 }
 
-
 void GLESDebugDraw::initShader() {
-  _shaderProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_U_COLOR);
+  _shaderProgram =
+      GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_U_COLOR);
   _colorLocation = glGetUniformLocation(_shaderProgram->getProgram(), "u_color");
 }
 
-void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int vertexCount, const b2Color& color) {
+void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int vertexCount,
+                                const b2Color& color) {
   _shaderProgram->use();
   _shaderProgram->setUniformsForBuiltins();
 
@@ -63,7 +63,8 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int vertexCount, con
   delete[] vertices;
 }
 
-void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int vertexCount, const b2Color& color) {
+void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int vertexCount,
+                                     const b2Color& color) {
   _shaderProgram->use();
   _shaderProgram->setUniformsForBuiltins();
 
@@ -73,7 +74,8 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int vertexCount
     vertices[i] *= _ratio;
   }
 
-  _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r * .5f, color.g * .5f, color.b * .5f, .2f);
+  _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r * .5f, color.g * .5f,
+                                           color.b * .5f, .2f);
 
   glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, vertices);
   glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
@@ -105,16 +107,18 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
   }
 
   _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r, color.g, color.b, 1);
-  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0,
+                        glVertices);
   glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
-  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,vertexCount);
+  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, vertexCount);
   CHECK_GL_ERROR_DEBUG();
 
   delete[] glVertices;
 }
 
-void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) {
+void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis,
+                                    const b2Color& color) {
   _shaderProgram->use();
   _shaderProgram->setUniformsForBuiltins();
 
@@ -131,15 +135,17 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
     theta += k_increment;
   }
 
-  _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r * .5f, color.g * .5f, color.b * .5f, .2f);
-  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r * .5f, color.g * .5f,
+                                           color.b * .5f, .2f);
+  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0,
+                        glVertices);
   glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
 
   _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r, color.g, color.b, 1);
   glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
   // Draw the axis line
-  DrawSegment(center,center+radius*axis,color);
+  DrawSegment(center, center + radius * axis, color);
 
   CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(2, vertexCount * 2);
   CHECK_GL_ERROR_DEBUG();
@@ -153,17 +159,13 @@ void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
 
   _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r, color.g, color.b, 1);
 
-  GLfloat glVertices[] = {
-    p1.x * _ratio,
-    p1.y * _ratio,
-    p2.x * _ratio,
-    p2.y * _ratio
-  };
+  GLfloat glVertices[] = {p1.x * _ratio, p1.y * _ratio, p2.x * _ratio, p2.y * _ratio};
 
-  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0,
+                        glVertices);
   glDrawArrays(GL_LINES, 0, 2);
 
-  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,2);
+  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 2);
   CHECK_GL_ERROR_DEBUG();
 }
 
@@ -175,7 +177,7 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf) {
   DrawSegment(p1, p2, b2Color(1, 0, 0));
 
   p2 = p1 + k_axisScale * xf.q.GetYAxis();
-  DrawSegment(p1,p2,b2Color(0, 1, 0));
+  DrawSegment(p1, p2, b2Color(0, 1, 0));
 }
 
 void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) {
@@ -184,15 +186,13 @@ void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& colo
 
   _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r, color.g, color.b, 1);
 
-  GLfloat glVertices[] = {
-    p.x * _ratio,
-    p.y * _ratio
-  };
+  GLfloat glVertices[] = {p.x * _ratio, p.y * _ratio};
 
-  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0,
+                        glVertices);
   glDrawArrays(GL_POINTS, 0, 1);
 
-  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,1);
+  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 1);
   CHECK_GL_ERROR_DEBUG();
 }
 
@@ -202,20 +202,15 @@ void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color) {
 
   _shaderProgram->setUniformLocationWith4f(_colorLocation, color.r, color.g, color.b, 1);
 
-  GLfloat glVertices[] = {
-    aabb->lowerBound.x * _ratio,
-    aabb->lowerBound.y * _ratio,
-    aabb->upperBound.x * _ratio,
-    aabb->lowerBound.y * _ratio,
-    aabb->upperBound.x * _ratio,
-    aabb->upperBound.y * _ratio,
-    aabb->lowerBound.x * _ratio,
-    aabb->upperBound.y * _ratio
-  };
+  GLfloat glVertices[] = {aabb->lowerBound.x * _ratio, aabb->lowerBound.y * _ratio,
+                          aabb->upperBound.x * _ratio, aabb->lowerBound.y * _ratio,
+                          aabb->upperBound.x * _ratio, aabb->upperBound.y * _ratio,
+                          aabb->lowerBound.x * _ratio, aabb->upperBound.y * _ratio};
 
-  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0,
+                        glVertices);
   glDrawArrays(GL_LINE_LOOP, 0, 4);
 
-  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,4);
+  CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
   CHECK_GL_ERROR_DEBUG();
 }

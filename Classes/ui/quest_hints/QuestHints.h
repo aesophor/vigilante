@@ -16,6 +16,6 @@ class QuestHints : public TimedLabelService {
   QuestHints();
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_QUEST_HINT_MANAGER_H_
+#endif  // VIGILANTE_QUEST_HINT_MANAGER_H_

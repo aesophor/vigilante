@@ -3,16 +3,15 @@
 
 #include <unordered_map>
 
+using cocos2d::EventKeyboard;
 using std::string;
 using std::unordered_map;
-using cocos2d::EventKeyboard;
 
 namespace {
 
 unordered_map<EventKeyboard::KeyCode, string> keyMap;
 
-} // namespace
-
+}  // namespace
 
 namespace vigilante {
 
@@ -116,9 +115,10 @@ string keyCodeToString(EventKeyboard::KeyCode keyCode) {
 }
 
 char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed) {
-  if ((keyCode >= EventKeyboard::KeyCode::KEY_0 && keyCode <= EventKeyboard::KeyCode::KEY_9)
-    || (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z)
-    || (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
+  if ((keyCode >= EventKeyboard::KeyCode::KEY_0 && keyCode <= EventKeyboard::KeyCode::KEY_9) ||
+      (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A &&
+       keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z) ||
+      (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
     char c = keyCodeToString(keyCode).front();
 
     if (isCapsLocked) {
@@ -128,7 +128,7 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
     if (isShiftPressed) {
       if (c >= 'A' && c <= 'Z') {
         c += 'a' - 'A';
-      } else { // c >= 'a' && c <= 'z'
+      } else {  // c >= 'a' && c <= 'z'
         c -= 'a' - 'A';
       }
     }
@@ -154,6 +154,6 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
   }
 }
 
-} // namespace keycode_util
+}  // namespace keycode_util
 
-} // namespace vigilante
+}  // namespace vigilante

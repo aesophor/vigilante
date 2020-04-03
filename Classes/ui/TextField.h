@@ -2,11 +2,11 @@
 #ifndef VIGILANTE_TEXT_FIELD_H_
 #define VIGILANTE_TEXT_FIELD_H_
 
-#include <string>
 #include <functional>
+#include <string>
 
-#include <cocos2d.h>
 #include <2d/CCLabel.h>
+#include <cocos2d.h>
 #include <ui/UILayout.h>
 #include "Controllable.h"
 
@@ -23,7 +23,7 @@ class TextField : public Controllable {
   virtual const std::string& getString() const;
   virtual void setString(const std::string& s);
   virtual void clear();
-  virtual void setOnSubmit(const std::function<void ()>& onSubmit);
+  virtual void setOnSubmit(const std::function<void()>& onSubmit);
 
   cocos2d::ui::Layout* getLayout() const;
 
@@ -33,13 +33,13 @@ class TextField : public Controllable {
   cocos2d::ui::Layout* _layout;
   cocos2d::Label* _label;
   std::string _buffer;
-  std::function<void ()> _onSubmit;
+  std::function<void()> _onSubmit;
 
   float _timer;
   bool _isRecevingInput;
   bool _isCursorVisible;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TEXT_FIELD_H_
+#endif  // VIGILANTE_TEXT_FIELD_H_

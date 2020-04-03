@@ -2,9 +2,9 @@
 #ifndef VIGILANTE_INPUT_MANAGER_H_
 #define VIGILANTE_INPUT_MANAGER_H_
 
+#include <functional>
 #include <set>
 #include <stack>
-#include <functional>
 
 #include <cocos2d.h>
 #include "input/Keybindable.h"
@@ -24,7 +24,8 @@ class InputManager {
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
-  using OnKeyPressedEvLstnr = std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
+  using OnKeyPressedEvLstnr =
+      std::function<void(cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
   void pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr);
   void popEvLstnr();
 
@@ -50,6 +51,6 @@ class InputManager {
   bool _isCapsLocked;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_INPUT_MANAGER_H_
+#endif  // VIGILANTE_INPUT_MANAGER_H_

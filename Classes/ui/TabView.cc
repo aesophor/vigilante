@@ -3,20 +3,20 @@
 
 #include "AssetManager.h"
 
-using std::vector;
+using cocos2d::Label;
+using cocos2d::Vec2;
+using cocos2d::ui::ImageView;
+using cocos2d::ui::Layout;
 using std::string;
 using std::unique_ptr;
-using cocos2d::Vec2;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
+using std::vector;
 using vigilante::asset_manager::kRegularFont;
 using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
 TabView::TabView(const string& regularBg, const string& highlightedBg)
-    : _layout(Layout::create()),      
+    : _layout(Layout::create()),
       _current(),
       _nextTabPos(),
       _regularBg(regularBg),
@@ -39,7 +39,7 @@ void TabView::addTab(const string& text) {
 }
 
 void TabView::selectTab(int index) {
-  if (index >= 0 && index < (int) _tabs.size()) {
+  if (index >= 0 && index < (int)_tabs.size()) {
     _tabs[_current]->setIsSelected(false);
     _tabs[index]->setIsSelected(true);
     _current = index;
@@ -58,7 +58,6 @@ void TabView::selectNext() {
   selectTab((_current + 1) % _tabs.size());
 }
 
-
 TabView::Tab* TabView::getSelectedTab() const {
   return _tabs[_current].get();
 }
@@ -67,10 +66,9 @@ Layout* TabView::getLayout() const {
   return _layout;
 }
 
-
 TabView::Tab::Tab(TabView* parent, const string& text)
     : _parent(parent),
-      _background(ImageView::create(parent->_regularBg)), 
+      _background(ImageView::create(parent->_regularBg)),
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       _isSelected(),
       _index(parent->_tabs.size()) {
@@ -90,4 +88,4 @@ int TabView::Tab::getIndex() const {
   return _index;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

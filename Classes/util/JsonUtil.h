@@ -12,10 +12,10 @@ namespace vigilante {
 namespace json_util {
 
 rapidjson::Document parseJson(const std::string& jsonFileName);
-std::vector<std::string> splitString(const std::string& s, const char delimiter=',');
+std::vector<std::string> splitString(const std::string& s, const char delimiter = ',');
 
-} // namespace json_util
+}  // namespace json_util
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_JSON_UTIL_H_
+#endif  // VIGILANTE_JSON_UTIL_H_

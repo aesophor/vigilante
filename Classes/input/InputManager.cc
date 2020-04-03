@@ -3,11 +3,11 @@
 
 #include "util/Logger.h"
 
-using std::set;
-using cocos2d::Scene;
 using cocos2d::Event;
 using cocos2d::EventKeyboard;
 using cocos2d::EventListenerKeyboard;
+using cocos2d::Scene;
+using std::set;
 
 namespace vigilante {
 
@@ -20,9 +20,7 @@ InputManager* InputManager::getInstance() {
   return _instance;
 }
 
-InputManager::InputManager()
-    : _scene(), _keyboardEvLstnr(), _pressedKeys(), _isCapsLocked() {}
-
+InputManager::InputManager() : _scene(), _keyboardEvLstnr(), _pressedKeys(), _isCapsLocked() {}
 
 void InputManager::activate(Scene* scene) {
   _scene = scene;
@@ -45,8 +43,9 @@ void InputManager::activate(Scene* scene) {
   _keyboardEvLstnr->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event*) {
     _pressedKeys.erase(keyCode);
   };
-  
-  _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr, scene);
+
+  _scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_keyboardEvLstnr,
+                                                                       scene);
 }
 
 void InputManager::deactivate() {
@@ -54,7 +53,6 @@ void InputManager::deactivate() {
   _keyboardEvLstnr = nullptr;
   _scene = nullptr;
 }
-
 
 bool InputManager::isKeyPressed(EventKeyboard::KeyCode keyCode) const {
   return _pressedKeys.find(keyCode) != _pressedKeys.end();
@@ -64,7 +62,6 @@ bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
   // std::set::erase() returns the number of elements erased.
   return _pressedKeys.erase(keyCode) > 0;
 }
-
 
 void InputManager::pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr) {
   _onKeyPressedEvLstnrs.push(evLstnr);
@@ -76,7 +73,6 @@ void InputManager::popEvLstnr() {
   }
 }
 
-
 bool InputManager::isCapsLocked() const {
   return _isCapsLocked;
 }
@@ -85,4 +81,4 @@ bool InputManager::isShiftPressed() const {
   return isKeyPressed(EventKeyboard::KeyCode::KEY_SHIFT);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

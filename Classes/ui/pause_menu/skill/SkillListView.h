@@ -16,9 +16,9 @@ class SkillListView : public ListView<Skill*> {
   explicit SkillListView(PauseMenu* pauseMenu);
   virtual ~SkillListView() = default;
 
-  virtual void confirm() override; // ListView<Skill*>
-  virtual void selectUp() override; // ListView<Skill*>
-  virtual void selectDown() override; // ListView<Skill*>
+  virtual void confirm() override;     // ListView<Skill*>
+  virtual void selectUp() override;    // ListView<Skill*>
+  virtual void selectDown() override;  // ListView<Skill*>
 
   void showSkills();
 
@@ -27,6 +27,6 @@ class SkillListView : public ListView<Skill*> {
   cocos2d::Label* _descLabel;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SKILL_LIST_VIEW_H_
+#endif  // VIGILANTE_SKILL_LIST_VIEW_H_

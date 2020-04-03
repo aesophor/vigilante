@@ -5,8 +5,8 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "input/Keybindable.h"
-#include "item/Item.h"
 #include "item/Consumable.h"
+#include "item/Item.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/KeyCodeUtil.h"
@@ -22,19 +22,19 @@
 #define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
 #define EMPTY_ITEM_NAME "---"
 
-using std::deque;
-using std::vector;
-using std::string;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
+using std::deque;
+using std::string;
+using std::vector;
 
 namespace vigilante {
 
 ItemListView::ItemListView(PauseMenu* pauseMenu)
     : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
-
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont,
+                                      asset_manager::kRegularFontSize)) {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
@@ -72,7 +72,6 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
   _layout->addChild(_descLabel);
 }
 
-
 void ItemListView::confirm() {
   Item* item = getSelectedObject();
   if (!item) {
@@ -96,7 +95,7 @@ void ItemListView::confirm() {
         _pauseMenu->update();
       });
       break;
-    case Item::Type::MISC: // fall through
+    case Item::Type::MISC:  // fall through
     default:
       break;
   }
@@ -109,10 +108,9 @@ void ItemListView::confirm() {
   dialog->show();
 }
 
-
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
-  
+
   if (_current <= 0) {
     return;
   }
@@ -124,14 +122,13 @@ void ItemListView::selectUp() {
 void ItemListView::selectDown() {
   ListView<Item*>::selectDown();
 
-  if (_current >= (int) _objects.size() - 1) {
+  if (_current >= (int)_objects.size() - 1) {
     return;
   }
 
   Item* selectedItem = _objects[_current];
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
 }
-
 
 void ItemListView::showItemsByType(Item::Type itemType) {
   // Show items of the specified type in ItemListView.
@@ -142,13 +139,19 @@ void ItemListView::showItemsByType(Item::Type itemType) {
 }
 
 void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
-  const vector<Item*> equipments = _pauseMenu->getPlayer()->getInventory()[Item::Type::EQUIPMENT];
+  const vector<Item*> equipments =
+      _pauseMenu->getPlayer()->getInventory()[Item::Type::EQUIPMENT];
   deque<Item*> objects(equipments.begin(), equipments.end());
 
   // Filter out any equipment other than the specified equipmentType.
-  objects.erase(std::remove_if(objects.begin(), objects.end(), [=](Item* i) {
-    return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType != equipmentType;
-  }), objects.end());
+  objects.erase(
+      std::remove_if(
+          objects.begin(), objects.end(),
+          [=](Item* i) {
+            return dynamic_cast<Equipment*>(i)->getEquipmentProfile().equipmentType !=
+                equipmentType;
+          }),
+      objects.end());
 
   // Currently this method is only used for selecting equipment,
   // so here we're going to push_front two extra equipment.
@@ -156,8 +159,8 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    objects.push_front(currentEquipment); // currently equipped item
-    objects.push_front(nullptr); // unequip
+    objects.push_front(currentEquipment);  // currently equipped item
+    objects.push_front(nullptr);           // unequip
   }
 
   // Show equipments of the specified type in ItemListView.
@@ -168,4 +171,4 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   _descLabel->setString((_objects.size() > 0) ? "Unequip" : "");
 }
 
-} // namespace vigilante
+}  // namespace vigilante

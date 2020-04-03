@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_FLOATING_DAMAGES_H_
 #define VIGILANTE_FLOATING_DAMAGES_H_
 
-#include <map>
 #include <deque>
+#include <map>
 #include <string>
 
 #include <cocos2d.h>
@@ -24,7 +24,7 @@ class FloatingDamages {
  private:
   struct DamageLabel {
     DamageLabel(const std::string& text, float lifetime);
-    bool operator== (const DamageLabel& other);
+    bool operator==(const DamageLabel& other);
     cocos2d::Label* label;
     float lifetime;
     float timer;
@@ -43,6 +43,6 @@ class FloatingDamages {
   std::map<Character*, std::deque<FloatingDamages::DamageLabel>> _damageMap;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_FLOATING_DAMAGES_H_
+#endif  // VIGILANTE_FLOATING_DAMAGES_H_

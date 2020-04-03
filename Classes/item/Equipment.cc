@@ -4,25 +4,17 @@
 #include <json/document.h>
 #include "util/JsonUtil.h"
 
+using rapidjson::Document;
 using std::array;
 using std::string;
-using rapidjson::Document;
 
 namespace vigilante {
 
-const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
-  "WEAPON",
-  "HEADGEAR",
-  "ARMOR",
-  "GAUNTLETS",
-  "BOOTS",
-  "CAPE",
-  "RING"
-}};
+const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {
+    {"WEAPON", "HEADGEAR", "ARMOR", "GAUNTLETS", "BOOTS", "CAPE", "RING"}};
 
 Equipment::Equipment(const string& jsonFileName)
-    : Item(jsonFileName),
-      _equipmentProfile(jsonFileName) {}
+    : Item(jsonFileName), _equipmentProfile(jsonFileName) {}
 
 void Equipment::import(const string& jsonFileName) {
   Item::import(jsonFileName);
@@ -32,7 +24,6 @@ void Equipment::import(const string& jsonFileName) {
 Equipment::Profile& Equipment::getEquipmentProfile() {
   return _equipmentProfile;
 }
-
 
 Equipment::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);
@@ -50,4 +41,4 @@ Equipment::Profile::Profile(const string& jsonFileName) {
   bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -3,15 +3,15 @@
 #define VIGILANTE_LIST_VIEW_H_
 
 #include <deque>
-#include <vector>
-#include <string>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <string>
+#include <vector>
 
-#include <cocos2d.h>
 #include <2d/CCLabel.h>
-#include <ui/UILayout.h>
+#include <cocos2d.h>
 #include <ui/UIImageView.h>
+#include <ui/UILayout.h>
 #include "AssetManager.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"
@@ -26,8 +26,8 @@ template <typename T>
 class ListView {
  public:
   ListView(uint8_t visibleItemCount, uint32_t width,
-           const std::string& regularBg=asset_manager::kEmptyImage,
-           const std::string& highlightedBg=asset_manager::kEmptyImage);
+           const std::string& regularBg = asset_manager::kEmptyImage,
+           const std::string& highlightedBg = asset_manager::kEmptyImage);
   virtual ~ListView() = default;
 
   virtual void confirm() = 0;
@@ -36,7 +36,7 @@ class ListView {
   virtual void scrollUp();
   virtual void scrollDown();
 
-  virtual void showFrom(int index); // show n ListViewItems starting from the specified index.
+  virtual void showFrom(int index);  // show n ListViewItems starting from the specified index.
   virtual void setObjects(const std::vector<T>& objects);
   virtual void setObjects(const std::deque<T>& objects);
 
@@ -78,11 +78,13 @@ class ListView {
 
   cocos2d::ui::Layout* _layout;
   cocos2d::ui::ImageView* _scrollBar;
- 
+
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
-  std::function<void (ListViewItem*, bool)> _setSelectedCallback; // called at the end of ListViewItem::setSelected()
-  std::function<void (ListViewItem*, T)> _setObjectCallback; // called at the end of ListViewItem::setObject()
+  std::function<void(ListViewItem*, bool)>
+      _setSelectedCallback;  // called at the end of ListViewItem::setSelected()
+  std::function<void(ListViewItem*, T)>
+      _setObjectCallback;  // called at the end of ListViewItem::setObject()
 
   uint8_t _visibleItemCount;
   uint32_t _width;
@@ -95,11 +97,9 @@ class ListView {
   bool _showScrollBar;
 };
 
-
-
 template <typename T>
-ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
-                      const std::string& regularBg, const std::string& highlightedBg)
+ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width, const std::string& regularBg,
+                      const std::string& highlightedBg)
     : _layout(cocos2d::ui::Layout::create()),
       _scrollBar(cocos2d::ui::ImageView::create(asset_manager::kScrollBar)),
       _visibleItemCount(visibleItemCount),
@@ -123,7 +123,6 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
   }
 }
 
-
 template <typename T>
 void ListView<T>::selectUp() {
   // If currently selected item is the first visible item, and we still can scroll up,
@@ -141,7 +140,7 @@ void ListView<T>::selectUp() {
 
 template <typename T>
 void ListView<T>::selectDown() {
-  if (_current >= (int) _objects.size() - 1) {
+  if (_current >= (int)_objects.size() - 1) {
     return;
   }
 
@@ -156,7 +155,7 @@ void ListView<T>::selectDown() {
 
 template <typename T>
 void ListView<T>::scrollUp() {
-  if ((int) _objects.size() <= _visibleItemCount || _firstVisibleIndex == 0) {
+  if ((int)_objects.size() <= _visibleItemCount || _firstVisibleIndex == 0) {
     return;
   }
   showFrom(--_firstVisibleIndex);
@@ -164,13 +163,12 @@ void ListView<T>::scrollUp() {
 
 template <typename T>
 void ListView<T>::scrollDown() {
-  if ((int) _objects.size() <= _visibleItemCount ||
-      (int) _objects.size() <= _firstVisibleIndex + _visibleItemCount) {
+  if ((int)_objects.size() <= _visibleItemCount ||
+      (int)_objects.size() <= _firstVisibleIndex + _visibleItemCount) {
     return;
   }
   showFrom(++_firstVisibleIndex);
 }
-
 
 template <typename T>
 void ListView<T>::showFrom(int index) {
@@ -178,7 +176,7 @@ void ListView<T>::showFrom(int index) {
   for (int i = 0; i < _visibleItemCount; i++) {
     _listViewItems[i]->setSelected(false);
 
-    if (index + i < (int) _objects.size()) {
+    if (index + i < (int)_objects.size()) {
       _listViewItems[i]->setVisible(true);
       T object = _objects[index + i];
       _listViewItems[i]->setObject(object);
@@ -192,8 +190,9 @@ void ListView<T>::showFrom(int index) {
     if (_objects.size() <= _visibleItemCount) {
       _scrollBar->setVisible(false);
     } else {
-      _scrollBar->setScaleY(((float) _visibleItemCount / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
-      _scrollBar->setPositionY(((float) -index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
+      _scrollBar->setScaleY(((float)_visibleItemCount / _objects.size()) *
+                            SCROLL_BAR_MAX_SCALE_Y);
+      _scrollBar->setPositionY(((float)-index / _objects.size()) * SCROLL_BAR_MAX_SCALE_Y);
       _scrollBar->setVisible(true);
     }
   }
@@ -239,7 +238,6 @@ void ListView<T>::hideScrollBar() {
   _scrollBar->setVisible(false);
 }
 
-
 template <typename T>
 T ListView<T>::getSelectedObject() const {
   if (!_objects.empty() && _listViewItems[_current]) {
@@ -253,8 +251,6 @@ cocos2d::ui::Layout* ListView<T>::getLayout() const {
   return _layout;
 }
 
-
-
 template <typename T>
 const int ListView<T>::ListViewItem::_kListViewIconSize = 16;
 
@@ -264,9 +260,10 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
       _layout(TableLayout::create(parent->_width)),
       _background(cocos2d::ui::ImageView::create(parent->_regularBg)),
       _icon(cocos2d::ui::ImageView::create(asset_manager::kEmptyImage)),
-      _label(cocos2d::Label::createWithTTF("---", asset_manager::kRegularFont, asset_manager::kRegularFontSize)),
+      _label(cocos2d::Label::createWithTTF("---", asset_manager::kRegularFont,
+                                           asset_manager::kRegularFontSize)),
       _object() {
-  _icon->setScale((float) _kListViewIconSize / kIconSize);
+  _icon->setScale((float)_kListViewIconSize / kIconSize);
 
   _background->setAnchorPoint({0, 1});
   _layout->setPosition({x, y});
@@ -281,7 +278,6 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
   _layout->addChild(_label);
   _layout->padTop(1);
 }
-
 
 template <typename T>
 void ListView<T>::ListViewItem::setSelected(bool selected) {
@@ -326,6 +322,6 @@ cocos2d::Label* ListView<T>::ListViewItem::getLabel() const {
   return _label;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_LIST_VIEW_H_
+#endif  // VIGILANTE_LIST_VIEW_H_

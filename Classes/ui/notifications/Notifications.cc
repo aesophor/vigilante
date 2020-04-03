@@ -19,6 +19,7 @@ Notifications* Notifications::getInstance() {
 }
 
 Notifications::Notifications()
-    : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
+    : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME,
+                        LABEL_ALIGNMENT) {}
 
-} // namespace vigilante
+}  // namespace vigilante

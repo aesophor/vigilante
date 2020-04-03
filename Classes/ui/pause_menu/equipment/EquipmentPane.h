@@ -2,18 +2,18 @@
 #ifndef VIGILANTE_EQUIPMENT_PANE_H_
 #define VIGILANTE_EQUIPMENT_PANE_H_
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
-#include <cocos2d.h>
 #include <2d/CCLabel.h>
-#include <ui/UILayout.h>
+#include <cocos2d.h>
 #include <ui/UIImageView.h>
+#include <ui/UILayout.h>
 #include "input/InputManager.h"
 #include "item/Equipment.h"
-#include "ui/pause_menu/AbstractPane.h"
 #include "ui/TableLayout.h"
+#include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
 
@@ -62,6 +62,6 @@ class EquipmentPane : public AbstractPane {
   int _current;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_EQUIPMENT_PANE_H_
+#endif  // VIGILANTE_EQUIPMENT_PANE_H_

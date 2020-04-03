@@ -4,16 +4,16 @@
 
 #include <memory>
 
+#include <Box2D/Box2D.h>
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
-#include <Box2D/Box2D.h>
 #include "Controllable.h"
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"
-#include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/floating_damages/FloatingDamages.h"
+#include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
@@ -26,16 +26,16 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   CREATE_FUNC(MainGameScene);
   virtual ~MainGameScene() = default;
 
-  virtual bool init() override; // cocos2d::Scene
-  virtual void update(float delta) override; // cocos2d::Scene
-  virtual void handleInput() override; // Controllable
+  virtual bool init() override;               // cocos2d::Scene
+  virtual void update(float delta) override;  // cocos2d::Scene
+  virtual void handleInput() override;        // Controllable
 
   b2World* getWorld() const;
 
  private:
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
-  b2DebugRenderer* _b2dr; // autorelease object
+  b2DebugRenderer* _b2dr;  // autorelease object
 
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
@@ -48,6 +48,6 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   std::unique_ptr<GameMapManager> _gameMapManager;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MAIN_GAME_SCENE_H_
+#endif  // VIGILANTE_MAIN_GAME_SCENE_H_

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef APP_DELEGATE_H_
 #define APP_DELEGATE_H_
 
@@ -23,4 +23,4 @@ class AppDelegate : private cocos2d::Application {
   virtual void applicationWillEnterForeground() override;
 };
 
-#endif // APP_DELEGATE_H_
+#endif  // APP_DELEGATE_H_

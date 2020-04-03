@@ -6,15 +6,15 @@
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 
+using cocos2d::Sprite;
 using std::string;
 using std::vector;
-using cocos2d::Sprite;
 using vigilante::kPpm;
-using vigilante::category_bits::kInteractableObject;
+using vigilante::category_bits::kFeet;
 using vigilante::category_bits::kGround;
+using vigilante::category_bits::kInteractableObject;
 using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kWall;
-using vigilante::category_bits::kFeet;
 
 namespace vigilante {
 
@@ -22,7 +22,6 @@ const int Chest::_kNumAnimations = 0;
 const int Chest::_kNumFixtures = 2;
 
 Chest::Chest() : DynamicActor(_kNumAnimations, _kNumFixtures), _isOpened() {}
-
 
 void Chest::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -41,32 +40,29 @@ void Chest::showOnMap(float x, float y) {
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
 }
 
-void Chest::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+void Chest::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x,
+                       float y) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
-  _body = bodyBuilder.type(bodyType)
-    .position(x, y, kPpm)
-    .buildBody();
+  _body = bodyBuilder.type(bodyType).position(x, y, kPpm).buildBody();
 
   bodyBuilder.newRectangleFixture(16 / 2, 16 / 2, kPpm)
-    .categoryBits(categoryBits)
-    .maskBits(maskBits | kFeet)
-    .setSensor(true)
-    .setUserData(this)
-    .buildFixture();
+      .categoryBits(categoryBits)
+      .maskBits(maskBits | kFeet)
+      .setSensor(true)
+      .setUserData(this)
+      .buildFixture();
 
   bodyBuilder.newRectangleFixture(16 / 2, 16 / 2, kPpm)
-    .categoryBits(categoryBits)
-    .maskBits(maskBits)
-    .setUserData(this)
-    .buildFixture();
+      .categoryBits(categoryBits)
+      .maskBits(maskBits)
+      .setUserData(this)
+      .buildFixture();
 }
-
 
 vector<string>& Chest::getItemJsons() {
   return _itemJsons;
 }
-
 
 void Chest::onInteract(Character* user) {
   if (!_isOpened) {
@@ -87,4 +83,4 @@ bool Chest::willInteractOnContact() const {
   return false;
 }
 
-} // namespace 
+}  // namespace vigilante

@@ -8,14 +8,14 @@
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
+using cocos2d::Label;
+using cocos2d::ui::ImageView;
+using cocos2d::ui::Layout;
+using std::string;
 using vigilante::asset_manager::kInventoryBg;
-using vigilante::asset_manager::kTabRegular;
 using vigilante::asset_manager::kTabHighlighted;
+using vigilante::asset_manager::kTabRegular;
 
 namespace vigilante {
 
@@ -29,7 +29,7 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
-  _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
+  _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
   _layout->addChild(_background);
 
   // Place item category tabs.
@@ -44,9 +44,9 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
   _layout->addChild(_itemListView->getLayout());
 }
 
-
 void InventoryPane::update() {
-  Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
+  Item::Type selectedItemType =
+      static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
   _itemListView->showItemsByType(selectedItemType);
 }
 
@@ -83,7 +83,6 @@ void InventoryPane::handleInput() {
   }
 }
 
-
 void InventoryPane::selectEquipment(Equipment::Type equipmentType) {
   _isSelectingEquipment = true;
   _selectingEquipmentType = equipmentType;
@@ -94,4 +93,4 @@ void InventoryPane::selectEquipment(Equipment::Type equipmentType) {
   _itemListView->showEquipmentByType(equipmentType);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -16,6 +16,6 @@ class Notifications : public TimedLabelService {
   Notifications();
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_NOTIFICATIONS_H_
+#endif  // VIGILANTE_NOTIFICATIONS_H_

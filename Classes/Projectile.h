@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_PROJECTILE_H_
 #define VIGILANTE_PROJECTILE_H_
 
@@ -16,6 +16,6 @@ class Projectile {
   virtual void onHit(Character* target) = 0;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_PROJECTILE_H_
+#endif  // VIGILANTE_PROJECTILE_H_

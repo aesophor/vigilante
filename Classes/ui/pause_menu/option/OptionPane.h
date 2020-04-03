@@ -25,6 +25,6 @@ class OptionPane : public AbstractPane {
   std::unique_ptr<OptionListView> _optionListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_OPTION_PANE_H_
+#endif  // VIGILANTE_OPTION_PANE_H_

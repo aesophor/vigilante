@@ -2,11 +2,11 @@
 #ifndef VIGILANTE_SUBTITLES_H_
 #define VIGILANTE_SUBTITLES_H_
 
-#include <string>
 #include <queue>
+#include <string>
 
-#include <cocos2d.h>
 #include <2d/CCLabel.h>
+#include <cocos2d.h>
 #include <ui/UIImageView.h>
 #include "Controllable.h"
 
@@ -18,7 +18,7 @@ class Subtitles : public Controllable {
   virtual ~Subtitles() = default;
 
   void update(float delta);
-  virtual void handleInput() override; // Controllable
+  virtual void handleInput() override;  // Controllable
 
   void addSubtitle(const std::string& subtitle);
   void beginSubtitles();
@@ -45,6 +45,6 @@ class Subtitles : public Controllable {
   float _timer;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SUBTITLES_H_
+#endif  // VIGILANTE_SUBTITLES_H_

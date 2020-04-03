@@ -1,31 +1,32 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AppDelegate.h"
 
 #include <string>
 
 #include "AssetManager.h"
 #include "Constants.h"
-#include "scene/MainMenuScene.h"
 #include "scene/MainGameScene.h"
+#include "scene/MainMenuScene.h"
 
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
-#error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
+#error \
+    "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
 #endif
 
 #if USE_AUDIO_ENGINE
 #include <AudioEngine.h>
-using namespace cocos2d::experimental;
+    using namespace cocos2d::experimental;
 #elif USE_SIMPLE_AUDIO_ENGINE
 #include <SimpleAudioEngine.h>
-using namespace CocosDenshion;
+    using namespace CocosDenshion;
 #endif
 
 using std::string;
-using vigilante::kVirtualWidth;
 using vigilante::kVirtualHeight;
+using vigilante::kVirtualWidth;
 
 USING_NS_CC;
 
@@ -50,10 +51,10 @@ void AppDelegate::initGLContextAttrs() {
   GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// if you want to use the package manager to install more packages,  
+// if you want to use the package manager to install more packages,
 // don't modify or remove this function
 static int register_all_packages() {
-  return 0; //flag for packages manager
+  return 0;  // flag for packages manager
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
@@ -61,9 +62,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
   Director* director = Director::getInstance();
   GLView* glview = director->getOpenGLView();
 
-  if(!glview) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-    glview = GLViewImpl::createWithRect("Vigilante", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+  if (!glview) {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || \
+    (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    glview = GLViewImpl::createWithRect(
+        "Vigilante",
+        cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
     glview = GLViewImpl::create("Vigilante");
 #endif
@@ -85,7 +89,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
   return true;
 }
 
-// This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
+// This function will be called when the app is inactive. Note, when receiving a phone call it
+// is invoked.
 void AppDelegate::applicationDidEnterBackground() {
   Director::getInstance()->stopAnimation();
 

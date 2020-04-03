@@ -4,9 +4,9 @@
 #include "AssetManager.h"
 #include "input/InputManager.h"
 
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
+using cocos2d::ui::ImageView;
+using cocos2d::ui::Layout;
 
 namespace vigilante {
 
@@ -17,14 +17,13 @@ QuestPane::QuestPane(PauseMenu* pauseMenu)
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
-  _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
+  _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
   _layout->addChild(_background);
 
   // Place item list view.
   _questListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_questListView->getLayout());
 }
-
 
 void QuestPane::update() {
   _questListView->showQuests();
@@ -42,4 +41,4 @@ void QuestPane::handleInput() {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante

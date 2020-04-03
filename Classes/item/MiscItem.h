@@ -14,6 +14,6 @@ class MiscItem : public Item {
   virtual ~MiscItem() = default;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MISC_ITEM_H_
+#endif  // VIGILANTE_MISC_ITEM_H_

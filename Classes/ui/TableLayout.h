@@ -9,18 +9,14 @@ namespace vigilante {
 
 class TableLayout : public cocos2d::ui::Layout {
  public:
-  static TableLayout* create(float tableWidth=100.0f, float rowHeight=8.0f);
+  static TableLayout* create(float tableWidth = 100.0f, float rowHeight = 8.0f);
   virtual bool init(float tableWidth, float rowHeight);
   virtual ~TableLayout() = default;
 
-  enum Alignment {
-    LEFT,
-    CENTER,
-    RIGHT
-  };
+  enum Alignment { LEFT, CENTER, RIGHT };
 
   virtual void addChild(cocos2d::Node* child) override;
-  virtual TableLayout* align(TableLayout::Alignment direction); // align last added child
+  virtual TableLayout* align(TableLayout::Alignment direction);  // align last added child
 
   virtual TableLayout* padLeft(float padding);
   virtual TableLayout* padRight(float padding);
@@ -30,7 +26,7 @@ class TableLayout : public cocos2d::ui::Layout {
   virtual TableLayout* spaceX(float spacing);
   virtual TableLayout* spaceY(float spacing);
 
-  virtual TableLayout* row(float height); // change row
+  virtual TableLayout* row(float height);  // change row
   virtual TableLayout* row();
 
   float getTableWidth() const;
@@ -46,13 +42,13 @@ class TableLayout : public cocos2d::ui::Layout {
   void setNextChildPositionY(float y);
 
  protected:
-  float _tableWidth; // the width of this table layout
-  float _rowHeight; // the height between any two rows
+  float _tableWidth;  // the width of this table layout
+  float _rowHeight;   // the height between any two rows
 
   cocos2d::Node* _lastAddedChild;
-  cocos2d::Vec2 _nextChildPosition; // the x,y of the next child to be added
+  cocos2d::Vec2 _nextChildPosition;  // the x,y of the next child to be added
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TABLE_LAYOUT_H_
+#endif  // VIGILANTE_TABLE_LAYOUT_H_

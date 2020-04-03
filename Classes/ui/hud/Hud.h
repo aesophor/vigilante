@@ -2,14 +2,14 @@
 #ifndef VIGILANTE_HUD_H_
 #define VIGILANTE_HUD_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
-#include <cocos2d.h>
 #include <2d/CCLabel.h>
+#include <cocos2d.h>
 #include <ui/UIImageView.h>
-#include "character/Player.h"
 #include "StatusBar.h"
+#include "character/Player.h"
 
 namespace vigilante {
 
@@ -42,6 +42,6 @@ class Hud {
   cocos2d::Label* _equippedWeaponDesc;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_HUD_H_
+#endif  // VIGILANTE_HUD_H_

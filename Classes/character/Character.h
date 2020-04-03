@@ -2,29 +2,29 @@
 #ifndef VIGILANTE_CHARACTER_H_
 #define VIGILANTE_CHARACTER_H_
 
-#include <set>
 #include <array>
-#include <vector>
-#include <map>
-#include <unordered_map>
-#include <string>
 #include <functional>
+#include <map>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
 #include "DynamicActor.h"
 #include "Importable.h"
 #include "Interactable.h"
-#include "item/Item.h"
-#include "item/Equipment.h"
 #include "item/Consumable.h"
+#include "item/Equipment.h"
+#include "item/Item.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
 
 namespace vigilante {
 
 class Character : public DynamicActor, public Importable {
- public: 
+ public:
   struct Profile {
     explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
@@ -68,18 +68,18 @@ class Character : public DynamicActor, public Importable {
   // We have a vector of b2Fixtures (declared in DynamicActor abstract class).
   // e.g., to access the weapon fixture: _fixtures[FixtureType::WEAPON]
   enum FixtureType {
-    BODY, // used in combat (with WEAPON fixture)
-    FEET, // used for ground/platform collision detection
-    WEAPON, // used in combat (with BODY fixture)
+    BODY,    // used in combat (with WEAPON fixture)
+    FEET,    // used for ground/platform collision detection
+    WEAPON,  // used in combat (with BODY fixture)
     FIXTURE_SIZE
   };
 
   virtual ~Character();
 
-  virtual void showOnMap(float x, float y) = 0; // DynamicActor
-  virtual void removeFromMap() override; // DynamicActor
-  virtual void update(float delta) override; // DynamicActor
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void showOnMap(float x, float y) = 0;                   // DynamicActor
+  virtual void removeFromMap() override;                          // DynamicActor
+  virtual void update(float delta) override;                      // DynamicActor
+  virtual void import(const std::string& jsonFileName) override;  // Importable
 
   virtual void moveLeft();
   virtual void moveRight();
@@ -97,8 +97,8 @@ class Character : public DynamicActor, public Importable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(Item* item, int amount=1);
-  virtual void removeItem(Item* item, int amount=1);
+  virtual void addItem(Item* item, int amount = 1);
+  virtual void removeItem(Item* item, int amount = 1);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
   virtual void unequip(Equipment::Type equipmentType);
@@ -154,7 +154,7 @@ class Character : public DynamicActor, public Importable {
   int getItemAmount(const std::string& itemName) const;
 
   int getDamageOutput() const;
-  
+
   static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
@@ -192,8 +192,8 @@ class Character : public DynamicActor, public Importable {
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
-  void runAnimation(Character::State state, bool loop=true) const;
-  void runAnimation(Character::State state, const std::function<void ()>& func) const;
+  void runAnimation(Character::State state, bool loop = true) const;
+  void runAnimation(Character::State state, const std::function<void()>& func) const;
   void runAnimation(const std::string& framesName, float interval);
 
   Character::State getState() const;
@@ -247,8 +247,7 @@ class Character : public DynamicActor, public Importable {
 
   // For each item, at most one copy of Item* is kept in memory.
   Item* getExistingItemObj(Item* item) const;
-  std::unordered_map<std::string, Item*> _itemMapper;   
-
+  std::unordered_map<std::string, Item*> _itemMapper;
 
   // The interactable object / portal to which this character is near.
   Interactable* _interactableObject;
@@ -262,19 +261,23 @@ class Character : public DynamicActor, public Importable {
   // The first attack animations is in _bodyAnimations[State::ATTACK],
   // and here's some extra ones.
   std::array<cocos2d::Animation*, 1> _bodyExtraAttackAnimations;
-  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>,
+             Equipment::Type::SIZE>
+      _equipmentExtraAttackAnimations;
 
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment
   // has their own animation!
   std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
   std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>,
+             Equipment::Type::SIZE>
+      _equipmentAnimations;
 
   // Skill animations
   std::unordered_map<std::string, cocos2d::Animation*> _skillBodyAnimations;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CHARACTER_H_
+#endif  // VIGILANTE_CHARACTER_H_

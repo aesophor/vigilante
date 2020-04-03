@@ -20,7 +20,7 @@ Shade* Shade::getInstance() {
   return _instance;
 }
 
-Shade::Shade() : _imageView(ImageView::create(asset_manager::kShade)) { // 1px * 1px
+Shade::Shade() : _imageView(ImageView::create(asset_manager::kShade)) {  // 1px * 1px
   auto winSize = Director::getInstance()->getWinSize();
   _imageView->setScaleX(winSize.width);
   _imageView->setScaleY(winSize.height);
@@ -28,9 +28,8 @@ Shade::Shade() : _imageView(ImageView::create(asset_manager::kShade)) { // 1px *
   _imageView->runAction(FadeOut::create(_kFadeOutTime));
 }
 
-
 ImageView* Shade::getImageView() const {
   return _imageView;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

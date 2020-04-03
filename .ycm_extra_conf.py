@@ -5,7 +5,7 @@ import logging
 import ycm_core
 import re
 
-proj_root = '/home/aesophor/Code/Vigilante/'
+proj_root = '/home/aesophor/Code/vigilante/'
 
 C_BASE_FLAGS = [
     '-Wall',
