@@ -1,4 +1,4 @@
 bin/*
 cocos2d-x-3.17.1/*
 linux-build/*
-Resources/
+res/
