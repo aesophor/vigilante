@@ -47,9 +47,9 @@ if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
 
-# Grab all .cc and .h under Classes/
-FILE(GLOB_RECURSE VIGILANTE_CC Classes/*.cc)
-FILE(GLOB_RECURSE VIGILANTE_H Classes/*.h)
+# Grab all .cc and .h under src/
+FILE(GLOB_RECURSE VIGILANTE_CC src/*.cc)
+FILE(GLOB_RECURSE VIGILANTE_H src/*.h)
 
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE ${VIGILANTE_CC})
@@ -122,7 +122,7 @@ endif()
 
 target_link_libraries(${APP_NAME} cocos2d)
 target_include_directories(${APP_NAME}
-        PRIVATE Classes
+        PRIVATE src 
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
 )
 

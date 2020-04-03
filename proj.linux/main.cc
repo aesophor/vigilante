@@ -3,8 +3,8 @@
 #include <string>
 #include <stdexcept>
 
-#include "../Classes/AppDelegate.h"
-#include "../Classes/util/Logger.h"
+#include "../src/AppDelegate.h"
+#include "../src/util/Logger.h"
 
 int main(int argc, char* args[]) {
   // Install SIGSEGV handler. See util/Logger.cc

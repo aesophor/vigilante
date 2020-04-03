@@ -9,17 +9,17 @@ export PATH=$COCOS_CONSOLE_ROOT:$PATH
 export COCOS_TEMPLATES_ROOT="/home/aesophor/Code/vigilante/cocos2d-x-3.17.1/templates"
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
-project_root="/home/aesophor/Code/vigilante/"
-spritesheets_list="Resources/Texture/spritesheets.txt"
-quests_list="Resources/Gameplay/quests_list.txt"
+proj_root="/home/aesophor/Code/vigilante/"
+spritesheets_list="res/Texture/spritesheets.txt"
+quests_list="res/Gameplay/quests_list.txt"
 
 
-# Generate Resources/Texture/spritesheets.txt
-cd $project_root/Resources && find Texture -type f | grep plist > $project_root/$spritesheets_list
+# Generate res/Texture/spritesheets.txt
+cd $proj_root/res && find Texture -type f | grep plist > $proj_root/$spritesheets_list
 
-# Generate Resources/Gameplay/quest_list.txt
-cd $project_root && find Resources -type f | grep quest | grep json > $project_root/$quests_list
+# Generate res/Gameplay/quest_list.txt
+cd $proj_root && find res -type f | grep quest | grep json > $proj_root/$quests_list
 
 # Lint
 ./lint.sh
-cocos compile -p linux
+cocos run -p linux
