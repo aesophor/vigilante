@@ -234,8 +234,8 @@ class Character : public DynamicActor, public Importable {
   Character* _lockedOnTarget;
   bool _isAlerted;
 
-  // When player are close enough to an items dropped in the world,
-  // their pointers are stored here.
+  // When player are close enough to the items dropped in the world,
+  // the pointers to the items are stored here.
   std::set<Item*> _inRangeItems;
 
   // Character's inventory and equipment slots.
