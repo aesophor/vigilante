@@ -10,19 +10,13 @@ export COCOS_TEMPLATES_ROOT="$HOME/Code/vigilante/cocos2d-x-3.17.1/templates"
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
 proj_root="$HOME/Code/vigilante/"
-
-# Linux
-#spritesheets_list="Resources/Texture/spritesheets.txt"
-#quests_list="Resources/Gameplay/quests_list.txt"
-
-# macOS
-spritesheets_list="Texture/spritesheets.txt"
-quests_list="Gameplay/quests_list.txt"
+spritesheets_list="Resources/Texture/spritesheets.txt"
+quests_list="Resources/Gameplay/quests_list.txt"
 
 # Generate Resources/Texture/spritesheets.txt
 cd $proj_root/Resources && find Texture -type f | grep plist > $proj_root/$spritesheets_list
 
 # Generate Resources/Gameplay/quest_list.txt
-cd $proj_root && find Resources -type f | grep quest | grep json > $proj_root/$quests_list
+cd $proj_root/Resources && find . -type f | grep quest | grep json > $proj_root/$quests_list
 
 cocos run -p mac
