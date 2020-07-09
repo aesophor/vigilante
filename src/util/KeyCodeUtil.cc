@@ -20,9 +20,11 @@ struct KeyCodeHash
         return static_cast<std::size_t>(t);
     }
 };
-#endif
 
 unordered_map<EventKeyboard::KeyCode, string, KeyCodeHash> keyMap;
+#else
+unordered_map<EventKeyboard::KeyCode, string> keyMap;
+#endif
 
 } // namespace
 
