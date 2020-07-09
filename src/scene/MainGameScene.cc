@@ -111,8 +111,8 @@ bool MainGameScene::init() {
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
 
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Database/item/equipment/short_sword.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Database/item/equipment/royal_cape.json"));
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
@@ -126,12 +126,12 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/back_dash.json", player));
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/forward_slash.json", player));
-  player->getSkills().push_back(Skill::create("Resources/Database/skill/ice_spike.json", player));
+  player->getSkills().push_back(Skill::create("Database/skill/back_dash.json", player));
+  player->getSkills().push_back(Skill::create("Database/skill/forward_slash.json", player));
+  player->getSkills().push_back(Skill::create("Database/skill/ice_spike.json", player));
 
-  //player->getQuestBook().startQuest("Resources/Database/quest/main/main01.json");
-  //_console->executeCmd("startquest Resources/Database/quest/main/main01.json");
+  //player->getQuestBook().startQuest("Database/quest/main/main01.json");
+  //_console->executeCmd("startquest Database/quest/main/main01.json");
 
 
   // Initialize Pause Menu.

@@ -98,7 +98,7 @@ Player* GameMap::createPlayer() const {
   auto& valMap = objGroup->getObjects()[0].asValueMap();
   float x = valMap["x"].asFloat();
   float y = valMap["y"].asFloat();
-  Player* player = new Player("Resources/Database/character/vlad.json");
+  Player* player = new Player("Database/character/vlad.json");
   player->showOnMap(x, y);
   return player;
 }

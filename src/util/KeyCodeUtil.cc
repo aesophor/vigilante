@@ -9,7 +9,20 @@ using cocos2d::EventKeyboard;
 
 namespace {
 
-unordered_map<EventKeyboard::KeyCode, string> keyMap;
+// Apple's libc++ is retarded... This hash function object isn't
+// necessary when compiling with libstdc++
+#ifdef __APPLE__
+struct KeyCodeHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return static_cast<std::size_t>(t);
+    }
+};
+#endif
+
+unordered_map<EventKeyboard::KeyCode, string, KeyCodeHash> keyMap;
 
 } // namespace
 

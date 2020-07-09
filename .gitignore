@@ -1,4 +1,6 @@
+.DS_Store
 bin/*
 cocos2d-x-3.17.1/*
+cocos2d-x-3.17.1.tar.gz
 linux-build/*
-res/
+Resources/

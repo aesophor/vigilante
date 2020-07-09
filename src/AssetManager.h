@@ -8,9 +8,15 @@ namespace vigilante {
 
 namespace asset_manager {
 
+#ifdef __linux__
 const std::string kExpPointTable = "Resources/Gameplay/exp_point_table.txt";
 const std::string kSpritesheetsList = "Resources/Texture/spritesheets.txt";
 const std::string kQuestsList = "Resources/Gameplay/quests_list.txt";
+#else
+const std::string kExpPointTable = "Gameplay/exp_point_table.txt";
+const std::string kSpritesheetsList = "Texture/spritesheets.txt";
+const std::string kQuestsList = "Gameplay/quests_list.txt";
+#endif
 
 // Fonts
 const std::string kRegularFont = "Font/HeartbitXX.ttf";
