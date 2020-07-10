@@ -37,7 +37,6 @@ class GameMapManager {
   void createDustFx(Character* character);
 
  private:
-  static GameMapManager* _instance;
   explicit GameMapManager(const b2Vec2& gravity);
 
   cocos2d::Layer* _layer;

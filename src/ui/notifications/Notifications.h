@@ -12,7 +12,6 @@ class Notifications : public TimedLabelService {
   virtual ~Notifications() = default;
 
  private:
-  static Notifications* _instance;
   Notifications();
 };
 

@@ -32,7 +32,6 @@ class InputManager {
   bool isShiftPressed() const;
 
  private:
-  static InputManager* _instance;
   InputManager();
 
   cocos2d::Scene* _scene;

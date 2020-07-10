@@ -12,13 +12,9 @@ using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
-Console* Console::_instance = nullptr;
-
 Console* Console::getInstance() {
-  if (!_instance) {
-    _instance = new Console();
-  }
-  return _instance;
+  static Console instance;
+  return &instance;
 }
 
 Console::Console()

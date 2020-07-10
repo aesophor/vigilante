@@ -9,13 +9,9 @@
 
 namespace vigilante {
 
-Notifications* Notifications::_instance = nullptr;
-
 Notifications* Notifications::getInstance() {
-  if (!_instance) {
-    _instance = new Notifications();
-  }
-  return _instance;
+  static Notifications instance;
+  return &instance;
 }
 
 Notifications::Notifications()

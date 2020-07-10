@@ -6,13 +6,9 @@ using cocos2d::Layer;
 
 namespace vigilante {
 
-DialogueManager* DialogueManager::_instance = nullptr;
-
 DialogueManager* DialogueManager::getInstance() {
-  if (!_instance) {
-    _instance = new DialogueManager();
-  }
-  return _instance;
+  static DialogueManager instance;
+  return &instance;
 }
 
 DialogueManager::DialogueManager()

@@ -11,8 +11,6 @@ using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
-HotkeyManager* HotkeyManager::_instance = nullptr;
-
 const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyManager::_kBindableKeys = {{
   EventKeyboard::KeyCode::KEY_LEFT_SHIFT,
   EventKeyboard::KeyCode::KEY_LEFT_CTRL,
@@ -22,10 +20,8 @@ const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyMan
 }};
 
 HotkeyManager* HotkeyManager::getInstance() {
-  if (!_instance) {
-    _instance = new HotkeyManager();
-  }
-  return _instance;
+  static HotkeyManager instance;
+  return &instance;
 }
 
 HotkeyManager::HotkeyManager() : _hotkeys() {}

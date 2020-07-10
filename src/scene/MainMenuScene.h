@@ -5,7 +5,6 @@
 #include <array>
 #include <vector>
 #include <string>
-#include <memory>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
@@ -43,7 +42,7 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
   std::vector<cocos2d::Label*> _labels;
   int _current;
 
-  std::unique_ptr<InputManager> _inputMgr;
+  InputManager* _inputMgr;
 };
 
 } // namespace vigilante

@@ -31,7 +31,6 @@ class DialogueManager : public Controllable {
   void setCurrentDialogue(Dialogue* dialogue) const;
 
  private:
-  static DialogueManager* _instance;
   DialogueManager();
 
   cocos2d::Layer* _layer;

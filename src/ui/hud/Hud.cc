@@ -24,13 +24,9 @@ namespace vigilante {
 
 const float Hud::_kBarLength = 75.0f;
 
-Hud* Hud::_instance = nullptr;
-
 Hud* Hud::getInstance() {
-  if (!_instance) {
-    _instance = new Hud();
-  }
-  return _instance;
+  static Hud instance;
+  return &instance;
 }
 
 Hud::Hud()

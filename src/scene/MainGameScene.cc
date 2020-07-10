@@ -21,7 +21,6 @@
 
 using std::string;
 using std::unique_ptr;
-using std::shared_ptr;
 using cocos2d::Vec3;
 using cocos2d::Camera;
 using cocos2d::CameraFlag;
@@ -60,39 +59,39 @@ bool MainGameScene::init() {
   addChild(_hudCamera);
   
   // Initialize shade.
-  _shade = unique_ptr<Shade>(Shade::getInstance());
+  _shade = Shade::getInstance();
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_shade->getImageView(), graphical_layers::kShade);
 
   // Initialize HUD.
-  _hud = unique_ptr<Hud>(Hud::getInstance());
+  _hud = Hud::getInstance();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_hud->getLayer(), graphical_layers::kHud);
   _hud->getLayer()->setPosition(75, winSize.height - 40);
 
   // Initialize console.
-  _console = unique_ptr<Console>(Console::getInstance());
+  _console = Console::getInstance();
   _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_console->getLayer(), graphical_layers::kConsole);
   _console->getLayer()->setPosition(10, 10);
 
   // Initialize notifications.
-  _notifications = unique_ptr<Notifications>(Notifications::getInstance());
+  _notifications = Notifications::getInstance();
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), graphical_layers::kNotification);
   _notifications->show("Notifications Initialized!");
   _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
   // Initialize quest hints.
-  _questHints = unique_ptr<QuestHints>(QuestHints::getInstance());
+  _questHints = QuestHints::getInstance();
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
   // Initialize floating damages.
-  _floatingDamages = unique_ptr<FloatingDamages>(FloatingDamages::getInstance());
+  _floatingDamages = FloatingDamages::getInstance();
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
   // Initialize dialogue manager.
-  _dialogueManager = unique_ptr<DialogueManager>(DialogueManager::getInstance());
+  _dialogueManager = DialogueManager::getInstance();
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
  
@@ -106,7 +105,7 @@ bool MainGameScene::init() {
   
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
-  _gameMapManager = unique_ptr<GameMapManager>(GameMapManager::getInstance());
+  _gameMapManager = GameMapManager::getInstance();
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 

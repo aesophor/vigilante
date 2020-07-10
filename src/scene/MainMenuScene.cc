@@ -7,7 +7,6 @@
 
 using std::array;
 using std::string;
-using std::unique_ptr;
 using cocos2d::Director;
 using cocos2d::Scene;
 using cocos2d::Label;
@@ -67,14 +66,14 @@ bool MainMenuScene::init() {
   addChild(versionLabel);
 
   // Initialize InputManager.
-  _inputMgr = unique_ptr<InputManager>(InputManager::getInstance());
+  _inputMgr = InputManager::getInstance();
   _inputMgr->activate(this);
 
   schedule(schedule_selector(MainMenuScene::update));
   return true;
 }
 
-void MainMenuScene::update(float delta) {
+void MainMenuScene::update(float) {
   handleInput();
 }
 

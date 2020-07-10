@@ -30,7 +30,6 @@ class FloatingDamages {
     float timer;
   };
 
-  static FloatingDamages* _instance;
   FloatingDamages();
 
   static const float kDeltaX;

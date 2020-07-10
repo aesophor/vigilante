@@ -25,7 +25,6 @@ class Console : public Controllable {
   cocos2d::Layer* getLayer() const;
 
  private:
-  static Console* _instance;
   Console();
 
   class CommandHistory : public CircularBuffer<std::string> {

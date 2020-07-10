@@ -11,13 +11,9 @@
 
 namespace vigilante {
 
-QuestHints* QuestHints::_instance = nullptr;
-
 QuestHints* QuestHints::getInstance() {
-  if (!_instance) {
-    _instance = new QuestHints();
-  }
-  return _instance;
+  static QuestHints instance;
+  return &instance;
 }
 
 QuestHints::QuestHints()

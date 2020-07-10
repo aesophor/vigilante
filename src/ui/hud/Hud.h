@@ -25,7 +25,6 @@ class Hud {
   void setPlayer(Player* player);
 
  private:
-  static Hud* _instance;
   Hud();
 
   static const float _kBarLength;

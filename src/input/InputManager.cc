@@ -11,13 +11,9 @@ using cocos2d::EventListenerKeyboard;
 
 namespace vigilante {
 
-InputManager* InputManager::_instance = nullptr;
-
 InputManager* InputManager::getInstance() {
-  if (!_instance) {
-    _instance = new InputManager();
-  }
-  return _instance;
+  static InputManager instance;
+  return &instance;
 }
 
 InputManager::InputManager()

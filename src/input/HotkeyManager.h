@@ -34,7 +34,6 @@ class HotkeyManager {
   void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:
-  static HotkeyManager* _instance;
   HotkeyManager();
 
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;

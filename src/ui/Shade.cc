@@ -11,13 +11,10 @@ namespace vigilante {
 
 const float Shade::_kFadeOutTime = .65f;
 const float Shade::_kFadeInTime = .3f;
-Shade* Shade::_instance = nullptr;
 
 Shade* Shade::getInstance() {
-  if (!_instance) {
-    _instance = new Shade();
-  }
-  return _instance;
+  static Shade instance;
+  return &instance;
 }
 
 Shade::Shade() : _imageView(ImageView::create(asset_manager::kShade)) { // 1px * 1px

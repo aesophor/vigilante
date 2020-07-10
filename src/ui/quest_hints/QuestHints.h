@@ -12,7 +12,6 @@ class QuestHints : public TimedLabelService {
   virtual ~QuestHints() = default;
 
  private:
-  static QuestHints* _instance;
   QuestHints();
 };
 

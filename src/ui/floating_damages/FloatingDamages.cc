@@ -20,8 +20,6 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-FloatingDamages* FloatingDamages::_instance = nullptr;
-
 const float FloatingDamages::kDeltaX = 0.0f;
 const float FloatingDamages::kDeltaY = 10.0f;
 
@@ -29,10 +27,8 @@ const float FloatingDamages::kMoveUpDuration = .2f;
 const float FloatingDamages::kFadeDuration = .2f;
 
 FloatingDamages* FloatingDamages::getInstance() {
-  if (!_instance) {
-    _instance = new FloatingDamages();
-  }
-  return _instance;
+  static FloatingDamages instance;
+  return &instance;
 }
 
 FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}

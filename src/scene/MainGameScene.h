@@ -37,15 +37,15 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   cocos2d::Camera* _hudCamera;
   b2DebugRenderer* _b2dr; // autorelease object
 
-  std::unique_ptr<Shade> _shade;
-  std::unique_ptr<Hud> _hud;
-  std::unique_ptr<Console> _console;
+  Shade* _shade;
+  Hud* _hud;
+  Console* _console;
   std::unique_ptr<PauseMenu> _pauseMenu;
-  std::unique_ptr<DialogueManager> _dialogueManager;
-  std::unique_ptr<FloatingDamages> _floatingDamages;
-  std::unique_ptr<QuestHints> _questHints;
-  std::unique_ptr<Notifications> _notifications;
-  std::unique_ptr<GameMapManager> _gameMapManager;
+  DialogueManager* _dialogueManager;
+  FloatingDamages* _floatingDamages;
+  QuestHints* _questHints;
+  Notifications* _notifications;
+  GameMapManager* _gameMapManager;
 };
 
 } // namespace vigilante

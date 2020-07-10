@@ -18,7 +18,6 @@ class Shade {
   cocos2d::ui::ImageView* getImageView() const;
 
  private:
-  static Shade* _instance;
   Shade();
 
   cocos2d::ui::ImageView* _imageView;
