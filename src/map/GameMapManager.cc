@@ -2,6 +2,7 @@
 #include "GameMapManager.h"
 
 #include <Box2D/Box2D.h>
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -57,10 +58,11 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (_gameMap) {
     _layer->removeChild(_gameMap->getTmxTiledMap());
     _gameMap->deleteObjects();
-    _gameMap.reset(); // deletes the underlying GameMap object
+    _gameMap.reset(); // deletes the underlying GameMap object and _gameMap = nullptr.
   }
 
-  _gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
+  //_gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
+  _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFileName);
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
