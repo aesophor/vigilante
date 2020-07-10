@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMap.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Character.h"
@@ -62,9 +63,6 @@ void GameMap::deleteObjects() {
     actor->removeFromMap(); // will remove `actor` from `_dynamicActors` 
     delete actor;
   }
-  for (auto portal : _portals) {
-    delete portal;
-  }
 }
 
 unordered_set<b2Body*>& GameMap::getTmxTiledMapBodies() {
@@ -80,9 +78,6 @@ unordered_set<DynamicActor*>& GameMap::getDynamicActors() {
   return _dynamicActors;
 }
 
-const vector<GameMap::Portal*>& GameMap::getPortals() const {
-  return _portals;
-}
 
 float GameMap::getWidth() const {
   return _tmxTiledMap->getMapSize().width * _tmxTiledMap->getTileSize().width;
@@ -193,14 +188,14 @@ void GameMap::createPortals() {
       .buildBody();
 
     // This portal object will be deleted at GameMap::~GameMap()
-    Portal* portal = new Portal(targetTmxMapFilePath, targetPortalId, willInteractOnContact, body);
-    _portals.push_back(portal);
+    _portals.push_back(std::make_unique<Portal>(targetTmxMapFilePath, targetPortalId,
+                                                willInteractOnContact, body));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
       .setSensor(true)
       .friction(0)
-      .setUserData(portal)
+      .setUserData(_portals.back().get())
       .buildFixture();
   }
 }
@@ -269,7 +264,7 @@ void GameMap::Portal::onInteract(Character* user) {
       auto gmMgr = GameMapManager::getInstance();
       gmMgr->loadGameMap(targetTmxMapFileName);
 
-      auto pos = gmMgr->getGameMap()->getPortals().at(targetPortalId)->getBody()->GetPosition();
+      auto pos = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
       user->setPosition(pos.x, pos.y);
     }),
     FadeOut::create(Shade::_kFadeOutTime),
@@ -287,10 +282,6 @@ int GameMap::Portal::getTargetPortalId() const {
 
 bool GameMap::Portal::willInteractOnContact() const {
   return _willInteractOnContact;
-}
-
-b2Body* GameMap::Portal::getBody() const {
-  return _body;
 }
 
 } // namespace vigilante

@@ -29,7 +29,6 @@ class GameMap {
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
-    b2Body* getBody() const;
 
    protected:
     std::string _targetTmxMapFileName; // new (target) .tmx filename
@@ -48,7 +47,6 @@ class GameMap {
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
 
   std::unordered_set<DynamicActor*>& getDynamicActors();
-  const std::vector<GameMap::Portal*>& getPortals() const;
 
   Player* createPlayer() const;
   Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
@@ -69,7 +67,7 @@ class GameMap {
   cocos2d::TMXTiledMap* _tmxTiledMap;
 
   std::unordered_set<DynamicActor*> _dynamicActors;
-  std::vector<GameMap::Portal*> _portals;
+  std::vector<std::unique_ptr<GameMap::Portal>> _portals;
 };
 
 } // namespace vigilante
