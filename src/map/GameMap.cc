@@ -248,7 +248,6 @@ void GameMap::createChests() {
     chest->showOnMap(x, y);
 
     for (const auto& itemJson : json_util::splitString(items)) {
-      // The chest will delete all of the items when its destructor is called.
       chest->getItemJsons().push_back(itemJson);
     }
   }
