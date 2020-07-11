@@ -6,6 +6,7 @@
 #include "map/GameMapManager.h"
 
 using std::vector;
+using std::unique_ptr;
 using cocos2d::Node;
 
 namespace vigilante {
@@ -22,12 +23,12 @@ void DynamicActor::removeFromMap() {
   }
 
   _isShownOnMap = false;
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+  GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
 
   // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
   GameMapManager::getInstance()->getLayer()->removeChild(
-    (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
-  );
+    (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite));
+
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;
 

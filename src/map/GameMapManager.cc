@@ -29,9 +29,9 @@ GameMapManager* GameMapManager::getInstance() {
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
-      _worldContactListener(new WorldContactListener()),
-      _world(new b2World(gravity)),
-      _fxMgr(new FxManager(_layer)),
+      _worldContactListener(std::make_unique<WorldContactListener>()),
+      _world(std::make_unique<b2World>(gravity)),
+      _fxMgr(std::make_unique<FxManager>(_layer)),
       _gameMap(),
       _player() {
   _world->SetAllowSleeping(true);
@@ -43,8 +43,9 @@ void GameMapManager::update(float delta) {
   if (_player) {
     _player->update(delta);
   }
-  for (auto actor : _gameMap->getDynamicActors()) {
-    actor->update(delta);
+
+  for (auto& actorRawUniquePair : _gameMap->_dynamicActors) {
+    actorRawUniquePair.second->update(delta);
   }
 }
 
@@ -61,7 +62,6 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
     _gameMap.reset(); // deletes the underlying GameMap object and _gameMap = nullptr.
   }
 
-  //_gameMap = unique_ptr<GameMap>(new GameMap(_world.get(), tmxMapFileName));
   _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFileName);
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);

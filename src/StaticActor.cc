@@ -48,7 +48,7 @@ void StaticActor::removeFromMap() {
   );
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;
- }
+}
 
 void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);

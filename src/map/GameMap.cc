@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMap.h"
 
 #include "std/make_unique.h"
@@ -58,10 +58,12 @@ void GameMap::deleteObjects() {
     _world->DestroyBody(body);
   }
 
+  // Iterate through _dynamicActors (which is an unordered_map),
+  // and call actor->removeFromMap() for each DynamicActor.
   for (auto it = _dynamicActors.begin(); it != _dynamicActors.end();) {
-    DynamicActor* actor = *(it++);
-    actor->removeFromMap(); // will remove `actor` from `_dynamicActors` 
-    delete actor;
+    // The following line will also remove the entry from _dynamicActors.
+    auto& actorRawUniquePair = *it++;
+    actorRawUniquePair.second->removeFromMap();
   }
 }
 
@@ -74,8 +76,19 @@ TMXTiledMap* GameMap::getTmxTiledMap() const {
 }
 
 
-unordered_set<DynamicActor*>& GameMap::getDynamicActors() {
-  return _dynamicActors;
+void GameMap::addDynamicActor(DynamicActor* actor) {
+  _dynamicActors.insert({actor, unique_ptr<DynamicActor>(actor)});
+}
+
+void GameMap::removeDynamicActor(const DynamicActor* actor) {
+  auto it = _dynamicActors.find(actor);
+  if (it != _dynamicActors.end()) {
+    // Since GameMap::removeDynamicActor() is an instance method,
+    // we'll simply release the unique_ptr, and let the callee
+    // find another way to manage this actor's lifetime.
+    it->second.release();
+    _dynamicActors.erase(actor);
+  }
 }
 
 
@@ -233,7 +246,6 @@ void GameMap::createChests() {
 
     Chest* chest = new Chest();
     chest->showOnMap(x, y);
-    _dynamicActors.insert(chest);
 
     for (const auto& itemJson : json_util::splitString(items)) {
       // The chest will delete all of the items when its destructor is called.

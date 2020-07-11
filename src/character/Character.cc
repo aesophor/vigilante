@@ -108,7 +108,7 @@ void Character::removeFromMap() {
     return;
   }
   _isShownOnMap = false;
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().erase(this);
+  GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
 
   if (!_isKilled) {
     _body->GetWorld()->DestroyBody(_body);

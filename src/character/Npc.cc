@@ -58,7 +58,7 @@ void Npc::showOnMap(float x, float y) {
     return;
   }
   _isShownOnMap = true;
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+  GameMapManager::getInstance()->getGameMap()->addDynamicActor(this);
 
   // Construct b2Body and b2Fixtures.
   short bodyCategoryBits = kNpc;

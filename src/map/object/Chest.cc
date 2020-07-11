@@ -30,7 +30,7 @@ void Chest::showOnMap(float x, float y) {
   }
 
   _isShownOnMap = true;
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+  GameMapManager::getInstance()->getGameMap()->addDynamicActor(this);
 
   short categoryBits = kInteractableObject;
   short maskBits = kGround | kPlatform | kWall;

@@ -48,7 +48,7 @@ void Item::showOnMap(float x, float y) {
     return;
   }
   _isShownOnMap = true;
-  GameMapManager::getInstance()->getGameMap()->getDynamicActors().insert(this);
+  GameMapManager::getInstance()->getGameMap()->addDynamicActor(this);
 
   short categoryBits = kItem;
   short maskBits = kGround | kPlatform | kWall;

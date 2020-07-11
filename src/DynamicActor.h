@@ -23,19 +23,19 @@ class DynamicActor : public StaticActor {
   explicit DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
   virtual ~DynamicActor() = default;
 
-  virtual void showOnMap(float x, float y) = 0; // StaticActor
-  virtual void removeFromMap() override; // StaticActor
-  virtual void setPosition(float x, float y) override; // StaticActor
+  virtual void showOnMap(float x, float y) = 0;  // StaticActor
+  virtual void removeFromMap() override;  // StaticActor:
+  virtual void setPosition(float x, float y) override;  // StaticActor
   virtual void update(float delta);
 
   b2Body* getBody() const;
   std::vector<b2Fixture*>& getFixtures();
 
  protected:
-  b2Body* _body; // users should manually destory _body in subclass!
+  b2Body* _body;  // users should manually destory _body in subclass!
   std::vector<b2Fixture*> _fixtures;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_DYNAMIC_ACTOR_H_
+#endif  // VIGILANTE_DYNAMIC_ACTOR_H_
