@@ -2,7 +2,7 @@
 #ifndef VIGILANTE_OPTION_PANE_H_
 #define VIGILANTE_OPTION_PANE_H_
 
-#include <array>
+#include <vector>
 #include <memory>
 
 #include "ui/pause_menu/AbstractPane.h"
@@ -21,7 +21,7 @@ class OptionPane : public AbstractPane {
   virtual void handleInput() override;
 
  private:
-  std::array<std::unique_ptr<Option>, OPTION_COUNT> _options;
+  std::vector<Option> _options;
   std::unique_ptr<OptionListView> _optionListView;
 };
 

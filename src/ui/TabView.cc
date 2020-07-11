@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TabView.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 
 using std::vector;
@@ -26,7 +27,7 @@ TabView::TabView(const string& regularBg, const string& highlightedBg)
 }
 
 void TabView::addTab(const string& text) {
-  _tabs.push_back(unique_ptr<Tab>(new Tab(this, text)));
+  _tabs.push_back(std::make_unique<Tab>(this, text));
 
   const auto& tabSize = _tabs.back()->_background->getContentSize();
   _nextTabPos.x += ((_nextTabPos.x == 0) ? tabSize.width / 2 : tabSize.width) + 1;

@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Hud.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "item/Equipment.h"
@@ -32,9 +33,9 @@ Hud* Hud::getInstance() {
 Hud::Hud()
     : _layer(Layer::create()),
       _player(),
-      _healthBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
-      _magickaBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
-      _staminaBar(new StatusBar(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
+      _healthBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
+      _magickaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
+      _staminaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
       _equippedWeaponBg(ImageView::create(kEquippedWeaponBg)),
       _equippedWeapon(ImageView::create()),
       _equippedWeaponDescBg(ImageView::create(kEquippedWeaponDescBg)),

@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestPane.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 
@@ -13,7 +14,7 @@ namespace vigilante {
 QuestPane::QuestPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
       _background(ImageView::create(asset_manager::kInventoryBg)),
-      _questListView(new QuestListView(pauseMenu)) {
+      _questListView(std::make_unique<QuestListView>(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);

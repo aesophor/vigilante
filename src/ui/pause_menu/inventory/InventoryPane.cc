@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "InventoryPane.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -24,8 +25,8 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
       _isSelectingEquipment(),
       _selectingEquipmentType(),
       _background(ImageView::create(kInventoryBg)),
-      _tabView(new TabView(kTabRegular, kTabHighlighted)),
-      _itemListView(new ItemListView(pauseMenu)) {
+      _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
+      _itemListView(std::make_unique<ItemListView>(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);

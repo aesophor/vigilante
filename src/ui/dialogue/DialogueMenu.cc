@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueMenu.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "character/Npc.h"
 #include "input/InputManager.h"
@@ -15,7 +16,8 @@ using cocos2d::EventKeyboard;
 namespace vigilante {
 
 DialogueMenu::DialogueMenu()
-    : _layer(Layer::create()), _dialogueListView(new DialogueListView(this)) {
+    : _layer(Layer::create()),
+      _dialogueListView(std::make_unique<DialogueListView>(this)) {
   auto winSize = Director::getInstance()->getWinSize();
   _dialogueListView->getLayout()->setAnchorPoint({0.5, 1});
   _dialogueListView->getLayout()->setPosition({250, DIALOGUE_MENU_Y});

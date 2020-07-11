@@ -70,7 +70,7 @@ Layer* Console::getLayer() const {
 
 
 Console::CommandHistory::CommandHistory()
-    : CircularBuffer<std::string>(DEFAULT_HISTORY_SIZE), _current(_tail) {}
+    : CircularBuffer<string>(DEFAULT_HISTORY_SIZE), _current(_tail) {}
 
 bool Console::CommandHistory::canGoBack() const {
   return _current != _head;

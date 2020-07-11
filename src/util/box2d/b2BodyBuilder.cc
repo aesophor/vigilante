@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "util/box2d/b2BodyBuilder.h"
 
+#include "std/make_unique.h"
+
 using std::unique_ptr;
 
 namespace vigilante {
@@ -45,58 +47,58 @@ b2Body* b2BodyBuilder::buildBody() {
 
 
 b2BodyBuilder& b2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm) {
-  b2PolygonShape* shape = new b2PolygonShape();
-  shape->SetAsBox(hw / ppm, hh / ppm);
-  _shape = unique_ptr<b2PolygonShape>(shape);
+  _shape = std::make_unique<b2PolygonShape>();
+  _fdef.shape = _shape.get();
 
-  _fdef.shape = shape;
+  b2PolygonShape* shape = dynamic_cast<b2PolygonShape*>(_shape.get());
+  shape->SetAsBox(hw / ppm, hh / ppm);
   return *this;
 }
 
 b2BodyBuilder& b2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t count, float ppm) {
-  b2PolygonShape* shape = new b2PolygonShape();
+  _shape = std::make_unique<b2PolygonShape>();
+  _fdef.shape = _shape.get();
+
+  b2PolygonShape* shape = dynamic_cast<b2PolygonShape*>(_shape.get());
   b2Vec2 scaledVertices[count];
   for (size_t i = 0; i < count; i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
   }
   shape->Set(scaledVertices, count);
-  _shape = unique_ptr<b2PolygonShape>(shape);
-
-  _fdef.shape = shape;
   return *this;
 }
 
 b2BodyBuilder& b2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t count, float ppm) {
-  b2ChainShape* shape = new b2ChainShape();
+  _shape = std::make_unique<b2ChainShape>();
+  _fdef.shape = _shape.get();
+
+  b2ChainShape* shape = dynamic_cast<b2ChainShape*>(_shape.get());
   b2Vec2 scaledVertices[count];
   for (size_t i = 0; i < count; i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
   }
   shape->CreateChain(scaledVertices, count);
-  _shape = unique_ptr<b2ChainShape>(shape);
-  
-  _fdef.shape = shape;
   return *this;
 }
 
 b2BodyBuilder& b2BodyBuilder::newEdgeShapeFixture(const b2Vec2& vertex1, const b2Vec2& vertex2, float ppm) {
-  b2EdgeShape* shape = new b2EdgeShape();
+  _shape = std::make_unique<b2EdgeShape>();
+  _fdef.shape = _shape.get();
+
+  b2EdgeShape* shape = dynamic_cast<b2EdgeShape*>(_shape.get());
   b2Vec2 scaledVertex1 = {vertex1.x / ppm, vertex1.y / ppm};
   b2Vec2 scaledVertex2 = {vertex2.x / ppm, vertex2.y / ppm};
   shape->Set(scaledVertex1, scaledVertex2);
-
-  _shape = unique_ptr<b2EdgeShape>(shape);
-  _fdef.shape = shape;
   return *this;
 }
 
 b2BodyBuilder& b2BodyBuilder::newCircleFixture(const b2Vec2& centerPos, int radius, float ppm) {
-  b2CircleShape* shape = new b2CircleShape();
+  _shape = std::make_unique<b2CircleShape>();
+  _fdef.shape = _shape.get();
+
+  b2CircleShape* shape = dynamic_cast<b2CircleShape*>(_shape.get());
   shape->m_p.Set(centerPos.x / ppm, centerPos.y / ppm);
   shape->m_radius = radius / ppm;
-
-  _shape = unique_ptr<b2CircleShape>(shape);
-  _fdef.shape = shape;
   return *this;
 }
 

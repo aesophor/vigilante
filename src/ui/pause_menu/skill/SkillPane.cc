@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SkillPane.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 
@@ -13,7 +14,7 @@ namespace vigilante {
 SkillPane::SkillPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
       _background(ImageView::create(asset_manager::kInventoryBg)),
-      _skillListView(new SkillListView(pauseMenu)) {
+      _skillListView(std::make_unique<SkillListView>(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);

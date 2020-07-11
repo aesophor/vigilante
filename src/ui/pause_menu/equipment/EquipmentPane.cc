@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "EquipmentPane.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -34,7 +35,7 @@ EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     const string& title = Equipment::_kEquipmentTypeStr[i];
     float x = 0;
     float y = -30.0f * i;
-    _equipmentItems.push_back(unique_ptr<EquipmentItem>(new EquipmentItem(parent, title, x, y)));
+    _equipmentItems.push_back(std::make_unique<EquipmentItem>(parent, title, x, y));
     innerLayout->addChild(_equipmentItems[i]->getLayout());
   }
   _equipmentItems.front()->setSelected(true);

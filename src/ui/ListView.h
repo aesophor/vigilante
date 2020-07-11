@@ -12,6 +12,7 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"
@@ -117,7 +118,7 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
   for (int i = 0; i < visibleItemCount; i++) {
     float x = 0;
     float y = -i * 25;
-    _listViewItems.push_back(std::unique_ptr<ListViewItem>(new ListViewItem(this, x, y)));
+    _listViewItems.push_back(std::make_unique<ListViewItem>(this, x, y));
     _listViewItems.back()->setVisible(false);
     _layout->addChild(_listViewItems[i]->getLayout());
   }

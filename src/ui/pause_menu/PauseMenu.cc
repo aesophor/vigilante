@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenu.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
@@ -38,9 +39,9 @@ PauseMenu::PauseMenu(Player* player)
     : _player(player),
       _layer(Layer::create()),
       _background(ImageView::create(kPauseMenuBg)),
-      _headerPane(new HeaderPane(this)),
-      _statsPane(new StatsPane(this)),
-      _dialog(new PauseMenuDialog(this)) {
+      _headerPane(std::make_unique<HeaderPane>(this)),
+      _statsPane(std::make_unique<StatsPane>(this)),
+      _dialog(std::make_unique<PauseMenuDialog>(this)) {
   // Scale the bg image to fill the entire visible area.
   auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -63,35 +64,35 @@ PauseMenu::PauseMenu(Player* player)
   _layer->addChild(_dialog->getLayout());
 
   // Initialize InventoryPane.
-  _panes[0] = unique_ptr<InventoryPane>(new InventoryPane(this));
+  _panes[0] = std::make_unique<InventoryPane>(this);
   InventoryPane* inventoryPane = dynamic_cast<InventoryPane*>(_panes[0].get());
   inventoryPane->setPosition(MAIN_PANE_POS);
   inventoryPane->setVisible(false);
   _layer->addChild(inventoryPane->getLayout());
 
   // Initialize EquipmentPane.
-  _panes[1] = unique_ptr<EquipmentPane>(new EquipmentPane(this));
+  _panes[1] = std::make_unique<EquipmentPane>(this);
   EquipmentPane* equipmentPane = dynamic_cast<EquipmentPane*>(_panes[1].get());
   equipmentPane->setPosition(MAIN_PANE_POS);
   equipmentPane->setVisible(false);
   _layer->addChild(equipmentPane->getLayout());
 
   // Initialize EquipmentPane.
-  _panes[2] = unique_ptr<SkillPane>(new SkillPane(this));
+  _panes[2] = std::make_unique<SkillPane>(this);
   SkillPane* skillPane = dynamic_cast<SkillPane*>(_panes[2].get());
   skillPane->setPosition(MAIN_PANE_POS);
   skillPane->setVisible(false);
   _layer->addChild(skillPane->getLayout());
 
   // Initialize QuestPane.
-  _panes[3] = unique_ptr<QuestPane>(new QuestPane(this));
+  _panes[3] = std::make_unique<QuestPane>(this);
   QuestPane* questPane = dynamic_cast<QuestPane*>(_panes[3].get());
   questPane->setPosition(MAIN_PANE_POS);
   questPane->setVisible(false);
   _layer->addChild(questPane->getLayout());
 
   // Initialize OptionPane.
-  _panes[4] = unique_ptr<OptionPane>(new OptionPane(this));
+  _panes[4] = std::make_unique<OptionPane>(this);
   OptionPane* optionPane = dynamic_cast<OptionPane*>(_panes[4].get());
   optionPane->setPosition(MAIN_PANE_POS);
   optionPane->setVisible(false);

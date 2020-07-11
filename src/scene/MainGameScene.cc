@@ -139,7 +139,7 @@ bool MainGameScene::init() {
 
 
   // Initialize Pause Menu.
-  _pauseMenu = unique_ptr<PauseMenu>(new PauseMenu(_gameMapManager->getPlayer()));
+  _pauseMenu = std::make_unique<PauseMenu>(_gameMapManager->getPlayer());
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);

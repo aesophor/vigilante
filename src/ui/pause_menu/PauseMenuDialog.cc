@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenuDialog.h"
 
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 #include "ui/TableLayout.h"
@@ -128,7 +129,7 @@ void PauseMenuDialog::show() {
 
 
 void PauseMenuDialog::addOption(const string& text, const function<void ()>& handler) {
-  _options.push_back(unique_ptr<Option>(new Option(text, handler)));
+  _options.push_back(std::make_unique<Option>(text, handler));
   _layout->addChild(_options.back()->getLayout());
   update();
   _options.front()->setSelected(true);

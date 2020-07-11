@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "std/make_unique.h"
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hints/QuestHints.h"
 #include "util/StringUtil.h"
@@ -27,7 +28,7 @@ QuestBook::QuestBook(const string& questsListFileName) {
 
   string line;
   while (std::getline(fin, line)) {
-    _questMapper[line] = unique_ptr<Quest>(new Quest(line));
+    _questMapper[line] = std::make_unique<Quest>(line);
   }
 }
 

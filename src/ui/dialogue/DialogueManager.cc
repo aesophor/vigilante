@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueManager.h"
 
+#include "std/make_unique.h"
+
 using std::unique_ptr;
 using cocos2d::Layer;
 
@@ -13,8 +15,8 @@ DialogueManager* DialogueManager::getInstance() {
 
 DialogueManager::DialogueManager()
     : _layer(Layer::create()),
-      _subtitles(new Subtitles()),
-      _dialogueMenu(new DialogueMenu()) {
+      _subtitles(std::make_unique<Subtitles>()),
+      _dialogueMenu(std::make_unique<DialogueMenu>()) {
   _layer->addChild(_subtitles->getLayer());
   _layer->addChild(_dialogueMenu->getLayer());
 }

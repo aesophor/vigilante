@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "std/make_unique.h"
 #include "input/InputManager.h"
 
 #define OPTIONS_COUNT 4
@@ -16,7 +17,8 @@ namespace vigilante {
 
 OptionPane::OptionPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _optionListView(new OptionListView(pauseMenu)) {
+      _options(OPTIONS_COUNT),
+      _optionListView(std::make_unique<OptionListView>(pauseMenu)) {
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
@@ -27,15 +29,15 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
 
   // Define available Options.
   _options = {{
-    unique_ptr<Option>(new Option({"Save Game", []() {}})),
-    unique_ptr<Option>(new Option({"Load Game", []() {}})),
-    unique_ptr<Option>(new Option({"Options",   []() {}})),
-    unique_ptr<Option>(new Option({"Quit",      []() {}}))
+    {"Save Game", []() {}},
+    {"Load Game", []() {}},
+    {"Options",   []() {}},
+    {"Quit",      []() {}}
   }};
  
   vector<Option*> options;
-  for (const auto& o : _options) {
-    options.push_back(o.get());
+  for (auto& o : _options) {
+    options.push_back(&o);
   }
   _optionListView->setObjects(options); 
 }

@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 
+#include "std/make_unique.h"
+
 #define DEFAULT_CAPACITY 32
 
 namespace vigilante {
@@ -39,7 +41,7 @@ class CircularBuffer {
 
 template <typename T>
 CircularBuffer<T>::CircularBuffer(int capacity)
-    : _data(new T[capacity]), _head(), _tail(), _size(), _capacity(capacity) {}
+    : _data(std::make_unique<T[]>(capacity)), _head(), _tail(), _size(), _capacity(capacity) {}
 
 template <typename T>
 T& CircularBuffer<T>::operator[] (size_t i) {
