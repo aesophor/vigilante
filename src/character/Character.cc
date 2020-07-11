@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Character.h"
 
+#include <algorithm>
+
 #include <json/document.h>
 #include "AssetManager.h"
 #include "Constants.h"
@@ -19,6 +21,7 @@ using std::unordered_map;
 using std::string;
 using std::function;
 using std::ifstream;
+using std::unique_ptr;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Sequence;
@@ -95,10 +98,6 @@ Character::~Character() {
   // Delete all items from inventory and equipment slots.
   for (auto item : _itemMapper) {
     delete item.second;
-  }
-  // Delete all skills.
-  for (auto skill : _skills) {
-    delete skill;
   }
 }
 
@@ -587,8 +586,8 @@ void Character::attack() {
 
 void Character::activateSkill(Skill* skill) {
   // If this character is still using another skill, or
-  // he/she doesn't meet the criteria of activating this skill,
-  // delete skill and return at once.
+  // if it doesn't meet the criteria of activating this skill,
+  // then return at once.
   if (_isUsingSkill || !skill->canActivate()) {
     return;
   }
@@ -776,6 +775,19 @@ void Character::interact(Interactable* target) {
 }
 
 
+void Character::addSkill(unique_ptr<Skill> skill) {
+  _skills.push_back(std::move(skill));
+}
+
+void Character::removeSkill(Skill* skill) {
+  _skills.erase(std::remove_if(_skills.begin(), _skills.end(),
+                               [&](unique_ptr<Skill>& s) {
+                                return s.get() == skill;
+                               }),
+                _skills.end());
+}
+
+
 bool Character::isFacingRight() const {
   return _isFacingRight;
 }
@@ -922,8 +934,12 @@ void Character::setPortal(GameMap::Portal* portal) {
 }
 
 
-vector<Skill*>& Character::getSkills() {
-  return _skills;
+vector<Skill*> Character::getSkills() {
+  vector<Skill*> skills;
+  for (auto& s : _skills) {
+    skills.push_back(s.get());
+  }
+  return skills;
 }
 
 Skill* Character::getCurrentlyUsedSkill() const {

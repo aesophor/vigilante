@@ -125,9 +125,14 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->getSkills().push_back(Skill::create("Database/skill/back_dash.json", player));
-  player->getSkills().push_back(Skill::create("Database/skill/forward_slash.json", player));
-  player->getSkills().push_back(Skill::create("Database/skill/ice_spike.json", player));
+  player->addSkill(unique_ptr<Skill>(
+        Skill::create("Database/skill/back_dash.json", player)));
+
+  player->addSkill(unique_ptr<Skill>(
+        Skill::create("Database/skill/forward_slash.json", player)));
+
+  player->addSkill(unique_ptr<Skill>(
+        Skill::create("Database/skill/ice_spike.json", player)));
 
   //player->getQuestBook().startQuest("Database/quest/main/main01.json");
   //_console->executeCmd("startquest Database/quest/main/main01.json");

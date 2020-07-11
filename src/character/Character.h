@@ -106,6 +106,9 @@ class Character : public DynamicActor, public Importable {
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
 
+  virtual void addSkill(std::unique_ptr<Skill> skill);
+  virtual void removeSkill(Skill* skill);
+
   bool isFacingRight() const;
   bool isJumping() const;
   bool isDoubleJumping() const;
@@ -144,7 +147,7 @@ class Character : public DynamicActor, public Importable {
   GameMap::Portal* getPortal() const;
   void setPortal(GameMap::Portal* portal);
 
-  std::vector<Skill*>& getSkills();
+  std::vector<Skill*> getSkills();
   Skill* getCurrentlyUsedSkill() const;
 
   using Inventory = std::array<std::vector<Item*>, Item::Type::SIZE>;
@@ -255,7 +258,7 @@ class Character : public DynamicActor, public Importable {
   GameMap::Portal* _portal;
 
   // Currently used skill.
-  std::vector<Skill*> _skills;
+  std::vector<std::unique_ptr<Skill>> _skills;
   Skill* _currentlyUsedSkill;
 
   // Extra attack animations.

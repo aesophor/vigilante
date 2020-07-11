@@ -24,7 +24,7 @@ class Skill : public Importable, public Keybindable {
     float framesDuration;
     float frameInterval;
 
-    std::string textureResDir; // the animation of skill itself
+    std::string textureResDir;  // the animation of skill itself
     std::string name;
     std::string desc;
     
@@ -46,10 +46,10 @@ class Skill : public Importable, public Keybindable {
   static Skill* create(const std::string& jsonFileName, Character* user);
 
   virtual ~Skill() = default;
-  virtual void import(const std::string& jsonFileName) = 0; // Importable
+  virtual void import(const std::string& jsonFileName) = 0;  // Importable
 
-  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const = 0; // Keybindable
-  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) = 0; // Keybindable
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const = 0;  // Keybindable
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) = 0;  // Keybindable
 
   virtual bool canActivate() = 0;
   virtual void activate() = 0;
@@ -60,6 +60,6 @@ class Skill : public Importable, public Keybindable {
   virtual std::string getIconPath() const = 0;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SKILL_H_
+#endif  // VIGILANTE_SKILL_H_

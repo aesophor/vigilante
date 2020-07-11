@@ -48,4 +48,4 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   deltaStamina = json["deltaStamina"].GetInt();
 }
 
-} // namespace vigilante
+}  // namespace vigilante
