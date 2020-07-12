@@ -94,13 +94,6 @@ Character::Character(const string& jsonFileName)
       _equipmentAnimations(),
       _skillBodyAnimations() {}
 
-Character::~Character() {
-  // Delete all items from inventory and equipment slots.
-  for (auto item : _itemMapper) {
-    delete item.second;
-  }
-}
-
 
 void Character::removeFromMap() {
   if (!_isShownOnMap) {
@@ -646,28 +639,28 @@ void Character::lockOn(Character* target) {
 }
 
 
-void Character::addItem(Item* item, int amount) {
+void Character::addItem(unique_ptr<Item> item, int amount) {
   if (!item) {
     return;
   }
 
   // If this Item* does not exist in Inventory or EquipmentSlots yet, store it in _itemMapper.
   // Otherwise, simply delete it and use the existing copy instead (saves memory).
-  Item* existingItemObj = getExistingItemObj(item);
+  Item* existingItemObj = getExistingItemObj(item.get());
 
-  if (!existingItemObj) {
-    existingItemObj = item;
-    _itemMapper[item->getItemProfile().name] = item;
-    existingItemObj->setAmount(amount);
-  } else {
+  if (item.get() == existingItemObj) {
+    item.release();
+  }
+
+  if (existingItemObj) {
     existingItemObj->setAmount(existingItemObj->getAmount() + amount);
+  } else {
+    existingItemObj = item.get();
+    existingItemObj->setAmount(amount);
+    _itemMapper[item->getItemProfile().name] = std::move(item);
   }
 
-  if (item != existingItemObj) {
-    delete item;
-  }
-
-  vector<Item*>& items = _inventory[item->getItemProfile().itemType];
+  vector<Item*>& items = _inventory[existingItemObj->getItemProfile().itemType];
   if (std::find(items.begin(), items.end(), existingItemObj) == items.end()) {
     items.push_back(existingItemObj);
   }
@@ -686,7 +679,6 @@ void Character::removeItem(Item* item, int amount) {
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
     if (!equipment || (_equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj)) {
       _itemMapper.erase(item->getItemProfile().name);
-      delete existingItemObj;
     }
   }
 }
@@ -696,7 +688,7 @@ Item* Character::getExistingItemObj(Item* item) const {
   // This copy will be stored in _itemMapper (unordered_map<string, Item*>)
   // Search time complexity: avg O(1), worst O(n).
   auto it = _itemMapper.find(item->getItemProfile().name);
-  return (it != _itemMapper.end()) ? (*it).second : nullptr;
+  return (it != _itemMapper.end()) ? it->second.get() : nullptr;
 }
 
 void Character::useItem(Consumable* consumable) {
@@ -746,7 +738,12 @@ void Character::unequip(Equipment::Type equipmentType) {
   if (_equipmentSlots[equipmentType]) {
     Equipment* e = _equipmentSlots[equipmentType];
     _equipmentSlots[equipmentType] = nullptr;
-    addItem(e, 1);
+
+    e->setAmount(e->getAmount() + 1);
+    vector<Item*>& items = _inventory[Item::Type::EQUIPMENT];
+    if (std::find(items.begin(), items.end(), e) == items.end()) {
+      items.push_back(e);
+    }
 
     GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 
@@ -758,7 +755,7 @@ void Character::unequip(Equipment::Type equipmentType) {
 
 void Character::pickupItem(Item* item) {
   item->removeFromMap();
-  addItem(item, item->getAmount());
+  addItem(unique_ptr<Item>(item), item->getAmount());
 }
 
 void Character::discardItem(Item* item, int amount) {

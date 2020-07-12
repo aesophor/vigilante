@@ -8,6 +8,7 @@
 #include <map>
 #include <unordered_map>
 #include <string>
+#include <memory>
 #include <functional>
 
 #include <cocos2d.h>
@@ -74,7 +75,7 @@ class Character : public DynamicActor, public Importable {
     FIXTURE_SIZE
   };
 
-  virtual ~Character();
+  virtual ~Character() = default;
 
   virtual void showOnMap(float x, float y) = 0; // DynamicActor
   virtual void removeFromMap() override; // DynamicActor
@@ -97,7 +98,7 @@ class Character : public DynamicActor, public Importable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(Item* item, int amount=1);
+  virtual void addItem(std::unique_ptr<Item> item, int amount=1);
   virtual void removeItem(Item* item, int amount=1);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
@@ -250,7 +251,7 @@ class Character : public DynamicActor, public Importable {
 
   // For each item, at most one copy of Item* is kept in memory.
   Item* getExistingItemObj(Item* item) const;
-  std::unordered_map<std::string, Item*> _itemMapper;   
+  std::unordered_map<std::string, std::unique_ptr<Item>> _itemMapper;   
 
 
   // The interactable object / portal to which this character is near.

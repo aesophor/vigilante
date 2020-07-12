@@ -110,8 +110,12 @@ bool MainGameScene::init() {
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
 
-  _gameMapManager->getPlayer()->addItem(Item::create("Database/item/equipment/short_sword.json"));
-  _gameMapManager->getPlayer()->addItem(Item::create("Database/item/equipment/royal_cape.json"));
+  _gameMapManager->getPlayer()->addItem(
+      unique_ptr<Item>(Item::create("Database/item/equipment/short_sword.json")));
+
+  _gameMapManager->getPlayer()->addItem(
+      unique_ptr<Item>(Item::create("Database/item/equipment/royal_cape.json")));
+
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.

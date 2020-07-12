@@ -1,6 +1,8 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "CommandParser.h"
 
+#include <memory>
+
 #include "character/Player.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
@@ -12,6 +14,7 @@
 
 using std::string;
 using std::vector;
+using std::unique_ptr;
 using std::out_of_range;
 using std::invalid_argument;
 using CmdTable = std::unordered_map<std::string, void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
@@ -101,7 +104,7 @@ void CommandParser::addItem(const vector<string>& args) {
     return;
   }
 
-  GameMapManager::getInstance()->getPlayer()->addItem(Item::create(args[1]), amount);
+  GameMapManager::getInstance()->getPlayer()->addItem(unique_ptr<Item>(Item::create(args[1])), amount);
   setSuccess();
 }
 
@@ -133,6 +136,7 @@ void CommandParser::removeItem(const vector<string>& args) {
     return;
   }
 
+  // FIXME
   GameMapManager::getInstance()->getPlayer()->removeItem(Item::create(args[1]), amount);
   setSuccess();
 }
