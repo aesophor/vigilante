@@ -17,6 +17,6 @@ quests_list="Resources/Gameplay/quests_list.txt"
 cd $proj_root/Resources && find Texture -type f | grep plist > $proj_root/$spritesheets_list
 
 # Generate Resources/Gameplay/quest_list.txt
-cd $proj_root/Resources && find . -type f | grep quest | grep json > $proj_root/$quests_list
+cd $proj_root && find Resources -type f | grep quest | grep json > $proj_root/$quests_list
 
-cocos run -p mac
+cocos run -p linux
