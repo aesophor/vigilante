@@ -21,7 +21,6 @@ using std::vector;
 using std::unordered_set;
 using std::string;
 using std::unique_ptr;
-using std::shared_ptr;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -45,10 +44,9 @@ void GameMap::createObjects() {
   createPolylines("Wall", category_bits::kWall, true, kWallFriction);
   createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
+  
   createPortals();
   createChests();
-
-  // Spawn Npcs and enemies.
   createNpcs();
   createEnemies();
 }
@@ -64,6 +62,30 @@ void GameMap::deleteObjects() {
   }
 }
 
+unique_ptr<Player> GameMap::createPlayer() const {
+  auto player = std::make_unique<Player>("Resources/Database/character/vlad.json");
+
+  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
+  auto& valMap = objGroup->getObjects()[0].asValueMap();
+  float x = valMap["x"].asFloat();
+  float y = valMap["y"].asFloat();
+
+  player->showOnMap(x, y);
+  return player;
+}
+
+Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
+  Item* item = showDynamicActor<Item>(Item::create(itemJson), x, y);
+  item->setAmount(amount);
+
+  float offsetX = rand_util::randFloat(-.3f, .3f);
+  float offsetY = 3.0f;
+  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
+
+  return item;
+}
+
+
 unordered_set<b2Body*>& GameMap::getTmxTiledMapBodies() {
   return _tmxTiledMapBodies;
 }
@@ -72,82 +94,12 @@ TMXTiledMap* GameMap::getTmxTiledMap() const {
   return _tmxTiledMap;
 }
 
-
-/*
-void GameMap::addDynamicActor(DynamicActor* actor) {
-  _dynamicActors.insert({actor, unique_ptr<DynamicActor>(actor)});
-}
-*/
-
-void GameMap::addDynamicActor(std::shared_ptr<DynamicActor> actor) {
-  shared_ptr<DynamicActor> key(shared_ptr<DynamicActor>(), actor.get());
-
-  auto it = _dynamicActors.find(key);
-  if (it == _dynamicActors.end()) {
-    _dynamicActors.insert(std::move(actor));
-  }
-}
-
-shared_ptr<DynamicActor> GameMap::removeDynamicActor(DynamicActor* actor) {
-  shared_ptr<DynamicActor> key(shared_ptr<DynamicActor>(), actor);
-  shared_ptr<DynamicActor> removedActor;
-
-  auto it = _dynamicActors.find(key);
-  if (it != _dynamicActors.end()) {
-    removedActor = *it;
-    _dynamicActors.erase(key);
-    return removedActor;
-  }
-
-  return nullptr;
-}
-
-/*
-void GameMap::removeDynamicActor(const DynamicActor* actor) {
-  auto it = _dynamicActors.find(actor);
-  if (it != _dynamicActors.end()) {
-    // Since GameMap::removeDynamicActor() is an instance method,
-    // we'll simply release the unique_ptr, and let the callee
-    // find another way to manage this actor's lifetime.
-    it->second.release();
-    _dynamicActors.erase(actor);
-  }
-}
-*/
-
-
 float GameMap::getWidth() const {
   return _tmxTiledMap->getMapSize().width * _tmxTiledMap->getTileSize().width;
 }
 
 float GameMap::getHeight() const {
   return _tmxTiledMap->getMapSize().height * _tmxTiledMap->getTileSize().height;
-}
-
-
-Player* GameMap::createPlayer() const {
-  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
-  auto& valMap = objGroup->getObjects()[0].asValueMap();
-  float x = valMap["x"].asFloat();
-  float y = valMap["y"].asFloat();
-  Player* player = new Player("Resources/Database/character/vlad.json");
-  player->showOnMap(x, y);
-  return player;
-}
-
-Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
-  unique_ptr<Item> item = Item::create(itemJson);
-  Item* itemRaw = item.get();
-
-  item->setAmount(amount);
-  item->showOnMap(x, y);
-
-  float offsetX = rand_util::randFloat(-.3f, .3f);
-  float offsetY = 3.0f;
-  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
-
-  addDynamicActor(std::move(item));
-  return itemRaw;
 }
 
 
@@ -246,10 +198,7 @@ void GameMap::createNpcs() {
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
-
-    auto npc = std::make_unique<Npc>(json);
-    npc->showOnMap(x, y);
-    addDynamicActor(std::move(npc));
+    showDynamicActor(std::make_shared<Npc>(json), x, y);
   }
 }
 
@@ -259,10 +208,7 @@ void GameMap::createEnemies() {
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
-
-    auto enemy = std::make_unique<Enemy>(json);
-    enemy->showOnMap(x, y);
-    addDynamicActor(std::move(enemy));
+    showDynamicActor(std::make_shared<Enemy>(json), x, y);
   }
 }
 
@@ -272,16 +218,7 @@ void GameMap::createChests() {
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
     string items = valMap["items"].asString();
-
-    auto chest = std::make_unique<Chest>();
-
-    // Populate the chest with items.
-    for (const auto& itemJson : json_util::splitString(items)) {
-      chest->getItemJsons().push_back(itemJson);
-    }
-
-    chest->showOnMap(x, y);
-    addDynamicActor(std::move(chest));
+    showDynamicActor(std::make_shared<Chest>(items), x, y);
   }
 }
 
@@ -327,4 +264,4 @@ bool GameMap::Portal::willInteractOnContact() const {
   return _willInteractOnContact;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

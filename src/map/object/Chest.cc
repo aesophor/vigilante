@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/JsonUtil.h"
 
 using std::string;
 using std::vector;
@@ -22,6 +23,10 @@ const int Chest::_kNumAnimations = 0;
 const int Chest::_kNumFixtures = 2;
 
 Chest::Chest() : DynamicActor(_kNumAnimations, _kNumFixtures), _isOpened() {}
+
+Chest::Chest(const string& itemJsons) : Chest() {
+  _itemJsons = json_util::splitString(itemJsons);
+}
 
 
 void Chest::showOnMap(float x, float y) {
@@ -61,28 +66,25 @@ void Chest::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, 
 }
 
 
-vector<string>& Chest::getItemJsons() {
-  return _itemJsons;
-}
-
-
-void Chest::onInteract(Character* user) {
-  if (!_isOpened) {
-    _bodySprite->setTexture("Texture/interactable_object/chest/chest_open.png");
-    _bodySprite->getTexture()->setAliasTexParameters();
-    _isOpened = true;
-
-    for (const auto item : _itemJsons) {
-      float x = _body->GetPosition().x;
-      float y = _body->GetPosition().y;
-      GameMapManager::getInstance()->getGameMap()->spawnItem(item, x * kPpm, y * kPpm);
-    }
-    _itemJsons.clear();
+void Chest::onInteract(Character*) {
+  if (_isOpened) {
+    return;
   }
+  _isOpened = true;
+
+  _bodySprite->setTexture("Texture/interactable_object/chest/chest_open.png");
+  _bodySprite->getTexture()->setAliasTexParameters();
+
+  for (const auto& item : _itemJsons) {
+    float x = _body->GetPosition().x;
+    float y = _body->GetPosition().y;
+    GameMapManager::getInstance()->getGameMap()->spawnItem(item, x * kPpm, y * kPpm);
+  }
+  _itemJsons.clear();
 }
 
 bool Chest::willInteractOnContact() const {
   return false;
 }
 
-} // namespace 
+}  // namespace vigilante

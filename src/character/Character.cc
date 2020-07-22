@@ -756,10 +756,8 @@ void Character::unequip(Equipment::Type equipmentType) {
 }
 
 void Character::pickupItem(Item* item) {
-  item->removeFromMap();
-  shared_ptr<DynamicActor> actor = GameMapManager::getInstance()->getGameMap()->removeDynamicActor(item); 
-
-  addItem(std::dynamic_pointer_cast<Item>(actor), item->getAmount());
+  shared_ptr<Item> i = GameMapManager::getInstance()->getGameMap()->removeDynamicActor<Item>(item); 
+  addItem(std::move(i), item->getAmount());
 }
 
 void Character::discardItem(Item* item, int amount) {

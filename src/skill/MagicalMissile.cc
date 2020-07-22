@@ -94,7 +94,6 @@ void MagicalMissile::onHit(Character* target) {
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
     CallFunc::create([=]() {
       GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
-      removeFromMap();
 
       shared_ptr<Skill> key(shared_ptr<Skill>(), this); 
       _user->getActiveSkills().erase(key);
@@ -140,13 +139,12 @@ void MagicalMissile::activate() {
 
   float x = _user->getBody()->GetPosition().x;
   float y = _user->getBody()->GetPosition().y;
-  showOnMap(x, y);
 
   shared_ptr<Skill> key(shared_ptr<Skill>(), this);
   auto it = _user->getActiveSkills().find(key);
   if (it != _user->getActiveSkills().end()) {
     auto actor = std::dynamic_pointer_cast<DynamicActor>(*it);
-    GameMapManager::getInstance()->getGameMap()->addDynamicActor(std::move(actor));
+    GameMapManager::getInstance()->getGameMap()->showDynamicActor(std::move(actor), x, y);
   }
 
   // Set up kinematicBody's moving speed.

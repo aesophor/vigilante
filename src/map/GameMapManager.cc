@@ -22,7 +22,6 @@ using cocos2d::TMXObjectGroup;
 namespace vigilante {
 
 GameMapManager* GameMapManager::getInstance() {
-  // Function static variables are initialized only once.
   static GameMapManager instance({0, kGravity});
   return &instance;
 }
@@ -68,7 +67,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
 
   // If the player object hasn't been created, spawn it.
   if (!_player) {
-    _player = unique_ptr<Player>(_gameMap->createPlayer());
+    _player = _gameMap->createPlayer();
   }
 }
 

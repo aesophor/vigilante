@@ -12,6 +12,7 @@
 #include "DynamicActor.h"
 #include "Interactable.h"
 #include "item/Item.h"
+#include "util/Logger.h"
 
 namespace vigilante {
 
@@ -24,16 +25,16 @@ class GameMap {
    public:
     Portal(const std::string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body);
     virtual ~Portal();
-    virtual void onInteract(Character* user) override; // Interactable
-    virtual bool willInteractOnContact() const override; // Interactable
+    virtual void onInteract(Character* user) override;  // Interactable
+    virtual bool willInteractOnContact() const override;  // Interactable
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
 
    protected:
-    std::string _targetTmxMapFileName; // new (target) .tmx filename
-    int _targetPortalId; // the portal id in the new (target) map
-    bool _willInteractOnContact; // interact with the portal on contact?
+    std::string _targetTmxMapFileName;  // new (target) .tmx filename
+    int _targetPortalId;  // the portal id in the new (target) map
+    bool _willInteractOnContact;  // interact with the portal on contact?
     b2Body* _body;
   };
 
@@ -42,16 +43,47 @@ class GameMap {
 
   void createObjects();
   void deleteObjects();
+  std::unique_ptr<Player> createPlayer() const;
+  Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
+
+
+  template <typename ReturnType = DynamicActor>
+  ReturnType* showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {
+    ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
+
+    std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor.get());
+    auto it = _dynamicActors.find(key);
+    if (it != _dynamicActors.end()) {
+      VGLOG(LOG_ERR, "This DynamicActor is already being shown: %p", actor.get());
+      return nullptr;
+    }
+
+    actor->showOnMap(x, y);
+    _dynamicActors.insert(std::move(actor));
+    return shownActor;
+  }
+
+
+  template <typename ReturnType = DynamicActor>
+  std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor) {
+    std::shared_ptr<ReturnType> removedActor(nullptr);
+
+    std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor);
+    auto it = _dynamicActors.find(key);
+    if (it == _dynamicActors.end()) {
+      VGLOG(LOG_ERR, "This DynamicActor has not yet been shown: %p", actor);
+      return nullptr;
+    }
+
+    removedActor = std::move(std::dynamic_pointer_cast<ReturnType>(*it));
+    removedActor->removeFromMap();
+    _dynamicActors.erase(it);
+    return removedActor;
+  }
+
 
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
-
-  void addDynamicActor(std::shared_ptr<DynamicActor> actor);
-  std::shared_ptr<DynamicActor> removeDynamicActor(DynamicActor* actor);
-
-  Player* createPlayer() const;
-  Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
-
   float getWidth() const;
   float getHeight() const;
 
@@ -73,6 +105,6 @@ class GameMap {
   friend class GameMapManager;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_GAME_MAP_H_
+#endif  // VIGILANTE_GAME_MAP_H_
