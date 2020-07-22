@@ -5,8 +5,8 @@
 #include <set>
 #include <array>
 #include <vector>
-#include <map>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <memory>
 #include <functional>
@@ -98,7 +98,7 @@ class Character : public DynamicActor, public Importable {
   virtual void receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(std::unique_ptr<Item> item, int amount=1);
+  virtual void addItem(std::shared_ptr<Item> item, int amount=1);
   virtual void removeItem(Item* item, int amount=1);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment);
@@ -149,6 +149,7 @@ class Character : public DynamicActor, public Importable {
   void setPortal(GameMap::Portal* portal);
 
   std::vector<Skill*> getSkills();
+  std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
   Skill* getCurrentlyUsedSkill() const;
 
   using Inventory = std::array<std::vector<Item*>, Item::Type::SIZE>;
@@ -251,7 +252,7 @@ class Character : public DynamicActor, public Importable {
 
   // For each item, at most one copy of Item* is kept in memory.
   Item* getExistingItemObj(Item* item) const;
-  std::unordered_map<std::string, std::unique_ptr<Item>> _itemMapper;   
+  std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;   
 
 
   // The interactable object / portal to which this character is near.
@@ -260,6 +261,7 @@ class Character : public DynamicActor, public Importable {
 
   // Currently used skill.
   std::vector<std::unique_ptr<Skill>> _skills;
+  std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
   Skill* _currentlyUsedSkill;
 
   // Extra attack animations.

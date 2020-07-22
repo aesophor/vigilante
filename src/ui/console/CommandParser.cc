@@ -137,7 +137,7 @@ void CommandParser::removeItem(const vector<string>& args) {
   }
 
   // FIXME
-  GameMapManager::getInstance()->getPlayer()->removeItem(Item::create(args[1]), amount);
+  //GameMapManager::getInstance()->getPlayer()->removeItem(Item::create(args[1]), amount);
   setSuccess();
 }
 

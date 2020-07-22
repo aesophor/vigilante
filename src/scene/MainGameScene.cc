@@ -110,11 +110,8 @@ bool MainGameScene::init() {
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
 
 
-  _gameMapManager->getPlayer()->addItem(
-      unique_ptr<Item>(Item::create("Resources/Database/item/equipment/short_sword.json")));
-
-  _gameMapManager->getPlayer()->addItem(
-      unique_ptr<Item>(Item::create("Resources/Database/item/equipment/royal_cape.json")));
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
+  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
 
   // Initialize InputManager.
@@ -129,14 +126,9 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
-  player->addSkill(unique_ptr<Skill>(
-        Skill::create("Resources/Database/skill/back_dash.json", player)));
-
-  player->addSkill(unique_ptr<Skill>(
-        Skill::create("Resources/Database/skill/forward_slash.json", player)));
-
-  player->addSkill(unique_ptr<Skill>(
-        Skill::create("Resources/Database/skill/ice_spike.json", player)));
+  player->addSkill(Skill::create("Resources/Database/skill/back_dash.json", player));
+  player->addSkill(Skill::create("Resources/Database/skill/forward_slash.json", player));
+  player->addSkill(Skill::create("Resources/Database/skill/ice_spike.json", player));
 
   //player->getQuestBook().startQuest("Database/quest/main/main01.json");
   //_console->executeCmd("startquest Database/quest/main/main01.json");

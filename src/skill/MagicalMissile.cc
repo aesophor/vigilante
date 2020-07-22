@@ -2,6 +2,7 @@
 #include "MagicalMissile.h"
 
 #include <functional>
+#include <memory>
 
 #include "AssetManager.h"
 #include "Constants.h"
@@ -9,9 +10,11 @@
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/CallbackUtil.h"
+#include "util/Logger.h"
 
 using std::string;
 using std::function;
+using std::shared_ptr;
 using cocos2d::FileUtils;
 using cocos2d::Vector;
 using cocos2d::Director;
@@ -48,7 +51,6 @@ void MagicalMissile::showOnMap(float x, float y) {
     return;
   }
   _isShownOnMap = true;
-  GameMapManager::getInstance()->getGameMap()->addDynamicActor(this);
 
   short categoryBits = kProjectile;
   short maskBits = kPlayer | kEnemy | kWall;
@@ -91,8 +93,11 @@ void MagicalMissile::onHit(Character* target) {
   _bodySprite->runAction(Sequence::createWithTwoActions(
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
     CallFunc::create([=]() {
+      GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
       removeFromMap();
-      delete this;
+
+      shared_ptr<Skill> key(shared_ptr<Skill>(), this); 
+      _user->getActiveSkills().erase(key);
     })
   ));
 
@@ -136,6 +141,13 @@ void MagicalMissile::activate() {
   float x = _user->getBody()->GetPosition().x;
   float y = _user->getBody()->GetPosition().y;
   showOnMap(x, y);
+
+  shared_ptr<Skill> key(shared_ptr<Skill>(), this);
+  auto it = _user->getActiveSkills().find(key);
+  if (it != _user->getActiveSkills().end()) {
+    auto actor = std::dynamic_pointer_cast<DynamicActor>(*it);
+    GameMapManager::getInstance()->getGameMap()->addDynamicActor(std::move(actor));
+  }
 
   // Set up kinematicBody's moving speed.
   _flyingSpeed = (_user->isFacingRight()) ? 3.5f : -3.5f;

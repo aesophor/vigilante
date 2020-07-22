@@ -21,6 +21,7 @@ using std::vector;
 using std::unordered_set;
 using std::string;
 using std::unique_ptr;
+using std::shared_ptr;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -58,12 +59,8 @@ void GameMap::deleteObjects() {
     _world->DestroyBody(body);
   }
 
-  // Iterate through _dynamicActors (which is an unordered_map),
-  // and call actor->removeFromMap() for each DynamicActor.
-  for (auto it = _dynamicActors.begin(); it != _dynamicActors.end();) {
-    // The following line will also remove the entry from _dynamicActors.
-    auto& actorRawUniquePair = *it++;
-    actorRawUniquePair.second->removeFromMap();
+  for (auto& actor : _dynamicActors) {
+    actor->removeFromMap();
   }
 }
 
@@ -76,10 +73,36 @@ TMXTiledMap* GameMap::getTmxTiledMap() const {
 }
 
 
+/*
 void GameMap::addDynamicActor(DynamicActor* actor) {
   _dynamicActors.insert({actor, unique_ptr<DynamicActor>(actor)});
 }
+*/
 
+void GameMap::addDynamicActor(std::shared_ptr<DynamicActor> actor) {
+  shared_ptr<DynamicActor> key(shared_ptr<DynamicActor>(), actor.get());
+
+  auto it = _dynamicActors.find(key);
+  if (it == _dynamicActors.end()) {
+    _dynamicActors.insert(std::move(actor));
+  }
+}
+
+shared_ptr<DynamicActor> GameMap::removeDynamicActor(DynamicActor* actor) {
+  shared_ptr<DynamicActor> key(shared_ptr<DynamicActor>(), actor);
+  shared_ptr<DynamicActor> removedActor;
+
+  auto it = _dynamicActors.find(key);
+  if (it != _dynamicActors.end()) {
+    removedActor = *it;
+    _dynamicActors.erase(key);
+    return removedActor;
+  }
+
+  return nullptr;
+}
+
+/*
 void GameMap::removeDynamicActor(const DynamicActor* actor) {
   auto it = _dynamicActors.find(actor);
   if (it != _dynamicActors.end()) {
@@ -90,6 +113,7 @@ void GameMap::removeDynamicActor(const DynamicActor* actor) {
     _dynamicActors.erase(actor);
   }
 }
+*/
 
 
 float GameMap::getWidth() const {
@@ -112,7 +136,9 @@ Player* GameMap::createPlayer() const {
 }
 
 Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
-  Item* item = Item::create(itemJson);
+  unique_ptr<Item> item = Item::create(itemJson);
+  Item* itemRaw = item.get();
+
   item->setAmount(amount);
   item->showOnMap(x, y);
 
@@ -120,7 +146,8 @@ Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
   float offsetY = 3.0f;
   item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
 
-  return item;
+  addDynamicActor(std::move(item));
+  return itemRaw;
 }
 
 
@@ -220,8 +247,9 @@ void GameMap::createNpcs() {
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
 
-    Npc* npc = new Npc(json);
+    auto npc = std::make_unique<Npc>(json);
     npc->showOnMap(x, y);
+    addDynamicActor(std::move(npc));
   }
 }
 
@@ -232,8 +260,9 @@ void GameMap::createEnemies() {
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
 
-    Enemy* enemy = new Enemy(json);
+    auto enemy = std::make_unique<Enemy>(json);
     enemy->showOnMap(x, y);
+    addDynamicActor(std::move(enemy));
   }
 }
 
@@ -244,12 +273,15 @@ void GameMap::createChests() {
     float y = valMap["y"].asFloat();
     string items = valMap["items"].asString();
 
-    Chest* chest = new Chest();
-    chest->showOnMap(x, y);
+    auto chest = std::make_unique<Chest>();
 
+    // Populate the chest with items.
     for (const auto& itemJson : json_util::splitString(items)) {
       chest->getItemJsons().push_back(itemJson);
     }
+
+    chest->showOnMap(x, y);
+    addDynamicActor(std::move(chest));
   }
 }
 

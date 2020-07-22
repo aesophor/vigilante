@@ -3,26 +3,30 @@
 
 #include <cocos2d.h>
 #include <json/document.h>
+#include "std/make_unique.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "util/JsonUtil.h"
+#include "util/Logger.h"
 
 using std::string;
+using std::unique_ptr;
 using rapidjson::Document;
 
 namespace vigilante {
 
-Skill* Skill::create(const string& jsonFileName, Character* user) {
+unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   if (jsonFileName.find("back_dash") != jsonFileName.npos) {
-    return new BackDash(jsonFileName, user);
+    return std::make_unique<BackDash>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
-    return new ForwardSlash(jsonFileName, user);
+    return std::make_unique<ForwardSlash>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
-    return new MagicalMissile(jsonFileName, user);
-  } else {
-    return nullptr;
+    return std::make_unique<MagicalMissile>(jsonFileName, user);
   }
+
+  VGLOG(LOG_ERR, "Unable to determine skill: %s", jsonFileName.c_str());
+  return nullptr;
 }
 
 

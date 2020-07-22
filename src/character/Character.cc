@@ -13,15 +13,18 @@
 #include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
+#include "util/Logger.h"
 
 using std::set;
 using std::array;
 using std::vector;
 using std::unordered_map;
+using std::unordered_set;
 using std::string;
 using std::function;
 using std::ifstream;
 using std::unique_ptr;
+using std::shared_ptr;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Sequence;
@@ -100,7 +103,6 @@ void Character::removeFromMap() {
     return;
   }
   _isShownOnMap = false;
-  GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
 
   if (!_isKilled) {
     _body->GetWorld()->DestroyBody(_body);
@@ -601,7 +603,11 @@ void Character::activateSkill(Skill* skill) {
   }
 
   // Create an extra copy of this skill object and activate it.
-  Skill::create(skill->getSkillProfile().jsonFileName, this)->activate();
+  unique_ptr<Skill> copiedSkill(Skill::create(skill->getSkillProfile().jsonFileName, this));
+  Skill* copiedSkillRaw = copiedSkill.get();
+  _activeSkills.insert(std::move(copiedSkill));
+  copiedSkillRaw->activate();
+  
   Hud::getInstance()->updateStatusBars();
 }
 
@@ -639,7 +645,7 @@ void Character::lockOn(Character* target) {
 }
 
 
-void Character::addItem(unique_ptr<Item> item, int amount) {
+void Character::addItem(shared_ptr<Item> item, int amount) {
   if (!item) {
     return;
   }
@@ -647,10 +653,6 @@ void Character::addItem(unique_ptr<Item> item, int amount) {
   // If this Item* does not exist in Inventory or EquipmentSlots yet, store it in _itemMapper.
   // Otherwise, simply delete it and use the existing copy instead (saves memory).
   Item* existingItemObj = getExistingItemObj(item.get());
-
-  if (item.get() == existingItemObj) {
-    item.release();
-  }
 
   if (existingItemObj) {
     existingItemObj->setAmount(existingItemObj->getAmount() + amount);
@@ -755,7 +757,9 @@ void Character::unequip(Equipment::Type equipmentType) {
 
 void Character::pickupItem(Item* item) {
   item->removeFromMap();
-  addItem(unique_ptr<Item>(item), item->getAmount());
+  shared_ptr<DynamicActor> actor = GameMapManager::getInstance()->getGameMap()->removeDynamicActor(item); 
+
+  addItem(std::dynamic_pointer_cast<Item>(actor), item->getAmount());
 }
 
 void Character::discardItem(Item* item, int amount) {
@@ -937,6 +941,10 @@ vector<Skill*> Character::getSkills() {
     skills.push_back(s.get());
   }
   return skills;
+}
+
+unordered_set<shared_ptr<Skill>>& Character::getActiveSkills() {
+  return _activeSkills;
 }
 
 Skill* Character::getCurrentlyUsedSkill() const {

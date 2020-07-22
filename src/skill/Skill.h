@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_SKILL_H_
 #define VIGILANTE_SKILL_H_
 
+#include <memory>
 #include <string>
 
 #include <cocos2d.h>
@@ -43,7 +44,7 @@ class Skill : public Importable, public Keybindable {
 
   // Create a skill by automatically deducing its concrete type
   // based on the json passed in.
-  static Skill* create(const std::string& jsonFileName, Character* user);
+  static std::unique_ptr<Skill> create(const std::string& jsonFileName, Character* user);
 
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0;  // Importable

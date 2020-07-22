@@ -3,14 +3,17 @@
 
 #include <json/document.h>
 #include "Constants.h"
+#include "std/make_unique.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "item/MiscItem.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/Logger.h"
 
 using std::string;
+using std::unique_ptr;
 using cocos2d::Sprite;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kFeet;
@@ -24,14 +27,17 @@ namespace vigilante {
 const int Item::_kNumAnimations = 0;
 const int Item::_kNumFixtures = 2;
 
-Item* Item::create(const string& jsonFileName) {
+unique_ptr<Item> Item::create(const string& jsonFileName) {
   if (jsonFileName.find("equipment") != jsonFileName.npos) {
-    return new Equipment(jsonFileName);
+    return std::make_unique<Equipment>(jsonFileName);
   } else if (jsonFileName.find("consumable") != jsonFileName.npos) {
-    return new Consumable(jsonFileName);
-  } else {
-    return new MiscItem(jsonFileName);
+    return std::make_unique<Consumable>(jsonFileName);
+  } else if (jsonFileName.find("misc") != jsonFileName.npos) {
+    return std::make_unique<MiscItem>(jsonFileName);
   }
+
+  VGLOG(LOG_ERR, "Unable to determine item type.");
+  return nullptr;
 }
 
 Item::Item(const string& jsonFileName)
@@ -48,7 +54,6 @@ void Item::showOnMap(float x, float y) {
     return;
   }
   _isShownOnMap = true;
-  GameMapManager::getInstance()->getGameMap()->addDynamicActor(this);
 
   short categoryBits = kItem;
   short maskBits = kGround | kPlatform | kWall;

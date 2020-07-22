@@ -1,11 +1,14 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ForwardSlash.h"
 
+#include <memory>
+
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/CallbackUtil.h"
 
 using std::string;
+using std::shared_ptr;
 using cocos2d::EventKeyboard;
 
 namespace vigilante {
@@ -55,7 +58,9 @@ void ForwardSlash::activate() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
-    delete this;
+
+    shared_ptr<Skill> key(shared_ptr<Skill>(), this);
+    _user->getActiveSkills().erase(key);
   }, _skillProfile.framesDuration);
 }
 

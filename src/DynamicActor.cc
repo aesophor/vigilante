@@ -21,9 +21,7 @@ void DynamicActor::removeFromMap() {
   if (!_isShownOnMap) {
     return;
   }
-
   _isShownOnMap = false;
-  GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
 
   // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
   GameMapManager::getInstance()->getLayer()->removeChild(

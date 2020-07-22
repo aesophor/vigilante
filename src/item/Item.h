@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_ITEM_H_
 #define VIGILANTE_ITEM_H_
 
+#include <memory>
 #include <string>
 
 #include <cocos2d.h>
@@ -33,7 +34,7 @@ class Item : public DynamicActor, public Importable {
 
   // Create an item by automatically deducing its concrete type
   // based on the json passed in.
-  static Item* create(const std::string& jsonFileName);
+  static std::unique_ptr<Item> create(const std::string& jsonFileName);
 
   virtual ~Item() = default;
   virtual void showOnMap(float x, float y) override; // DynamicActor

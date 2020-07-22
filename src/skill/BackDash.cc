@@ -1,11 +1,14 @@
 // Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "BackDash.h"
 
+#include <memory>
+
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/CallbackUtil.h"
 
 using std::string;
+using std::shared_ptr;
 using cocos2d::EventKeyboard;
 
 namespace vigilante {
@@ -46,7 +49,9 @@ void BackDash::activate() {
 
   callback_util::runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
-    delete this;
+
+    shared_ptr<Skill> key(shared_ptr<Skill>(), this);
+    _user->getActiveSkills().erase(key);
   }, _skillProfile.framesDuration);
 }
 

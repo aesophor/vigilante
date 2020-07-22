@@ -44,8 +44,8 @@ void GameMapManager::update(float delta) {
     _player->update(delta);
   }
 
-  for (auto& actorRawUniquePair : _gameMap->_dynamicActors) {
-    actorRawUniquePair.second->update(delta);
+  for (auto& actor : _gameMap->_dynamicActors) {
+    actor->update(delta);
   }
 }
 

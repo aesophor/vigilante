@@ -2,7 +2,6 @@
 #ifndef VIGILANTE_GAME_MAP_H_
 #define VIGILANTE_GAME_MAP_H_
 
-#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 #include <string>
@@ -47,14 +46,8 @@ class GameMap {
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
 
-  // Add the given DynamicActor to this map. The actor's lifetime
-  // will be managed be this map.
-  void addDynamicActor(DynamicActor* actor);
-
-  // Remove the specified DynamicActor from this map. unique_ptr::release()
-  // will be called for the underlying unique_ptr. The callee must find
-  // a way to manage the removed actor's lifetime.
-  void removeDynamicActor(const DynamicActor* actor);
+  void addDynamicActor(std::shared_ptr<DynamicActor> actor);
+  std::shared_ptr<DynamicActor> removeDynamicActor(DynamicActor* actor);
 
   Player* createPlayer() const;
   Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
@@ -74,7 +67,7 @@ class GameMap {
   std::unordered_set<b2Body*> _tmxTiledMapBodies;
   cocos2d::TMXTiledMap* _tmxTiledMap;
 
-  std::unordered_map<const DynamicActor*, std::unique_ptr<DynamicActor>> _dynamicActors;
+  std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
 
   friend class GameMapManager;
