@@ -6,6 +6,7 @@
 
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
+#include "ui/TabView.h"
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/skill/SkillListView.h"
 
@@ -21,9 +22,10 @@ class SkillPane : public AbstractPane {
 
  private:
   cocos2d::ui::ImageView* _background;
+  std::unique_ptr<TabView> _tabView;
   std::unique_ptr<SkillListView> _skillListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SKILL_PANE_H_
+#endif  // VIGILANTE_SKILL_PANE_H_

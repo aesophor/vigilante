@@ -347,6 +347,6 @@ cocos2d::Label* ListView<T>::ListViewItem::getLabel() const {
   return _label;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_LIST_VIEW_H_
+#endif  // VIGILANTE_LIST_VIEW_H_

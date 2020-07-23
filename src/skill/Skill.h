@@ -16,11 +16,20 @@ class Character;
 // Skill interface
 class Skill : public Importable, public Keybindable {
  public:
+  enum Type {
+    MELEE,
+    MAGIC,
+    DARK,
+    BUFF,
+    SIZE
+  };
+
   struct Profile {
     explicit Profile(const std::string& jsonFileName);
     virtual ~Profile() = default;
 
     std::string jsonFileName;
+    Skill::Type skillType;
     std::string characterFramesName;
     float framesDuration;
     float frameInterval;

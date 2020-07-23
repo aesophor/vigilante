@@ -29,6 +29,7 @@ class Character : public DynamicActor, public Importable {
  public: 
   using Inventory = std::array<SetVector<Item*>, Item::Type::SIZE>;
   using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
+  using SkillBook = std::array<SetVector<Skill*>, Skill::Type::SIZE>;
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
@@ -146,19 +147,19 @@ class Character : public DynamicActor, public Importable {
 
   std::set<Item*>& getInRangeItems();
 
+  const Inventory& getInventory() const;
+  const EquipmentSlots& getEquipmentSlots() const;
+  int getItemAmount(const std::string& itemName) const;
+
   Interactable* getInteractableObject() const;
   void setInteractableObject(Interactable* interactableObject);
 
   GameMap::Portal* getPortal() const;
   void setPortal(GameMap::Portal* portal);
 
-  std::vector<Skill*> getSkills();
+  const SkillBook& getSkillBook() const;
   std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
   Skill* getCurrentlyUsedSkill() const;
-
-  const Inventory& getInventory() const;
-  const EquipmentSlots& getEquipmentSlots() const;
-  int getItemAmount(const std::string& itemName) const;
 
   int getDamageOutput() const;
   
@@ -261,10 +262,15 @@ class Character : public DynamicActor, public Importable {
   Interactable* _interactableObject;
   GameMap::Portal* _portal;
 
+
   // Currently used skill.
-  std::vector<std::unique_ptr<Skill>> _skills;
+  Character::SkillBook _skillBook;
+  std::unordered_map<std::string, std::unique_ptr<Skill>> _skillMapper;
+
+  //std::vector<std::unique_ptr<Skill>> _skills;
   std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
   Skill* _currentlyUsedSkill;
+
 
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],

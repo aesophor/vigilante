@@ -2,6 +2,7 @@
 #include "Character.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include <json/document.h>
 #include "AssetManager.h"
@@ -86,9 +87,11 @@ Character::Character(const string& jsonFileName)
       _isAlerted(),
       _inventory(),
       _equipmentSlots(),
+      _itemMapper(),
       _interactableObject(),
       _portal(),
-      _skills(),
+      _skillBook(),
+      _skillMapper(),
       _currentlyUsedSkill(),
       _bodyExtraAttackAnimations(),
       _equipmentExtraAttackAnimations(),
@@ -770,15 +773,29 @@ void Character::interact(Interactable* target) {
 
 
 void Character::addSkill(unique_ptr<Skill> skill) {
-  _skills.push_back(std::move(skill));
+  assert(skill != nullptr);
+
+  auto it = _skillMapper.find(skill->getName());
+  if (it != _skillMapper.end()) {
+    VGLOG(LOG_WARN, "This character has already learned the skill: %s", skill->getName().c_str());
+    return;
+  }
+
+  _skillBook[skill->getSkillProfile().skillType].insert(skill.get());
+  _skillMapper.insert({skill->getName(), std::move(skill)});
 }
 
 void Character::removeSkill(Skill* skill) {
-  _skills.erase(std::remove_if(_skills.begin(), _skills.end(),
-                               [&](unique_ptr<Skill>& s) {
-                                return s.get() == skill;
-                               }),
-                _skills.end());
+  assert(skill != nullptr);
+
+  auto it = _skillMapper.find(skill->getName());
+  if (it == _skillMapper.end()) {
+    VGLOG(LOG_WARN, "This character has not yet learned the skill: %s", skill->getName().c_str());
+    return;
+  }
+
+  _skillBook[skill->getSkillProfile().skillType].erase(skill);
+  _skillMapper.erase(skill->getName());
 }
 
 
@@ -928,12 +945,8 @@ void Character::setPortal(GameMap::Portal* portal) {
 }
 
 
-vector<Skill*> Character::getSkills() {
-  vector<Skill*> skills;
-  for (auto& s : _skills) {
-    skills.push_back(s.get());
-  }
-  return skills;
+const Character::SkillBook& Character::getSkillBook() const {
+  return _skillBook;
 }
 
 unordered_set<shared_ptr<Skill>>& Character::getActiveSkills() {
@@ -1032,4 +1045,4 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

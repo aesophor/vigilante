@@ -80,7 +80,7 @@ void SkillListView::confirm() {
   if (static_cast<bool>(skill->getHotkey())) {
     dialog->setOption(1, true, "Clear", [=]() {
       HotkeyManager::getInstance()->clearHotkeyAction(skill->getHotkey());
-      showSkills();
+      //showSkills();
     });
   }
 
@@ -92,7 +92,7 @@ void SkillListView::confirm() {
 void SkillListView::selectUp() {
   ListView<Skill*>::selectUp();
 
-  if (_current <= 0) {
+  if (_current < 0) {
     return;
   }
 
@@ -104,7 +104,7 @@ void SkillListView::selectUp() {
 void SkillListView::selectDown() {
   ListView<Skill*>::selectDown();
 
-  if (_current >= (int) _objects.size() - 1) {
+  if (_current > (int) _objects.size() - 1) {
     return;
   }
 
@@ -114,12 +114,12 @@ void SkillListView::selectDown() {
 }
 
 
-void SkillListView::showSkills() {
+void SkillListView::showSkillsByType(Skill::Type skillType) {
   // Show player skills in SkillListView.
-  setObjects(_pauseMenu->getPlayer()->getSkills());
+  setObjects(_pauseMenu->getPlayer()->getSkillBook()[skillType]);
 
   // Update description label.
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -37,6 +37,6 @@ class InventoryPane : public AbstractPane {
   std::unique_ptr<ItemListView> _itemListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_INVENTORY_PANE_H_
+#endif  // VIGILANTE_INVENTORY_PANE_H_
