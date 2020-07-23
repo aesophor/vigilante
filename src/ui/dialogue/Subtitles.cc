@@ -8,8 +8,9 @@
 #include "ui/hud/Hud.h"
 #include "util/ds/Algorithm.h"
 
-#define SHOW_CHAR_INTERVAL .05f
+#define SHOW_CHAR_INTERVAL .04f
 #define LETTERBOX_HEIGHT 50
+#define LETTERBOX_TRANSITION_DURATION 1.0f
 #define SUBTITLES_Y 38
 
 using std::string;
@@ -100,9 +101,9 @@ void Subtitles::beginSubtitles() {
   _isTransitioning = true;
   Hud::getInstance()->getLayer()->setVisible(false);
   _layer->setVisible(true);
-  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}));
+  _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}),
+    MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
       _isTransitioning = false;
       showNextSubtitle();
@@ -116,9 +117,9 @@ void Subtitles::endSubtitles() {
   }
 
   _isTransitioning = true;
-  _upperLetterbox->runAction(MoveBy::create(2.0f, {0, LETTERBOX_HEIGHT}));
+  _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(2.0f, {0, -LETTERBOX_HEIGHT}),
+    MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
       _isTransitioning = false;
       Hud::getInstance()->getLayer()->setVisible(true);
