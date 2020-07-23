@@ -157,9 +157,9 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    objects.push_front(currentEquipment);  // currently equipped item
-    objects.push_front(nullptr);  // unequip
+    objects.push_front(currentEquipment);
   }
+  objects.push_front(nullptr);  // unequip
 
   // Show equipments of the specified type in ItemListView.
   setObjects(objects);

@@ -86,13 +86,13 @@ void InventoryPane::handleInput() {
 
 
 void InventoryPane::selectEquipment(Equipment::Type equipmentType) {
+  // Switch into equipment selection mode.
   _isSelectingEquipment = true;
   _selectingEquipmentType = equipmentType;
-
-  // Switch into equipment selection mode.
   _pauseMenu->show(PauseMenu::Pane::INVENTORY);
+
   // Show only the corresponding equipment type.
   _itemListView->showEquipmentByType(equipmentType);
 }
 
-} // namespace vigilante
+}  // namespace vigilante
