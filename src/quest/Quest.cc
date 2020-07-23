@@ -43,7 +43,7 @@ void Quest::advanceStage() {
   if (_currentStageIdx >= 0) {
     switch (getCurrentStage().objective->getObjectiveType()) {
       case Quest::Objective::Type::KILL: {
-        KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
+        auto objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
         KillTargetObjective::removeRelatedObjective(objective->getCharacterName(), objective);
         break;
       }
@@ -58,7 +58,7 @@ void Quest::advanceStage() {
   if (!isCompleted()) {
     switch (getCurrentStage().objective->getObjectiveType()) {
       case Quest::Objective::Type::KILL: {
-        KillTargetObjective* objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
+        auto objective = dynamic_cast<KillTargetObjective*>(getCurrentStage().objective);
         KillTargetObjective::addRelatedObjective(objective->getCharacterName(), objective);
         break;
       }

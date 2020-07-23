@@ -659,7 +659,7 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
   } else {
     existingItemObj = item.get();
     existingItemObj->setAmount(amount);
-    _itemMapper[item->getItemProfile().jsonFileName] = std::move(item);
+    _itemMapper[item->getItemProfile().name] = std::move(item);
   }
 
   _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
@@ -688,7 +688,7 @@ Item* Character::getExistingItemObj(Item* item) const {
   // For each instance of an item, at most one copy is kept in the memory.
   // This copy will be stored in _itemMapper (unordered_map<string, Item*>)
   // Search time complexity: avg O(1), worst O(n).
-  auto it = _itemMapper.find(item->getItemProfile().jsonFileName);
+  auto it = _itemMapper.find(item->getItemProfile().name);
   return (it != _itemMapper.end()) ? it->second.get() : nullptr;
 }
 
