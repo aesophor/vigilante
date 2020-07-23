@@ -92,25 +92,15 @@ void SkillListView::confirm() {
 void SkillListView::selectUp() {
   ListView<Skill*>::selectUp();
 
-  if (_current < 0) {
-    return;
-  }
-
-  Skill* selectedSkill = _objects[_current];
-  assert(selectedSkill != nullptr);
-  _descLabel->setString(selectedSkill->getDesc());
+  Skill* selectedSkill = getSelectedObject();
+  _descLabel->setString((selectedSkill) ? selectedSkill->getDesc() : "");
 }
 
 void SkillListView::selectDown() {
   ListView<Skill*>::selectDown();
 
-  if (_current > (int) _objects.size() - 1) {
-    return;
-  }
-
-  Skill* selectedSkill = _objects[_current];
-  assert(selectedSkill != nullptr);
-  _descLabel->setString(selectedSkill->getDesc());
+  Skill* selectedSkill = getSelectedObject();
+  _descLabel->setString((selectedSkill) ? selectedSkill->getDesc() : "");
 }
 
 

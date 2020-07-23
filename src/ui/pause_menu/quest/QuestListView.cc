@@ -77,25 +77,15 @@ void QuestListView::confirm() {
 void QuestListView::selectUp() {
   ListView<Quest*>::selectUp();
 
-  if (_current <= 0) {
-    return;
-  }
-
-  Quest* selectedQuest = _objects[_current];
-  assert(selectedQuest != nullptr);
-  _descLabel->setString(selectedQuest->getQuestProfile().desc);
+  Quest* selectedQuest = getSelectedObject();
+  _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");
 }
 
 void QuestListView::selectDown() {
   ListView<Quest*>::selectDown();
 
-  if (_current >= (int) _objects.size() - 1) {
-    return;
-  }
-
-  Quest* selectedQuest = _objects[_current];
-  assert(selectedQuest != nullptr);
-  _descLabel->setString(selectedQuest->getQuestProfile().desc);
+  Quest* selectedQuest = getSelectedObject();
+  _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");
 }
 
 
