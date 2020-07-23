@@ -746,7 +746,7 @@ void Character::unequip(Equipment::Type equipmentType) {
 
   Equipment* e = _equipmentSlots[equipmentType];
   _equipmentSlots[equipmentType] = nullptr;
-  addItem(_itemMapper.find(e->getItemProfile().jsonFileName)->second, 1);
+  addItem(_itemMapper.find(e->getItemProfile().name)->second, 1);
   GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 }
 
