@@ -126,6 +126,7 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   auto player = _gameMapManager->getPlayer();
+  player->addSkill(Skill::create("Resources/Database/skill/bat_form.json", player));
   player->addSkill(Skill::create("Resources/Database/skill/back_dash.json", player));
   player->addSkill(Skill::create("Resources/Database/skill/forward_slash.json", player));
   player->addSkill(Skill::create("Resources/Database/skill/ice_spike.json", player));

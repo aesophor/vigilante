@@ -4,6 +4,7 @@
 #include <cocos2d.h>
 #include <json/document.h>
 #include "std/make_unique.h"
+#include "skill/BatForm.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
@@ -17,7 +18,9 @@ using rapidjson::Document;
 namespace vigilante {
 
 unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
-  if (jsonFileName.find("back_dash") != jsonFileName.npos) {
+  if (jsonFileName.find("bat_form") != jsonFileName.npos) {
+    return std::make_unique<BatForm>(jsonFileName, user);
+  } else if (jsonFileName.find("back_dash") != jsonFileName.npos) {
     return std::make_unique<BackDash>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
     return std::make_unique<ForwardSlash>(jsonFileName, user);
