@@ -659,27 +659,26 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
   } else {
     existingItemObj = item.get();
     existingItemObj->setAmount(amount);
-    _itemMapper[item->getItemProfile().name] = std::move(item);
+    _itemMapper[item->getItemProfile().jsonFileName] = std::move(item);
   }
 
-  vector<Item*>& items = _inventory[existingItemObj->getItemProfile().itemType];
-  if (std::find(items.begin(), items.end(), existingItemObj) == items.end()) {
-    items.push_back(existingItemObj);
-  }
+  _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
 }
 
 void Character::removeItem(Item* item, int amount) {
-  vector<Item*>& items = _inventory[item->getItemProfile().itemType];
   Item* existingItemObj = getExistingItemObj(item);
   existingItemObj->setAmount(existingItemObj->getAmount() - amount);
 
   if (existingItemObj->getAmount() <= 0) {
-    items.erase(std::remove(items.begin(), items.end(), existingItemObj), items.end());
+    _inventory[item->getItemProfile().itemType].erase(existingItemObj);
+
     // We can safely delete this Item* if:
     // 1. It is not an equipment, or...
     // 2. It is an equipment, but no same item is currently equipped.
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
-    if (!equipment || (_equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj)) {
+    Equipment::Type equipmentType = equipment->getEquipmentProfile().equipmentType;
+
+    if (!equipment || _equipmentSlots[equipmentType] != existingItemObj) {
       _itemMapper.erase(item->getItemProfile().name);
     }
   }
@@ -689,7 +688,7 @@ Item* Character::getExistingItemObj(Item* item) const {
   // For each instance of an item, at most one copy is kept in the memory.
   // This copy will be stored in _itemMapper (unordered_map<string, Item*>)
   // Search time complexity: avg O(1), worst O(n).
-  auto it = _itemMapper.find(item->getItemProfile().name);
+  auto it = _itemMapper.find(item->getItemProfile().jsonFileName);
   return (it != _itemMapper.end()) ? it->second.get() : nullptr;
 }
 
@@ -737,22 +736,18 @@ void Character::equip(Equipment* equipment) {
 void Character::unequip(Equipment::Type equipmentType) {
   // If there's an equipped item in the target slot,
   // move it into character's inventory.
-  if (_equipmentSlots[equipmentType]) {
-    Equipment* e = _equipmentSlots[equipmentType];
-    _equipmentSlots[equipmentType] = nullptr;
-
-    e->setAmount(e->getAmount() + 1);
-    vector<Item*>& items = _inventory[Item::Type::EQUIPMENT];
-    if (std::find(items.begin(), items.end(), e) == items.end()) {
-      items.push_back(e);
-    }
-
-    GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
-
-    if (equipmentType == Equipment::Type::WEAPON) {
-      sheathWeapon();
-    }
+  if (!_equipmentSlots[equipmentType]) {
+    return;
   }
+
+  if (equipmentType == Equipment::Type::WEAPON) {
+    sheathWeapon();
+  }
+
+  Equipment* e = _equipmentSlots[equipmentType];
+  _equipmentSlots[equipmentType] = nullptr;
+  addItem(_itemMapper.find(e->getItemProfile().jsonFileName)->second, 1);
+  GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 }
 
 void Character::pickupItem(Item* item) {

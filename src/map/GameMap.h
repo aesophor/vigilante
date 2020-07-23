@@ -48,38 +48,10 @@ class GameMap {
 
 
   template <typename ReturnType = DynamicActor>
-  ReturnType* showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {
-    ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
-
-    std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor.get());
-    auto it = _dynamicActors.find(key);
-    if (it != _dynamicActors.end()) {
-      VGLOG(LOG_ERR, "This DynamicActor is already being shown: %p", actor.get());
-      return nullptr;
-    }
-
-    actor->showOnMap(x, y);
-    _dynamicActors.insert(std::move(actor));
-    return shownActor;
-  }
-
+  ReturnType* showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y);
 
   template <typename ReturnType = DynamicActor>
-  std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor) {
-    std::shared_ptr<ReturnType> removedActor(nullptr);
-
-    std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor);
-    auto it = _dynamicActors.find(key);
-    if (it == _dynamicActors.end()) {
-      VGLOG(LOG_ERR, "This DynamicActor has not yet been shown: %p", actor);
-      return nullptr;
-    }
-
-    removedActor = std::move(std::dynamic_pointer_cast<ReturnType>(*it));
-    removedActor->removeFromMap();
-    _dynamicActors.erase(it);
-    return removedActor;
-  }
+  std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
 
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
@@ -104,6 +76,42 @@ class GameMap {
 
   friend class GameMapManager;
 };
+
+
+
+template <typename ReturnType = DynamicActor>
+ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {
+  ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
+
+  std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor.get());
+  auto it = _dynamicActors.find(key);
+  if (it != _dynamicActors.end()) {
+    VGLOG(LOG_ERR, "This DynamicActor is already being shown: %p", actor.get());
+    return nullptr;
+  }
+
+  actor->showOnMap(x, y);
+  _dynamicActors.insert(std::move(actor));
+  return shownActor;
+}
+
+
+template <typename ReturnType = DynamicActor>
+std::shared_ptr<ReturnType> GameMap::removeDynamicActor(DynamicActor* actor) {
+  std::shared_ptr<ReturnType> removedActor(nullptr);
+
+  std::shared_ptr<DynamicActor> key(std::shared_ptr<DynamicActor>(), actor);
+  auto it = _dynamicActors.find(key);
+  if (it == _dynamicActors.end()) {
+    VGLOG(LOG_ERR, "This DynamicActor has not yet been shown: %p", actor);
+    return nullptr;
+  }
+
+  removedActor = std::move(std::dynamic_pointer_cast<ReturnType>(*it));
+  removedActor->removeFromMap();
+  _dynamicActors.erase(it);
+  return removedActor;
+}
 
 }  // namespace vigilante
 

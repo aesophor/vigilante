@@ -109,6 +109,6 @@ T CircularBuffer<T>::back() const {
   return _data[(_tail - 1 < 0) ? _capacity - 1 : _tail - 1];
 }
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CIRCULAR_BUFFER_H_
+#endif  // VIGILANTE_CIRCULAR_BUFFER_H_

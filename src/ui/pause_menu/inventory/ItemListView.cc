@@ -9,6 +9,7 @@
 #include "item/Consumable.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
+#include "util/ds/SetVector.h"
 #include "util/KeyCodeUtil.h"
 
 #define VISIBLE_ITEM_COUNT 5
@@ -142,7 +143,7 @@ void ItemListView::showItemsByType(Item::Type itemType) {
 }
 
 void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
-  const vector<Item*> equipments = _pauseMenu->getPlayer()->getInventory()[Item::Type::EQUIPMENT];
+  const SetVector<Item*>& equipments = _pauseMenu->getPlayer()->getInventory()[Item::Type::EQUIPMENT];
   deque<Item*> objects(equipments.begin(), equipments.end());
 
   // Filter out any equipment other than the specified equipmentType.

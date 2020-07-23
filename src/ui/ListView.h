@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_LIST_VIEW_H_
 #define VIGILANTE_LIST_VIEW_H_
 
+#include <set>
 #include <deque>
 #include <vector>
 #include <string>
@@ -16,6 +17,7 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"
+#include "util/ds/SetVector.h"
 
 #define SCROLL_BAR_MAX_SCALE_Y 120
 
@@ -37,9 +39,10 @@ class ListView {
   virtual void scrollUp();
   virtual void scrollDown();
 
-  virtual void showFrom(int index); // show n ListViewItems starting from the specified index.
+  virtual void showFrom(int index);  // show n ListViewItems starting from the specified index.
   virtual void setObjects(const std::vector<T>& objects);
   virtual void setObjects(const std::deque<T>& objects);
+  virtual void setObjects(const SetVector<T>& objects);
 
   virtual void showScrollBar();
   virtual void hideScrollBar();
@@ -82,8 +85,11 @@ class ListView {
  
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
-  std::function<void (ListViewItem*, bool)> _setSelectedCallback; // called at the end of ListViewItem::setSelected()
-  std::function<void (ListViewItem*, T)> _setObjectCallback; // called at the end of ListViewItem::setObject()
+
+  // called at the end of ListViewItem::setSelected()
+  std::function<void (ListViewItem*, bool)> _setSelectedCallback;
+  // called at the end of ListViewItem::setObject()
+  std::function<void (ListViewItem*, T)> _setObjectCallback;
 
   uint8_t _visibleItemCount;
   uint32_t _width;
@@ -218,6 +224,20 @@ template <typename T>
 void ListView<T>::setObjects(const std::deque<T>& objects) {
   // Copy all items into local deque.
   _objects = std::deque<T>(objects);
+
+  _firstVisibleIndex = 0;
+  _current = 0;
+  showFrom(_firstVisibleIndex);
+
+  if (_objects.size() > 0) {
+    _listViewItems[0]->setSelected(true);
+  }
+}
+
+template <typename T>
+void ListView<T>::setObjects(const SetVector<T>& objects) {
+  // Copy all items into local deque.
+  _objects = std::deque<T>(objects.begin(), objects.end());
 
   _firstVisibleIndex = 0;
   _current = 0;

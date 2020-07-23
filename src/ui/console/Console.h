@@ -9,7 +9,7 @@
 #include "Controllable.h"
 #include "ui/TextField.h"
 #include "ui/console/CommandParser.h"
-#include "util/CircularBuffer.h"
+#include "util/ds/CircularBuffer.h"
 
 namespace vigilante {
 

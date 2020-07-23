@@ -21,14 +21,18 @@
 #include "item/Consumable.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
+#include "util/ds/SetVector.h"
 
 namespace vigilante {
 
 class Character : public DynamicActor, public Importable {
  public: 
-  struct Profile {
+  using Inventory = std::array<SetVector<Item*>, Item::Type::SIZE>;
+  using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
+
+  struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    virtual ~Profile() = default;
+    ~Profile() = default;
 
     std::string jsonFileName;
     std::string textureResDir;
@@ -152,8 +156,6 @@ class Character : public DynamicActor, public Importable {
   std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
   Skill* getCurrentlyUsedSkill() const;
 
-  using Inventory = std::array<std::vector<Item*>, Item::Type::SIZE>;
-  using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
   const Inventory& getInventory() const;
   const EquipmentSlots& getEquipmentSlots() const;
   int getItemAmount(const std::string& itemName) const;
@@ -281,6 +283,6 @@ class Character : public DynamicActor, public Importable {
   std::unordered_map<std::string, cocos2d::Animation*> _skillBodyAnimations;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CHARACTER_H_
+#endif  // VIGILANTE_CHARACTER_H_

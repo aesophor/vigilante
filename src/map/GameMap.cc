@@ -57,6 +57,7 @@ void GameMap::deleteObjects() {
     _world->DestroyBody(body);
   }
 
+  // Destroy DynamicActor's b2body and textures.
   for (auto& actor : _dynamicActors) {
     actor->removeFromMap();
   }
