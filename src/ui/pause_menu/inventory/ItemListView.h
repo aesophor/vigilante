@@ -15,9 +15,9 @@ class ItemListView : public ListView<Item*> {
   explicit ItemListView(PauseMenu* pauseMenu);
   virtual ~ItemListView() = default;
 
-  virtual void confirm() override; // ListView<Item*>
-  virtual void selectUp() override; // ListView<Item*>
-  virtual void selectDown() override; // ListView<Item*>
+  virtual void confirm() override;  // ListView<Item*>
+  virtual void selectUp() override;  // ListView<Item*>
+  virtual void selectDown() override;  // ListView<Item*>
 
   void showItemsByType(Item::Type itemType);
   void showEquipmentByType(Equipment::Type equipmentType);
@@ -27,6 +27,6 @@ class ItemListView : public ListView<Item*> {
   cocos2d::Label* _descLabel;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ITEM_LIST_VIEW_H_
+#endif  // VIGILANTE_ITEM_LIST_VIEW_H_

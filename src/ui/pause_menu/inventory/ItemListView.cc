@@ -97,7 +97,7 @@ void ItemListView::confirm() {
         _pauseMenu->update();
       });
       break;
-    case Item::Type::MISC: // fall through
+    case Item::Type::MISC:  // fall through
     default:
       break;
   }
@@ -114,7 +114,7 @@ void ItemListView::confirm() {
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
   
-  if (_current <= 0) {
+  if (_current < 0) {
     return;
   }
 
@@ -125,7 +125,7 @@ void ItemListView::selectUp() {
 void ItemListView::selectDown() {
   ListView<Item*>::selectDown();
 
-  if (_current >= (int) _objects.size() - 1) {
+  if (_current > (int) _objects.size() - 1) {
     return;
   }
 
@@ -157,8 +157,8 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   Equipment* currentEquipment = character->getEquipmentSlots()[equipmentType];
 
   if (currentEquipment) {
-    objects.push_front(currentEquipment); // currently equipped item
-    objects.push_front(nullptr); // unequip
+    objects.push_front(currentEquipment);  // currently equipped item
+    objects.push_front(nullptr);  // unequip
   }
 
   // Show equipments of the specified type in ItemListView.
@@ -169,4 +169,4 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   _descLabel->setString((_objects.size() > 0) ? "Unequip" : "");
 }
 
-} // namespace vigilante
+}  // namespace vigilante
