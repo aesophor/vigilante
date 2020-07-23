@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_KEYCODE_UTIL_H_
 #define VIGILANTE_KEYCODE_UTIL_H_
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StringUtil.h"
 
 #include <sstream>

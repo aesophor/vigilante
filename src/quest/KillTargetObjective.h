@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_KILL_TARGET_OBJECTIVE_H_
 #define VIGILANTE_KILL_TARGET_OBJECTIVE_H_
 

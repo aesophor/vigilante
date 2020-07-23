@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_STRING_UTIL_H_
 #define VIGILANTE_STRING_UTIL_H_
 
@@ -16,8 +17,8 @@ void strip(std::string& s);
 std::string& toUpper(std::string& s);
 std::string& toLower(std::string& s);
 
-} // namespace string_util
+}  // namespace string_util
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_STRING_UTIL_H_
+#endif  // VIGILANTE_STRING_UTIL_H_
