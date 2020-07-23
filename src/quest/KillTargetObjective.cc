@@ -35,4 +35,4 @@ void KillTargetObjective::incrementCurrentAmount() {
   _currentAmount++;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -87,24 +87,27 @@ void QuestBook::markCompleted(Quest* quest) {
 
 
 void QuestBook::unlockQuest(const string& questJsonFileName) {
-  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+  auto it = _questMapper.find(questJsonFileName);
+  if (it == _questMapper.end()) {
     return;
   }
-  unlockQuest(_questMapper[questJsonFileName].get());
+  unlockQuest(it->second.get());
 }
 
 void QuestBook::startQuest(const string& questJsonFileName) {
-  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+  auto it = _questMapper.find(questJsonFileName);
+  if (it == _questMapper.end()) {
     return;
   }
-  startQuest(_questMapper[questJsonFileName].get());
+  startQuest(it->second.get());
 }
 
 void QuestBook::markCompleted(const string& questJsonFileName) {
-  if (_questMapper.find(questJsonFileName) == _questMapper.end()) {
+  auto it = _questMapper.find(questJsonFileName);
+  if (it == _questMapper.end()) {
     return;
   }
-  markCompleted(_questMapper[questJsonFileName].get());
+  markCompleted(it->second.get());
 }
 
 
@@ -122,4 +125,4 @@ const vector<Quest*>& QuestBook::getCompletedQuests() const {
   return _completedQuests;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

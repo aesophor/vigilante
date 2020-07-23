@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_QUEST_H_
 #define VIGILANTE_QUEST_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -13,7 +14,7 @@ namespace vigilante {
 class Quest : public Importable {
  public:
   explicit Quest(const std::string& jsonFileName);
-  virtual ~Quest();
+  virtual ~Quest() = default;
 
 
   class Objective {
@@ -34,35 +35,23 @@ class Quest : public Importable {
     Objective::Type getObjectiveType() const;
     const std::string& getDesc() const;
 
-    // Provide a key and get all objectives related to this key.
-    static void addRelatedObjective(const std::string& key, Quest::Objective* objective);
-    static void removeRelatedObjective(const std::string& key, Quest::Objective* objective);
-    static const std::vector<Quest::Objective*>& getRelatedObjectives(const std::string& key);
-
    protected:
     Objective(Objective::Type objectiveType, const std::string& desc);
-
-    static std::unordered_map<std::string, std::vector<Quest::Objective*>> _relatedObjectives;
-    static const std::vector<Quest::Objective*> _kEmptyVector;
 
     Objective::Type _objectiveType;
     std::string _desc;
   };
 
 
-  struct Stage {
-    explicit Stage(Quest::Objective* objective);
-    virtual ~Stage() = default;
-
+  struct Stage final {
     bool isFinished;
-    std::string questDesc; // optionally update quest desc when this stage is reached
-    Quest::Objective* objective;
+    std::string questDesc;  // optionally update questDesc when this stage is reached.
+    std::unique_ptr<Objective> objective; 
   };
 
 
-  struct Profile {
+  struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    virtual ~Profile() = default;
 
     std::string jsonFileName;
     std::string title;
@@ -71,7 +60,7 @@ class Quest : public Importable {
   };
 
 
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void import(const std::string& jsonFileName) override;  // Importable
   
   void unlock();
   void advanceStage();
@@ -88,6 +77,6 @@ class Quest : public Importable {
   int _currentStageIdx;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_QUEST_H_
+#endif  // VIGILANTE_QUEST_H_

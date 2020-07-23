@@ -188,9 +188,12 @@ void Player::inflictDamage(Character* target, int damage) {
   camera_util::shake(8, .1f);
 
   if (target->isSetToKill()) {
-    const string& targetName = target->getCharacterProfile().name;
-    for (const auto objective : KillTargetObjective::getRelatedObjectives(targetName)) {
-      dynamic_cast<KillTargetObjective*>(objective)->incrementCurrentAmount();
+    for (auto quest : _questBook.getInProgressQuests()) {
+      auto currentObjective = quest->getCurrentStage().objective.get();
+      if (currentObjective->getObjectiveType() == Quest::Objective::Type::KILL &&
+          dynamic_cast<KillTargetObjective*>(currentObjective)->getCharacterName() == target->getCharacterProfile().name) {
+        dynamic_cast<KillTargetObjective*>(currentObjective)->incrementCurrentAmount();
+      }
     }
     _questBook.update(Quest::Objective::Type::KILL);
   }
@@ -231,4 +234,4 @@ QuestBook& Player::getQuestBook() {
   return _questBook;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

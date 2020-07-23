@@ -25,6 +25,6 @@ class CollectItemObjective : public Quest::Objective {
   int _amount;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
+#endif  // VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_

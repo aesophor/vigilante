@@ -28,6 +28,6 @@ class KillTargetObjective : public Quest::Objective {
   int _currentAmount;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_KILL_TARGET_OBJECTIVE_H_
+#endif  // VIGILANTE_KILL_TARGET_OBJECTIVE_H_
