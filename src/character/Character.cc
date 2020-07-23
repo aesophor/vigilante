@@ -676,9 +676,9 @@ void Character::removeItem(Item* item, int amount) {
     // 1. It is not an equipment, or...
     // 2. It is an equipment, but no same item is currently equipped.
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
-    Equipment::Type equipmentType = equipment->getEquipmentProfile().equipmentType;
 
-    if (!equipment || _equipmentSlots[equipmentType] != existingItemObj) {
+    if (!equipment ||
+        _equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj) {
       _itemMapper.erase(item->getItemProfile().name);
     }
   }
