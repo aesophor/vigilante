@@ -29,7 +29,7 @@ void DialogueTree::import(const string& jsonFileName) {
 
   // Deserialize json into runtime DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD
-  stack<pair<rapidjson::Value::Object, Node*>> st; // <jsonObject, parent>
+  stack<pair<rapidjson::Value::Object, Node*>> st;  // <jsonObject, parent>
   st.push({json.GetObject(), nullptr});
 
   while (!st.empty()) {

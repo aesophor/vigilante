@@ -6,6 +6,7 @@
 
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
+#include "ui/TabView.h"
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/quest/QuestListView.h"
 
@@ -21,6 +22,8 @@ class QuestPane : public AbstractPane {
 
  private:
   cocos2d::ui::ImageView* _background;
+
+  std::unique_ptr<TabView> _tabView;
   std::unique_ptr<QuestListView> _questListView;
 };
 

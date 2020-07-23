@@ -99,7 +99,7 @@ void QuestListView::selectDown() {
 }
 
 
-void QuestListView::showQuests() {
+void QuestListView::showAllQuests() {
   // Show player skills in QuestListView.
   Player* player = _pauseMenu->getPlayer();
   setObjects(player->getQuestBook().getAllQuests());
@@ -108,4 +108,22 @@ void QuestListView::showQuests() {
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
 }
 
-} // namespace vigilante
+void QuestListView::showInProgressQuests() {
+  // Show player skills in QuestListView.
+  Player* player = _pauseMenu->getPlayer();
+  setObjects(player->getQuestBook().getInProgressQuests());
+
+  // Update description label.
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
+}
+
+void QuestListView::showCompletedQuests() {
+  // Show player skills in QuestListView.
+  Player* player = _pauseMenu->getPlayer();
+  setObjects(player->getQuestBook().getCompletedQuests());
+
+  // Update description label.
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
+}
+
+}  // namespace vigilante
