@@ -29,6 +29,6 @@ class DialogueMenu : public Controllable {
   std::unique_ptr<DialogueListView> _dialogueListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_DIALOGUE_MENU_H_
+#endif  // VIGILANTE_DIALOGUE_MENU_H_

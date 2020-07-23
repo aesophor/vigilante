@@ -1,9 +1,11 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueTree.h"
 
+#include <cassert>
 #include <stack>
 
 #include <cocos2d.h>
+#include "std/make_unique.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
@@ -18,21 +20,6 @@ namespace vigilante {
 DialogueTree::DialogueTree(const string& jsonFileName)
     : _rootNode(), _currentNode() {
   import(jsonFileName);
-}
-
-DialogueTree::~DialogueTree() {
-  dfsDeleteNodes(_rootNode);
-}
-
-void DialogueTree::dfsDeleteNodes(DialogueTree::Node* node) const {
-  if (!node) {
-    return;
-  }
-  
-  for (auto child : node->children) {
-    dfsDeleteNodes(child);
-  }
-  delete node;
 }
 
 
@@ -51,19 +38,21 @@ void DialogueTree::import(const string& jsonFileName) {
     st.pop();
 
     // Construct this node.
-    _currentNode = new Node();
+    auto currentNode = std::make_unique<Node>();
+    _currentNode = currentNode.get();
+
     for (const auto& line : node["lines"].GetArray()) {
-      _currentNode->lines.push_back(line.GetString());
+      currentNode->lines.push_back(line.GetString());
     }
     for (const auto& cmd : node["exec"].GetArray()) {
-      _currentNode->cmds.push_back(cmd.GetString());
+      currentNode->cmds.push_back(cmd.GetString());
     }
 
     if (!_rootNode) {
-      _rootNode = _currentNode;
-    }
-    if (parent) {
-      parent->children.push_back(_currentNode);
+      _rootNode = std::move(currentNode);
+    } else {
+      assert(parent != nullptr);
+      parent->children.push_back(std::move(currentNode));
     }
    
     // Push this node's children onto the stack in reverse order.
@@ -74,11 +63,11 @@ void DialogueTree::import(const string& jsonFileName) {
   }
 
   // Set _currentNode to _rootNode for later use (UI)
-  _currentNode = _rootNode;
+  resetCurrentNode();
 }
 
 DialogueTree::Node* DialogueTree::getRootNode() const {
-  return _rootNode;
+  return _rootNode.get();
 }
 
 DialogueTree::Node* DialogueTree::getCurrentNode() const {
@@ -90,7 +79,7 @@ void DialogueTree::setCurrentNode(DialogueTree::Node* node) {
 }
 
 void DialogueTree::resetCurrentNode() {
-  _currentNode = _rootNode;
+  _currentNode = _rootNode.get();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

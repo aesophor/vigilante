@@ -39,7 +39,7 @@ void DialogueListView::confirm() {
     Console::getInstance()->executeCmd(cmd);
   }
   
-  Dialogue* nextDialogue = getSelectedObject()->children.front();
+  Dialogue* nextDialogue = getSelectedObject()->children.front().get();
   for (const auto& line : nextDialogue->lines) {
     subtitles->addSubtitle(line);
   }
@@ -49,4 +49,4 @@ void DialogueListView::confirm() {
   dialogueMgr->setCurrentDialogue(nextDialogue);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

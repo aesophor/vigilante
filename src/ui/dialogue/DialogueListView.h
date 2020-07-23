@@ -12,7 +12,6 @@ class DialogueMenu;
 
 // using Dialogue = DialogueTree::Node
 // See gameplay/DialogueTree.h for this alias.
-
 using Dialogue = DialogueTree::Node;
 
 class DialogueListView : public ListView<Dialogue*> {
@@ -26,6 +25,6 @@ class DialogueListView : public ListView<Dialogue*> {
   DialogueMenu* _dialogueMenu;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_DIALOGUE_LISTVIEW_H_
+#endif  // VIGILANTE_DIALOGUE_LISTVIEW_H_

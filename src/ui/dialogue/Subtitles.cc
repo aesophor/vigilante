@@ -6,6 +6,7 @@
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/hud/Hud.h"
+#include "util/ds/Algorithm.h"
 
 #define SHOW_CHAR_INTERVAL .05f
 #define LETTERBOX_HEIGHT 50
@@ -149,11 +150,13 @@ void Subtitles::showNextSubtitle() {
     Console::getInstance()->executeCmd(cmd);
   }
 
-  if (currentDialogue->children.empty()) { // end of dialogue
+  if (currentDialogue->children.empty()) {  // end of dialogue
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
-  } else { // still has children dialogue
-    dialogueMenu->getDialogueListView()->setObjects(currentDialogue->children);
+  } else {  // still has children dialogue
+    dialogueMenu->getDialogueListView()->setObjects(
+        uniqueVec2RawVec<Dialogue>(currentDialogue->children)
+    );
     dialogueMenu->getLayer()->setVisible(true);
   }
 }
