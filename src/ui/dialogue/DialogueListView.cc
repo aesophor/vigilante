@@ -2,6 +2,7 @@
 #include "DialogueListView.h"
 
 #include "AssetManager.h"
+#include "Constants.h"
 #include "gameplay/DialogueTree.h"
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
@@ -53,7 +54,7 @@ void DialogueListView::confirm() {
 }
 
 
-void DialogueListView::updatePosition(cocos2d::Size* retNewSize) {
+void DialogueListView::updatePosition() {
   auto winSize = Director::getInstance()->getWinSize();
   auto listViewSize = getContentSize();  // defined in ui/ListView.h
   const float offset = 12.0;  // for calibration. FIXME: see if we can get rid of this value.
@@ -64,10 +65,6 @@ void DialogueListView::updatePosition(cocos2d::Size* retNewSize) {
 
   // Update the positionX of _scrollBar.
   _scrollBar->setPositionX(listViewSize.width + offset);
-  
-  if (retNewSize) {
-    *retNewSize = listViewSize;
-  }
 }
 
 }  // namespace vigilante

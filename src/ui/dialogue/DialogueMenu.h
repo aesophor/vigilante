@@ -21,9 +21,6 @@ class DialogueMenu : public Controllable {
 
   virtual void handleInput() override; // Controllable
 
-  // Update the position of DialougeMenu. See ui/dialogue/Subtitles.cc
-  void updatePosition();
-
   cocos2d::Layer* getLayer() const;
   DialogueListView* getDialogueListView() const;
 

@@ -23,7 +23,7 @@ class DialogueListView : public ListView<Dialogue*> {
 
   // Update the position and size of DialogueListView
   // See ui/dialogue/DialogueMenu.cc and ui/dialogue/Subtitles.cc
-  void updatePosition(cocos2d::Size* retNewSize=nullptr);
+  void updatePosition();
 
  private:
   DialogueMenu* _dialogueMenu;

@@ -49,15 +49,6 @@ void DialogueMenu::handleInput() {
 }
 
 
-void DialogueMenu::updatePosition() {
-  cocos2d::Size newListViewSize;
-  _dialogueListView->updatePosition(&newListViewSize);
-
-  _background->setPositionX(_dialogueListView->getLayout()->getPositionX());
-  _background->setScaleX((newListViewSize.width / 300) + .08f);
-}
-
-
 Layer* DialogueMenu::getLayer() const {
   return _layer;
 }
