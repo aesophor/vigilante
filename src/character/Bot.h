@@ -7,33 +7,20 @@
 
 namespace vigilante {
 
+// Bot interface
 class Bot {
  public:
-  explicit Bot(Character* c);
+  Bot() = default;
   virtual ~Bot() = default;
 
-  virtual void act(float delta);
-  void moveToTarget(Character* target);
-  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration);
-  void jumpIfStucked(float delta, float checkInterval);
-  void reverseDirection();
-  
- private:
-  Character* _character;
-
-  // The following variables are used in BotActions::moveRandomly()
-  bool _isMovingRight;
-  float _moveDuration;
-  float _moveTimer;
-  float _waitDuration;
-  float _waitTimer;
-
-  // The following variables are used in BotActions::jumpIfStucked()
-  b2Vec2 _lastStoppedPosition;
-  float _lastTraveledDistance;
-  float _calculateDistanceTimer;
+  virtual void act(float delta) = 0;
+  virtual void moveToTarget(Character* target) = 0;
+  virtual void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration,
+                            int minWaitDuration, int maxWaitDuration) = 0;
+  virtual void jumpIfStucked(float delta, float checkInterval) = 0;
+  virtual void reverseDirection() = 0;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_BOT_H_
+#endif  // VIGILANTE_BOT_H_

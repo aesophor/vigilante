@@ -1,8 +1,9 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Enemy.h"
 
-#include <json/document.h>
+#include <set>
 
+#include <json/document.h>
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -15,6 +16,7 @@
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
 
+using std::set;
 using std::string;
 using cocos2d::Vector;
 using cocos2d::Director;
@@ -44,8 +46,14 @@ namespace vigilante {
 
 Enemy::Enemy(const string& jsonFileName)
     : Character(jsonFileName),
-      Bot(this),
-      _enemyProfile(jsonFileName) {}
+      _enemyProfile(jsonFileName),
+      _isMovingRight(),
+      _moveDuration(),
+      _moveTimer(),
+      _waitDuration(),
+      _waitTimer(),
+      _lastTraveledDistance(),
+      _calculateDistanceTimer() {}
 
 void Enemy::update(float delta) {
   Character::update(delta);
@@ -81,7 +89,6 @@ void Enemy::import(const string& jsonFileName) {
   Character::import(jsonFileName);
   _enemyProfile = Enemy::Profile(jsonFileName);
 }
-
 
 void Enemy::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
@@ -121,6 +128,87 @@ void Enemy::receiveDamage(Character* source, int damage) {
   }
 }
 
+
+void Enemy::act(float delta) {
+  if (isKilled() || isSetToKill() || isAttacking()) {
+    return;
+  }
+
+  set<Character*>& inRangeTargets = getInRangeTargets();
+  Character* lockedOnTarget = getLockedOnTarget();
+
+  if (isAlerted() && lockedOnTarget && !lockedOnTarget->isSetToKill()) {
+    if (!inRangeTargets.empty()) { // is target within the attack range?
+      attack();
+      if (inRangeTargets.empty()) {
+        setLockedOnTarget(nullptr);
+      }
+    } else if (std::abs(getBody()->GetPosition().x - lockedOnTarget->getBody()->GetPosition().x) > .25f) {
+      // If the target isn't within attack range, move toward it until attackable
+      moveToTarget(lockedOnTarget);
+      jumpIfStucked(delta, .1f);
+    }
+  } else {
+    moveRandomly(delta, 0, 5, 0, 5);
+  }
+}
+
+void Enemy::moveToTarget(Character* target) {
+  b2Body* thisBody = getBody();
+  b2Body* targetBody = target->getBody();
+
+  if (thisBody->GetPosition().x > targetBody->GetPosition().x) {
+    moveLeft();
+  } else {
+    moveRight();
+  }
+}
+
+void Enemy::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration) {
+  // If the character has finished moving and waiting, regenerate random values for
+  // _moveDuration and _waitDuration within the specified range.
+  if (_moveTimer >= _moveDuration && _waitTimer >= _waitDuration) {
+    _isMovingRight = static_cast<bool>(rand_util::randInt(0, 1));
+    _moveDuration = rand_util::randInt(minMoveDuration, maxMoveDuration);
+    _waitDuration = rand_util::randInt(minWaitDuration, maxWaitDuration);
+    _moveTimer = 0;
+    _waitTimer = 0;
+  }
+
+  if (_moveTimer < _moveDuration) {
+    if (_isMovingRight) {
+      moveRight();
+    } else {
+      moveLeft();
+    }
+    // Make sure the character doesn't get stucked somewhere along the way.
+    jumpIfStucked(delta, .5f);
+    _moveTimer += delta;
+  } else {
+    _waitTimer += delta;
+  }
+}
+
+void Enemy::jumpIfStucked(float delta, float checkInterval) {
+  b2Body* thisBody = getBody();
+
+  if (_calculateDistanceTimer > checkInterval) {
+    _lastTraveledDistance = std::abs(thisBody->GetPosition().x - _lastStoppedPosition.x);
+    _lastStoppedPosition.Set(thisBody->GetPosition().x, thisBody->GetPosition().y);
+    if (_lastTraveledDistance == 0) {
+      jump();
+    }
+    _calculateDistanceTimer = 0;
+  } else {
+    _calculateDistanceTimer += delta;
+  }
+}
+
+void Enemy::reverseDirection() {
+  _isMovingRight = !_isMovingRight;
+}
+
+
 Enemy::Profile& Enemy::getEnemyProfile() {
   return _enemyProfile;
 }
@@ -144,4 +232,4 @@ Enemy::Profile::Profile(const string& jsonFileName) {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante

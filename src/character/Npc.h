@@ -6,13 +6,12 @@
 #include <vector>
 
 #include "Character.h"
-#include "Bot.h"
 #include "Interactable.h"
 #include "gameplay/DialogueTree.h"
 
 namespace vigilante {
 
-class Npc : public Character, public Bot, public Interactable {
+class Npc : public Character, public Interactable {
  public:
   struct Profile {
     explicit Profile(const std::string& jsonFileName);

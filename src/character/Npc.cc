@@ -44,7 +44,6 @@ namespace vigilante {
 
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
-      Bot(this),
       _npcProfile(jsonFileName),
       _dialogueTree(_npcProfile.dialogueTree) {}
 
@@ -145,4 +144,4 @@ Npc::Profile::Profile(const string& jsonFileName) {
   dialogueTree = json["dialogueTree"].GetString();
 }
 
-} // namespace vigilante
+}  // namespace vigilante
