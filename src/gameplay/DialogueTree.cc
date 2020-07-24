@@ -13,9 +13,12 @@ using std::pair;
 using std::stack;
 using std::string;
 using std::vector;
+using std::unordered_map;
 using rapidjson::Document;
 
 namespace vigilante {
+
+unordered_map<string, string> DialogueTree::_latestNpcDialogueTree;
 
 DialogueTree::DialogueTree(const string& jsonFileName)
     : _rootNode(), _currentNode() {
