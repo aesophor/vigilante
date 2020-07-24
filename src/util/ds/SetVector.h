@@ -28,11 +28,13 @@ class SetVector {
   SetVector& operator=(const SetVector& other) {
     _set = other._set;
     _vec = other._vec;
+    return *this;
   }
   
   SetVector& operator=(SetVector&& other) noexcept {
     _set = std::move(other._set);
     _vec = std::move(other._vec);
+    return *this;
   }
   
   virtual ~SetVector() = default;

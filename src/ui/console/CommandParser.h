@@ -23,11 +23,12 @@ class CommandParser {
   void startQuest(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);
   void removeItem(const std::vector<std::string>& args);
+  void updateDialogueTree(const std::vector<std::string>& args);
 
   bool _success;
   std::string _errMsg;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_COMMAND_PARSER_H_
+#endif  // VIGILANTE_COMMAND_PARSER_H_

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "character/Player.h"
+#include "gameplay/DialogueTree.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 #include "ui/notifications/Notifications.h"
@@ -17,7 +18,9 @@ using std::vector;
 using std::unique_ptr;
 using std::out_of_range;
 using std::invalid_argument;
-using CmdTable = std::unordered_map<std::string, void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
+
+using CmdTable = std::unordered_map<std::string,
+      void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
 
 namespace vigilante {
 
@@ -34,9 +37,10 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
 
   // Command handler table.
   static const CmdTable cmdTable = {
-    {"startquest", &CommandParser::startQuest},
-    {"additem",    &CommandParser::addItem   },
-    {"removeitem", &CommandParser::removeItem}
+    {"startquest",         &CommandParser::startQuest        },
+    {"additem",            &CommandParser::addItem           },
+    {"removeitem",         &CommandParser::removeItem        },
+    {"updateDialogueTree", &CommandParser::updateDialogueTree},
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -68,7 +72,7 @@ void CommandParser::setError(const string& errMsg) {
 
 void CommandParser::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("missing parameter `quest`");
+    setError("usage: startQuest <quest>");
     return;
   }
 
@@ -79,7 +83,7 @@ void CommandParser::startQuest(const vector<string>& args) {
 
 void CommandParser::addItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("missing parameter `itemName`");
+    setError("usage: addItem <itemName> [amount]");
     return;
   }
 
@@ -104,14 +108,15 @@ void CommandParser::addItem(const vector<string>& args) {
     return;
   }
 
-  GameMapManager::getInstance()->getPlayer()->addItem(unique_ptr<Item>(Item::create(args[1])), amount);
+  unique_ptr<Item> item = Item::create(args[1]);
+  GameMapManager::getInstance()->getPlayer()->addItem(std::move(item), amount);
   setSuccess();
 }
 
 
 void CommandParser::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("missing parameter `itemName`");
+    setError("usage: removeItem <itemName> [amount]");
     return;
   }
 
@@ -136,9 +141,22 @@ void CommandParser::removeItem(const vector<string>& args) {
     return;
   }
 
-  // FIXME
-  //GameMapManager::getInstance()->getPlayer()->removeItem(Item::create(args[1]), amount);
+  unique_ptr<Item> item = Item::create(args[1]);
+  GameMapManager::getInstance()->getPlayer()->removeItem(item.get(), amount);
   setSuccess();
 }
 
-} // namespace vigilante
+
+void CommandParser::updateDialogueTree(const vector<string>& args) {
+  if (args.size() < 3) {
+    setError("usage: updateDialogueTree <npcJson> <dialogueTreeJson>");
+    return;
+  }
+
+  // TODO: Maybe add some argument check here?
+ 
+  DialogueTree::setLatestNpcDialogueTree(args[1], args[2]);
+  setSuccess();
+}
+
+}  // namespace vigilante

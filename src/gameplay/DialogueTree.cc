@@ -22,6 +22,16 @@ DialogueTree::DialogueTree(const string& jsonFileName)
   import(jsonFileName);
 }
 
+DialogueTree::DialogueTree(DialogueTree&& other) noexcept
+    : _rootNode(std::move(other._rootNode)),
+      _currentNode(other._currentNode) {}
+
+DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
+  _rootNode = std::move(other._rootNode);
+  _currentNode = other._currentNode;
+  return *this;
+}
+
 
 void DialogueTree::import(const string& jsonFileName) {
   VGLOG(LOG_INFO, "Loading dialogue tree...");
@@ -80,6 +90,17 @@ void DialogueTree::setCurrentNode(DialogueTree::Node* node) {
 
 void DialogueTree::resetCurrentNode() {
   _currentNode = _rootNode.get();
+}
+
+
+string DialogueTree::getLatestNpcDialogueTree(const string& npcJsonFileName) {
+  auto it = _latestNpcDialogueTree.find(npcJsonFileName);
+  return (it != _latestNpcDialogueTree.end()) ? it->second : "";
+}
+
+void DialogueTree::setLatestNpcDialogueTree(const string& npcJsonFileName,
+                                            const string& dialogueTreeJsonFileName) {
+  _latestNpcDialogueTree[npcJsonFileName] = dialogueTreeJsonFileName;
 }
 
 }  // namespace vigilante

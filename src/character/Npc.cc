@@ -116,16 +116,22 @@ void Npc::receiveDamage(Character* source, int damage) {
 }
 
 void Npc::onInteract(Character* user) {
+  updateDialogueTreeIfNeeded();
+  beginDialogue();
+}
+
+bool Npc::willInteractOnContact() const {
+  return false;
+}
+
+
+void Npc::beginDialogue() {
   auto dialogueMgr = DialogueManager::getInstance();
   dialogueMgr->setTargetNpc(this);
   for (const auto& line : _dialogueTree.getCurrentNode()->lines) {
     dialogueMgr->getSubtitles()->addSubtitle(line);
   }
   dialogueMgr->getSubtitles()->beginSubtitles();
-}
-
-bool Npc::willInteractOnContact() const {
-  return false;
 }
 
 
@@ -135,6 +141,21 @@ Npc::Profile& Npc::getNpcProfile() {
 
 DialogueTree& Npc::getDialogueTree() {
   return _dialogueTree;
+}
+
+void Npc::updateDialogueTreeIfNeeded() {
+  // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
+  // See gameplay/DialogueTree.cc
+  string latestDialogueTreeJsonFileName
+    = DialogueTree::getLatestNpcDialogueTree(_characterProfile.jsonFileName);
+
+  if (latestDialogueTreeJsonFileName.empty()) {
+    return;
+  }
+
+  VGLOG(LOG_INFO, "Loading %s's dialogue tree: %s", _characterProfile.jsonFileName.c_str(),
+                                                    latestDialogueTreeJsonFileName.c_str());
+  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName);
 }
 
 

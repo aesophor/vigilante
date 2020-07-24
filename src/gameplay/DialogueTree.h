@@ -13,6 +13,10 @@ namespace vigilante {
 class DialogueTree : public Importable {
  public:
   explicit DialogueTree(const std::string& jsonFileName);
+  DialogueTree(const DialogueTree&) = delete;
+  DialogueTree(DialogueTree&& other) noexcept;
+  DialogueTree& operator=(const DialogueTree&) = delete;
+  DialogueTree& operator=(DialogueTree&& other) noexcept;
   virtual ~DialogueTree() = default;
 
   virtual void import(const std::string& jsonFileName) override;
@@ -28,7 +32,13 @@ class DialogueTree : public Importable {
   void setCurrentNode(DialogueTree::Node* node);
   void resetCurrentNode();
 
+  static std::string getLatestNpcDialogueTree(const std::string& npcJsonFileName);
+  static void setLatestNpcDialogueTree(const std::string& npcJsonFileName,
+                                       const std::string& dialogueTreeJsonFileName);
+
  private:
+  static std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
+
   std::unique_ptr<DialogueTree::Node> _rootNode;
   DialogueTree::Node* _currentNode;
 };
