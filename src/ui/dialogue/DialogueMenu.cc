@@ -18,7 +18,6 @@ namespace vigilante {
 DialogueMenu::DialogueMenu()
     : _layer(Layer::create()),
       _dialogueListView(std::make_unique<DialogueListView>(this)) {
-  auto winSize = Director::getInstance()->getWinSize();
   _dialogueListView->getLayout()->setAnchorPoint({0.5, 1});
   _dialogueListView->getLayout()->setPosition({250, DIALOGUE_MENU_Y});
 
@@ -48,4 +47,4 @@ DialogueListView* DialogueMenu::getDialogueListView() const {
   return _dialogueListView.get();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

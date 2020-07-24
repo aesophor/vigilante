@@ -39,7 +39,7 @@ class Enemy : public Character, public Bot {
   virtual void act(float delta) override;  // Bot
   virtual void moveToTarget(Character* target) override;  // Bot
   virtual void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration,
-                    int minWaitDuration, int maxWaitDuration) override;  // Bot
+                            int minWaitDuration, int maxWaitDuration) override;  // Bot
   virtual void jumpIfStucked(float delta, float checkInterval) override;  // Bot
   virtual void reverseDirection() override;  // Bot
 

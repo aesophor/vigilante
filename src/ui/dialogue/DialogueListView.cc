@@ -9,13 +9,14 @@
 
 #define VISIBLE_ITEM_COUNT 3
 #define WIDTH vigilante::kVirtualWidth / 2
+#define LINE_HEIGHT 15
 #define REGULAR_BG vigilante::asset_manager::kEmptyImage
 #define HIGHLIGHTED_BG vigilante::asset_manager::kEmptyImage
 
 namespace vigilante {
 
 DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
-    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, LINE_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
       _dialogueMenu(dialogMenu) {
 
   _setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {

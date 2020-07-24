@@ -28,7 +28,7 @@ class PauseMenu;
 template <typename T>
 class ListView {
  public:
-  ListView(uint8_t visibleItemCount, uint32_t width,
+  ListView(int visibleItemCount, int width, int lineHeight,
            const std::string& regularBg=asset_manager::kEmptyImage,
            const std::string& highlightedBg=asset_manager::kEmptyImage);
   virtual ~ListView() = default;
@@ -91,8 +91,8 @@ class ListView {
   // called at the end of ListViewItem::setObject()
   std::function<void (ListViewItem*, T)> _setObjectCallback;
 
-  uint8_t _visibleItemCount;
-  uint32_t _width;
+  int _visibleItemCount;
+  int _width;
   std::string _regularBg;
   std::string _highlightedBg;
 
@@ -105,7 +105,7 @@ class ListView {
 
 
 template <typename T>
-ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
+ListView<T>::ListView(int visibleItemCount, int width, int lineHeight,
                       const std::string& regularBg, const std::string& highlightedBg)
     : _layout(cocos2d::ui::Layout::create()),
       _scrollBar(cocos2d::ui::ImageView::create(asset_manager::kScrollBar)),
@@ -123,7 +123,7 @@ ListView<T>::ListView(uint8_t visibleItemCount, uint32_t width,
 
   for (int i = 0; i < visibleItemCount; i++) {
     float x = 0;
-    float y = -i * 25;
+    float y = -i * lineHeight;
     _listViewItems.push_back(std::make_unique<ListViewItem>(this, x, y));
     _listViewItems.back()->setVisible(false);
     _layout->addChild(_listViewItems[i]->getLayout());
