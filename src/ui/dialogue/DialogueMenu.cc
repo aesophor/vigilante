@@ -7,20 +7,30 @@
 #include "input/InputManager.h"
 #include "ui/dialogue/DialogueManager.h"
 
-#define DIALOGUE_MENU_Y 45
+// The positionX of DialogueMenu will be updated dynamically in runtime.
+// See DialogueMenu::updatePosition() and ui/dialogue/Subtitles.cc
+#define DIALOGUE_MENU_BG_POS {0, 63}
+#define DIALOGUE_MENU_POS {0, 60}
 
 using cocos2d::Director;
 using cocos2d::Layer;
 using cocos2d::EventKeyboard;
+using cocos2d::ui::Layout;
+using cocos2d::ui::ImageView;
+using vigilante::asset_manager::kDialogueMenuBg;
 
 namespace vigilante {
 
 DialogueMenu::DialogueMenu()
     : _layer(Layer::create()),
+      _background(ImageView::create(kDialogueMenuBg)),
       _dialogueListView(std::make_unique<DialogueListView>(this)) {
-  _dialogueListView->getLayout()->setAnchorPoint({0.5, 1});
-  _dialogueListView->getLayout()->setPosition({250, DIALOGUE_MENU_Y});
+  _background->setAnchorPoint({0, 1});  // make top-left (0, 0)
+  _background->setPosition(DIALOGUE_MENU_BG_POS);
+  _layer->addChild(_background, 0);
 
+  _dialogueListView->getLayout()->setAnchorPoint({0, 0});
+  _dialogueListView->getLayout()->setPosition(DIALOGUE_MENU_POS);
   _layer->addChild(_dialogueListView->getLayout());
   _layer->setVisible(false);
 }
@@ -36,6 +46,15 @@ void DialogueMenu::handleInput() {
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
     _dialogueListView->confirm();
   }
+}
+
+
+void DialogueMenu::updatePosition() {
+  cocos2d::Size newListViewSize;
+  _dialogueListView->updatePosition(&newListViewSize);
+
+  _background->setPositionX(_dialogueListView->getLayout()->getPositionX());
+  _background->setScaleX((newListViewSize.width / 300) + .08f);
 }
 
 

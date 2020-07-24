@@ -67,4 +67,4 @@ void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {
   _targetNpc->getDialogueTree().setCurrentNode(dialogue);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

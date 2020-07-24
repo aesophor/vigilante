@@ -145,6 +145,7 @@ void Subtitles::showNextSubtitle() {
   // If all subtitles has been displayed, show DialogueMenu if possible.
   DialogueManager* dialogueMgr = DialogueManager::getInstance();
   DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
+  DialogueListView* dialogueListView = dialogueMenu->getDialogueListView();
   Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
 
   for (const auto& cmd : currentDialogue->cmds) {
@@ -155,9 +156,10 @@ void Subtitles::showNextSubtitle() {
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
   } else {  // still has children dialogue
-    dialogueMenu->getDialogueListView()->setObjects(
-        uniqueVec2RawVec<Dialogue>(currentDialogue->children)
-    );
+    dialogueListView->setObjects(uniqueVec2RawVec<Dialogue>(currentDialogue->children));
+    //dialogueListView->updatePosition();
+
+    dialogueMenu->updatePosition();
     dialogueMenu->getLayer()->setVisible(true);
   }
 }
@@ -170,4 +172,4 @@ Layer* Subtitles::getLayer() const {
 
 Subtitles::Subtitle::Subtitle(const string& text) : text(text) {}
 
-} // namespace vigilante
+}  // namespace vigilante

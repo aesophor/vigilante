@@ -30,7 +30,7 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);
-  _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
+  _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
   _layout->addChild(_background);
 
   // Place item category tabs.

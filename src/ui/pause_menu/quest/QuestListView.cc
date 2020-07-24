@@ -8,8 +8,9 @@
 #include "ui/pause_menu/PauseMenuDialog.h"
 
 #define VISIBLE_ITEM_COUNT 5
-#define WIDTH vigilante::kVirtualWidth / 2
-#define LINE_HEIGHT 25
+#define WIDTH 289.5
+#define HEIGHT 120
+#define ITEM_GAP_HEIGHT 25
 #define REGULAR_BG vigilante::asset_manager::kItemRegular
 #define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
@@ -21,7 +22,7 @@ using cocos2d::Label;
 namespace vigilante {
 
 QuestListView::QuestListView(PauseMenu* pauseMenu)
-    : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, LINE_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
       _pauseMenu(pauseMenu),
       _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
 

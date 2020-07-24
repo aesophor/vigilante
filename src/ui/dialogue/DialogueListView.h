@@ -19,7 +19,11 @@ class DialogueListView : public ListView<Dialogue*> {
   explicit DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
 
-  virtual void confirm() override;
+  virtual void confirm() override;  // ListView<Dialogue*>
+
+  // Update the position and size of DialogueListView
+  // See ui/dialogue/DialogueMenu.cc and ui/dialogue/Subtitles.cc
+  void updatePosition(cocos2d::Size* retNewSize=nullptr);
 
  private:
   DialogueMenu* _dialogueMenu;
