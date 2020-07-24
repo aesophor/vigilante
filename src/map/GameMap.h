@@ -79,7 +79,7 @@ class GameMap {
 
 
 
-template <typename ReturnType = DynamicActor>
+template <typename ReturnType>
 ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {
   ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
 
@@ -96,7 +96,7 @@ ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float
 }
 
 
-template <typename ReturnType = DynamicActor>
+template <typename ReturnType>
 std::shared_ptr<ReturnType> GameMap::removeDynamicActor(DynamicActor* actor) {
   std::shared_ptr<ReturnType> removedActor(nullptr);
 
