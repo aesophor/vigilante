@@ -39,21 +39,19 @@ class ListView {
   virtual void scrollUp();
   virtual void scrollDown();
 
-  virtual void showFrom(int index);  // show n ListViewItems starting from the specified index.
-  virtual void setObjects(const std::vector<T>& objects);
-  virtual void setObjects(const std::deque<T>& objects);
-  virtual void setObjects(const SetVector<T>& objects);
+  void showFrom(int index);  // show n ListViewItems starting from the specified index.
 
-  virtual void showScrollBar();
-  virtual void hideScrollBar();
+  template <template <typename...> typename ContainerType>
+  void setObjects(const ContainerType<T>& objects);
+
+  void showScrollBar();
+  void hideScrollBar();
 
   T getSelectedObject() const;
   cocos2d::ui::Layout* getLayout() const;
   cocos2d::Size getContentSize() const;
 
  protected:
-  friend class ListViewItem;
-
   class ListViewItem {
    public:
     ListViewItem(ListView<T>* parent, float x, float y);
@@ -82,6 +80,7 @@ class ListView {
     T _object;
   };
 
+
   cocos2d::ui::Layout* _layout;
   cocos2d::ui::ImageView* _scrollBar;
  
@@ -106,6 +105,8 @@ class ListView {
   int _current;
 
   bool _showScrollBar;
+
+  friend class ListViewItem;
 };
 
 
@@ -218,10 +219,11 @@ void ListView<T>::showFrom(int index) {
 }
 
 template <typename T>
-void ListView<T>::setObjects(const std::vector<T>& objects) {
-  // Copy all items into local deque.
+template <template <typename...> typename ContainerType>
+void ListView<T>::setObjects(const ContainerType<T>& objects) {
   _objects = std::deque<T>(objects.begin(), objects.end());
 
+  // FIXME: Improve this shitty algorithm
   _firstVisibleIndex = 0;
   _current = 0;
   showFrom(_firstVisibleIndex);
@@ -231,33 +233,6 @@ void ListView<T>::setObjects(const std::vector<T>& objects) {
   }
 }
 
-template <typename T>
-void ListView<T>::setObjects(const std::deque<T>& objects) {
-  // Copy all items into local deque.
-  _objects = std::deque<T>(objects);
-
-  _firstVisibleIndex = 0;
-  _current = 0;
-  showFrom(_firstVisibleIndex);
-
-  if (_objects.size() > 0) {
-    _listViewItems[0]->setSelected(true);
-  }
-}
-
-template <typename T>
-void ListView<T>::setObjects(const SetVector<T>& objects) {
-  // Copy all items into local deque.
-  _objects = std::deque<T>(objects.begin(), objects.end());
-
-  _firstVisibleIndex = 0;
-  _current = 0;
-  showFrom(_firstVisibleIndex);
-
-  if (_objects.size() > 0) {
-    _listViewItems[0]->setSelected(true);
-  }
-}
 
 template <typename T>
 void ListView<T>::showScrollBar() {

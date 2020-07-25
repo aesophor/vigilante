@@ -160,7 +160,7 @@ void Subtitles::showNextSubtitle() {
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
   } else {  // still has children dialogue
-    dialogueListView->setObjects(children);
+    dialogueListView->setObjects<vector>(children);
     dialogueListView->updatePosition();
     dialogueMenu->getLayer()->setVisible(true);
   }
