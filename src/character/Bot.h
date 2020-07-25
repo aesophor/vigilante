@@ -13,6 +13,7 @@ class Bot {
   Bot() = default;
   virtual ~Bot() = default;
 
+ protected:
   virtual void act(float delta) = 0;
   virtual void moveToTarget(Character* target) = 0;
   virtual void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration,
