@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Subtitles.h"
 
+#include <vector>
+
 #include "AssetManager.h"
 #include "input/InputManager.h"
 #include "ui/console/Console.h"
@@ -15,6 +17,7 @@
 
 using std::string;
 using std::queue;
+using std::vector;
 using cocos2d::Director;
 using cocos2d::Layer;
 using cocos2d::Label;
@@ -148,15 +151,16 @@ void Subtitles::showNextSubtitle() {
   DialogueListView* dialogueListView = dialogueMenu->getDialogueListView();
   Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
 
-  for (const auto& cmd : currentDialogue->cmds) {
+  for (const auto& cmd : currentDialogue->getCmds()) {
     Console::getInstance()->executeCmd(cmd);
   }
 
-  if (currentDialogue->children.empty()) {  // end of dialogue
+  vector<DialogueTree::Node*> children = currentDialogue->getChildren();
+  if (children.empty()) {  // end of dialogue
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
   } else {  // still has children dialogue
-    dialogueListView->setObjects(uniqueVec2RawVec<Dialogue>(currentDialogue->children));
+    dialogueListView->setObjects(children);
     dialogueListView->updatePosition();
     dialogueMenu->getLayer()->setVisible(true);
   }

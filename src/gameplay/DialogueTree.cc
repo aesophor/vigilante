@@ -6,6 +6,7 @@
 
 #include <cocos2d.h>
 #include "std/make_unique.h"
+#include "util/ds/Algorithm.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
@@ -21,17 +22,19 @@ namespace vigilante {
 unordered_map<string, string> DialogueTree::_latestNpcDialogueTree;
 
 DialogueTree::DialogueTree(const string& jsonFileName)
-    : _rootNode(), _currentNode() {
+    : _rootNode(), _currentNode(), _nodeMapper() {
   import(jsonFileName);
 }
 
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
     : _rootNode(std::move(other._rootNode)),
-      _currentNode(other._currentNode) {}
+      _currentNode(other._currentNode), 
+      _nodeMapper(std::move(other._nodeMapper)) {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
+  _nodeMapper = std::move(other._nodeMapper);
   return *this;
 }
 
@@ -40,44 +43,65 @@ void DialogueTree::import(const string& jsonFileName) {
   VGLOG(LOG_INFO, "Loading dialogue tree...");
   Document json = json_util::parseJson(jsonFileName);
 
-  // Deserialize json into runtime DialogueTree using tree DFS.
+  // Convert rapidjson tree into our DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD
   stack<pair<rapidjson::Value::Object, Node*>> st;  // <jsonObject, parent>
   st.push({json.GetObject(), nullptr});
 
   while (!st.empty()) {
     rapidjson::Value::Object node = st.top().first;
-    Node* parent = st.top().second;
+    DialogueTree::Node* parent = st.top().second;
     st.pop();
 
+
     // Construct this node.
-    auto currentNode = std::make_unique<Node>();
+    auto currentNode = std::make_unique<Node>(this);
     _currentNode = currentNode.get();
 
+    if (node.HasMember("nodeName")) {
+      currentNode->_nodeName = node["nodeName"].GetString();
+      _nodeMapper.insert({currentNode->_nodeName, currentNode.get()});
+    }
+
     for (const auto& line : node["lines"].GetArray()) {
-      currentNode->lines.push_back(line.GetString());
+      currentNode->_lines.push_back(line.GetString());
     }
     for (const auto& cmd : node["exec"].GetArray()) {
-      currentNode->cmds.push_back(cmd.GetString());
+      currentNode->_cmds.push_back(cmd.GetString());
     }
+
+    if (node.HasMember("childrenRef")) {
+      currentNode->_childrenRef = node["childrenRef"].GetString();
+    } else {
+      // Push this node's children onto the stack in reverse order.
+      const auto& children = node["children"].GetArray();
+      for (int i = children.Size() - 1; i >= 0; i--) {
+        st.push({children[i].GetObject(), currentNode.get()});
+      }
+    }
+
 
     if (!_rootNode) {
       _rootNode = std::move(currentNode);
     } else {
       assert(parent != nullptr);
-      parent->children.push_back(std::move(currentNode));
-    }
-   
-    // Push this node's children onto the stack in reverse order.
-    const auto& children = node["children"].GetArray();
-    for (int i = children.Size() - 1; i >= 0; i--) {
-      st.push({children[i].GetObject(), _currentNode});
+      parent->_children.push_back(std::move(currentNode));
     }
   }
 
   // Set _currentNode to _rootNode for later use (UI)
   resetCurrentNode();
 }
+
+
+DialogueTree::Node* DialogueTree::getNode(const string& nodeName) const {
+  auto it = _nodeMapper.find(nodeName);
+  if (it == _nodeMapper.end()) {
+    return nullptr;
+  }
+  return it->second;
+}
+
 
 DialogueTree::Node* DialogueTree::getRootNode() const {
   return _rootNode.get();
@@ -104,6 +128,32 @@ string DialogueTree::getLatestNpcDialogueTree(const string& npcJsonFileName) {
 void DialogueTree::setLatestNpcDialogueTree(const string& npcJsonFileName,
                                             const string& dialogueTreeJsonFileName) {
   _latestNpcDialogueTree[npcJsonFileName] = dialogueTreeJsonFileName;
+}
+
+
+
+DialogueTree::Node::Node(DialogueTree* tree)
+    : _tree(tree), _nodeName(), _lines(), _cmds(), _children() {}
+
+const string& DialogueTree::Node::getNodeName() const {
+  return _nodeName;
+}
+
+const vector<string>& DialogueTree::Node::getLines() const {
+  return _lines;
+}
+
+const vector<string>& DialogueTree::Node::getCmds() const {
+  return _cmds;
+}
+
+vector<DialogueTree::Node*> DialogueTree::Node::getChildren() const {
+  if (_childrenRef.empty()) {
+    return uniqueVec2RawVec<Dialogue>(_children);
+  }
+
+  DialogueTree::Node* refNode = _tree->getNode(_childrenRef);
+  return uniqueVec2RawVec<Dialogue>(refNode->_children);
 }
 
 }  // namespace vigilante

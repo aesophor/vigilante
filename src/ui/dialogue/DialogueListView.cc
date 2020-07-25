@@ -29,7 +29,7 @@ DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
   };
 
   _setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
-    listViewItem->getLabel()->setString(dialogue->lines.front());
+    listViewItem->getLabel()->setString(dialogue->getLines().front());
   };
 }
 
@@ -39,12 +39,12 @@ void DialogueListView::confirm() {
   auto dialogueMenu = dialogueMgr->getDialogueMenu();
   auto subtitles = dialogueMgr->getSubtitles();
 
-  for (const auto& cmd : getSelectedObject()->cmds) {
+  for (const auto& cmd : getSelectedObject()->getCmds()) {
     Console::getInstance()->executeCmd(cmd);
   }
-  
-  Dialogue* nextDialogue = getSelectedObject()->children.front().get();
-  for (const auto& line : nextDialogue->lines) {
+
+  Dialogue* nextDialogue = getSelectedObject()->getChildren().front();
+  for (const auto& line : nextDialogue->getLines()) {
     subtitles->addSubtitle(line);
   }
   subtitles->showNextSubtitle();
@@ -57,14 +57,15 @@ void DialogueListView::confirm() {
 void DialogueListView::updatePosition() {
   auto winSize = Director::getInstance()->getWinSize();
   auto listViewSize = getContentSize();  // defined in ui/ListView.h
-  const float offset = 12.0;  // for calibration. FIXME: see if we can get rid of this value.
 
   // Try to re-center the DialogueListView by calculating a `newPositionX` for it.
-  float newPositionX = winSize.width / 2 - listViewSize.width / 2 - offset;
+  float newPositionX = winSize.width / 2 - listViewSize.width / 2 - 12.0;
   _layout->setPositionX(newPositionX);
 
   // Update the positionX of _scrollBar.
-  _scrollBar->setPositionX(listViewSize.width + offset);
+  _scrollBar->setPositionX(listViewSize.width + 15.0);
+
+  // FIXME: See if we can get rid of the floating-point literals above.
 }
 
 }  // namespace vigilante

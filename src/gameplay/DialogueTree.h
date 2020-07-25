@@ -20,14 +20,42 @@ class DialogueTree : public Importable {
   DialogueTree& operator=(DialogueTree&& other) noexcept;
   virtual ~DialogueTree() = default;
 
-  virtual void import(const std::string& jsonFileName) override;
 
-  struct Node {
-    std::vector<std::string> lines;
-    std::vector<std::string> cmds;
-    std::vector<std::unique_ptr<Node>> children;
+  class Node final {
+   public:
+    explicit Node(DialogueTree* tree);
+    ~Node() = default;
+
+    const std::string& getNodeName() const;
+    const std::vector<std::string>& getLines() const;
+    const std::vector<std::string>& getCmds() const;
+    const std::string& getChildrenRef() const;
+    std::vector<Node*> getChildren() const;
+
+   private:
+    DialogueTree* _tree;
+
+    std::string _nodeName;  // only required when `childrenRef` exists. See comment below.
+    std::vector<std::string> _lines;
+    std::vector<std::string> _cmds;  // the command to execute after all lines are shown.
+
+    // We have two (mutually exclusive) methods for keeping children:
+    //
+    // (a) childrenRef: we reference another node's children by its `nodeName`.
+    //                               ~~~~~~~~~~~~               ~~~
+    //                                    |______________________|
+    // (b) children: we actually keep unique_ptr<Node> to the nodes.
+    std::string _childrenRef;
+    std::vector<std::unique_ptr<Node>> _children;
+
+    friend class DialogueTree;
   };
- 
+
+
+  virtual void import(const std::string& jsonFileName) override;  // Importable
+
+  DialogueTree::Node* getNode(const std::string& nodeName) const;
+  
   DialogueTree::Node* getRootNode() const;
   DialogueTree::Node* getCurrentNode() const;
   void setCurrentNode(DialogueTree::Node* node);
@@ -38,10 +66,13 @@ class DialogueTree : public Importable {
                                        const std::string& dialogueTreeJsonFileName);
 
  private:
-  static std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
-
   std::unique_ptr<DialogueTree::Node> _rootNode;
   DialogueTree::Node* _currentNode;
+
+  // <nodeName, DialogueTree::Node*>
+  std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;
+
+  static std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
 };
 
 

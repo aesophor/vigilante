@@ -128,7 +128,7 @@ bool Npc::willInteractOnContact() const {
 void Npc::beginDialogue() {
   auto dialogueMgr = DialogueManager::getInstance();
   dialogueMgr->setTargetNpc(this);
-  for (const auto& line : _dialogueTree.getCurrentNode()->lines) {
+  for (const auto& line : _dialogueTree.getCurrentNode()->getLines()) {
     dialogueMgr->getSubtitles()->addSubtitle(line);
   }
   dialogueMgr->getSubtitles()->beginSubtitles();
