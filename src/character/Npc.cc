@@ -86,8 +86,6 @@ void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMask
   // but make it a sensor.
   b2BodyBuilder bodyBuilder(_body);
 
-  // Create body fixture.
-  // Fixture position in box2d is relative to b2body's position.
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   b2Vec2 vertices[4];
   float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.5;
