@@ -20,6 +20,6 @@ class WorldContactListener : public b2ContactListener {
   b2Fixture* GetTargetFixture(short targetCategoryBits, b2Fixture* f1, b2Fixture* f2) const;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_WORLD_CONTACT_LISTENER_H_
+#endif  // VIGILANTE_WORLD_CONTACT_LISTENER_H_

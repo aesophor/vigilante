@@ -32,6 +32,9 @@ class DynamicActor : public StaticActor {
   std::vector<b2Fixture*>& getFixtures();
 
  protected:
+  static void setCategoryBits(b2Fixture* fixture, const short categoryBits);
+  static void setMaskBits(b2Fixture* fixture, const short maskBits);
+
   b2Body* _body;  // users should manually destory _body in subclass!
   std::vector<b2Fixture*> _fixtures;
 };

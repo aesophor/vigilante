@@ -634,7 +634,7 @@ void Character::receiveDamage(Character* source, int damage) {
 
   if (_characterProfile.health <= 0) {
     source->getInRangeTargets().erase(this);
-    Character::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
+    DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
     _isSetToKill = true;
     // TODO: play killed sound.
   } else {
@@ -957,12 +957,6 @@ Skill* Character::getCurrentlyUsedSkill() const {
   return _currentlyUsedSkill;
 }
 
-
-void Character::setCategoryBits(b2Fixture* fixture, short bits) {
-  b2Filter filter;
-  filter.categoryBits = bits;
-  fixture->SetFilterData(filter);
-}
 
 int Character::getDamageOutput() const {
   int output = _characterProfile.baseMeleeDamage;

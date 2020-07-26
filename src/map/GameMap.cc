@@ -6,7 +6,6 @@
 #include "Constants.h"
 #include "character/Character.h"
 #include "character/Player.h"
-#include "character/Enemy.h"
 #include "character/Npc.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
@@ -48,7 +47,6 @@ void GameMap::createObjects() {
   createPortals();
   createChests();
   createNpcs();
-  createEnemies();
 }
 
 void GameMap::deleteObjects() {
@@ -200,16 +198,6 @@ void GameMap::createNpcs() {
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
     showDynamicActor(std::make_shared<Npc>(json), x, y);
-  }
-}
-
-void GameMap::createEnemies() {
-  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Enemies")->getObjects()) {
-    auto& valMap = rectObj.asValueMap();
-    float x = valMap["x"].asFloat();
-    float y = valMap["y"].asFloat();
-    string json = valMap["json"].asString();
-    showDynamicActor(std::make_shared<Enemy>(json), x, y);
   }
 }
 

@@ -64,7 +64,6 @@ class GameMap {
   void createPolylines(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPortals();
   void createNpcs();
-  void createEnemies();
   void createChests();
 
   b2World* _world;

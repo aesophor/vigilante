@@ -6,7 +6,6 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Player.h"
-#include "character/Enemy.h"
 #include "item/Equipment.h"
 #include "skill/MagicalMissile.h"
 #include "util/box2d/b2BodyBuilder.h"

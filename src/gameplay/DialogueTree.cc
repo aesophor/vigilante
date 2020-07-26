@@ -40,6 +40,10 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
 
 
 void DialogueTree::import(const string& jsonFileName) {
+  if (jsonFileName.empty()) {
+    return;
+  }
+
   VGLOG(LOG_INFO, "Loading dialogue tree...");
   Document json = json_util::parseJson(jsonFileName);
 

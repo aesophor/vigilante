@@ -163,7 +163,6 @@ class Character : public DynamicActor, public Importable {
 
   int getDamageOutput() const;
   
-  static void setCategoryBits(b2Fixture* fixture, short bits);
 
  protected:
   explicit Character(const std::string& jsonFileName);

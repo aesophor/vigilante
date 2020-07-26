@@ -11,13 +11,33 @@
 
 namespace vigilante {
 
+// Npc: Non-player character
+// i.e., enemies and allies are all npcs.
 class Npc : public Character, public Interactable {
  public:
-  struct Profile {
-    explicit Profile(const std::string& jsonFileName);
-
-    std::string dialogueTree;
+  // The "disposition" of an Npc means its "friendliness" toward the player.
+  enum class Disposition {
+    ALLY,
+    ENEMY,
+    SIZE
   };
+
+  struct Profile final {
+    explicit Profile(const std::string& jsonFileName);
+    ~Profile() = default;
+
+    struct DroppedItemData {
+      int chance;
+      int minAmount;
+      int maxAmount;
+    };
+    // <json, {chance, minAmount, maxAmount}>
+    std::unordered_map<std::string, DroppedItemData> droppedItems;
+
+    std::string dialogueTreeJsonFile;
+    Npc::Disposition disposition;
+  };
+
 
   explicit Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
@@ -29,21 +49,46 @@ class Npc : public Character, public Interactable {
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
-
+  void updateDialogueTreeIfNeeded();
   void beginDialogue();
+
+  // TODO: maybe virtual can be disabled?
+  // TODO: maybe rename moveRandomly() to beginSandbox()? idk...
+  void act(float delta);  // Bot
+  void moveToTarget(Character* target);  // Bot
+  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration,
+                            int minWaitDuration, int maxWaitDuration);  // Bot
+  void jumpIfStucked(float delta, float checkInterval);  // Bot
+  void reverseDirection();  // Bot
 
   Npc::Profile& getNpcProfile();
   DialogueTree& getDialogueTree();
-  void updateDialogueTreeIfNeeded();
+  Npc::Disposition getDisposition() const;
+  void setDisposition(Npc::Disposition disposition);
+
 
  private:
   void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
                   short feetMaskBits, short weaponMaskBits, float x, float y) override;
 
+
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
+  Npc::Disposition _disposition;
+
+  // The following variables are used in Npc::moveRandomly()
+  bool _isMovingRight;
+  float _moveDuration;
+  float _moveTimer;
+  float _waitDuration;
+  float _waitTimer;
+
+  // The following variables are used in Npc::jumpIfStucked()
+  b2Vec2 _lastStoppedPosition;
+  float _lastTraveledDistance;
+  float _calculateDistanceTimer;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_NPC_H_
+#endif  // VIGILANTE_NPC_H_

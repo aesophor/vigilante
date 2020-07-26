@@ -53,4 +53,17 @@ vector<b2Fixture*>& DynamicActor::getFixtures() {
   return _fixtures;
 }
 
-} // namespace vigilante
+
+void DynamicActor::setCategoryBits(b2Fixture* fixture, const short categoryBits) {
+  b2Filter filter = fixture->GetFilterData();
+  filter.categoryBits = categoryBits;
+  fixture->SetFilterData(filter);
+}
+
+void DynamicActor::setMaskBits(b2Fixture* fixture, const short maskBits) {
+  b2Filter filter = fixture->GetFilterData();
+  filter.maskBits = maskBits;
+  fixture->SetFilterData(filter);
+}
+
+}  // namespace vigilante
