@@ -60,6 +60,7 @@ Npc::Npc(const string& jsonFileName)
       _npcProfile(jsonFileName),
       _dialogueTree(_npcProfile.dialogueTreeJsonFile),
       _disposition(_npcProfile.disposition),
+      _isSandboxing(_npcProfile.shouldSandbox),
       _isMovingRight(),
       _moveDuration(),
       _moveTimer(),
@@ -208,7 +209,7 @@ void Npc::updateDialogueTreeIfNeeded() {
 
 
 void Npc::act(float delta) {
-  if (isKilled() || isSetToKill() || isAttacking()) {
+  if (_isKilled || _isSetToKill || _isAttacking || !_isSandboxing) {
     return;
   }
 
@@ -341,8 +342,8 @@ Npc::Profile::Profile(const string& jsonFileName) {
   }
 
   dialogueTreeJsonFile = json["dialogueTree"].GetString();
-
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
+  shouldSandbox = json["shouldSandbox"].GetBool();
 }
 
 }  // namespace vigilante

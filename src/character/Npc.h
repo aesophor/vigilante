@@ -36,6 +36,7 @@ class Npc : public Character, public Interactable {
 
     std::string dialogueTreeJsonFile;
     Npc::Disposition disposition;
+    bool shouldSandbox;
   };
 
 
@@ -76,6 +77,7 @@ class Npc : public Character, public Interactable {
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
   Npc::Disposition _disposition;
+  bool _isSandboxing;
 
   // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;
