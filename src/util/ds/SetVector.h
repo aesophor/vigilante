@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_SET_VECTOR_H_
 #define VIGILANTE_SET_VECTOR_H_
 
+#include <initializer_list>
 #include <unordered_set>
 #include <vector>
 
@@ -18,6 +19,12 @@ class SetVector {
   using const_iterator = typename std::vector<Key>::const_iterator;
 
   SetVector() : _set(), _vec() {}
+
+  SetVector(std::initializer_list<Key> init_list) : SetVector() {
+    for (const auto& element : init_list) {
+      insert(element);
+    }
+  }
   
   SetVector(const SetVector& other)
       : _set(other._set), _vec(other._vec) {}

@@ -68,6 +68,25 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       }
       break;
     }
+    // When an ally Npc bumps into an enemy, the enemy will inflict damage to the ally and knock it back.
+    case category_bits::kNpc | category_bits::kEnemy: {
+      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+      b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+
+      if (npcFixture && enemyFixture) {
+        Npc* npc = static_cast<Npc*>(npcFixture->GetUserData());
+        Npc* enemy = static_cast<Npc*>(enemyFixture->GetUserData());
+
+        if (!npc->isInvincible()) {
+          enemy->inflictDamage(npc, 25);
+          float knockBackForceX = (npc->isFacingRight()) ? -.25f : .25f; // temporary
+          float knockBackForceY = 1.0f; // temporary
+          enemy->knockBack(npc, knockBackForceX, knockBackForceY);
+        }
+      }
+      break;
+    }
+
     case category_bits::kEnemy | category_bits::kCliffMarker: {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
       if (enemyFixture) {

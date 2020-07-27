@@ -16,6 +16,7 @@
 #include "DynamicActor.h"
 #include "Importable.h"
 #include "Interactable.h"
+#include "character/Party.h"
 #include "item/Item.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
@@ -161,6 +162,10 @@ class Character : public DynamicActor, public Importable {
   std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
   Skill* getCurrentlyUsedSkill() const;
 
+  std::unordered_set<Character*> getAllies() const;
+  std::shared_ptr<Party> getParty() const;
+  void setParty(std::shared_ptr<Party> party);
+
   int getDamageOutput() const;
   
 
@@ -287,6 +292,12 @@ class Character : public DynamicActor, public Importable {
 
   // Skill animations
   std::unordered_map<std::string, cocos2d::Animation*> _skillBodyAnimations;
+
+  // Party
+  // A character can either:
+  // (1) be a leader who has a set of allies/followers, or
+  // (2) be a follower of other character
+  std::shared_ptr<Party> _party;
 };
 
 }  // namespace vigilante

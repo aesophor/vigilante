@@ -18,6 +18,7 @@
 using std::string;
 using std::vector;
 using std::unique_ptr;
+using std::shared_ptr;
 using std::out_of_range;
 using std::invalid_argument;
 
@@ -165,10 +166,19 @@ void CommandParser::updateDialogueTree(const vector<string>& args) {
 
 void CommandParser::followPlayer(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* npc = DialogueManager::getInstance()->getTargetNpc();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
 
-  assert(player != nullptr && npc != nullptr);
-  npc->setFollowee(player);
+  assert(player != nullptr && targetNpc != nullptr);
+
+  shared_ptr<Character> npc
+    = std::dynamic_pointer_cast<Character>(
+        GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetNpc));
+
+  npc->showOnMap(targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
+  player->getParty()->addMember(std::move(npc));
+
+  setSuccess();
 }
 
 }  // namespace vigilante

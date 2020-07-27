@@ -38,12 +38,16 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
 }
 
 void GameMapManager::update(float delta) {
-  if (_player) {
-    _player->update(delta);
-  }
-
   for (auto& actor : _gameMap->_dynamicActors) {
     actor->update(delta);
+  }
+
+  if (_player) {
+    _player->update(delta);
+
+    for (const auto& ally : _player->getAllies()) {
+      ally->update(delta);
+    }
   }
 }
 

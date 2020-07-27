@@ -15,12 +15,12 @@
 #include "util/JsonUtil.h"
 
 #define ALLY_BODY_CATEGORY_BITS kNpc
-#define ALLY_BODY_MASK_BITS kFeet | kMeleeWeapon | kCliffMarker | kProjectile
+#define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kCliffMarker | kProjectile
 #define ALLY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kPortal | kInteractableObject
 #define ALLY_WEAPON_MASK_BITS kEnemy
 
 #define ENEMY_BODY_CATEGORY_BITS kEnemy
-#define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kMeleeWeapon | kCliffMarker | kProjectile
+#define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kCliffMarker | kProjectile
 #define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractableObject
 #define ENEMY_WEAPON_MASK_BITS kPlayer
 
@@ -61,7 +61,6 @@ Npc::Npc(const string& jsonFileName)
       _dialogueTree(_npcProfile.dialogueTreeJsonFile),
       _disposition(_npcProfile.disposition),
       _isSandboxing(_npcProfile.shouldSandbox),
-      _followee(),
       _isMovingRight(),
       _moveDuration(),
       _moveTimer(),
@@ -236,8 +235,8 @@ void Npc::act(float delta) {
       moveToTarget(delta, _lockedOnTarget, .25f);
     }
 
-  } else if (_followee) {
-    moveToTarget(delta, _followee, .5f);
+  } else if (_party) {
+    moveToTarget(delta, _party->getLeader(), .5f);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
@@ -317,10 +316,6 @@ bool Npc::isSandboxing() const {
   return _isSandboxing;
 }
 
-Character* Npc::getFollowee() const {
-  return _followee;
-}
-
 
 void Npc::setDisposition(Npc::Disposition disposition) {
   _disposition = disposition;
@@ -346,10 +341,6 @@ void Npc::setDisposition(Npc::Disposition disposition) {
 
 void Npc::setSandboxing(bool sandboxing) {
   _isSandboxing = sandboxing;
-}
-
-void Npc::setFollowee(Character* followee) {
-  _followee = followee;
 }
 
 

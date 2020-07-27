@@ -235,6 +235,10 @@ void GameMap::Portal::onInteract(Character* user) {
 
       auto pos = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
       user->setPosition(pos.x, pos.y);
+
+      for (const auto& ally : user->getAllies()) {
+        ally->setPosition(pos.x, pos.y);
+      }
     }),
     FadeOut::create(Shade::_kFadeOutTime),
     nullptr

@@ -6,6 +6,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Party.h"
 #include "input/InputManager.h"
 #include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
@@ -55,7 +56,11 @@ using vigilante::category_bits::kProjectile;
 namespace vigilante {
 
 Player::Player(const std::string& jsonFileName)
-    : Character(jsonFileName), _questBook(asset_manager::kQuestsList) {}
+    : Character(jsonFileName),
+      _questBook(asset_manager::kQuestsList) {
+  // The player has a party (team) with no other members by default.
+  _party = std::make_shared<Party>(this);
+}
 
 
 void Player::showOnMap(float x, float y) {

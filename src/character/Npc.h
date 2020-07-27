@@ -67,11 +67,9 @@ class Npc : public Character, public Interactable {
   DialogueTree& getDialogueTree();
   Npc::Disposition getDisposition() const;
   bool isSandboxing() const;
-  Character* getFollowee() const;
 
   void setDisposition(Npc::Disposition disposition);
   void setSandboxing(bool sandboxing);
-  void setFollowee(Character* followee);
 
 
  private:
@@ -84,8 +82,6 @@ class Npc : public Character, public Interactable {
   DialogueTree _dialogueTree;
   Npc::Disposition _disposition;
   bool _isSandboxing;
-
-  Character* _followee;
 
   // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;

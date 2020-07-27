@@ -98,7 +98,8 @@ Character::Character(const string& jsonFileName)
       _equipmentSprites(),
       _equipmentSpritesheets(),
       _equipmentAnimations(),
-      _skillBodyAnimations() {}
+      _skillBodyAnimations(),
+      _party() {}
 
 
 void Character::removeFromMap() {
@@ -576,7 +577,7 @@ void Character::attack() {
 
     if (!_lockedOnTarget->isInvincible()) {
       inflictDamage(_lockedOnTarget, getDamageOutput());
-      float knockBackForceX = (isFacingRight()) ? .5f : -.5f; // temporary
+      float knockBackForceX = (_isFacingRight) ? .5f : -.5f; // temporary
       float knockBackForceY = 1.0f; // temporary
       knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
     }
@@ -623,6 +624,13 @@ void Character::knockBack(Character* target, float forceX, float forceY) const {
 void Character::inflictDamage(Character* target, int damage) {
   target->receiveDamage(this, damage);
   target->lockOn(this);
+
+  for (const auto& ally : this->getAllies()) {
+    ally->lockOn(target);
+  }
+  for (const auto& targetAlly : target->getAllies()) {
+    targetAlly->lockOn(this);
+  }
 }
 
 void Character::receiveDamage(Character* source, int damage) {
@@ -635,6 +643,12 @@ void Character::receiveDamage(Character* source, int damage) {
 
   if (_characterProfile.health <= 0) {
     source->getInRangeTargets().erase(this);
+    for (const auto& sourceAlly : source->getAllies()) {
+      sourceAlly->getInRangeTargets().erase(this);
+      if (sourceAlly->getLockedOnTarget() == this) {
+        sourceAlly->setLockedOnTarget(nullptr);
+      }
+    }
     DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
     _isSetToKill = true;
     // TODO: play killed sound.
@@ -773,6 +787,8 @@ void Character::interact(Interactable* target) {
 }
 
 
+
+
 void Character::addSkill(unique_ptr<Skill> skill) {
   assert(skill != nullptr);
 
@@ -798,6 +814,7 @@ void Character::removeSkill(Skill* skill) {
   _skillBook[skill->getSkillProfile().skillType].erase(skill);
   _skillMapper.erase(skill->getName());
 }
+
 
 
 bool Character::isFacingRight() const {
@@ -951,12 +968,41 @@ const Character::SkillBook& Character::getSkillBook() const {
 }
 
 unordered_set<shared_ptr<Skill>>& Character::getActiveSkills() {
+  // FIXME: make add/remove/get consistent with allies
   return _activeSkills;
 }
 
 Skill* Character::getCurrentlyUsedSkill() const {
   return _currentlyUsedSkill;
 }
+
+unordered_set<Character*> Character::getAllies() const {
+  if (!_party) {
+    return {};
+  }
+
+  unordered_set<Character*> ret;
+
+  for (const auto& member : _party->getMembers()) {
+    ret.insert(member.get());
+  }
+
+  Character* leader = _party->getLeader();
+  if (leader != this) {
+    ret.insert(leader);
+  }
+
+  return ret;
+}
+
+shared_ptr<Party> Character::getParty() const {
+  return _party;
+}
+
+void Character::setParty(shared_ptr<Party> party) {
+  _party = party;
+}
+
 
 
 int Character::getDamageOutput() const {
