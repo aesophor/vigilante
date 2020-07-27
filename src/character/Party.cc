@@ -4,12 +4,22 @@
 #include "character/Character.h"
 
 using std::shared_ptr;
+using std::string;
 using std::unordered_set;
 
 namespace vigilante {
 
 Party::Party(Character* leader) : _leader(leader), _members() {}
 
+
+bool Party::hasMember(const string& characterJsonFileName) const {
+  for (const auto& member : _members) {
+    if (member->getCharacterProfile().jsonFileName == characterJsonFileName) {
+      return true;
+    }
+  }
+  return false;
+}
 
 void Party::addMember(shared_ptr<Character> character) {
   character->setParty(_leader->getParty());

@@ -7,6 +7,7 @@
 #include "character/Character.h"
 #include "character/Player.h"
 #include "character/Npc.h"
+#include "character/Party.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "map/GameMapManager.h"
@@ -198,6 +199,15 @@ void GameMap::createNpcs() {
     float x = valMap["x"].asFloat();
     float y = valMap["y"].asFloat();
     string json = valMap["json"].asString();
+
+    // Skip this character (don't spawn it)
+    // if it has already been recruited by the player.
+    // FIXME: what if two or more characters with the same name exist in one map?
+    auto player = GameMapManager::getInstance()->getPlayer();
+    if (player && player->getParty()->hasMember(json)) {
+      continue;
+    }
+
     showDynamicActor(std::make_shared<Npc>(json), x, y);
   }
 }
