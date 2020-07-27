@@ -172,6 +172,12 @@ void Npc::receiveDamage(Character* source, int damage) {
   }, .2f);
 }
 
+void Npc::interact(Interactable* target) {
+  if (!dynamic_cast<GameMap::Portal*>(target)) {
+    Character::interact(target);
+  }
+}
+
 
 void Npc::onInteract(Character* user) {
   updateDialogueTreeIfNeeded();

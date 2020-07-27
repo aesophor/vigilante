@@ -87,13 +87,28 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       break;
     }
 
-    case category_bits::kEnemy | category_bits::kCliffMarker: {
+    case category_bits::kEnemy | category_bits::kPivotMarker: {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
       if (enemyFixture) {
         static_cast<Npc*>(enemyFixture->GetUserData())->reverseDirection();
       }
       break;
     }
+    case category_bits::kEnemy | category_bits::kCliffMarker: {
+      b2Fixture* bodyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
+      if (bodyFixture) {
+        static_cast<Character*>(bodyFixture->GetUserData())->doubleJump();
+      }
+      break;
+    }
+    case category_bits::kNpc | category_bits::kCliffMarker: {
+      b2Fixture* bodyFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+      if (bodyFixture) {
+        static_cast<Character*>(bodyFixture->GetUserData())->doubleJump();
+      }
+      break;
+    }
+
     // Set enemy as player's current target (so player can inflict damage to enemy).
     case category_bits::kMeleeWeapon | category_bits::kEnemy: {
       b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);

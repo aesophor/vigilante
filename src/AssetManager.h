@@ -19,7 +19,7 @@ const std::string kQuestsList = "Gameplay/quests_list.txt";
 #endif
 
 // Fonts
-const std::string kRegularFont = "Font/HeartbitXX.ttf";
+const std::string kRegularFont = "Font/at01.ttf";
 const std::string kBoldFont = "Font/HeartbitXX2Px.ttf";
 const std::string kTitleFont = "Font/MatchupPro.ttf";
 const float kRegularFontSize = 16.0f;

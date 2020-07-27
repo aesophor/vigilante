@@ -25,19 +25,20 @@ const short kGround = 1;
 const short kPlatform = 2;
 const short kFeet = 4;
 const short kWall = 8;
-const short kCliffMarker = 16;
-const short kPortal = 32;
-const short kInteractableObject = 64;
+const short kPivotMarker = 16;
+const short kCliffMarker = 32;
+const short kPortal = 64;
+const short kInteractableObject = 128;
 
-const short kPlayer = 128;
-const short kEnemy = 256;
-const short kNpc = 512;
-const short kItem = 1024;
-const short kMeleeWeapon = 2048;
-const short kProjectile = 4096;
-const short kDestroyed = 8192;
+const short kPlayer = 256;
+const short kEnemy = 512;
+const short kNpc = 1024;
+const short kItem = 2048;
+const short kMeleeWeapon = 4096;
+const short kProjectile = 8192;
+const short kDestroyed = 16384;
 
-} // namespace category_bits
+}  // namespace category_bits
 
 
 namespace graphical_layers {
@@ -62,8 +63,8 @@ const int kShade = 97;
 const int kPauseMenu = 99;
 const int kConsole = 100;
 
-} // namespace graphical_layers
+}  // namespace graphical_layers
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CONSTANTS_H_
+#endif  // VIGILANTE_CONSTANTS_H_

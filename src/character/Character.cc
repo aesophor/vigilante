@@ -503,9 +503,7 @@ void Character::jump() {
     return;
   }
 
-  if (!_isJumping) {
-    _isJumping = true;
-  } else {
+  if (_isJumping) {
     _isDoubleJumping = true;
     runAnimation((_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED, false);
     // Set velocity.y to 0.
@@ -517,14 +515,26 @@ void Character::jump() {
   _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
 }
 
-void Character::jumpDown() {
-  if (_isOnPlatform) {
-    _fixtures[FixtureType::FEET]->SetSensor(true);
+void Character::doubleJump() {
+  VGLOG(LOG_INFO, "Performing first jump");
+  jump();
 
-    callback_util::runAfter([=]() {
-      _fixtures[FixtureType::FEET]->SetSensor(false);
-    }, .25f);
+  callback_util::runAfter([=]() {
+    VGLOG(LOG_INFO, "Performing second jump");
+    jump();
+  }, .25f);
+}
+
+void Character::jumpDown() {
+  if (!_isOnPlatform) {
+    return;
   }
+
+  _fixtures[FixtureType::FEET]->SetSensor(true);
+
+  callback_util::runAfter([=]() {
+    _fixtures[FixtureType::FEET]->SetSensor(false);
+  }, .25f);
 }
 
 void Character::crouch() {

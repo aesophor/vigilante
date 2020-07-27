@@ -91,6 +91,7 @@ class Character : public DynamicActor, public Importable {
   virtual void moveLeft();
   virtual void moveRight();
   virtual void jump();
+  virtual void doubleJump();
   virtual void jumpDown();
   virtual void crouch();
   virtual void getUp();

@@ -42,6 +42,7 @@ void GameMap::createObjects() {
   createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
   createPolylines("Wall", category_bits::kWall, true, kWallFriction);
   createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
+  createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   
   createPortals();

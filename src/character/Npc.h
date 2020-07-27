@@ -47,6 +47,7 @@ class Npc : public Character, public Interactable {
   virtual void update(float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character
+  virtual void interact(Interactable* target) override;  // Character
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
