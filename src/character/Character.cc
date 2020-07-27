@@ -229,8 +229,9 @@ void Character::import(const string& jsonFileName) {
 }
 
 
-void Character::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
-                           short feetMaskBits, short weaponMaskBits, float x, float y) {
+void Character::defineBody(b2BodyType bodyType, float x, float y,
+                           short bodyCategoryBits, short bodyMaskBits,
+                           short feetMaskBits, short weaponMaskBits) {
   b2World* world = GameMapManager::getInstance()->getWorld();
   b2BodyBuilder bodyBuilder(world);
 

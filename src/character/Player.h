@@ -17,16 +17,17 @@ class Player : public Character, public Controllable {
   explicit Player(const std::string& jsonFileName);
   virtual ~Player() = default;
 
-  virtual void showOnMap(float x, float y) override; // Character
-  virtual void removeFromMap() override; // Character
-  virtual void handleInput() override; // Controllable
+  virtual void showOnMap(float x, float y) override;  // Character
+  virtual void removeFromMap() override;  // Character
+  
+  virtual void inflictDamage(Character* target, int damage) override;  // Character
+  virtual void receiveDamage(Character* source, int damage) override;  // Character
 
-  virtual void inflictDamage(Character* target, int damage) override; // Character
-  virtual void receiveDamage(Character* source, int damage) override; // Character
+  virtual void equip(Equipment* equipment) override;  // Character
+  virtual void unequip(Equipment::Type equipmentType) override;  // Character
+  virtual void pickupItem(Item* item) override;  // Character
 
-  virtual void equip(Equipment* equipment) override; // Character
-  virtual void unequip(Equipment::Type equipmentType) override; // Character
-  virtual void pickupItem(Item* item) override; // Character
+  virtual void handleInput() override;  // Controllable
 
   QuestBook& getQuestBook();
 

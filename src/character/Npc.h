@@ -68,8 +68,9 @@ class Npc : public Character, public Interactable {
 
 
  private:
-  void defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
-                  short feetMaskBits, short weaponMaskBits, float x, float y) override;
+  void defineBody(b2BodyType bodyType, float x, float y,
+                  short bodyCategoryBits=0, short bodyMaskBits=0,
+                  short feetMaskBits=0, short weaponMaskBits=0) override;
 
 
   Npc::Profile _npcProfile;

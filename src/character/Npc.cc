@@ -82,7 +82,7 @@ void Npc::showOnMap(float x, float y) {
   // Construct b2Body and b2Fixtures.
   // The category/mask bits of each fixture are set in Npc::setDisposition()
   // based on the disposition of this npc.
-  defineBody(b2BodyType::b2_dynamicBody, 0, 0, 0, 0, x, y);
+  defineBody(b2BodyType::b2_dynamicBody, x, y);
   setDisposition(_disposition);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
@@ -97,9 +97,11 @@ void Npc::showOnMap(float x, float y) {
   }
 }
 
-void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMaskBits,
-                     short feetMaskBits, short weaponMaskBits, float x, float y) {
-  Character::defineBody(bodyType, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+void Npc::defineBody(b2BodyType bodyType, float x, float y,
+                     short bodyCategoryBits, short bodyMaskBits,
+                     short feetMaskBits, short weaponMaskBits) {
+  Character::defineBody(bodyType, x, y,
+                        bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits);
 
   // Besides the original fixtures created in Character::defineBody(),
   // create one extra fixture which can collide with player's feetFixture,
@@ -116,7 +118,7 @@ void Npc::defineBody(b2BodyType bodyType, short bodyCategoryBits, short bodyMask
 
   bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(kNpc)
-    .maskBits(bodyMaskBits | kFeet)
+    .maskBits(kFeet)
     .setSensor(true)
     .setUserData(this)
     .buildFixture();

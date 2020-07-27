@@ -57,6 +57,7 @@ namespace vigilante {
 Player::Player(const std::string& jsonFileName)
     : Character(jsonFileName), _questBook(asset_manager::kQuestsList) {}
 
+
 void Player::showOnMap(float x, float y) {
   if (_isShownOnMap) {
     return;
@@ -68,7 +69,9 @@ void Player::showOnMap(float x, float y) {
   short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
   short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
   short weaponMaskBits = kEnemy;
-  defineBody(b2BodyType::b2_dynamicBody, bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits, x, y);
+
+  defineBody(b2BodyType::b2_dynamicBody, x, y,
+             bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
@@ -101,6 +104,53 @@ void Player::removeFromMap() {
       gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
     }
   }
+}
+
+
+void Player::inflictDamage(Character* target, int damage) {
+  Character::inflictDamage(target, damage);
+  camera_util::shake(8, .1f);
+
+  if (target->isSetToKill()) {
+    for (auto quest : _questBook.getInProgressQuests()) {
+      auto currentObjective = quest->getCurrentStage().objective.get();
+      if (currentObjective->getObjectiveType() == Quest::Objective::Type::KILL &&
+          dynamic_cast<KillTargetObjective*>(currentObjective)->getCharacterName() == target->getCharacterProfile().name) {
+        dynamic_cast<KillTargetObjective*>(currentObjective)->incrementCurrentAmount();
+      }
+    }
+    _questBook.update(Quest::Objective::Type::KILL);
+  }
+}
+
+void Player::receiveDamage(Character* source, int damage) {
+  Character::receiveDamage(source, damage);
+  camera_util::shake(8, .1f);
+
+  _fixtures[FixtureType::BODY]->SetSensor(true);
+  _isInvincible = true;
+
+  callback_util::runAfter([&](){
+    _fixtures[FixtureType::BODY]->SetSensor(false);
+    _isInvincible = false;
+  }, 1.5f);
+
+  Hud::getInstance()->updateStatusBars();
+}
+
+void Player::equip(Equipment* equipment) {
+  Character::equip(equipment);
+  Hud::getInstance()->updateEquippedWeapon();
+}
+
+void Player::unequip(Equipment::Type equipmentType) {
+  Character::unequip(equipmentType);
+  Hud::getInstance()->updateEquippedWeapon();
+}
+
+void Player::pickupItem(Item* item) {
+  Character::pickupItem(item);
+  _questBook.update(Quest::Objective::Type::COLLECT);
 }
 
 
@@ -180,53 +230,6 @@ void Player::handleInput() {
   if (_isCrouching && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     getUp();
   }
-}
-
-
-void Player::inflictDamage(Character* target, int damage) {
-  Character::inflictDamage(target, damage);
-  camera_util::shake(8, .1f);
-
-  if (target->isSetToKill()) {
-    for (auto quest : _questBook.getInProgressQuests()) {
-      auto currentObjective = quest->getCurrentStage().objective.get();
-      if (currentObjective->getObjectiveType() == Quest::Objective::Type::KILL &&
-          dynamic_cast<KillTargetObjective*>(currentObjective)->getCharacterName() == target->getCharacterProfile().name) {
-        dynamic_cast<KillTargetObjective*>(currentObjective)->incrementCurrentAmount();
-      }
-    }
-    _questBook.update(Quest::Objective::Type::KILL);
-  }
-}
-
-void Player::receiveDamage(Character* source, int damage) {
-  Character::receiveDamage(source, damage);
-  camera_util::shake(8, .1f);
-
-  _fixtures[FixtureType::BODY]->SetSensor(true);
-  _isInvincible = true;
-
-  callback_util::runAfter([&](){
-    _fixtures[FixtureType::BODY]->SetSensor(false);
-    _isInvincible = false;
-  }, 1.5f);
-
-  Hud::getInstance()->updateStatusBars();
-}
-
-void Player::equip(Equipment* equipment) {
-  Character::equip(equipment);
-  Hud::getInstance()->updateEquippedWeapon();
-}
-
-void Player::unequip(Equipment::Type equipmentType) {
-  Character::unequip(equipmentType);
-  Hud::getInstance()->updateEquippedWeapon();
-}
-
-void Player::pickupItem(Item* item) {
-  Character::pickupItem(item);
-  _questBook.update(Quest::Objective::Type::COLLECT);
 }
 
 
