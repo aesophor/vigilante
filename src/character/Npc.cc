@@ -61,13 +61,14 @@ Npc::Npc(const string& jsonFileName)
       _dialogueTree(_npcProfile.dialogueTreeJsonFile),
       _disposition(_npcProfile.disposition),
       _isSandboxing(_npcProfile.shouldSandbox),
+      _followee(),
       _isMovingRight(),
       _moveDuration(),
       _moveTimer(),
       _waitDuration(),
       _waitTimer(),
-      _lastTraveledDistance(),
-      _calculateDistanceTimer() {}
+      _calculateDistanceTimer(),
+      _lastStoppedPosition() {}
 
 void Npc::update(float delta) {
   Character::update(delta);
@@ -135,38 +136,41 @@ void Npc::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   _isAlerted = true;
 
-  if (_isSetToKill) {
-    // Give source character exp point.
-    int& sourceCharacterExp = source->getCharacterProfile().exp;
-    int& sourceCharacterLevel = source->getCharacterProfile().level;
 
-    sourceCharacterExp += getCharacterProfile().exp;
-    Notifications::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
-
-    while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
-      sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
-      sourceCharacterLevel++;
-      Notifications::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
-    }
-
-    // Drop items. (Here we'll use a callback to drop items
-    // since creating fixtures during collision callback will crash)
-    // See: https://github.com/libgdx/libgdx/issues/2730
-    callback_util::runAfter([=]() {
-      for (const auto& i : _npcProfile.droppedItems) {
-        const string& itemJson = i.first;
-        float dropChance = i.second.chance;
-
-        float randChance = rand_util::randInt(0, 100);
-        if (randChance <= dropChance) {
-          float x = _body->GetPosition().x;
-          float y = _body->GetPosition().y;
-          int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-          GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
-        }
-      }
-    }, .2f);
+  if (!_isSetToKill) {
+    return;
   }
+
+  // Give source character exp point.
+  int& sourceCharacterExp = source->getCharacterProfile().exp;
+  int& sourceCharacterLevel = source->getCharacterProfile().level;
+
+  sourceCharacterExp += getCharacterProfile().exp;
+  Notifications::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
+
+  while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
+    sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
+    sourceCharacterLevel++;
+    Notifications::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
+  }
+
+  // Drop items. (Here we'll use a callback to drop items
+  // since creating fixtures during collision callback will crash)
+  // See: https://github.com/libgdx/libgdx/issues/2730
+  callback_util::runAfter([=]() {
+    for (const auto& i : _npcProfile.droppedItems) {
+      const string& itemJson = i.first;
+      float dropChance = i.second.chance;
+
+      float randChance = rand_util::randInt(0, 100);
+      if (randChance <= dropChance) {
+        float x = _body->GetPosition().x;
+        float y = _body->GetPosition().y;
+        int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
+        GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
+      }
+    }
+  }, .2f);
 }
 
 
@@ -192,6 +196,7 @@ void Npc::beginDialogue() {
   dialogueMgr->getSubtitles()->beginSubtitles();
 }
 
+
 void Npc::updateDialogueTreeIfNeeded() {
   // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
   // See gameplay/DialogueTree.cc
@@ -209,41 +214,52 @@ void Npc::updateDialogueTreeIfNeeded() {
 
 
 void Npc::act(float delta) {
-  if (_isKilled || _isSetToKill || _isAttacking || !_isSandboxing) {
+  if (_isKilled || _isSetToKill || _isAttacking) {
     return;
   }
 
-  set<Character*>& inRangeTargets = getInRangeTargets();
-  Character* lockedOnTarget = getLockedOnTarget();
+  // This Npc may perform one of the following actions:
+  // (1) Has `_lockedOnTarget`:
+  //     a. target is within attack range -> attack()
+  //     b. target not within attack range -> moveToTarget()
+  // (2) Is following another Character -> moveToTarget()
+  // (3) Sandboxing (just moving around wasting its time) -> moveRandomly()
 
-  if (isAlerted() && lockedOnTarget && !lockedOnTarget->isSetToKill()) {
-    if (!inRangeTargets.empty()) { // is target within the attack range?
+  if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
+
+    if (!_inRangeTargets.empty()) {  // target is within attack range
       attack();
-      if (inRangeTargets.empty()) {
+      if (_inRangeTargets.empty()) {
         setLockedOnTarget(nullptr);
       }
-    } else if (std::abs(getBody()->GetPosition().x - lockedOnTarget->getBody()->GetPosition().x) > .25f) {
-      // If the target isn't within attack range, move toward it until attackable
-      moveToTarget(lockedOnTarget);
-      jumpIfStucked(delta, .1f);
+    } else {  // target not within attack range
+      moveToTarget(delta, _lockedOnTarget, .25f);
     }
-  } else {
+
+  } else if (_followee) {
+    moveToTarget(delta, _followee, .5f);
+  } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
 }
 
-void Npc::moveToTarget(Character* target) {
-  b2Body* thisBody = getBody();
-  b2Body* targetBody = target->getBody();
-
-  if (thisBody->GetPosition().x > targetBody->GetPosition().x) {
-    moveLeft();
-  } else {
-    moveRight();
+void Npc::moveToTarget(float delta, Character* target, float followDistance) {
+  const b2Vec2& thisPos = _body->GetPosition();
+  const b2Vec2& targetPos = target->getBody()->GetPosition();
+  
+  // If this character is already close enough to the target character,
+  // we could return at once.
+  if (std::abs(thisPos.x - targetPos.x) <= followDistance) {
+    return;
   }
+
+  (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
+  jumpIfStucked(delta, /*checkInterval=*/.1f);
 }
 
-void Npc::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, int minWaitDuration, int maxWaitDuration) {
+void Npc::moveRandomly(float delta,
+                       int minMoveDuration, int maxMoveDuration,
+                       int minWaitDuration, int maxWaitDuration) {
   // If the character has finished moving and waiting, regenerate random values for
   // _moveDuration and _waitDuration within the specified range.
   if (_moveTimer >= _moveDuration && _waitTimer >= _waitDuration) {
@@ -254,33 +270,30 @@ void Npc::moveRandomly(float delta, int minMoveDuration, int maxMoveDuration, in
     _waitTimer = 0;
   }
 
-  if (_moveTimer < _moveDuration) {
-    if (_isMovingRight) {
-      moveRight();
-    } else {
-      moveLeft();
-    }
-    // Make sure the character doesn't get stucked somewhere along the way.
-    jumpIfStucked(delta, .5f);
-    _moveTimer += delta;
-  } else {
+  if (_moveTimer >= _moveDuration) {
     _waitTimer += delta;
+  } else {
+    _moveTimer += delta;
+    (_isMovingRight) ? moveRight() : moveLeft();
+    jumpIfStucked(delta, /*checkInterval=*/.5f);
   }
 }
 
 void Npc::jumpIfStucked(float delta, float checkInterval) {
-  b2Body* thisBody = getBody();
-
-  if (_calculateDistanceTimer > checkInterval) {
-    _lastTraveledDistance = std::abs(thisBody->GetPosition().x - _lastStoppedPosition.x);
-    _lastStoppedPosition.Set(thisBody->GetPosition().x, thisBody->GetPosition().y);
-    if (_lastTraveledDistance == 0) {
-      jump();
-    }
-    _calculateDistanceTimer = 0;
-  } else {
+  // If we haven't reached checkInterval yet, add delta to the timer
+  // and return at once.
+  if (_calculateDistanceTimer <= checkInterval) {
     _calculateDistanceTimer += delta;
+    return;
   }
+
+  // We've reached checkInterval, so we can make this character jump
+  // if it hasn't moved at all, and then reset the timer.
+  if (std::abs(_body->GetPosition().x - _lastStoppedPosition.x) == 0) {
+    jump();
+  }
+  _lastStoppedPosition = {_body->GetPosition().x, _body->GetPosition().y};
+  _calculateDistanceTimer = 0;
 }
 
 void Npc::reverseDirection() {
@@ -296,10 +309,18 @@ DialogueTree& Npc::getDialogueTree() {
   return _dialogueTree;
 }
 
-
 Npc::Disposition Npc::getDisposition() const {
   return _disposition;
 }
+
+bool Npc::isSandboxing() const {
+  return _isSandboxing;
+}
+
+Character* Npc::getFollowee() const {
+  return _followee;
+}
+
 
 void Npc::setDisposition(Npc::Disposition disposition) {
   _disposition = disposition;
@@ -321,6 +342,14 @@ void Npc::setDisposition(Npc::Disposition disposition) {
       VGLOG(LOG_ERR, "Invalid disposition for user: %s", _characterProfile.name.c_str());
       break;
   }
+}
+
+void Npc::setSandboxing(bool sandboxing) {
+  _isSandboxing = sandboxing;
+}
+
+void Npc::setFollowee(Character* followee) {
+  _followee = followee;
 }
 
 

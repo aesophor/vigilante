@@ -53,19 +53,25 @@ class Npc : public Character, public Interactable {
   void updateDialogueTreeIfNeeded();
   void beginDialogue();
 
-  // TODO: maybe virtual can be disabled?
-  // TODO: maybe rename moveRandomly() to beginSandbox()? idk...
-  void act(float delta);  // Bot
-  void moveToTarget(Character* target);  // Bot
-  void moveRandomly(float delta, int minMoveDuration, int maxMoveDuration,
-                            int minWaitDuration, int maxWaitDuration);  // Bot
-  void jumpIfStucked(float delta, float checkInterval);  // Bot
-  void reverseDirection();  // Bot
 
+  // TODO: maybe rename moveRandomly() to beginSandbox()? idk...
+  void act(float delta);
+  void moveToTarget(float delta, Character* target, float followDistance);
+  void moveRandomly(float delta,
+                    int minMoveDuration, int maxMoveDuration,
+                    int minWaitDuration, int maxWaitDuration);
+  void jumpIfStucked(float delta, float checkInterval);
+  void reverseDirection();
+  
   Npc::Profile& getNpcProfile();
   DialogueTree& getDialogueTree();
   Npc::Disposition getDisposition() const;
+  bool isSandboxing() const;
+  Character* getFollowee() const;
+
   void setDisposition(Npc::Disposition disposition);
+  void setSandboxing(bool sandboxing);
+  void setFollowee(Character* followee);
 
 
  private:
@@ -79,6 +85,8 @@ class Npc : public Character, public Interactable {
   Npc::Disposition _disposition;
   bool _isSandboxing;
 
+  Character* _followee;
+
   // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;
   float _moveDuration;
@@ -87,9 +95,8 @@ class Npc : public Character, public Interactable {
   float _waitTimer;
 
   // The following variables are used in Npc::jumpIfStucked()
-  b2Vec2 _lastStoppedPosition;
-  float _lastTraveledDistance;
   float _calculateDistanceTimer;
+  b2Vec2 _lastStoppedPosition;
 };
 
 }  // namespace vigilante

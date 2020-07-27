@@ -4,9 +4,11 @@
 #include <memory>
 
 #include "character/Player.h"
+#include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
 #include "item/Item.h"
 #include "map/GameMapManager.h"
+#include "ui/dialogue/DialogueManager.h"
 #include "ui/notifications/Notifications.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
@@ -41,6 +43,7 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
     {"additem",            &CommandParser::addItem           },
     {"removeitem",         &CommandParser::removeItem        },
     {"updateDialogueTree", &CommandParser::updateDialogueTree},
+    {"followPlayer",       &CommandParser::followPlayer      },
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -157,6 +160,15 @@ void CommandParser::updateDialogueTree(const vector<string>& args) {
  
   DialogueTree::setLatestNpcDialogueTree(args[1], args[2]);
   setSuccess();
+}
+
+
+void CommandParser::followPlayer(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* npc = DialogueManager::getInstance()->getTargetNpc();
+
+  assert(player != nullptr && npc != nullptr);
+  npc->setFollowee(player);
 }
 
 }  // namespace vigilante
