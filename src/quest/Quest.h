@@ -44,6 +44,8 @@ class Quest : public Importable {
 
 
   struct Stage final {
+    std::string getHint() const;
+
     bool isFinished;
     std::string questDesc;  // optionally update questDesc when this stage is reached.
     std::unique_ptr<Objective> objective; 

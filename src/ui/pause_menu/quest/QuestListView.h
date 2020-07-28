@@ -24,6 +24,8 @@ class QuestListView : public ListView<Quest*> {
   void showInProgressQuests();
   void showCompletedQuests();
 
+  static std::string generateDesc(const Quest* q);
+
  private:
   PauseMenu* _pauseMenu;
   cocos2d::Label* _descLabel;

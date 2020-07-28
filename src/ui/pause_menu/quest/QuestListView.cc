@@ -17,6 +17,7 @@
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
+using std::string;
 using cocos2d::Label;
 
 namespace vigilante {
@@ -84,7 +85,7 @@ void QuestListView::selectUp() {
   }
 
   Quest* selectedQuest = getSelectedObject();
-  _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");
+  _descLabel->setString((selectedQuest) ? generateDesc(selectedQuest) : "");
 }
 
 void QuestListView::selectDown() {
@@ -95,7 +96,7 @@ void QuestListView::selectDown() {
   }
 
   Quest* selectedQuest = getSelectedObject();
-  _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");
+  _descLabel->setString((selectedQuest) ? generateDesc(selectedQuest) : "");
 }
 
 
@@ -105,7 +106,7 @@ void QuestListView::showAllQuests() {
   setObjects(player->getQuestBook().getAllQuests());
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
+  _descLabel->setString((!_objects.empty()) ? generateDesc(_objects[_current]) : "");
 }
 
 void QuestListView::showInProgressQuests() {
@@ -114,7 +115,7 @@ void QuestListView::showInProgressQuests() {
   setObjects(player->getQuestBook().getInProgressQuests());
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
+  _descLabel->setString((!_objects.empty())? generateDesc(_objects[_current]) : "");
 }
 
 void QuestListView::showCompletedQuests() {
@@ -123,7 +124,14 @@ void QuestListView::showCompletedQuests() {
   setObjects(player->getQuestBook().getCompletedQuests());
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getQuestProfile().desc : "");
+  _descLabel->setString((!_objects.empty())? generateDesc(_objects[_current]) : "");
+}
+
+
+string QuestListView::generateDesc(const Quest* q) {
+  string text = q->getQuestProfile().desc;
+  text += (q->isCompleted()) ? "" : "\n\n" + q->getCurrentStage().getHint();
+  return text;
 }
 
 }  // namespace vigilante
