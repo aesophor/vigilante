@@ -94,12 +94,20 @@ void SkillListView::confirm() {
 void SkillListView::selectUp() {
   ListView<Skill*>::selectUp();
 
+  if (_objects.empty()) {
+    return;
+  }
+
   Skill* selectedSkill = getSelectedObject();
   _descLabel->setString((selectedSkill) ? selectedSkill->getDesc() : "");
 }
 
 void SkillListView::selectDown() {
   ListView<Skill*>::selectDown();
+
+  if (_objects.empty()) {
+    return;
+  }
 
   Skill* selectedSkill = getSelectedObject();
   _descLabel->setString((selectedSkill) ? selectedSkill->getDesc() : "");

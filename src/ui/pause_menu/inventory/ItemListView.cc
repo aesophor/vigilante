@@ -116,12 +116,20 @@ void ItemListView::confirm() {
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
   
+  if (_objects.empty()) {
+    return;
+  }
+
   Item* selectedItem = getSelectedObject();
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
 }
 
 void ItemListView::selectDown() {
   ListView<Item*>::selectDown();
+
+  if (_objects.empty()) {
+    return;
+  }
 
   Item* selectedItem = getSelectedObject();
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");

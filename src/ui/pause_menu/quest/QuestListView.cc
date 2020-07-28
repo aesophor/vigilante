@@ -79,12 +79,20 @@ void QuestListView::confirm() {
 void QuestListView::selectUp() {
   ListView<Quest*>::selectUp();
 
+  if (_objects.empty()) {
+    return;
+  }
+
   Quest* selectedQuest = getSelectedObject();
   _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");
 }
 
 void QuestListView::selectDown() {
   ListView<Quest*>::selectDown();
+
+  if (_objects.empty()) {
+    return;
+  }
 
   Quest* selectedQuest = getSelectedObject();
   _descLabel->setString((selectedQuest) ? selectedQuest->getQuestProfile().desc : "");

@@ -249,7 +249,7 @@ void ListView<T>::hideScrollBar() {
 
 template <typename T>
 T ListView<T>::getSelectedObject() const {
-  return _objects[_current];
+  return (_current < _objects.size()) ? _objects[_current] : nullptr;
 }
 
 template <typename T>
