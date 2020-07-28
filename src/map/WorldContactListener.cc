@@ -13,6 +13,7 @@
 #include "skill/MagicalMissile.h"
 #include "skill/ForwardSlash.h"
 #include "util/CallbackUtil.h"
+#include "util/Logger.h"
 
 using std::unique_ptr;
 
@@ -171,36 +172,20 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       break;
     }
     // When a character gets close to an interactable object or NPC, register it to the character.
-    case category_bits::kFeet | category_bits::kInteractableObject: {
+    case category_bits::kFeet | category_bits::kInteractable: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
+      b2Fixture* interactableFixture = GetTargetFixture(category_bits::kInteractable, fixtureA, fixtureB);
       
-      if (feetFixture && objFixture) {
+      if (feetFixture && interactableFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        Interactable* obj = static_cast<Interactable*>(objFixture->GetUserData());
-        c->setInteractableObject(obj);
+        Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
 
-        if (obj->willInteractOnContact()) {
-          callback_util::runAfter([=]() {
-            c->interact(obj);
-          }, .1f);
-        }
-      }
-      break;
-    }
-    // When a character gets close to an NPC, register it to the character.
-    case category_bits::kFeet | category_bits::kNpc: {
-      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
-      
-      if (feetFixture && npcFixture) {
-        Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        Npc* npc = static_cast<Npc*>(npcFixture->GetUserData());
-        c->setInteractableObject(npc);
+        c->setInteractableObject(i);
+        i->createHintBubbleFx();
 
-        if (npc->willInteractOnContact()) {
+        if (i->willInteractOnContact()) {
           callback_util::runAfter([=]() {
-            c->interact(npc);
+            c->interact(i);
           }, .1f);
         }
       }
@@ -302,24 +287,16 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       break;
     }
     // When a character leaves an interactable object, clear it from the character.
-    case category_bits::kFeet | category_bits::kInteractableObject: {
+    case category_bits::kFeet | category_bits::kInteractable: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* objFixture = GetTargetFixture(category_bits::kInteractableObject, fixtureA, fixtureB);
+      b2Fixture* interactableFixture = GetTargetFixture(category_bits::kInteractable, fixtureA, fixtureB);
       
-      if (feetFixture && objFixture) {
+      if (feetFixture && interactableFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
+
         c->setInteractableObject(nullptr);
-      }
-      break;
-    }
-    // When a character leaves an NPC, clear it from the character.
-    case category_bits::kFeet | category_bits::kNpc: {
-      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
-      
-      if (feetFixture && npcFixture) {
-        Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setInteractableObject(nullptr);
+        i->removeHintBubbleFx();
       }
       break;
     }
@@ -368,4 +345,4 @@ b2Fixture* WorldContactListener::GetTargetFixture(short targetCategoryBits, b2Fi
   return targetFixture;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -2,6 +2,8 @@
 #ifndef VIGILANTE_INTERACTABLE_H_
 #define VIGILANTE_INTERACTABLE_H_
 
+#define HINT_BUBBLE_FX_SPRITE_OFFSET_Y 30
+
 namespace vigilante {
 
 class Character;
@@ -9,10 +11,13 @@ class Character;
 class Interactable {
  public:
   virtual ~Interactable() = default;
+
   virtual void onInteract(Character* user) = 0;
   virtual bool willInteractOnContact() const = 0;
+  virtual void createHintBubbleFx() = 0;
+  virtual void removeHintBubbleFx() = 0;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_INTERACTABLE_H_
+#endif  // VIGILANTE_INTERACTABLE_H_

@@ -75,18 +75,18 @@ class Character : public DynamicActor, public Importable {
   // We have a vector of b2Fixtures (declared in DynamicActor abstract class).
   // e.g., to access the weapon fixture: _fixtures[FixtureType::WEAPON]
   enum FixtureType {
-    BODY, // used in combat (with WEAPON fixture)
-    FEET, // used for ground/platform collision detection
-    WEAPON, // used in combat (with BODY fixture)
+    BODY,  // used in combat (with WEAPON fixture)
+    FEET,  // used for ground/platform collision detection
+    WEAPON,  // used in combat (with BODY fixture)
     FIXTURE_SIZE
   };
 
   virtual ~Character() = default;
 
-  virtual void showOnMap(float x, float y) = 0; // DynamicActor
-  virtual void removeFromMap() override; // DynamicActor
-  virtual void update(float delta) override; // DynamicActor
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void showOnMap(float x, float y) = 0;  // DynamicActor
+  virtual void removeFromMap() override;  // DynamicActor
+  virtual void update(float delta) override;  // DynamicActor
+  virtual void import(const std::string& jsonFileName) override;  // Importable
 
   virtual void moveLeft();
   virtual void moveRight();

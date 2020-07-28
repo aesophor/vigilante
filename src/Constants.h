@@ -28,7 +28,7 @@ const short kWall = 8;
 const short kPivotMarker = 16;
 const short kCliffMarker = 32;
 const short kPortal = 64;
-const short kInteractableObject = 128;
+const short kInteractable = 128;
 
 const short kPlayer = 256;
 const short kEnemy = 512;

@@ -33,6 +33,7 @@ class GameMapManager {
   b2World* getWorld() const;
 
   cocos2d::Layer* getLayer() const;
+  FxManager* getFxManager() const;
 
   void createDustFx(Character* character);
 
@@ -47,6 +48,6 @@ class GameMapManager {
   std::unique_ptr<Player> _player;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_GAMEMAP_MANAGER_H_
+#endif  // VIGILANTE_GAMEMAP_MANAGER_H_

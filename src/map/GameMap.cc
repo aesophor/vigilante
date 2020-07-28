@@ -227,7 +227,8 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, 
     : _targetTmxMapFileName(targetTmxMapFileName),
       _targetPortalId(targetPortalId),
       _willInteractOnContact(willInteractOnContact),
-      _body(body) {}
+      _body(body),
+      _hintBubbleFxSprite() {}
 
 GameMap::Portal::~Portal() {
   _body->GetWorld()->DestroyBody(_body);
@@ -255,6 +256,31 @@ void GameMap::Portal::onInteract(Character* user) {
     nullptr
   ));
 }
+
+void GameMap::Portal::createHintBubbleFx() {
+  if (_hintBubbleFxSprite) {
+    removeHintBubbleFx();
+  }
+
+  const b2Vec2& bodyPos = _body->GetPosition();
+  float x = bodyPos.x * kPpm;
+  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
+
+  _hintBubbleFxSprite
+    = GameMapManager::getInstance()->getFxManager()->createFx(
+        "Texture/fx/hint_bubble", "dialogue_available", x, y, -1, 45.0f);
+}
+
+void GameMap::Portal::removeHintBubbleFx() {
+  if (!_hintBubbleFxSprite) {
+    return;
+  }
+
+  _hintBubbleFxSprite->stopAllActions();
+  _hintBubbleFxSprite->removeFromParent();
+  _hintBubbleFxSprite = nullptr;
+}
+
 
 const string& GameMap::Portal::getTargetTmxMapFileName() const {
   return _targetTmxMapFileName;

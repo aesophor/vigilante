@@ -22,6 +22,11 @@
 #include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 
+#define PLAYER_BODY_CATEGORY_BITS kPlayer
+#define PLAYER_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kProjectile
+#define PLAYER_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractable
+#define PLAYER_WEAPON_MASK_BITS kEnemy
+
 using std::string;
 using std::vector;
 using cocos2d::Vector;
@@ -50,7 +55,7 @@ using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kInteractableObject;
+using vigilante::category_bits::kInteractable;
 using vigilante::category_bits::kProjectile;
 
 namespace vigilante {
@@ -70,13 +75,11 @@ void Player::showOnMap(float x, float y) {
   _isShownOnMap = true;
 
   // Construct b2Body and b2Fixtures
-  short bodyCategoryBits = kPlayer;
-  short bodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
-  short feetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractableObject;
-  short weaponMaskBits = kEnemy;
-
   defineBody(b2BodyType::b2_dynamicBody, x, y,
-             bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits);
+             PLAYER_BODY_CATEGORY_BITS,
+             PLAYER_BODY_MASK_BITS,
+             PLAYER_FEET_MASK_BITS,
+             PLAYER_WEAPON_MASK_BITS);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include <cocos2d.h>
 #include "Character.h"
 #include "Interactable.h"
 #include "gameplay/DialogueTree.h"
@@ -39,6 +40,16 @@ class Npc : public Character, public Interactable {
     bool shouldSandbox;
   };
 
+  // In addition to Character::FixtureType, the new version defined in Npc.h
+  // has the fourth fixture type.
+  enum FixtureType {
+    BODY,
+    FEET,
+    WEAPON,
+    INTERACTABLE,  // used in player's interaction with Npcs (with FEET fixture)
+    FIXTURE_SIZE
+  };
+
 
   explicit Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
@@ -51,11 +62,13 @@ class Npc : public Character, public Interactable {
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
+  virtual void createHintBubbleFx() override;  // Interactable
+  virtual void removeHintBubbleFx() override;  // Interactable
+
   void updateDialogueTreeIfNeeded();
   void beginDialogue();
 
 
-  // TODO: maybe rename moveRandomly() to beginSandbox()? idk...
   void act(float delta);
   void moveToTarget(float delta, Character* target, float followDistance);
   void moveRandomly(float delta,
@@ -63,6 +76,7 @@ class Npc : public Character, public Interactable {
                     int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
   void reverseDirection();
+
   
   Npc::Profile& getNpcProfile();
   DialogueTree& getDialogueTree();
@@ -78,11 +92,12 @@ class Npc : public Character, public Interactable {
                   short bodyCategoryBits=0, short bodyMaskBits=0,
                   short feetMaskBits=0, short weaponMaskBits=0) override;
 
-
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
   Npc::Disposition _disposition;
   bool _isSandboxing;
+
+  cocos2d::Sprite* _hintBubbleFxSprite;
 
   // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;

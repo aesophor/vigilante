@@ -87,12 +87,16 @@ Layer* GameMapManager::getLayer() const {
   return _layer;
 }
 
-
-void GameMapManager::createDustFx(Character* character) {
-  auto feetPos = character->getBody()->GetPosition();
-  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
-  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
-  _fxMgr->createFx("Texture/fx/dust", "white", x, y);
+FxManager* GameMapManager::getFxManager() const {
+  return _fxMgr.get();
 }
 
-} // namespace vigilante
+
+void GameMapManager::createDustFx(Character* character) {
+  const b2Vec2& feetPos = character->getBody()->GetPosition();
+  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
+  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
+  _fxMgr->createFx("Texture/fx/dust", "white", x, y, 1, 10.0f);
+}
+
+}  // namespace vigilante

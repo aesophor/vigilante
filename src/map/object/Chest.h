@@ -5,13 +5,14 @@
 #include <string>
 #include <vector>
 
+#include <cocos2d.h>
 #include <Box2D/Box2D.h>
 #include "DynamicActor.h"
 #include "Interactable.h"
 
 namespace vigilante {
 
-class Chest : public Interactable, public DynamicActor {
+class Chest : public DynamicActor, public Interactable {
  public:
   Chest();
   explicit Chest(const std::string& itemsJson);
@@ -20,6 +21,8 @@ class Chest : public Interactable, public DynamicActor {
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
+  virtual void createHintBubbleFx() override;  // Interactable
+  virtual void removeHintBubbleFx() override;  // Interactable
 
  protected:
   void defineBody(b2BodyType bodyType, short categoryBits, short maskBits,
@@ -27,6 +30,8 @@ class Chest : public Interactable, public DynamicActor {
 
   static const int _kNumAnimations;
   static const int _kNumFixtures;
+
+  cocos2d::Sprite* _hintBubbleFxSprite;
 
   std::vector<std::string> _itemJsons;
   bool _isOpened;

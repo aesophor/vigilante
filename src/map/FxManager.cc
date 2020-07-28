@@ -25,8 +25,10 @@ namespace vigilante {
 FxManager::FxManager(Layer* gameMapLayer) : _gameMapLayer(gameMapLayer) {}
 
 
-void FxManager::createFx(const string& textureResDir, const string& framesName,
-                         float x, float y) {
+Sprite* FxManager::createFx(const string& textureResDir,
+                            const string& framesName,
+                            float x, float y,
+                            unsigned int loopCount, float frameInterval) {
   // If the cocos2d::Animation* is not present in cache, then create one
   // and cache this animation object.
   //
@@ -38,7 +40,7 @@ void FxManager::createFx(const string& textureResDir, const string& framesName,
   string cacheKey = textureResDir + "/" + framesNamePrefix + "_" + framesName;
 
   if (_animationCache.find(cacheKey) == _animationCache.end()) {
-    Animation* animation = StaticActor::createAnimation(textureResDir, framesName, 10.0f / kPpm);
+    Animation* animation = StaticActor::createAnimation(textureResDir, framesName, frameInterval / kPpm);
     _animationCache.insert({cacheKey, animation});
   }
 
@@ -54,11 +56,12 @@ void FxManager::createFx(const string& textureResDir, const string& framesName,
 
   // Run animation.
   FiniteTimeAction* animate = nullptr;
-  animate = Repeat::create(Animate::create(_animationCache[cacheKey]), 1);
+  animate = Repeat::create(Animate::create(_animationCache[cacheKey]), loopCount);
   auto cleanup = CallFunc::create([=]() {
     _gameMapLayer->removeChild(spritesheet);
   });
   sprite->runAction(Sequence::createWithTwoActions(animate, cleanup));
+  return sprite;
 }
 
 string FxManager::getSpritesheetFileName(const string& textureResDir) {
@@ -68,4 +71,4 @@ string FxManager::getSpritesheetFileName(const string& textureResDir) {
   return textureResDir + "/spritesheet.png";
 }
 
-} // namespace vigilante
+}  // namespace vigilante

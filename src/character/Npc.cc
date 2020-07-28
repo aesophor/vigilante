@@ -7,6 +7,7 @@
 #include "item/Item.h"
 #include "gameplay/ExpPointTable.h"
 #include "map/GameMapManager.h"
+#include "map/FxManager.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -16,12 +17,12 @@
 
 #define ALLY_BODY_CATEGORY_BITS kNpc
 #define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kCliffMarker | kProjectile
-#define ALLY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kPortal | kInteractableObject
+#define ALLY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kPortal | kInteractable
 #define ALLY_WEAPON_MASK_BITS kEnemy
 
 #define ENEMY_BODY_CATEGORY_BITS kEnemy
 #define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kCliffMarker | kProjectile
-#define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractableObject
+#define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
 #define ENEMY_WEAPON_MASK_BITS kPlayer
 
 using std::set;
@@ -49,7 +50,7 @@ using vigilante::category_bits::kPlatform;
 using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kInteractableObject;
+using vigilante::category_bits::kInteractable;
 using vigilante::category_bits::kProjectile;
 using rapidjson::Document;
 
@@ -61,6 +62,7 @@ Npc::Npc(const string& jsonFileName)
       _dialogueTree(_npcProfile.dialogueTreeJsonFile),
       _disposition(_npcProfile.disposition),
       _isSandboxing(_npcProfile.shouldSandbox),
+      _hintBubbleFxSprite(),
       _isMovingRight(),
       _moveDuration(),
       _moveTimer(),
@@ -71,6 +73,14 @@ Npc::Npc(const string& jsonFileName)
 
 void Npc::update(float delta) {
   Character::update(delta);
+
+  // Sync the hint bubble fx sprite with Npc's b2body if it exists.
+  if (_hintBubbleFxSprite) {
+    const b2Vec2& b2bodyPos = _body->GetPosition();
+    _hintBubbleFxSprite->setPosition(b2bodyPos.x * kPpm,
+                                     b2bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y);
+  }
+
   act(delta);
 }
 
@@ -102,7 +112,10 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
                      short bodyCategoryBits, short bodyMaskBits,
                      short feetMaskBits, short weaponMaskBits) {
   Character::defineBody(bodyType, x, y,
-                        bodyCategoryBits, bodyMaskBits, feetMaskBits, weaponMaskBits);
+                        bodyCategoryBits,
+                        bodyMaskBits,
+                        feetMaskBits,
+                        weaponMaskBits);
 
   // Besides the original fixtures created in Character::defineBody(),
   // create one extra fixture which can collide with player's feetFixture,
@@ -118,10 +131,10 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
   vertices[3] = { sideLength / scaleFactor, -sideLength / scaleFactor};
 
   bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
-    .categoryBits(kNpc)
+    .categoryBits(kInteractable)
     .maskBits(kFeet)
     .setSensor(true)
-    .setUserData(this)
+    .setUserData(static_cast<Interactable*>(this))
     .buildFixture();
 }
 
@@ -188,10 +201,37 @@ bool Npc::willInteractOnContact() const {
   return false;
 }
 
+void Npc::createHintBubbleFx() {
+  if (_hintBubbleFxSprite) {
+    return;
+  }
+
+  const b2Vec2& bodyPos = _body->GetPosition();
+  float x = bodyPos.x * kPpm;
+  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
+
+  _hintBubbleFxSprite
+    = GameMapManager::getInstance()->getFxManager()->createFx(
+        "Texture/fx/hint_bubble", "dialogue_available", x, y, -1, 45.0f);
+}
+
+void Npc::removeHintBubbleFx() {
+  if (!_hintBubbleFxSprite) {
+    return;
+  }
+
+  _hintBubbleFxSprite->stopAllActions();
+  _hintBubbleFxSprite->removeFromParent();
+  _hintBubbleFxSprite = nullptr;
+}
+
+
 void Npc::beginDialogue() {
   if (_npcProfile.dialogueTreeJsonFile.empty()) {
     return;
   }
+
+  removeHintBubbleFx();
 
   auto dialogueMgr = DialogueManager::getInstance();
   dialogueMgr->setTargetNpc(this);
@@ -304,6 +344,7 @@ void Npc::jumpIfStucked(float delta, float checkInterval) {
 void Npc::reverseDirection() {
   _isMovingRight = !_isMovingRight;
 }
+
 
 
 Npc::Profile& Npc::getNpcProfile() {
