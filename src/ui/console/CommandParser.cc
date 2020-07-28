@@ -177,7 +177,6 @@ void CommandParser::followPlayer(const vector<string>&) {
 
   npc->showOnMap(targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
   player->getParty()->addMember(std::move(npc));
-
   setSuccess();
 }
 

@@ -56,6 +56,7 @@ class Quest : public Importable {
     std::string jsonFileName;
     std::string title;
     std::string desc;
+    std::vector<std::string> cmds;
     std::vector<Quest::Stage> stages;
   };
 

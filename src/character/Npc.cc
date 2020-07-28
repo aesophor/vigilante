@@ -16,12 +16,12 @@
 #include "util/JsonUtil.h"
 
 #define ALLY_BODY_CATEGORY_BITS kNpc
-#define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kCliffMarker | kProjectile
+#define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
 #define ALLY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kPortal | kInteractable
 #define ALLY_WEAPON_MASK_BITS kEnemy
 
 #define ENEMY_BODY_CATEGORY_BITS kEnemy
-#define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kCliffMarker | kProjectile
+#define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
 #define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
 #define ENEMY_WEAPON_MASK_BITS kPlayer
 
@@ -47,6 +47,7 @@ using vigilante::category_bits::kMeleeWeapon;
 using vigilante::category_bits::kItem;
 using vigilante::category_bits::kGround;
 using vigilante::category_bits::kPlatform;
+using vigilante::category_bits::kPivotMarker;
 using vigilante::category_bits::kCliffMarker;
 using vigilante::category_bits::kWall;
 using vigilante::category_bits::kPortal;

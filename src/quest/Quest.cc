@@ -7,6 +7,7 @@
 #include "std/make_unique.h"
 #include "quest/CollectItemObjective.h"
 #include "quest/KillTargetObjective.h"
+#include "ui/console/Console.h"
 #include "util/JsonUtil.h"
 
 using std::string;
@@ -36,6 +37,13 @@ void Quest::advanceStage() {
   }
   ++_currentStageIdx;
 
+  if (isCompleted()) {
+    for (const auto& cmd : _questProfile.cmds) {
+      Console::getInstance()->executeCmd(cmd);
+    }
+  }
+
+  // Update quest description (if provided).
   if (!isCompleted() && !getCurrentStage().questDesc.empty()) {
     _questProfile.desc = getCurrentStage().questDesc;
   }
@@ -77,6 +85,11 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
 
   title = json["title"].GetString();
   desc = json["desc"].GetString();
+
+  for (const auto& cmd : json["exec"].GetArray()) {
+    cmds.push_back(cmd.GetString());
+  }
+
   
   for (const auto& stageJson : json["stages"].GetArray()) {
     auto objectiveType = static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
