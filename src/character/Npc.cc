@@ -69,7 +69,11 @@ Npc::Npc(const string& jsonFileName)
       _waitDuration(),
       _waitTimer(),
       _calculateDistanceTimer(),
-      _lastStoppedPosition() {}
+      _lastStoppedPosition() {
+  if (_npcProfile.unsheathed) {
+    unsheathWeapon();
+  }
+}
 
 void Npc::update(float delta) {
   Character::update(delta);
@@ -410,6 +414,7 @@ Npc::Profile::Profile(const string& jsonFileName) {
 
   dialogueTreeJsonFile = json["dialogueTree"].GetString();
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
+  unsheathed = json["unsheathed"].GetBool();
   shouldSandbox = json["shouldSandbox"].GetBool();
 }
 

@@ -37,6 +37,7 @@ class Npc : public Character, public Interactable {
 
     std::string dialogueTreeJsonFile;
     Npc::Disposition disposition;
+    bool unsheathed;
     bool shouldSandbox;
   };
 
