@@ -124,7 +124,7 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
 
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   b2Vec2 vertices[4];
-  float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.5;
+  float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.2;
   vertices[0] = {-sideLength / scaleFactor,  sideLength / scaleFactor};
   vertices[1] = { sideLength / scaleFactor,  sideLength / scaleFactor};
   vertices[2] = {-sideLength / scaleFactor, -sideLength / scaleFactor};
@@ -202,7 +202,7 @@ bool Npc::willInteractOnContact() const {
 }
 
 void Npc::createHintBubbleFx() {
-  if (_hintBubbleFxSprite) {
+  if (_hintBubbleFxSprite || _disposition == Npc::Disposition::ENEMY) {
     return;
   }
 
