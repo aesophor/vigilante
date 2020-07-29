@@ -154,13 +154,26 @@ void Npc::import(const string& jsonFileName) {
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
 
-  if (_disposition != Npc::Disposition::ALLY || !_party || !target->isSetToKill()) {
-    return;
+
+  // If `target` dies, then try to lockOn() `target`'s other party members
+  // including the leader.'
+  if (target->isSetToKill() && target->getParty()) {
+    for (auto member : target->getParty()->getLeaderAndMembers()) {
+      if (!member->isSetToKill()) {
+        lockOn(member);
+        break;
+      }
+    }
   }
 
-  auto player = dynamic_cast<Player*>(_party->getLeader());
-  if (player) {
-    player->updateKillTargetObjectives(target);
+
+  // If this Npc is in the player's party, and this Npc kills an enemy,
+  // then update player's quests with KillTargetObjective.
+  if (_disposition == Npc::Disposition::ALLY && _party && target->isSetToKill()) {
+    auto player = dynamic_cast<Player*>(_party->getLeader());
+    if (player) {
+      player->updateKillTargetObjectives(target);
+    }
   }
 }
 

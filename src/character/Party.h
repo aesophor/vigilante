@@ -22,6 +22,7 @@ class Party {
 
   Character* getLeader() const;
   const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
+  std::unordered_set<Character*> getLeaderAndMembers() const;
   
  protected:
   // `_leader` will NOT be in `_members`.

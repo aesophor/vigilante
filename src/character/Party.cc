@@ -52,4 +52,14 @@ const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
   return _members;
 }
 
+unordered_set<Character*> Party::getLeaderAndMembers() const {
+  unordered_set<Character*> allMembers;
+
+  allMembers.insert(_leader);
+  for (const auto& member : _members) {
+    allMembers.insert(member.get());
+  }
+  return allMembers;
+}
+
 }  // namespace vigilante
