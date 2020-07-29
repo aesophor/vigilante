@@ -29,12 +29,15 @@ class Player : public Character, public Controllable {
 
   virtual void handleInput() override;  // Controllable
 
+
+  void updateKillTargetObjectives(Character* killedCharacter);
+
   QuestBook& getQuestBook();
 
  private:
   QuestBook _questBook;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_PLAYER_H_
+#endif  // VIGILANTE_PLAYER_H_

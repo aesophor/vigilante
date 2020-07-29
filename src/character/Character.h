@@ -212,6 +212,7 @@ class Character : public DynamicActor, public Importable {
 
   Character::State getState() const;
 
+
   // Characater data.
   Character::Profile _characterProfile;
 

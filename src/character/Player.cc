@@ -118,16 +118,9 @@ void Player::removeFromMap() {
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
   camera_util::shake(8, .1f);
-
+  
   if (target->isSetToKill()) {
-    for (auto quest : _questBook.getInProgressQuests()) {
-      auto currentObjective = quest->getCurrentStage().objective.get();
-      if (currentObjective->getObjectiveType() == Quest::Objective::Type::KILL &&
-          dynamic_cast<KillTargetObjective*>(currentObjective)->getCharacterName() == target->getCharacterProfile().name) {
-        dynamic_cast<KillTargetObjective*>(currentObjective)->incrementCurrentAmount();
-      }
-    }
-    _questBook.update(Quest::Objective::Type::KILL);
+    updateKillTargetObjectives(target);
   }
 }
 
@@ -238,6 +231,21 @@ void Player::handleInput() {
   if (_isCrouching && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     getUp();
   }
+}
+
+
+void Player::updateKillTargetObjectives(Character* killedCharacter) {
+  if (!killedCharacter->isSetToKill()) {
+    return;
+  }
+
+  for (auto quest : _questBook.getInProgressQuests()) {
+    auto ko = dynamic_cast<KillTargetObjective*>(quest->getCurrentStage().objective.get());
+    if (ko && ko->getCharacterName() == killedCharacter->getCharacterProfile().name) {
+      ko->incrementCurrentAmount();
+    }
+  }
+  _questBook.update(Quest::Objective::Type::KILL);
 }
 
 
