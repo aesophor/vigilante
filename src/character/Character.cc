@@ -138,7 +138,8 @@ void Character::update(float delta) {
 
   // Sync the body sprite with its b2body.
   const b2Vec2& b2bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
+  _bodySprite->setPosition(b2bodyPos.x * kPpm + _characterProfile.spriteOffsetX,
+                           b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
 
   // Sync the equipment sprites with its b2body.
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
