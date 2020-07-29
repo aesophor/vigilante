@@ -37,7 +37,8 @@ class Npc : public Character, public Interactable {
 
     std::string dialogueTreeJsonFile;
     Npc::Disposition disposition;
-    bool unsheathed;
+    bool isPotentialPartyMember;
+    bool isUnsheathed;
     bool shouldSandbox;
   };
 
@@ -78,6 +79,8 @@ class Npc : public Character, public Interactable {
                     int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
   void reverseDirection();
+
+  bool isInPlayerParty() const;
 
   
   Npc::Profile& getNpcProfile();

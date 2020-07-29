@@ -43,14 +43,20 @@ void DialogueListView::confirm() {
     Console::getInstance()->executeCmd(cmd);
   }
 
-  Dialogue* nextDialogue = getSelectedObject()->getChildren().front();
-  for (const auto& line : nextDialogue->getLines()) {
-    subtitles->addSubtitle(line);
+  if (getSelectedObject()->getChildren().empty()) {
+    subtitles->endSubtitles();
+    dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
+  } else {
+    Dialogue* nextDialogue = getSelectedObject()->getChildren().front();
+    for (const auto& line : nextDialogue->getLines()) {
+      subtitles->addSubtitle(line);
+    }
+    subtitles->showNextSubtitle();
+    dialogueMgr->setCurrentDialogue(nextDialogue);
   }
-  subtitles->showNextSubtitle();
-  dialogueMenu->getLayer()->setVisible(false);
 
-  dialogueMgr->setCurrentDialogue(nextDialogue);
+  dialogueMgr->getTargetNpc()->getDialogueTree().update();
+  dialogueMenu->getLayer()->setVisible(false);
 }
 
 

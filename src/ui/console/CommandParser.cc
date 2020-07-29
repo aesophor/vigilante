@@ -172,6 +172,11 @@ void CommandParser::joinPlayerParty(const vector<string>&) {
 
   assert(player != nullptr && targetNpc != nullptr);
 
+  if (targetNpc->isInPlayerParty()) {
+    setError("This Npc is already in player's party.");
+    return;
+  }
+
   shared_ptr<Character> npc
     = std::dynamic_pointer_cast<Character>(
         GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetNpc));
@@ -189,6 +194,11 @@ void CommandParser::leavePlayerParty(const vector<string>&) {
   b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
 
   assert(player != nullptr && targetNpc != nullptr);
+
+  if (!targetNpc->isInPlayerParty()) {
+    setError("This Npc has not joined player's party yet.");
+    return;
+  }
 
   shared_ptr<DynamicActor> npc = player->getParty()->removeMember(targetNpc);
   npc->removeFromMap();

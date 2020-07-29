@@ -63,7 +63,7 @@ namespace vigilante {
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
       _npcProfile(jsonFileName),
-      _dialogueTree(_npcProfile.dialogueTreeJsonFile),
+      _dialogueTree(_npcProfile.dialogueTreeJsonFile, this),
       _disposition(_npcProfile.disposition),
       _isSandboxing(_npcProfile.shouldSandbox),
       _hintBubbleFxSprite(),
@@ -74,7 +74,7 @@ Npc::Npc(const string& jsonFileName)
       _waitTimer(),
       _calculateDistanceTimer(),
       _lastStoppedPosition() {
-  if (_npcProfile.unsheathed) {
+  if (_npcProfile.isUnsheathed) {
     unsheathWeapon();
   }
 }
@@ -274,7 +274,7 @@ void Npc::updateDialogueTreeIfNeeded() {
 
   VGLOG(LOG_INFO, "Loading %s's dialogue tree: %s", _characterProfile.jsonFileName.c_str(),
                                                     latestDialogueTreeJsonFileName.c_str());
-  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName);
+  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName, this);
 }
 
 
@@ -366,6 +366,10 @@ void Npc::reverseDirection() {
 }
 
 
+bool Npc::isInPlayerParty() const {
+  return (_party) ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
+}
+
 
 Npc::Profile& Npc::getNpcProfile() {
   return _npcProfile;
@@ -430,7 +434,8 @@ Npc::Profile::Profile(const string& jsonFileName) {
 
   dialogueTreeJsonFile = json["dialogueTree"].GetString();
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
-  unsheathed = json["unsheathed"].GetBool();
+  isPotentialPartyMember = json["isPotentialPartyMember"].GetBool();
+  isUnsheathed = json["isUnsheathed"].GetBool();
   shouldSandbox = json["shouldSandbox"].GetBool();
 }
 

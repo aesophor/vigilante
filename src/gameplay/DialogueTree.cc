@@ -6,6 +6,7 @@
 
 #include <cocos2d.h>
 #include "std/make_unique.h"
+#include "character/Npc.h"
 #include "util/ds/Algorithm.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
@@ -21,20 +22,28 @@ namespace vigilante {
 
 unordered_map<string, string> DialogueTree::_latestNpcDialogueTree;
 
-DialogueTree::DialogueTree(const string& jsonFileName)
-    : _rootNode(), _currentNode(), _nodeMapper() {
+DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
+    : _nodeMapper(),
+      _rootNode(),
+      _currentNode(),
+      _toggleJoinPartyNode(),
+      _owner(owner) {
   import(jsonFileName);
 }
 
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
-    : _rootNode(std::move(other._rootNode)),
+    : _nodeMapper(std::move(other._nodeMapper)),
+      _rootNode(std::move(other._rootNode)),
       _currentNode(other._currentNode), 
-      _nodeMapper(std::move(other._nodeMapper)) {}
+      _toggleJoinPartyNode(other._toggleJoinPartyNode),
+      _owner(other._owner) {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
+  _nodeMapper = std::move(other._nodeMapper);
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
-  _nodeMapper = std::move(other._nodeMapper);
+  _toggleJoinPartyNode = other._toggleJoinPartyNode;
+  _owner = other._owner;
   return *this;
 }
 
@@ -59,7 +68,7 @@ void DialogueTree::import(const string& jsonFileName) {
 
 
     // Construct this node.
-    auto currentNode = std::make_unique<Node>(this);
+    auto currentNode = std::make_unique<DialogueTree::Node>(this);
     _currentNode = currentNode.get();
 
     if (node.HasMember("nodeName")) {
@@ -93,8 +102,37 @@ void DialogueTree::import(const string& jsonFileName) {
     }
   }
 
+
+  // If the dialogue tree's owner is a potential member of the player's party,
+  // then add toggle follower dialogue to top-level.
+  if (_owner->getNpcProfile().isPotentialPartyMember) {
+    auto node = std::make_unique<DialogueTree::Node>(this);
+    _toggleJoinPartyNode = node.get();
+
+    node->_lines.resize(1);
+    node->_cmds.resize(1);
+
+    _rootNode->_children.push_back(std::move(node));
+    update();
+  }
+
+
   // Set _currentNode to _rootNode for later use (UI)
   resetCurrentNode();
+}
+
+void DialogueTree::update() {
+  if (!_toggleJoinPartyNode) {
+    return;
+  }
+
+  if (!_owner->isInPlayerParty()) {
+    _toggleJoinPartyNode->_lines.front() = "Follow me.";
+    _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
+  } else {
+    _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
+    _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
+  }
 }
 
 
