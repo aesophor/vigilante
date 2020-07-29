@@ -27,6 +27,7 @@ DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
       _rootNode(),
       _currentNode(),
       _toggleJoinPartyNode(),
+      _isQuestDialogue(),
       _owner(owner) {
   import(jsonFileName);
 }
@@ -36,6 +37,7 @@ DialogueTree::DialogueTree(DialogueTree&& other) noexcept
       _rootNode(std::move(other._rootNode)),
       _currentNode(other._currentNode), 
       _toggleJoinPartyNode(other._toggleJoinPartyNode),
+      _isQuestDialogue(),
       _owner(other._owner) {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
@@ -43,6 +45,7 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
   _toggleJoinPartyNode = other._toggleJoinPartyNode;
+  _isQuestDialogue = other._isQuestDialogue;
   _owner = other._owner;
   return *this;
 }
@@ -103,9 +106,14 @@ void DialogueTree::import(const string& jsonFileName) {
   }
 
 
+  // What's the effect of a "QuestDialogue"?
+  // e.g., if `_isQuestDialogue` == ture, then the dialogue to
+  //       toggle following/dismiss won't be present.
+  _isQuestDialogue = json["isQuestDialogue"].GetBool();
+
   // If the dialogue tree's owner is a potential member of the player's party,
   // then add toggle follower dialogue to top-level.
-  if (_owner->getNpcProfile().isPotentialPartyMember) {
+  if (!_isQuestDialogue && _owner->getNpcProfile().isPotentialPartyMember) {
     auto node = std::make_unique<DialogueTree::Node>(this);
     _toggleJoinPartyNode = node.get();
 

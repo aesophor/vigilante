@@ -77,6 +77,7 @@ class DialogueTree : public Importable {
   std::unique_ptr<DialogueTree::Node> _rootNode;
   DialogueTree::Node* _currentNode;
   DialogueTree::Node* _toggleJoinPartyNode;
+  bool _isQuestDialogue;
   Npc* _owner;
 };
 
