@@ -36,15 +36,19 @@ void Quest::advanceStage() {
   if (isCompleted()) {
     return;
   }
-  ++_currentStageIdx;
 
-  if (isCompleted()) {
-    for (const auto& cmd : _questProfile.cmds) {
+  // Execute the commands that are supposed to run after
+  // this stage is completed.
+  if (_currentStageIdx >= 0) {
+    for (const auto& cmd : getCurrentStage().cmds) {
       Console::getInstance()->executeCmd(cmd);
     }
   }
+  ++_currentStageIdx;
 
-  // Update quest description (if provided).
+  // Update quest desc (if provided).
+  // We can only update quest desc if it hasn't been completed,
+  // or we'll get out of index during `getCurrentStage()`.
   if (!isCompleted() && !getCurrentStage().questDesc.empty()) {
     _questProfile.desc = getCurrentStage().questDesc;
   }
@@ -116,11 +120,6 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   title = json["title"].GetString();
   desc = json["desc"].GetString();
 
-  for (const auto& cmd : json["exec"].GetArray()) {
-    cmds.push_back(cmd.GetString());
-  }
-
-  
   for (const auto& stageJson : json["stages"].GetArray()) {
     auto objectiveType = static_cast<Quest::Objective::Type>(stageJson["objective"]["objectiveType"].GetInt());
     auto objectiveDesc = stageJson["objective"]["desc"].GetString();
@@ -157,6 +156,10 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
     if (stageJson.HasMember("questDesc")) {
       string questDesc = stageJson["questDesc"].GetString();
       stage.questDesc = questDesc;
+    }
+
+    for (const auto& cmd : stageJson["exec"].GetArray()) {
+      stage.cmds.push_back(cmd.GetString());
     }
 
     stages.push_back(std::move(stage));

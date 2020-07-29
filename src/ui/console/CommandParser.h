@@ -24,7 +24,8 @@ class CommandParser {
   void addItem(const std::vector<std::string>& args);
   void removeItem(const std::vector<std::string>& args);
   void updateDialogueTree(const std::vector<std::string>& args);
-  void followPlayer(const std::vector<std::string>& args);
+  void joinPlayerParty(const std::vector<std::string>& args);
+  void leavePlayerParty(const std::vector<std::string>& args);
 
   bool _success;
   std::string _errMsg;

@@ -40,11 +40,12 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
 
   // Command handler table.
   static const CmdTable cmdTable = {
-    {"startquest",         &CommandParser::startQuest        },
-    {"additem",            &CommandParser::addItem           },
-    {"removeitem",         &CommandParser::removeItem        },
+    {"startQuest",         &CommandParser::startQuest        },
+    {"addItem",            &CommandParser::addItem           },
+    {"removeItem",         &CommandParser::removeItem        },
     {"updateDialogueTree", &CommandParser::updateDialogueTree},
-    {"followPlayer",       &CommandParser::followPlayer      },
+    {"joinPlayerParty",    &CommandParser::joinPlayerParty   },
+    {"leavePlayerParty",   &CommandParser::leavePlayerParty  },
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -164,7 +165,7 @@ void CommandParser::updateDialogueTree(const vector<string>& args) {
 }
 
 
-void CommandParser::followPlayer(const vector<string>&) {
+void CommandParser::joinPlayerParty(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
@@ -176,7 +177,25 @@ void CommandParser::followPlayer(const vector<string>&) {
         GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetNpc));
 
   npc->showOnMap(targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
+
   player->getParty()->addMember(std::move(npc));
+  setSuccess();
+}
+
+
+void CommandParser::leavePlayerParty(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
+
+  assert(player != nullptr && targetNpc != nullptr);
+
+  shared_ptr<DynamicActor> npc = player->getParty()->removeMember(targetNpc);
+  npc->removeFromMap();
+
+  GameMapManager::getInstance()->getGameMap()->showDynamicActor(
+      std::move(npc), targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
+
   setSuccess();
 }
 

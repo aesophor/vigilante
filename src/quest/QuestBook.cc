@@ -8,6 +8,7 @@
 #include "std/make_unique.h"
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hints/QuestHints.h"
+#include "util/ds/Algorithm.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
@@ -58,13 +59,14 @@ void QuestBook::unlockQuest(Quest* quest) {
 }
 
 void QuestBook::startQuest(Quest* quest) {
-  auto& qs = _inProgressQuests;
-  if (std::find(qs.begin(), qs.end(), quest) != qs.end()) {
+  // If the quest is already completed or is already in progress, return at once.
+  if (quest->isCompleted() ||
+      std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest) != _inProgressQuests.end()) {
     return;
   }
 
   // Add this quest to _inProgressQuests.
-  qs.push_back(quest);
+  _inProgressQuests.push_back(quest);
 
   quest->advanceStage();
   QuestHints::getInstance()->show("Started: " + quest->getQuestProfile().title);
@@ -72,14 +74,17 @@ void QuestBook::startQuest(Quest* quest) {
 }
 
 void QuestBook::markCompleted(Quest* quest) {
-  auto& qs = _inProgressQuests;
-  if (std::find(qs.begin(), qs.end(), quest) == qs.end()) {
+  // If `quest` is currently NOT in progress, return at once.
+  if (std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest) == _inProgressQuests.end()) {
     return;
   }
 
-  // Erase this quest from _inProgressQuests,
+  // If we can get here, then `quest` must be in progress, and we have to
+  // mark it as completed. We'll erase this quest from _inProgressQuests,
   // and add it to _completedQuests.
-  qs.erase(std::remove(qs.begin(), qs.end(), quest), qs.end());
+  _inProgressQuests.erase(
+      std::remove(_inProgressQuests.begin(), _inProgressQuests.end(), quest), _inProgressQuests.end());
+
   _completedQuests.push_back(quest);
 
   QuestHints::getInstance()->show("Completed: " + quest->getQuestProfile().title);

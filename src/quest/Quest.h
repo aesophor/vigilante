@@ -49,6 +49,7 @@ class Quest : public Importable {
     bool isFinished;
     std::string questDesc;  // optionally update questDesc when this stage is reached.
     std::unique_ptr<Objective> objective; 
+    std::vector<std::string> cmds;
   };
 
 
@@ -58,7 +59,6 @@ class Quest : public Importable {
     std::string jsonFileName;
     std::string title;
     std::string desc;
-    std::vector<std::string> cmds;
     std::vector<Quest::Stage> stages;
   };
 

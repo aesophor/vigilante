@@ -18,7 +18,7 @@ class Party {
 
   bool hasMember(const std::string& characterJsonFileName) const;
   void addMember(std::shared_ptr<Character> character);
-  std::shared_ptr<Character> removeMember(Character* member);
+  std::shared_ptr<Character> removeMember(Character* character);
 
   Character* getLeader() const;
   const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;

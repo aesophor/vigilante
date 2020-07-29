@@ -29,4 +29,4 @@ int CollectItemObjective::getAmount() const {
   return _amount;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
