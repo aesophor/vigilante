@@ -26,7 +26,7 @@
 #define ENEMY_BODY_CATEGORY_BITS kEnemy
 #define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
 #define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
-#define ENEMY_WEAPON_MASK_BITS kPlayer
+#define ENEMY_WEAPON_MASK_BITS kPlayer | kNpc
 
 using std::set;
 using std::string;
@@ -302,8 +302,8 @@ void Npc::act(float delta) {
   //     b. target not within attack range -> moveToTarget()
   // (2) Is following another Character -> moveToTarget()
   // (3) Sandboxing (just moving around wasting its time) -> moveRandomly()
-
   if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
+    VGLOG(LOG_INFO, "%s acting", _characterProfile.name.c_str());
 
     if (!_inRangeTargets.empty()) {  // target is within attack range
       attack();
@@ -311,7 +311,7 @@ void Npc::act(float delta) {
         setLockedOnTarget(nullptr);
       }
     } else {  // target not within attack range
-      moveToTarget(delta, _lockedOnTarget, .25f);
+      moveToTarget(delta, _lockedOnTarget, _characterProfile.attackRange / kPpm);
     }
 
   } else if (_party) {
@@ -329,6 +329,16 @@ void Npc::moveToTarget(float delta, Character* target, float followDistance) {
   // we could return at once.
   if (std::abs(thisPos.x - targetPos.x) <= followDistance) {
     return;
+  }
+
+  if (targetPos.x - thisPos.x < 0) {  // target, thisNpc
+    if (_isFacingRight) {
+      _isFacingRight = false;
+    }
+  } else {  // thisNpc, target
+    if (!_isFacingRight) {
+      _isFacingRight = true;
+    }
   }
 
   (thisPos.x > targetPos.x) ? moveLeft() : moveRight();

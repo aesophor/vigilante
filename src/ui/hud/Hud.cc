@@ -93,4 +93,4 @@ void Hud::setPlayer(Player* player) {
   _player = player;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

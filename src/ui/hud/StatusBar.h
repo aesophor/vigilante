@@ -29,6 +29,6 @@ class StatusBar {
   const float _maxLength;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_STATUS_BAR_H_
+#endif  // VIGILANTE_STATUS_BAR_H_

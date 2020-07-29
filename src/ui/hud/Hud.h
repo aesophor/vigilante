@@ -41,6 +41,6 @@ class Hud {
   cocos2d::Label* _equippedWeaponDesc;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_HUD_H_
+#endif  // VIGILANTE_HUD_H_

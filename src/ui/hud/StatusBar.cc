@@ -38,4 +38,4 @@ Layout* StatusBar::getLayout() const {
   return _layout;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

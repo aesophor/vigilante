@@ -648,9 +648,10 @@ void Character::receiveDamage(Character* source, int damage) {
   }
 
   _characterProfile.health -= damage;
-  FloatingDamages::getInstance()->show(this, damage);
-
+  
   if (_characterProfile.health <= 0) {
+    _characterProfile.health = 0;
+
     source->getInRangeTargets().erase(this);
     for (const auto& sourceAlly : source->getAllies()) {
       sourceAlly->getInRangeTargets().erase(this);
@@ -658,12 +659,15 @@ void Character::receiveDamage(Character* source, int damage) {
         sourceAlly->setLockedOnTarget(nullptr);
       }
     }
+
     DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
     _isSetToKill = true;
     // TODO: play killed sound.
   } else {
     // TODO: play hurt sound.
   }
+
+  FloatingDamages::getInstance()->show(this, damage);
 }
 
 void Character::lockOn(Character* target) {

@@ -4,7 +4,7 @@
 #include <cocos2d.h>
 #include "Constants.h"
 #include "Projectile.h"
-#include "character/Player.h"
+#include "character/Character.h"
 #include "character/Npc.h"
 #include "item/Item.h"
 #include "map/GameMap.h"
@@ -57,8 +57,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (playerFixture && enemyFixture) {
-        Player* player = static_cast<Player*>(playerFixture->GetUserData());
-        Npc* enemy = static_cast<Npc*>(enemyFixture->GetUserData());
+        Character* player = static_cast<Character*>(playerFixture->GetUserData());
+        Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
 
         if (!player->isInvincible()) {
           enemy->inflictDamage(player, 25);
@@ -75,8 +75,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (npcFixture && enemyFixture) {
-        Npc* npc = static_cast<Npc*>(npcFixture->GetUserData());
-        Npc* enemy = static_cast<Npc*>(enemyFixture->GetUserData());
+        Character* npc = static_cast<Character*>(npcFixture->GetUserData());
+        Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
 
         if (!npc->isInvincible()) {
           enemy->inflictDamage(npc, 25);
@@ -116,15 +116,15 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (weaponFixture && enemyFixture) {
-        Player* player = static_cast<Player*>(weaponFixture->GetUserData());
-        Npc* enemy = static_cast<Npc*>(enemyFixture->GetUserData());
-        player->getInRangeTargets().insert(enemy);
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
+        attacker->getInRangeTargets().insert(enemy);
 
         // If player is using skill (e.g., forward slash), than inflict damage
         // when an enemy contacts player's weapon fixture.
-        if (player->isUsingSkill() && dynamic_cast<ForwardSlash*>(player->getCurrentlyUsedSkill())) {
-          int skillDmg = player->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
-          player->inflictDamage(enemy, player->getDamageOutput() + skillDmg);
+        if (attacker->isUsingSkill() && dynamic_cast<ForwardSlash*>(attacker->getCurrentlyUsedSkill())) {
+          int skillDmg = attacker->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
+          attacker->inflictDamage(enemy, attacker->getDamageOutput() + skillDmg);
         }
       }
       break;
@@ -135,9 +135,21 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
 
       if (weaponFixture && playerFixture) {
-        Npc* enemy = static_cast<Npc*>(weaponFixture->GetUserData());
-        Player* player = static_cast<Player*>(playerFixture->GetUserData());
-        enemy->getInRangeTargets().insert(player);
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* player = static_cast<Character*>(playerFixture->GetUserData());
+        attacker->getInRangeTargets().insert(player);
+      }
+      break;
+    }
+    // Set Npc as enemy's current target (so enemy can inflict damage to the Npc).
+    case category_bits::kMeleeWeapon | category_bits::kNpc: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+
+      if (weaponFixture && npcFixture) {
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* npc = static_cast<Character*>(npcFixture->GetUserData());
+        attacker->getInRangeTargets().insert(npc);
       }
       break;
     }
@@ -245,9 +257,9 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
 
       if (weaponFixture && enemyFixture) {
-        Player* player = static_cast<Player*>(weaponFixture->GetUserData());
-        Npc* enemy = static_cast<Npc*>(enemyFixture->GetUserData());
-        player->getInRangeTargets().erase(enemy);
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
+        attacker->getInRangeTargets().erase(enemy);
       }
       break;
     }
@@ -257,9 +269,21 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
 
       if (weaponFixture && playerFixture) {
-        Npc* enemy = static_cast<Npc*>(weaponFixture->GetUserData());
-        Player* player = static_cast<Player*>(playerFixture->GetUserData());
-        enemy->getInRangeTargets().erase(player);
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* player = static_cast<Character*>(playerFixture->GetUserData());
+        attacker->getInRangeTargets().erase(player);
+      }
+      break;
+    }
+    // Clear enemy's current target (so enemy cannot inflict damage to npc from a distance).
+    case category_bits::kMeleeWeapon | category_bits::kNpc: {
+      b2Fixture* weaponFixture = GetTargetFixture(category_bits::kMeleeWeapon, fixtureA, fixtureB);
+      b2Fixture* npcFixture = GetTargetFixture(category_bits::kNpc, fixtureA, fixtureB);
+
+      if (weaponFixture && npcFixture) {
+        Character* attacker = static_cast<Character*>(weaponFixture->GetUserData());
+        Character* npc = static_cast<Character*>(npcFixture->GetUserData());
+        attacker->getInRangeTargets().erase(npc);
       }
       break;
     }
