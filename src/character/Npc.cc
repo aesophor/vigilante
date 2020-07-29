@@ -303,7 +303,6 @@ void Npc::act(float delta) {
   // (2) Is following another Character -> moveToTarget()
   // (3) Sandboxing (just moving around wasting its time) -> moveRandomly()
   if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
-    VGLOG(LOG_INFO, "%s acting", _characterProfile.name.c_str());
 
     if (!_inRangeTargets.empty()) {  // target is within attack range
       attack();
