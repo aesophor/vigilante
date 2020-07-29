@@ -62,43 +62,43 @@ void DialogueTree::import(const string& jsonFileName) {
   st.push({json.GetObject(), nullptr});
 
   while (!st.empty()) {
-    rapidjson::Value::Object node = st.top().first;
+    rapidjson::Value::Object jsonNode = st.top().first;
     DialogueTree::Node* parent = st.top().second;
     st.pop();
 
 
     // Construct this node.
-    auto currentNode = std::make_unique<DialogueTree::Node>(this);
-    _currentNode = currentNode.get();
+    auto node = std::make_unique<DialogueTree::Node>(this);
 
-    if (node.HasMember("nodeName")) {
-      currentNode->_nodeName = node["nodeName"].GetString();
-      _nodeMapper.insert({currentNode->_nodeName, currentNode.get()});
+    if (jsonNode.HasMember("nodeName")) {
+      node->_nodeName = jsonNode["nodeName"].GetString();
+      _nodeMapper.insert({node->_nodeName, node.get()});
     }
 
-    for (const auto& line : node["lines"].GetArray()) {
-      currentNode->_lines.push_back(line.GetString());
+    for (const auto& line : jsonNode["lines"].GetArray()) {
+      node->_lines.push_back(line.GetString());
     }
-    for (const auto& cmd : node["exec"].GetArray()) {
-      currentNode->_cmds.push_back(cmd.GetString());
+    for (const auto& cmd : jsonNode["exec"].GetArray()) {
+      node->_cmds.push_back(cmd.GetString());
     }
 
-    if (node.HasMember("childrenRef")) {
-      currentNode->_childrenRef = node["childrenRef"].GetString();
+    if (jsonNode.HasMember("childrenRef")) {
+      node->_childrenRef = jsonNode["childrenRef"].GetString();
     } else {
       // Push this node's children onto the stack in reverse order.
-      const auto& children = node["children"].GetArray();
+      const auto& children = jsonNode["children"].GetArray();
       for (int i = children.Size() - 1; i >= 0; i--) {
-        st.push({children[i].GetObject(), currentNode.get()});
+        st.push({children[i].GetObject(), node.get()});
       }
     }
 
 
     if (!_rootNode) {
-      _rootNode = std::move(currentNode);
+      _rootNode = std::move(node);
+      _currentNode = _rootNode.get();
     } else {
       assert(parent != nullptr);
-      parent->_children.push_back(std::move(currentNode));
+      parent->_children.push_back(std::move(node));
     }
   }
 
@@ -115,10 +115,6 @@ void DialogueTree::import(const string& jsonFileName) {
     _rootNode->_children.push_back(std::move(node));
     update();
   }
-
-
-  // Set _currentNode to _rootNode for later use (UI)
-  resetCurrentNode();
 }
 
 void DialogueTree::update() {
