@@ -4,10 +4,13 @@
 #include <json/document.h>
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "item/Item.h"
 #include "gameplay/ExpPointTable.h"
 #include "map/GameMapManager.h"
 #include "map/FxManager.h"
+#include "quest/KillTargetObjective.h"
+#include "quest/CollectItemObjective.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -148,6 +151,29 @@ void Npc::import(const string& jsonFileName) {
   _npcProfile = Npc::Profile(jsonFileName);
 }
 
+void Npc::inflictDamage(Character* target, int damage) {
+  Character::inflictDamage(target, damage);
+
+  if (_disposition != Npc::Disposition::ALLY || !_party || !target->isSetToKill()) {
+    return;
+  }
+
+  auto player = dynamic_cast<Player*>(_party->getLeader());
+
+  if (!player) {
+    return;
+  }
+
+  // FIXME: code duplication (Player::inflictDamage())
+  for (auto quest : player->getQuestBook().getInProgressQuests()) {
+    auto currentObjective = quest->getCurrentStage().objective.get();
+    if (currentObjective->getObjectiveType() == Quest::Objective::Type::KILL &&
+        dynamic_cast<KillTargetObjective*>(currentObjective)->getCharacterName() == target->getCharacterProfile().name) {
+      dynamic_cast<KillTargetObjective*>(currentObjective)->incrementCurrentAmount();
+    }
+  }
+  player->getQuestBook().update(Quest::Objective::Type::KILL);
+}
 
 void Npc::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);

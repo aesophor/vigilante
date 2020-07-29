@@ -516,11 +516,9 @@ void Character::jump() {
 }
 
 void Character::doubleJump() {
-  VGLOG(LOG_INFO, "Performing first jump");
   jump();
 
   callback_util::runAfter([=]() {
-    VGLOG(LOG_INFO, "Performing second jump");
     jump();
   }, .25f);
 }
