@@ -151,25 +151,13 @@ void Npc::import(const string& jsonFileName) {
   _npcProfile = Npc::Profile(jsonFileName);
 }
 
+
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
 
-
-  // If `target` dies, then try to lockOn() `target`'s other party members
-  // including the leader.'
-  if (target->isSetToKill() && target->getParty()) {
-    for (auto member : target->getParty()->getLeaderAndMembers()) {
-      if (!member->isSetToKill()) {
-        lockOn(member);
-        break;
-      }
-    }
-  }
-
-
   // If this Npc is in the player's party, and this Npc kills an enemy,
   // then update player's quests with KillTargetObjective.
-  if (_disposition == Npc::Disposition::ALLY && _party && target->isSetToKill()) {
+  if (_disposition == Npc::Disposition::ALLY && target->isSetToKill() && _party) {
     auto player = dynamic_cast<Player*>(_party->getLeader());
     if (player) {
       player->updateKillTargetObjectives(target);
@@ -302,13 +290,32 @@ void Npc::act(float delta) {
   //     b. target not within attack range -> moveToTarget()
   // (2) Is following another Character -> moveToTarget()
   // (3) Sandboxing (just moving around wasting its time) -> moveRandomly()
+  VGLOG(LOG_INFO, "%s's lockedOnTarget = %s", _characterProfile.name.c_str(),
+      (_lockedOnTarget) ? _lockedOnTarget->getCharacterProfile().name.c_str() : "(null)");
+
   if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
 
     if (!_inRangeTargets.empty()) {  // target is within attack range
       attack();
+
+
+      auto target = _lockedOnTarget;
       if (_inRangeTargets.empty()) {
         setLockedOnTarget(nullptr);
       }
+
+      // If `target` dies, then try to lockOn() `target`'s other party members
+      // including the leader.'
+      if (_inRangeTargets.empty() && target->getParty()) {
+        for (auto member : target->getParty()->getLeaderAndMembers()) {
+          if (!member->isSetToKill()) {
+            VGLOG(LOG_INFO, "selecting next target: %s", member->getCharacterProfile().name.c_str());
+            setLockedOnTarget(member);
+            break;
+          }
+        }
+      }
+
     } else {  // target not within attack range
       moveToTarget(delta, _lockedOnTarget, _characterProfile.attackRange / kPpm);
     }
@@ -318,6 +325,7 @@ void Npc::act(float delta) {
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
+
 }
 
 void Npc::moveToTarget(float delta, Character* target, float followDistance) {
