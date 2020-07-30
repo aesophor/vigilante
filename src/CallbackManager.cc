@@ -22,7 +22,7 @@ CallbackManager::CallbackManager()
       _pendingCount(0) {}
 
 
-void CallbackManager::runAfter(const function<void()>& userCallback, float delay) {
+void CallbackManager::runAfter(const function<void ()>& userCallback, float delay) {
   _scene->runAction(Sequence::create(
       CallFunc::create([=]() { ++(this->_pendingCount); }),
       DelayTime::create(delay),

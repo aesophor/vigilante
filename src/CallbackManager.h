@@ -14,7 +14,7 @@ class CallbackManager {
   static CallbackManager* getInstance();
   virtual ~CallbackManager() = default;
 
-  void runAfter(const std::function<void()>& userCallback, float delay);
+  void runAfter(const std::function<void ()>& userCallback, float delay);
 
   int getPendingCount() const;
   void setScene(cocos2d::Scene* scene);
