@@ -3,9 +3,9 @@
 
 #include <memory>
 
+#include "CallbackManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
-#include "util/CallbackUtil.h"
 
 using std::string;
 using std::shared_ptr;
@@ -54,7 +54,7 @@ void BatForm::activate() {
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);

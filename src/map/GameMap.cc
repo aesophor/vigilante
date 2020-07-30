@@ -1,8 +1,11 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMap.h"
 
+#include <thread>
+
 #include "std/make_unique.h"
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "character/Player.h"
@@ -21,6 +24,7 @@ using std::vector;
 using std::unordered_set;
 using std::string;
 using std::unique_ptr;
+using std::thread;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -236,25 +240,45 @@ GameMap::Portal::~Portal() {
 
 void GameMap::Portal::onInteract(Character* user) {
   Shade::getInstance()->getImageView()->runAction(Sequence::create(
-    FadeIn::create(Shade::_kFadeInTime),
-    CallFunc::create([=]() {
-      // Load target GameMap.
-      string targetTmxMapFileName = _targetTmxMapFileName;
-      int targetPortalId = _targetPortalId;
+      FadeIn::create(Shade::_kFadeInTime),
+      nullptr
+    )
+  );
 
-      auto gmMgr = GameMapManager::getInstance();
-      gmMgr->loadGameMap(targetTmxMapFileName);
+  Npc::setNpcsAllowedToAct(false);
 
-      auto pos = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
-      user->setPosition(pos.x, pos.y);
+  // If there are callbacks which are still pending for execution,
+  // don't change the GameMap right away. We'll create another thread
+  // to call Portal::onInteract() again when all callbacks have finished.
+  thread([=]() {
+    VGLOG(LOG_INFO, "Waiting until all callbacks have finished...");
+    while (CallbackManager::getInstance()->getPendingCount() > 0);
+    VGLOG(LOG_INFO, "All callback finished, resuming.");
 
-      for (const auto& ally : user->getAllies()) {
-        ally->setPosition(pos.x, pos.y);
-      }
-    }),
-    FadeOut::create(Shade::_kFadeOutTime),
-    nullptr
-  ));
+    Shade::getInstance()->getImageView()->runAction(Sequence::create(
+        FadeIn::create(Shade::_kFadeInTime),
+        CallFunc::create([=]() {
+          // Load target GameMap.
+          string targetTmxMapFileName = _targetTmxMapFileName;
+          int targetPortalId = _targetPortalId;
+
+          auto gmMgr = GameMapManager::getInstance();
+          gmMgr->loadGameMap(targetTmxMapFileName);
+
+          auto pos = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
+          user->setPosition(pos.x, pos.y);
+
+          for (const auto& ally : user->getAllies()) {
+            ally->setPosition(pos.x, pos.y);
+          }
+        }),
+        FadeOut::create(Shade::_kFadeOutTime),
+        nullptr
+      )
+    );
+
+    Npc::setNpcsAllowedToAct(true);
+  }).detach();
 }
 
 void GameMap::Portal::createHintBubbleFx() {

@@ -9,7 +9,6 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CallbackUtil.h"
 #include "util/Logger.h"
 
 using std::string;

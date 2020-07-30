@@ -3,9 +3,9 @@
 
 #include <memory>
 
+#include "CallbackManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
-#include "util/CallbackUtil.h"
 
 using std::string;
 using std::shared_ptr;
@@ -47,7 +47,7 @@ void BackDash::activate() {
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
   _user->getBody()->SetLinearDamping(4.0f);
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
 
     shared_ptr<Skill> key(shared_ptr<Skill>(), this);

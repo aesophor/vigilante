@@ -6,12 +6,12 @@
 
 #include <json/document.h>
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "ui/floating_damages/FloatingDamages.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
@@ -519,7 +519,7 @@ void Character::jump() {
 void Character::doubleJump() {
   jump();
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     jump();
   }, .25f);
 }
@@ -531,7 +531,7 @@ void Character::jumpDown() {
 
   _fixtures[FixtureType::FEET]->SetSensor(true);
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _fixtures[FixtureType::FEET]->SetSensor(false);
   }, .25f);
 }
@@ -548,7 +548,7 @@ void Character::getUp() {
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
   }, .8f);
@@ -557,7 +557,7 @@ void Character::sheathWeapon() {
 void Character::unsheathWeapon() {
   _isUnsheathingWeapon = true;
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
@@ -577,7 +577,7 @@ void Character::attack() {
 
   _isAttacking = true;
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _isAttacking = false;
   }, _characterProfile.attackTime);
 
@@ -605,7 +605,7 @@ void Character::activateSkill(Skill* skill) {
   _isUsingSkill = true;
   _currentlyUsedSkill = skill;
 
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     _isUsingSkill = false;
     // Set _currentState to FORCE_UPDATE so that next time in
     // Character::update the animation is guaranteed to be updated.

@@ -26,16 +26,16 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   CREATE_FUNC(MainGameScene);
   virtual ~MainGameScene() = default;
 
-  virtual bool init() override; // cocos2d::Scene
-  virtual void update(float delta) override; // cocos2d::Scene
-  virtual void handleInput() override; // Controllable
+  virtual bool init() override;  // cocos2d::Scene
+  virtual void update(float delta) override;  // cocos2d::Scene
+  virtual void handleInput() override;  // Controllable
 
   b2World* getWorld() const;
 
  private:
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
-  b2DebugRenderer* _b2dr; // autorelease object
+  b2DebugRenderer* _b2dr;  // autorelease object
 
   Shade* _shade;
   Hud* _hud;
@@ -48,6 +48,6 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   GameMapManager* _gameMapManager;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MAIN_GAME_SCENE_H_
+#endif  // VIGILANTE_MAIN_GAME_SCENE_H_

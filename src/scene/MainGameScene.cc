@@ -5,6 +5,7 @@
 
 #include <SimpleAudioEngine.h>
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
@@ -14,7 +15,6 @@
 #include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
 #include "util/CameraUtil.h"
-#include "util/CallbackUtil.h"
 #include "util/KeyCodeUtil.h"
 #include "util/RandUtil.h"
 #include "util/Logger.h"
@@ -98,8 +98,10 @@ bool MainGameScene::init() {
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
 
+  // Initialize CallbackManager.
+  CallbackManager::getInstance()->setScene(this);
+
   // Initialize Vigilante's utils.
-  vigilante::callback_util::init(this);
   vigilante::keycode_util::init();
   vigilante::rand_util::init();
   
@@ -113,7 +115,7 @@ bool MainGameScene::init() {
   _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
   _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
 
-
+  
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
   InputManager::getInstance()->activate(this);

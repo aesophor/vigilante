@@ -3,6 +3,7 @@
 
 #include <json/document.h>
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "item/Item.h"
@@ -14,7 +15,6 @@
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/CallbackUtil.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
 
@@ -60,6 +60,8 @@ using rapidjson::Document;
 
 namespace vigilante {
 
+bool Npc::_areNpcsAllowedToAct = true;
+
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
       _npcProfile(jsonFileName),
@@ -89,7 +91,9 @@ void Npc::update(float delta) {
                                      b2bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y);
   }
 
-  act(delta);
+  if (_areNpcsAllowedToAct) {
+    act(delta);
+  }
 }
 
 void Npc::showOnMap(float x, float y) {
@@ -190,7 +194,7 @@ void Npc::receiveDamage(Character* source, int damage) {
   // Drop items. (Here we'll use a callback to drop items
   // since creating fixtures during collision callback will crash)
   // See: https://github.com/libgdx/libgdx/issues/2730
-  callback_util::runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([=]() {
     for (const auto& i : _npcProfile.droppedItems) {
       const string& itemJson = i.first;
       float dropChance = i.second.chance;
@@ -328,7 +332,14 @@ void Npc::findNewLockedOnTargetFromParty(Character* killedTarget) {
 }
 
 void Npc::moveToTarget(float delta, Character* target, float followDistance) {
-  assert(target != nullptr);
+  assert(_body != nullptr);
+
+  if (!target->getBody()) {
+    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
+                    target->getCharacterProfile().name.c_str());
+    return;
+  }
+
   const b2Vec2& thisPos = _body->GetPosition();
   const b2Vec2& targetPos = target->getBody()->GetPosition();
   
@@ -338,20 +349,13 @@ void Npc::moveToTarget(float delta, Character* target, float followDistance) {
     return;
   }
 
-  /*
-  if (targetPos.x - thisPos.x < 0) {  // target, thisNpc
-    if (_isFacingRight) {
-      _isFacingRight = false;
-    }
-  } else {  // thisNpc, target
-    if (!_isFacingRight) {
-      _isFacingRight = true;
-    }
-  }
-  */
+  // Sometimes when Npcs are too close to each other,
+  // they will stuck in the same place, unable to attack each other.
+  // This is most likely because they are facing at the wrong direction.
+  _isFacingRight = targetPos.x - thisPos.x > 0;
 
   (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
-  jumpIfStucked(delta, /*checkInterval=*/.1f);
+  jumpIfStucked(delta, /*checkInterval=*/.5f);
 }
 
 void Npc::moveRandomly(float delta,
@@ -444,6 +448,11 @@ void Npc::setDisposition(Npc::Disposition disposition) {
 
 void Npc::setSandboxing(bool sandboxing) {
   _isSandboxing = sandboxing;
+}
+
+
+void Npc::setNpcsAllowedToAct(bool npcsAllowedToAct) {
+  _areNpcsAllowedToAct = npcsAllowedToAct;
 }
 
 

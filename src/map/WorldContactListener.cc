@@ -2,6 +2,7 @@
 #include "WorldContactListener.h"
 
 #include <cocos2d.h>
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "Projectile.h"
 #include "character/Character.h"
@@ -12,7 +13,6 @@
 #include "skill/Skill.h"
 #include "skill/MagicalMissile.h"
 #include "skill/ForwardSlash.h"
-#include "util/CallbackUtil.h"
 #include "util/Logger.h"
 
 using std::unique_ptr;
@@ -176,7 +176,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setPortal(p);
 
         if (p->willInteractOnContact()) {
-          callback_util::runAfter([=]() {
+          CallbackManager::getInstance()->runAfter([=]() {
             c->interact(p);
           }, .1f);
         }
@@ -196,7 +196,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         i->createHintBubbleFx();
 
         if (i->willInteractOnContact()) {
-          callback_util::runAfter([=]() {
+          CallbackManager::getInstance()->runAfter([=]() {
             c->interact(i);
           }, .1f);
         }

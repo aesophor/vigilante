@@ -92,11 +92,15 @@ class Npc : public Character, public Interactable {
   void setDisposition(Npc::Disposition disposition);
   void setSandboxing(bool sandboxing);
 
+  static void setNpcsAllowedToAct(bool npcsAllowedToAct);
+
 
  private:
   void defineBody(b2BodyType bodyType, float x, float y,
                   short bodyCategoryBits=0, short bodyMaskBits=0,
                   short feetMaskBits=0, short weaponMaskBits=0) override;
+
+  static bool _areNpcsAllowedToAct;
 
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;

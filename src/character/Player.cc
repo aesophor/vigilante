@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
 #include "input/InputManager.h"
@@ -19,7 +20,6 @@
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
-#include "util/CallbackUtil.h"
 #include "util/CameraUtil.h"
 
 #define PLAYER_BODY_CATEGORY_BITS kPlayer
@@ -131,7 +131,7 @@ void Player::receiveDamage(Character* source, int damage) {
   _fixtures[FixtureType::BODY]->SetSensor(true);
   _isInvincible = true;
 
-  callback_util::runAfter([&](){
+  CallbackManager::getInstance()->runAfter([&](){
     _fixtures[FixtureType::BODY]->SetSensor(false);
     _isInvincible = false;
   }, 1.0f);
