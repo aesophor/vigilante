@@ -21,6 +21,7 @@
 #include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
 #include "util/CameraUtil.h"
+#include "util/StringUtil.h"
 
 #define PLAYER_BODY_CATEGORY_BITS kPlayer
 #define PLAYER_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kProjectile
@@ -120,6 +121,10 @@ void Player::inflictDamage(Character* target, int damage) {
   camera_util::shake(8, .1f);
   
   if (target->isSetToKill()) {
+    Notifications::getInstance()->show(
+        string_util::format("Acquired %d exp", target->getCharacterProfile().exp)
+    );
+
     updateKillTargetObjectives(target);
   }
 }
@@ -151,7 +156,23 @@ void Player::unequip(Equipment::Type equipmentType) {
 
 void Player::pickupItem(Item* item) {
   Character::pickupItem(item);
+
+  Notifications::getInstance()->show((item->getAmount() > 1) ?
+      string_util::format("Acquired item: %s (%d).", item->getName().c_str(), item->getAmount()) :
+      string_util::format("Acquired item: %s.", item->getName().c_str())
+  );
+
   _questBook.update(Quest::Objective::Type::COLLECT);
+}
+
+void Player::addExp(const int exp) {
+  int originalLevel = _characterProfile.level;
+  Character::addExp(exp);
+
+  if (_characterProfile.level > originalLevel) {
+    Notifications::getInstance()->show(
+        string_util::format("Congrats! You are now level %d.", _characterProfile.level));
+  }
 }
 
 
@@ -216,11 +237,7 @@ void Player::handleInput() {
 
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
     if (!_inRangeItems.empty()) {
-      Item* item = *_inRangeItems.begin();
-      string itemName = item->getItemProfile().name;
-      int amount = item->getAmount();
-      pickupItem(item);
-      Notifications::getInstance()->show("Acquired item: " + itemName + ((amount > 1) ? (" (" + std::to_string(amount) + ")" + ".") : ""));
+      pickupItem(*_inRangeItems.begin());
     }
   }
 

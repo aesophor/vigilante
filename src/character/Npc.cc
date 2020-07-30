@@ -7,16 +7,15 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "item/Item.h"
-#include "gameplay/ExpPointTable.h"
 #include "map/GameMapManager.h"
 #include "map/FxManager.h"
 #include "quest/KillTargetObjective.h"
 #include "quest/CollectItemObjective.h"
 #include "ui/dialogue/DialogueManager.h"
-#include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
+#include "util/StringUtil.h"
 
 #define ALLY_BODY_CATEGORY_BITS kNpc
 #define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
@@ -178,19 +177,9 @@ void Npc::receiveDamage(Character* source, int damage) {
     return;
   }
 
-  // Give source character exp point.
-  int& sourceCharacterExp = source->getCharacterProfile().exp;
-  int& sourceCharacterLevel = source->getCharacterProfile().level;
-
-  sourceCharacterExp += getCharacterProfile().exp;
-  Notifications::getInstance()->show("Acquired " + std::to_string(getCharacterProfile().exp) + " exp.");
-
-  while (sourceCharacterExp >= exp_point_table::getNextLevelExp(sourceCharacterLevel)) {
-    sourceCharacterExp -= exp_point_table::getNextLevelExp(sourceCharacterLevel);
-    sourceCharacterLevel++;
-    Notifications::getInstance()->show("Congratulations! You are now level " + std::to_string(sourceCharacterLevel) + ".");
-  }
-
+  // Give exp point to source character.
+  source->addExp(_characterProfile.exp);
+ 
   // Drop items. (Here we'll use a callback to drop items
   // since creating fixtures during collision callback will crash)
   // See: https://github.com/libgdx/libgdx/issues/2730

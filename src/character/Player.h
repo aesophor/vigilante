@@ -26,6 +26,7 @@ class Player : public Character, public Controllable {
   virtual void equip(Equipment* equipment) override;  // Character
   virtual void unequip(Equipment::Type equipmentType) override;  // Character
   virtual void pickupItem(Item* item) override;  // Character
+  virtual void addExp(const int exp) override;  // Character
 
   virtual void handleInput() override;  // Controllable
 

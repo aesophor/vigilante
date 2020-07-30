@@ -113,6 +113,7 @@ class Character : public DynamicActor, public Importable {
   virtual void pickupItem(Item* item);
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
+  virtual void addExp(const int exp);
 
   virtual void addSkill(std::unique_ptr<Skill> skill);
   virtual void removeSkill(Skill* skill);

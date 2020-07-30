@@ -8,6 +8,7 @@
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"
+#include "gameplay/ExpPointTable.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
 #include "ui/floating_damages/FloatingDamages.h"
@@ -800,7 +801,16 @@ void Character::interact(Interactable* target) {
   target->onInteract(this);
 }
 
+void Character::addExp(const int exp) {
+  int& thisExp = _characterProfile.exp;
+  int& thisLevel = _characterProfile.level;
 
+  thisExp += exp;
+  while (thisExp >= exp_point_table::getNextLevelExp(thisLevel)) {
+    thisExp -= exp_point_table::getNextLevelExp(thisLevel);
+    thisLevel++;
+  }
+}
 
 
 void Character::addSkill(unique_ptr<Skill> skill) {
