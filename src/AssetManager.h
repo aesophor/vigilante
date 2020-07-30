@@ -12,10 +12,12 @@ namespace asset_manager {
 const std::string kExpPointTable = "Resources/Gameplay/exp_point_table.txt";
 const std::string kSpritesheetsList = "Resources/Texture/spritesheets.txt";
 const std::string kQuestsList = "Resources/Gameplay/quests_list.txt";
+const std::string kPlayerJson = "Resources/Database/character/vlad.json";
 #else
 const std::string kExpPointTable = "Gameplay/exp_point_table.txt";
 const std::string kSpritesheetsList = "Texture/spritesheets.txt";
 const std::string kQuestsList = "Gameplay/quests_list.txt";
+const std::string kPlayerJson = "Database/character/vlad.json";
 #endif
 
 // Fonts
@@ -68,6 +70,7 @@ const std::string kEquipmentHighlighted = kPauseMenu + "equipment_highlighted.pn
 // Item icons
 const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyImage = "Texture/empty.png";
+
 
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);

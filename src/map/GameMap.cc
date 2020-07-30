@@ -69,7 +69,7 @@ void GameMap::deleteObjects() {
 }
 
 unique_ptr<Player> GameMap::spawnPlayer() const {
-  auto player = std::make_unique<Player>("Resources/Database/character/vlad.json");
+  auto player = std::make_unique<Player>(asset_manager::kPlayerJson);
 
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
   auto& valMap = objGroup->getObjects()[0].asValueMap();
@@ -109,7 +109,8 @@ float GameMap::getHeight() const {
 }
 
 
-void GameMap::createRectangles(const string& layerName, short categoryBits, bool collidable, float friction) {
+void GameMap::createRectangles(const string& layerName, short categoryBits,
+                               bool collidable, float friction) {
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   
@@ -136,7 +137,8 @@ void GameMap::createRectangles(const string& layerName, short categoryBits, bool
   }
 }
 
-void GameMap::createPolylines(const string& layerName, short categoryBits, bool collidable, float friction) {
+void GameMap::createPolylines(const string& layerName, short categoryBits,
+                              bool collidable, float friction) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
   for (auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
@@ -228,7 +230,8 @@ void GameMap::spawnChests() {
 }
 
 
-GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId, bool willInteractOnContact, b2Body* body)
+GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
+                        bool willInteractOnContact, b2Body* body)
     : _targetTmxMapFileName(targetTmxMapFileName),
       _targetPortalId(targetPortalId),
       _willInteractOnContact(willInteractOnContact),
