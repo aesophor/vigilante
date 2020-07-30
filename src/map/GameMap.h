@@ -47,7 +47,7 @@ class GameMap {
 
   void createObjects();
   void deleteObjects();
-  std::unique_ptr<Player> createPlayer() const;
+  std::unique_ptr<Player> spawnPlayer() const;
   Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
 
 
@@ -66,9 +66,10 @@ class GameMap {
  private:
   void createRectangles(const std::string& layerName, short categoryBits, bool collidable, float friction);
   void createPolylines(const std::string& layerName, short categoryBits, bool collidable, float friction);
-  void createPortals();
-  void createNpcs();
-  void createChests();
+
+  void spawnPortals();
+  void spawnNpcs();
+  void spawnChests();
 
   b2World* _world;
   std::unordered_set<b2Body*> _tmxTiledMapBodies;

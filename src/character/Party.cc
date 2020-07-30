@@ -44,12 +44,30 @@ shared_ptr<Character> Party::removeMember(Character* character) {
 }
 
 
-Character* Party::getLeader() const {
-  return _leader;
+bool Party::hasDeceasedMember(const string& characterJsonFileName) const {
+  auto it = _deceasedMembers.find(characterJsonFileName);
+  return it != _deceasedMembers.end();
 }
 
-const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
-  return _members;
+void Party::addDeceasedMember(const string& characterJsonFileName) {
+  if (hasDeceasedMember(characterJsonFileName)) {
+    VGLOG(LOG_ERR, "This member is already a deceased member of the party.");
+    return;
+  }
+  _deceasedMembers.insert(characterJsonFileName);
+}
+
+void Party::removeDeceasedMember(const string& characterJsonFileName) {
+  if (!hasDeceasedMember(characterJsonFileName)) {
+    VGLOG(LOG_ERR, "This member is not a deceased member of the party.");
+    return;
+  }
+  _deceasedMembers.erase(characterJsonFileName);
+}
+
+
+Character* Party::getLeader() const {
+  return _leader;
 }
 
 unordered_set<Character*> Party::getLeaderAndMembers() const {
@@ -60,6 +78,14 @@ unordered_set<Character*> Party::getLeaderAndMembers() const {
     allMembers.insert(member.get());
   }
   return allMembers;
+}
+
+const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
+  return _members;
+}
+
+const unordered_set<string>& Party::getDeceasedMembers() const {
+  return _deceasedMembers;
 }
 
 }  // namespace vigilante

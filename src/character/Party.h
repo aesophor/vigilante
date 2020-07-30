@@ -20,14 +20,20 @@ class Party {
   void addMember(std::shared_ptr<Character> character);
   std::shared_ptr<Character> removeMember(Character* character);
 
+  bool hasDeceasedMember(const std::string& characterJsonFileName) const;
+  void addDeceasedMember(const std::string& characterJsonFileName);
+  void removeDeceasedMember(const std::string& characterJsonFileName);
+
   Character* getLeader() const;
-  const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
   std::unordered_set<Character*> getLeaderAndMembers() const;
-  
+  const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
+  const std::unordered_set<std::string>& getDeceasedMembers() const;
+
  protected:
   // `_leader` will NOT be in `_members`.
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
+  std::unordered_set<std::string> _deceasedMembers;
 };
 
 }  // namespace vigilante

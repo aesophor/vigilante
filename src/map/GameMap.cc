@@ -23,8 +23,9 @@
 using std::vector;
 using std::unordered_set;
 using std::string;
-using std::unique_ptr;
 using std::thread;
+using std::unique_ptr;
+using std::shared_ptr;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -50,9 +51,9 @@ void GameMap::createObjects() {
   createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   
-  createPortals();
-  createChests();
-  createNpcs();
+  spawnPortals();
+  spawnChests();
+  spawnNpcs();
 }
 
 void GameMap::deleteObjects() {
@@ -67,7 +68,7 @@ void GameMap::deleteObjects() {
   }
 }
 
-unique_ptr<Player> GameMap::createPlayer() const {
+unique_ptr<Player> GameMap::spawnPlayer() const {
   auto player = std::make_unique<Player>("Resources/Database/character/vlad.json");
 
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
@@ -167,7 +168,7 @@ void GameMap::createPolylines(const string& layerName, short categoryBits, bool 
   }
 }
 
-void GameMap::createPortals() {
+void GameMap::spawnPortals() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
@@ -197,7 +198,7 @@ void GameMap::createPortals() {
   }
 }
 
-void GameMap::createNpcs() {
+void GameMap::spawnNpcs() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
@@ -208,7 +209,7 @@ void GameMap::createNpcs() {
     // if it has already been recruited by the player.
     // FIXME: what if two or more characters with the same name exist in one map?
     auto player = GameMapManager::getInstance()->getPlayer();
-    if (player && player->getParty()->hasMember(json)) {
+    if (player && (player->getParty()->hasMember(json) || player->getParty()->hasDeceasedMember(json))) {
       continue;
     }
 
@@ -216,7 +217,7 @@ void GameMap::createNpcs() {
   }
 }
 
-void GameMap::createChests() {
+void GameMap::spawnChests() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
@@ -268,7 +269,13 @@ void GameMap::Portal::onInteract(Character* user) {
                 // Place the user and its party members at the portal.
                 user->setPosition(pos.x, pos.y);
                 for (auto ally : user->getAllies()) {
-                  ally->setPosition(pos.x, pos.y);
+                  if (!ally->isKilled()) {
+                    ally->setPosition(pos.x, pos.y);
+                  } else {
+                    shared_ptr<Character> deceased = user->getParty()->removeMember(ally);
+                    deceased->removeFromMap();
+                    user->getParty()->addDeceasedMember(deceased->getCharacterProfile().jsonFileName);
+                  }
                 }
               }),
               FadeOut::create(Shade::_kFadeOutTime),
