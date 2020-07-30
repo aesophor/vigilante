@@ -36,7 +36,7 @@ std::string string_util::format(const std::string& fmt, Args&&... args) {
   const int bufSize
     = 1 + std::snprintf(nullptr, 0, fmt.c_str(), std::forward<Args>(args)...);
 
-  const std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufSize);
+  const auto buf = std::make_unique<char[]>(bufSize);
   std::memset(buf.get(), 0x00, bufSize);
 
   return (std::snprintf(buf.get(), bufSize, fmt.c_str(),
