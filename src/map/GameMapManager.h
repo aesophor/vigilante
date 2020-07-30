@@ -27,7 +27,7 @@ class GameMapManager {
   void update(float delta);
 
   GameMap* getGameMap() const;
-  void loadGameMap(const std::string& tmxMapFileName);
+  GameMap* loadGameMap(const std::string& tmxMapFileName);
 
   Player* getPlayer() const;
   b2World* getWorld() const;

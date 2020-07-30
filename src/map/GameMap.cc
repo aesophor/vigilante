@@ -239,46 +239,49 @@ GameMap::Portal::~Portal() {
 }
 
 void GameMap::Portal::onInteract(Character* user) {
-  Shade::getInstance()->getImageView()->runAction(Sequence::create(
-      FadeIn::create(Shade::_kFadeInTime),
-      nullptr
-    )
-  );
+  // [IMPORTANT]
+  // Before loading the new GameMap, we need to make sure that
+  // all pending callbacks have finished executing.
 
+  // Pause all Npcs from acting, which prevents new callbacks
+  // from being generated.
   Npc::setNpcsAllowedToAct(false);
 
-  // If there are callbacks which are still pending for execution,
-  // don't change the GameMap right away. We'll create another thread
-  // to call Portal::onInteract() again when all callbacks have finished.
-  thread([=]() {
-    VGLOG(LOG_INFO, "Waiting until all callbacks have finished...");
-    while (CallbackManager::getInstance()->getPendingCount() > 0);
-    VGLOG(LOG_INFO, "All callback finished, resuming.");
+  Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
+      FadeIn::create(Shade::_kFadeInTime),
+      CallFunc::create([this, user]() {
+        // We'll create another thread and use spinlock to wait until
+        // all callbacks have finished executing before loading the new GameMap
+        // and faded out the shade.
+        thread([this, user]() {
+          while (CallbackManager::getInstance()->getPendingCount() > 0);
 
-    Shade::getInstance()->getImageView()->runAction(Sequence::create(
-        FadeIn::create(Shade::_kFadeInTime),
-        CallFunc::create([=]() {
-          // Load target GameMap.
-          string targetTmxMapFileName = _targetTmxMapFileName;
-          int targetPortalId = _targetPortalId;
+          Shade::getInstance()->getImageView()->runAction(Sequence::create(
+              CallFunc::create([this, user]() {
+                // Load target GameMap.
+                const string newMapFile = _targetTmxMapFileName;
+                const int targetPortalId = _targetPortalId;
 
-          auto gmMgr = GameMapManager::getInstance();
-          gmMgr->loadGameMap(targetTmxMapFileName);
+                auto newMap = GameMapManager::getInstance()->loadGameMap(newMapFile);
+                auto pos = newMap->_portals.at(targetPortalId)->_body->GetPosition();
 
-          auto pos = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
-          user->setPosition(pos.x, pos.y);
+                // Place the user and its party members at the portal.
+                user->setPosition(pos.x, pos.y);
+                for (auto ally : user->getAllies()) {
+                  ally->setPosition(pos.x, pos.y);
+                }
+              }),
+              FadeOut::create(Shade::_kFadeOutTime),
+              nullptr
+            )
+          );
 
-          for (const auto& ally : user->getAllies()) {
-            ally->setPosition(pos.x, pos.y);
-          }
-        }),
-        FadeOut::create(Shade::_kFadeOutTime),
-        nullptr
-      )
-    );
-
-    Npc::setNpcsAllowedToAct(true);
-  }).detach();
+          // Resume Npcs to act.
+          Npc::setNpcsAllowedToAct(true);
+        }).detach();
+      })
+    )
+  );
 }
 
 void GameMap::Portal::createHintBubbleFx() {

@@ -56,7 +56,7 @@ GameMap* GameMapManager::getGameMap() const {
   return _gameMap.get();
 }
 
-void GameMapManager::loadGameMap(const string& tmxMapFileName) {
+GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // Clean up previous GameMap.
   if (_gameMap) {
     _layer->removeChild(_gameMap->getTmxTiledMap());
@@ -72,6 +72,8 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (!_player) {
     _player = _gameMap->createPlayer();
   }
+
+  return _gameMap.get();
 }
 
 
