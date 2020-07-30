@@ -269,13 +269,7 @@ void GameMap::Portal::onInteract(Character* user) {
                 // Place the user and its party members at the portal.
                 user->setPosition(pos.x, pos.y);
                 for (auto ally : user->getAllies()) {
-                  if (!ally->isKilled()) {
-                    ally->setPosition(pos.x, pos.y);
-                  } else {
-                    shared_ptr<Character> deceased = user->getParty()->removeMember(ally);
-                    deceased->removeFromMap();
-                    user->getParty()->addDeceasedMember(deceased->getCharacterProfile().jsonFileName);
-                  }
+                  ally->setPosition(pos.x, pos.y);
                 }
               }),
               FadeOut::create(Shade::_kFadeOutTime),

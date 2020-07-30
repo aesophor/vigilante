@@ -13,6 +13,7 @@
 using std::set;
 using std::string;
 using std::unique_ptr;
+using std::shared_ptr;
 using cocos2d::Director;
 using cocos2d::Layer;
 using cocos2d::TMXTiledMap;
@@ -64,6 +65,19 @@ GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
     _gameMap.reset(); // deletes the underlying GameMap object and _gameMap = nullptr.
   }
 
+  // Remove deceased party member from player's party, remove their
+  // b2body and texture, and add them to the party's deceasedMember unordered_set.
+  if (_player) {
+    for (auto ally : _player->getAllies()) {
+      if (ally->isKilled()) {
+        shared_ptr<Character> deceased = ally->getParty()->removeMember(ally);
+        deceased->removeFromMap();
+        _player->getParty()->addDeceasedMember(deceased->getCharacterProfile().jsonFileName);
+      }
+    }
+  }
+
+  // Load the new GameMap.
   _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFileName);
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
