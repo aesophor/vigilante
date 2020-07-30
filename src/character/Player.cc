@@ -134,7 +134,7 @@ void Player::receiveDamage(Character* source, int damage) {
   callback_util::runAfter([&](){
     _fixtures[FixtureType::BODY]->SetSensor(false);
     _isInvincible = false;
-  }, 1.5f);
+  }, 1.0f);
 
   Hud::getInstance()->updateStatusBars();
 }

@@ -564,9 +564,9 @@ void Character::unsheathWeapon() {
 }
 
 void Character::attack() {
-  // If character is still attacking, block this request.
+  // If character is still attacking, block this attack request.
   // The latter condition prevents the character from being stucked in an
-  // attack animation when the user calls Character::attack too frequently.
+  // attack animation when the user calls Character::attack() too frequently.
   if (_isAttacking || _currentState == State::ATTACKING) {
     return;
   }
@@ -580,6 +580,7 @@ void Character::attack() {
   callback_util::runAfter([=]() {
     _isAttacking = false;
   }, _characterProfile.attackTime);
+
 
   if (!_inRangeTargets.empty()) {
     _lockedOnTarget = *_inRangeTargets.begin();

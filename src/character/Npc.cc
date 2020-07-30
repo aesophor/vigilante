@@ -152,6 +152,38 @@ void Npc::import(const string& jsonFileName) {
 }
 
 
+void Npc::attack() {
+  Character::attack();
+
+  // For an Npc who belongs to a party, there's one extra thing that
+  // is needed to be taken care of:
+  // 
+  // If `_inRangeTargets` becomes empty, then it means the previous
+  // `_lockedOnTarget` has been killed.
+  //
+  // (1) If we can select another party members (including the leader)
+  //     from target's party, then set it as the new `_lockedOnTarget`.
+  // (2) If there's no suitable candidate, clear `_lockedOnTarget`.
+
+  if (!_inRangeTargets.empty()) {
+    return;
+  }
+
+  /*
+  Character* killedTarget = _lockedOnTarget;
+  setLockedOnTarget(nullptr);
+
+  if (killedTarget->getParty()) {
+    for (auto member : killedTarget->getParty()->getLeaderAndMembers()) {
+      if (!member->isSetToKill()) {
+        setLockedOnTarget(member);
+        break;
+      }
+    }
+  }
+  */
+}
+
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
 
@@ -284,51 +316,51 @@ void Npc::act(float delta) {
     return;
   }
 
+
   // This Npc may perform one of the following actions:
-  // (1) Has `_lockedOnTarget`:
+  // (1) Has `_lockedOnTarget` and `_lockedOnTarget` is not dead yet:
   //     a. target is within attack range -> attack()
   //     b. target not within attack range -> moveToTarget()
-  // (2) Is following another Character -> moveToTarget()
-  // (3) Sandboxing (just moving around wasting its time) -> moveRandomly()
-  VGLOG(LOG_INFO, "%s's lockedOnTarget = %s", _characterProfile.name.c_str(),
-      (_lockedOnTarget) ? _lockedOnTarget->getCharacterProfile().name.c_str() : "(null)");
+  // (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
+  //     a. target belongs to a party -> try to select other member as new _lockedOnTarget
+  //     b. target not belongs to any party -> clear _lockedOnTarget
+  // (3) Is following another Character -> moveToTarget()
+  // (4) Sandboxing (just moving around wasting its time) -> moveRandomly()
 
   if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
 
     if (!_inRangeTargets.empty()) {  // target is within attack range
       attack();
-
-
-      auto target = _lockedOnTarget;
-      if (_inRangeTargets.empty()) {
-        setLockedOnTarget(nullptr);
-      }
-
-      // If `target` dies, then try to lockOn() `target`'s other party members
-      // including the leader.'
-      if (_inRangeTargets.empty() && target->getParty()) {
-        for (auto member : target->getParty()->getLeaderAndMembers()) {
-          if (!member->isSetToKill()) {
-            VGLOG(LOG_INFO, "selecting next target: %s", member->getCharacterProfile().name.c_str());
-            setLockedOnTarget(member);
-            break;
-          }
-        }
-      }
-
     } else {  // target not within attack range
       moveToTarget(delta, _lockedOnTarget, _characterProfile.attackRange / kPpm);
     }
 
+  } else if (_lockedOnTarget && _lockedOnTarget->isSetToKill()) {
+    Character* killedTarget = _lockedOnTarget;
+    setLockedOnTarget(nullptr);
+    findNewLockedOnTargetFromParty(killedTarget);
   } else if (_party) {
     moveToTarget(delta, _party->getLeader(), .5f);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
+}
 
+void Npc::findNewLockedOnTargetFromParty(Character* killedTarget) {
+  if (!killedTarget->getParty()) {
+    return;
+  }
+
+  for (auto member : killedTarget->getParty()->getLeaderAndMembers()) {
+    if (!member->isSetToKill()) {
+      setLockedOnTarget(member);
+      return;
+    }
+  }
 }
 
 void Npc::moveToTarget(float delta, Character* target, float followDistance) {
+  assert(target != nullptr);
   const b2Vec2& thisPos = _body->GetPosition();
   const b2Vec2& targetPos = target->getBody()->GetPosition();
   
@@ -338,6 +370,7 @@ void Npc::moveToTarget(float delta, Character* target, float followDistance) {
     return;
   }
 
+  /*
   if (targetPos.x - thisPos.x < 0) {  // target, thisNpc
     if (_isFacingRight) {
       _isFacingRight = false;
@@ -347,6 +380,7 @@ void Npc::moveToTarget(float delta, Character* target, float followDistance) {
       _isFacingRight = true;
     }
   }
+  */
 
   (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
   jumpIfStucked(delta, /*checkInterval=*/.1f);
