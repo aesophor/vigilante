@@ -59,7 +59,6 @@ class Npc : public Character, public Interactable {
   virtual void showOnMap(float x, float y) override;  // Character
   virtual void update(float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
-  virtual void attack() override;  // Character
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character
   virtual void interact(Interactable* target) override;  // Character

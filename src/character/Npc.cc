@@ -152,38 +152,6 @@ void Npc::import(const string& jsonFileName) {
 }
 
 
-void Npc::attack() {
-  Character::attack();
-
-  // For an Npc who belongs to a party, there's one extra thing that
-  // is needed to be taken care of:
-  // 
-  // If `_inRangeTargets` becomes empty, then it means the previous
-  // `_lockedOnTarget` has been killed.
-  //
-  // (1) If we can select another party members (including the leader)
-  //     from target's party, then set it as the new `_lockedOnTarget`.
-  // (2) If there's no suitable candidate, clear `_lockedOnTarget`.
-
-  if (!_inRangeTargets.empty()) {
-    return;
-  }
-
-  /*
-  Character* killedTarget = _lockedOnTarget;
-  setLockedOnTarget(nullptr);
-
-  if (killedTarget->getParty()) {
-    for (auto member : killedTarget->getParty()->getLeaderAndMembers()) {
-      if (!member->isSetToKill()) {
-        setLockedOnTarget(member);
-        break;
-      }
-    }
-  }
-  */
-}
-
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
 
