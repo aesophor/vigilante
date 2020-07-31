@@ -100,6 +100,7 @@ bool MainGameScene::init() {
   _window = std::make_unique<Window>();
   _window->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_window->getLayer(), graphical_layers::kWindow);
+  _window->setVisible(false);
  
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);

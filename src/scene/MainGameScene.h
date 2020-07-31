@@ -10,7 +10,6 @@
 #include "Controllable.h"
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"
-#include "ui/Window.h"
 #include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
@@ -18,6 +17,7 @@
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
+#include "ui/window/Window.h"
 #include "util/box2d/b2DebugRenderer.h"
 
 namespace vigilante {

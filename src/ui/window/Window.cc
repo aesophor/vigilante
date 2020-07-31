@@ -152,16 +152,9 @@ string Window::getTitle() const {
   return _titleLabel->getString();
 }
 
-
-void Window::clearContentLayout() {
-  _contentLayout->removeAllChildren();
+bool Window::isVisible() const {
+  return _isVisible;
 }
-
-void Window::setTitle(const string& title) {
-  _titleLabel->setString(title);
-  normalize();
-}
-
 
 const Vec2& Window::getPosition() const {
   return _position;
@@ -169,6 +162,26 @@ const Vec2& Window::getPosition() const {
 
 const Size& Window::getSize() const {
   return _size;
+}
+
+
+void Window::setContentLayout(Layout* contentLayout) {
+  assert(contentLayout != nullptr);
+
+  _layout->removeChild(_contentLayout, /*cleanup=*/true);
+  _layout->addChild(contentLayout);
+
+  _contentLayout = contentLayout;
+}
+
+void Window::setTitle(const string& title) {
+  _titleLabel->setString(title);
+  normalize();
+}
+
+void Window::setVisible(bool visible) {
+  _isVisible = visible;
+  _layer->setVisible(visible);
 }
 
 void Window::setPosition(const Vec2& position) {

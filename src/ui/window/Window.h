@@ -21,11 +21,13 @@ class Window {
   cocos2d::ui::Layout* getLayout() const;
   cocos2d::ui::Layout* getContentLayout() const;
   std::string getTitle() const;
+  bool isVisible() const;
   const cocos2d::Vec2& getPosition() const;
   const cocos2d::Size& getSize() const;
 
-  void clearContentLayout();
+  void setContentLayout(cocos2d::ui::Layout* contentLayout);
   void setTitle(const std::string& title);
+  void setVisible(bool visible);
   void setPosition(const cocos2d::Vec2& position);
   void setPosition(float x, float y);
   void setSize(const cocos2d::Size& size);
@@ -53,6 +55,7 @@ class Window {
   cocos2d::ui::ImageView* _bottomBg;
   
 
+  bool _isVisible;
   cocos2d::Vec2 _position;
   cocos2d::Size _size;
 };
