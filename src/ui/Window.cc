@@ -11,6 +11,11 @@
 #define DEFAULT_ROW_HEIGHT 2
 #define TITLE_LABEL_OFFSET_Y -10
 
+#define CONTENT_MARGIN_LEFT 10
+#define CONTENT_MARGIN_RIGHT 10
+#define CONTENT_MARGIN_TOP 25
+#define CONTENT_MARGIN_BOTTOM 30
+
 using std::string;
 using cocos2d::Vec2;
 using cocos2d::Size;
@@ -19,7 +24,7 @@ using cocos2d::Layer;
 using cocos2d::Director;
 using cocos2d::ui::Layout;
 using cocos2d::ui::ImageView;
-using vigilante::asset_manager::kRegularFont;
+using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
 using vigilante::asset_manager::kWindowContentBg;
 using vigilante::asset_manager::kWindowTopLeftBg;
@@ -36,8 +41,8 @@ namespace vigilante {
 Window::Window(float x, float y, float width, float height)
     : _layer(Layer::create()),
       _layout(TableLayout::create(width, DEFAULT_ROW_HEIGHT)),
-      _contentLayout(),
-      _titleLabel(Label::createWithTTF(DEFAULT_TITLE, kRegularFont, kRegularFontSize)),
+      _contentLayout(Layout::create()),
+      _titleLabel(Label::createWithTTF(DEFAULT_TITLE, kBoldFont, kRegularFontSize)),
       _contentBg(ImageView::create(kWindowContentBg)),
       _topLeftBg(ImageView::create(kWindowTopLeftBg)),
       _topRightBg(ImageView::create(kWindowTopRightBg)),
@@ -91,12 +96,43 @@ Window::Window(float x, float y, float width, float height)
   layout->addChild(_bottomLeftBg);
   layout->addChild(_bottomBg);
   layout->addChild(_bottomRightBg);
-
-  _titleLabel->getFontAtlas()->setAliasTexParameters();
   _layer->addChild(layout);
+
+
+  // Add `_titleLabel` to `_layer`.
+  _titleLabel->getFontAtlas()->setAliasTexParameters();
   _layer->addChild(_titleLabel);
 
-  placeAtCenter();
+  // Add `_contentLayout` to `_layer`
+  _contentLayout->setAnchorPoint({0, 1});
+  _contentLayout->setClippingEnabled(true);
+  _layer->addChild(_contentLayout);
+
+  normalize();
+}
+
+void Window::normalize() {
+  const auto winSize = Director::getInstance()->getWinSize();
+
+  // Place the window itself at the center.
+  _position.x = winSize.width / 2 - _size.width / 2;
+  _position.y = winSize.height / 2 + _size.height / 2;
+  _layout->setPosition(_position);
+
+  // Resize `_contentLayout` to a suitable size and
+  // place it the center of the window, reserving some extra space
+  // at the bottom of the window for MenuDialog.
+  const float contentX = _position.x + CONTENT_MARGIN_LEFT;
+  const float contentY = _position.y - CONTENT_MARGIN_TOP;
+  const float contentWidth = _size.width - CONTENT_MARGIN_LEFT - CONTENT_MARGIN_RIGHT;
+  const float contentHeight = _size.height - CONTENT_MARGIN_TOP - CONTENT_MARGIN_BOTTOM;
+  _contentLayout->setPosition({contentX, contentY});
+  _contentLayout->setContentSize({contentWidth, contentHeight});
+
+  // Place the title label slightly below the window's upper edge.
+  const float titleX = _position.x + _size.width / 2;
+  const float titleY = _position.y + TITLE_LABEL_OFFSET_Y;
+  _titleLabel->setPosition(titleX, titleY);
 }
 
 
@@ -117,18 +153,13 @@ string Window::getTitle() const {
 }
 
 
-void Window::setContentLayout(Layout* contentLayout) {
-  assert(contentLayout != nullptr);
-
-  if (_contentLayout) {
-    _layer->removeChild(_contentLayout);
-  }
-  _contentLayout = contentLayout;
-  _layer->addChild(contentLayout);
+void Window::clearContentLayout() {
+  _contentLayout->removeAllChildren();
 }
 
 void Window::setTitle(const string& title) {
   _titleLabel->setString(title);
+  normalize();
 }
 
 
@@ -142,35 +173,20 @@ const Size& Window::getSize() const {
 
 void Window::setPosition(const Vec2& position) {
   _position = position;
+  normalize();
 }
 
 void Window::setPosition(float x, float y) {
-  _position.x = x;
-  _position.y = y;
+  setPosition({x, y});
 }
 
 void Window::setSize(const Size& size) {
   _size = size;
+  normalize();
 }
 
 void Window::setSize(float width, float height) {
-  _size.width = width;
-  _size.height = height;
-}
-
-void Window::placeAtCenter() {
-  auto winSize = Director::getInstance()->getWinSize();
-
-  // Place the window itself at the center.
-  _layout->setAnchorPoint({0, 1});  // Make top right (0, 0)
-  _position.x = winSize.width / 2 - _size.width / 2;
-  _position.y = winSize.height / 2 + _size.height / 2;
-  _layout->setPosition(_position);
-
-  // Place the title label slightly below the window's upper edge.
-  float titleX = _position.x + _size.width / 2;
-  float titleY = _position.y + TITLE_LABEL_OFFSET_Y;
-  _titleLabel->setPosition(titleX, titleY);
+  setSize({width, height});
 }
 
 }  // namespace vigilante

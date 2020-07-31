@@ -24,7 +24,7 @@ class Window {
   const cocos2d::Vec2& getPosition() const;
   const cocos2d::Size& getSize() const;
 
-  void setContentLayout(cocos2d::ui::Layout* contentLayout);
+  void clearContentLayout();
   void setTitle(const std::string& title);
   void setPosition(const cocos2d::Vec2& position);
   void setPosition(float x, float y);
@@ -32,7 +32,9 @@ class Window {
   void setSize(float width, float height);
 
  private:
-  void placeAtCenter();
+  // Place the window at the center, and place `_titleLabel` as well as
+  // `_contentLayout` at the correct position.
+  void normalize();
 
   cocos2d::Layer* _layer;
 
