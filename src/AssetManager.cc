@@ -33,6 +33,6 @@ void loadSpritesheets(const string& spritesheetsListFileName) {
   }
 }
 
-} // namespace asset_manager
+}  // namespace asset_manager
 
-} // namespace vigilante
+}  // namespace vigilante

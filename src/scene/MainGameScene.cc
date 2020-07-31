@@ -84,6 +84,7 @@ bool MainGameScene::init() {
 
   // Initialize quest hints.
   _questHints = QuestHints::getInstance();
+  _questHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
   // Initialize floating damages.
@@ -94,6 +95,11 @@ bool MainGameScene::init() {
   _dialogueManager = DialogueManager::getInstance();
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
+
+  // Initialize window.
+  _window = std::make_unique<Window>();
+  _window->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_window->getLayer(), graphical_layers::kWindow);
  
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);

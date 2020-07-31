@@ -10,6 +10,7 @@
 #include "Controllable.h"
 #include "map/GameMapManager.h"
 #include "ui/Shade.h"
+#include "ui/Window.h"
 #include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
@@ -41,6 +42,7 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   Hud* _hud;
   Console* _console;
   std::unique_ptr<PauseMenu> _pauseMenu;
+  std::unique_ptr<Window> _window;
   DialogueManager* _dialogueManager;
   FloatingDamages* _floatingDamages;
   QuestHints* _questHints;

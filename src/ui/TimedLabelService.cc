@@ -31,6 +31,7 @@ TimedLabelService::TimedLabelService(int startingX, int startingY,
       _kLabelLifetime(labelLifetime),
       _kAlignment(alignment) {}
 
+
 void TimedLabelService::update(float delta) {
   for (auto& notification : _labelQueue) {
     notification.timer += delta;
@@ -64,7 +65,11 @@ void TimedLabelService::show(const string& message) {
   }
 
   // Display the new notification.
+  // Note that cocos2d::Layer::setCameraMask() can only apply the given mask to
+  // the children that are in the _layer at that moment. If we create a label/sprite
+  // afterwards, the mask is the default one, even if we add it as a child of that layer.
   TimedLabel timedLabel(message, _kLabelLifetime, _kAlignment);
+  timedLabel.label->setCameraMask(_layer->getCameraMask());
   timedLabel.label->setPosition(_kStartingX, _kStartingY);
   timedLabel.label->runAction(MoveBy::create(_kMoveUpDuration, {_kDeltaX, _kDeltaY}));
   _labelQueue.push_back(timedLabel);
@@ -87,11 +92,10 @@ TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime,
       timer() {
   label->setAnchorPoint(alignment);
   label->getFontAtlas()->setAliasTexParameters();
-  label->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
 }
 
-bool TimedLabelService::TimedLabel::operator== (const TimedLabel& other) {
+bool TimedLabelService::TimedLabel::operator==(const TimedLabel& other) {
   return this->label == other.label;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

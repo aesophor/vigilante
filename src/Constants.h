@@ -54,13 +54,14 @@ const int kEquipment = 37;
 
 const int kDefault = 50;
 
-const int kFloatingDamage = 91;
-const int kNotification = 93;
-const int kQuestHint = 94;
-const int kHud = 95;
-const int kDialogue = 96;
-const int kShade = 97;
-const int kPauseMenu = 99;
+const int kFloatingDamage = 85;
+const int kNotification = 87;
+const int kQuestHint = 89;
+const int kHud = 91;
+const int kWindow = 92;
+const int kDialogue = 93;
+const int kShade = 95;
+const int kPauseMenu = 97;
 const int kConsole = 100;
 
 }  // namespace graphical_layers

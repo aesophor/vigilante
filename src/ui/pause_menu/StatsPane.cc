@@ -42,7 +42,6 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
   // but we know it's a TableLayout in StatsPane
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
 
-  layout->setLayoutType(Layout::Type::RELATIVE);
   layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
   layout->addChild(_background);
   layout->setTableWidth(_background->getContentSize().width);

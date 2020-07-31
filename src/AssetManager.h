@@ -71,12 +71,24 @@ const std::string kEquipmentHighlighted = kPauseMenu + "equipment_highlighted.pn
 const std::string kItemIcons = "Texture/item/";
 const std::string kEmptyImage = "Texture/empty.png";
 
+// Window
+const std::string kWindow = "Texture/ui/window/";
+const std::string kWindowContentBg = kWindow + "window_content_bg.png";
+const std::string kWindowTopLeftBg = kWindow + "window_top_left_bg.png";
+const std::string kWindowTopRightBg = kWindow + "window_top_right_bg.png";
+const std::string kWindowBottomLeftBg = kWindow + "window_bottom_left_bg.png";
+const std::string kWindowBottomRightBg = kWindow + "window_bottom_right_bg.png";
+const std::string kWindowTopBg = kWindow + "window_top_bg.png";
+const std::string kWindowLeftBg = kWindow + "window_left_bg.png";
+const std::string kWindowRightBg = kWindow + "window_right_bg.png";
+const std::string kWindowBottomBg = kWindow + "window_bottom_bg.png";
+
 
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);
 
-} // namespace asset_manager
+}  // namespace asset_manager
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ASSET_MANAGER_H_
+#endif  // VIGILANTE_ASSET_MANAGER_H_

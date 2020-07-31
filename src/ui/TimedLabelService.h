@@ -52,6 +52,6 @@ class TimedLabelService {
   const TimedLabelService::TimedLabel::Alignment _kAlignment;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TIMED_LABEL_SERVICE_H_
+#endif  // VIGILANTE_TIMED_LABEL_SERVICE_H_

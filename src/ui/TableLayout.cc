@@ -33,10 +33,11 @@ bool TableLayout::init(float tableWidth, float rowHeight) {
 
 void TableLayout::addChild(Node* child) {
   Layout::addChild(child);
+  child->setAnchorPoint({0, 1});
   child->setPosition(_nextChildPosition);
-
+  
   _lastAddedChild = child;
-  _nextChildPosition.x += child->getContentSize().width;
+  _nextChildPosition.x += child->getScaleX() * child->getContentSize().width;
 }
 
 TableLayout* TableLayout::align(TableLayout::Alignment direction) {
@@ -49,12 +50,14 @@ TableLayout* TableLayout::align(TableLayout::Alignment direction) {
     case Alignment::LEFT:
       _lastAddedChild->setAnchorPoint({0, 1});
       _lastAddedChild->setPositionX(0);
-      _nextChildPosition.x = 0 + _lastAddedChild->getContentSize().width;
+      _nextChildPosition.x
+        = 0 + _lastAddedChild->getScaleX() * _lastAddedChild->getContentSize().width;
       break;
     case Alignment::CENTER:
       _lastAddedChild->setAnchorPoint({0.5, 1});
       _lastAddedChild->setPositionX(_tableWidth / 2);
-      _nextChildPosition.x = _tableWidth / 2 + _lastAddedChild->getContentSize().width / 2;
+      _nextChildPosition.x
+        = _tableWidth / 2 + _lastAddedChild->getScaleX() * _lastAddedChild->getContentSize().width / 2;
       break;
     case Alignment::RIGHT:
       _lastAddedChild->setAnchorPoint({1, 1});
@@ -74,7 +77,7 @@ TableLayout* TableLayout::padLeft(float padding) {
   }
   float originalX = _lastAddedChild->getPositionX();
   float newX = originalX + padding;
-  float width = _lastAddedChild->getContentSize().width;
+  float width = _lastAddedChild->getScaleX() * _lastAddedChild->getContentSize().width;
   _lastAddedChild->setPositionX(newX);
   _nextChildPosition.x = newX + width;
   return this;
@@ -86,7 +89,7 @@ TableLayout* TableLayout::padRight(float padding) {
   }
   float originalX = _lastAddedChild->getPositionX();
   float newX = originalX - padding;
-  float width = _lastAddedChild->getContentSize().width;
+  float width = _lastAddedChild->getScaleX() * _lastAddedChild->getContentSize().width;
   _lastAddedChild->setPositionX(newX);
   _nextChildPosition.x = newX + width;
   return this;
@@ -180,4 +183,4 @@ void TableLayout::setNextChildPositionY(float y) {
   _nextChildPosition.y = y;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
