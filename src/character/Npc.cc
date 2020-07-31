@@ -464,7 +464,7 @@ Npc::Profile::Profile(const string& jsonFileName) {
 
   dialogueTreeJsonFile = json["dialogueTree"].GetString();
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
-  isPotentialPartyMember = json["isPotentialPartyMember"].GetBool();
+  isRecruitable = json["isRecruitable"].GetBool();
   isUnsheathed = json["isUnsheathed"].GetBool();
   shouldSandbox = json["shouldSandbox"].GetBool();
 }

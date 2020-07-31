@@ -111,9 +111,9 @@ void DialogueTree::import(const string& jsonFileName) {
   //       toggle following/dismiss won't be present.
   _isQuestDialogue = json["isQuestDialogue"].GetBool();
 
-  // If the dialogue tree's owner is a potential member of the player's party,
+  // If the dialogue tree's owner is a recruitable Npc,
   // then add toggle follower dialogue to top-level.
-  if (!_isQuestDialogue && _owner->getNpcProfile().isPotentialPartyMember) {
+  if (!_isQuestDialogue && _owner->getNpcProfile().isRecruitable) {
     auto node = std::make_unique<DialogueTree::Node>(this);
     _toggleJoinPartyNode = node.get();
 
