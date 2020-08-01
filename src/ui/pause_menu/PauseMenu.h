@@ -52,7 +52,7 @@ class PauseMenu : public Controllable {
   PauseMenuDialog* getDialog() const;
 
  private:
-  Player* _player;
+  void initMainPane(int index, std::unique_ptr<AbstractPane> pane);
 
   cocos2d::Layer* _layer;
   cocos2d::ui::ImageView* _background;
@@ -61,8 +61,10 @@ class PauseMenu : public Controllable {
   std::unique_ptr<StatsPane> _statsPane;
   std::unique_ptr<PauseMenuDialog> _dialog;
   std::array<std::unique_ptr<AbstractPane>, PauseMenu::Pane::SIZE> _panes;
+
+  Player* _player;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_PAUSE_MENU_H_
+#endif  // VIGILANTE_PAUSE_MENU_H_
