@@ -16,6 +16,9 @@ class Party {
   explicit Party(Character* leader);
   virtual ~Party() = default;
 
+  void recruit(Character* targetCharacter);
+  void dismiss(Character* targetCharacter);
+
   bool hasMember(const std::string& characterJsonFileName) const;
   void addMember(std::shared_ptr<Character> character);
   std::shared_ptr<Character> removeMember(Character* character);

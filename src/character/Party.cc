@@ -1,7 +1,10 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Party.h"
 
+#include <Box2D/Box2D.h>
+#include "Constants.h"
 #include "character/Character.h"
+#include "map/GameMapManager.h"
 
 using std::shared_ptr;
 using std::string;
@@ -11,6 +14,27 @@ namespace vigilante {
 
 Party::Party(Character* leader) : _leader(leader), _members() {}
 
+
+void Party::recruit(Character* targetCharacter) {
+  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+
+  shared_ptr<Character> target
+    = std::dynamic_pointer_cast<Character>(
+        GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetCharacter));
+
+  target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);
+  addMember(std::move(target));
+}
+
+void Party::dismiss(Character* targetCharacter) {
+  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+
+  shared_ptr<DynamicActor> target = removeMember(targetCharacter);
+  target->removeFromMap();
+
+  GameMapManager::getInstance()->getGameMap()->showDynamicActor(
+      std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
+}
 
 bool Party::hasMember(const string& characterJsonFileName) const {
   for (const auto& member : _members) {

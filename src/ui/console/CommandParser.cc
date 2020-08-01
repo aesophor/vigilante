@@ -168,8 +168,6 @@ void CommandParser::updateDialogueTree(const vector<string>& args) {
 void CommandParser::joinPlayerParty(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
-  b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
-
   assert(player != nullptr && targetNpc != nullptr);
 
   if (targetNpc->isInPlayerParty()) {
@@ -177,13 +175,7 @@ void CommandParser::joinPlayerParty(const vector<string>&) {
     return;
   }
 
-  shared_ptr<Character> npc
-    = std::dynamic_pointer_cast<Character>(
-        GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetNpc));
-
-  npc->showOnMap(targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
-
-  player->getParty()->addMember(std::move(npc));
+  player->getParty()->recruit(targetNpc);
   setSuccess();
 }
 
@@ -191,8 +183,6 @@ void CommandParser::joinPlayerParty(const vector<string>&) {
 void CommandParser::leavePlayerParty(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
-  b2Vec2 targetNpcPos = targetNpc->getBody()->GetPosition();
-
   assert(player != nullptr && targetNpc != nullptr);
 
   if (!targetNpc->isInPlayerParty()) {
@@ -200,12 +190,7 @@ void CommandParser::leavePlayerParty(const vector<string>&) {
     return;
   }
 
-  shared_ptr<DynamicActor> npc = player->getParty()->removeMember(targetNpc);
-  npc->removeFromMap();
-
-  GameMapManager::getInstance()->getGameMap()->showDynamicActor(
-      std::move(npc), targetNpcPos.x * kPpm, targetNpcPos.y * kPpm);
-
+  player->getParty()->dismiss(targetNpc);
   setSuccess();
 }
 
