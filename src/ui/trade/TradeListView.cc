@@ -56,15 +56,34 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
 
 void TradeListView::confirm() {
-
+  Item* item = getSelectedObject();
+  if (!item) {
+    return;
+  }
 }
 
 void TradeListView::selectUp() {
+  ListView<Item*>::selectUp();
 
+  if (_objects.empty()) {
+    return;
+  }
+
+  Item* selectedItem = getSelectedObject();
+  assert(selectedItem != nullptr);
+  _descLabel->setString(selectedItem->getDesc());
 }
 
 void TradeListView::selectDown() {
+  ListView<Item*>::selectDown();
 
+  if (_objects.empty()) {
+    return;
+  }
+
+  Item* selectedItem = getSelectedObject();
+  assert(selectedItem != nullptr);
+  _descLabel->setString(selectedItem->getDesc());
 }
 
 
@@ -73,6 +92,7 @@ void TradeListView::showCharactersItemByType(Character* owner, Item::Type itemTy
   setObjects(owner->getInventory()[itemType]);
 
   // Update description label.
+  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
 }  // namespace vigilante
