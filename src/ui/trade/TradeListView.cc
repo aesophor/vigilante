@@ -11,11 +11,48 @@
 #define REGULAR_BG vigilante::asset_manager::kItemRegular
 #define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
+#define DESC_LABEL_X 5
+#define DESC_LABEL_Y -132
+
+#define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
+#define EMPTY_ITEM_NAME "---"
+
+using cocos2d::Label;
+using cocos2d::ui::ImageView;
+
 namespace vigilante {
 
 TradeListView::TradeListView(TradeWindow* tradeWindow)
     : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
-      _tradeWindow(tradeWindow) {}
+      _tradeWindow(tradeWindow),
+      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
+
+  // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
+  // see ui/ListView.h
+  _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
+    ImageView* icon = listViewItem->getIcon();
+    Label* label = listViewItem->getLabel();
+
+    icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
+    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
+
+    if (!item) {
+      return;
+    }
+
+    // Display item amount if amount > 1
+    if (item->getAmount() > 1) {
+      Label* label = listViewItem->getLabel();
+      label->setString(label->getString() + " (" + std::to_string(item->getAmount()) + ")");
+    }
+  };
+
+  _descLabel->getFontAtlas()->setAliasTexParameters();
+  _descLabel->setAnchorPoint({0, 1});
+  _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
+  _descLabel->enableWrap(true);
+  _layout->addChild(_descLabel);
+}
 
 
 void TradeListView::confirm() {

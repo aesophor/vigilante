@@ -24,6 +24,7 @@ class TradeListView : public ListView<Item*> {
 
  private:
   TradeWindow* _tradeWindow;
+  cocos2d::Label* _descLabel;
 };
 
 }  // namespace vigilante
