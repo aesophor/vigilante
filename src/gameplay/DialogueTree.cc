@@ -27,7 +27,8 @@ DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
       _rootNode(),
       _currentNode(),
       _toggleJoinPartyNode(),
-      _isQuestDialogue(),
+      _tradeNode(),
+      _isQuestDialogueTree(),
       _owner(owner) {
   import(jsonFileName);
 }
@@ -37,7 +38,8 @@ DialogueTree::DialogueTree(DialogueTree&& other) noexcept
       _rootNode(std::move(other._rootNode)),
       _currentNode(other._currentNode), 
       _toggleJoinPartyNode(other._toggleJoinPartyNode),
-      _isQuestDialogue(),
+      _tradeNode(other._tradeNode),
+      _isQuestDialogueTree(),
       _owner(other._owner) {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
@@ -45,7 +47,8 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
   _toggleJoinPartyNode = other._toggleJoinPartyNode;
-  _isQuestDialogue = other._isQuestDialogue;
+  _tradeNode = other._tradeNode;
+  _isQuestDialogueTree = other._isQuestDialogueTree;
   _owner = other._owner;
   return *this;
 }
@@ -106,14 +109,14 @@ void DialogueTree::import(const string& jsonFileName) {
   }
 
 
-  // What's the effect of a "QuestDialogue"?
+  // What's the effect of a "QuestDialogueTree"?
   // e.g., if `_isQuestDialogue` == ture, then the dialogue to
   //       toggle following/dismiss won't be present.
-  _isQuestDialogue = json["isQuestDialogue"].GetBool();
+  _isQuestDialogueTree = json["isQuestDialogueTree"].GetBool();
 
   // If the dialogue tree's owner is a recruitable Npc,
-  // then add toggle follower dialogue to top-level.
-  if (!_isQuestDialogue && _owner->getNpcProfile().isRecruitable) {
+  // then add toggle follower dialogue as a root node's child.
+  if (!_isQuestDialogueTree && _owner->getNpcProfile().isRecruitable) {
     auto node = std::make_unique<DialogueTree::Node>(this);
     _toggleJoinPartyNode = node.get();
 
@@ -123,19 +126,31 @@ void DialogueTree::import(const string& jsonFileName) {
     _rootNode->_children.push_back(std::move(node));
     update();
   }
+
+  // If the dialogue tree's owner is a tradable Npc,
+  // then add trade dialogue as a root node's child.
+  if (!_isQuestDialogueTree && _owner->getNpcProfile().isTradable) {
+    auto node = std::make_unique<DialogueTree::Node>(this);
+    _tradeNode = node.get();
+
+    node->_lines.push_back("Let's trade.");
+    node->_cmds.push_back("");
+
+    _rootNode->_children.push_back(std::move(node));
+    update();
+  }
 }
 
 void DialogueTree::update() {
-  if (!_toggleJoinPartyNode) {
-    return;
-  }
-
-  if (!_owner->isInPlayerParty()) {
-    _toggleJoinPartyNode->_lines.front() = "Follow me.";
-    _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
-  } else {
-    _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
-    _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
+  // Update _toggleJoinPartyNode
+  if (_toggleJoinPartyNode) {
+    if (!_owner->isInPlayerParty()) {
+      _toggleJoinPartyNode->_lines.front() = "Follow me.";
+      _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
+    } else {
+      _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
+      _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
+    }
   }
 }
 

@@ -9,14 +9,18 @@
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
 #include "AssetManager.h"
+#include "Controllable.h"
 
 namespace vigilante {
 
-class Window {
+class Window : public Controllable {
  public:
   Window(float x=150, float y=225, float width=300, float height=150);
   virtual ~Window() = default;
   
+  virtual void update() = 0;
+  virtual void handleInput() = 0;
+
   cocos2d::Layer* getLayer() const;
   cocos2d::ui::Layout* getLayout() const;
   cocos2d::ui::Layout* getContentLayout() const;
@@ -33,7 +37,7 @@ class Window {
   void setSize(const cocos2d::Size& size);
   void setSize(float width, float height);
 
- private:
+ protected:
   // Place the window at the center, and place `_titleLabel` as well as
   // `_contentLayout` at the correct position.
   void normalize();

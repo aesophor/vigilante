@@ -9,6 +9,7 @@
 #include <Box2D/Box2D.h>
 #include "Controllable.h"
 #include "map/GameMapManager.h"
+#include "ui/WindowManager.h"
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
@@ -17,7 +18,6 @@
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
-#include "ui/window/Window.h"
 #include "util/box2d/b2DebugRenderer.h"
 
 namespace vigilante {
@@ -38,11 +38,14 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
   cocos2d::Camera* _hudCamera;
   b2DebugRenderer* _b2dr;  // autorelease object
 
+
+  // For singleton classes, use raw pointers here.
+  // Otherwise, use smart pointers (prefer unique_ptr<>).
   Shade* _shade;
   Hud* _hud;
   Console* _console;
   std::unique_ptr<PauseMenu> _pauseMenu;
-  std::unique_ptr<Window> _window;
+  WindowManager* _windowManager;
   DialogueManager* _dialogueManager;
   FloatingDamages* _floatingDamages;
   QuestHints* _questHints;

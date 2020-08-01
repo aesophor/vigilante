@@ -466,6 +466,7 @@ Npc::Profile::Profile(const string& jsonFileName) {
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
   isRecruitable = json["isRecruitable"].GetBool();
   isUnsheathed = json["isUnsheathed"].GetBool();
+  isTradable = json["isTradable"].GetBool();
   shouldSandbox = json["shouldSandbox"].GetBool();
 }
 

@@ -96,11 +96,10 @@ bool MainGameScene::init() {
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
 
-  // Initialize window.
-  _window = std::make_unique<Window>();
-  _window->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_window->getLayer(), graphical_layers::kWindow);
-  _window->setVisible(false);
+  // Initialize window manager.
+  _windowManager = WindowManager::getInstance();
+  _windowManager->setScene(this);
+  _windowManager->setDefaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
  
   // Initialize Vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
@@ -129,7 +128,6 @@ bool MainGameScene::init() {
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
-  _b2dr->setVisible(false);
   addChild(_b2dr);
 
   _hud->setPlayer(_gameMapManager->getPlayer());

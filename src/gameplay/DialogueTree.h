@@ -76,8 +76,11 @@ class DialogueTree : public Importable {
   std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;
   std::unique_ptr<DialogueTree::Node> _rootNode;
   DialogueTree::Node* _currentNode;
+
   DialogueTree::Node* _toggleJoinPartyNode;
-  bool _isQuestDialogue;
+  DialogueTree::Node* _tradeNode;
+
+  bool _isQuestDialogueTree;
   Npc* _owner;
 };
 
