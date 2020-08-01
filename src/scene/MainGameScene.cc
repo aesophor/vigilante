@@ -189,8 +189,13 @@ void MainGameScene::handleInput() {
     return;
   }
 
-  // Toggle PauseMenu
+  // Exit window or toggle PauseMenu
   if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
+    if (!_windowManager->isEmpty()) {
+      _windowManager->pop();
+      return;
+    }
+
     bool isVisible = !_pauseMenu->getLayer()->isVisible();
     _pauseMenu->getLayer()->setVisible(isVisible);
     _pauseMenu->update();
@@ -204,8 +209,9 @@ void MainGameScene::handleInput() {
     return;
   }
 
-
-  if (_pauseMenu->getLayer()->isVisible()) {
+  if (!_windowManager->isEmpty()) {
+    _windowManager->top()->handleInput();
+  } else if (_pauseMenu->getLayer()->isVisible()) {
     _pauseMenu->handleInput(); // paused
   } else if (_console->getLayer()->isVisible()) {
     _console->handleInput();

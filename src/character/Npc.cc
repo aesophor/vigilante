@@ -264,7 +264,7 @@ void Npc::beginDialogue() {
 void Npc::beginTrade() {
   auto player = GameMapManager::getInstance()->getPlayer();
 
-  WindowManager::getInstance()->pushWindow(
+  WindowManager::getInstance()->push(
       std::make_unique<TradeWindow>(/*buyer=*/player, /*seller=*/this));
 }
 

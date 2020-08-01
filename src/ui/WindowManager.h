@@ -17,10 +17,12 @@ class WindowManager {
   virtual ~WindowManager() = default;
 
   // Push `window` to the internal window stack and render it.
-  void pushWindow(std::unique_ptr<Window> window);
+  void push(std::unique_ptr<Window> window);
   // Pop the top window off the internal window stack and unrender it.
-  std::unique_ptr<Window> popWindow();
+  std::unique_ptr<Window> pop();
+  Window* top() const;
 
+  bool isEmpty() const;
   int getSize() const;
   uint16_t getDefaultCameraMask() const;
 

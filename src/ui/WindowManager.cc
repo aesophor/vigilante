@@ -24,7 +24,7 @@ WindowManager::WindowManager()
       _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)),
       _windows() {}
 
-void WindowManager::pushWindow(unique_ptr<Window> window) {
+void WindowManager::push(unique_ptr<Window> window) {
   if (_windows.size() >= _kMaxWindowCount) {
     VGLOG(LOG_WARN, "Unable to render more window(s), maximum: %ld", _kMaxWindowCount);
     return;
@@ -41,7 +41,7 @@ void WindowManager::pushWindow(unique_ptr<Window> window) {
   _windows.push_back(std::move(window));
 }
 
-unique_ptr<Window> WindowManager::popWindow() {
+unique_ptr<Window> WindowManager::pop() {
   if (_windows.empty()) {
     VGLOG(LOG_ERR, "Unable to pop more window(s).");
     return nullptr;
@@ -58,6 +58,17 @@ unique_ptr<Window> WindowManager::popWindow() {
   return removedWindow;
 }
 
+Window* WindowManager::top() const {
+  if (_windows.empty()) {
+    return nullptr;
+  }
+  return _windows.back().get();
+}
+
+
+bool WindowManager::isEmpty() const {
+  return _windows.size() == 0;
+}
 
 int WindowManager::getSize() const {
   return _windows.size();
