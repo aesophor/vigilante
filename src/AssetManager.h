@@ -83,6 +83,10 @@ const std::string kWindowLeftBg = kWindow + "window_left_bg.png";
 const std::string kWindowRightBg = kWindow + "window_right_bg.png";
 const std::string kWindowBottomBg = kWindow + "window_bottom_bg.png";
 
+// Trade
+const std::string kTrade = "Texture/ui/trade/";
+const std::string kTradeBg = kTrade + "trade_bg.png";
+
 
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);

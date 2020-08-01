@@ -26,14 +26,16 @@ void Party::recruit(Character* targetCharacter) {
   addMember(std::move(target));
 }
 
-void Party::dismiss(Character* targetCharacter) {
+void Party::dismiss(Character* targetCharacter, bool addToMap) {
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
   target->removeFromMap();
 
-  GameMapManager::getInstance()->getGameMap()->showDynamicActor(
-      std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
+  if (addToMap) {
+    GameMapManager::getInstance()->getGameMap()->showDynamicActor(
+        std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
+  }
 }
 
 bool Party::hasMember(const string& characterJsonFileName) const {
@@ -43,28 +45,6 @@ bool Party::hasMember(const string& characterJsonFileName) const {
     }
   }
   return false;
-}
-
-void Party::addMember(shared_ptr<Character> character) {
-  character->setParty(_leader->getParty());
-  _members.insert(std::move(character));
-}
-
-shared_ptr<Character> Party::removeMember(Character* character) {
-  character->setParty(nullptr);
-
-  shared_ptr<Character> removedMember;
-
-  shared_ptr<Character> key(shared_ptr<Character>(), character);
-  auto it = _members.find(key);
-  if (it == _members.end()) {
-    VGLOG(LOG_ERR, "This member is not in the party.");
-    return nullptr;
-  }
-
-  removedMember = std::move(*it);
-  _members.erase(it);
-  return removedMember;
 }
 
 
@@ -110,6 +90,29 @@ const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
 
 const unordered_set<string>& Party::getDeceasedMembers() const {
   return _deceasedMembers;
+}
+
+
+void Party::addMember(shared_ptr<Character> character) {
+  character->setParty(_leader->getParty());
+  _members.insert(std::move(character));
+}
+
+shared_ptr<Character> Party::removeMember(Character* character) {
+  character->setParty(nullptr);
+
+  shared_ptr<Character> removedMember;
+
+  shared_ptr<Character> key(shared_ptr<Character>(), character);
+  auto it = _members.find(key);
+  if (it == _members.end()) {
+    VGLOG(LOG_ERR, "This member is not in the party.");
+    return nullptr;
+  }
+
+  removedMember = std::move(*it);
+  _members.erase(it);
+  return removedMember;
 }
 
 }  // namespace vigilante

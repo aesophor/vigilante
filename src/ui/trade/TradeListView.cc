@@ -2,6 +2,7 @@
 #include "TradeListView.h"
 
 #include "AssetManager.h"
+#include "ui/trade/TradeWindow.h"
 
 #define VISIBLE_ITEM_COUNT 5
 #define WIDTH 289.5
@@ -27,6 +28,14 @@ void TradeListView::selectUp() {
 
 void TradeListView::selectDown() {
 
+}
+
+
+void TradeListView::showCharactersItemByType(Character* owner, Item::Type itemType) {
+  // Show the owner's items of the specified type.
+  setObjects(owner->getInventory()[itemType]);
+
+  // Update description label.
 }
 
 }  // namespace vigilante

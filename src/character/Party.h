@@ -16,12 +16,9 @@ class Party {
   explicit Party(Character* leader);
   virtual ~Party() = default;
 
-  void recruit(Character* targetCharacter);
-  void dismiss(Character* targetCharacter);
-
   bool hasMember(const std::string& characterJsonFileName) const;
-  void addMember(std::shared_ptr<Character> character);
-  std::shared_ptr<Character> removeMember(Character* character);
+  void recruit(Character* targetCharacter);
+  void dismiss(Character* targetCharacter, bool addToMap=true);
 
   bool hasDeceasedMember(const std::string& characterJsonFileName) const;
   void addDeceasedMember(const std::string& characterJsonFileName);
@@ -33,6 +30,9 @@ class Party {
   const std::unordered_set<std::string>& getDeceasedMembers() const;
 
  protected:
+  void addMember(std::shared_ptr<Character> character);
+  std::shared_ptr<Character> removeMember(Character* character);
+
   // `_leader` will NOT be in `_members`.
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;

@@ -22,11 +22,12 @@ namespace vigilante {
 
 InventoryPane::InventoryPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _isSelectingEquipment(),
-      _selectingEquipmentType(),
       _background(ImageView::create(kInventoryBg)),
       _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _itemListView(std::make_unique<ItemListView>(pauseMenu)) {
+      _itemListView(std::make_unique<ItemListView>(pauseMenu)),
+      _isSelectingEquipment(),
+      _selectingEquipmentType() {
+
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(Layout::Type::ABSOLUTE);

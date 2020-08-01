@@ -2,11 +2,14 @@
 #ifndef VIGILANTE_TRADE_LIST_VIEW_H_
 #define VIGILANTE_TRADE_LIST_VIEW_H_
 
+#include "character/Character.h"
 #include "item/Item.h"
 #include "ui/ListView.h"
-#include "ui/trade/TradeWindow.h"
 
 namespace vigilante {
+
+// Forward declaration
+class TradeWindow;
 
 class TradeListView : public ListView<Item*> {
  public:
@@ -16,6 +19,8 @@ class TradeListView : public ListView<Item*> {
   virtual void confirm() override;  // ListView<Item*>
   virtual void selectUp() override;  // ListView<Item*>
   virtual void selectDown() override;  // ListView<Item*>
+
+  void showCharactersItemByType(Character* owner, Item::Type itemType);
 
  private:
   TradeWindow* _tradeWindow;

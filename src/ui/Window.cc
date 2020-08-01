@@ -38,7 +38,7 @@ using vigilante::asset_manager::kWindowBottomBg;
 
 namespace vigilante {
 
-Window::Window(float x, float y, float width, float height)
+Window::Window(float width, float height)
     : _layer(Layer::create()),
       _layout(TableLayout::create(width, DEFAULT_ROW_HEIGHT)),
       _contentLayout(Layout::create()),
@@ -52,7 +52,7 @@ Window::Window(float x, float y, float width, float height)
       _leftBg(ImageView::create(kWindowLeftBg)),
       _rightBg(ImageView::create(kWindowRightBg)),
       _bottomBg(ImageView::create(kWindowBottomBg)),
-      _position(x, y),
+      _position(0, 0),  // Calculated in Window::normalize()
       _size(width, height) {
 
   // All {topLeft,topRight,bottomLeft,bottomRight}Bg images
@@ -67,15 +67,25 @@ Window::Window(float x, float y, float width, float height)
          _topLeftBg->getContentSize().height == _bottomLeftBg->getContentSize().height &&
          _topLeftBg->getContentSize().height == _bottomRightBg->getContentSize().height);
 
+  normalize(/*init=*/true);
+}
 
+void Window::normalize(bool init) {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
+  layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
+  if (!init) {
+    layout->removeAllChildren();
+  }
+
+  const auto winSize = Director::getInstance()->getWinSize();
+  _position.x = winSize.width / 2 - _size.width / 2;
+  _position.y = winSize.height / 2 + _size.height / 2;
+  layout->setPosition(_position);
+
   const float cornerBgSideLength = _topLeftBg->getContentSize().width;
   const Size contentBgSize = {_size.width - cornerBgSideLength * 2,
                               _size.height - cornerBgSideLength * 2};
-
-  layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
-  layout->setPosition(_position);
-
+  
   _topBg->setScaleX(contentBgSize.width);
   _leftBg->setScaleY(contentBgSize.height);
   _contentBg->setScaleX(contentBgSize.width);
@@ -96,43 +106,31 @@ Window::Window(float x, float y, float width, float height)
   layout->addChild(_bottomLeftBg);
   layout->addChild(_bottomBg);
   layout->addChild(_bottomRightBg);
+  if (!init) {
+    _layer->removeChild(layout); 
+  }
   _layer->addChild(layout);
 
-
-  // Add `_titleLabel` to `_layer`.
-  _titleLabel->getFontAtlas()->setAliasTexParameters();
-  _layer->addChild(_titleLabel);
-
-  // Add `_contentLayout` to `_layer`
-  _contentLayout->setAnchorPoint({0, 1});
-  _contentLayout->setClippingEnabled(true);
-  _layer->addChild(_contentLayout);
-
-  normalize();
-}
-
-void Window::normalize() {
-  const auto winSize = Director::getInstance()->getWinSize();
-
-  // Place the window itself at the center.
-  _position.x = winSize.width / 2 - _size.width / 2;
-  _position.y = winSize.height / 2 + _size.height / 2;
-  _layout->setPosition(_position);
-
-  // Resize `_contentLayout` to a suitable size and
-  // place it the center of the window, reserving some extra space
-  // at the bottom of the window for MenuDialog.
+  
+  // Reposition `_contentLayout` 
   const float contentX = _position.x + CONTENT_MARGIN_LEFT;
   const float contentY = _position.y - CONTENT_MARGIN_TOP;
-  const float contentWidth = _size.width - CONTENT_MARGIN_LEFT - CONTENT_MARGIN_RIGHT;
-  const float contentHeight = _size.height - CONTENT_MARGIN_TOP - CONTENT_MARGIN_BOTTOM;
+  _contentLayout->setAnchorPoint({0, 1});
   _contentLayout->setPosition({contentX, contentY});
-  _contentLayout->setContentSize({contentWidth, contentHeight});
+  if (!init) {
+    _layer->removeChild(_contentLayout);
+  }
+  _layer->addChild(_contentLayout);
 
   // Place the title label slightly below the window's upper edge.
   const float titleX = _position.x + _size.width / 2;
   const float titleY = _position.y + TITLE_LABEL_OFFSET_Y;
   _titleLabel->setPosition(titleX, titleY);
+  _titleLabel->getFontAtlas()->setAliasTexParameters();
+  if (!init) {
+    _layer->removeChild(_titleLabel);
+  }
+  _layer->addChild(_titleLabel);
 }
 
 
@@ -165,15 +163,6 @@ const Size& Window::getSize() const {
 }
 
 
-void Window::setContentLayout(Layout* contentLayout) {
-  assert(contentLayout != nullptr);
-
-  _layout->removeChild(_contentLayout, /*cleanup=*/true);
-  _layout->addChild(contentLayout);
-
-  _contentLayout = contentLayout;
-}
-
 void Window::setTitle(const string& title) {
   _titleLabel->setString(title);
   normalize();
@@ -183,6 +172,7 @@ void Window::setVisible(bool visible) {
   _isVisible = visible;
   _layer->setVisible(visible);
 }
+
 
 void Window::setPosition(const Vec2& position) {
   _position = position;

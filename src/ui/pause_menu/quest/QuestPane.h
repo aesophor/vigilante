@@ -22,7 +22,6 @@ class QuestPane : public AbstractPane {
 
  private:
   cocos2d::ui::ImageView* _background;
-
   std::unique_ptr<TabView> _tabView;
   std::unique_ptr<QuestListView> _questListView;
 };

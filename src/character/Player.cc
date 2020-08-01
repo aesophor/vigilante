@@ -70,7 +70,7 @@ Player::Player(const std::string& jsonFileName)
 
 
 void Player::showOnMap(float x, float y) {
-  if (_isShownOnMap) {
+  if (_isShownOnMap || _isKilled) {
     return;
   }
   _isShownOnMap = true;

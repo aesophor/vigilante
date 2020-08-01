@@ -46,6 +46,7 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
     {"updateDialogueTree", &CommandParser::updateDialogueTree},
     {"joinPlayerParty",    &CommandParser::joinPlayerParty   },
     {"leavePlayerParty",   &CommandParser::leavePlayerParty  },
+    {"tradeWithPlayer",    &CommandParser::tradeWithPlayer   },
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -191,6 +192,21 @@ void CommandParser::leavePlayerParty(const vector<string>&) {
   }
 
   player->getParty()->dismiss(targetNpc);
+  setSuccess();
+}
+
+
+void CommandParser::tradeWithPlayer(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  assert(player != nullptr && targetNpc != nullptr);
+
+  if (!targetNpc->getNpcProfile().isTradable) {
+    setError("This Npc is not tradable.");
+    return;
+  }
+
+  targetNpc->beginTrade();
   setSuccess();
 }
 

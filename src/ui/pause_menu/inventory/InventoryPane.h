@@ -27,14 +27,14 @@ class InventoryPane : public AbstractPane {
   void selectEquipment(Equipment::Type equipmentType);
 
  private:
+  cocos2d::ui::ImageView* _background;
+  std::unique_ptr<TabView> _tabView;
+  std::unique_ptr<ItemListView> _itemListView;
+
   // These two variables are necessary when
   // the inventory pane is to select a equipment.
   bool _isSelectingEquipment;
   Equipment::Type _selectingEquipmentType;
-
-  cocos2d::ui::ImageView* _background;
-  std::unique_ptr<TabView> _tabView;
-  std::unique_ptr<ItemListView> _itemListView;
 };
 
 }  // namespace vigilante

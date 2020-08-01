@@ -70,9 +70,8 @@ GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (_player) {
     for (auto ally : _player->getAllies()) {
       if (ally->isKilled()) {
-        shared_ptr<Character> deceased = ally->getParty()->removeMember(ally);
-        deceased->removeFromMap();
-        _player->getParty()->addDeceasedMember(deceased->getCharacterProfile().jsonFileName);
+        _player->getParty()->dismiss(ally, /*addToMap=*/false);
+        _player->getParty()->addDeceasedMember(ally->getCharacterProfile().jsonFileName);
       }
     }
   }

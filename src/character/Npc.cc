@@ -1,7 +1,10 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
+#include <memory>
+
 #include <json/document.h>
+#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -11,7 +14,9 @@
 #include "map/FxManager.h"
 #include "quest/KillTargetObjective.h"
 #include "quest/CollectItemObjective.h"
+#include "ui/WindowManager.h"
 #include "ui/dialogue/DialogueManager.h"
+#include "ui/trade/TradeWindow.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
@@ -30,6 +35,7 @@
 using std::set;
 using std::string;
 using std::vector;
+using std::unique_ptr;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -96,7 +102,7 @@ void Npc::update(float delta) {
 }
 
 void Npc::showOnMap(float x, float y) {
-  if (_isShownOnMap) {
+  if (_isShownOnMap || _isKilled) {
     return;
   }
   _isShownOnMap = true;
@@ -253,6 +259,13 @@ void Npc::beginDialogue() {
     dialogueMgr->getSubtitles()->addSubtitle(line);
   }
   dialogueMgr->getSubtitles()->beginSubtitles();
+}
+
+void Npc::beginTrade() {
+  auto player = GameMapManager::getInstance()->getPlayer();
+
+  WindowManager::getInstance()->pushWindow(
+      std::make_unique<TradeWindow>(/*buyer=*/player, /*seller=*/this));
 }
 
 

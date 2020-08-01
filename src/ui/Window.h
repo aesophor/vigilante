@@ -15,7 +15,7 @@ namespace vigilante {
 
 class Window : public Controllable {
  public:
-  Window(float x=150, float y=225, float width=300, float height=150);
+  Window(float width=300, float height=150);
   virtual ~Window() = default;
   
   virtual void update() = 0;
@@ -29,7 +29,6 @@ class Window : public Controllable {
   const cocos2d::Vec2& getPosition() const;
   const cocos2d::Size& getSize() const;
 
-  void setContentLayout(cocos2d::ui::Layout* contentLayout);
   void setTitle(const std::string& title);
   void setVisible(bool visible);
   void setPosition(const cocos2d::Vec2& position);
@@ -40,7 +39,7 @@ class Window : public Controllable {
  protected:
   // Place the window at the center, and place `_titleLabel` as well as
   // `_contentLayout` at the correct position.
-  void normalize();
+  void normalize(bool init=false);
 
   cocos2d::Layer* _layer;
 

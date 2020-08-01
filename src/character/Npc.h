@@ -71,6 +71,7 @@ class Npc : public Character, public Interactable {
 
   void updateDialogueTreeIfNeeded();
   void beginDialogue();
+  void beginTrade();
 
 
   void act(float delta);

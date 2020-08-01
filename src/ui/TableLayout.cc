@@ -25,11 +25,15 @@ bool TableLayout::init(float tableWidth, float rowHeight) {
   }
   _tableWidth = tableWidth;
   _rowHeight = rowHeight;
-  _lastAddedChild = nullptr;
-  _nextChildPosition = {0, 0};
+  reset();
   return true;
 }
 
+
+void TableLayout::removeAllChildren() {
+  Layout::removeAllChildren();
+  reset();
+}
 
 void TableLayout::addChild(Node* child) {
   Layout::addChild(child);
@@ -139,6 +143,11 @@ TableLayout* TableLayout::row(float height) {
 
 TableLayout* TableLayout::row() {
   return row(_rowHeight);
+}
+
+void TableLayout::reset() {
+  _lastAddedChild = nullptr;
+  _nextChildPosition = {0, 0};
 }
 
 

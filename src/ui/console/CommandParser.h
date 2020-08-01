@@ -26,6 +26,7 @@ class CommandParser {
   void updateDialogueTree(const std::vector<std::string>& args);
   void joinPlayerParty(const std::vector<std::string>& args);
   void leavePlayerParty(const std::vector<std::string>& args);
+  void tradeWithPlayer(const std::vector<std::string>& args);
 
   bool _success;
   std::string _errMsg;

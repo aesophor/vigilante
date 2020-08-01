@@ -134,7 +134,7 @@ void DialogueTree::import(const string& jsonFileName) {
     _tradeNode = node.get();
 
     node->_lines.push_back("Let's trade.");
-    node->_cmds.push_back("");
+    node->_cmds.push_back("tradeWithPlayer");
 
     _rootNode->_children.push_back(std::move(node));
     update();

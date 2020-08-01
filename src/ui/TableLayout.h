@@ -19,6 +19,8 @@ class TableLayout : public cocos2d::ui::Layout {
     RIGHT
   };
 
+  virtual void removeAllChildren();  // cocos2d::ui::Layout
+
   virtual void addChild(cocos2d::Node* child) override;
   virtual TableLayout* align(TableLayout::Alignment direction);  // align last added child
 
@@ -30,9 +32,11 @@ class TableLayout : public cocos2d::ui::Layout {
   virtual TableLayout* spaceX(float spacing);
   virtual TableLayout* spaceY(float spacing);
 
-  virtual TableLayout* row(float height); // change row
+  virtual TableLayout* row(float height);  // change row
   virtual TableLayout* row();
 
+  void reset();
+  
   float getTableWidth() const;
   float getRowHeight() const;
   cocos2d::Vec2 getNextChildPosition() const;
