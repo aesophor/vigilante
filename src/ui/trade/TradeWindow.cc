@@ -83,7 +83,7 @@ void TradeWindow::handleInput() {
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _tradeListView->selectDown();
   } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
-
+    _tradeListView->confirm();
   }
 }
 

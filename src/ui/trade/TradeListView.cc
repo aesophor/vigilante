@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TradeListView.h"
 
+#include <memory>
+
 #include "AssetManager.h"
 #include "ui/trade/TradeWindow.h"
 
@@ -60,6 +62,11 @@ void TradeListView::confirm() {
   if (!item) {
     return;
   }
+
+  _tradeWindow->getBuyer()->addItem(Item::create(item->getItemProfile().jsonFileName));
+  _tradeWindow->getSeller()->removeItem(item);
+
+  _tradeWindow->update();
 }
 
 void TradeListView::selectUp() {
