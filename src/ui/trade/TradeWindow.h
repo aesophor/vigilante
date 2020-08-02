@@ -22,6 +22,8 @@ class TradeWindow : public Window {
   virtual void update() override;  // Window
   virtual void handleInput() override;  // Window
 
+  void toggleBuySell();
+
   Character* getBuyer() const;
   Character* getSeller() const;
 
