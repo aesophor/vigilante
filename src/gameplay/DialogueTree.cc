@@ -27,6 +27,7 @@ DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
       _rootNode(),
       _currentNode(),
       _toggleJoinPartyNode(),
+      _toggleWaitNode(),
       _tradeNode(),
       _isQuestDialogueTree(),
       _owner(owner) {
@@ -38,6 +39,7 @@ DialogueTree::DialogueTree(DialogueTree&& other) noexcept
       _rootNode(std::move(other._rootNode)),
       _currentNode(other._currentNode), 
       _toggleJoinPartyNode(other._toggleJoinPartyNode),
+      _toggleWaitNode(other._toggleWaitNode),
       _tradeNode(other._tradeNode),
       _isQuestDialogueTree(),
       _owner(other._owner) {}
@@ -47,6 +49,7 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
   _toggleJoinPartyNode = other._toggleJoinPartyNode;
+  _toggleWaitNode = other._toggleWaitNode;
   _tradeNode = other._tradeNode;
   _isQuestDialogueTree = other._isQuestDialogueTree;
   _owner = other._owner;
@@ -115,15 +118,22 @@ void DialogueTree::import(const string& jsonFileName) {
   _isQuestDialogueTree = json["isQuestDialogueTree"].GetBool();
 
   // If the dialogue tree's owner is a recruitable Npc,
-  // then add toggle follower dialogue as a root node's child.
+  // then add the following DialogueTree::Nodes  as root node's children.
+  // (1) toggle join/leave (recruit/dismiss) party
+  // (2) toggle wait/follow
   if (!_isQuestDialogueTree && _owner->getNpcProfile().isRecruitable) {
-    auto node = std::make_unique<DialogueTree::Node>(this);
-    _toggleJoinPartyNode = node.get();
+    auto toggleJoinPartyNode = std::make_unique<DialogueTree::Node>(this);
+    toggleJoinPartyNode->_lines.resize(1);
+    toggleJoinPartyNode->_cmds.resize(1);
+    _toggleJoinPartyNode = toggleJoinPartyNode.get();
+    _rootNode->_children.push_back(std::move(toggleJoinPartyNode));
 
-    node->_lines.resize(1);
-    node->_cmds.resize(1);
+    auto toggleWaitNode = std::make_unique<DialogueTree::Node>(this);
+    toggleWaitNode->_lines.resize(1);
+    toggleWaitNode->_cmds.resize(1);
+    _toggleWaitNode = toggleWaitNode.get();
+    _rootNode->_children.push_back(std::move(toggleWaitNode));
 
-    _rootNode->_children.push_back(std::move(node));
     update();
   }
 
@@ -142,15 +152,27 @@ void DialogueTree::import(const string& jsonFileName) {
 }
 
 void DialogueTree::update() {
-  // Update _toggleJoinPartyNode
-  if (_toggleJoinPartyNode) {
-    if (!_owner->isInPlayerParty()) {
-      _toggleJoinPartyNode->_lines.front() = "Follow me.";
-      _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
-    } else {
-      _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
-      _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
-    }
+  if (!_toggleJoinPartyNode) {
+    return;
+  }
+
+  // If this Npc is recruitable but it has not been recruited yet...
+  if (!_owner->isInPlayerParty()) {
+    _toggleJoinPartyNode->_lines.front() = "Follow me.";
+    _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
+    return;
+  }
+
+  // If this Npc is recruitable and it has already been recruited...
+  _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
+  _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
+
+  if (_owner->isWaitingForPlayer()) {
+    _toggleWaitNode->_lines.front() = "Continue to follow me.";
+    _toggleWaitNode->_cmds.front() = "playerPartyMemberFollow";
+  } else {
+    _toggleWaitNode->_lines.front() = "Wait here.";
+    _toggleWaitNode->_cmds.front() = "playerPartyMemberWait";
   }
 }
 

@@ -78,6 +78,7 @@ class DialogueTree : public Importable {
   DialogueTree::Node* _currentNode;
 
   DialogueTree::Node* _toggleJoinPartyNode;
+  DialogueTree::Node* _toggleWaitNode;
   DialogueTree::Node* _tradeNode;
 
   bool _isQuestDialogueTree;

@@ -39,6 +39,7 @@ namespace vigilante {
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
+      _tmxTiledMapFileName(tmxMapFileName),
       _dynamicActors(),
       _portals() {}
 
@@ -94,6 +95,10 @@ Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
 
 unordered_set<b2Body*>& GameMap::getTmxTiledMapBodies() {
   return _tmxTiledMapBodies;
+}
+
+const string& GameMap::getTmxTiledMapFileName() const {
+  return _tmxTiledMapFileName;
 }
 
 TMXTiledMap* GameMap::getTmxTiledMap() const {
@@ -211,8 +216,25 @@ void GameMap::spawnNpcs() {
     // if it has already been recruited by the player.
     // FIXME: what if two or more characters with the same name exist in one map?
     auto player = GameMapManager::getInstance()->getPlayer();
-    if (player && (player->getParty()->hasMember(json) || player->getParty()->hasDeceasedMember(json))) {
-      continue;
+
+    if (player) {
+      if (player->getParty()->hasDeceasedMember(json)) {
+        continue;
+      }
+
+      if (player->getParty()->hasWaitingMember(json)) {
+        VGLOG(LOG_INFO, "found waiting party member!");
+        Party::WaitingLocationInfo location = player->getParty()->getWaitingMemberLocationInfo(json);
+        if (location.tmxMapFileName == _tmxTiledMapFileName) {
+          VGLOG(LOG_INFO, "rendering waiting party member at: (%.2f, %.2f)", location.x * kPpm, location.y * kPpm);
+          player->getParty()->getMember(json)->showOnMap(location.x * kPpm, location.y * kPpm);
+          continue;
+        }
+      }
+
+      if (player->getParty()->hasMember(json)) {
+        continue;
+      }
     }
 
     showDynamicActor(std::make_shared<Npc>(json), x, y);
@@ -272,7 +294,11 @@ void GameMap::Portal::onInteract(Character* user) {
                 // Place the user and its party members at the portal.
                 user->setPosition(pos.x, pos.y);
                 for (auto ally : user->getAllies()) {
-                  ally->setPosition(pos.x, pos.y);
+                  if (!dynamic_cast<Npc*>(ally)->isWaitingForPlayer()) {
+                    ally->setPosition(pos.x, pos.y);
+                  } else {
+                    ally->removeFromMap();
+                  }
                 }
               }),
               FadeOut::create(Shade::_kFadeOutTime),

@@ -6,14 +6,26 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
-using std::shared_ptr;
 using std::string;
+using std::shared_ptr;
+using std::unordered_map;
 using std::unordered_set;
 
 namespace vigilante {
 
 Party::Party(Character* leader) : _leader(leader), _members() {}
 
+
+Character* Party::getMember(const string& characterJsonFileName) const {
+  auto it = std::find_if(_members.begin(), _members.end(), [&](const shared_ptr<Character>& c) {
+      return c->getCharacterProfile().jsonFileName == characterJsonFileName;
+  });
+  return (it != _members.end()) ? it->get() : nullptr;
+}
+
+bool Party::hasMember(const string& characterJsonFileName) const {
+  return getMember(characterJsonFileName) != nullptr;
+}
 
 void Party::recruit(Character* targetCharacter) {
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
@@ -38,13 +50,54 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   }
 }
 
-bool Party::hasMember(const string& characterJsonFileName) const {
-  for (const auto& member : _members) {
-    if (member->getCharacterProfile().jsonFileName == characterJsonFileName) {
-      return true;
-    }
+
+void Party::askMemberToWait(Character* targetCharacter) {
+  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+  VGLOG(LOG_INFO, "asked party member to wait at (%.2f, %.2f)", targetPos.x * kPpm, targetPos.y * kPpm);
+
+  addWaitingMember(targetCharacter->getCharacterProfile().jsonFileName,
+                   GameMapManager::getInstance()->getGameMap()->getTmxTiledMapFileName(),
+                   targetPos.x,
+                   targetPos.y);
+}
+
+void Party::askMemberToFollow(Character* targetCharacter) {
+  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
+}
+
+
+bool Party::hasWaitingMember(const string& characterJsonFileName) const {
+  auto it = _waitingMembers.find(characterJsonFileName);
+  return it != _waitingMembers.end();
+}
+
+void Party::addWaitingMember(const string& characterJsonFileName,
+                             const string& currentTmxMapFileName,
+                             float x,
+                             float y) {
+  if (hasWaitingMember(characterJsonFileName)) {
+    VGLOG(LOG_ERR, "This member is already a waiting member of the party.");
+    return;
   }
-  return false;
+  _waitingMembers.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
+}
+
+void Party::removeWaitingMember(const string& characterJsonFileName) {
+  if (!hasWaitingMember(characterJsonFileName)) {
+    VGLOG(LOG_ERR, "This member is not a waiting member of the party.");
+    return;
+  }
+  _waitingMembers.erase(characterJsonFileName);
+}
+
+Party::WaitingLocationInfo
+Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const {
+  auto it = _waitingMembers.find(characterJsonFileName);
+  if (it == _waitingMembers.end()) {
+    VGLOG(LOG_ERR, "This member is not a waiting member of the party");
+    return {"", 0, 0};
+  }
+  return it->second;
 }
 
 
@@ -86,6 +139,10 @@ unordered_set<Character*> Party::getLeaderAndMembers() const {
 
 const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
   return _members;
+}
+
+const unordered_map<string, Party::WaitingLocationInfo>& Party::getWaitingMembers() const {
+  return _waitingMembers;
 }
 
 const unordered_set<string>& Party::getDeceasedMembers() const {

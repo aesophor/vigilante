@@ -84,6 +84,7 @@ class Npc : public Character, public Interactable {
   void reverseDirection();
 
   bool isInPlayerParty() const;
+  bool isWaitingForPlayer() const;
 
   
   Npc::Profile& getNpcProfile();

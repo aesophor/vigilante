@@ -89,6 +89,10 @@ Npc::Npc(const string& jsonFileName)
 void Npc::update(float delta) {
   Character::update(delta);
 
+  if (!_isShownOnMap || _isKilled) {
+    return;
+  }
+
   // Sync the hint bubble fx sprite with Npc's b2body if it exists.
   if (_hintBubbleFxSprite) {
     const b2Vec2& b2bodyPos = _body->GetPosition();
@@ -123,6 +127,7 @@ void Npc::showOnMap(float x, float y) {
       gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
+  VGLOG(LOG_INFO, "showOnMap complete");
 }
 
 void Npc::defineBody(b2BodyType bodyType, float x, float y,
@@ -313,7 +318,7 @@ void Npc::act(float delta) {
     Character* killedTarget = _lockedOnTarget;
     setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
-  } else if (_party) {
+  } else if (_party && !isWaitingForPlayer()) {
     moveToTarget(delta, _party->getLeader(), .5f);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
@@ -406,6 +411,10 @@ void Npc::reverseDirection() {
 
 bool Npc::isInPlayerParty() const {
   return (_party) ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
+}
+
+bool Npc::isWaitingForPlayer() const {
+  return isInPlayerParty() && _party->hasWaitingMember(_characterProfile.jsonFileName);
 }
 
 

@@ -61,6 +61,7 @@ class GameMap {
 
   std::unordered_set<b2Body*>& getTmxTiledMapBodies();
   cocos2d::TMXTiledMap* getTmxTiledMap() const;
+  const std::string& getTmxTiledMapFileName() const;
   float getWidth() const;
   float getHeight() const;
 
@@ -77,6 +78,7 @@ class GameMap {
   b2World* _world;
   std::unordered_set<b2Body*> _tmxTiledMapBodies;
   cocos2d::TMXTiledMap* _tmxTiledMap;
+  std::string _tmxTiledMapFileName;
 
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;

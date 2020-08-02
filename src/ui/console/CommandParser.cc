@@ -40,13 +40,15 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
 
   // Command handler table.
   static const CmdTable cmdTable = {
-    {"startQuest",         &CommandParser::startQuest        },
-    {"addItem",            &CommandParser::addItem           },
-    {"removeItem",         &CommandParser::removeItem        },
-    {"updateDialogueTree", &CommandParser::updateDialogueTree},
-    {"joinPlayerParty",    &CommandParser::joinPlayerParty   },
-    {"leavePlayerParty",   &CommandParser::leavePlayerParty  },
-    {"tradeWithPlayer",    &CommandParser::tradeWithPlayer   },
+    {"startQuest",              &CommandParser::startQuest             },
+    {"addItem",                 &CommandParser::addItem                },
+    {"removeItem",              &CommandParser::removeItem             },
+    {"updateDialogueTree",      &CommandParser::updateDialogueTree     },
+    {"joinPlayerParty",         &CommandParser::joinPlayerParty        },
+    {"leavePlayerParty",        &CommandParser::leavePlayerParty       },
+    {"playerPartyMemberWait",   &CommandParser::playerPartyMemberWait  },
+    {"playerPartyMemberFollow", &CommandParser::playerPartyMemberFollow},
+    {"tradeWithPlayer",         &CommandParser::tradeWithPlayer        },
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -192,6 +194,46 @@ void CommandParser::leavePlayerParty(const vector<string>&) {
   }
 
   player->getParty()->dismiss(targetNpc);
+  setSuccess();
+}
+
+
+void CommandParser::playerPartyMemberWait(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  assert(player != nullptr && targetNpc != nullptr);
+
+  if (!targetNpc->isInPlayerParty()) {
+    setError("This Npc has not joined player's party yet.");
+    return;
+  }
+
+  if (player->getParty()->hasWaitingMember(targetNpc->getCharacterProfile().jsonFileName)) {
+    setError("This Npc is already waiting for player.");
+    return;
+  }
+
+  player->getParty()->askMemberToWait(targetNpc);
+  setSuccess();
+}
+
+
+void CommandParser::playerPartyMemberFollow(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  assert(player != nullptr && targetNpc != nullptr);
+
+  if (!targetNpc->isInPlayerParty()) {
+    setError("This Npc has not joined player's party yet.");
+    return;
+  }
+
+  if (!player->getParty()->hasWaitingMember(targetNpc->getCharacterProfile().jsonFileName)) {
+    setError("This Npc is not waiting for player yet.");
+    return;
+  }
+
+  player->getParty()->askMemberToFollow(targetNpc);
   setSuccess();
 }
 

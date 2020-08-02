@@ -124,7 +124,9 @@ void Character::removeFromMap() {
 }
 
 void Character::update(float delta) {
-  if (_isKilled) return;
+  if (!_isShownOnMap || _isKilled) {
+    return;
+  }
 
   // Flip the sprite if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 
 namespace vigilante {
@@ -13,12 +14,31 @@ class Character;
 
 class Party {
  public:
+  struct WaitingLocationInfo {
+    std::string tmxMapFileName;
+    float x;
+    float y;
+  };
+
   explicit Party(Character* leader);
   virtual ~Party() = default;
 
+  Character* getMember(const std::string& characterJsonFileName) const;
   bool hasMember(const std::string& characterJsonFileName) const;
   void recruit(Character* targetCharacter);
   void dismiss(Character* targetCharacter, bool addToMap=true);
+
+  void askMemberToWait(Character* targetCharacter);  // wait in a specific map
+  void askMemberToFollow(Character* targetCharacter);  // resume following
+
+
+  bool hasWaitingMember(const std::string& characterJsonFileName) const;
+  void addWaitingMember(const std::string& characterJsonFileName,
+                        const std::string& currentTmxMapFileName,
+                        float x,
+                        float y);
+  void removeWaitingMember(const std::string& characterJsonFileName);
+  Party::WaitingLocationInfo getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const;
 
   bool hasDeceasedMember(const std::string& characterJsonFileName) const;
   void addDeceasedMember(const std::string& characterJsonFileName);
@@ -27,6 +47,7 @@ class Party {
   Character* getLeader() const;
   std::unordered_set<Character*> getLeaderAndMembers() const;
   const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
+  const std::unordered_map<std::string, Party::WaitingLocationInfo>& getWaitingMembers() const;
   const std::unordered_set<std::string>& getDeceasedMembers() const;
 
  protected:
@@ -36,6 +57,7 @@ class Party {
   // `_leader` will NOT be in `_members`.
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
+  std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembers;
   std::unordered_set<std::string> _deceasedMembers;
 };
 
