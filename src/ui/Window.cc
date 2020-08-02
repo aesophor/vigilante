@@ -19,6 +19,8 @@
 using std::string;
 using cocos2d::Vec2;
 using cocos2d::Size;
+using cocos2d::Node;
+using cocos2d::Vector;
 using cocos2d::Label;
 using cocos2d::Layer;
 using cocos2d::Director;
@@ -73,9 +75,15 @@ Window::Window(float width, float height)
 void Window::normalize(bool init) {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
   layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
+
+  // Copy all children to another cocos2d::Vector
+  // so that each child's reference count gets incremented by 1.
+  // (removeChild() and removeAllChild() will decrement child's refCount by 1).
+  Vector<Node*> children = layout->getChildren();
   if (!init) {
     layout->removeAllChildren();
   }
+
 
   const auto winSize = Director::getInstance()->getWinSize();
   _position.x = winSize.width / 2 - _size.width / 2;
@@ -85,7 +93,7 @@ void Window::normalize(bool init) {
   const float cornerBgSideLength = _topLeftBg->getContentSize().width;
   const Size contentBgSize = {_size.width - cornerBgSideLength * 2,
                               _size.height - cornerBgSideLength * 2};
-  
+
   _topBg->setScaleX(contentBgSize.width);
   _leftBg->setScaleY(contentBgSize.height);
   _contentBg->setScaleX(contentBgSize.width);
@@ -106,31 +114,53 @@ void Window::normalize(bool init) {
   layout->addChild(_bottomLeftBg);
   layout->addChild(_bottomBg);
   layout->addChild(_bottomRightBg);
-  if (!init) {
-    _layer->removeChild(layout); 
+
+  if (init) {
+    _layer->addChild(layout);
+  } else {
+    layout->retain();
+    _layer->removeChild(layout);  // child's refCount -= 1
+    _layer->addChild(layout);  // child's refCount += 1
+    layout->release();
   }
-  _layer->addChild(layout);
 
   
   // Reposition `_contentLayout` 
   const float contentX = _position.x + CONTENT_MARGIN_LEFT;
   const float contentY = _position.y - CONTENT_MARGIN_TOP;
   _contentLayout->setAnchorPoint({0, 1});
-  _contentLayout->setPosition({contentX, contentY});
-  if (!init) {
-    _layer->removeChild(_contentLayout);
+  _contentLayout->setPosition({contentX, contentY - 15});  // FIXME: remove this literal
+ 
+  if (init) {
+    _layer->addChild(_contentLayout);
+  } else {
+    _contentLayout->retain();
+    _layer->removeChild(_contentLayout);  // child's refCount -= 1
+    _layer->addChild(_contentLayout);  // child's refCount += 1
+    _contentLayout->release();
   }
-  _layer->addChild(_contentLayout);
+
 
   // Place the title label slightly below the window's upper edge.
   const float titleX = _position.x + _size.width / 2;
   const float titleY = _position.y + TITLE_LABEL_OFFSET_Y;
   _titleLabel->setPosition(titleX, titleY);
   _titleLabel->getFontAtlas()->setAliasTexParameters();
-  if (!init) {
-    _layer->removeChild(_titleLabel);
+
+  if (init) {
+    _layer->addChild(_titleLabel);
+  } else {
+    _titleLabel->retain();
+    _layer->removeChild(_titleLabel);  // child's refCount -= 1
+    _layer->addChild(_titleLabel);  // child's refCount += 1
+    _titleLabel->release();
   }
-  _layer->addChild(_titleLabel);
+
+  /*
+  for (auto child : children) {
+    VGLOG(LOG_INFO, "RefCount: %d", child->getReferenceCount());
+  }
+  */
 }
 
 

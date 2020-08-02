@@ -19,7 +19,7 @@ class Window : public Controllable {
   virtual ~Window() = default;
   
   virtual void update() = 0;
-  virtual void handleInput() = 0;
+  virtual void handleInput() = 0;  // Controllable
 
   cocos2d::Layer* getLayer() const;
   cocos2d::ui::Layout* getLayout() const;
