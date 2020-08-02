@@ -21,6 +21,11 @@ class Window : public Controllable {
   virtual void update() = 0;
   virtual void handleInput() = 0;  // Controllable
 
+  virtual void move(const cocos2d::Vec2& position);
+  virtual void move(float x, float y);
+  virtual void resize(const cocos2d::Size& size);
+  virtual void resize(float width, float height);
+
   cocos2d::Layer* getLayer() const;
   cocos2d::ui::Layout* getLayout() const;
   cocos2d::ui::Layout* getContentLayout() const;
@@ -31,15 +36,14 @@ class Window : public Controllable {
 
   void setTitle(const std::string& title);
   void setVisible(bool visible);
-  void setPosition(const cocos2d::Vec2& position);
-  void setPosition(float x, float y);
-  void setSize(const cocos2d::Size& size);
-  void setSize(float width, float height);
 
  protected:
   // Place the window at the center, and place `_titleLabel` as well as
   // `_contentLayout` at the correct position.
   void normalize(bool init=false);
+
+  void setPosition(const cocos2d::Vec2& position);
+  void setSize(const cocos2d::Size& size);
 
   cocos2d::Layer* _layer;
 

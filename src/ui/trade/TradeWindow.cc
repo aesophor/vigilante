@@ -32,7 +32,7 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
   auto tradeWindowSize = _contentBackground->getContentSize();
   tradeWindowSize.width += TRADE_WINDOW_CONTENT_MARGIN_LEFT + TRADE_WINDOW_CONTENT_MARGIN_RIGHT;
   tradeWindowSize.height += TRADE_WINDOW_CONTENT_MARGIN_TOP + TRADE_WINDOW_CONTENT_MARGIN_BOTTOM;
-  setSize(tradeWindowSize);
+  resize(tradeWindowSize);
 
   _contentBackground->setAnchorPoint({0, 1});
 

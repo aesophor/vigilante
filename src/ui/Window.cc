@@ -72,6 +72,68 @@ Window::Window(float width, float height)
   normalize(/*init=*/true);
 }
 
+
+void Window::move(const Vec2& position) {
+  setPosition(position);
+  normalize();
+}
+
+void Window::move(float x, float y) {
+  setPosition({x, y});
+  normalize();
+}
+
+void Window::resize(const Size& size) {
+  setSize(size);
+  normalize();
+}
+
+void Window::resize(float width, float height) {
+  setSize({width, height});
+  normalize();
+}
+
+
+Layer* Window::getLayer() const {
+  return _layer;
+}
+
+Layout* Window::getLayout() const {
+  return _layout;
+}
+
+Layout* Window::getContentLayout() const {
+  return _contentLayout;
+}
+
+string Window::getTitle() const {
+  return _titleLabel->getString();
+}
+
+bool Window::isVisible() const {
+  return _isVisible;
+}
+
+const Vec2& Window::getPosition() const {
+  return _position;
+}
+
+const Size& Window::getSize() const {
+  return _size;
+}
+
+
+void Window::setTitle(const string& title) {
+  _titleLabel->setString(title);
+  normalize();
+}
+
+void Window::setVisible(bool visible) {
+  _isVisible = visible;
+  _layer->setVisible(visible);
+}
+
+
 void Window::normalize(bool init) {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
   layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
@@ -155,71 +217,14 @@ void Window::normalize(bool init) {
     _layer->addChild(_titleLabel);  // child's refCount += 1
     _titleLabel->release();
   }
-
-  /*
-  for (auto child : children) {
-    VGLOG(LOG_INFO, "RefCount: %d", child->getReferenceCount());
-  }
-  */
 }
-
-
-Layer* Window::getLayer() const {
-  return _layer;
-}
-
-Layout* Window::getLayout() const {
-  return _layout;
-}
-
-Layout* Window::getContentLayout() const {
-  return _contentLayout;
-}
-
-string Window::getTitle() const {
-  return _titleLabel->getString();
-}
-
-bool Window::isVisible() const {
-  return _isVisible;
-}
-
-const Vec2& Window::getPosition() const {
-  return _position;
-}
-
-const Size& Window::getSize() const {
-  return _size;
-}
-
-
-void Window::setTitle(const string& title) {
-  _titleLabel->setString(title);
-  normalize();
-}
-
-void Window::setVisible(bool visible) {
-  _isVisible = visible;
-  _layer->setVisible(visible);
-}
-
 
 void Window::setPosition(const Vec2& position) {
   _position = position;
-  normalize();
-}
-
-void Window::setPosition(float x, float y) {
-  setPosition({x, y});
 }
 
 void Window::setSize(const Size& size) {
   _size = size;
-  normalize();
-}
-
-void Window::setSize(float width, float height) {
-  setSize({width, height});
 }
 
 }  // namespace vigilante
