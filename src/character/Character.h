@@ -114,9 +114,13 @@ class Character : public DynamicActor, public Importable {
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
   virtual void addExp(const int exp);
-
+  
   virtual void addSkill(std::unique_ptr<Skill> skill);
   virtual void removeSkill(Skill* skill);
+
+  int getGoldBalance() const;
+  void addGold(const int amount);
+  void removeGold(const int amount);
 
   bool isFacingRight() const;
   bool isJumping() const;

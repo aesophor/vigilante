@@ -33,7 +33,10 @@ void import(const string& tableFileName) {
     string itemJsonFileName;
     int price;
     fin >> itemJsonFileName >> price;
-    prices[itemJsonFileName] = price;
+    if (!itemJsonFileName.empty()) {
+      prices[itemJsonFileName] = price;
+      VGLOG(LOG_INFO, "%s (%d)", itemJsonFileName.c_str(), price);
+    }
   }
 }
 

@@ -30,6 +30,7 @@
 
 using std::string;
 using std::vector;
+using std::shared_ptr;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -144,6 +145,25 @@ void Player::receiveDamage(Character* source, int damage) {
   Hud::getInstance()->updateStatusBars();
 }
 
+
+void Player::addItem(shared_ptr<Item> item, int amount) {
+  Character::addItem(item, amount);
+
+  Notifications::getInstance()->show((item->getAmount() > 1) ?
+      string_util::format("Acquired item: %s (%d).", item->getName().c_str(), item->getAmount()) :
+      string_util::format("Acquired item: %s.", item->getName().c_str())
+  );
+}
+
+void Player::removeItem(Item* item, int amount) {
+  Character::removeItem(item, amount);
+
+  Notifications::getInstance()->show((item->getAmount() > 1) ?
+      string_util::format("Removed item: %s (%d).", item->getName().c_str(), item->getAmount()) :
+      string_util::format("Removed item: %s.", item->getName().c_str())
+  );
+}
+
 void Player::equip(Equipment* equipment) {
   Character::equip(equipment);
   Hud::getInstance()->updateEquippedWeapon();
@@ -156,12 +176,6 @@ void Player::unequip(Equipment::Type equipmentType) {
 
 void Player::pickupItem(Item* item) {
   Character::pickupItem(item);
-
-  Notifications::getInstance()->show((item->getAmount() > 1) ?
-      string_util::format("Acquired item: %s (%d).", item->getName().c_str(), item->getAmount()) :
-      string_util::format("Acquired item: %s.", item->getName().c_str())
-  );
-
   _questBook.update(Quest::Objective::Type::COLLECT);
 }
 

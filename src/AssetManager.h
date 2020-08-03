@@ -89,6 +89,8 @@ const std::string kWindowBottomBg = kWindow + "window_bottom_bg.png";
 const std::string kTrade = "Texture/ui/trade/";
 const std::string kTradeBg = kTrade + "trade_bg.png";
 
+// Important items
+const std::string kGoldCoin = "Resources/Database/item/misc/gold_coin.json";
 
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);

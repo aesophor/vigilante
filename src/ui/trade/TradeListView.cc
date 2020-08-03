@@ -4,7 +4,9 @@
 #include <memory>
 
 #include "AssetManager.h"
+#include "gameplay/ItemPriceTable.h"
 #include "ui/trade/TradeWindow.h"
+#include "util/StringUtil.h"
 
 #define VISIBLE_ITEM_COUNT 5
 #define WIDTH 289.5
@@ -36,7 +38,9 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
     Label* label = listViewItem->getLabel();
 
     icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
-    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
+    label->setString((item) ?
+        string_util::format("%s ($%d)", item->getName().c_str(), item_price_table::getPrice(item)) :
+        EMPTY_ITEM_NAME);
 
     if (!item) {
       return;
@@ -58,14 +62,28 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
 
 void TradeListView::confirm() {
+  Character* seller = _tradeWindow->getSeller();
+  Character* buyer = _tradeWindow->getBuyer();
   Item* item = getSelectedObject();
-  if (!item) {
+  assert(item != nullptr);
+
+  int itemPrice = item_price_table::getPrice(item);
+  
+  // Check if the buyer has sufficient amount of gold.
+  if (buyer->getGoldBalance() < itemPrice) {
+    // Show "insufficient gold" alert in UI...
+    VGLOG(LOG_INFO, "The buyer has insufficient gold...");
     return;
   }
 
-  _tradeWindow->getBuyer()->addItem(Item::create(item->getItemProfile().jsonFileName));
-  _tradeWindow->getSeller()->removeItem(item);
+  // Transfer funds
+  buyer->removeGold(itemPrice);
+  seller->addGold(itemPrice);
 
+  // Trade item
+  buyer->addItem(Item::create(item->getItemProfile().jsonFileName));
+  seller->removeItem(item);
+ 
   _tradeWindow->update();
 }
 

@@ -842,6 +842,18 @@ void Character::removeSkill(Skill* skill) {
 }
 
 
+int Character::getGoldBalance() const {
+  return getItemAmount(Item::create(asset_manager::kGoldCoin)->getName());
+}
+
+void Character::addGold(const int amount) {
+  addItem(Item::create(asset_manager::kGoldCoin), amount);
+}
+
+void Character::removeGold(const int amount) {
+  removeItem(Item::create(asset_manager::kGoldCoin).get(), amount);
+}
+
 
 bool Character::isFacingRight() const {
   return _isFacingRight;
