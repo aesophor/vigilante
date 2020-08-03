@@ -59,6 +59,6 @@ class Item : public DynamicActor, public Importable {
   int _amount;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ITEM_H_
+#endif  // VIGILANTE_ITEM_H_
