@@ -73,9 +73,9 @@ unique_ptr<Player> GameMap::spawnPlayer() const {
   auto player = std::make_unique<Player>(asset_manager::kPlayerJson);
 
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
-  auto& valMap = objGroup->getObjects()[0].asValueMap();
-  float x = valMap["x"].asFloat();
-  float y = valMap["y"].asFloat();
+  auto& valMap = objGroup->getObjects().at(0).asValueMap();
+  float x = valMap.at("x").asFloat();
+  float y = valMap.at("y").asFloat();
 
   player->showOnMap(x, y);
   return player;
@@ -121,10 +121,10 @@ void GameMap::createRectangles(const string& layerName, short categoryBits,
   
   for (auto& rectObj : objGroup->getObjects()) {
     auto& valMap = rectObj.asValueMap();
-    float x = valMap["x"].asFloat();
-    float y = valMap["y"].asFloat();
-    float w = valMap["width"].asFloat();
-    float h = valMap["height"].asFloat();
+    float x = valMap.at("x").asFloat();
+    float y = valMap.at("y").asFloat();
+    float w = valMap.at("width").asFloat();
+    float h = valMap.at("height").asFloat();
 
     b2BodyBuilder bodyBuilder(_world);
 
@@ -148,14 +148,14 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
 
   for (auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
     auto& valMap = lineObj.asValueMap();
-    float xRef = valMap["x"].asFloat();
-    float yRef = valMap["y"].asFloat();
+    float xRef = valMap.at("x").asFloat();
+    float yRef = valMap.at("y").asFloat();
 
-    auto& valVec = valMap["polylinePoints"].asValueVector();
+    auto& valVec = valMap.at("polylinePoints").asValueVector();
     b2Vec2 vertices[valVec.size()];
     for (size_t i = 0; i < valVec.size(); i++) {
-      float x = valVec[i].asValueMap()["x"].asFloat() / scaleFactor;
-      float y = valVec[i].asValueMap()["y"].asFloat() / scaleFactor;
+      float x = valVec.at(i).asValueMap().at("x").asFloat() / scaleFactor;
+      float y = valVec.at(i).asValueMap().at("y").asFloat() / scaleFactor;
       vertices[i] = {xRef + x, yRef - y};
     }
 
@@ -178,13 +178,13 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
 void GameMap::spawnPortals() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
-    float x = valMap["x"].asFloat();
-    float y = valMap["y"].asFloat();
-    float w = valMap["width"].asFloat();
-    float h = valMap["height"].asFloat();
-    string targetTmxMapFilePath = valMap["targetMap"].asString();
-    int targetPortalId = valMap["targetPortalID"].asInt();
-    bool willInteractOnContact = valMap["willInteractOnContact"].asBool();
+    float x = valMap.at("x").asFloat();
+    float y = valMap.at("y").asFloat();
+    float w = valMap.at("width").asFloat();
+    float h = valMap.at("height").asFloat();
+    string targetTmxMapFilePath = valMap.at("targetMap").asString();
+    int targetPortalId = valMap.at("targetPortalID").asInt();
+    bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
 
     b2BodyBuilder bodyBuilder(_world);
 
@@ -210,9 +210,9 @@ void GameMap::spawnNpcs() {
 
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
-    float x = valMap["x"].asFloat();
-    float y = valMap["y"].asFloat();
-    string json = valMap["json"].asString();
+    float x = valMap.at("x").asFloat();
+    float y = valMap.at("y").asFloat();
+    string json = valMap.at("json").asString();
 
     // Skip this character (don't spawn it)
     // if it has already been recruited by the player.
@@ -243,9 +243,9 @@ void GameMap::spawnNpcs() {
 void GameMap::spawnChests() {
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
-    float x = valMap["x"].asFloat();
-    float y = valMap["y"].asFloat();
-    string items = valMap["items"].asString();
+    float x = valMap.at("x").asFloat();
+    float y = valMap.at("y").asFloat();
+    string items = valMap.at("items").asString();
     showDynamicActor(std::make_shared<Chest>(items), x, y);
   }
 }
