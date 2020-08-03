@@ -71,7 +71,7 @@ class Character : public DynamicActor, public Importable {
     float attackRange;
     int baseMeleeDamage;
 
-    std::unordered_map<std::string, int> defaultInventory;
+    std::vector<std::pair<std::string, int>> defaultInventory;
   };
 
   // We have a vector of b2Fixtures (declared in DynamicActor abstract class).

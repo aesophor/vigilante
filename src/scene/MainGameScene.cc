@@ -120,11 +120,6 @@ bool MainGameScene::init() {
   _gameMapManager = GameMapManager::getInstance();
   _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
   addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
-
-
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/short_sword.json"));
-  _gameMapManager->getPlayer()->addItem(Item::create("Resources/Database/item/equipment/royal_cape.json"));
-
   
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.

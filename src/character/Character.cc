@@ -1139,12 +1139,10 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   attackRange = json["attackRange"].GetFloat();
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 
-  if (json.HasMember("inventory")) {
-    for (const auto& itemJson : json["inventory"].GetObject()) {
-      string itemJsonFileName = itemJson.name.GetString();
-      int amount = itemJson.value.GetInt();
-      defaultInventory.insert({itemJsonFileName, amount});
-    }
+  for (const auto& itemJson : json["defaultInventory"].GetObject()) {
+    string itemJsonFileName = itemJson.name.GetString();
+    int amount = itemJson.value.GetInt();
+    defaultInventory.push_back({itemJsonFileName, amount});
   }
 }
 
