@@ -72,8 +72,8 @@ void GameMap::deleteObjects() {
 unique_ptr<Player> GameMap::spawnPlayer() const {
   auto player = std::make_unique<Player>(asset_manager::kPlayerJson);
 
-  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
-  auto& valMap = objGroup->getObjects().at(0).asValueMap();
+  const TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
+  const auto& valMap = objGroup->getObjects().at(0).asValueMap();
   float x = valMap.at("x").asFloat();
   float y = valMap.at("y").asFloat();
 
@@ -119,8 +119,8 @@ void GameMap::createRectangles(const string& layerName, short categoryBits,
   TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   
-  for (auto& rectObj : objGroup->getObjects()) {
-    auto& valMap = rectObj.asValueMap();
+  for (const auto& rectObj : objGroup->getObjects()) {
+    const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
     float w = valMap.at("width").asFloat();
@@ -146,12 +146,12 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
                               bool collidable, float friction) {
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
-  for (auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
-    auto& valMap = lineObj.asValueMap();
+  for (const auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
+    const auto& valMap = lineObj.asValueMap();
     float xRef = valMap.at("x").asFloat();
     float yRef = valMap.at("y").asFloat();
 
-    auto& valVec = valMap.at("polylinePoints").asValueVector();
+    const auto& valVec = valMap.at("polylinePoints").asValueVector();
     b2Vec2 vertices[valVec.size()];
     for (size_t i = 0; i < valVec.size(); i++) {
       float x = valVec.at(i).asValueMap().at("x").asFloat() / scaleFactor;
@@ -176,8 +176,8 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
 }
 
 void GameMap::spawnPortals() {
-  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
-    auto& valMap = rectObj.asValueMap();
+  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
+    const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
     float w = valMap.at("width").asFloat();
@@ -208,8 +208,8 @@ void GameMap::spawnPortals() {
 void GameMap::spawnNpcs() {
   auto player = GameMapManager::getInstance()->getPlayer();
 
-  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
-    auto& valMap = rectObj.asValueMap();
+  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
+    const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
     string json = valMap.at("json").asString();
@@ -241,8 +241,8 @@ void GameMap::spawnNpcs() {
 }
 
 void GameMap::spawnChests() {
-  for (auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
-    auto& valMap = rectObj.asValueMap();
+  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
+    const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
     string items = valMap.at("items").asString();
