@@ -80,8 +80,6 @@ bool MainGameScene::init() {
   _notifications = Notifications::getInstance();
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), graphical_layers::kNotification);
-  _notifications->show("Notifications Initialized!");
-  _notifications->show("Welcome to Vigilante 0.0.1 alpha");
 
   // Initialize quest hints.
   _questHints = QuestHints::getInstance();
@@ -118,8 +116,8 @@ bool MainGameScene::init() {
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = GameMapManager::getInstance();
-  _gameMapManager->loadGameMap("Map/prison_cell1.tmx");
-  addChild(static_cast<Layer*>(_gameMapManager->getLayer()));
+  _gameMapManager->loadGameMap(asset_manager::kNewGameInitialMap);
+  addChild(_gameMapManager->getLayer());
   
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
@@ -128,14 +126,15 @@ bool MainGameScene::init() {
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(getWorld());
   addChild(_b2dr);
-
-  _hud->setPlayer(_gameMapManager->getPlayer());
-
+  
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>(_gameMapManager->getPlayer());
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
+
+  // Misc
+  _hud->setPlayer(_gameMapManager->getPlayer());
 
   // Tick the box2d world.
   schedule(schedule_selector(MainGameScene::update));
