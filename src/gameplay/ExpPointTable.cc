@@ -5,7 +5,6 @@
 #include <fstream>
 #include <stdexcept>
 
-#include <cocos2d.h>
 #include "util/Logger.h"
 
 using std::string;
@@ -17,9 +16,9 @@ namespace vigilante {
 
 namespace {
 
-array<int, exp_point_table::levelCap> levelUpExp;
+array<int, exp_point_table::kLevelCap> levelUpExp;
 
-} // namespace
+}  // namespace
 
 
 namespace exp_point_table {
@@ -31,7 +30,7 @@ void import(const string& tableFileName) {
   }
 
   VGLOG(LOG_INFO, "Loading exp point table...");
-  for (int i = 0; i < levelCap - 1; i++) {
+  for (int i = 0; i < kLevelCap - 1; i++) {
     int level;
     int exp;
     fin >> level >> exp;
@@ -43,6 +42,6 @@ int getNextLevelExp(int currentLevel) {
   return levelUpExp[currentLevel];
 }
 
-} // namespace exp_point_table
+}  // namespace exp_point_table
 
-} // namespace vigilante
+}  // namespace vigilante
