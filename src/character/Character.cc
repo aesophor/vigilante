@@ -685,7 +685,8 @@ void Character::lockOn(Character* target) {
 
 
 void Character::addItem(shared_ptr<Item> item, int amount) {
-  if (!item) {
+  if (!item || amount == 0) {
+    VGLOG(LOG_WARN, "Either item == nullptr or amount == 0");
     return;
   }
 
@@ -705,6 +706,11 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
 }
 
 void Character::removeItem(Item* item, int amount) {
+  if (!item || amount == 0) {
+    VGLOG(LOG_WARN, "Either item == nullptr or amount == 0");
+    return;
+  }
+
   Item* existingItemObj = getExistingItemObj(item);
   existingItemObj->setAmount(existingItemObj->getAmount() - amount);
 
