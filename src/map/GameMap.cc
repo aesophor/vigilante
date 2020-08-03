@@ -192,7 +192,6 @@ void GameMap::spawnPortals() {
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    // This portal object will be deleted at GameMap::~GameMap()
     _portals.push_back(std::make_unique<Portal>(targetTmxMapFilePath, targetPortalId,
                                                 willInteractOnContact, body));
 
