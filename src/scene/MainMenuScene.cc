@@ -24,8 +24,8 @@ const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
   "Exit"
 }};
 
-const string MainMenuScene::_kCopyrightStr = "© 2019 Aesophor Softworks";
-const string MainMenuScene::_kVersionStr = "0.0.1 Alpha";
+const string MainMenuScene::_kCopyrightStr = "© 2018-2020 Aesophor Softworks";
+const string MainMenuScene::_kVersionStr = "0.1.0 Alpha";
 
 const int MainMenuScene::_kMenuOptionGap = 20;
 const int MainMenuScene::_kFooterLabelPadding = 10;
