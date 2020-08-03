@@ -35,7 +35,6 @@ void import(const string& tableFileName) {
     fin >> itemJsonFileName >> price;
     if (!itemJsonFileName.empty()) {
       prices[itemJsonFileName] = price;
-      VGLOG(LOG_INFO, "%s (%d)", itemJsonFileName.c_str(), price);
     }
   }
 }

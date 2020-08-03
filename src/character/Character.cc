@@ -100,7 +100,11 @@ Character::Character(const string& jsonFileName)
       _equipmentSpritesheets(),
       _equipmentAnimations(),
       _skillBodyAnimations(),
-      _party() {}
+      _party() {
+  for (const auto& p : _characterProfile.defaultInventory) {
+    addItem(Item::create(p.first), p.second);
+  }
+}
 
 
 void Character::removeFromMap() {
@@ -1128,6 +1132,14 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   attackTime = json["attackTime"].GetFloat();
   attackRange = json["attackRange"].GetFloat();
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
+
+  if (json.HasMember("inventory")) {
+    for (const auto& itemJson : json["inventory"].GetObject()) {
+      string itemJsonFileName = itemJson.name.GetString();
+      int amount = itemJson.value.GetInt();
+      defaultInventory.insert({itemJsonFileName, amount});
+    }
+  }
 }
 
 }  // namespace vigilante

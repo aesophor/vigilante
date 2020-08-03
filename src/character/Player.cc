@@ -149,8 +149,8 @@ void Player::receiveDamage(Character* source, int damage) {
 void Player::addItem(shared_ptr<Item> item, int amount) {
   Character::addItem(item, amount);
 
-  Notifications::getInstance()->show((item->getAmount() > 1) ?
-      string_util::format("Acquired item: %s (%d).", item->getName().c_str(), item->getAmount()) :
+  Notifications::getInstance()->show((amount > 1) ?
+      string_util::format("Acquired item: %s (%d).", item->getName().c_str(), amount) :
       string_util::format("Acquired item: %s.", item->getName().c_str())
   );
 }
@@ -158,8 +158,8 @@ void Player::addItem(shared_ptr<Item> item, int amount) {
 void Player::removeItem(Item* item, int amount) {
   Character::removeItem(item, amount);
 
-  Notifications::getInstance()->show((item->getAmount() > 1) ?
-      string_util::format("Removed item: %s (%d).", item->getName().c_str(), item->getAmount()) :
+  Notifications::getInstance()->show((amount > 1) ?
+      string_util::format("Removed item: %s (%d).", item->getName().c_str(), amount) :
       string_util::format("Removed item: %s.", item->getName().c_str())
   );
 }
