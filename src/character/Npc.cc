@@ -127,7 +127,6 @@ void Npc::showOnMap(float x, float y) {
       gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
-  VGLOG(LOG_INFO, "showOnMap complete");
 }
 
 void Npc::defineBody(b2BodyType bodyType, float x, float y,

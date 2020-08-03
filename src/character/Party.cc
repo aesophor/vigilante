@@ -13,7 +13,11 @@ using std::unordered_set;
 
 namespace vigilante {
 
-Party::Party(Character* leader) : _leader(leader), _members() {}
+Party::Party(Character* leader)
+    : _leader(leader),
+      _members(),
+      _waitingMembersLocationInfo(),
+      _deceasedMembers() {}
 
 
 Character* Party::getMember(const string& characterJsonFileName) const {
@@ -53,7 +57,6 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
 
 void Party::askMemberToWait(Character* targetCharacter) {
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
-  VGLOG(LOG_INFO, "asked party member to wait at (%.2f, %.2f)", targetPos.x * kPpm, targetPos.y * kPpm);
 
   addWaitingMember(targetCharacter->getCharacterProfile().jsonFileName,
                    GameMapManager::getInstance()->getGameMap()->getTmxTiledMapFileName(),
@@ -67,8 +70,8 @@ void Party::askMemberToFollow(Character* targetCharacter) {
 
 
 bool Party::hasWaitingMember(const string& characterJsonFileName) const {
-  auto it = _waitingMembers.find(characterJsonFileName);
-  return it != _waitingMembers.end();
+  auto it = _waitingMembersLocationInfo.find(characterJsonFileName);
+  return it != _waitingMembersLocationInfo.end();
 }
 
 void Party::addWaitingMember(const string& characterJsonFileName,
@@ -79,7 +82,7 @@ void Party::addWaitingMember(const string& characterJsonFileName,
     VGLOG(LOG_ERR, "This member is already a waiting member of the party.");
     return;
   }
-  _waitingMembers.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
+  _waitingMembersLocationInfo.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
 }
 
 void Party::removeWaitingMember(const string& characterJsonFileName) {
@@ -87,13 +90,13 @@ void Party::removeWaitingMember(const string& characterJsonFileName) {
     VGLOG(LOG_ERR, "This member is not a waiting member of the party.");
     return;
   }
-  _waitingMembers.erase(characterJsonFileName);
+  _waitingMembersLocationInfo.erase(characterJsonFileName);
 }
 
 Party::WaitingLocationInfo
 Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const {
-  auto it = _waitingMembers.find(characterJsonFileName);
-  if (it == _waitingMembers.end()) {
+  auto it = _waitingMembersLocationInfo.find(characterJsonFileName);
+  if (it == _waitingMembersLocationInfo.end()) {
     VGLOG(LOG_ERR, "This member is not a waiting member of the party");
     return {"", 0, 0};
   }
@@ -141,8 +144,9 @@ const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
   return _members;
 }
 
-const unordered_map<string, Party::WaitingLocationInfo>& Party::getWaitingMembers() const {
-  return _waitingMembers;
+const unordered_map<string, Party::WaitingLocationInfo>&
+Party::getWaitingMembersLocationInfo() const {
+  return _waitingMembersLocationInfo;
 }
 
 const unordered_set<string>& Party::getDeceasedMembers() const {

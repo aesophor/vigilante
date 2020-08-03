@@ -47,7 +47,7 @@ class Party {
   Character* getLeader() const;
   std::unordered_set<Character*> getLeaderAndMembers() const;
   const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
-  const std::unordered_map<std::string, Party::WaitingLocationInfo>& getWaitingMembers() const;
+  const std::unordered_map<std::string, Party::WaitingLocationInfo>& getWaitingMembersLocationInfo() const;
   const std::unordered_set<std::string>& getDeceasedMembers() const;
 
  protected:
@@ -57,7 +57,7 @@ class Party {
   // `_leader` will NOT be in `_members`.
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
-  std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembers;
+  std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfo;
   std::unordered_set<std::string> _deceasedMembers;
 };
 

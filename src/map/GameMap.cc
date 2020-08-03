@@ -206,6 +206,8 @@ void GameMap::spawnPortals() {
 }
 
 void GameMap::spawnNpcs() {
+  auto player = GameMapManager::getInstance()->getPlayer();
+
   for (auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
     auto& valMap = rectObj.asValueMap();
     float x = valMap["x"].asFloat();
@@ -215,29 +217,26 @@ void GameMap::spawnNpcs() {
     // Skip this character (don't spawn it)
     // if it has already been recruited by the player.
     // FIXME: what if two or more characters with the same name exist in one map?
-    auto player = GameMapManager::getInstance()->getPlayer();
+    if (player && (player->getParty()->hasDeceasedMember(json) ||
+                   player->getParty()->hasMember(json))) {
+      continue;
+    }
+    showDynamicActor(std::make_shared<Npc>(json), x, y);
+  }
 
-    if (player) {
-      if (player->getParty()->hasDeceasedMember(json)) {
-        continue;
-      }
 
-      if (player->getParty()->hasWaitingMember(json)) {
-        VGLOG(LOG_INFO, "found waiting party member!");
-        Party::WaitingLocationInfo location = player->getParty()->getWaitingMemberLocationInfo(json);
-        if (location.tmxMapFileName == _tmxTiledMapFileName) {
-          VGLOG(LOG_INFO, "rendering waiting party member at: (%.2f, %.2f)", location.x * kPpm, location.y * kPpm);
-          player->getParty()->getMember(json)->showOnMap(location.x * kPpm, location.y * kPpm);
-          continue;
-        }
-      }
+  if (player) {
+    for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
+      const string& characterJsonFileName = p.first;
+      const Party::WaitingLocationInfo& location = p.second;
 
-      if (player->getParty()->hasMember(json)) {
-        continue;
+      // If this Npc is waiting for its leader in the current map,
+      // then we should show it on this map.
+      if (location.tmxMapFileName == _tmxTiledMapFileName) {
+        player->getParty()->getMember(characterJsonFileName)->showOnMap(location.x * kPpm,
+                                                                        location.y * kPpm);
       }
     }
-
-    showDynamicActor(std::make_shared<Npc>(json), x, y);
   }
 }
 
@@ -285,19 +284,29 @@ void GameMap::Portal::onInteract(Character* user) {
           Shade::getInstance()->getImageView()->runAction(Sequence::create(
               CallFunc::create([this, user]() {
                 // Load target GameMap.
-                const string newMapFile = _targetTmxMapFileName;
+                const string newMapFileName = _targetTmxMapFileName;
                 const int targetPortalId = _targetPortalId;
 
-                auto newMap = GameMapManager::getInstance()->loadGameMap(newMapFile);
+                auto newMap = GameMapManager::getInstance()->loadGameMap(newMapFileName);
                 auto pos = newMap->_portals.at(targetPortalId)->_body->GetPosition();
 
                 // Place the user and its party members at the portal.
                 user->setPosition(pos.x, pos.y);
                 for (auto ally : user->getAllies()) {
+                  string s1;
+                  string s2;
                   if (!dynamic_cast<Npc*>(ally)->isWaitingForPlayer()) {
                     ally->setPosition(pos.x, pos.y);
+                  //} else if (user->getParty()->getWaitingMemberLocationInfo(
+                  //ally->getCharacterProfile().jsonFileName).tmxMapFileName != _targetTmxMapFileName) {
                   } else {
-                    ally->removeFromMap();
+                    s1 = user->getParty()->getWaitingMemberLocationInfo(ally->getCharacterProfile().jsonFileName).tmxMapFileName;
+                    s2 = newMapFileName;
+                    VGLOG(LOG_INFO, "%s vs %s (equal=%d)", s1.c_str(), s2.c_str(), s1 == s2);
+                    if (s1 != s2) {
+                      VGLOG(LOG_INFO, "Removing...%s", ally->getCharacterProfile().name.c_str());
+                      ally->removeFromMap();
+                    }
                   }
                 }
               }),
