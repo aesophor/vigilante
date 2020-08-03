@@ -164,6 +164,7 @@ class Character : public DynamicActor, public Importable {
   std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
   Skill* getCurrentlyUsedSkill() const;
 
+  bool isWaitingForPartyLeader() const;
   std::unordered_set<Character*> getAllies() const;
   std::shared_ptr<Party> getParty() const;
   void setParty(std::shared_ptr<Party> party);

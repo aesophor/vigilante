@@ -1003,6 +1003,11 @@ Skill* Character::getCurrentlyUsedSkill() const {
   return _currentlyUsedSkill;
 }
 
+
+bool Character::isWaitingForPartyLeader() const {
+  return _party && _party->hasWaitingMember(_characterProfile.jsonFileName);
+}
+
 unordered_set<Character*> Character::getAllies() const {
   if (!_party) {
     return {};

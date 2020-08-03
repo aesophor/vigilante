@@ -283,29 +283,33 @@ void GameMap::Portal::onInteract(Character* user) {
           Shade::getInstance()->getImageView()->runAction(Sequence::create(
               CallFunc::create([this, user]() {
                 // Load target GameMap.
+                // Note that after calling GameMapManager::loadGameMap(),
+                // all instances of Portal in current GameMap will be freed,
+                // so we MUST NOT refer to this->blah anymore, or there'll be UAF bugs.
                 const string newMapFileName = _targetTmxMapFileName;
                 const int targetPortalId = _targetPortalId;
-
-                auto newMap = GameMapManager::getInstance()->loadGameMap(newMapFileName);
-                auto pos = newMap->_portals.at(targetPortalId)->_body->GetPosition();
+                const GameMap* newMap = GameMapManager::getInstance()->loadGameMap(newMapFileName);
+                const b2Vec2 portalPos = newMap->_portals.at(targetPortalId)->_body->GetPosition();
 
                 // Place the user and its party members at the portal.
-                user->setPosition(pos.x, pos.y);
+                user->setPosition(portalPos.x, portalPos.y);
+
+                // How should we handle user's allies?
+                // (1) If `ally` is not waiting for its party leader,
+                //     then teleport the ally's body to its party leader.
+                // (2) If `ally` is waiting for its party leader,
+                //     AND if this new map is not where `ally` is waiting at,
+                //     then we'll remove it from the map temporarily.
+                //     Whether it will be shown again is determined in
+                //     GameMap::spawnNpcs().
                 for (auto ally : user->getAllies()) {
-                  string s1;
-                  string s2;
-                  if (!dynamic_cast<Npc*>(ally)->isWaitingForPlayer()) {
-                    ally->setPosition(pos.x, pos.y);
-                  //} else if (user->getParty()->getWaitingMemberLocationInfo(
-                  //ally->getCharacterProfile().jsonFileName).tmxMapFileName != _targetTmxMapFileName) {
-                  } else {
-                    s1 = user->getParty()->getWaitingMemberLocationInfo(ally->getCharacterProfile().jsonFileName).tmxMapFileName;
-                    s2 = newMapFileName;
-                    VGLOG(LOG_INFO, "%s vs %s (equal=%d)", s1.c_str(), s2.c_str(), s1 == s2);
-                    if (s1 != s2) {
-                      VGLOG(LOG_INFO, "Removing...%s", ally->getCharacterProfile().name.c_str());
-                      ally->removeFromMap();
-                    }
+                  assert(ally->getParty() != nullptr);
+
+                  if (!ally->isWaitingForPartyLeader()) {
+                    ally->setPosition(portalPos.x, portalPos.y);
+                  } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
+                        ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
+                    ally->removeFromMap();
                   }
                 }
               }),
