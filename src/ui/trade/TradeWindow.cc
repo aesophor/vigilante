@@ -59,7 +59,7 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
 void TradeWindow::update() {
   setTitle((dynamic_cast<Player*>(_buyer)) ? 
       string_util::format("Buying from: %s", _seller->getCharacterProfile().name.c_str()) :
-      string_util::format("Selling to: %s", _seller->getCharacterProfile().name.c_str())
+      string_util::format("Selling to: %s", _buyer->getCharacterProfile().name.c_str())
   );
 
   Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
