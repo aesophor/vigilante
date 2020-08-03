@@ -9,6 +9,7 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
+#include "gameplay/ItemPriceTable.h"
 #include "input/InputManager.h"
 #include "map/GameMap.h"
 #include "skill/Skill.h"
@@ -101,8 +102,11 @@ bool MainGameScene::init() {
   _windowManager->setScene(this);
   _windowManager->setDefaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
  
-  // Initialize Vigilante's exp point table.
+  // Initialize vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
+
+  // Initialize vigilante's item price table.
+  item_price_table::import(asset_manager::kItemPriceTable);
 
   // Initialize CallbackManager.
   CallbackManager::getInstance()->setScene(this);
