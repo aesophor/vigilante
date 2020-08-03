@@ -71,6 +71,7 @@ class Character : public DynamicActor, public Importable {
     float attackRange;
     int baseMeleeDamage;
 
+    std::vector<std::string> defaultSkills;
     std::vector<std::pair<std::string, int>> defaultInventory;
   };
 

@@ -101,6 +101,11 @@ Character::Character(const string& jsonFileName)
       _equipmentAnimations(),
       _skillBodyAnimations(),
       _party() {
+
+  for (const auto& s : _characterProfile.defaultSkills) {
+    addSkill(Skill::create(s, this));
+  }
+
   for (const auto& p : _characterProfile.defaultInventory) {
     addItem(Item::create(p.first), p.second);
   }
@@ -1138,6 +1143,11 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   attackTime = json["attackTime"].GetFloat();
   attackRange = json["attackRange"].GetFloat();
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
+
+  for (const auto& skillJson : json["defaultSkills"].GetArray()) {
+    string skillJsonFileName = skillJson.GetString();
+    defaultSkills.push_back(skillJsonFileName);
+  }
 
   for (const auto& itemJson : json["defaultInventory"].GetObject()) {
     string itemJsonFileName = itemJson.name.GetString();

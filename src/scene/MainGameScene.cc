@@ -131,16 +131,6 @@ bool MainGameScene::init() {
 
   _hud->setPlayer(_gameMapManager->getPlayer());
 
-  auto player = _gameMapManager->getPlayer();
-  player->addSkill(Skill::create("Resources/Database/skill/bat_form.json", player));
-  player->addSkill(Skill::create("Resources/Database/skill/back_dash.json", player));
-  player->addSkill(Skill::create("Resources/Database/skill/forward_slash.json", player));
-  player->addSkill(Skill::create("Resources/Database/skill/ice_spike.json", player));
-
-  //player->getQuestBook().startQuest("Database/quest/main/main01.json");
-  //_console->executeCmd("startquest Database/quest/main/main01.json");
-
-
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>(_gameMapManager->getPlayer());
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
