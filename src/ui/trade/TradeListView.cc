@@ -5,6 +5,7 @@
 
 #include "AssetManager.h"
 #include "gameplay/ItemPriceTable.h"
+#include "ui/notifications/Notifications.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/StringUtil.h"
 
@@ -71,8 +72,7 @@ void TradeListView::confirm() {
   
   // Check if the buyer has sufficient amount of gold.
   if (buyer->getGoldBalance() < itemPrice) {
-    // Show "insufficient gold" alert in UI...
-    VGLOG(LOG_INFO, "The buyer has insufficient gold...");
+    Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
     return;
   }
 
