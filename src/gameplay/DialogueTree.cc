@@ -157,11 +157,9 @@ void DialogueTree::import(const string& jsonFileName) {
 void DialogueTree::update() {
   if (_toggleJoinPartyNode) {
     if (!_owner->isInPlayerParty()) {
-      // If this Npc is recruitable but it has not been recruited yet...
       _toggleJoinPartyNode->_lines.front() = "Follow me.";
       _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
     } else {
-      // If this Npc is recruitable and it has already been recruited...
       _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
       _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
     }
