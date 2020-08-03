@@ -43,8 +43,12 @@ void Party::recruit(Character* targetCharacter) {
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
-  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+  if (hasWaitingMember(targetCharacter->getCharacterProfile().jsonFileName)) {
+    removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
+  }
 
+  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+  
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
   target->removeFromMap();
 
