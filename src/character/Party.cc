@@ -5,6 +5,8 @@
 #include "Constants.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
+#include "ui/notifications/Notifications.h"
+#include "util/StringUtil.h"
 
 using std::string;
 using std::shared_ptr;
@@ -40,6 +42,9 @@ void Party::recruit(Character* targetCharacter) {
 
   target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);
   addMember(std::move(target));
+
+  Notifications::getInstance()->show(
+      string_util::format("%s is now following you.", targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
@@ -56,6 +61,9 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
     GameMapManager::getInstance()->getGameMap()->showDynamicActor(
         std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
   }
+
+  Notifications::getInstance()->show(
+      string_util::format("%s has left your party.", targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 
@@ -66,10 +74,16 @@ void Party::askMemberToWait(Character* targetCharacter) {
                    GameMapManager::getInstance()->getGameMap()->getTmxTiledMapFileName(),
                    targetPos.x,
                    targetPos.y);
+
+  Notifications::getInstance()->show(
+      string_util::format("%s will be waiting for you.", targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::askMemberToFollow(Character* targetCharacter) {
   removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
+
+  Notifications::getInstance()->show(
+      string_util::format("%s is now following you.", targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 
