@@ -19,15 +19,11 @@
 
 using std::set;
 using std::array;
-using std::vector;
-using std::unordered_map;
 using std::unordered_set;
 using std::string;
 using std::function;
-using std::ifstream;
 using std::unique_ptr;
 using std::shared_ptr;
-using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Sequence;
 using cocos2d::CallFunc;
@@ -38,8 +34,6 @@ using cocos2d::Animate;
 using cocos2d::Action;
 using cocos2d::Sprite;
 using cocos2d::FileUtils;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
 using rapidjson::Document;
 
@@ -95,18 +89,27 @@ Character::Character(const string& jsonFileName)
       _skillBook(),
       _skillMapper(),
       _currentlyUsedSkill(),
-      _bodyExtraAttackAnimations(getExtraAttackAnimationsCount()),
+      // There will be at least `1` attack animation.
+      _kAttackAnimationIdxMax(1 + getExtraAttackAnimationsCount()),
+      _attackAnimationIdx(),
+      _bodyExtraAttackAnimations(_kAttackAnimationIdxMax - 1),
       _equipmentExtraAttackAnimations(),
       _equipmentSprites(),
       _equipmentSpritesheets(),
       _equipmentAnimations(),
       _skillBodyAnimations(),
       _party() {
+  // Resize each vector in _equipmentExtraAttackAnimations to match
+  // the size of _bodyExtraAttackAnimations.
+  for (auto& animationVector : _equipmentExtraAttackAnimations) {
+    animationVector.resize(_bodyExtraAttackAnimations.size());
+  }
 
+  // Populate this character's _skillBook with the skills it knows by default.
   for (const auto& s : _characterProfile.defaultSkills) {
     addSkill(Skill::create(s, this));
   }
-
+  // Popuplate this character's _inventory with the items it owns by default.
   for (const auto& p : _characterProfile.defaultInventory) {
     addItem(Item::create(p.first), p.second);
   }
@@ -123,12 +126,14 @@ void Character::removeFromMap() {
     _body->GetWorld()->DestroyBody(_body);
   }
 
-  GameMapManager* gmMgr = GameMapManager::getInstance();
-  gmMgr->getLayer()->removeChild(_bodySpritesheet);
+  // Remove _bodySpritesheet
+  GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
+  // Remove _equipmentSpritesheets
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
-      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
+      GameMapManager::getInstance()->getLayer()->removeChild(
+          _equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]
+      );
     }
   }
 }
@@ -141,30 +146,33 @@ void Character::update(float delta) {
   // Flip the sprite if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    auto shape = dynamic_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {-_characterProfile.attackRange / kPpm, 0};
   } else if (_isFacingRight && _bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(false);
-    b2CircleShape* shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    auto shape = dynamic_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {_characterProfile.attackRange / kPpm, 0};
   }
 
-  // Sync the body sprite with its b2body.
   const b2Vec2& b2bodyPos = _body->GetPosition();
-  _bodySprite->setPosition(b2bodyPos.x * kPpm + _characterProfile.spriteOffsetX,
-                           b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
+
+  // Sync the body sprite with its b2body.
+   _bodySprite->setPosition(_body->GetPosition().x * kPpm + _characterProfile.spriteOffsetX,
+                            _body->GetPosition().y * kPpm + _characterProfile.spriteOffsetY);
 
   // Sync the equipment sprites with its b2body.
-  for (int i = 0; i < Equipment::Type::SIZE; i++) {
-    Equipment::Type type = static_cast<Equipment::Type>(i);
-    if (_equipmentSlots[type]) {
-      if (!_isFacingRight && !_equipmentSprites[type]->isFlippedX()) {
-        _equipmentSprites[type]->setFlippedX(true);
-      } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
-        _equipmentSprites[type]->setFlippedX(false);
-      }
-      _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
+  for (int type = 0; type < static_cast<int>(Equipment::Type::SIZE); type++) {
+    if (!_equipmentSlots[type]) {
+      continue;
     }
+
+    if (!_isFacingRight && !_equipmentSprites[type]->isFlippedX()) {
+      _equipmentSprites[type]->setFlippedX(true);
+    } else if (_isFacingRight && _equipmentSprites[type]->isFlippedX()) {
+      _equipmentSprites[type]->setFlippedX(false);
+    }
+    _equipmentSprites[type]->setPosition(b2bodyPos.x * kPpm + _characterProfile.spriteOffsetX,
+                                         b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
   }
 
   // Handle stats regeneration.
@@ -231,7 +239,7 @@ void Character::update(float delta) {
       case State::IDLE_SHEATHED:
         runAnimation(State::IDLE_SHEATHED, true);
         break;
-      case State::IDLE_UNSHEATHED: // fall through
+      case State::IDLE_UNSHEATHED:  // fallthrough
       default:
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
@@ -315,8 +323,6 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     );                                                 \
   } while (0)
 
-  _bodySpritesheet = SpriteBatchNode::create(bodyTextureResDir + "/spritesheet.png");
-
   CREATE_BODY_ANIMATION(State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _bodyAnimations[State::IDLE_SHEATHED];
   CREATE_BODY_ANIMATION(State::IDLE_UNSHEATHED, fallback);
@@ -346,11 +352,12 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   // Select a frame as default look for this sprite.
   string framePrefix = StaticActor::getLastDirName(bodyTextureResDir);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
-  _bodySprite->setScaleX(_characterProfile.spriteScaleX);
-  _bodySprite->setScaleY(_characterProfile.spriteScaleY);
+  _bodySprite->setScale(_characterProfile.spriteScaleX,
+                        _characterProfile.spriteScaleY);
 
+  _bodySpritesheet = SpriteBatchNode::create(bodyTextureResDir + "/spritesheet.png");
+  _bodySpritesheet->getTexture()->setAliasTexParameters();  // disable texture antialiasing
   _bodySpritesheet->addChild(_bodySprite);
-  _bodySpritesheet->getTexture()->setAliasTexParameters(); // disable texture antialiasing
 }
 
 void Character::loadEquipmentAnimations(Equipment* equipment) {
@@ -366,8 +373,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
   const string& textureResDir = equipment->getItemProfile().textureResDir;
-  _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
-
+  
   CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
   CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_UNSHEATHED, fallback);
@@ -386,22 +392,23 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
-    _equipmentExtraAttackAnimations[type].resize(_bodyExtraAttackAnimations.size());
     _equipmentExtraAttackAnimations[type][i] = createAnimation(
-        equipment->getItemProfile().textureResDir,
+        textureResDir,
         "attacking" + std::to_string(1 + i),
         _characterProfile.frameInterval[State::ATTACKING] / kPpm,
         fallback
     );
   }
 
+  // Select a frame as default look for this sprite.
   string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
-  _equipmentSprites[type]->setScaleX(_characterProfile.spriteScaleX);
-  _equipmentSprites[type]->setScaleY(_characterProfile.spriteScaleY);
+  _equipmentSprites[type]->setScale(_characterProfile.spriteScaleX,
+                                    _characterProfile.spriteScaleY);
 
-  _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
+  _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
+  _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
 }
 
 int Character::getExtraAttackAnimationsCount() const {
@@ -423,52 +430,44 @@ int Character::getExtraAttackAnimationsCount() const {
   return frameCount;
 }
 
+Animation* Character::getBodyAttackAnimation() const {
+  return (_attackAnimationIdx == 0) ? _bodyAnimations[State::ATTACKING] :
+                                      _bodyExtraAttackAnimations[_attackAnimationIdx - 1];
+}
 
-void Character::runAnimation(State state, bool loop) const {
-  auto targetAnimation = _bodyAnimations[state];
+Animation* Character::getEquipmentAttackAnimation(const Equipment::Type type) const {
+  return (_attackAnimationIdx == 0) ? _equipmentAnimations[type][State::ATTACKING] :
+                                      _equipmentExtraAttackAnimations[type][_attackAnimationIdx - 1];
+}
 
-  int attackAnimationIdx = 0;
-  if (state == State::ATTACKING) {
-    int i = rand_util::randInt(0, _bodyExtraAttackAnimations.size());
-    if (i >= 1) {
-      // Pick the animation from _extraAttackAnimations array.
-      targetAnimation = _bodyExtraAttackAnimations[i - 1];
-    }
-    attackAnimationIdx = i;
-  }
 
-  auto animation = Animate::create(targetAnimation);
-  Action* action = nullptr;
-  if (loop) {
-    action = RepeatForever::create(animation);
-  } else {
-    action = Repeat::create(animation, 1);
-  }
-
+void Character::runAnimation(State state, bool loop) {
   // Update body animation.
+  Animate* animate = Animate::create((state != State::ATTACKING) ? _bodyAnimations[state] :
+                                                                   getBodyAttackAnimation());
   _bodySprite->stopAllActions();
-  _bodySprite->runAction(action);
+  _bodySprite->runAction((loop) ? dynamic_cast<Action*>(RepeatForever::create(animate)) :
+                                  dynamic_cast<Action*>(Repeat::create(animate, 1)));
 
   // Update equipment animation.
-  for (int i = 0; i < Equipment::Type::SIZE; i++) {
-    Equipment::Type type = static_cast<Equipment::Type>(i);
-    if (_equipmentSlots[type]) {
-      _equipmentSprites[type]->stopAllActions();
-
-      auto targetAnimation = _equipmentAnimations[type][state];
-      if (state == State::ATTACKING && attackAnimationIdx > 0) {
-        targetAnimation = _equipmentExtraAttackAnimations[type][attackAnimationIdx - 1];
-      }
-
-      auto animate = Animate::create(targetAnimation);
-      Action* action = nullptr;
-      if (loop) {
-        action = RepeatForever::create(animate);
-      } else {
-        action = Repeat::create(animate, 1);
-      }
-      _equipmentSprites[type]->runAction(action);
+  for (int type = 0; type < static_cast<int>(Equipment::Type::SIZE); type++) {
+    if (!_equipmentSlots[type]) {
+      continue;
     }
+
+    Animate* animate = Animate::create((state != State::ATTACKING) ?
+        _equipmentAnimations[type][state] :
+        getEquipmentAttackAnimation(static_cast<Equipment::Type>(type)));
+
+    _equipmentSprites[type]->stopAllActions();
+    _equipmentSprites[type]->runAction((loop) ? dynamic_cast<Action*>(RepeatForever::create(animate)) :
+                                                dynamic_cast<Action*>(Repeat::create(animate, 1)));
+  }
+
+  // If `state` is ATTACKING, then increment `_attackAnimationIdx` 
+  // and wrap around when needed.
+  if (state == State::ATTACKING) {
+    _attackAnimationIdx = (_attackAnimationIdx + 1) % _kAttackAnimationIdxMax;
   }
 }
 
@@ -479,15 +478,15 @@ void Character::runAnimation(State state, const function<void ()>& func) const {
   _bodySprite->runAction(Sequence::createWithTwoActions(animate, callback));
 
   // Update equipment animation.
-  for (int i = 0; i < Equipment::Type::SIZE; i++) {
-    Equipment::Type type = static_cast<Equipment::Type>(i);
-    if (_equipmentSlots[type]) {
-      _equipmentSprites[type]->stopAllActions();
-
-      auto animate = Animate::create(_equipmentAnimations[type][state]);
-      Action* action = Repeat::create(animate, 1);
-      _equipmentSprites[type]->runAction(action);
+  for (int type = 0; type < static_cast<int>(Equipment::Type::SIZE); type++) {
+    if (!_equipmentSlots[type]) {
+      continue;
     }
+
+    Animate* animate = Animate::create(_equipmentAnimations[type][state]);
+    Action* action = Repeat::create(animate, 1);
+    _equipmentSprites[type]->stopAllActions();
+    _equipmentSprites[type]->runAction(action);
   }
 }
 
@@ -495,32 +494,31 @@ void Character::runAnimation(const string& framesName, float interval) {
   // Try to load the target framesName under this character's textureResDir.
   Animation* bodyAnimation = nullptr;
   
-  if (_skillBodyAnimations.find(framesName) == _skillBodyAnimations.end()) {
+  if (_skillBodyAnimations.find(framesName) != _skillBodyAnimations.end()) {
+    bodyAnimation = _skillBodyAnimations[framesName];
+  } else {
     Animation* fallback = _bodyAnimations[State::ATTACKING];
     bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval, fallback);
     // Cache this skill animation (body).
     _skillBodyAnimations.insert({framesName, bodyAnimation});
-  } else {
-    bodyAnimation = _skillBodyAnimations[framesName];
   }
 
   _bodySprite->stopAllActions();
   _bodySprite->runAction(Repeat::create(Animate::create(bodyAnimation), 1));
 
   // Update equipment animation.
-  for (int i = 0; i < Equipment::Type::SIZE; i++) {
-    Equipment::Type type = static_cast<Equipment::Type>(i);
-    if (_equipmentSlots[type]) {
-      _equipmentSprites[type]->stopAllActions();
-
-      const string& textureResDir = _equipmentSlots[type]->getItemProfile().textureResDir;
-      Animation* fallback = _equipmentAnimations[type][ATTACKING];
-
-      // TODO: cache these equipment skill animation
-      Animation* animation = createAnimation(textureResDir, framesName, interval, fallback);
-      _equipmentSprites[type]->stopAllActions();
-      _equipmentSprites[type]->runAction(Animate::create(animation));
+  for (int type = 0; type < static_cast<int>(Equipment::Type::SIZE); type++) {
+    if (!_equipmentSlots[type]) {
+      continue;
     }
+
+    const string& textureResDir = _equipmentSlots[type]->getItemProfile().textureResDir;
+    Animation* fallback = _equipmentAnimations[type][ATTACKING];
+
+    // TODO: cache these equipment skill animation
+    Animation* animation = createAnimation(textureResDir, framesName, interval, fallback);
+    _equipmentSprites[type]->stopAllActions();
+    _equipmentSprites[type]->runAction(Animate::create(animation));
   }
 }
 

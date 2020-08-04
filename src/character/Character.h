@@ -216,8 +216,10 @@ class Character : public DynamicActor, public Importable {
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
   int getExtraAttackAnimationsCount() const;
+  cocos2d::Animation* getBodyAttackAnimation() const;
+  cocos2d::Animation* getEquipmentAttackAnimation(const Equipment::Type type) const;
 
-  void runAnimation(Character::State state, bool loop=true) const;
+  void runAnimation(Character::State state, bool loop=true);
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
   void runAnimation(const std::string& framesName, float interval);
 
@@ -293,6 +295,8 @@ class Character : public DynamicActor, public Importable {
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],
   // and here's some extra ones.
+  const int _kAttackAnimationIdxMax;
+  int _attackAnimationIdx;
   std::vector<cocos2d::Animation*> _bodyExtraAttackAnimations;
   std::array<std::vector<cocos2d::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
  
