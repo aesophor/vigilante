@@ -58,7 +58,7 @@ const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr
   "crouching_unsheathed",
   "sheathing_weapon",
   "unsheathing_weapon",
-  "attacking",
+  "attacking0",
   "killed"
 }};
 
@@ -337,7 +337,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
     _bodyExtraAttackAnimations[i] = createAnimation(
         bodyTextureResDir,
-        "attacking" + std::to_string(2 + i),
+        "attacking" + std::to_string(1 + i),
         _characterProfile.frameInterval[State::ATTACKING] / kPpm,
         fallback
     );
@@ -386,10 +386,10 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
-    _equipmentExtraAttackAnimations[type].reserve(_bodyExtraAttackAnimations.size());
+    _equipmentExtraAttackAnimations[type].resize(_bodyExtraAttackAnimations.size());
     _equipmentExtraAttackAnimations[type][i] = createAnimation(
         equipment->getItemProfile().textureResDir,
-        "attacking" + std::to_string(2 + i),
+        "attacking" + std::to_string(1 + i),
         _characterProfile.frameInterval[State::ATTACKING] / kPpm,
         fallback
     );
@@ -408,12 +408,12 @@ int Character::getExtraAttackAnimationsCount() const {
   FileUtils* fileUtils = FileUtils::getInstance();
   const string& framesNamePrefix = StaticActor::getLastDirName(_characterProfile.textureResDir);
 
-  // player_attacking
-  // player_attacking2
-  // player_attacking3
+  // player_attacking0  // must have!
+  // player_attacking1  // optional...
+  // player_attacking2  // optional...
   // ...
   string dir = _characterProfile.textureResDir + "/" + framesNamePrefix + "_" + "attacking";
-  int frameCount = 1;  // there must be at least 1 attacking animation
+  int frameCount = 0;
   fileUtils->setPopupNotify(false);  // disable CCLOG
   while (fileUtils->isDirectoryExist(dir + std::to_string(frameCount + 1))) {
     frameCount++;
@@ -429,7 +429,7 @@ void Character::runAnimation(State state, bool loop) const {
 
   int attackAnimationIdx = 0;
   if (state == State::ATTACKING) {
-    int i = rand_util::randInt(0, 1);
+    int i = rand_util::randInt(0, _bodyExtraAttackAnimations.size());
     if (i >= 1) {
       // Pick the animation from _extraAttackAnimations array.
       targetAnimation = _bodyExtraAttackAnimations[i - 1];

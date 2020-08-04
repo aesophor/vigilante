@@ -45,12 +45,12 @@ class StaticActor {
 
   // The texture resources under Resources/Texture/ has the following rules:
   //
-  // Texture/character/player/player_attacking/0.png
-  // |______________________| |____| |_______| |___|
+  // Texture/character/player/player_attacking0/0.png
+  // |______________________| |____| |________| |___|
   //      textureResDir          |   framesName
   //                      framesNamePrefix
   //
-  // As you can see, each framesName (e.g., attacking) is preceded by a prefix,
+  // As you can see, each framesName (e.g., attacking0) is preceded by a prefix,
   // this is to **prevent frames name collision** in cocos2d::SpriteFrameCache!
   //
   // The following utility method takes in textureResPath as a parameter

@@ -112,7 +112,7 @@ bool MainGameScene::init() {
   // Initialize Vigilante's utils.
   vigilante::keycode_util::init();
   vigilante::rand_util::init();
-  
+
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = GameMapManager::getInstance();
