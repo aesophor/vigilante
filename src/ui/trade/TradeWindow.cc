@@ -26,6 +26,7 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
       _contentBackground(ImageView::create(kTradeBg)),
       _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
       _tradeListView(std::make_unique<TradeListView>(this)),
+      _isTradingWithAlly(seller->getAllies().find(buyer) != seller->getAllies().end()),
       _buyer(buyer),
       _seller(seller) {
   // Resize window: Make the window slightly larger than `_contentBackground`.
@@ -57,11 +58,18 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
 }
 
 void TradeWindow::update() {
-  setTitle((dynamic_cast<Player*>(_buyer)) ? 
-      string_util::format("Buying from: %s", _seller->getCharacterProfile().name.c_str()) :
-      string_util::format("Selling to: %s", _buyer->getCharacterProfile().name.c_str())
-  );
-
+  if (_isTradingWithAlly) {
+    setTitle((dynamic_cast<Player*>(_buyer)) ? 
+        string_util::format("Receiving from: %s", _seller->getCharacterProfile().name.c_str()) :
+        string_util::format("Giving to: %s", _buyer->getCharacterProfile().name.c_str())
+    );
+  } else {
+    setTitle((dynamic_cast<Player*>(_buyer)) ? 
+        string_util::format("Buying from: %s", _seller->getCharacterProfile().name.c_str()) :
+        string_util::format("Selling to: %s", _buyer->getCharacterProfile().name.c_str())
+    );
+  }
+  
   Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
   _tradeListView->showCharactersItemByType(_seller, selectedItemType); 
 }
@@ -93,6 +101,10 @@ void TradeWindow::toggleBuySell() {
   update();
 }
 
+
+bool TradeWindow::isTradingWithAlly() const {
+  return _isTradingWithAlly;
+}
 
 Character* TradeWindow::getBuyer() const {
   return _buyer;

@@ -34,23 +34,25 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
-  _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
+  _setObjectCallback = [this](ListViewItem* listViewItem, Item* item) {
+    assert(item != nullptr);
+
     ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
-
+   
     icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
-    label->setString((item) ?
-        string_util::format("%s ($%d)", item->getName().c_str(), item_price_table::getPrice(item)) :
-        EMPTY_ITEM_NAME);
+    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
 
-    if (!item) {
-      return;
+    // Display item price if not trading with ally.
+    if (!_tradeWindow->isTradingWithAlly()) {
+      label->setString(label->getString() +
+          string_util::format(" ($%d)", item_price_table::getPrice(item)));
     }
 
     // Display item amount if amount > 1
     if (item->getAmount() > 1) {
-      Label* label = listViewItem->getLabel();
-      label->setString(label->getString() + " (" + std::to_string(item->getAmount()) + ")");
+      label->setString(label->getString() +
+          string_util::format(" (%d)", item->getAmount()));
     }
   };
 
@@ -68,19 +70,20 @@ void TradeListView::confirm() {
   Item* item = getSelectedObject();
   assert(item != nullptr);
 
-  int itemPrice = item_price_table::getPrice(item);
+  if (!_tradeWindow->isTradingWithAlly()) {
+    int itemPrice = item_price_table::getPrice(item);
   
-  // Check if the buyer has sufficient amount of gold.
-  if (buyer->getGoldBalance() < itemPrice) {
-    Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
-    return;
+    // Check if the buyer has sufficient amount of gold.
+    if (buyer->getGoldBalance() < itemPrice) {
+      Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
+      return;
+    }
+    // Transfer funds
+    buyer->removeGold(itemPrice);
+    seller->addGold(itemPrice);
   }
-
-  // Transfer funds
-  buyer->removeGold(itemPrice);
-  seller->addGold(itemPrice);
-
-  // Trade item
+  
+  // Transfer item
   buyer->addItem(Item::create(item->getItemProfile().jsonFileName));
   seller->removeItem(item);
  

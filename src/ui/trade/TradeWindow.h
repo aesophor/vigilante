@@ -24,6 +24,7 @@ class TradeWindow : public Window {
 
   void toggleBuySell();
 
+  bool isTradingWithAlly() const;
   Character* getBuyer() const;
   Character* getSeller() const;
 
@@ -32,6 +33,7 @@ class TradeWindow : public Window {
   std::unique_ptr<TabView> _tabView;
   std::unique_ptr<TradeListView> _tradeListView;
 
+  bool _isTradingWithAlly;
   Character* _buyer;
   Character* _seller;
 };
