@@ -95,6 +95,10 @@ const std::string kTradeBg = kTrade + "trade_bg.png";
 // Important items
 const std::string kGoldCoin = "Resources/Database/item/misc/gold_coin.json";
 
+// BGM
+const std::string kBgm = "Music/";
+const std::string kMainThemeBgm = kBgm + "main_theme.mp3";
+
 // Spritesheets
 void loadSpritesheets(const std::string& spritesheetsListFileName);
 

@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MainMenuScene.h"
 
+#include <SimpleAudioEngine.h>
 #include "AssetManager.h"
 #include "MainGameScene.h"
 #include "ui/Colorscheme.h"
@@ -12,6 +13,7 @@ using cocos2d::Scene;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
 using cocos2d::EventKeyboard;
+using CocosDenshion::SimpleAudioEngine;
 using vigilante::asset_manager::kBoldFont;
 using vigilante::asset_manager::kRegularFontSize;
 
@@ -69,6 +71,9 @@ bool MainMenuScene::init() {
   _inputMgr = InputManager::getInstance();
   _inputMgr->activate(this);
 
+  // Play main theme Bgm.
+  SimpleAudioEngine::getInstance()->playBackgroundMusic(asset_manager::kMainThemeBgm.c_str(), true);
+
   schedule(schedule_selector(MainMenuScene::update));
   return true;
 }
@@ -94,6 +99,7 @@ void MainMenuScene::handleInput() {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
         _inputMgr->deactivate();
+        SimpleAudioEngine::getInstance()->stopBackgroundMusic();
         Scene* scene = MainGameScene::create();
         Director::getInstance()->pushScene(scene);
         break;
@@ -111,4 +117,4 @@ void MainMenuScene::handleInput() {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante
