@@ -215,6 +215,8 @@ class Character : public DynamicActor, public Importable {
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
+  int getExtraAttackAnimationsCount() const;
+
   void runAnimation(Character::State state, bool loop=true) const;
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
   void runAnimation(const std::string& framesName, float interval);
@@ -291,15 +293,16 @@ class Character : public DynamicActor, public Importable {
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],
   // and here's some extra ones.
-  std::array<cocos2d::Animation*, 1> _bodyExtraAttackAnimations;
-  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
-
+  std::vector<cocos2d::Animation*> _bodyExtraAttackAnimations;
+  std::array<std::vector<cocos2d::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
+ 
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment
   // has their own animation!
   std::array<cocos2d::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
   std::array<cocos2d::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
+  std::array<std::array<cocos2d::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE>
+    _equipmentAnimations;
 
   // Skill animations
   std::unordered_map<std::string, cocos2d::Animation*> _skillBodyAnimations;

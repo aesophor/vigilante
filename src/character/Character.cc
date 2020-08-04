@@ -37,6 +37,7 @@ using cocos2d::Animation;
 using cocos2d::Animate;
 using cocos2d::Action;
 using cocos2d::Sprite;
+using cocos2d::FileUtils;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
@@ -94,7 +95,7 @@ Character::Character(const string& jsonFileName)
       _skillBook(),
       _skillMapper(),
       _currentlyUsedSkill(),
-      _bodyExtraAttackAnimations(),
+      _bodyExtraAttackAnimations(getExtraAttackAnimationsCount()),
       _equipmentExtraAttackAnimations(),
       _equipmentSprites(),
       _equipmentSpritesheets(),
@@ -333,8 +334,15 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   CREATE_BODY_ANIMATION(State::KILLED, fallback);
 
   // Load extra attack animations.
-  _bodyExtraAttackAnimations[0] = createAnimation(bodyTextureResDir, "attacking2", _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
-
+  for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
+    _bodyExtraAttackAnimations[i] = createAnimation(
+        bodyTextureResDir,
+        "attacking" + std::to_string(2 + i),
+        _characterProfile.frameInterval[State::ATTACKING] / kPpm,
+        fallback
+    );
+  }
+  
   // Select a frame as default look for this sprite.
   string framePrefix = StaticActor::getLastDirName(bodyTextureResDir);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -377,7 +385,15 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   CREATE_EQUIPMENT_ANIMATION(equipment, State::KILLED, fallback);
 
   // Load extra attack animations.
-  _equipmentExtraAttackAnimations[type][0] = createAnimation(textureResDir, "attacking2", _characterProfile.frameInterval[State::ATTACKING] / kPpm, fallback);
+  for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
+    _equipmentExtraAttackAnimations[type].reserve(_bodyExtraAttackAnimations.size());
+    _equipmentExtraAttackAnimations[type][i] = createAnimation(
+        equipment->getItemProfile().textureResDir,
+        "attacking" + std::to_string(2 + i),
+        _characterProfile.frameInterval[State::ATTACKING] / kPpm,
+        fallback
+    );
+  }
 
   string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -386,6 +402,25 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
+}
+
+int Character::getExtraAttackAnimationsCount() const {
+  FileUtils* fileUtils = FileUtils::getInstance();
+  const string& framesNamePrefix = StaticActor::getLastDirName(_characterProfile.textureResDir);
+
+  // player_attacking
+  // player_attacking2
+  // player_attacking3
+  // ...
+  string dir = _characterProfile.textureResDir + "/" + framesNamePrefix + "_" + "attacking";
+  int frameCount = 1;  // there must be at least 1 attacking animation
+  fileUtils->setPopupNotify(false);  // disable CCLOG
+  while (fileUtils->isDirectoryExist(dir + std::to_string(frameCount + 1))) {
+    frameCount++;
+  }
+  fileUtils->setPopupNotify(true);
+
+  return frameCount;
 }
 
 
