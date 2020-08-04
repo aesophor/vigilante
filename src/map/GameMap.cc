@@ -337,7 +337,7 @@ void GameMap::Portal::createHintBubbleFx() {
 
   _hintBubbleFxSprite
     = GameMapManager::getInstance()->getFxManager()->createFx(
-        "Texture/fx/hint_bubble", "dialogue_available", x, y, -1, 45.0f);
+        "Texture/fx/hint_bubble", "portal_available", x, y, -1, 45.0f);
 }
 
 void GameMap::Portal::removeHintBubbleFx() {

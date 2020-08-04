@@ -175,6 +175,10 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
 
+        if (!p->willInteractOnContact()) {
+          p->createHintBubbleFx();
+        }
+        
         if (p->willInteractOnContact()) {
           CallbackManager::getInstance()->runAfter([=]() {
             c->interact(p);
@@ -306,7 +310,9 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
+        GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(nullptr);
+        p->removeHintBubbleFx();
       }
       break;
     }
