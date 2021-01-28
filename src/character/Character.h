@@ -86,7 +86,7 @@ class Character : public DynamicActor, public Importable {
 
   virtual ~Character() = default;
 
-  virtual void showOnMap(float x, float y) = 0;  // DynamicActor
+  virtual void showOnMap(float x, float y) override = 0;  // DynamicActor
   virtual void removeFromMap() override;  // DynamicActor
   virtual void update(float delta) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable

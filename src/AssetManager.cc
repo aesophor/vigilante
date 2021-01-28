@@ -1,6 +1,10 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AssetManager.h"
 
+extern "C" {
+#include <unistd.h>
+}
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <stdexcept>
@@ -18,6 +22,10 @@ namespace vigilante {
 namespace asset_manager {
 
 void loadSpritesheets(const string& spritesheetsListFileName) {
+  char buf[256] = {0};
+  getcwd(buf, 256);
+  std::cout << buf << std::endl;
+
   ifstream fin(spritesheetsListFileName);
   if (!fin.is_open()) {
     throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName);
