@@ -22,11 +22,11 @@ cd $proj_root/Resources && find . -type f | grep quest | grep json > $proj_root/
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   cocos compile -p linux
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-  xcodebuild -project /Users/aesophor/Code/vigilante/proj.ios_mac/Vigilante.xcodeproj\
+  xcodebuild -project $proj_root/proj.ios_mac/Vigilante.xcodeproj\
     -configuration Debug \
     -arch x86_64 \
     -target "Vigilante-desktop" \
-    CONFIGURATION_BUILD_DIR="/Users/aesophor/Code/vigilante/bin/debug/mac"
+    CONFIGURATION_BUILD_DIR="$proj_root/bin/debug/mac"
 else
   echo 'Unsupported platform'
 fi
