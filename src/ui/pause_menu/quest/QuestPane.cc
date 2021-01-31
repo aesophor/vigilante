@@ -28,7 +28,7 @@ QuestPane::QuestPane(PauseMenu* pauseMenu)
 
   // Place quest tabs.
   _tabView->addTab("ALL");
-  _tabView->addTab("ONGOING");
+  _tabView->addTab("ACTIVE");
   _tabView->addTab("DONE");
   _tabView->selectTab(0);
   _layout->addChild(_tabView->getLayout());
