@@ -206,14 +206,14 @@ void MainGameScene::handleInput() {
   if (!_windowManager->isEmpty()) {
     _windowManager->top()->handleInput();
   } else if (_pauseMenu->getLayer()->isVisible()) {
-    _pauseMenu->handleInput();  // paused
+    _pauseMenu->handleInput();
   } else if (_console->getLayer()->isVisible()) {
     _console->handleInput();
   } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible() ||
              _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
     _dialogueManager->handleInput();
   } else {
-    _gameMapManager->getPlayer()->handleInput();  // not paused
+    _gameMapManager->getPlayer()->handleInput();
   }
 }
 

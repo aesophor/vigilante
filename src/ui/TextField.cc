@@ -104,9 +104,9 @@ bool TextField::isReceivingInput() const {
 void TextField::setReceivingInput(bool receivingInput) {
   // Avoid repeatedly pushing/popping the same _onKeyPressedEvLstnr
   if (receivingInput && !_isReceivingInput) {
-    InputManager::getInstance()->pushEvLstnr(_onKeyPressedEvLstnr);
+    InputManager::getInstance()->setSpecialOnKeyPressed(_onKeyPressedEvLstnr);
   } else if (!receivingInput && _isReceivingInput) {
-    InputManager::getInstance()->popEvLstnr();
+    InputManager::getInstance()->clearSpecialOnKeyPressed();
   }
 
   _isReceivingInput = receivingInput;

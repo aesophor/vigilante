@@ -18,8 +18,6 @@
 
 namespace vigilante {
 
-class PauseMenuDialog;
-
 class InputManager {
  public:
   static InputManager* getInstance();
@@ -31,12 +29,15 @@ class InputManager {
   bool isKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode) const;
   bool isKeyJustPressed(cocos2d::EventKeyboard::KeyCode keyCode);
 
-  using OnKeyPressedEvLstnr = std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
-  void pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr);
-  void popEvLstnr();
-
   bool isCapsLocked() const;
   bool isShiftPressed() const;
+
+
+  using OnKeyPressedEvLstnr =
+    std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
+
+  void setSpecialOnKeyPressed(const OnKeyPressedEvLstnr& onKeyPressed);
+  void clearSpecialOnKeyPressed();
 
  private:
   InputManager();
@@ -44,18 +45,15 @@ class InputManager {
   cocos2d::Scene* _scene;
   cocos2d::EventListenerKeyboard* _keyboardEvLstnr;
 
+  bool _isCapsLocked;
+
   // Pressed Keys are stored in this set.
   // Relevant method: isKeyPressed(), isKeyJustPressed()
   std::set<cocos2d::EventKeyboard::KeyCode> _pressedKeys;
 
-  // The functor at the top of the stack will be called whenever
-  // an onKeyPressed Event arrives.
-  // Relevant method: pushEvLstnr(), popEvLstnr()
-  std::stack<OnKeyPressedEvLstnr> _onKeyPressedEvLstnrs;
-
-  bool _isCapsLocked;
+  OnKeyPressedEvLstnr _specialOnKeyPressed;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_INPUT_MANAGER_H_
+#endif  // VIGILANTE_INPUT_MANAGER_H_

@@ -74,11 +74,11 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
     pauseMenuDialog->setVisible(false);
     pauseMenuDialog->getPauseMenu()->update();
     
-    // Everything done. Now it is safe to pop this functor off the stack.
-    InputManager::getInstance()->popEvLstnr();
+    // Everything done. Now it is safe to clear this functor.
+    InputManager::getInstance()->clearSpecialOnKeyPressed();
   };
 
-  InputManager::getInstance()->pushEvLstnr(onKeyPressedEvLstnr);
+  InputManager::getInstance()->setSpecialOnKeyPressed(onKeyPressedEvLstnr);
 }
 
 } // namespace vigilante

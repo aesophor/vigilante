@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "input/InputManager.h"
 
+#include "ui/TextField.h"
 #include "util/Logger.h"
 
 using std::set;
@@ -17,7 +18,11 @@ InputManager* InputManager::getInstance() {
 }
 
 InputManager::InputManager()
-    : _scene(), _keyboardEvLstnr(), _pressedKeys(), _isCapsLocked() {}
+    : _scene(),
+      _keyboardEvLstnr(),
+      _isCapsLocked(),
+      _pressedKeys(),
+      _specialOnKeyPressed() {}
 
 
 void InputManager::activate(Scene* scene) {
@@ -25,20 +30,21 @@ void InputManager::activate(Scene* scene) {
   _keyboardEvLstnr = EventListenerKeyboard::create();
 
   // Capture "this" by value.
-  _keyboardEvLstnr->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* e) {
+  _keyboardEvLstnr->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
     _pressedKeys.insert(keyCode);
 
     if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
       _isCapsLocked = !_isCapsLocked;
     }
 
-    // Execute additional OnKeyPressedEvLstnrs.
-    if (!_onKeyPressedEvLstnrs.empty()) {
-      _onKeyPressedEvLstnrs.top()(keyCode, e);
+    // Execute the additional onKeyPressed handler for special events.
+    // (e.g., prompting for a hotkey, receiving TextField input, etc)
+    if (_specialOnKeyPressed) {
+      _specialOnKeyPressed(keyCode, e);
     }
   };
 
-  _keyboardEvLstnr->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event*) {
+  _keyboardEvLstnr->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event*) {
     _pressedKeys.erase(keyCode);
   };
   
@@ -62,20 +68,6 @@ bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
 }
 
 
-void InputManager::pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr) {
-  _onKeyPressedEvLstnrs.push(evLstnr);
-  VGLOG(LOG_INFO, "pushed. remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
-}
-
-void InputManager::popEvLstnr() {
-  //VGLOG(LOG_INFO, "remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
-  if (!_onKeyPressedEvLstnrs.empty()) {
-    _onKeyPressedEvLstnrs.pop();
-  }
-  VGLOG(LOG_INFO, "popped. remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
-}
-
-
 bool InputManager::isCapsLocked() const {
   return _isCapsLocked;
 }
@@ -84,4 +76,13 @@ bool InputManager::isShiftPressed() const {
   return isKeyPressed(EventKeyboard::KeyCode::KEY_SHIFT);
 }
 
-} // namespace vigilante
+
+void InputManager::setSpecialOnKeyPressed(const OnKeyPressedEvLstnr& onKeyPressed) {
+  _specialOnKeyPressed = onKeyPressed;
+}
+
+void InputManager::clearSpecialOnKeyPressed() {
+  _specialOnKeyPressed = nullptr;
+}
+
+}  // namespace vigilante

@@ -43,7 +43,7 @@ void Console::handleInput() {
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
     _layer->setVisible(!_layer->isVisible());
     _textField.setReceivingInput(false);
-    InputManager::getInstance()->popEvLstnr();
+    InputManager::getInstance()->clearSpecialOnKeyPressed();
     return;
   }
 
@@ -77,13 +77,6 @@ bool Console::isVisible() const {
 void Console::setVisible(bool visible) {
   _layer->setVisible(visible);
   _textField.setReceivingInput(visible);
-
-  if (visible) {
-
-  } else {
-    _textField.setReceivingInput(false);
-    InputManager::getInstance()->popEvLstnr();
-  }
 }
 
 Layer* Console::getLayer() const {
