@@ -24,6 +24,13 @@ WindowManager::WindowManager()
       _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)),
       _windows() {}
 
+
+void WindowManager::update(float delta) {
+  for (auto& w : _windows) {
+    w->update(delta);
+  }
+}
+
 void WindowManager::push(unique_ptr<Window> window) {
   if (_windows.size() >= _kMaxWindowCount) {
     VGLOG(LOG_WARN, "Unable to render more window(s), maximum: %ld", _kMaxWindowCount);
@@ -52,7 +59,7 @@ unique_ptr<Window> WindowManager::pop() {
   _windows.pop_back();
 
   // Set window to invisible.
-  removedWindow->getLayer()->setVisible(false);
+  removedWindow->setVisible(false);
   _scene->removeChild(removedWindow->getLayer());
 
   return removedWindow;
@@ -67,7 +74,7 @@ Window* WindowManager::top() const {
 
 
 bool WindowManager::isEmpty() const {
-  return _windows.size() == 0;
+  return _windows.empty();
 }
 
 int WindowManager::getSize() const {

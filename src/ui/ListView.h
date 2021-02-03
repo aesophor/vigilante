@@ -228,7 +228,7 @@ void ListView<T>::setObjects(const ContainerType<T>& objects) {
   _current = 0;
   showFrom(_firstVisibleIndex);
 
-  if (_objects.size() > 0) {
+  if (!_objects.empty()) {
     _listViewItems[0]->setSelected(true);
   }
 }

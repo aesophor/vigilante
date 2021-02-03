@@ -2,6 +2,7 @@
 #include "Item.h"
 
 #include <json/document.h>
+#include "AssetManager.h"
 #include "Constants.h"
 #include "std/make_unique.h"
 #include "item/Equipment.h"
@@ -105,6 +106,10 @@ const string& Item::getDesc() const {
 
 string Item::getIconPath() const {
   return _itemProfile.textureResDir + "/icon.png";
+}
+
+bool Item::isGold() const {
+  return _itemProfile.jsonFileName == asset_manager::kGoldCoin;
 }
 
 

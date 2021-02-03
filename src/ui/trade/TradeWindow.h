@@ -19,7 +19,7 @@ class TradeWindow : public Window {
   TradeWindow(Character* buyer, Character* seller);
   virtual ~TradeWindow() = default;
 
-  virtual void update() override;  // Window
+  virtual void update(float delta) override;  // Window
   virtual void handleInput() override;  // Window
 
   void toggleBuySell();

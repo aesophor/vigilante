@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_INPUT_MANAGER_H_
 #define VIGILANTE_INPUT_MANAGER_H_
 
@@ -8,6 +8,13 @@
 
 #include <cocos2d.h>
 #include "input/Keybindable.h"
+
+#define IS_KEY_PRESSED(keyCode) \
+  InputManager::getInstance()->isKeyPressed(keyCode)
+
+#define IS_KEY_JUST_PRESSED(keyCode) \
+  InputManager::getInstance()->isKeyJustPressed(keyCode)
+
 
 namespace vigilante {
 

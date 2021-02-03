@@ -26,6 +26,8 @@ class TextField : public Controllable {
   virtual void setOnSubmit(const std::function<void ()>& onSubmit);
 
   cocos2d::ui::Layout* getLayout() const;
+  bool isReceivingInput() const;
+  void setReceivingInput(bool receivingInput);
 
  private:
   virtual void toggleCursor();
@@ -34,9 +36,10 @@ class TextField : public Controllable {
   cocos2d::Label* _label;
   std::string _buffer;
   std::function<void ()> _onSubmit;
+  std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)> _onKeyPressedEvLstnr;
 
   float _timer;
-  bool _isRecevingInput;
+  bool _isReceivingInput;
   bool _isCursorVisible;
 };
 

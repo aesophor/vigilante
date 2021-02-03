@@ -88,12 +88,14 @@ const std::string kWindowLeftBg = kWindow + "window_left_bg.png";
 const std::string kWindowRightBg = kWindow + "window_right_bg.png";
 const std::string kWindowBottomBg = kWindow + "window_bottom_bg.png";
 
+const std::string kTextFieldBg = "Texture/ui/text_field_bg.png";
+
 // Trade
 const std::string kTrade = "Texture/ui/trade/";
 const std::string kTradeBg = kTrade + "trade_bg.png";
 
 // Important items
-const std::string kGoldCoin = "Resources/Database/item/misc/gold_coin.json";
+const std::string kGoldCoin = "Database/item/misc/gold_coin.json";
 
 // BGM
 const std::string kBgm = "Music/";

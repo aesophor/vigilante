@@ -44,6 +44,7 @@ class Item : public DynamicActor, public Importable {
   const std::string& getName() const;
   const std::string& getDesc() const;
   std::string getIconPath() const;
+  bool isGold() const;
 
   int getAmount() const;
   void setAmount(int amount);

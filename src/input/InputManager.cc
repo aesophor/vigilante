@@ -64,12 +64,15 @@ bool InputManager::isKeyJustPressed(EventKeyboard::KeyCode keyCode) {
 
 void InputManager::pushEvLstnr(const OnKeyPressedEvLstnr& evLstnr) {
   _onKeyPressedEvLstnrs.push(evLstnr);
+  VGLOG(LOG_INFO, "pushed. remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
 }
 
 void InputManager::popEvLstnr() {
+  //VGLOG(LOG_INFO, "remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
   if (!_onKeyPressedEvLstnrs.empty()) {
     _onKeyPressedEvLstnrs.pop();
   }
+  VGLOG(LOG_INFO, "popped. remaining evlstnrs: %ld", _onKeyPressedEvLstnrs.size());
 }
 
 

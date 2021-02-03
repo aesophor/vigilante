@@ -22,6 +22,9 @@ class Console : public Controllable {
   virtual void handleInput() override;
   virtual void executeCmd(const std::string& cmd, bool showNotification=false);
 
+  bool isVisible() const;
+  void setVisible(bool visible);
+
   cocos2d::Layer* getLayer() const;
 
  private:

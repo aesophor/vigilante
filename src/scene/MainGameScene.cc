@@ -160,6 +160,7 @@ void MainGameScene::update(float delta) {
   _questHints->update(delta);
   _dialogueManager->update(delta);
   _console->update(delta);
+  _windowManager->update(delta);
 
   vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
@@ -167,10 +168,8 @@ void MainGameScene::update(float delta) {
 }
 
 void MainGameScene::handleInput() {
-  auto inputMgr = InputManager::getInstance();
-
   // Toggle b2dr (b2DebugRenderer)
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_0)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_0)) {
     bool isVisible = !_b2dr->isVisible();
     _b2dr->setVisible(isVisible);
     _notifications->show(string("Debug Mode: ") + ((isVisible) ? "on" : "off"));
@@ -178,7 +177,7 @@ void MainGameScene::handleInput() {
   }
 
   // Exit window or toggle PauseMenu
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ESCAPE)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ESCAPE)) {
     if (!_windowManager->isEmpty()) {
       _windowManager->pop();
       return;
@@ -191,23 +190,30 @@ void MainGameScene::handleInput() {
   }
 
   // Toggle Console
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_GRAVE)) {
-    bool isVisible = !_console->getLayer()->isVisible();
-    _console->getLayer()->setVisible(isVisible);
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
+    _console->getLayer()->setVisible(!_console->getLayer()->isVisible());
+
+    /*
+    if (!_console->getLayer()->isVisible()) {
+      _isRecevingInput = false;
+      InputManager::getInstance()->popEvLstnr();
+      return;
+    }
+    */
     return;
   }
 
   if (!_windowManager->isEmpty()) {
     _windowManager->top()->handleInput();
   } else if (_pauseMenu->getLayer()->isVisible()) {
-    _pauseMenu->handleInput(); // paused
+    _pauseMenu->handleInput();  // paused
   } else if (_console->getLayer()->isVisible()) {
     _console->handleInput();
-  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible()
-      || _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
+  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible() ||
+             _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
     _dialogueManager->handleInput();
   } else {
-    _gameMapManager->getPlayer()->handleInput(); // not paused
+    _gameMapManager->getPlayer()->handleInput();  // not paused
   }
 }
 
@@ -216,4 +222,4 @@ b2World* MainGameScene::getWorld() const {
   return _gameMapManager->getWorld();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

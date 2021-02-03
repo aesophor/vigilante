@@ -54,10 +54,10 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
   _tradeListView->getLayout()->setPosition({5, -5});
   _contentLayout->addChild(_tradeListView->getLayout());
 
-  update();
+  update(0);
 }
 
-void TradeWindow::update() {
+void TradeWindow::update(float) {
   if (_isTradingWithAlly) {
     setTitle((dynamic_cast<Player*>(_buyer)) ? 
         string_util::format("Receiving from: %s", _seller->getCharacterProfile().name.c_str()) :
@@ -75,22 +75,20 @@ void TradeWindow::update() {
 }
 
 void TradeWindow::handleInput() {
-  auto inputMgr = InputManager::getInstance();
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Q) ||
-      inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_Q) ||
+      IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
     toggleBuySell();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     _tabView->selectPrev();
-    update();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+    update(0);
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     _tabView->selectNext();
-    update();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+    update(0);
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     _tradeListView->selectUp();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _tradeListView->selectDown();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     _tradeListView->confirm();
   }
 }
@@ -98,7 +96,7 @@ void TradeWindow::handleInput() {
 
 void TradeWindow::toggleBuySell() {
   std::swap(_buyer, _seller);
-  update();
+  update(0);
 }
 
 

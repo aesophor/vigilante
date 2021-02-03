@@ -764,12 +764,13 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
 }
 
 void Character::removeItem(Item* item, int amount) {
-  if (!item || amount == 0) {
-    VGLOG(LOG_WARN, "Either item == nullptr or amount == 0");
+  Item* existingItemObj = getExistingItemObj(item);
+  
+  if (!existingItemObj || amount == 0) {
+    VGLOG(LOG_WARN, "Unable to remove such item!");
     return;
   }
 
-  Item* existingItemObj = getExistingItemObj(item);
   existingItemObj->setAmount(existingItemObj->getAmount() - amount);
 
   if (existingItemObj->getAmount() <= 0) {
@@ -787,10 +788,13 @@ void Character::removeItem(Item* item, int amount) {
   }
 }
 
+// For each instance of an item, at most one copy is kept in the memory.
+// This copy will be stored in _itemMapper (unordered_map<string, Item*>)
+// Search time complexity: avg O(1), worst O(n).
 Item* Character::getExistingItemObj(Item* item) const {
-  // For each instance of an item, at most one copy is kept in the memory.
-  // This copy will be stored in _itemMapper (unordered_map<string, Item*>)
-  // Search time complexity: avg O(1), worst O(n).
+  if (!item) {
+    return nullptr;
+  }
   auto it = _itemMapper.find(item->getItemProfile().name);
   return (it != _itemMapper.end()) ? it->second.get() : nullptr;
 }

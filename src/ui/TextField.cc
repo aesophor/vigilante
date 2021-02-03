@@ -25,10 +25,34 @@ TextField::TextField()
       _buffer(),
       _onSubmit(),
       _timer(),
-      _isRecevingInput(),
+      _isReceivingInput(),
       _isCursorVisible() {
   _label->setAnchorPoint({0, 0});
   _layout->addChild(_label);
+
+  _onKeyPressedEvLstnr = [this](EventKeyboard::KeyCode keyCode, Event*) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
+      if (!_buffer.empty() && _onSubmit) {
+        _onSubmit();
+      }
+      return;
+    }
+
+    if (keyCode == EventKeyboard::KeyCode::KEY_BACKSPACE) {
+      if (!_buffer.empty()) {
+        _buffer.pop_back();
+        _label->setString(_buffer + CURSOR_CHAR);
+      }
+      return;
+    }
+
+    auto inputMgr = InputManager::getInstance();
+    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(), inputMgr->isShiftPressed());
+    if (c != 0x00) {
+      _buffer += c;
+      _label->setString(_buffer + CURSOR_CHAR);
+    }
+  };
 }
 
 
@@ -42,40 +66,7 @@ void TextField::update(float delta) {
 }
 
 void TextField::handleInput() {
-  // FIXME: clean up this shit god dammit
-  auto onKeyPressedEvLstnr = [=](EventKeyboard::KeyCode keyCode, Event*) {
-    if (keyCode == EventKeyboard::KeyCode::KEY_GRAVE) {
-      _isRecevingInput = false;
-      InputManager::getInstance()->popEvLstnr();
-      return;
-    }
 
-    if (keyCode == EventKeyboard::KeyCode::KEY_ENTER && !_buffer.empty()) {
-      if (_onSubmit) {
-        _onSubmit();
-      }
-      clear();
-      return;
-    }
-
-    if (keyCode == EventKeyboard::KeyCode::KEY_BACKSPACE && !_buffer.empty()) {
-      _buffer.pop_back();
-      _label->setString(_buffer + CURSOR_CHAR);
-      return;
-    }
-
-    auto inputMgr = InputManager::getInstance();
-    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(), inputMgr->isShiftPressed());
-    if (c != 0x00) {
-      _buffer += c;
-      _label->setString(_buffer + CURSOR_CHAR);
-    }
-  };
-
-  if (!_isRecevingInput) {
-    _isRecevingInput = true;
-    InputManager::getInstance()->pushEvLstnr(onKeyPressedEvLstnr);
-  }
 }
 
 
@@ -104,6 +95,21 @@ void TextField::toggleCursor() {
 
 Layout* TextField::getLayout() const {
   return _layout;
+}
+
+bool TextField::isReceivingInput() const {
+  return _isReceivingInput;
+}
+
+void TextField::setReceivingInput(bool receivingInput) {
+  // Avoid repeatedly pushing/popping the same _onKeyPressedEvLstnr
+  if (receivingInput && !_isReceivingInput) {
+    InputManager::getInstance()->pushEvLstnr(_onKeyPressedEvLstnr);
+  } else if (!receivingInput && _isReceivingInput) {
+    InputManager::getInstance()->popEvLstnr();
+  }
+
+  _isReceivingInput = receivingInput;
 }
 
 } // namespace vigilante

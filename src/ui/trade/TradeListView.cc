@@ -4,7 +4,10 @@
 #include <memory>
 
 #include "AssetManager.h"
+#include "input/InputManager.h"
 #include "gameplay/ItemPriceTable.h"
+#include "ui/AmountSelectionWindow.h"
+#include "ui/WindowManager.h"
 #include "ui/notifications/Notifications.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/StringUtil.h"
@@ -65,19 +68,53 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
 
 void TradeListView::confirm() {
+  Item* item = getSelectedObject();
+
+  if (!item) {
+    return;
+  }
+
   Character* seller = _tradeWindow->getSeller();
   Character* buyer = _tradeWindow->getBuyer();
-  Item* item = getSelectedObject();
-  assert(item != nullptr);
 
+  if (item->getAmount() > 1) {
+    auto w = std::make_unique<AmountSelectionWindow>();
+    AmountSelectionWindow* wRaw = w.get();
+
+    auto onSubmit = [wRaw, item, seller, buyer]() {
+        int amount = std::stoi(wRaw->getTextField()->getString());
+        int price = item_price_table::getPrice(item);
+
+        // Transfer funds
+        if (!item->isGold()) {
+          buyer->removeGold(price * amount);
+          seller->addGold(price * amount);
+        }
+
+        // Transfer items
+        buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
+        seller->removeItem(item, amount);
+
+        // Close AmountSelectionWindow
+        WindowManager::getInstance()->pop();
+        IS_KEY_JUST_PRESSED(cocos2d::EventKeyboard::KeyCode::KEY_ENTER);
+    };
+
+    w->getTextField()->setOnSubmit(onSubmit);
+    w->getTextField()->setReceivingInput(true);
+    WindowManager::getInstance()->push(std::move(w));
+    return;
+  }
+
+  /*
   if (!_tradeWindow->isTradingWithAlly()) {
-    int itemPrice = item_price_table::getPrice(item);
   
     // Check if the buyer has sufficient amount of gold.
     if (buyer->getGoldBalance() < itemPrice) {
       Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
       return;
     }
+
     // Transfer funds
     buyer->removeGold(itemPrice);
     seller->addGold(itemPrice);
@@ -86,8 +123,9 @@ void TradeListView::confirm() {
   // Transfer item
   buyer->addItem(Item::create(item->getItemProfile().jsonFileName));
   seller->removeItem(item);
+  */
  
-  _tradeWindow->update();
+  _tradeWindow->update(0);
 }
 
 void TradeListView::selectUp() {

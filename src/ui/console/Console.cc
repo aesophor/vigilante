@@ -23,8 +23,8 @@ Console::Console()
       _cmdParser(),
       _cmdHistory() {
   _textField.setOnSubmit([this]() {
-    bool showNotification = true;
-    executeCmd(this->_textField.getString(), showNotification);
+    executeCmd(_textField.getString(), /*showNotification=*/true);
+    _textField.clear();
   });
 
   _layer->setVisible(false);
@@ -40,15 +40,21 @@ void Console::update(float delta) {
 }
 
 void Console::handleInput() {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
+    _layer->setVisible(!_layer->isVisible());
+    _textField.setReceivingInput(false);
+    InputManager::getInstance()->popEvLstnr();
+    return;
+  }
+
   if (!_layer->isVisible()) {
     return;
   }
 
-  auto inputMgr = InputManager::getInstance();
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW) && _cmdHistory.canGoBack()) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW) && _cmdHistory.canGoBack()) {
     _cmdHistory.goBack();
     _textField.setString(_cmdHistory.getCurrentLine());
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) && _cmdHistory.canGoForward()) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW) && _cmdHistory.canGoForward()) {
     _cmdHistory.goForward();
     _textField.setString(_cmdHistory.getCurrentLine());
   } else {
@@ -63,6 +69,22 @@ void Console::executeCmd(const string& cmd, bool showNotification) {
   _cmdHistory._current = _cmdHistory._tail;
 }
 
+
+bool Console::isVisible() const {
+  return _layer->isVisible();
+}
+
+void Console::setVisible(bool visible) {
+  _layer->setVisible(visible);
+  _textField.setReceivingInput(visible);
+
+  if (visible) {
+
+  } else {
+    _textField.setReceivingInput(false);
+    InputManager::getInstance()->popEvLstnr();
+  }
+}
 
 Layer* Console::getLayer() const {
   return _layer;
