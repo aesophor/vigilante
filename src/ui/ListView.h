@@ -223,13 +223,18 @@ template <template <typename...> typename ContainerType>
 void ListView<T>::setObjects(const ContainerType<T>& objects) {
   _objects = std::deque<T>(objects.begin(), objects.end());
 
-  // FIXME: Improve this shitty algorithm
-  _firstVisibleIndex = 0;
-  _current = 0;
+  if (_current < 0) {
+    _current = 0;
+    _firstVisibleIndex = 0;
+  } else if (_current >= _objects.size()) {
+    _current = _objects.size() - 1;
+    _firstVisibleIndex = std::max(0, _current - (_visibleItemCount - 1));
+  }
+
   showFrom(_firstVisibleIndex);
 
   if (!_objects.empty()) {
-    _listViewItems[0]->setSelected(true);
+    _listViewItems[_current - _firstVisibleIndex]->setSelected(true);
   }
 }
 

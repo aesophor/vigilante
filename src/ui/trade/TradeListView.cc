@@ -69,21 +69,26 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
 void TradeListView::confirm() {
   Item* item = getSelectedObject();
-
   if (!item) {
     return;
   }
 
   Character* seller = _tradeWindow->getSeller();
   Character* buyer = _tradeWindow->getBuyer();
+  int price = item_price_table::getPrice(item);
 
   if (item->getAmount() > 1) {
     auto w = std::make_unique<AmountSelectionWindow>();
     AmountSelectionWindow* wRaw = w.get();
 
-    auto onSubmit = [wRaw, item, seller, buyer]() {
+    auto onSubmit = [wRaw, item, seller, buyer, price]() {
       int amount = std::stoi(wRaw->getTextField()->getString());
-      int price = item_price_table::getPrice(item);
+
+      // Check if the buyer has sufficient amount of gold.
+      if (buyer->getGoldBalance() < price * amount) {
+        Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
+        return;
+      }
 
       // Transfer funds
       if (!item->isGold()) {
@@ -108,25 +113,26 @@ void TradeListView::confirm() {
     return;
   }
 
-  /*
+
   if (!_tradeWindow->isTradingWithAlly()) {
-  
     // Check if the buyer has sufficient amount of gold.
-    if (buyer->getGoldBalance() < itemPrice) {
+    if (buyer->getGoldBalance() < price) {
       Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
       return;
     }
 
     // Transfer funds
-    buyer->removeGold(itemPrice);
-    seller->addGold(itemPrice);
+    if (!item->isGold()) {
+      buyer->removeGold(price);
+      seller->addGold(price);
+    }
   }
-  
+
   // Transfer item
   buyer->addItem(Item::create(item->getItemProfile().jsonFileName));
   seller->removeItem(item);
-  */
  
+
   _tradeWindow->update(0);
 }
 
