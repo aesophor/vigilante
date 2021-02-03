@@ -23,6 +23,11 @@ class TradeListView : public ListView<Item*> {
   void showCharactersItemByType(Character* owner, Item::Type itemType);
 
  private:
+  void doTrade(Character* buyer,
+               Character* seller,
+               Item* item,
+               const int amount) const;
+
   TradeWindow* _tradeWindow;
   cocos2d::Label* _descLabel;
 };

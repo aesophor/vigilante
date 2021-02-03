@@ -25,6 +25,7 @@
 #define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
 #define EMPTY_ITEM_NAME "---"
 
+using std::string;
 using cocos2d::Label;
 using cocos2d::ui::ImageView;
 
@@ -49,7 +50,7 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
     // Display item price if not trading with ally.
     if (!_tradeWindow->isTradingWithAlly()) {
       label->setString(label->getString() +
-          string_util::format(" ($%d)", item_price_table::getPrice(item)));
+          string_util::format(" [$%d]", item_price_table::getPrice(item)));
     }
 
     // Display item amount if amount > 1
@@ -75,34 +76,34 @@ void TradeListView::confirm() {
 
   Character* seller = _tradeWindow->getSeller();
   Character* buyer = _tradeWindow->getBuyer();
-  int price = item_price_table::getPrice(item);
 
-  if (item->getAmount() > 1) {
+  if (item->getAmount() == 1) {
+    doTrade(buyer, seller, item, 1);
+
+  } else {
     auto w = std::make_unique<AmountSelectionWindow>();
     AmountSelectionWindow* wRaw = w.get();
 
-    auto onSubmit = [wRaw, item, seller, buyer, price]() {
-      int amount = std::stoi(wRaw->getTextField()->getString());
+    auto onSubmit = [wRaw, this, buyer, seller, item]() {
+      const string& buf = wRaw->getTextField()->getString();
+      int amount = 0;
 
-      // Check if the buyer has sufficient amount of gold.
-      if (buyer->getGoldBalance() < price * amount) {
-        Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
-        return;
+      try {
+        amount = std::stoi(buf);
+      } catch (const std::invalid_argument& ex) {
+        Notifications::getInstance()->show("Invalid amount");
+      } catch (const std::out_of_range& ex) {
+        Notifications::getInstance()->show("Amount too large or too small");
+      } catch (...) {
+        Notifications::getInstance()->show("Unknown error while parsing amount");
       }
 
-      // Transfer funds
-      if (!item->isGold()) {
-        buyer->removeGold(price * amount);
-        seller->addGold(price * amount);
-      }
-
-      // Transfer items
-      buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
-      seller->removeItem(item, amount);
+      doTrade(buyer, seller, item, amount);
     };
 
     auto onDismiss = []() {
-      // Close AmountSelectionWindow
+      // Close AmountSelectionWindow which
+      // should be at the top at this moment.
       WindowManager::getInstance()->pop();
     };
 
@@ -110,30 +111,7 @@ void TradeListView::confirm() {
     w->getTextField()->setOnDismiss(onDismiss);
     w->getTextField()->setReceivingInput(true);
     WindowManager::getInstance()->push(std::move(w));
-    return;
   }
-
-
-  if (!_tradeWindow->isTradingWithAlly()) {
-    // Check if the buyer has sufficient amount of gold.
-    if (buyer->getGoldBalance() < price) {
-      Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
-      return;
-    }
-
-    // Transfer funds
-    if (!item->isGold()) {
-      buyer->removeGold(price);
-      seller->addGold(price);
-    }
-  }
-
-  // Transfer item
-  buyer->addItem(Item::create(item->getItemProfile().jsonFileName));
-  seller->removeItem(item);
- 
-
-  _tradeWindow->update(0);
 }
 
 void TradeListView::selectUp() {
@@ -167,6 +145,42 @@ void TradeListView::showCharactersItemByType(Character* owner, Item::Type itemTy
 
   // Update description label.
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
+}
+
+
+void TradeListView::doTrade(Character* buyer,
+                            Character* seller,
+                            Item* item,
+                            const int amount) const {
+  if (amount <= 0) {
+    return;
+  }
+
+  const int price = item_price_table::getPrice(item);
+
+  // Check if `amount` is valid.
+  if (amount > item->getAmount()) {
+    Notifications::getInstance()->show("Invalid amount");
+    return;
+  }
+
+  if (!_tradeWindow->isTradingWithAlly()) {
+    // Check if the buyer has sufficient amount of gold.
+    if (buyer->getGoldBalance() < price * amount) {
+      Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
+      return;
+    }
+
+    // Transfer funds
+    if (!item->isGold()) {
+      buyer->removeGold(price * amount);
+      seller->addGold(price * amount);
+    }
+  }
+
+  // Transfer items
+  buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
+  seller->removeItem(item, amount);
 }
 
 }  // namespace vigilante
