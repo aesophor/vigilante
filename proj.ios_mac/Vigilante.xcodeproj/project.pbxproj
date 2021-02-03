@@ -28,160 +28,162 @@
 		3A83517125C2BAC7006CD40F /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517025C2BAC7006CD40F /* Music */; };
 		3A83517325C2BACC006CD40F /* Sfx in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517225C2BACC006CD40F /* Sfx */; };
 		3A83517525C2BACF006CD40F /* Texture in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517425C2BACF006CD40F /* Texture */; };
-		3AE7CBE625C2F11C004ED855 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2625C2F11C004ED855 /* FloatingDamages.cc */; };
-		3AE7CBE725C2F11C004ED855 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2625C2F11C004ED855 /* FloatingDamages.cc */; };
-		3AE7CBE825C2F11C004ED855 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2725C2F11C004ED855 /* Shade.cc */; };
-		3AE7CBE925C2F11C004ED855 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2725C2F11C004ED855 /* Shade.cc */; };
-		3AE7CBEA25C2F11C004ED855 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2A25C2F11C004ED855 /* Window.cc */; };
-		3AE7CBEB25C2F11C004ED855 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2A25C2F11C004ED855 /* Window.cc */; };
-		3AE7CBEC25C2F11C004ED855 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2B25C2F11C004ED855 /* TableLayout.cc */; };
-		3AE7CBED25C2F11C004ED855 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2B25C2F11C004ED855 /* TableLayout.cc */; };
-		3AE7CBEE25C2F11C004ED855 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2E25C2F11C004ED855 /* TabView.cc */; };
-		3AE7CBEF25C2F11C004ED855 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2E25C2F11C004ED855 /* TabView.cc */; };
-		3AE7CBF025C2F11C004ED855 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2F25C2F11C004ED855 /* TextField.cc */; };
-		3AE7CBF125C2F11C004ED855 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB2F25C2F11C004ED855 /* TextField.cc */; };
-		3AE7CBF225C2F11C004ED855 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3125C2F11C004ED855 /* TradeListView.cc */; };
-		3AE7CBF325C2F11C004ED855 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3125C2F11C004ED855 /* TradeListView.cc */; };
-		3AE7CBF425C2F11C004ED855 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3425C2F11C004ED855 /* TradeWindow.cc */; };
-		3AE7CBF525C2F11C004ED855 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3425C2F11C004ED855 /* TradeWindow.cc */; };
-		3AE7CBF625C2F11C004ED855 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3525C2F11C004ED855 /* TimedLabelService.cc */; };
-		3AE7CBF725C2F11C004ED855 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3525C2F11C004ED855 /* TimedLabelService.cc */; };
-		3AE7CBF825C2F11C004ED855 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3925C2F11C004ED855 /* DialogueManager.cc */; };
-		3AE7CBF925C2F11C004ED855 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3925C2F11C004ED855 /* DialogueManager.cc */; };
-		3AE7CBFA25C2F11C004ED855 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3C25C2F11C004ED855 /* Subtitles.cc */; };
-		3AE7CBFB25C2F11C004ED855 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3C25C2F11C004ED855 /* Subtitles.cc */; };
-		3AE7CBFC25C2F11C004ED855 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3D25C2F11C004ED855 /* DialogueListView.cc */; };
-		3AE7CBFD25C2F11C004ED855 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3D25C2F11C004ED855 /* DialogueListView.cc */; };
-		3AE7CBFE25C2F11C004ED855 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3F25C2F11C004ED855 /* DialogueMenu.cc */; };
-		3AE7CBFF25C2F11C004ED855 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB3F25C2F11C004ED855 /* DialogueMenu.cc */; };
-		3AE7CC0025C2F11C004ED855 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4225C2F11C004ED855 /* PauseMenuDialog.cc */; };
-		3AE7CC0125C2F11C004ED855 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4225C2F11C004ED855 /* PauseMenuDialog.cc */; };
-		3AE7CC0225C2F11C004ED855 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4625C2F11C004ED855 /* SkillPane.cc */; };
-		3AE7CC0325C2F11C004ED855 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4625C2F11C004ED855 /* SkillPane.cc */; };
-		3AE7CC0425C2F11C004ED855 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4725C2F11C004ED855 /* SkillListView.cc */; };
-		3AE7CC0525C2F11C004ED855 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4725C2F11C004ED855 /* SkillListView.cc */; };
-		3AE7CC0625C2F11C004ED855 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4925C2F11C004ED855 /* AbstractPane.cc */; };
-		3AE7CC0725C2F11C004ED855 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4925C2F11C004ED855 /* AbstractPane.cc */; };
-		3AE7CC0825C2F11C004ED855 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4C25C2F11C004ED855 /* OptionListView.cc */; };
-		3AE7CC0925C2F11C004ED855 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4C25C2F11C004ED855 /* OptionListView.cc */; };
-		3AE7CC0A25C2F11C004ED855 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4E25C2F11C004ED855 /* OptionPane.cc */; };
-		3AE7CC0B25C2F11C004ED855 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB4E25C2F11C004ED855 /* OptionPane.cc */; };
-		3AE7CC0C25C2F11C004ED855 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5225C2F11C004ED855 /* PauseMenu.cc */; };
-		3AE7CC0D25C2F11C004ED855 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5225C2F11C004ED855 /* PauseMenu.cc */; };
-		3AE7CC0E25C2F11C004ED855 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5525C2F11C004ED855 /* QuestListView.cc */; };
-		3AE7CC0F25C2F11C004ED855 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5525C2F11C004ED855 /* QuestListView.cc */; };
-		3AE7CC1025C2F11C004ED855 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5625C2F11C004ED855 /* QuestPane.cc */; };
-		3AE7CC1125C2F11C004ED855 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5625C2F11C004ED855 /* QuestPane.cc */; };
-		3AE7CC1225C2F11C004ED855 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5925C2F11C004ED855 /* InventoryPane.cc */; };
-		3AE7CC1325C2F11C004ED855 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5925C2F11C004ED855 /* InventoryPane.cc */; };
-		3AE7CC1425C2F11C004ED855 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5C25C2F11C004ED855 /* ItemListView.cc */; };
-		3AE7CC1525C2F11C004ED855 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5C25C2F11C004ED855 /* ItemListView.cc */; };
-		3AE7CC1625C2F11C004ED855 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5D25C2F11C004ED855 /* HeaderPane.cc */; };
-		3AE7CC1725C2F11C004ED855 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5D25C2F11C004ED855 /* HeaderPane.cc */; };
-		3AE7CC1825C2F11C004ED855 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5E25C2F11C004ED855 /* StatsPane.cc */; };
-		3AE7CC1925C2F11C004ED855 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB5E25C2F11C004ED855 /* StatsPane.cc */; };
-		3AE7CC1A25C2F11C004ED855 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6025C2F11C004ED855 /* EquipmentPane.cc */; };
-		3AE7CC1B25C2F11C004ED855 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6025C2F11C004ED855 /* EquipmentPane.cc */; };
-		3AE7CC1C25C2F11C004ED855 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6325C2F11C004ED855 /* WindowManager.cc */; };
-		3AE7CC1D25C2F11C004ED855 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6325C2F11C004ED855 /* WindowManager.cc */; };
-		3AE7CC1E25C2F11C004ED855 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6725C2F11C004ED855 /* QuestHints.cc */; };
-		3AE7CC1F25C2F11C004ED855 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6725C2F11C004ED855 /* QuestHints.cc */; };
-		3AE7CC2025C2F11C004ED855 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6A25C2F11C004ED855 /* Notifications.cc */; };
-		3AE7CC2125C2F11C004ED855 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6A25C2F11C004ED855 /* Notifications.cc */; };
-		3AE7CC2225C2F11C004ED855 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6E25C2F11C004ED855 /* CommandParser.cc */; };
-		3AE7CC2325C2F11C004ED855 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6E25C2F11C004ED855 /* CommandParser.cc */; };
-		3AE7CC2425C2F11C004ED855 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6F25C2F11C004ED855 /* Console.cc */; };
-		3AE7CC2525C2F11C004ED855 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB6F25C2F11C004ED855 /* Console.cc */; };
-		3AE7CC2625C2F11C004ED855 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7325C2F11C004ED855 /* StatusBar.cc */; };
-		3AE7CC2725C2F11C004ED855 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7325C2F11C004ED855 /* StatusBar.cc */; };
-		3AE7CC2825C2F11C004ED855 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7425C2F11C004ED855 /* Hud.cc */; };
-		3AE7CC2925C2F11C004ED855 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7425C2F11C004ED855 /* Hud.cc */; };
-		3AE7CC2A25C2F11C004ED855 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7E25C2F11C004ED855 /* MagicalMissile.cc */; };
-		3AE7CC2B25C2F11C004ED855 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB7E25C2F11C004ED855 /* MagicalMissile.cc */; };
-		3AE7CC2C25C2F11C004ED855 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8125C2F11C004ED855 /* ForwardSlash.cc */; };
-		3AE7CC2D25C2F11C004ED855 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8125C2F11C004ED855 /* ForwardSlash.cc */; };
-		3AE7CC2E25C2F11C004ED855 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8225C2F11C004ED855 /* BatForm.cc */; };
-		3AE7CC2F25C2F11C004ED855 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8225C2F11C004ED855 /* BatForm.cc */; };
-		3AE7CC3025C2F11C004ED855 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8325C2F11C004ED855 /* Skill.cc */; };
-		3AE7CC3125C2F11C004ED855 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8325C2F11C004ED855 /* Skill.cc */; };
-		3AE7CC3225C2F11C004ED855 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8425C2F11C004ED855 /* BackDash.cc */; };
-		3AE7CC3325C2F11C004ED855 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8425C2F11C004ED855 /* BackDash.cc */; };
-		3AE7CC3425C2F11D004ED855 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8B25C2F11C004ED855 /* Logger.cc */; };
-		3AE7CC3525C2F11D004ED855 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8B25C2F11C004ED855 /* Logger.cc */; };
-		3AE7CC3625C2F11D004ED855 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8C25C2F11C004ED855 /* JsonUtil.cc */; };
-		3AE7CC3725C2F11D004ED855 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8C25C2F11C004ED855 /* JsonUtil.cc */; };
-		3AE7CC3825C2F11D004ED855 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8D25C2F11C004ED855 /* RandUtil.cc */; };
-		3AE7CC3925C2F11D004ED855 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8D25C2F11C004ED855 /* RandUtil.cc */; };
-		3AE7CC3A25C2F11D004ED855 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8F25C2F11C004ED855 /* StringUtil.cc */; };
-		3AE7CC3B25C2F11D004ED855 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB8F25C2F11C004ED855 /* StringUtil.cc */; };
-		3AE7CC3C25C2F11D004ED855 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9025C2F11C004ED855 /* KeyCodeUtil.cc */; };
-		3AE7CC3D25C2F11D004ED855 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9025C2F11C004ED855 /* KeyCodeUtil.cc */; };
-		3AE7CC3E25C2F11D004ED855 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9425C2F11C004ED855 /* CameraUtil.cc */; };
-		3AE7CC3F25C2F11D004ED855 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9425C2F11C004ED855 /* CameraUtil.cc */; };
-		3AE7CC4025C2F11D004ED855 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9625C2F11C004ED855 /* b2BodyBuilder.cc */; };
-		3AE7CC4125C2F11D004ED855 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9625C2F11C004ED855 /* b2BodyBuilder.cc */; };
-		3AE7CC4225C2F11D004ED855 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9725C2F11C004ED855 /* b2DebugRenderer.cc */; };
-		3AE7CC4325C2F11D004ED855 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9725C2F11C004ED855 /* b2DebugRenderer.cc */; };
-		3AE7CC4425C2F11D004ED855 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9E25C2F11C004ED855 /* InputManager.cc */; };
-		3AE7CC4525C2F11D004ED855 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CB9E25C2F11C004ED855 /* InputManager.cc */; };
-		3AE7CC4625C2F11D004ED855 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA025C2F11C004ED855 /* HotkeyManager.cc */; };
-		3AE7CC4725C2F11D004ED855 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA025C2F11C004ED855 /* HotkeyManager.cc */; };
-		3AE7CC4825C2F11D004ED855 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA225C2F11C004ED855 /* StaticActor.cc */; };
-		3AE7CC4925C2F11D004ED855 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA225C2F11C004ED855 /* StaticActor.cc */; };
-		3AE7CC4A25C2F11D004ED855 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA525C2F11C004ED855 /* Npc.cc */; };
-		3AE7CC4B25C2F11D004ED855 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA525C2F11C004ED855 /* Npc.cc */; };
-		3AE7CC4C25C2F11D004ED855 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA725C2F11C004ED855 /* Character.cc */; };
-		3AE7CC4D25C2F11D004ED855 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA725C2F11C004ED855 /* Character.cc */; };
-		3AE7CC4E25C2F11D004ED855 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA925C2F11C004ED855 /* Party.cc */; };
-		3AE7CC4F25C2F11D004ED855 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBA925C2F11C004ED855 /* Party.cc */; };
-		3AE7CC5025C2F11D004ED855 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBAC25C2F11C004ED855 /* Player.cc */; };
-		3AE7CC5125C2F11D004ED855 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBAC25C2F11C004ED855 /* Player.cc */; };
-		3AE7CC5225C2F11D004ED855 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB125C2F11C004ED855 /* CallbackManager.cc */; };
-		3AE7CC5325C2F11D004ED855 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB125C2F11C004ED855 /* CallbackManager.cc */; };
-		3AE7CC5425C2F11D004ED855 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB225C2F11C004ED855 /* DynamicActor.cc */; };
-		3AE7CC5525C2F11D004ED855 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB225C2F11C004ED855 /* DynamicActor.cc */; };
-		3AE7CC5625C2F11D004ED855 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB425C2F11C004ED855 /* GameMapManager.cc */; };
-		3AE7CC5725C2F11D004ED855 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB425C2F11C004ED855 /* GameMapManager.cc */; };
-		3AE7CC5825C2F11D004ED855 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB725C2F11C004ED855 /* FxManager.cc */; };
-		3AE7CC5925C2F11D004ED855 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB725C2F11C004ED855 /* FxManager.cc */; };
-		3AE7CC5A25C2F11D004ED855 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB925C2F11C004ED855 /* Chest.cc */; };
-		3AE7CC5B25C2F11D004ED855 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBB925C2F11C004ED855 /* Chest.cc */; };
-		3AE7CC5C25C2F11D004ED855 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBBD25C2F11C004ED855 /* GameMap.cc */; };
-		3AE7CC5D25C2F11D004ED855 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBBD25C2F11C004ED855 /* GameMap.cc */; };
-		3AE7CC5E25C2F11D004ED855 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBBE25C2F11C004ED855 /* WorldContactListener.cc */; };
-		3AE7CC5F25C2F11D004ED855 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBBE25C2F11C004ED855 /* WorldContactListener.cc */; };
-		3AE7CC6025C2F11D004ED855 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC025C2F11C004ED855 /* AssetManager.cc */; };
-		3AE7CC6125C2F11D004ED855 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC025C2F11C004ED855 /* AssetManager.cc */; };
-		3AE7CC6225C2F11D004ED855 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC325C2F11C004ED855 /* Item.cc */; };
-		3AE7CC6325C2F11D004ED855 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC325C2F11C004ED855 /* Item.cc */; };
-		3AE7CC6425C2F11D004ED855 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC425C2F11C004ED855 /* Consumable.cc */; };
-		3AE7CC6525C2F11D004ED855 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC425C2F11C004ED855 /* Consumable.cc */; };
-		3AE7CC6625C2F11D004ED855 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC625C2F11C004ED855 /* Equipment.cc */; };
-		3AE7CC6725C2F11D004ED855 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC625C2F11C004ED855 /* Equipment.cc */; };
-		3AE7CC6825C2F11D004ED855 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC825C2F11C004ED855 /* MiscItem.cc */; };
-		3AE7CC6925C2F11D004ED855 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBC825C2F11C004ED855 /* MiscItem.cc */; };
-		3AE7CC6A25C2F11D004ED855 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBCC25C2F11C004ED855 /* Quest.cc */; };
-		3AE7CC6B25C2F11D004ED855 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBCC25C2F11C004ED855 /* Quest.cc */; };
-		3AE7CC6C25C2F11D004ED855 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBCD25C2F11C004ED855 /* CollectItemObjective.cc */; };
-		3AE7CC6D25C2F11D004ED855 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBCD25C2F11C004ED855 /* CollectItemObjective.cc */; };
-		3AE7CC6E25C2F11D004ED855 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD125C2F11C004ED855 /* QuestBook.cc */; };
-		3AE7CC6F25C2F11D004ED855 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD125C2F11C004ED855 /* QuestBook.cc */; };
-		3AE7CC7025C2F11D004ED855 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD325C2F11C004ED855 /* KillTargetObjective.cc */; };
-		3AE7CC7125C2F11D004ED855 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD325C2F11C004ED855 /* KillTargetObjective.cc */; };
-		3AE7CC7225C2F11D004ED855 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD525C2F11C004ED855 /* ItemPriceTable.cc */; };
-		3AE7CC7325C2F11D004ED855 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD525C2F11C004ED855 /* ItemPriceTable.cc */; };
-		3AE7CC7425C2F11D004ED855 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD925C2F11C004ED855 /* DialogueTree.cc */; };
-		3AE7CC7525C2F11D004ED855 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBD925C2F11C004ED855 /* DialogueTree.cc */; };
-		3AE7CC7625C2F11D004ED855 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDA25C2F11C004ED855 /* ExpPointTable.cc */; };
-		3AE7CC7725C2F11D004ED855 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDA25C2F11C004ED855 /* ExpPointTable.cc */; };
-		3AE7CC7825C2F11D004ED855 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDC25C2F11C004ED855 /* GLESDebugDraw.cc */; };
-		3AE7CC7925C2F11D004ED855 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDC25C2F11C004ED855 /* GLESDebugDraw.cc */; };
-		3AE7CC7A25C2F11D004ED855 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDE25C2F11C004ED855 /* AppDelegate.cc */; };
-		3AE7CC7B25C2F11D004ED855 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBDE25C2F11C004ED855 /* AppDelegate.cc */; };
-		3AE7CC7C25C2F11D004ED855 /* MainGameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBE325C2F11C004ED855 /* MainGameScene.cc */; };
-		3AE7CC7D25C2F11D004ED855 /* MainGameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBE325C2F11C004ED855 /* MainGameScene.cc */; };
-		3AE7CC7E25C2F11D004ED855 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBE525C2F11C004ED855 /* MainMenuScene.cc */; };
-		3AE7CC7F25C2F11D004ED855 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7CBE525C2F11C004ED855 /* MainMenuScene.cc */; };
+		3A8BC0AE25C90E12007CAF07 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFEC25C90E11007CAF07 /* FloatingDamages.cc */; };
+		3A8BC0AF25C90E12007CAF07 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFEC25C90E11007CAF07 /* FloatingDamages.cc */; };
+		3A8BC0B025C90E12007CAF07 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFED25C90E11007CAF07 /* Shade.cc */; };
+		3A8BC0B125C90E12007CAF07 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFED25C90E11007CAF07 /* Shade.cc */; };
+		3A8BC0B225C90E12007CAF07 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF125C90E11007CAF07 /* Window.cc */; };
+		3A8BC0B325C90E12007CAF07 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF125C90E11007CAF07 /* Window.cc */; };
+		3A8BC0B425C90E12007CAF07 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF225C90E11007CAF07 /* TableLayout.cc */; };
+		3A8BC0B525C90E12007CAF07 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF225C90E11007CAF07 /* TableLayout.cc */; };
+		3A8BC0B625C90E12007CAF07 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF425C90E11007CAF07 /* AmountSelectionWindow.cc */; };
+		3A8BC0B725C90E12007CAF07 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF425C90E11007CAF07 /* AmountSelectionWindow.cc */; };
+		3A8BC0B825C90E12007CAF07 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF625C90E11007CAF07 /* TabView.cc */; };
+		3A8BC0B925C90E12007CAF07 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF625C90E11007CAF07 /* TabView.cc */; };
+		3A8BC0BA25C90E12007CAF07 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF725C90E11007CAF07 /* TextField.cc */; };
+		3A8BC0BB25C90E12007CAF07 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF725C90E11007CAF07 /* TextField.cc */; };
+		3A8BC0BC25C90E12007CAF07 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF925C90E11007CAF07 /* TradeListView.cc */; };
+		3A8BC0BD25C90E12007CAF07 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFF925C90E11007CAF07 /* TradeListView.cc */; };
+		3A8BC0BE25C90E12007CAF07 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFFC25C90E11007CAF07 /* TradeWindow.cc */; };
+		3A8BC0BF25C90E12007CAF07 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFFC25C90E11007CAF07 /* TradeWindow.cc */; };
+		3A8BC0C025C90E12007CAF07 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFFD25C90E11007CAF07 /* TimedLabelService.cc */; };
+		3A8BC0C125C90E12007CAF07 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BBFFD25C90E11007CAF07 /* TimedLabelService.cc */; };
+		3A8BC0C225C90E12007CAF07 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00125C90E11007CAF07 /* DialogueManager.cc */; };
+		3A8BC0C325C90E12007CAF07 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00125C90E11007CAF07 /* DialogueManager.cc */; };
+		3A8BC0C425C90E12007CAF07 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00425C90E11007CAF07 /* Subtitles.cc */; };
+		3A8BC0C525C90E12007CAF07 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00425C90E11007CAF07 /* Subtitles.cc */; };
+		3A8BC0C625C90E12007CAF07 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00525C90E11007CAF07 /* DialogueListView.cc */; };
+		3A8BC0C725C90E12007CAF07 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00525C90E11007CAF07 /* DialogueListView.cc */; };
+		3A8BC0C825C90E12007CAF07 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00725C90E11007CAF07 /* DialogueMenu.cc */; };
+		3A8BC0C925C90E12007CAF07 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00725C90E11007CAF07 /* DialogueMenu.cc */; };
+		3A8BC0CA25C90E12007CAF07 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00A25C90E11007CAF07 /* PauseMenuDialog.cc */; };
+		3A8BC0CB25C90E12007CAF07 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00A25C90E11007CAF07 /* PauseMenuDialog.cc */; };
+		3A8BC0CC25C90E12007CAF07 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00E25C90E11007CAF07 /* SkillPane.cc */; };
+		3A8BC0CD25C90E12007CAF07 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00E25C90E11007CAF07 /* SkillPane.cc */; };
+		3A8BC0CE25C90E12007CAF07 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00F25C90E11007CAF07 /* SkillListView.cc */; };
+		3A8BC0CF25C90E12007CAF07 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC00F25C90E11007CAF07 /* SkillListView.cc */; };
+		3A8BC0D025C90E12007CAF07 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01125C90E11007CAF07 /* AbstractPane.cc */; };
+		3A8BC0D125C90E12007CAF07 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01125C90E11007CAF07 /* AbstractPane.cc */; };
+		3A8BC0D225C90E12007CAF07 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01425C90E11007CAF07 /* OptionListView.cc */; };
+		3A8BC0D325C90E12007CAF07 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01425C90E11007CAF07 /* OptionListView.cc */; };
+		3A8BC0D425C90E12007CAF07 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01625C90E11007CAF07 /* OptionPane.cc */; };
+		3A8BC0D525C90E12007CAF07 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01625C90E11007CAF07 /* OptionPane.cc */; };
+		3A8BC0D625C90E12007CAF07 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01A25C90E11007CAF07 /* PauseMenu.cc */; };
+		3A8BC0D725C90E12007CAF07 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01A25C90E11007CAF07 /* PauseMenu.cc */; };
+		3A8BC0D825C90E12007CAF07 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01D25C90E11007CAF07 /* QuestListView.cc */; };
+		3A8BC0D925C90E12007CAF07 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01D25C90E11007CAF07 /* QuestListView.cc */; };
+		3A8BC0DA25C90E12007CAF07 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01E25C90E11007CAF07 /* QuestPane.cc */; };
+		3A8BC0DB25C90E12007CAF07 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC01E25C90E11007CAF07 /* QuestPane.cc */; };
+		3A8BC0DC25C90E12007CAF07 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02125C90E11007CAF07 /* InventoryPane.cc */; };
+		3A8BC0DD25C90E12007CAF07 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02125C90E11007CAF07 /* InventoryPane.cc */; };
+		3A8BC0DE25C90E12007CAF07 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02425C90E11007CAF07 /* ItemListView.cc */; };
+		3A8BC0DF25C90E12007CAF07 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02425C90E11007CAF07 /* ItemListView.cc */; };
+		3A8BC0E025C90E12007CAF07 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02525C90E11007CAF07 /* HeaderPane.cc */; };
+		3A8BC0E125C90E12007CAF07 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02525C90E11007CAF07 /* HeaderPane.cc */; };
+		3A8BC0E225C90E12007CAF07 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02625C90E11007CAF07 /* StatsPane.cc */; };
+		3A8BC0E325C90E12007CAF07 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02625C90E11007CAF07 /* StatsPane.cc */; };
+		3A8BC0E425C90E12007CAF07 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02825C90E11007CAF07 /* EquipmentPane.cc */; };
+		3A8BC0E525C90E12007CAF07 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02825C90E11007CAF07 /* EquipmentPane.cc */; };
+		3A8BC0E625C90E12007CAF07 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02B25C90E11007CAF07 /* WindowManager.cc */; };
+		3A8BC0E725C90E12007CAF07 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02B25C90E11007CAF07 /* WindowManager.cc */; };
+		3A8BC0E825C90E12007CAF07 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02F25C90E11007CAF07 /* QuestHints.cc */; };
+		3A8BC0E925C90E12007CAF07 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC02F25C90E11007CAF07 /* QuestHints.cc */; };
+		3A8BC0EA25C90E12007CAF07 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03225C90E11007CAF07 /* Notifications.cc */; };
+		3A8BC0EB25C90E12007CAF07 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03225C90E11007CAF07 /* Notifications.cc */; };
+		3A8BC0EC25C90E12007CAF07 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03625C90E11007CAF07 /* CommandParser.cc */; };
+		3A8BC0ED25C90E12007CAF07 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03625C90E11007CAF07 /* CommandParser.cc */; };
+		3A8BC0EE25C90E12007CAF07 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03725C90E11007CAF07 /* Console.cc */; };
+		3A8BC0EF25C90E12007CAF07 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03725C90E11007CAF07 /* Console.cc */; };
+		3A8BC0F025C90E12007CAF07 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03B25C90E11007CAF07 /* StatusBar.cc */; };
+		3A8BC0F125C90E12007CAF07 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03B25C90E11007CAF07 /* StatusBar.cc */; };
+		3A8BC0F225C90E12007CAF07 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03C25C90E11007CAF07 /* Hud.cc */; };
+		3A8BC0F325C90E12007CAF07 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC03C25C90E11007CAF07 /* Hud.cc */; };
+		3A8BC0F425C90E12007CAF07 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04625C90E11007CAF07 /* MagicalMissile.cc */; };
+		3A8BC0F525C90E12007CAF07 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04625C90E11007CAF07 /* MagicalMissile.cc */; };
+		3A8BC0F625C90E12007CAF07 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04925C90E11007CAF07 /* ForwardSlash.cc */; };
+		3A8BC0F725C90E12007CAF07 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04925C90E11007CAF07 /* ForwardSlash.cc */; };
+		3A8BC0F825C90E12007CAF07 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04A25C90E11007CAF07 /* BatForm.cc */; };
+		3A8BC0F925C90E12007CAF07 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04A25C90E11007CAF07 /* BatForm.cc */; };
+		3A8BC0FA25C90E12007CAF07 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04B25C90E11007CAF07 /* Skill.cc */; };
+		3A8BC0FB25C90E12007CAF07 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04B25C90E11007CAF07 /* Skill.cc */; };
+		3A8BC0FC25C90E12007CAF07 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04C25C90E11007CAF07 /* BackDash.cc */; };
+		3A8BC0FD25C90E12007CAF07 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC04C25C90E11007CAF07 /* BackDash.cc */; };
+		3A8BC0FE25C90E12007CAF07 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05325C90E11007CAF07 /* Logger.cc */; };
+		3A8BC0FF25C90E12007CAF07 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05325C90E11007CAF07 /* Logger.cc */; };
+		3A8BC10025C90E12007CAF07 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05425C90E11007CAF07 /* JsonUtil.cc */; };
+		3A8BC10125C90E12007CAF07 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05425C90E11007CAF07 /* JsonUtil.cc */; };
+		3A8BC10225C90E12007CAF07 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05525C90E11007CAF07 /* RandUtil.cc */; };
+		3A8BC10325C90E12007CAF07 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05525C90E11007CAF07 /* RandUtil.cc */; };
+		3A8BC10425C90E12007CAF07 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05725C90E11007CAF07 /* StringUtil.cc */; };
+		3A8BC10525C90E12007CAF07 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05725C90E11007CAF07 /* StringUtil.cc */; };
+		3A8BC10625C90E12007CAF07 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05825C90E11007CAF07 /* KeyCodeUtil.cc */; };
+		3A8BC10725C90E12007CAF07 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05825C90E11007CAF07 /* KeyCodeUtil.cc */; };
+		3A8BC10825C90E12007CAF07 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05C25C90E11007CAF07 /* CameraUtil.cc */; };
+		3A8BC10925C90E12007CAF07 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05C25C90E11007CAF07 /* CameraUtil.cc */; };
+		3A8BC10A25C90E12007CAF07 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05E25C90E11007CAF07 /* b2BodyBuilder.cc */; };
+		3A8BC10B25C90E12007CAF07 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05E25C90E11007CAF07 /* b2BodyBuilder.cc */; };
+		3A8BC10C25C90E12007CAF07 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05F25C90E11007CAF07 /* b2DebugRenderer.cc */; };
+		3A8BC10D25C90E12007CAF07 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC05F25C90E11007CAF07 /* b2DebugRenderer.cc */; };
+		3A8BC10E25C90E12007CAF07 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06625C90E11007CAF07 /* InputManager.cc */; };
+		3A8BC10F25C90E12007CAF07 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06625C90E11007CAF07 /* InputManager.cc */; };
+		3A8BC11025C90E12007CAF07 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06825C90E11007CAF07 /* HotkeyManager.cc */; };
+		3A8BC11125C90E12007CAF07 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06825C90E11007CAF07 /* HotkeyManager.cc */; };
+		3A8BC11225C90E12007CAF07 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06A25C90E11007CAF07 /* StaticActor.cc */; };
+		3A8BC11325C90E12007CAF07 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06A25C90E11007CAF07 /* StaticActor.cc */; };
+		3A8BC11425C90E12007CAF07 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06D25C90E11007CAF07 /* Npc.cc */; };
+		3A8BC11525C90E12007CAF07 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06D25C90E11007CAF07 /* Npc.cc */; };
+		3A8BC11625C90E12007CAF07 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06F25C90E11007CAF07 /* Character.cc */; };
+		3A8BC11725C90E12007CAF07 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC06F25C90E11007CAF07 /* Character.cc */; };
+		3A8BC11825C90E12007CAF07 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07125C90E11007CAF07 /* Party.cc */; };
+		3A8BC11925C90E12007CAF07 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07125C90E11007CAF07 /* Party.cc */; };
+		3A8BC11A25C90E12007CAF07 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07425C90E11007CAF07 /* Player.cc */; };
+		3A8BC11B25C90E12007CAF07 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07425C90E11007CAF07 /* Player.cc */; };
+		3A8BC11C25C90E12007CAF07 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07925C90E11007CAF07 /* CallbackManager.cc */; };
+		3A8BC11D25C90E12007CAF07 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07925C90E11007CAF07 /* CallbackManager.cc */; };
+		3A8BC11E25C90E12007CAF07 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07A25C90E11007CAF07 /* DynamicActor.cc */; };
+		3A8BC11F25C90E12007CAF07 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07A25C90E11007CAF07 /* DynamicActor.cc */; };
+		3A8BC12025C90E12007CAF07 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07C25C90E11007CAF07 /* GameMapManager.cc */; };
+		3A8BC12125C90E12007CAF07 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07C25C90E11007CAF07 /* GameMapManager.cc */; };
+		3A8BC12225C90E12007CAF07 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07F25C90E11007CAF07 /* FxManager.cc */; };
+		3A8BC12325C90E12007CAF07 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC07F25C90E11007CAF07 /* FxManager.cc */; };
+		3A8BC12425C90E12007CAF07 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08125C90E11007CAF07 /* Chest.cc */; };
+		3A8BC12525C90E12007CAF07 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08125C90E11007CAF07 /* Chest.cc */; };
+		3A8BC12625C90E12007CAF07 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08525C90E11007CAF07 /* GameMap.cc */; };
+		3A8BC12725C90E12007CAF07 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08525C90E11007CAF07 /* GameMap.cc */; };
+		3A8BC12825C90E12007CAF07 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08625C90E11007CAF07 /* WorldContactListener.cc */; };
+		3A8BC12925C90E12007CAF07 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08625C90E11007CAF07 /* WorldContactListener.cc */; };
+		3A8BC12A25C90E12007CAF07 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08825C90E11007CAF07 /* AssetManager.cc */; };
+		3A8BC12B25C90E12007CAF07 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08825C90E11007CAF07 /* AssetManager.cc */; };
+		3A8BC12C25C90E12007CAF07 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08B25C90E11007CAF07 /* Item.cc */; };
+		3A8BC12D25C90E12007CAF07 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08B25C90E11007CAF07 /* Item.cc */; };
+		3A8BC12E25C90E12007CAF07 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08C25C90E11007CAF07 /* Consumable.cc */; };
+		3A8BC12F25C90E12007CAF07 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08C25C90E11007CAF07 /* Consumable.cc */; };
+		3A8BC13025C90E12007CAF07 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08E25C90E11007CAF07 /* Equipment.cc */; };
+		3A8BC13125C90E12007CAF07 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC08E25C90E11007CAF07 /* Equipment.cc */; };
+		3A8BC13225C90E12007CAF07 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09025C90E11007CAF07 /* MiscItem.cc */; };
+		3A8BC13325C90E12007CAF07 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09025C90E11007CAF07 /* MiscItem.cc */; };
+		3A8BC13425C90E12007CAF07 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09425C90E11007CAF07 /* Quest.cc */; };
+		3A8BC13525C90E12007CAF07 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09425C90E11007CAF07 /* Quest.cc */; };
+		3A8BC13625C90E12007CAF07 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09525C90E11007CAF07 /* CollectItemObjective.cc */; };
+		3A8BC13725C90E12007CAF07 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09525C90E11007CAF07 /* CollectItemObjective.cc */; };
+		3A8BC13825C90E12007CAF07 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09925C90E11007CAF07 /* QuestBook.cc */; };
+		3A8BC13925C90E12007CAF07 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09925C90E11007CAF07 /* QuestBook.cc */; };
+		3A8BC13A25C90E12007CAF07 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09B25C90E11007CAF07 /* KillTargetObjective.cc */; };
+		3A8BC13B25C90E12007CAF07 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09B25C90E11007CAF07 /* KillTargetObjective.cc */; };
+		3A8BC13C25C90E12007CAF07 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09D25C90E11007CAF07 /* ItemPriceTable.cc */; };
+		3A8BC13D25C90E12007CAF07 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC09D25C90E11007CAF07 /* ItemPriceTable.cc */; };
+		3A8BC13E25C90E12007CAF07 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A125C90E11007CAF07 /* DialogueTree.cc */; };
+		3A8BC13F25C90E12007CAF07 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A125C90E11007CAF07 /* DialogueTree.cc */; };
+		3A8BC14025C90E12007CAF07 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A225C90E11007CAF07 /* ExpPointTable.cc */; };
+		3A8BC14125C90E12007CAF07 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A225C90E11007CAF07 /* ExpPointTable.cc */; };
+		3A8BC14225C90E12007CAF07 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A425C90E11007CAF07 /* GLESDebugDraw.cc */; };
+		3A8BC14325C90E12007CAF07 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A425C90E11007CAF07 /* GLESDebugDraw.cc */; };
+		3A8BC14425C90E12007CAF07 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A625C90E11007CAF07 /* AppDelegate.cc */; };
+		3A8BC14525C90E12007CAF07 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0A625C90E11007CAF07 /* AppDelegate.cc */; };
+		3A8BC14625C90E12007CAF07 /* MainGameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0AB25C90E11007CAF07 /* MainGameScene.cc */; };
+		3A8BC14725C90E12007CAF07 /* MainGameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0AB25C90E11007CAF07 /* MainGameScene.cc */; };
+		3A8BC14825C90E12007CAF07 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0AD25C90E11007CAF07 /* MainMenuScene.cc */; };
+		3A8BC14925C90E12007CAF07 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC0AD25C90E11007CAF07 /* MainMenuScene.cc */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
 		5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5087E76717EB910900C73F5D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -267,173 +269,175 @@
 		3A83517025C2BAC7006CD40F /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = ../Resources/Music; sourceTree = "<group>"; };
 		3A83517225C2BACC006CD40F /* Sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sfx; path = ../Resources/Sfx; sourceTree = "<group>"; };
 		3A83517425C2BACF006CD40F /* Texture */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Texture; path = ../Resources/Texture; sourceTree = "<group>"; };
-		3AE7CB2525C2F11C004ED855 /* FloatingDamages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingDamages.h; sourceTree = "<group>"; };
-		3AE7CB2625C2F11C004ED855 /* FloatingDamages.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingDamages.cc; sourceTree = "<group>"; };
-		3AE7CB2725C2F11C004ED855 /* Shade.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shade.cc; sourceTree = "<group>"; };
-		3AE7CB2825C2F11C004ED855 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		3AE7CB2925C2F11C004ED855 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		3AE7CB2A25C2F11C004ED855 /* Window.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cc; sourceTree = "<group>"; };
-		3AE7CB2B25C2F11C004ED855 /* TableLayout.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableLayout.cc; sourceTree = "<group>"; };
-		3AE7CB2C25C2F11C004ED855 /* Colorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colorscheme.h; sourceTree = "<group>"; };
-		3AE7CB2D25C2F11C004ED855 /* ListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListView.h; sourceTree = "<group>"; };
-		3AE7CB2E25C2F11C004ED855 /* TabView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TabView.cc; sourceTree = "<group>"; };
-		3AE7CB2F25C2F11C004ED855 /* TextField.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextField.cc; sourceTree = "<group>"; };
-		3AE7CB3125C2F11C004ED855 /* TradeListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeListView.cc; sourceTree = "<group>"; };
-		3AE7CB3225C2F11C004ED855 /* TradeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeListView.h; sourceTree = "<group>"; };
-		3AE7CB3325C2F11C004ED855 /* TradeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeWindow.h; sourceTree = "<group>"; };
-		3AE7CB3425C2F11C004ED855 /* TradeWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeWindow.cc; sourceTree = "<group>"; };
-		3AE7CB3525C2F11C004ED855 /* TimedLabelService.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedLabelService.cc; sourceTree = "<group>"; };
-		3AE7CB3625C2F11C004ED855 /* TimedLabelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedLabelService.h; sourceTree = "<group>"; };
-		3AE7CB3725C2F11C004ED855 /* TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextField.h; sourceTree = "<group>"; };
-		3AE7CB3925C2F11C004ED855 /* DialogueManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueManager.cc; sourceTree = "<group>"; };
-		3AE7CB3A25C2F11C004ED855 /* DialogueListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueListView.h; sourceTree = "<group>"; };
-		3AE7CB3B25C2F11C004ED855 /* DialogueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueManager.h; sourceTree = "<group>"; };
-		3AE7CB3C25C2F11C004ED855 /* Subtitles.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Subtitles.cc; sourceTree = "<group>"; };
-		3AE7CB3D25C2F11C004ED855 /* DialogueListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueListView.cc; sourceTree = "<group>"; };
-		3AE7CB3E25C2F11C004ED855 /* DialogueMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueMenu.h; sourceTree = "<group>"; };
-		3AE7CB3F25C2F11C004ED855 /* DialogueMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueMenu.cc; sourceTree = "<group>"; };
-		3AE7CB4025C2F11C004ED855 /* Subtitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subtitles.h; sourceTree = "<group>"; };
-		3AE7CB4225C2F11C004ED855 /* PauseMenuDialog.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenuDialog.cc; sourceTree = "<group>"; };
-		3AE7CB4325C2F11C004ED855 /* StatsPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsPane.h; sourceTree = "<group>"; };
-		3AE7CB4525C2F11C004ED855 /* SkillPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPane.h; sourceTree = "<group>"; };
-		3AE7CB4625C2F11C004ED855 /* SkillPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillPane.cc; sourceTree = "<group>"; };
-		3AE7CB4725C2F11C004ED855 /* SkillListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillListView.cc; sourceTree = "<group>"; };
-		3AE7CB4825C2F11C004ED855 /* SkillListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillListView.h; sourceTree = "<group>"; };
-		3AE7CB4925C2F11C004ED855 /* AbstractPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPane.cc; sourceTree = "<group>"; };
-		3AE7CB4A25C2F11C004ED855 /* PauseMenuDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenuDialog.h; sourceTree = "<group>"; };
-		3AE7CB4C25C2F11C004ED855 /* OptionListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionListView.cc; sourceTree = "<group>"; };
-		3AE7CB4D25C2F11C004ED855 /* OptionPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPane.h; sourceTree = "<group>"; };
-		3AE7CB4E25C2F11C004ED855 /* OptionPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionPane.cc; sourceTree = "<group>"; };
-		3AE7CB4F25C2F11C004ED855 /* OptionListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionListView.h; sourceTree = "<group>"; };
-		3AE7CB5025C2F11C004ED855 /* PauseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
-		3AE7CB5125C2F11C004ED855 /* AbstractPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPane.h; sourceTree = "<group>"; };
-		3AE7CB5225C2F11C004ED855 /* PauseMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cc; sourceTree = "<group>"; };
-		3AE7CB5425C2F11C004ED855 /* QuestListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestListView.h; sourceTree = "<group>"; };
-		3AE7CB5525C2F11C004ED855 /* QuestListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestListView.cc; sourceTree = "<group>"; };
-		3AE7CB5625C2F11C004ED855 /* QuestPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestPane.cc; sourceTree = "<group>"; };
-		3AE7CB5725C2F11C004ED855 /* QuestPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestPane.h; sourceTree = "<group>"; };
-		3AE7CB5925C2F11C004ED855 /* InventoryPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryPane.cc; sourceTree = "<group>"; };
-		3AE7CB5A25C2F11C004ED855 /* InventoryPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryPane.h; sourceTree = "<group>"; };
-		3AE7CB5B25C2F11C004ED855 /* ItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListView.h; sourceTree = "<group>"; };
-		3AE7CB5C25C2F11C004ED855 /* ItemListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemListView.cc; sourceTree = "<group>"; };
-		3AE7CB5D25C2F11C004ED855 /* HeaderPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeaderPane.cc; sourceTree = "<group>"; };
-		3AE7CB5E25C2F11C004ED855 /* StatsPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatsPane.cc; sourceTree = "<group>"; };
-		3AE7CB6025C2F11C004ED855 /* EquipmentPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquipmentPane.cc; sourceTree = "<group>"; };
-		3AE7CB6125C2F11C004ED855 /* EquipmentPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentPane.h; sourceTree = "<group>"; };
-		3AE7CB6225C2F11C004ED855 /* HeaderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderPane.h; sourceTree = "<group>"; };
-		3AE7CB6325C2F11C004ED855 /* WindowManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cc; sourceTree = "<group>"; };
-		3AE7CB6425C2F11C004ED855 /* TabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabView.h; sourceTree = "<group>"; };
-		3AE7CB6625C2F11C004ED855 /* QuestHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestHints.h; sourceTree = "<group>"; };
-		3AE7CB6725C2F11C004ED855 /* QuestHints.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestHints.cc; sourceTree = "<group>"; };
-		3AE7CB6825C2F11C004ED855 /* Shade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shade.h; sourceTree = "<group>"; };
-		3AE7CB6A25C2F11C004ED855 /* Notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifications.cc; sourceTree = "<group>"; };
-		3AE7CB6B25C2F11C004ED855 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
-		3AE7CB6D25C2F11C004ED855 /* CommandParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandParser.h; sourceTree = "<group>"; };
-		3AE7CB6E25C2F11C004ED855 /* CommandParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParser.cc; sourceTree = "<group>"; };
-		3AE7CB6F25C2F11C004ED855 /* Console.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cc; sourceTree = "<group>"; };
-		3AE7CB7025C2F11C004ED855 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
-		3AE7CB7225C2F11C004ED855 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
-		3AE7CB7325C2F11C004ED855 /* StatusBar.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatusBar.cc; sourceTree = "<group>"; };
-		3AE7CB7425C2F11C004ED855 /* Hud.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cc; sourceTree = "<group>"; };
-		3AE7CB7525C2F11C004ED855 /* StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
-		3AE7CB7625C2F11C004ED855 /* TableLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableLayout.h; sourceTree = "<group>"; };
-		3AE7CB7725C2F11C004ED855 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
-		3AE7CB7825C2F11C004ED855 /* Importable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Importable.h; sourceTree = "<group>"; };
-		3AE7CB7925C2F11C004ED855 /* StaticActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticActor.h; sourceTree = "<group>"; };
-		3AE7CB7B25C2F11C004ED855 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
-		3AE7CB7C25C2F11C004ED855 /* BatForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatForm.h; sourceTree = "<group>"; };
-		3AE7CB7D25C2F11C004ED855 /* ForwardSlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardSlash.h; sourceTree = "<group>"; };
-		3AE7CB7E25C2F11C004ED855 /* MagicalMissile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicalMissile.cc; sourceTree = "<group>"; };
-		3AE7CB7F25C2F11C004ED855 /* BackDash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackDash.h; sourceTree = "<group>"; };
-		3AE7CB8025C2F11C004ED855 /* MagicalMissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalMissile.h; sourceTree = "<group>"; };
-		3AE7CB8125C2F11C004ED855 /* ForwardSlash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ForwardSlash.cc; sourceTree = "<group>"; };
-		3AE7CB8225C2F11C004ED855 /* BatForm.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BatForm.cc; sourceTree = "<group>"; };
-		3AE7CB8325C2F11C004ED855 /* Skill.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cc; sourceTree = "<group>"; };
-		3AE7CB8425C2F11C004ED855 /* BackDash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackDash.cc; sourceTree = "<group>"; };
-		3AE7CB8625C2F11C004ED855 /* JsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtil.h; sourceTree = "<group>"; };
-		3AE7CB8825C2F11C004ED855 /* SetVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVector.h; sourceTree = "<group>"; };
-		3AE7CB8925C2F11C004ED855 /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
-		3AE7CB8A25C2F11C004ED855 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Algorithm.h; sourceTree = "<group>"; };
-		3AE7CB8B25C2F11C004ED855 /* Logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cc; sourceTree = "<group>"; };
-		3AE7CB8C25C2F11C004ED855 /* JsonUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtil.cc; sourceTree = "<group>"; };
-		3AE7CB8D25C2F11C004ED855 /* RandUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandUtil.cc; sourceTree = "<group>"; };
-		3AE7CB8E25C2F11C004ED855 /* KeyCodeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodeUtil.h; sourceTree = "<group>"; };
-		3AE7CB8F25C2F11C004ED855 /* StringUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cc; sourceTree = "<group>"; };
-		3AE7CB9025C2F11C004ED855 /* KeyCodeUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyCodeUtil.cc; sourceTree = "<group>"; };
-		3AE7CB9125C2F11C004ED855 /* RandUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandUtil.h; sourceTree = "<group>"; };
-		3AE7CB9225C2F11C004ED855 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
-		3AE7CB9325C2F11C004ED855 /* CameraUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraUtil.h; sourceTree = "<group>"; };
-		3AE7CB9425C2F11C004ED855 /* CameraUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraUtil.cc; sourceTree = "<group>"; };
-		3AE7CB9625C2F11C004ED855 /* b2BodyBuilder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BodyBuilder.cc; sourceTree = "<group>"; };
-		3AE7CB9725C2F11C004ED855 /* b2DebugRenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2DebugRenderer.cc; sourceTree = "<group>"; };
-		3AE7CB9825C2F11C004ED855 /* b2BodyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BodyBuilder.h; sourceTree = "<group>"; };
-		3AE7CB9925C2F11C004ED855 /* b2DebugRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2DebugRenderer.h; sourceTree = "<group>"; };
-		3AE7CB9A25C2F11C004ED855 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
-		3AE7CB9C25C2F11C004ED855 /* Keybindable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keybindable.h; sourceTree = "<group>"; };
-		3AE7CB9D25C2F11C004ED855 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
-		3AE7CB9E25C2F11C004ED855 /* InputManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cc; sourceTree = "<group>"; };
-		3AE7CB9F25C2F11C004ED855 /* HotkeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyManager.h; sourceTree = "<group>"; };
-		3AE7CBA025C2F11C004ED855 /* HotkeyManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HotkeyManager.cc; sourceTree = "<group>"; };
-		3AE7CBA125C2F11C004ED855 /* CallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackManager.h; sourceTree = "<group>"; };
-		3AE7CBA225C2F11C004ED855 /* StaticActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticActor.cc; sourceTree = "<group>"; };
-		3AE7CBA325C2F11C004ED855 /* Interactable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactable.h; sourceTree = "<group>"; };
-		3AE7CBA525C2F11C004ED855 /* Npc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Npc.cc; sourceTree = "<group>"; };
-		3AE7CBA625C2F11C004ED855 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		3AE7CBA725C2F11C004ED855 /* Character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cc; sourceTree = "<group>"; };
-		3AE7CBA825C2F11C004ED855 /* Npc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Npc.h; sourceTree = "<group>"; };
-		3AE7CBA925C2F11C004ED855 /* Party.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Party.cc; sourceTree = "<group>"; };
-		3AE7CBAA25C2F11C004ED855 /* Party.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
-		3AE7CBAB25C2F11C004ED855 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		3AE7CBAC25C2F11C004ED855 /* Player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cc; sourceTree = "<group>"; };
-		3AE7CBAD25C2F11C004ED855 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		3AE7CBAE25C2F11C004ED855 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
-		3AE7CBB025C2F11C004ED855 /* make_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = make_unique.h; sourceTree = "<group>"; };
-		3AE7CBB125C2F11C004ED855 /* CallbackManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallbackManager.cc; sourceTree = "<group>"; };
-		3AE7CBB225C2F11C004ED855 /* DynamicActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicActor.cc; sourceTree = "<group>"; };
-		3AE7CBB425C2F11C004ED855 /* GameMapManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMapManager.cc; sourceTree = "<group>"; };
-		3AE7CBB525C2F11C004ED855 /* FxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FxManager.h; sourceTree = "<group>"; };
-		3AE7CBB625C2F11C004ED855 /* GameMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMap.h; sourceTree = "<group>"; };
-		3AE7CBB725C2F11C004ED855 /* FxManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FxManager.cc; sourceTree = "<group>"; };
-		3AE7CBB925C2F11C004ED855 /* Chest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chest.cc; sourceTree = "<group>"; };
-		3AE7CBBA25C2F11C004ED855 /* Chest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chest.h; sourceTree = "<group>"; };
-		3AE7CBBB25C2F11C004ED855 /* GameMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMapManager.h; sourceTree = "<group>"; };
-		3AE7CBBC25C2F11C004ED855 /* WorldContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldContactListener.h; sourceTree = "<group>"; };
-		3AE7CBBD25C2F11C004ED855 /* GameMap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMap.cc; sourceTree = "<group>"; };
-		3AE7CBBE25C2F11C004ED855 /* WorldContactListener.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContactListener.cc; sourceTree = "<group>"; };
-		3AE7CBBF25C2F11C004ED855 /* DynamicActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicActor.h; sourceTree = "<group>"; };
-		3AE7CBC025C2F11C004ED855 /* AssetManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cc; sourceTree = "<group>"; };
-		3AE7CBC225C2F11C004ED855 /* Consumable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Consumable.h; sourceTree = "<group>"; };
-		3AE7CBC325C2F11C004ED855 /* Item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cc; sourceTree = "<group>"; };
-		3AE7CBC425C2F11C004ED855 /* Consumable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Consumable.cc; sourceTree = "<group>"; };
-		3AE7CBC525C2F11C004ED855 /* Equipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Equipment.h; sourceTree = "<group>"; };
-		3AE7CBC625C2F11C004ED855 /* Equipment.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Equipment.cc; sourceTree = "<group>"; };
-		3AE7CBC725C2F11C004ED855 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		3AE7CBC825C2F11C004ED855 /* MiscItem.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscItem.cc; sourceTree = "<group>"; };
-		3AE7CBC925C2F11C004ED855 /* MiscItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscItem.h; sourceTree = "<group>"; };
-		3AE7CBCB25C2F11C004ED855 /* TalkToTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkToTargetObjective.h; sourceTree = "<group>"; };
-		3AE7CBCC25C2F11C004ED855 /* Quest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quest.cc; sourceTree = "<group>"; };
-		3AE7CBCD25C2F11C004ED855 /* CollectItemObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollectItemObjective.cc; sourceTree = "<group>"; };
-		3AE7CBCE25C2F11C004ED855 /* Quest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quest.h; sourceTree = "<group>"; };
-		3AE7CBCF25C2F11C004ED855 /* CollectItemObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectItemObjective.h; sourceTree = "<group>"; };
-		3AE7CBD025C2F11C004ED855 /* QuestBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestBook.h; sourceTree = "<group>"; };
-		3AE7CBD125C2F11C004ED855 /* QuestBook.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestBook.cc; sourceTree = "<group>"; };
-		3AE7CBD225C2F11C004ED855 /* KillTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillTargetObjective.h; sourceTree = "<group>"; };
-		3AE7CBD325C2F11C004ED855 /* KillTargetObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KillTargetObjective.cc; sourceTree = "<group>"; };
-		3AE7CBD525C2F11C004ED855 /* ItemPriceTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemPriceTable.cc; sourceTree = "<group>"; };
-		3AE7CBD625C2F11C004ED855 /* ItemPriceTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemPriceTable.h; sourceTree = "<group>"; };
-		3AE7CBD725C2F11C004ED855 /* DialogueTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueTree.h; sourceTree = "<group>"; };
-		3AE7CBD825C2F11C004ED855 /* ExpPointTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpPointTable.h; sourceTree = "<group>"; };
-		3AE7CBD925C2F11C004ED855 /* DialogueTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueTree.cc; sourceTree = "<group>"; };
-		3AE7CBDA25C2F11C004ED855 /* ExpPointTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpPointTable.cc; sourceTree = "<group>"; };
-		3AE7CBDC25C2F11C004ED855 /* GLESDebugDraw.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLESDebugDraw.cc; sourceTree = "<group>"; };
-		3AE7CBDD25C2F11C004ED855 /* GLESDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESDebugDraw.h; sourceTree = "<group>"; };
-		3AE7CBDE25C2F11C004ED855 /* AppDelegate.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cc; sourceTree = "<group>"; };
-		3AE7CBDF25C2F11C004ED855 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		3AE7CBE025C2F11C004ED855 /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
-		3AE7CBE225C2F11C004ED855 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
-		3AE7CBE325C2F11C004ED855 /* MainGameScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainGameScene.cc; sourceTree = "<group>"; };
-		3AE7CBE425C2F11C004ED855 /* MainGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainGameScene.h; sourceTree = "<group>"; };
-		3AE7CBE525C2F11C004ED855 /* MainMenuScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScene.cc; sourceTree = "<group>"; };
+		3A8BBFEB25C90E11007CAF07 /* FloatingDamages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingDamages.h; sourceTree = "<group>"; };
+		3A8BBFEC25C90E11007CAF07 /* FloatingDamages.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingDamages.cc; sourceTree = "<group>"; };
+		3A8BBFED25C90E11007CAF07 /* Shade.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shade.cc; sourceTree = "<group>"; };
+		3A8BBFEE25C90E11007CAF07 /* AmountSelectionWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmountSelectionWindow.h; sourceTree = "<group>"; };
+		3A8BBFEF25C90E11007CAF07 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
+		3A8BBFF025C90E11007CAF07 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		3A8BBFF125C90E11007CAF07 /* Window.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cc; sourceTree = "<group>"; };
+		3A8BBFF225C90E11007CAF07 /* TableLayout.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableLayout.cc; sourceTree = "<group>"; };
+		3A8BBFF325C90E11007CAF07 /* Colorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colorscheme.h; sourceTree = "<group>"; };
+		3A8BBFF425C90E11007CAF07 /* AmountSelectionWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmountSelectionWindow.cc; sourceTree = "<group>"; };
+		3A8BBFF525C90E11007CAF07 /* ListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListView.h; sourceTree = "<group>"; };
+		3A8BBFF625C90E11007CAF07 /* TabView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TabView.cc; sourceTree = "<group>"; };
+		3A8BBFF725C90E11007CAF07 /* TextField.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextField.cc; sourceTree = "<group>"; };
+		3A8BBFF925C90E11007CAF07 /* TradeListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeListView.cc; sourceTree = "<group>"; };
+		3A8BBFFA25C90E11007CAF07 /* TradeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeListView.h; sourceTree = "<group>"; };
+		3A8BBFFB25C90E11007CAF07 /* TradeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeWindow.h; sourceTree = "<group>"; };
+		3A8BBFFC25C90E11007CAF07 /* TradeWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeWindow.cc; sourceTree = "<group>"; };
+		3A8BBFFD25C90E11007CAF07 /* TimedLabelService.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedLabelService.cc; sourceTree = "<group>"; };
+		3A8BBFFE25C90E11007CAF07 /* TimedLabelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedLabelService.h; sourceTree = "<group>"; };
+		3A8BBFFF25C90E11007CAF07 /* TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextField.h; sourceTree = "<group>"; };
+		3A8BC00125C90E11007CAF07 /* DialogueManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueManager.cc; sourceTree = "<group>"; };
+		3A8BC00225C90E11007CAF07 /* DialogueListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueListView.h; sourceTree = "<group>"; };
+		3A8BC00325C90E11007CAF07 /* DialogueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueManager.h; sourceTree = "<group>"; };
+		3A8BC00425C90E11007CAF07 /* Subtitles.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Subtitles.cc; sourceTree = "<group>"; };
+		3A8BC00525C90E11007CAF07 /* DialogueListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueListView.cc; sourceTree = "<group>"; };
+		3A8BC00625C90E11007CAF07 /* DialogueMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueMenu.h; sourceTree = "<group>"; };
+		3A8BC00725C90E11007CAF07 /* DialogueMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueMenu.cc; sourceTree = "<group>"; };
+		3A8BC00825C90E11007CAF07 /* Subtitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subtitles.h; sourceTree = "<group>"; };
+		3A8BC00A25C90E11007CAF07 /* PauseMenuDialog.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenuDialog.cc; sourceTree = "<group>"; };
+		3A8BC00B25C90E11007CAF07 /* StatsPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsPane.h; sourceTree = "<group>"; };
+		3A8BC00D25C90E11007CAF07 /* SkillPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPane.h; sourceTree = "<group>"; };
+		3A8BC00E25C90E11007CAF07 /* SkillPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillPane.cc; sourceTree = "<group>"; };
+		3A8BC00F25C90E11007CAF07 /* SkillListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillListView.cc; sourceTree = "<group>"; };
+		3A8BC01025C90E11007CAF07 /* SkillListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillListView.h; sourceTree = "<group>"; };
+		3A8BC01125C90E11007CAF07 /* AbstractPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPane.cc; sourceTree = "<group>"; };
+		3A8BC01225C90E11007CAF07 /* PauseMenuDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenuDialog.h; sourceTree = "<group>"; };
+		3A8BC01425C90E11007CAF07 /* OptionListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionListView.cc; sourceTree = "<group>"; };
+		3A8BC01525C90E11007CAF07 /* OptionPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPane.h; sourceTree = "<group>"; };
+		3A8BC01625C90E11007CAF07 /* OptionPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionPane.cc; sourceTree = "<group>"; };
+		3A8BC01725C90E11007CAF07 /* OptionListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionListView.h; sourceTree = "<group>"; };
+		3A8BC01825C90E11007CAF07 /* PauseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
+		3A8BC01925C90E11007CAF07 /* AbstractPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPane.h; sourceTree = "<group>"; };
+		3A8BC01A25C90E11007CAF07 /* PauseMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cc; sourceTree = "<group>"; };
+		3A8BC01C25C90E11007CAF07 /* QuestListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestListView.h; sourceTree = "<group>"; };
+		3A8BC01D25C90E11007CAF07 /* QuestListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestListView.cc; sourceTree = "<group>"; };
+		3A8BC01E25C90E11007CAF07 /* QuestPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestPane.cc; sourceTree = "<group>"; };
+		3A8BC01F25C90E11007CAF07 /* QuestPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestPane.h; sourceTree = "<group>"; };
+		3A8BC02125C90E11007CAF07 /* InventoryPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryPane.cc; sourceTree = "<group>"; };
+		3A8BC02225C90E11007CAF07 /* InventoryPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryPane.h; sourceTree = "<group>"; };
+		3A8BC02325C90E11007CAF07 /* ItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListView.h; sourceTree = "<group>"; };
+		3A8BC02425C90E11007CAF07 /* ItemListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemListView.cc; sourceTree = "<group>"; };
+		3A8BC02525C90E11007CAF07 /* HeaderPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeaderPane.cc; sourceTree = "<group>"; };
+		3A8BC02625C90E11007CAF07 /* StatsPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatsPane.cc; sourceTree = "<group>"; };
+		3A8BC02825C90E11007CAF07 /* EquipmentPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquipmentPane.cc; sourceTree = "<group>"; };
+		3A8BC02925C90E11007CAF07 /* EquipmentPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentPane.h; sourceTree = "<group>"; };
+		3A8BC02A25C90E11007CAF07 /* HeaderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderPane.h; sourceTree = "<group>"; };
+		3A8BC02B25C90E11007CAF07 /* WindowManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cc; sourceTree = "<group>"; };
+		3A8BC02C25C90E11007CAF07 /* TabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabView.h; sourceTree = "<group>"; };
+		3A8BC02E25C90E11007CAF07 /* QuestHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestHints.h; sourceTree = "<group>"; };
+		3A8BC02F25C90E11007CAF07 /* QuestHints.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestHints.cc; sourceTree = "<group>"; };
+		3A8BC03025C90E11007CAF07 /* Shade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shade.h; sourceTree = "<group>"; };
+		3A8BC03225C90E11007CAF07 /* Notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifications.cc; sourceTree = "<group>"; };
+		3A8BC03325C90E11007CAF07 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
+		3A8BC03525C90E11007CAF07 /* CommandParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandParser.h; sourceTree = "<group>"; };
+		3A8BC03625C90E11007CAF07 /* CommandParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParser.cc; sourceTree = "<group>"; };
+		3A8BC03725C90E11007CAF07 /* Console.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cc; sourceTree = "<group>"; };
+		3A8BC03825C90E11007CAF07 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		3A8BC03A25C90E11007CAF07 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
+		3A8BC03B25C90E11007CAF07 /* StatusBar.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatusBar.cc; sourceTree = "<group>"; };
+		3A8BC03C25C90E11007CAF07 /* Hud.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cc; sourceTree = "<group>"; };
+		3A8BC03D25C90E11007CAF07 /* StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
+		3A8BC03E25C90E11007CAF07 /* TableLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableLayout.h; sourceTree = "<group>"; };
+		3A8BC03F25C90E11007CAF07 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
+		3A8BC04025C90E11007CAF07 /* Importable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Importable.h; sourceTree = "<group>"; };
+		3A8BC04125C90E11007CAF07 /* StaticActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticActor.h; sourceTree = "<group>"; };
+		3A8BC04325C90E11007CAF07 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
+		3A8BC04425C90E11007CAF07 /* BatForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatForm.h; sourceTree = "<group>"; };
+		3A8BC04525C90E11007CAF07 /* ForwardSlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardSlash.h; sourceTree = "<group>"; };
+		3A8BC04625C90E11007CAF07 /* MagicalMissile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicalMissile.cc; sourceTree = "<group>"; };
+		3A8BC04725C90E11007CAF07 /* BackDash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackDash.h; sourceTree = "<group>"; };
+		3A8BC04825C90E11007CAF07 /* MagicalMissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalMissile.h; sourceTree = "<group>"; };
+		3A8BC04925C90E11007CAF07 /* ForwardSlash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ForwardSlash.cc; sourceTree = "<group>"; };
+		3A8BC04A25C90E11007CAF07 /* BatForm.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BatForm.cc; sourceTree = "<group>"; };
+		3A8BC04B25C90E11007CAF07 /* Skill.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cc; sourceTree = "<group>"; };
+		3A8BC04C25C90E11007CAF07 /* BackDash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackDash.cc; sourceTree = "<group>"; };
+		3A8BC04E25C90E11007CAF07 /* JsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtil.h; sourceTree = "<group>"; };
+		3A8BC05025C90E11007CAF07 /* SetVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVector.h; sourceTree = "<group>"; };
+		3A8BC05125C90E11007CAF07 /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
+		3A8BC05225C90E11007CAF07 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Algorithm.h; sourceTree = "<group>"; };
+		3A8BC05325C90E11007CAF07 /* Logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cc; sourceTree = "<group>"; };
+		3A8BC05425C90E11007CAF07 /* JsonUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtil.cc; sourceTree = "<group>"; };
+		3A8BC05525C90E11007CAF07 /* RandUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandUtil.cc; sourceTree = "<group>"; };
+		3A8BC05625C90E11007CAF07 /* KeyCodeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodeUtil.h; sourceTree = "<group>"; };
+		3A8BC05725C90E11007CAF07 /* StringUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cc; sourceTree = "<group>"; };
+		3A8BC05825C90E11007CAF07 /* KeyCodeUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyCodeUtil.cc; sourceTree = "<group>"; };
+		3A8BC05925C90E11007CAF07 /* RandUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandUtil.h; sourceTree = "<group>"; };
+		3A8BC05A25C90E11007CAF07 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		3A8BC05B25C90E11007CAF07 /* CameraUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraUtil.h; sourceTree = "<group>"; };
+		3A8BC05C25C90E11007CAF07 /* CameraUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraUtil.cc; sourceTree = "<group>"; };
+		3A8BC05E25C90E11007CAF07 /* b2BodyBuilder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BodyBuilder.cc; sourceTree = "<group>"; };
+		3A8BC05F25C90E11007CAF07 /* b2DebugRenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2DebugRenderer.cc; sourceTree = "<group>"; };
+		3A8BC06025C90E11007CAF07 /* b2BodyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BodyBuilder.h; sourceTree = "<group>"; };
+		3A8BC06125C90E11007CAF07 /* b2DebugRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2DebugRenderer.h; sourceTree = "<group>"; };
+		3A8BC06225C90E11007CAF07 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		3A8BC06425C90E11007CAF07 /* Keybindable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keybindable.h; sourceTree = "<group>"; };
+		3A8BC06525C90E11007CAF07 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		3A8BC06625C90E11007CAF07 /* InputManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cc; sourceTree = "<group>"; };
+		3A8BC06725C90E11007CAF07 /* HotkeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyManager.h; sourceTree = "<group>"; };
+		3A8BC06825C90E11007CAF07 /* HotkeyManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HotkeyManager.cc; sourceTree = "<group>"; };
+		3A8BC06925C90E11007CAF07 /* CallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackManager.h; sourceTree = "<group>"; };
+		3A8BC06A25C90E11007CAF07 /* StaticActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticActor.cc; sourceTree = "<group>"; };
+		3A8BC06B25C90E11007CAF07 /* Interactable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactable.h; sourceTree = "<group>"; };
+		3A8BC06D25C90E11007CAF07 /* Npc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Npc.cc; sourceTree = "<group>"; };
+		3A8BC06E25C90E11007CAF07 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		3A8BC06F25C90E11007CAF07 /* Character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cc; sourceTree = "<group>"; };
+		3A8BC07025C90E11007CAF07 /* Npc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Npc.h; sourceTree = "<group>"; };
+		3A8BC07125C90E11007CAF07 /* Party.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Party.cc; sourceTree = "<group>"; };
+		3A8BC07225C90E11007CAF07 /* Party.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
+		3A8BC07325C90E11007CAF07 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		3A8BC07425C90E11007CAF07 /* Player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cc; sourceTree = "<group>"; };
+		3A8BC07525C90E11007CAF07 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		3A8BC07625C90E11007CAF07 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
+		3A8BC07825C90E11007CAF07 /* make_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = make_unique.h; sourceTree = "<group>"; };
+		3A8BC07925C90E11007CAF07 /* CallbackManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallbackManager.cc; sourceTree = "<group>"; };
+		3A8BC07A25C90E11007CAF07 /* DynamicActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicActor.cc; sourceTree = "<group>"; };
+		3A8BC07C25C90E11007CAF07 /* GameMapManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMapManager.cc; sourceTree = "<group>"; };
+		3A8BC07D25C90E11007CAF07 /* FxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FxManager.h; sourceTree = "<group>"; };
+		3A8BC07E25C90E11007CAF07 /* GameMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMap.h; sourceTree = "<group>"; };
+		3A8BC07F25C90E11007CAF07 /* FxManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FxManager.cc; sourceTree = "<group>"; };
+		3A8BC08125C90E11007CAF07 /* Chest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chest.cc; sourceTree = "<group>"; };
+		3A8BC08225C90E11007CAF07 /* Chest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chest.h; sourceTree = "<group>"; };
+		3A8BC08325C90E11007CAF07 /* GameMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMapManager.h; sourceTree = "<group>"; };
+		3A8BC08425C90E11007CAF07 /* WorldContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldContactListener.h; sourceTree = "<group>"; };
+		3A8BC08525C90E11007CAF07 /* GameMap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMap.cc; sourceTree = "<group>"; };
+		3A8BC08625C90E11007CAF07 /* WorldContactListener.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContactListener.cc; sourceTree = "<group>"; };
+		3A8BC08725C90E11007CAF07 /* DynamicActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicActor.h; sourceTree = "<group>"; };
+		3A8BC08825C90E11007CAF07 /* AssetManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cc; sourceTree = "<group>"; };
+		3A8BC08A25C90E11007CAF07 /* Consumable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Consumable.h; sourceTree = "<group>"; };
+		3A8BC08B25C90E11007CAF07 /* Item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cc; sourceTree = "<group>"; };
+		3A8BC08C25C90E11007CAF07 /* Consumable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Consumable.cc; sourceTree = "<group>"; };
+		3A8BC08D25C90E11007CAF07 /* Equipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Equipment.h; sourceTree = "<group>"; };
+		3A8BC08E25C90E11007CAF07 /* Equipment.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Equipment.cc; sourceTree = "<group>"; };
+		3A8BC08F25C90E11007CAF07 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		3A8BC09025C90E11007CAF07 /* MiscItem.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscItem.cc; sourceTree = "<group>"; };
+		3A8BC09125C90E11007CAF07 /* MiscItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscItem.h; sourceTree = "<group>"; };
+		3A8BC09325C90E11007CAF07 /* TalkToTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkToTargetObjective.h; sourceTree = "<group>"; };
+		3A8BC09425C90E11007CAF07 /* Quest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quest.cc; sourceTree = "<group>"; };
+		3A8BC09525C90E11007CAF07 /* CollectItemObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollectItemObjective.cc; sourceTree = "<group>"; };
+		3A8BC09625C90E11007CAF07 /* Quest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quest.h; sourceTree = "<group>"; };
+		3A8BC09725C90E11007CAF07 /* CollectItemObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectItemObjective.h; sourceTree = "<group>"; };
+		3A8BC09825C90E11007CAF07 /* QuestBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestBook.h; sourceTree = "<group>"; };
+		3A8BC09925C90E11007CAF07 /* QuestBook.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestBook.cc; sourceTree = "<group>"; };
+		3A8BC09A25C90E11007CAF07 /* KillTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillTargetObjective.h; sourceTree = "<group>"; };
+		3A8BC09B25C90E11007CAF07 /* KillTargetObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KillTargetObjective.cc; sourceTree = "<group>"; };
+		3A8BC09D25C90E11007CAF07 /* ItemPriceTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemPriceTable.cc; sourceTree = "<group>"; };
+		3A8BC09E25C90E11007CAF07 /* ItemPriceTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemPriceTable.h; sourceTree = "<group>"; };
+		3A8BC09F25C90E11007CAF07 /* DialogueTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueTree.h; sourceTree = "<group>"; };
+		3A8BC0A025C90E11007CAF07 /* ExpPointTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpPointTable.h; sourceTree = "<group>"; };
+		3A8BC0A125C90E11007CAF07 /* DialogueTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueTree.cc; sourceTree = "<group>"; };
+		3A8BC0A225C90E11007CAF07 /* ExpPointTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpPointTable.cc; sourceTree = "<group>"; };
+		3A8BC0A425C90E11007CAF07 /* GLESDebugDraw.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLESDebugDraw.cc; sourceTree = "<group>"; };
+		3A8BC0A525C90E11007CAF07 /* GLESDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESDebugDraw.h; sourceTree = "<group>"; };
+		3A8BC0A625C90E11007CAF07 /* AppDelegate.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cc; sourceTree = "<group>"; };
+		3A8BC0A725C90E11007CAF07 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		3A8BC0A825C90E11007CAF07 /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
+		3A8BC0AA25C90E11007CAF07 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
+		3A8BC0AB25C90E11007CAF07 /* MainGameScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainGameScene.cc; sourceTree = "<group>"; };
+		3A8BC0AC25C90E11007CAF07 /* MainGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainGameScene.h; sourceTree = "<group>"; };
+		3A8BC0AD25C90E11007CAF07 /* MainMenuScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScene.cc; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE10317EB98FF00D1A890 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = mac/main.cc; sourceTree = "<group>"; tabWidth = 2; };
@@ -539,7 +543,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB2225C2F11C004ED855 /* src */,
+				3A8BBFE825C90E11007CAF07 /* src */,
 				3A83517425C2BACF006CD40F /* Texture */,
 				3A83517225C2BACC006CD40F /* Sfx */,
 				3A83517025C2BAC7006CD40F /* Music */,
@@ -583,401 +587,403 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3AE7CB2225C2F11C004ED855 /* src */ = {
+		3A8BBFE825C90E11007CAF07 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBDE25C2F11C004ED855 /* AppDelegate.cc */,
-				3AE7CBC025C2F11C004ED855 /* AssetManager.cc */,
-				3AE7CBB125C2F11C004ED855 /* CallbackManager.cc */,
-				3AE7CBB225C2F11C004ED855 /* DynamicActor.cc */,
-				3AE7CBA225C2F11C004ED855 /* StaticActor.cc */,
-				3AE7CBDF25C2F11C004ED855 /* AppDelegate.h */,
-				3AE7CB7725C2F11C004ED855 /* AssetManager.h */,
-				3AE7CBA125C2F11C004ED855 /* CallbackManager.h */,
-				3AE7CBAD25C2F11C004ED855 /* Constants.h */,
-				3AE7CBE025C2F11C004ED855 /* Controllable.h */,
-				3AE7CBBF25C2F11C004ED855 /* DynamicActor.h */,
-				3AE7CB7825C2F11C004ED855 /* Importable.h */,
-				3AE7CBA325C2F11C004ED855 /* Interactable.h */,
-				3AE7CBAE25C2F11C004ED855 /* Projectile.h */,
-				3AE7CB7925C2F11C004ED855 /* StaticActor.h */,
-				3AE7CBA425C2F11C004ED855 /* character */,
-				3AE7CBD425C2F11C004ED855 /* gameplay */,
-				3AE7CBDB25C2F11C004ED855 /* gl */,
-				3AE7CB9B25C2F11C004ED855 /* input */,
-				3AE7CBC125C2F11C004ED855 /* item */,
-				3AE7CBB325C2F11C004ED855 /* map */,
-				3AE7CBCA25C2F11C004ED855 /* quest */,
-				3AE7CBE125C2F11C004ED855 /* scene */,
-				3AE7CB7A25C2F11C004ED855 /* skill */,
-				3AE7CBAF25C2F11C004ED855 /* std */,
-				3AE7CB2325C2F11C004ED855 /* ui */,
-				3AE7CB8525C2F11C004ED855 /* util */,
+				3A8BC0A625C90E11007CAF07 /* AppDelegate.cc */,
+				3A8BC08825C90E11007CAF07 /* AssetManager.cc */,
+				3A8BC07925C90E11007CAF07 /* CallbackManager.cc */,
+				3A8BC07A25C90E11007CAF07 /* DynamicActor.cc */,
+				3A8BC06A25C90E11007CAF07 /* StaticActor.cc */,
+				3A8BC0A725C90E11007CAF07 /* AppDelegate.h */,
+				3A8BC03F25C90E11007CAF07 /* AssetManager.h */,
+				3A8BC06925C90E11007CAF07 /* CallbackManager.h */,
+				3A8BC07525C90E11007CAF07 /* Constants.h */,
+				3A8BC0A825C90E11007CAF07 /* Controllable.h */,
+				3A8BC08725C90E11007CAF07 /* DynamicActor.h */,
+				3A8BC04025C90E11007CAF07 /* Importable.h */,
+				3A8BC06B25C90E11007CAF07 /* Interactable.h */,
+				3A8BC07625C90E11007CAF07 /* Projectile.h */,
+				3A8BC04125C90E11007CAF07 /* StaticActor.h */,
+				3A8BC06C25C90E11007CAF07 /* character */,
+				3A8BC09C25C90E11007CAF07 /* gameplay */,
+				3A8BC0A325C90E11007CAF07 /* gl */,
+				3A8BC06325C90E11007CAF07 /* input */,
+				3A8BC08925C90E11007CAF07 /* item */,
+				3A8BC07B25C90E11007CAF07 /* map */,
+				3A8BC09225C90E11007CAF07 /* quest */,
+				3A8BC0A925C90E11007CAF07 /* scene */,
+				3A8BC04225C90E11007CAF07 /* skill */,
+				3A8BC07725C90E11007CAF07 /* std */,
+				3A8BBFE925C90E11007CAF07 /* ui */,
+				3A8BC04D25C90E11007CAF07 /* util */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		3AE7CB2325C2F11C004ED855 /* ui */ = {
+		3A8BBFE925C90E11007CAF07 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB2425C2F11C004ED855 /* floating_damages */,
-				3AE7CB2725C2F11C004ED855 /* Shade.cc */,
-				3AE7CB2825C2F11C004ED855 /* WindowManager.h */,
-				3AE7CB2925C2F11C004ED855 /* Window.h */,
-				3AE7CB2A25C2F11C004ED855 /* Window.cc */,
-				3AE7CB2B25C2F11C004ED855 /* TableLayout.cc */,
-				3AE7CB2C25C2F11C004ED855 /* Colorscheme.h */,
-				3AE7CB2D25C2F11C004ED855 /* ListView.h */,
-				3AE7CB2E25C2F11C004ED855 /* TabView.cc */,
-				3AE7CB2F25C2F11C004ED855 /* TextField.cc */,
-				3AE7CB3025C2F11C004ED855 /* trade */,
-				3AE7CB3525C2F11C004ED855 /* TimedLabelService.cc */,
-				3AE7CB3625C2F11C004ED855 /* TimedLabelService.h */,
-				3AE7CB3725C2F11C004ED855 /* TextField.h */,
-				3AE7CB3825C2F11C004ED855 /* dialogue */,
-				3AE7CB4125C2F11C004ED855 /* pause_menu */,
-				3AE7CB6325C2F11C004ED855 /* WindowManager.cc */,
-				3AE7CB6425C2F11C004ED855 /* TabView.h */,
-				3AE7CB6525C2F11C004ED855 /* quest_hints */,
-				3AE7CB6825C2F11C004ED855 /* Shade.h */,
-				3AE7CB6925C2F11C004ED855 /* notifications */,
-				3AE7CB6C25C2F11C004ED855 /* console */,
-				3AE7CB7125C2F11C004ED855 /* hud */,
-				3AE7CB7625C2F11C004ED855 /* TableLayout.h */,
+				3A8BBFEA25C90E11007CAF07 /* floating_damages */,
+				3A8BBFED25C90E11007CAF07 /* Shade.cc */,
+				3A8BBFEE25C90E11007CAF07 /* AmountSelectionWindow.h */,
+				3A8BBFEF25C90E11007CAF07 /* WindowManager.h */,
+				3A8BBFF025C90E11007CAF07 /* Window.h */,
+				3A8BBFF125C90E11007CAF07 /* Window.cc */,
+				3A8BBFF225C90E11007CAF07 /* TableLayout.cc */,
+				3A8BBFF325C90E11007CAF07 /* Colorscheme.h */,
+				3A8BBFF425C90E11007CAF07 /* AmountSelectionWindow.cc */,
+				3A8BBFF525C90E11007CAF07 /* ListView.h */,
+				3A8BBFF625C90E11007CAF07 /* TabView.cc */,
+				3A8BBFF725C90E11007CAF07 /* TextField.cc */,
+				3A8BBFF825C90E11007CAF07 /* trade */,
+				3A8BBFFD25C90E11007CAF07 /* TimedLabelService.cc */,
+				3A8BBFFE25C90E11007CAF07 /* TimedLabelService.h */,
+				3A8BBFFF25C90E11007CAF07 /* TextField.h */,
+				3A8BC00025C90E11007CAF07 /* dialogue */,
+				3A8BC00925C90E11007CAF07 /* pause_menu */,
+				3A8BC02B25C90E11007CAF07 /* WindowManager.cc */,
+				3A8BC02C25C90E11007CAF07 /* TabView.h */,
+				3A8BC02D25C90E11007CAF07 /* quest_hints */,
+				3A8BC03025C90E11007CAF07 /* Shade.h */,
+				3A8BC03125C90E11007CAF07 /* notifications */,
+				3A8BC03425C90E11007CAF07 /* console */,
+				3A8BC03925C90E11007CAF07 /* hud */,
+				3A8BC03E25C90E11007CAF07 /* TableLayout.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
 		};
-		3AE7CB2425C2F11C004ED855 /* floating_damages */ = {
+		3A8BBFEA25C90E11007CAF07 /* floating_damages */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB2525C2F11C004ED855 /* FloatingDamages.h */,
-				3AE7CB2625C2F11C004ED855 /* FloatingDamages.cc */,
+				3A8BBFEB25C90E11007CAF07 /* FloatingDamages.h */,
+				3A8BBFEC25C90E11007CAF07 /* FloatingDamages.cc */,
 			);
 			path = floating_damages;
 			sourceTree = "<group>";
 		};
-		3AE7CB3025C2F11C004ED855 /* trade */ = {
+		3A8BBFF825C90E11007CAF07 /* trade */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB3125C2F11C004ED855 /* TradeListView.cc */,
-				3AE7CB3225C2F11C004ED855 /* TradeListView.h */,
-				3AE7CB3325C2F11C004ED855 /* TradeWindow.h */,
-				3AE7CB3425C2F11C004ED855 /* TradeWindow.cc */,
+				3A8BBFF925C90E11007CAF07 /* TradeListView.cc */,
+				3A8BBFFA25C90E11007CAF07 /* TradeListView.h */,
+				3A8BBFFB25C90E11007CAF07 /* TradeWindow.h */,
+				3A8BBFFC25C90E11007CAF07 /* TradeWindow.cc */,
 			);
 			path = trade;
 			sourceTree = "<group>";
 		};
-		3AE7CB3825C2F11C004ED855 /* dialogue */ = {
+		3A8BC00025C90E11007CAF07 /* dialogue */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB3925C2F11C004ED855 /* DialogueManager.cc */,
-				3AE7CB3A25C2F11C004ED855 /* DialogueListView.h */,
-				3AE7CB3B25C2F11C004ED855 /* DialogueManager.h */,
-				3AE7CB3C25C2F11C004ED855 /* Subtitles.cc */,
-				3AE7CB3D25C2F11C004ED855 /* DialogueListView.cc */,
-				3AE7CB3E25C2F11C004ED855 /* DialogueMenu.h */,
-				3AE7CB3F25C2F11C004ED855 /* DialogueMenu.cc */,
-				3AE7CB4025C2F11C004ED855 /* Subtitles.h */,
+				3A8BC00125C90E11007CAF07 /* DialogueManager.cc */,
+				3A8BC00225C90E11007CAF07 /* DialogueListView.h */,
+				3A8BC00325C90E11007CAF07 /* DialogueManager.h */,
+				3A8BC00425C90E11007CAF07 /* Subtitles.cc */,
+				3A8BC00525C90E11007CAF07 /* DialogueListView.cc */,
+				3A8BC00625C90E11007CAF07 /* DialogueMenu.h */,
+				3A8BC00725C90E11007CAF07 /* DialogueMenu.cc */,
+				3A8BC00825C90E11007CAF07 /* Subtitles.h */,
 			);
 			path = dialogue;
 			sourceTree = "<group>";
 		};
-		3AE7CB4125C2F11C004ED855 /* pause_menu */ = {
+		3A8BC00925C90E11007CAF07 /* pause_menu */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB4225C2F11C004ED855 /* PauseMenuDialog.cc */,
-				3AE7CB4325C2F11C004ED855 /* StatsPane.h */,
-				3AE7CB4425C2F11C004ED855 /* skill */,
-				3AE7CB4925C2F11C004ED855 /* AbstractPane.cc */,
-				3AE7CB4A25C2F11C004ED855 /* PauseMenuDialog.h */,
-				3AE7CB4B25C2F11C004ED855 /* option */,
-				3AE7CB5025C2F11C004ED855 /* PauseMenu.h */,
-				3AE7CB5125C2F11C004ED855 /* AbstractPane.h */,
-				3AE7CB5225C2F11C004ED855 /* PauseMenu.cc */,
-				3AE7CB5325C2F11C004ED855 /* quest */,
-				3AE7CB5825C2F11C004ED855 /* inventory */,
-				3AE7CB5D25C2F11C004ED855 /* HeaderPane.cc */,
-				3AE7CB5E25C2F11C004ED855 /* StatsPane.cc */,
-				3AE7CB5F25C2F11C004ED855 /* equipment */,
-				3AE7CB6225C2F11C004ED855 /* HeaderPane.h */,
+				3A8BC00A25C90E11007CAF07 /* PauseMenuDialog.cc */,
+				3A8BC00B25C90E11007CAF07 /* StatsPane.h */,
+				3A8BC00C25C90E11007CAF07 /* skill */,
+				3A8BC01125C90E11007CAF07 /* AbstractPane.cc */,
+				3A8BC01225C90E11007CAF07 /* PauseMenuDialog.h */,
+				3A8BC01325C90E11007CAF07 /* option */,
+				3A8BC01825C90E11007CAF07 /* PauseMenu.h */,
+				3A8BC01925C90E11007CAF07 /* AbstractPane.h */,
+				3A8BC01A25C90E11007CAF07 /* PauseMenu.cc */,
+				3A8BC01B25C90E11007CAF07 /* quest */,
+				3A8BC02025C90E11007CAF07 /* inventory */,
+				3A8BC02525C90E11007CAF07 /* HeaderPane.cc */,
+				3A8BC02625C90E11007CAF07 /* StatsPane.cc */,
+				3A8BC02725C90E11007CAF07 /* equipment */,
+				3A8BC02A25C90E11007CAF07 /* HeaderPane.h */,
 			);
 			path = pause_menu;
 			sourceTree = "<group>";
 		};
-		3AE7CB4425C2F11C004ED855 /* skill */ = {
+		3A8BC00C25C90E11007CAF07 /* skill */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB4525C2F11C004ED855 /* SkillPane.h */,
-				3AE7CB4625C2F11C004ED855 /* SkillPane.cc */,
-				3AE7CB4725C2F11C004ED855 /* SkillListView.cc */,
-				3AE7CB4825C2F11C004ED855 /* SkillListView.h */,
+				3A8BC00D25C90E11007CAF07 /* SkillPane.h */,
+				3A8BC00E25C90E11007CAF07 /* SkillPane.cc */,
+				3A8BC00F25C90E11007CAF07 /* SkillListView.cc */,
+				3A8BC01025C90E11007CAF07 /* SkillListView.h */,
 			);
 			path = skill;
 			sourceTree = "<group>";
 		};
-		3AE7CB4B25C2F11C004ED855 /* option */ = {
+		3A8BC01325C90E11007CAF07 /* option */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB4C25C2F11C004ED855 /* OptionListView.cc */,
-				3AE7CB4D25C2F11C004ED855 /* OptionPane.h */,
-				3AE7CB4E25C2F11C004ED855 /* OptionPane.cc */,
-				3AE7CB4F25C2F11C004ED855 /* OptionListView.h */,
+				3A8BC01425C90E11007CAF07 /* OptionListView.cc */,
+				3A8BC01525C90E11007CAF07 /* OptionPane.h */,
+				3A8BC01625C90E11007CAF07 /* OptionPane.cc */,
+				3A8BC01725C90E11007CAF07 /* OptionListView.h */,
 			);
 			path = option;
 			sourceTree = "<group>";
 		};
-		3AE7CB5325C2F11C004ED855 /* quest */ = {
+		3A8BC01B25C90E11007CAF07 /* quest */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB5425C2F11C004ED855 /* QuestListView.h */,
-				3AE7CB5525C2F11C004ED855 /* QuestListView.cc */,
-				3AE7CB5625C2F11C004ED855 /* QuestPane.cc */,
-				3AE7CB5725C2F11C004ED855 /* QuestPane.h */,
+				3A8BC01C25C90E11007CAF07 /* QuestListView.h */,
+				3A8BC01D25C90E11007CAF07 /* QuestListView.cc */,
+				3A8BC01E25C90E11007CAF07 /* QuestPane.cc */,
+				3A8BC01F25C90E11007CAF07 /* QuestPane.h */,
 			);
 			path = quest;
 			sourceTree = "<group>";
 		};
-		3AE7CB5825C2F11C004ED855 /* inventory */ = {
+		3A8BC02025C90E11007CAF07 /* inventory */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB5925C2F11C004ED855 /* InventoryPane.cc */,
-				3AE7CB5A25C2F11C004ED855 /* InventoryPane.h */,
-				3AE7CB5B25C2F11C004ED855 /* ItemListView.h */,
-				3AE7CB5C25C2F11C004ED855 /* ItemListView.cc */,
+				3A8BC02125C90E11007CAF07 /* InventoryPane.cc */,
+				3A8BC02225C90E11007CAF07 /* InventoryPane.h */,
+				3A8BC02325C90E11007CAF07 /* ItemListView.h */,
+				3A8BC02425C90E11007CAF07 /* ItemListView.cc */,
 			);
 			path = inventory;
 			sourceTree = "<group>";
 		};
-		3AE7CB5F25C2F11C004ED855 /* equipment */ = {
+		3A8BC02725C90E11007CAF07 /* equipment */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB6025C2F11C004ED855 /* EquipmentPane.cc */,
-				3AE7CB6125C2F11C004ED855 /* EquipmentPane.h */,
+				3A8BC02825C90E11007CAF07 /* EquipmentPane.cc */,
+				3A8BC02925C90E11007CAF07 /* EquipmentPane.h */,
 			);
 			path = equipment;
 			sourceTree = "<group>";
 		};
-		3AE7CB6525C2F11C004ED855 /* quest_hints */ = {
+		3A8BC02D25C90E11007CAF07 /* quest_hints */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB6625C2F11C004ED855 /* QuestHints.h */,
-				3AE7CB6725C2F11C004ED855 /* QuestHints.cc */,
+				3A8BC02E25C90E11007CAF07 /* QuestHints.h */,
+				3A8BC02F25C90E11007CAF07 /* QuestHints.cc */,
 			);
 			path = quest_hints;
 			sourceTree = "<group>";
 		};
-		3AE7CB6925C2F11C004ED855 /* notifications */ = {
+		3A8BC03125C90E11007CAF07 /* notifications */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB6A25C2F11C004ED855 /* Notifications.cc */,
-				3AE7CB6B25C2F11C004ED855 /* Notifications.h */,
+				3A8BC03225C90E11007CAF07 /* Notifications.cc */,
+				3A8BC03325C90E11007CAF07 /* Notifications.h */,
 			);
 			path = notifications;
 			sourceTree = "<group>";
 		};
-		3AE7CB6C25C2F11C004ED855 /* console */ = {
+		3A8BC03425C90E11007CAF07 /* console */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB6D25C2F11C004ED855 /* CommandParser.h */,
-				3AE7CB6E25C2F11C004ED855 /* CommandParser.cc */,
-				3AE7CB6F25C2F11C004ED855 /* Console.cc */,
-				3AE7CB7025C2F11C004ED855 /* Console.h */,
+				3A8BC03525C90E11007CAF07 /* CommandParser.h */,
+				3A8BC03625C90E11007CAF07 /* CommandParser.cc */,
+				3A8BC03725C90E11007CAF07 /* Console.cc */,
+				3A8BC03825C90E11007CAF07 /* Console.h */,
 			);
 			path = console;
 			sourceTree = "<group>";
 		};
-		3AE7CB7125C2F11C004ED855 /* hud */ = {
+		3A8BC03925C90E11007CAF07 /* hud */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB7225C2F11C004ED855 /* Hud.h */,
-				3AE7CB7325C2F11C004ED855 /* StatusBar.cc */,
-				3AE7CB7425C2F11C004ED855 /* Hud.cc */,
-				3AE7CB7525C2F11C004ED855 /* StatusBar.h */,
+				3A8BC03A25C90E11007CAF07 /* Hud.h */,
+				3A8BC03B25C90E11007CAF07 /* StatusBar.cc */,
+				3A8BC03C25C90E11007CAF07 /* Hud.cc */,
+				3A8BC03D25C90E11007CAF07 /* StatusBar.h */,
 			);
 			path = hud;
 			sourceTree = "<group>";
 		};
-		3AE7CB7A25C2F11C004ED855 /* skill */ = {
+		3A8BC04225C90E11007CAF07 /* skill */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB7B25C2F11C004ED855 /* Skill.h */,
-				3AE7CB7C25C2F11C004ED855 /* BatForm.h */,
-				3AE7CB7D25C2F11C004ED855 /* ForwardSlash.h */,
-				3AE7CB7E25C2F11C004ED855 /* MagicalMissile.cc */,
-				3AE7CB7F25C2F11C004ED855 /* BackDash.h */,
-				3AE7CB8025C2F11C004ED855 /* MagicalMissile.h */,
-				3AE7CB8125C2F11C004ED855 /* ForwardSlash.cc */,
-				3AE7CB8225C2F11C004ED855 /* BatForm.cc */,
-				3AE7CB8325C2F11C004ED855 /* Skill.cc */,
-				3AE7CB8425C2F11C004ED855 /* BackDash.cc */,
+				3A8BC04325C90E11007CAF07 /* Skill.h */,
+				3A8BC04425C90E11007CAF07 /* BatForm.h */,
+				3A8BC04525C90E11007CAF07 /* ForwardSlash.h */,
+				3A8BC04625C90E11007CAF07 /* MagicalMissile.cc */,
+				3A8BC04725C90E11007CAF07 /* BackDash.h */,
+				3A8BC04825C90E11007CAF07 /* MagicalMissile.h */,
+				3A8BC04925C90E11007CAF07 /* ForwardSlash.cc */,
+				3A8BC04A25C90E11007CAF07 /* BatForm.cc */,
+				3A8BC04B25C90E11007CAF07 /* Skill.cc */,
+				3A8BC04C25C90E11007CAF07 /* BackDash.cc */,
 			);
 			path = skill;
 			sourceTree = "<group>";
 		};
-		3AE7CB8525C2F11C004ED855 /* util */ = {
+		3A8BC04D25C90E11007CAF07 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB8625C2F11C004ED855 /* JsonUtil.h */,
-				3AE7CB8725C2F11C004ED855 /* ds */,
-				3AE7CB8B25C2F11C004ED855 /* Logger.cc */,
-				3AE7CB8C25C2F11C004ED855 /* JsonUtil.cc */,
-				3AE7CB8D25C2F11C004ED855 /* RandUtil.cc */,
-				3AE7CB8E25C2F11C004ED855 /* KeyCodeUtil.h */,
-				3AE7CB8F25C2F11C004ED855 /* StringUtil.cc */,
-				3AE7CB9025C2F11C004ED855 /* KeyCodeUtil.cc */,
-				3AE7CB9125C2F11C004ED855 /* RandUtil.h */,
-				3AE7CB9225C2F11C004ED855 /* Logger.h */,
-				3AE7CB9325C2F11C004ED855 /* CameraUtil.h */,
-				3AE7CB9425C2F11C004ED855 /* CameraUtil.cc */,
-				3AE7CB9525C2F11C004ED855 /* box2d */,
-				3AE7CB9A25C2F11C004ED855 /* StringUtil.h */,
+				3A8BC04E25C90E11007CAF07 /* JsonUtil.h */,
+				3A8BC04F25C90E11007CAF07 /* ds */,
+				3A8BC05325C90E11007CAF07 /* Logger.cc */,
+				3A8BC05425C90E11007CAF07 /* JsonUtil.cc */,
+				3A8BC05525C90E11007CAF07 /* RandUtil.cc */,
+				3A8BC05625C90E11007CAF07 /* KeyCodeUtil.h */,
+				3A8BC05725C90E11007CAF07 /* StringUtil.cc */,
+				3A8BC05825C90E11007CAF07 /* KeyCodeUtil.cc */,
+				3A8BC05925C90E11007CAF07 /* RandUtil.h */,
+				3A8BC05A25C90E11007CAF07 /* Logger.h */,
+				3A8BC05B25C90E11007CAF07 /* CameraUtil.h */,
+				3A8BC05C25C90E11007CAF07 /* CameraUtil.cc */,
+				3A8BC05D25C90E11007CAF07 /* box2d */,
+				3A8BC06225C90E11007CAF07 /* StringUtil.h */,
 			);
 			path = util;
 			sourceTree = "<group>";
 		};
-		3AE7CB8725C2F11C004ED855 /* ds */ = {
+		3A8BC04F25C90E11007CAF07 /* ds */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB8825C2F11C004ED855 /* SetVector.h */,
-				3AE7CB8925C2F11C004ED855 /* CircularBuffer.h */,
-				3AE7CB8A25C2F11C004ED855 /* Algorithm.h */,
+				3A8BC05025C90E11007CAF07 /* SetVector.h */,
+				3A8BC05125C90E11007CAF07 /* CircularBuffer.h */,
+				3A8BC05225C90E11007CAF07 /* Algorithm.h */,
 			);
 			path = ds;
 			sourceTree = "<group>";
 		};
-		3AE7CB9525C2F11C004ED855 /* box2d */ = {
+		3A8BC05D25C90E11007CAF07 /* box2d */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB9625C2F11C004ED855 /* b2BodyBuilder.cc */,
-				3AE7CB9725C2F11C004ED855 /* b2DebugRenderer.cc */,
-				3AE7CB9825C2F11C004ED855 /* b2BodyBuilder.h */,
-				3AE7CB9925C2F11C004ED855 /* b2DebugRenderer.h */,
+				3A8BC05E25C90E11007CAF07 /* b2BodyBuilder.cc */,
+				3A8BC05F25C90E11007CAF07 /* b2DebugRenderer.cc */,
+				3A8BC06025C90E11007CAF07 /* b2BodyBuilder.h */,
+				3A8BC06125C90E11007CAF07 /* b2DebugRenderer.h */,
 			);
 			path = box2d;
 			sourceTree = "<group>";
 		};
-		3AE7CB9B25C2F11C004ED855 /* input */ = {
+		3A8BC06325C90E11007CAF07 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CB9C25C2F11C004ED855 /* Keybindable.h */,
-				3AE7CB9D25C2F11C004ED855 /* InputManager.h */,
-				3AE7CB9E25C2F11C004ED855 /* InputManager.cc */,
-				3AE7CB9F25C2F11C004ED855 /* HotkeyManager.h */,
-				3AE7CBA025C2F11C004ED855 /* HotkeyManager.cc */,
+				3A8BC06425C90E11007CAF07 /* Keybindable.h */,
+				3A8BC06525C90E11007CAF07 /* InputManager.h */,
+				3A8BC06625C90E11007CAF07 /* InputManager.cc */,
+				3A8BC06725C90E11007CAF07 /* HotkeyManager.h */,
+				3A8BC06825C90E11007CAF07 /* HotkeyManager.cc */,
 			);
 			path = input;
 			sourceTree = "<group>";
 		};
-		3AE7CBA425C2F11C004ED855 /* character */ = {
+		3A8BC06C25C90E11007CAF07 /* character */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBA525C2F11C004ED855 /* Npc.cc */,
-				3AE7CBA625C2F11C004ED855 /* Player.h */,
-				3AE7CBA725C2F11C004ED855 /* Character.cc */,
-				3AE7CBA825C2F11C004ED855 /* Npc.h */,
-				3AE7CBA925C2F11C004ED855 /* Party.cc */,
-				3AE7CBAA25C2F11C004ED855 /* Party.h */,
-				3AE7CBAB25C2F11C004ED855 /* Character.h */,
-				3AE7CBAC25C2F11C004ED855 /* Player.cc */,
+				3A8BC06D25C90E11007CAF07 /* Npc.cc */,
+				3A8BC06E25C90E11007CAF07 /* Player.h */,
+				3A8BC06F25C90E11007CAF07 /* Character.cc */,
+				3A8BC07025C90E11007CAF07 /* Npc.h */,
+				3A8BC07125C90E11007CAF07 /* Party.cc */,
+				3A8BC07225C90E11007CAF07 /* Party.h */,
+				3A8BC07325C90E11007CAF07 /* Character.h */,
+				3A8BC07425C90E11007CAF07 /* Player.cc */,
 			);
 			path = character;
 			sourceTree = "<group>";
 		};
-		3AE7CBAF25C2F11C004ED855 /* std */ = {
+		3A8BC07725C90E11007CAF07 /* std */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBB025C2F11C004ED855 /* make_unique.h */,
+				3A8BC07825C90E11007CAF07 /* make_unique.h */,
 			);
 			path = std;
 			sourceTree = "<group>";
 		};
-		3AE7CBB325C2F11C004ED855 /* map */ = {
+		3A8BC07B25C90E11007CAF07 /* map */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBB425C2F11C004ED855 /* GameMapManager.cc */,
-				3AE7CBB525C2F11C004ED855 /* FxManager.h */,
-				3AE7CBB625C2F11C004ED855 /* GameMap.h */,
-				3AE7CBB725C2F11C004ED855 /* FxManager.cc */,
-				3AE7CBB825C2F11C004ED855 /* object */,
-				3AE7CBBB25C2F11C004ED855 /* GameMapManager.h */,
-				3AE7CBBC25C2F11C004ED855 /* WorldContactListener.h */,
-				3AE7CBBD25C2F11C004ED855 /* GameMap.cc */,
-				3AE7CBBE25C2F11C004ED855 /* WorldContactListener.cc */,
+				3A8BC07C25C90E11007CAF07 /* GameMapManager.cc */,
+				3A8BC07D25C90E11007CAF07 /* FxManager.h */,
+				3A8BC07E25C90E11007CAF07 /* GameMap.h */,
+				3A8BC07F25C90E11007CAF07 /* FxManager.cc */,
+				3A8BC08025C90E11007CAF07 /* object */,
+				3A8BC08325C90E11007CAF07 /* GameMapManager.h */,
+				3A8BC08425C90E11007CAF07 /* WorldContactListener.h */,
+				3A8BC08525C90E11007CAF07 /* GameMap.cc */,
+				3A8BC08625C90E11007CAF07 /* WorldContactListener.cc */,
 			);
 			path = map;
 			sourceTree = "<group>";
 		};
-		3AE7CBB825C2F11C004ED855 /* object */ = {
+		3A8BC08025C90E11007CAF07 /* object */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBB925C2F11C004ED855 /* Chest.cc */,
-				3AE7CBBA25C2F11C004ED855 /* Chest.h */,
+				3A8BC08125C90E11007CAF07 /* Chest.cc */,
+				3A8BC08225C90E11007CAF07 /* Chest.h */,
 			);
 			path = object;
 			sourceTree = "<group>";
 		};
-		3AE7CBC125C2F11C004ED855 /* item */ = {
+		3A8BC08925C90E11007CAF07 /* item */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBC225C2F11C004ED855 /* Consumable.h */,
-				3AE7CBC325C2F11C004ED855 /* Item.cc */,
-				3AE7CBC425C2F11C004ED855 /* Consumable.cc */,
-				3AE7CBC525C2F11C004ED855 /* Equipment.h */,
-				3AE7CBC625C2F11C004ED855 /* Equipment.cc */,
-				3AE7CBC725C2F11C004ED855 /* Item.h */,
-				3AE7CBC825C2F11C004ED855 /* MiscItem.cc */,
-				3AE7CBC925C2F11C004ED855 /* MiscItem.h */,
+				3A8BC08A25C90E11007CAF07 /* Consumable.h */,
+				3A8BC08B25C90E11007CAF07 /* Item.cc */,
+				3A8BC08C25C90E11007CAF07 /* Consumable.cc */,
+				3A8BC08D25C90E11007CAF07 /* Equipment.h */,
+				3A8BC08E25C90E11007CAF07 /* Equipment.cc */,
+				3A8BC08F25C90E11007CAF07 /* Item.h */,
+				3A8BC09025C90E11007CAF07 /* MiscItem.cc */,
+				3A8BC09125C90E11007CAF07 /* MiscItem.h */,
 			);
 			path = item;
 			sourceTree = "<group>";
 		};
-		3AE7CBCA25C2F11C004ED855 /* quest */ = {
+		3A8BC09225C90E11007CAF07 /* quest */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBCB25C2F11C004ED855 /* TalkToTargetObjective.h */,
-				3AE7CBCC25C2F11C004ED855 /* Quest.cc */,
-				3AE7CBCD25C2F11C004ED855 /* CollectItemObjective.cc */,
-				3AE7CBCE25C2F11C004ED855 /* Quest.h */,
-				3AE7CBCF25C2F11C004ED855 /* CollectItemObjective.h */,
-				3AE7CBD025C2F11C004ED855 /* QuestBook.h */,
-				3AE7CBD125C2F11C004ED855 /* QuestBook.cc */,
-				3AE7CBD225C2F11C004ED855 /* KillTargetObjective.h */,
-				3AE7CBD325C2F11C004ED855 /* KillTargetObjective.cc */,
+				3A8BC09325C90E11007CAF07 /* TalkToTargetObjective.h */,
+				3A8BC09425C90E11007CAF07 /* Quest.cc */,
+				3A8BC09525C90E11007CAF07 /* CollectItemObjective.cc */,
+				3A8BC09625C90E11007CAF07 /* Quest.h */,
+				3A8BC09725C90E11007CAF07 /* CollectItemObjective.h */,
+				3A8BC09825C90E11007CAF07 /* QuestBook.h */,
+				3A8BC09925C90E11007CAF07 /* QuestBook.cc */,
+				3A8BC09A25C90E11007CAF07 /* KillTargetObjective.h */,
+				3A8BC09B25C90E11007CAF07 /* KillTargetObjective.cc */,
 			);
 			path = quest;
 			sourceTree = "<group>";
 		};
-		3AE7CBD425C2F11C004ED855 /* gameplay */ = {
+		3A8BC09C25C90E11007CAF07 /* gameplay */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBD525C2F11C004ED855 /* ItemPriceTable.cc */,
-				3AE7CBD625C2F11C004ED855 /* ItemPriceTable.h */,
-				3AE7CBD725C2F11C004ED855 /* DialogueTree.h */,
-				3AE7CBD825C2F11C004ED855 /* ExpPointTable.h */,
-				3AE7CBD925C2F11C004ED855 /* DialogueTree.cc */,
-				3AE7CBDA25C2F11C004ED855 /* ExpPointTable.cc */,
+				3A8BC09D25C90E11007CAF07 /* ItemPriceTable.cc */,
+				3A8BC09E25C90E11007CAF07 /* ItemPriceTable.h */,
+				3A8BC09F25C90E11007CAF07 /* DialogueTree.h */,
+				3A8BC0A025C90E11007CAF07 /* ExpPointTable.h */,
+				3A8BC0A125C90E11007CAF07 /* DialogueTree.cc */,
+				3A8BC0A225C90E11007CAF07 /* ExpPointTable.cc */,
 			);
 			path = gameplay;
 			sourceTree = "<group>";
 		};
-		3AE7CBDB25C2F11C004ED855 /* gl */ = {
+		3A8BC0A325C90E11007CAF07 /* gl */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBDC25C2F11C004ED855 /* GLESDebugDraw.cc */,
-				3AE7CBDD25C2F11C004ED855 /* GLESDebugDraw.h */,
+				3A8BC0A425C90E11007CAF07 /* GLESDebugDraw.cc */,
+				3A8BC0A525C90E11007CAF07 /* GLESDebugDraw.h */,
 			);
 			path = gl;
 			sourceTree = "<group>";
 		};
-		3AE7CBE125C2F11C004ED855 /* scene */ = {
+		3A8BC0A925C90E11007CAF07 /* scene */ = {
 			isa = PBXGroup;
 			children = (
-				3AE7CBE225C2F11C004ED855 /* MainMenuScene.h */,
-				3AE7CBE325C2F11C004ED855 /* MainGameScene.cc */,
-				3AE7CBE425C2F11C004ED855 /* MainGameScene.h */,
-				3AE7CBE525C2F11C004ED855 /* MainMenuScene.cc */,
+				3A8BC0AA25C90E11007CAF07 /* MainMenuScene.h */,
+				3A8BC0AB25C90E11007CAF07 /* MainGameScene.cc */,
+				3A8BC0AC25C90E11007CAF07 /* MainGameScene.h */,
+				3A8BC0AD25C90E11007CAF07 /* MainMenuScene.cc */,
 			);
 			path = scene;
 			sourceTree = "<group>";
@@ -1132,86 +1138,87 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AE7CC6225C2F11D004ED855 /* Item.cc in Sources */,
-				3AE7CC1825C2F11C004ED855 /* StatsPane.cc in Sources */,
-				3AE7CC1425C2F11C004ED855 /* ItemListView.cc in Sources */,
-				3AE7CC7625C2F11D004ED855 /* ExpPointTable.cc in Sources */,
-				3AE7CBF625C2F11C004ED855 /* TimedLabelService.cc in Sources */,
-				3AE7CC6625C2F11D004ED855 /* Equipment.cc in Sources */,
-				3AE7CC5425C2F11D004ED855 /* DynamicActor.cc in Sources */,
-				3AE7CC7425C2F11D004ED855 /* DialogueTree.cc in Sources */,
-				3AE7CC2425C2F11C004ED855 /* Console.cc in Sources */,
-				3AE7CC5A25C2F11D004ED855 /* Chest.cc in Sources */,
-				3AE7CC3A25C2F11D004ED855 /* StringUtil.cc in Sources */,
-				3AE7CC6825C2F11D004ED855 /* MiscItem.cc in Sources */,
-				3AE7CC3425C2F11D004ED855 /* Logger.cc in Sources */,
-				3AE7CC6C25C2F11D004ED855 /* CollectItemObjective.cc in Sources */,
-				3AE7CBFA25C2F11C004ED855 /* Subtitles.cc in Sources */,
-				3AE7CC4A25C2F11D004ED855 /* Npc.cc in Sources */,
-				3AE7CBFE25C2F11C004ED855 /* DialogueMenu.cc in Sources */,
-				3AE7CBEE25C2F11C004ED855 /* TabView.cc in Sources */,
-				3AE7CC2025C2F11C004ED855 /* Notifications.cc in Sources */,
-				3AE7CC4225C2F11D004ED855 /* b2DebugRenderer.cc in Sources */,
-				3AE7CC0C25C2F11C004ED855 /* PauseMenu.cc in Sources */,
-				3AE7CC6425C2F11D004ED855 /* Consumable.cc in Sources */,
-				3AE7CC1625C2F11C004ED855 /* HeaderPane.cc in Sources */,
-				3AE7CC0E25C2F11C004ED855 /* QuestListView.cc in Sources */,
-				3AE7CC4425C2F11D004ED855 /* InputManager.cc in Sources */,
-				3AE7CC4625C2F11D004ED855 /* HotkeyManager.cc in Sources */,
-				3AE7CBE625C2F11C004ED855 /* FloatingDamages.cc in Sources */,
-				3AE7CC1A25C2F11C004ED855 /* EquipmentPane.cc in Sources */,
-				3AE7CC7A25C2F11D004ED855 /* AppDelegate.cc in Sources */,
-				3AE7CC0225C2F11C004ED855 /* SkillPane.cc in Sources */,
-				3AE7CC4E25C2F11D004ED855 /* Party.cc in Sources */,
-				3AE7CC5025C2F11D004ED855 /* Player.cc in Sources */,
-				3AE7CC7225C2F11D004ED855 /* ItemPriceTable.cc in Sources */,
-				3AE7CC4C25C2F11D004ED855 /* Character.cc in Sources */,
+				3A8BC0AE25C90E12007CAF07 /* FloatingDamages.cc in Sources */,
+				3A8BC0F425C90E12007CAF07 /* MagicalMissile.cc in Sources */,
+				3A8BC14025C90E12007CAF07 /* ExpPointTable.cc in Sources */,
+				3A8BC0F025C90E12007CAF07 /* StatusBar.cc in Sources */,
+				3A8BC0EE25C90E12007CAF07 /* Console.cc in Sources */,
+				3A8BC10625C90E12007CAF07 /* KeyCodeUtil.cc in Sources */,
+				3A8BC10825C90E12007CAF07 /* CameraUtil.cc in Sources */,
+				3A8BC0F225C90E12007CAF07 /* Hud.cc in Sources */,
+				3A8BC0BC25C90E12007CAF07 /* TradeListView.cc in Sources */,
+				3A8BC13225C90E12007CAF07 /* MiscItem.cc in Sources */,
+				3A8BC10025C90E12007CAF07 /* JsonUtil.cc in Sources */,
+				3A8BC13025C90E12007CAF07 /* Equipment.cc in Sources */,
+				3A8BC0CE25C90E12007CAF07 /* SkillListView.cc in Sources */,
+				3A8BC0FA25C90E12007CAF07 /* Skill.cc in Sources */,
+				3A8BC0BE25C90E12007CAF07 /* TradeWindow.cc in Sources */,
+				3A8BC0D825C90E12007CAF07 /* QuestListView.cc in Sources */,
+				3A8BC12825C90E12007CAF07 /* WorldContactListener.cc in Sources */,
+				3A8BC0D425C90E12007CAF07 /* OptionPane.cc in Sources */,
+				3A8BC0BA25C90E12007CAF07 /* TextField.cc in Sources */,
+				3A8BC12425C90E12007CAF07 /* Chest.cc in Sources */,
+				3A8BC0F625C90E12007CAF07 /* ForwardSlash.cc in Sources */,
+				3A8BC10425C90E12007CAF07 /* StringUtil.cc in Sources */,
+				3A8BC0B825C90E12007CAF07 /* TabView.cc in Sources */,
+				3A8BC0EC25C90E12007CAF07 /* CommandParser.cc in Sources */,
+				3A8BC0E825C90E12007CAF07 /* QuestHints.cc in Sources */,
+				3A8BC12A25C90E12007CAF07 /* AssetManager.cc in Sources */,
+				3A8BC14225C90E12007CAF07 /* GLESDebugDraw.cc in Sources */,
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
-				3AE7CC3825C2F11D004ED855 /* RandUtil.cc in Sources */,
-				3AE7CBF025C2F11C004ED855 /* TextField.cc in Sources */,
-				3AE7CBE825C2F11C004ED855 /* Shade.cc in Sources */,
-				3AE7CC5825C2F11D004ED855 /* FxManager.cc in Sources */,
-				3AE7CC3C25C2F11D004ED855 /* KeyCodeUtil.cc in Sources */,
-				3AE7CC2E25C2F11C004ED855 /* BatForm.cc in Sources */,
-				3AE7CC6E25C2F11D004ED855 /* QuestBook.cc in Sources */,
-				3AE7CC2825C2F11C004ED855 /* Hud.cc in Sources */,
-				3AE7CC7025C2F11D004ED855 /* KillTargetObjective.cc in Sources */,
-				3AE7CC4825C2F11D004ED855 /* StaticActor.cc in Sources */,
-				3AE7CC0425C2F11C004ED855 /* SkillListView.cc in Sources */,
-				3AE7CC3E25C2F11D004ED855 /* CameraUtil.cc in Sources */,
-				3AE7CBFC25C2F11C004ED855 /* DialogueListView.cc in Sources */,
-				3AE7CC5E25C2F11D004ED855 /* WorldContactListener.cc in Sources */,
-				3AE7CC1C25C2F11C004ED855 /* WindowManager.cc in Sources */,
-				3AE7CC5625C2F11D004ED855 /* GameMapManager.cc in Sources */,
-				3AE7CC4025C2F11D004ED855 /* b2BodyBuilder.cc in Sources */,
-				3AE7CC0625C2F11C004ED855 /* AbstractPane.cc in Sources */,
-				3AE7CC0A25C2F11C004ED855 /* OptionPane.cc in Sources */,
-				3AE7CC5225C2F11D004ED855 /* CallbackManager.cc in Sources */,
-				3AE7CC1025C2F11C004ED855 /* QuestPane.cc in Sources */,
-				3AE7CC2C25C2F11C004ED855 /* ForwardSlash.cc in Sources */,
-				3AE7CBF225C2F11C004ED855 /* TradeListView.cc in Sources */,
-				3AE7CC0025C2F11C004ED855 /* PauseMenuDialog.cc in Sources */,
-				3AE7CC3225C2F11C004ED855 /* BackDash.cc in Sources */,
-				3AE7CC2625C2F11C004ED855 /* StatusBar.cc in Sources */,
-				3AE7CBEC25C2F11C004ED855 /* TableLayout.cc in Sources */,
-				3AE7CBF825C2F11C004ED855 /* DialogueManager.cc in Sources */,
-				3AE7CC2225C2F11C004ED855 /* CommandParser.cc in Sources */,
-				3AE7CC1E25C2F11C004ED855 /* QuestHints.cc in Sources */,
-				3AE7CC1225C2F11C004ED855 /* InventoryPane.cc in Sources */,
-				3AE7CC7825C2F11D004ED855 /* GLESDebugDraw.cc in Sources */,
-				3AE7CBF425C2F11C004ED855 /* TradeWindow.cc in Sources */,
-				3AE7CC3025C2F11C004ED855 /* Skill.cc in Sources */,
-				3AE7CC2A25C2F11C004ED855 /* MagicalMissile.cc in Sources */,
-				3AE7CC6A25C2F11D004ED855 /* Quest.cc in Sources */,
-				3AE7CBEA25C2F11C004ED855 /* Window.cc in Sources */,
-				3AE7CC0825C2F11C004ED855 /* OptionListView.cc in Sources */,
-				3AE7CC7C25C2F11D004ED855 /* MainGameScene.cc in Sources */,
+				3A8BC12625C90E12007CAF07 /* GameMap.cc in Sources */,
+				3A8BC11E25C90E12007CAF07 /* DynamicActor.cc in Sources */,
+				3A8BC11C25C90E12007CAF07 /* CallbackManager.cc in Sources */,
+				3A8BC12225C90E12007CAF07 /* FxManager.cc in Sources */,
+				3A8BC10225C90E12007CAF07 /* RandUtil.cc in Sources */,
+				3A8BC13425C90E12007CAF07 /* Quest.cc in Sources */,
+				3A8BC0FE25C90E12007CAF07 /* Logger.cc in Sources */,
+				3A8BC10C25C90E12007CAF07 /* b2DebugRenderer.cc in Sources */,
+				3A8BC0B025C90E12007CAF07 /* Shade.cc in Sources */,
+				3A8BC0B425C90E12007CAF07 /* TableLayout.cc in Sources */,
+				3A8BC0C625C90E12007CAF07 /* DialogueListView.cc in Sources */,
+				3A8BC13E25C90E12007CAF07 /* DialogueTree.cc in Sources */,
+				3A8BC0C425C90E12007CAF07 /* Subtitles.cc in Sources */,
+				3A8BC13A25C90E12007CAF07 /* KillTargetObjective.cc in Sources */,
+				3A8BC0B225C90E12007CAF07 /* Window.cc in Sources */,
+				3A8BC11825C90E12007CAF07 /* Party.cc in Sources */,
+				3A8BC11225C90E12007CAF07 /* StaticActor.cc in Sources */,
+				3A8BC14425C90E12007CAF07 /* AppDelegate.cc in Sources */,
+				3A8BC0DA25C90E12007CAF07 /* QuestPane.cc in Sources */,
+				3A8BC11A25C90E12007CAF07 /* Player.cc in Sources */,
+				3A8BC0E225C90E12007CAF07 /* StatsPane.cc in Sources */,
+				3A8BC0E425C90E12007CAF07 /* EquipmentPane.cc in Sources */,
+				3A8BC0CA25C90E12007CAF07 /* PauseMenuDialog.cc in Sources */,
+				3A8BC11025C90E12007CAF07 /* HotkeyManager.cc in Sources */,
+				3A8BC12C25C90E12007CAF07 /* Item.cc in Sources */,
+				3A8BC11425C90E12007CAF07 /* Npc.cc in Sources */,
+				3A8BC13825C90E12007CAF07 /* QuestBook.cc in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
-				3AE7CC6025C2F11D004ED855 /* AssetManager.cc in Sources */,
-				3AE7CC7E25C2F11D004ED855 /* MainMenuScene.cc in Sources */,
+				3A8BC10A25C90E12007CAF07 /* b2BodyBuilder.cc in Sources */,
+				3A8BC0EA25C90E12007CAF07 /* Notifications.cc in Sources */,
+				3A8BC0FC25C90E12007CAF07 /* BackDash.cc in Sources */,
+				3A8BC0F825C90E12007CAF07 /* BatForm.cc in Sources */,
+				3A8BC10E25C90E12007CAF07 /* InputManager.cc in Sources */,
+				3A8BC0E025C90E12007CAF07 /* HeaderPane.cc in Sources */,
+				3A8BC0B625C90E12007CAF07 /* AmountSelectionWindow.cc in Sources */,
+				3A8BC0D225C90E12007CAF07 /* OptionListView.cc in Sources */,
+				3A8BC0C225C90E12007CAF07 /* DialogueManager.cc in Sources */,
+				3A8BC14625C90E12007CAF07 /* MainGameScene.cc in Sources */,
+				3A8BC13625C90E12007CAF07 /* CollectItemObjective.cc in Sources */,
+				3A8BC0E625C90E12007CAF07 /* WindowManager.cc in Sources */,
+				3A8BC0C025C90E12007CAF07 /* TimedLabelService.cc in Sources */,
+				3A8BC0D625C90E12007CAF07 /* PauseMenu.cc in Sources */,
+				3A8BC13C25C90E12007CAF07 /* ItemPriceTable.cc in Sources */,
+				3A8BC14825C90E12007CAF07 /* MainMenuScene.cc in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
-				3AE7CC3625C2F11D004ED855 /* JsonUtil.cc in Sources */,
-				3AE7CC5C25C2F11D004ED855 /* GameMap.cc in Sources */,
+				3A8BC0CC25C90E12007CAF07 /* SkillPane.cc in Sources */,
+				3A8BC0C825C90E12007CAF07 /* DialogueMenu.cc in Sources */,
+				3A8BC12E25C90E12007CAF07 /* Consumable.cc in Sources */,
+				3A8BC0DE25C90E12007CAF07 /* ItemListView.cc in Sources */,
+				3A8BC12025C90E12007CAF07 /* GameMapManager.cc in Sources */,
+				3A8BC11625C90E12007CAF07 /* Character.cc in Sources */,
+				3A8BC0D025C90E12007CAF07 /* AbstractPane.cc in Sources */,
+				3A8BC0DC25C90E12007CAF07 /* InventoryPane.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1219,84 +1226,85 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AE7CBF925C2F11C004ED855 /* DialogueManager.cc in Sources */,
-				3AE7CBE925C2F11C004ED855 /* Shade.cc in Sources */,
-				3AE7CC6D25C2F11D004ED855 /* CollectItemObjective.cc in Sources */,
-				3AE7CC7725C2F11D004ED855 /* ExpPointTable.cc in Sources */,
-				3AE7CC4925C2F11D004ED855 /* StaticActor.cc in Sources */,
-				3AE7CBED25C2F11C004ED855 /* TableLayout.cc in Sources */,
-				3AE7CC2725C2F11C004ED855 /* StatusBar.cc in Sources */,
-				3AE7CC6925C2F11D004ED855 /* MiscItem.cc in Sources */,
-				3AE7CC0F25C2F11C004ED855 /* QuestListView.cc in Sources */,
-				3AE7CC4725C2F11D004ED855 /* HotkeyManager.cc in Sources */,
-				3AE7CC0325C2F11C004ED855 /* SkillPane.cc in Sources */,
-				3AE7CC1125C2F11C004ED855 /* QuestPane.cc in Sources */,
-				3AE7CC1925C2F11C004ED855 /* StatsPane.cc in Sources */,
-				3AE7CC6325C2F11D004ED855 /* Item.cc in Sources */,
-				3AE7CC7F25C2F11D004ED855 /* MainMenuScene.cc in Sources */,
-				3AE7CC6125C2F11D004ED855 /* AssetManager.cc in Sources */,
-				3AE7CC4325C2F11D004ED855 /* b2DebugRenderer.cc in Sources */,
-				3AE7CC3525C2F11D004ED855 /* Logger.cc in Sources */,
-				3AE7CC3325C2F11C004ED855 /* BackDash.cc in Sources */,
-				3AE7CC0925C2F11C004ED855 /* OptionListView.cc in Sources */,
-				3AE7CC5D25C2F11D004ED855 /* GameMap.cc in Sources */,
-				3AE7CC7925C2F11D004ED855 /* GLESDebugDraw.cc in Sources */,
-				3AE7CC5325C2F11D004ED855 /* CallbackManager.cc in Sources */,
-				3AE7CC2125C2F11C004ED855 /* Notifications.cc in Sources */,
-				3AE7CBEB25C2F11C004ED855 /* Window.cc in Sources */,
-				3AE7CC1725C2F11C004ED855 /* HeaderPane.cc in Sources */,
-				3AE7CC7325C2F11D004ED855 /* ItemPriceTable.cc in Sources */,
-				3AE7CC6B25C2F11D004ED855 /* Quest.cc in Sources */,
-				3AE7CC3F25C2F11D004ED855 /* CameraUtil.cc in Sources */,
-				3AE7CBF325C2F11C004ED855 /* TradeListView.cc in Sources */,
-				3AE7CC1F25C2F11C004ED855 /* QuestHints.cc in Sources */,
-				3AE7CC1525C2F11C004ED855 /* ItemListView.cc in Sources */,
-				3AE7CC2D25C2F11C004ED855 /* ForwardSlash.cc in Sources */,
-				3AE7CC3125C2F11C004ED855 /* Skill.cc in Sources */,
-				3AE7CC3925C2F11D004ED855 /* RandUtil.cc in Sources */,
-				3AE7CC1D25C2F11C004ED855 /* WindowManager.cc in Sources */,
-				3AE7CC4525C2F11D004ED855 /* InputManager.cc in Sources */,
-				3AE7CC5B25C2F11D004ED855 /* Chest.cc in Sources */,
-				3AE7CBE725C2F11C004ED855 /* FloatingDamages.cc in Sources */,
-				3AE7CC5925C2F11D004ED855 /* FxManager.cc in Sources */,
-				3AE7CC3D25C2F11D004ED855 /* KeyCodeUtil.cc in Sources */,
-				3AE7CC2325C2F11C004ED855 /* CommandParser.cc in Sources */,
-				3AE7CBF525C2F11C004ED855 /* TradeWindow.cc in Sources */,
-				3AE7CBF725C2F11C004ED855 /* TimedLabelService.cc in Sources */,
-				3AE7CC5125C2F11D004ED855 /* Player.cc in Sources */,
-				3AE7CC2525C2F11C004ED855 /* Console.cc in Sources */,
-				3AE7CC5725C2F11D004ED855 /* GameMapManager.cc in Sources */,
-				3AE7CC7525C2F11D004ED855 /* DialogueTree.cc in Sources */,
-				3AE7CC0D25C2F11C004ED855 /* PauseMenu.cc in Sources */,
-				3AE7CC0B25C2F11C004ED855 /* OptionPane.cc in Sources */,
-				3AE7CC1325C2F11C004ED855 /* InventoryPane.cc in Sources */,
-				3AE7CBF125C2F11C004ED855 /* TextField.cc in Sources */,
-				3AE7CC4125C2F11D004ED855 /* b2BodyBuilder.cc in Sources */,
-				3AE7CC4D25C2F11D004ED855 /* Character.cc in Sources */,
-				3AE7CC6525C2F11D004ED855 /* Consumable.cc in Sources */,
-				3AE7CC2B25C2F11C004ED855 /* MagicalMissile.cc in Sources */,
-				3AE7CC6F25C2F11D004ED855 /* QuestBook.cc in Sources */,
-				3AE7CC2925C2F11C004ED855 /* Hud.cc in Sources */,
-				3AE7CC4B25C2F11D004ED855 /* Npc.cc in Sources */,
-				3AE7CBEF25C2F11C004ED855 /* TabView.cc in Sources */,
-				3AE7CC7125C2F11D004ED855 /* KillTargetObjective.cc in Sources */,
-				3AE7CC1B25C2F11C004ED855 /* EquipmentPane.cc in Sources */,
-				3AE7CC3B25C2F11D004ED855 /* StringUtil.cc in Sources */,
-				3AE7CC7B25C2F11D004ED855 /* AppDelegate.cc in Sources */,
-				3AE7CC4F25C2F11D004ED855 /* Party.cc in Sources */,
-				3AE7CC5F25C2F11D004ED855 /* WorldContactListener.cc in Sources */,
-				3AE7CBFD25C2F11C004ED855 /* DialogueListView.cc in Sources */,
-				3AE7CC0525C2F11C004ED855 /* SkillListView.cc in Sources */,
+				3A8BC13B25C90E12007CAF07 /* KillTargetObjective.cc in Sources */,
+				3A8BC0D925C90E12007CAF07 /* QuestListView.cc in Sources */,
+				3A8BC10525C90E12007CAF07 /* StringUtil.cc in Sources */,
+				3A8BC0C525C90E12007CAF07 /* Subtitles.cc in Sources */,
+				3A8BC14525C90E12007CAF07 /* AppDelegate.cc in Sources */,
+				3A8BC13525C90E12007CAF07 /* Quest.cc in Sources */,
+				3A8BC0B125C90E12007CAF07 /* Shade.cc in Sources */,
+				3A8BC0F325C90E12007CAF07 /* Hud.cc in Sources */,
+				3A8BC0BB25C90E12007CAF07 /* TextField.cc in Sources */,
+				3A8BC0E925C90E12007CAF07 /* QuestHints.cc in Sources */,
+				3A8BC0CD25C90E12007CAF07 /* SkillPane.cc in Sources */,
+				3A8BC0CF25C90E12007CAF07 /* SkillListView.cc in Sources */,
+				3A8BC13F25C90E12007CAF07 /* DialogueTree.cc in Sources */,
+				3A8BC0E525C90E12007CAF07 /* EquipmentPane.cc in Sources */,
+				3A8BC0ED25C90E12007CAF07 /* CommandParser.cc in Sources */,
+				3A8BC13125C90E12007CAF07 /* Equipment.cc in Sources */,
+				3A8BC14125C90E12007CAF07 /* ExpPointTable.cc in Sources */,
+				3A8BC0B525C90E12007CAF07 /* TableLayout.cc in Sources */,
+				3A8BC12D25C90E12007CAF07 /* Item.cc in Sources */,
+				3A8BC0D125C90E12007CAF07 /* AbstractPane.cc in Sources */,
+				3A8BC12F25C90E12007CAF07 /* Consumable.cc in Sources */,
+				3A8BC0B725C90E12007CAF07 /* AmountSelectionWindow.cc in Sources */,
+				3A8BC0D525C90E12007CAF07 /* OptionPane.cc in Sources */,
+				3A8BC0DD25C90E12007CAF07 /* InventoryPane.cc in Sources */,
+				3A8BC0C125C90E12007CAF07 /* TimedLabelService.cc in Sources */,
+				3A8BC0C725C90E12007CAF07 /* DialogueListView.cc in Sources */,
+				3A8BC0C925C90E12007CAF07 /* DialogueMenu.cc in Sources */,
+				3A8BC11125C90E12007CAF07 /* HotkeyManager.cc in Sources */,
+				3A8BC13D25C90E12007CAF07 /* ItemPriceTable.cc in Sources */,
+				3A8BC0E725C90E12007CAF07 /* WindowManager.cc in Sources */,
+				3A8BC0FB25C90E12007CAF07 /* Skill.cc in Sources */,
+				3A8BC10925C90E12007CAF07 /* CameraUtil.cc in Sources */,
+				3A8BC12925C90E12007CAF07 /* WorldContactListener.cc in Sources */,
+				3A8BC0FD25C90E12007CAF07 /* BackDash.cc in Sources */,
+				3A8BC0BF25C90E12007CAF07 /* TradeWindow.cc in Sources */,
+				3A8BC10325C90E12007CAF07 /* RandUtil.cc in Sources */,
+				3A8BC0F525C90E12007CAF07 /* MagicalMissile.cc in Sources */,
+				3A8BC10125C90E12007CAF07 /* JsonUtil.cc in Sources */,
+				3A8BC0DF25C90E12007CAF07 /* ItemListView.cc in Sources */,
+				3A8BC0CB25C90E12007CAF07 /* PauseMenuDialog.cc in Sources */,
+				3A8BC0D325C90E12007CAF07 /* OptionListView.cc in Sources */,
+				3A8BC11725C90E12007CAF07 /* Character.cc in Sources */,
+				3A8BC11925C90E12007CAF07 /* Party.cc in Sources */,
+				3A8BC0B925C90E12007CAF07 /* TabView.cc in Sources */,
+				3A8BC12725C90E12007CAF07 /* GameMap.cc in Sources */,
+				3A8BC14325C90E12007CAF07 /* GLESDebugDraw.cc in Sources */,
+				3A8BC0F125C90E12007CAF07 /* StatusBar.cc in Sources */,
+				3A8BC11D25C90E12007CAF07 /* CallbackManager.cc in Sources */,
+				3A8BC0C325C90E12007CAF07 /* DialogueManager.cc in Sources */,
+				3A8BC12525C90E12007CAF07 /* Chest.cc in Sources */,
+				3A8BC0FF25C90E12007CAF07 /* Logger.cc in Sources */,
+				3A8BC14925C90E12007CAF07 /* MainMenuScene.cc in Sources */,
+				3A8BC10F25C90E12007CAF07 /* InputManager.cc in Sources */,
+				3A8BC0E125C90E12007CAF07 /* HeaderPane.cc in Sources */,
+				3A8BC0B325C90E12007CAF07 /* Window.cc in Sources */,
+				3A8BC0AF25C90E12007CAF07 /* FloatingDamages.cc in Sources */,
+				3A8BC10D25C90E12007CAF07 /* b2DebugRenderer.cc in Sources */,
+				3A8BC11B25C90E12007CAF07 /* Player.cc in Sources */,
+				3A8BC0BD25C90E12007CAF07 /* TradeListView.cc in Sources */,
+				3A8BC13925C90E12007CAF07 /* QuestBook.cc in Sources */,
+				3A8BC12125C90E12007CAF07 /* GameMapManager.cc in Sources */,
+				3A8BC0F725C90E12007CAF07 /* ForwardSlash.cc in Sources */,
+				3A8BC11525C90E12007CAF07 /* Npc.cc in Sources */,
 				3A0E168524B69344003BCCA1 /* main.cc in Sources */,
-				3AE7CBFF25C2F11C004ED855 /* DialogueMenu.cc in Sources */,
-				3AE7CC5525C2F11D004ED855 /* DynamicActor.cc in Sources */,
-				3AE7CC6725C2F11D004ED855 /* Equipment.cc in Sources */,
-				3AE7CBFB25C2F11C004ED855 /* Subtitles.cc in Sources */,
-				3AE7CC7D25C2F11D004ED855 /* MainGameScene.cc in Sources */,
-				3AE7CC2F25C2F11C004ED855 /* BatForm.cc in Sources */,
-				3AE7CC3725C2F11D004ED855 /* JsonUtil.cc in Sources */,
-				3AE7CC0125C2F11C004ED855 /* PauseMenuDialog.cc in Sources */,
-				3AE7CC0725C2F11C004ED855 /* AbstractPane.cc in Sources */,
+				3A8BC12325C90E12007CAF07 /* FxManager.cc in Sources */,
+				3A8BC11325C90E12007CAF07 /* StaticActor.cc in Sources */,
+				3A8BC0DB25C90E12007CAF07 /* QuestPane.cc in Sources */,
+				3A8BC0D725C90E12007CAF07 /* PauseMenu.cc in Sources */,
+				3A8BC0EB25C90E12007CAF07 /* Notifications.cc in Sources */,
+				3A8BC13725C90E12007CAF07 /* CollectItemObjective.cc in Sources */,
+				3A8BC10725C90E12007CAF07 /* KeyCodeUtil.cc in Sources */,
+				3A8BC0F925C90E12007CAF07 /* BatForm.cc in Sources */,
+				3A8BC14725C90E12007CAF07 /* MainGameScene.cc in Sources */,
+				3A8BC10B25C90E12007CAF07 /* b2BodyBuilder.cc in Sources */,
+				3A8BC0E325C90E12007CAF07 /* StatsPane.cc in Sources */,
+				3A8BC0EF25C90E12007CAF07 /* Console.cc in Sources */,
+				3A8BC12B25C90E12007CAF07 /* AssetManager.cc in Sources */,
+				3A8BC13325C90E12007CAF07 /* MiscItem.cc in Sources */,
+				3A8BC11F25C90E12007CAF07 /* DynamicActor.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
 
 <div align="center">
 <h3>VIGILANTE</h3>
-<img src="/.meta/combat.gif">
+<img src="/.meta/demo.gif">
 </div>
 
 ## Overview
