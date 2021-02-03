@@ -21,7 +21,7 @@ using vigilante::asset_manager::kRegularFontSize;
 
 namespace vigilante {
 
-TextField::TextField()
+TextField::TextField(const string& defaultText)
     : _layout(Layout::create()),
       _label(Label::createWithTTF(CURSOR_CHAR, kRegularFont, kRegularFontSize)),
       _buffer(),
@@ -68,6 +68,10 @@ TextField::TextField()
       _label->setString(_buffer + CURSOR_CHAR);
     }
   };
+
+  if (!defaultText.empty()) {
+    setString(defaultText);
+  }
 }
 
 

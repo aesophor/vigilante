@@ -25,7 +25,7 @@ namespace vigilante {
 AmountSelectionWindow::AmountSelectionWindow()
     : Window(),
       _contentBackground(ImageView::create(kTextFieldBg)),
-      _textField() {
+      _textField("1") {
 
   setTitle("How many?");
   Size windowSize = _titleLabel->getContentSize();

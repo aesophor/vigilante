@@ -14,7 +14,7 @@ namespace vigilante {
 
 class TextField {
  public:
-  TextField();
+  TextField(const std::string& defaultText="");
   virtual ~TextField() = default;
 
   virtual void update(float delta);
