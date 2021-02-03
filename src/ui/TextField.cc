@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TextField.h"
 
 #include "AssetManager.h"
@@ -7,6 +7,8 @@
 
 #define CURSOR_CHAR "|"
 #define CURSOR_BLINK_INTERVAL 0.7f
+
+#define DEFAULT_DISMISS_KEY EventKeyboard::KeyCode::KEY_ENTER
 
 using std::string;
 using std::function;
@@ -24,17 +26,30 @@ TextField::TextField()
       _label(Label::createWithTTF(CURSOR_CHAR, kRegularFont, kRegularFontSize)),
       _buffer(),
       _onSubmit(),
+      _onDismiss(),
+      _onKeyPressed(),
+      _extraOnKeyPressed(),
+      _dismissKey(DEFAULT_DISMISS_KEY),
       _timer(),
       _isReceivingInput(),
       _isCursorVisible() {
+
   _label->setAnchorPoint({0, 0});
   _layout->addChild(_label);
 
-  _onKeyPressedEvLstnr = [this](EventKeyboard::KeyCode keyCode, Event*) {
+  _onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
+    if (_extraOnKeyPressed) {
+      _extraOnKeyPressed(keyCode, e);
+    }
+
     if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
       if (!_buffer.empty() && _onSubmit) {
         _onSubmit();
       }
+    }
+
+    if (keyCode == _dismissKey && _onDismiss) {
+      _onDismiss();
       return;
     }
 
@@ -65,10 +80,6 @@ void TextField::update(float delta) {
   }
 }
 
-void TextField::handleInput() {
-
-}
-
 
 const string& TextField::getString() const {
   return _buffer;
@@ -83,9 +94,6 @@ void TextField::clear() {
   setString("");
 }
 
-void TextField::setOnSubmit(const function<void ()>& onSubmit) {
-  _onSubmit = onSubmit;
-}
 
 void TextField::toggleCursor() {
   _label->setString((_isCursorVisible) ? _buffer : _buffer + CURSOR_CHAR);
@@ -93,18 +101,14 @@ void TextField::toggleCursor() {
 }
 
 
-Layout* TextField::getLayout() const {
-  return _layout;
-}
-
 bool TextField::isReceivingInput() const {
   return _isReceivingInput;
 }
 
 void TextField::setReceivingInput(bool receivingInput) {
-  // Avoid repeatedly pushing/popping the same _onKeyPressedEvLstnr
+  // Avoid repeatedly setting/clearing the same _onKeyPressed event listener
   if (receivingInput && !_isReceivingInput) {
-    InputManager::getInstance()->setSpecialOnKeyPressed(_onKeyPressedEvLstnr);
+    InputManager::getInstance()->setSpecialOnKeyPressed(_onKeyPressed);
   } else if (!receivingInput && _isReceivingInput) {
     InputManager::getInstance()->clearSpecialOnKeyPressed();
   }
@@ -112,4 +116,26 @@ void TextField::setReceivingInput(bool receivingInput) {
   _isReceivingInput = receivingInput;
 }
 
-} // namespace vigilante
+void TextField::setOnSubmit(const function<void ()>& onSubmit) {
+  _onSubmit = onSubmit;
+}
+
+void TextField::setOnDismiss(const function<void ()>& onDismiss) {
+  _onDismiss = onDismiss;
+}
+
+void TextField::setExtraOnKeyPressed(const InputManager::OnKeyPressedEvLstnr& extraOnKeyPressed) {
+  _extraOnKeyPressed = extraOnKeyPressed;
+}
+
+
+void TextField::setDismissKey(EventKeyboard::KeyCode dismissKey) {
+  _dismissKey = dismissKey;
+}
+
+
+Layout* TextField::getLayout() const {
+  return _layout;
+}
+
+}  // namespace vigilante

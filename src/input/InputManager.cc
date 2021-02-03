@@ -31,16 +31,21 @@ void InputManager::activate(Scene* scene) {
 
   // Capture "this" by value.
   _keyboardEvLstnr->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
-    _pressedKeys.insert(keyCode);
+
+    if (!_specialOnKeyPressed) {
+      // We keep track of which keys have been pressed
+      // only when there is no active _specialOnKeyPressed event listener,
+      // because _specialOnKeyPressed will do whatever it needs to do
+      // with these keys.
+      _pressedKeys.insert(keyCode);
+    } else {
+      // Execute the additional onKeyPressed handler for special events.
+      // (e.g., prompting for a hotkey, receiving TextField input, etc)
+      _specialOnKeyPressed(keyCode, e);
+    }
 
     if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
       _isCapsLocked = !_isCapsLocked;
-    }
-
-    // Execute the additional onKeyPressed handler for special events.
-    // (e.g., prompting for a hotkey, receiving TextField input, etc)
-    if (_specialOnKeyPressed) {
-      _specialOnKeyPressed(keyCode, e);
     }
   };
 
@@ -76,6 +81,10 @@ bool InputManager::isShiftPressed() const {
   return isKeyPressed(EventKeyboard::KeyCode::KEY_SHIFT);
 }
 
+
+bool InputManager::hasSpecialOnKeyPressed() const {
+  return static_cast<bool>(_specialOnKeyPressed);
+}
 
 void InputManager::setSpecialOnKeyPressed(const OnKeyPressedEvLstnr& onKeyPressed) {
   _specialOnKeyPressed = onKeyPressed;

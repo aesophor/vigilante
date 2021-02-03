@@ -82,25 +82,27 @@ void TradeListView::confirm() {
     AmountSelectionWindow* wRaw = w.get();
 
     auto onSubmit = [wRaw, item, seller, buyer]() {
-        int amount = std::stoi(wRaw->getTextField()->getString());
-        int price = item_price_table::getPrice(item);
+      int amount = std::stoi(wRaw->getTextField()->getString());
+      int price = item_price_table::getPrice(item);
 
-        // Transfer funds
-        if (!item->isGold()) {
-          buyer->removeGold(price * amount);
-          seller->addGold(price * amount);
-        }
+      // Transfer funds
+      if (!item->isGold()) {
+        buyer->removeGold(price * amount);
+        seller->addGold(price * amount);
+      }
 
-        // Transfer items
-        buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
-        seller->removeItem(item, amount);
+      // Transfer items
+      buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
+      seller->removeItem(item, amount);
+    };
 
-        // Close AmountSelectionWindow
-        WindowManager::getInstance()->pop();
-        IS_KEY_JUST_PRESSED(cocos2d::EventKeyboard::KeyCode::KEY_ENTER);
+    auto onDismiss = []() {
+      // Close AmountSelectionWindow
+      WindowManager::getInstance()->pop();
     };
 
     w->getTextField()->setOnSubmit(onSubmit);
+    w->getTextField()->setOnDismiss(onDismiss);
     w->getTextField()->setReceivingInput(true);
     WindowManager::getInstance()->push(std::move(w));
     return;

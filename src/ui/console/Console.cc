@@ -8,6 +8,7 @@
 
 using std::string;
 using cocos2d::Layer;
+using cocos2d::Event;
 using cocos2d::EventKeyboard;
 
 namespace vigilante {
@@ -22,10 +23,30 @@ Console::Console()
       _textField(),
       _cmdParser(),
       _cmdHistory() {
-  _textField.setOnSubmit([this]() {
+
+  auto onSubmit = [this]() {
     executeCmd(_textField.getString(), /*showNotification=*/true);
     _textField.clear();
-  });
+  };
+
+  auto onDismiss = [this]() {
+    setVisible(false);
+  };
+
+  auto extraOnKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event*) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW && _cmdHistory.canGoBack()) {
+      _cmdHistory.goBack();
+      _textField.setString(_cmdHistory.getCurrentLine());
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW && _cmdHistory.canGoForward()) {
+      _cmdHistory.goForward();
+      _textField.setString(_cmdHistory.getCurrentLine());
+    }
+  };
+
+  _textField.setOnSubmit(onSubmit);
+  _textField.setOnDismiss(onDismiss);
+  _textField.setExtraOnKeyPressed(extraOnKeyPressed);
+  _textField.setDismissKey(EventKeyboard::KeyCode::KEY_GRAVE);
 
   _layer->setVisible(false);
   _layer->addChild(_textField.getLayout());
@@ -39,28 +60,6 @@ void Console::update(float delta) {
   _textField.update(delta);
 }
 
-void Console::handleInput() {
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
-    _layer->setVisible(!_layer->isVisible());
-    _textField.setReceivingInput(false);
-    InputManager::getInstance()->clearSpecialOnKeyPressed();
-    return;
-  }
-
-  if (!_layer->isVisible()) {
-    return;
-  }
-
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW) && _cmdHistory.canGoBack()) {
-    _cmdHistory.goBack();
-    _textField.setString(_cmdHistory.getCurrentLine());
-  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW) && _cmdHistory.canGoForward()) {
-    _cmdHistory.goForward();
-    _textField.setString(_cmdHistory.getCurrentLine());
-  } else {
-    _textField.handleInput();
-  }
-}
 
 void Console::executeCmd(const string& cmd, bool showNotification) {
   VGLOG(LOG_INFO, "Executing: %s", cmd.c_str());

@@ -6,20 +6,18 @@
 #include <string>
 
 #include <cocos2d.h>
-#include "Controllable.h"
 #include "ui/TextField.h"
 #include "ui/console/CommandParser.h"
 #include "util/ds/CircularBuffer.h"
 
 namespace vigilante {
 
-class Console : public Controllable {
+class Console {
  public:
   static Console* getInstance();
   virtual ~Console() = default;
 
   virtual void update(float delta);
-  virtual void handleInput() override;
   virtual void executeCmd(const std::string& cmd, bool showNotification=false);
 
   bool isVisible() const;

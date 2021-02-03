@@ -63,11 +63,7 @@ void AmountSelectionWindow::update(float delta) {
 }
 
 void AmountSelectionWindow::handleInput() {
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
 
-  } else {
-    _textField.handleInput();
-  }
 }
 
 

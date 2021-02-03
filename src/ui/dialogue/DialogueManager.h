@@ -40,6 +40,6 @@ class DialogueManager : public Controllable {
   std::unique_ptr<DialogueMenu> _dialogueMenu;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_DIALOGUE_MANAGER_H_
+#endif  // VIGILANTE_DIALOGUE_MANAGER_H_

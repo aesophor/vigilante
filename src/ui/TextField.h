@@ -8,26 +8,31 @@
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
-#include "Controllable.h"
+#include "input/InputManager.h"
 
 namespace vigilante {
 
-class TextField : public Controllable {
+class TextField {
  public:
   TextField();
   virtual ~TextField() = default;
 
   virtual void update(float delta);
-  virtual void handleInput() override;
 
   virtual const std::string& getString() const;
   virtual void setString(const std::string& s);
   virtual void clear();
-  virtual void setOnSubmit(const std::function<void ()>& onSubmit);
 
-  cocos2d::ui::Layout* getLayout() const;
   bool isReceivingInput() const;
   void setReceivingInput(bool receivingInput);
+
+  void setOnSubmit(const std::function<void ()>& onSubmit);
+  void setOnDismiss(const std::function<void ()>& onDismiss);
+  void setExtraOnKeyPressed(const InputManager::OnKeyPressedEvLstnr& extraOnKeyPressed);
+
+  void setDismissKey(cocos2d::EventKeyboard::KeyCode dismissKey);
+
+  cocos2d::ui::Layout* getLayout() const;
 
  private:
   virtual void toggleCursor();
@@ -36,13 +41,18 @@ class TextField : public Controllable {
   cocos2d::Label* _label;
   std::string _buffer;
   std::function<void ()> _onSubmit;
-  std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)> _onKeyPressedEvLstnr;
+  std::function<void ()> _onDismiss;
+  InputManager::OnKeyPressedEvLstnr _onKeyPressed;
+  InputManager::OnKeyPressedEvLstnr _extraOnKeyPressed;
+
+  // The keyCode of the key which will dismiss this TextField
+  cocos2d::EventKeyboard::KeyCode _dismissKey;
 
   float _timer;
   bool _isReceivingInput;
   bool _isCursorVisible;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TEXT_FIELD_H_
+#endif  // VIGILANTE_TEXT_FIELD_H_

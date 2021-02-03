@@ -168,6 +168,14 @@ void MainGameScene::update(float delta) {
 }
 
 void MainGameScene::handleInput() {
+  // First thing first:
+  // If there is a specialOnKeyPressed Event Listener,
+  // then we should simply let it do its job,
+  // and return immediately so that we won't interfere with it.
+  if (InputManager::getInstance()->hasSpecialOnKeyPressed()) {
+    return;
+  }
+
   // Toggle b2dr (b2DebugRenderer)
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_0)) {
     bool isVisible = !_b2dr->isVisible();
@@ -191,30 +199,27 @@ void MainGameScene::handleInput() {
 
   // Toggle Console
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
-    _console->getLayer()->setVisible(!_console->getLayer()->isVisible());
-
-    /*
-    if (!_console->getLayer()->isVisible()) {
-      _isRecevingInput = false;
-      InputManager::getInstance()->popEvLstnr();
-      return;
-    }
-    */
+    _console->setVisible(true);
     return;
   }
 
   if (!_windowManager->isEmpty()) {
     _windowManager->top()->handleInput();
-  } else if (_pauseMenu->getLayer()->isVisible()) {
-    _pauseMenu->handleInput();
-  } else if (_console->getLayer()->isVisible()) {
-    _console->handleInput();
-  } else if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible() ||
-             _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
-    _dialogueManager->handleInput();
-  } else {
-    _gameMapManager->getPlayer()->handleInput();
+    return;
   }
+
+  if (_pauseMenu->getLayer()->isVisible()) {
+    _pauseMenu->handleInput();
+    return;
+  }
+
+  if (_dialogueManager->getDialogueMenu()->getLayer()->isVisible() ||
+      _dialogueManager->getSubtitles()->getLayer()->isVisible()) {
+    _dialogueManager->handleInput();
+    return;
+  }
+
+  _gameMapManager->getPlayer()->handleInput();
 }
 
 

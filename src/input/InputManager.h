@@ -36,6 +36,7 @@ class InputManager {
   using OnKeyPressedEvLstnr =
     std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
 
+  bool hasSpecialOnKeyPressed() const;
   void setSpecialOnKeyPressed(const OnKeyPressedEvLstnr& onKeyPressed);
   void clearSpecialOnKeyPressed();
 
