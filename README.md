@@ -5,7 +5,7 @@
 </div>
 
 ## Overview
-Vigilante is a metroidvania game which I've been working on for several months.
+Vigilante is a 2D side-scrolling single-player RPG which offers gaming experience similar to Maplestory and The Elder Scrolls Series. The game features an intriguing vampire storyline, allowing the player to grow from a nobody eventually to a vampiric lord. It also provides plenty of maps, enemies, magics, and equipments to discover.
 
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
 * [box2d](https://box2d.org/) - 2D Physics Engine
