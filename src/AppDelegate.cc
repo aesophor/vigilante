@@ -79,8 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetsList);
 
   // Create a scene (auto-release object).
-  Scene* scene = vigilante::MainMenuScene::create();
-  director->runWithScene(scene);
+  director->runWithScene(vigilante::MainMenuScene::create());
 
   return true;
 }
