@@ -41,10 +41,8 @@ class MainMenuScene : public cocos2d::Scene, public Controllable {
   cocos2d::ui::ImageView* _background;
   std::vector<cocos2d::Label*> _labels;
   int _current;
-
-  InputManager* _inputMgr;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MAIN_MENU_SCENE_H_
+#endif  // VIGILANTE_MAIN_MENU_SCENE_H_

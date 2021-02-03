@@ -68,8 +68,7 @@ bool MainMenuScene::init() {
   addChild(versionLabel);
 
   // Initialize InputManager.
-  _inputMgr = InputManager::getInstance();
-  _inputMgr->activate(this);
+  InputManager::getInstance()->activate(this);
 
   // Play main theme Bgm.
   SimpleAudioEngine::getInstance()->playBackgroundMusic(asset_manager::kMainThemeBgm.c_str(), true);
@@ -83,25 +82,26 @@ void MainMenuScene::update(float) {
 }
 
 void MainMenuScene::handleInput() {
-  if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (_current == 0) {
       return;
     }
     _labels[_current--]->setTextColor(vigilante::colorscheme::kWhite);
     _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
-  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     if (_current == static_cast<int>(Option::SIZE) - 1) {
       return;
     }
     _labels[_current++]->setTextColor(vigilante::colorscheme::kWhite);
     _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
-  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
-        _inputMgr->deactivate();
+        InputManager::getInstance()->deactivate();
         SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-        Scene* scene = MainGameScene::create();
-        Director::getInstance()->pushScene(scene);
+        Director::getInstance()->pushScene(MainGameScene::create());
         break;
       }
       case Option::LOAD_GAME:
