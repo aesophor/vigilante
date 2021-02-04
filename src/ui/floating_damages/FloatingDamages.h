@@ -24,7 +24,7 @@ class FloatingDamages {
  private:
   struct DamageLabel {
     DamageLabel(const std::string& text, float lifetime);
-    bool operator== (const DamageLabel& other);
+    bool operator==(const DamageLabel& other);
     cocos2d::Label* label;
     float lifetime;
     float timer;

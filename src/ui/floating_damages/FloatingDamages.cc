@@ -4,6 +4,9 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "character/Character.h"
+#include "character/Player.h"
+#include "character/Npc.h"
+#include "ui/Colorscheme.h"
 
 using std::map;
 using std::deque;
@@ -82,6 +85,9 @@ void FloatingDamages::show(Character* character, int damage) {
 
   // Display the new floating damage label.
   DamageLabel dmg(std::to_string(damage), 1.5f);
+  if (dynamic_cast<Player*>(character) || dynamic_cast<Npc*>(character)->isInPlayerParty()) {
+    dmg.label->setTextColor(colorscheme::kRed);
+  }
   const auto& characterPos = character->getBody()->GetPosition();
   float x = characterPos.x * kPpm;
   float y = characterPos.y * kPpm + 15;
@@ -104,8 +110,8 @@ FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
   label->getFontAtlas()->setAliasTexParameters();
 }
 
-bool FloatingDamages::DamageLabel::operator== (const DamageLabel& other) {
+bool FloatingDamages::DamageLabel::operator==(const DamageLabel& other) {
   return this->label == other.label;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
