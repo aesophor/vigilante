@@ -252,6 +252,7 @@ class Character : public DynamicActor, public Importable {
   bool _isUsingSkill;
   bool _isCrouching;
   bool _isInvincible;
+  bool _isTakingDamage;
   bool _isKilled;
   bool _isSetToKill;
 

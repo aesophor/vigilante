@@ -237,7 +237,6 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setJumping(true);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);
       }
@@ -248,7 +247,6 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        c->setJumping(true);
         c->setOnPlatform(false);
         // Create dust effect.
         GameMapManager::getInstance()->createDustFx(c);

@@ -24,13 +24,18 @@ class GameMap {
   class Portal : public Interactable {
    public:
     Portal(const std::string& targetTmxMapFileName, int targetPortalId,
-           bool willInteractOnContact, b2Body* body);
+           bool willInteractOnContact, bool isLocked, b2Body* body);
     virtual ~Portal();
 
     virtual void onInteract(Character* user) override;  // Interactable
     virtual bool willInteractOnContact() const override;  // Interactable
     virtual void createHintBubbleFx() override;  // Interactable
     virtual void removeHintBubbleFx() override;  // Interactable
+
+    bool canBeUnlockedBy(Character* user) const;
+    bool isLocked() const;
+    void lock();
+    void unlock();
 
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
@@ -39,6 +44,7 @@ class GameMap {
     std::string _targetTmxMapFileName;  // new (target) .tmx filename
     int _targetPortalId;  // the portal id in the new (target) map
     bool _willInteractOnContact;  // interact with the portal on contact?
+    bool _isLocked;
     b2Body* _body;
     cocos2d::Sprite* _hintBubbleFxSprite;
   };

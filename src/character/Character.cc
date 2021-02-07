@@ -76,6 +76,7 @@ Character::Character(const string& jsonFileName)
       _isUsingSkill(),
       _isCrouching(),
       _isInvincible(),
+      _isTakingDamage(),
       _isKilled(),
       _isSetToKill(),
       _inRangeTargets(),
@@ -534,11 +535,11 @@ Character::State Character::getState() const {
     return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
     return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
-  } else if (_body->GetLinearVelocity().y < -1.0f) {
+  } else if (_body->GetLinearVelocity().y < -1.0f && !_isTakingDamage) {
     return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
     return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
-  } else if (std::abs(_body->GetLinearVelocity().x) > .01f) {
+  } else if (std::abs(_body->GetLinearVelocity().x) > .01f && !_isTakingDamage) {
     return (_isWeaponSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
     return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
@@ -714,6 +715,11 @@ void Character::receiveDamage(Character* source, int damage) {
   }
 
   _characterProfile.health -= damage;
+
+  _isTakingDamage = true;
+  CallbackManager::getInstance()->runAfter([this]() {
+    _isTakingDamage = false;
+  }, .25f);
   
   if (_characterProfile.health <= 0) {
     _characterProfile.health = 0;

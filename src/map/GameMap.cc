@@ -16,6 +16,7 @@
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
+#include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/RandUtil.h"
@@ -193,7 +194,7 @@ void GameMap::spawnPortals() {
       .buildBody();
 
     _portals.push_back(std::make_unique<Portal>(targetTmxMapFilePath, targetPortalId,
-                                                willInteractOnContact, body));
+                                                willInteractOnContact, true, body));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
@@ -251,10 +252,11 @@ void GameMap::spawnChests() {
 
 
 GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
-                        bool willInteractOnContact, b2Body* body)
+                        bool willInteractOnContact, bool isLocked, b2Body* body)
     : _targetTmxMapFileName(targetTmxMapFileName),
       _targetPortalId(targetPortalId),
       _willInteractOnContact(willInteractOnContact),
+      _isLocked(isLocked),
       _body(body),
       _hintBubbleFxSprite() {}
 
@@ -263,6 +265,16 @@ GameMap::Portal::~Portal() {
 }
 
 void GameMap::Portal::onInteract(Character* user) {
+  if (isLocked()) {
+    if (!canBeUnlockedBy(user)) {
+      Notifications::getInstance()->show("This door is locked.");
+      return;
+    } else {
+      Notifications::getInstance()->show("Door unlocked.");
+      unlock();
+    }
+  }
+
   // [IMPORTANT]
   // Before loading the new GameMap, we need to make sure that
   // all pending callbacks have finished executing.
@@ -348,6 +360,23 @@ void GameMap::Portal::removeHintBubbleFx() {
   _hintBubbleFxSprite->stopAllActions();
   _hintBubbleFxSprite->removeFromParent();
   _hintBubbleFxSprite = nullptr;
+}
+
+
+bool GameMap::Portal::canBeUnlockedBy(Character* user) const {
+  return true;
+}
+
+bool GameMap::Portal::isLocked() const {
+  return _isLocked;
+}
+
+void GameMap::Portal::lock() {
+  _isLocked = true;
+}
+
+void GameMap::Portal::unlock() {
+  _isLocked = false;
 }
 
 
