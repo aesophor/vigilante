@@ -8,6 +8,7 @@
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"
+#include "Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "map/GameMapManager.h"
 #include "ui/hud/Hud.h"
@@ -652,10 +653,16 @@ void Character::attack() {
     _lockedOnTarget = *_inRangeTargets.begin();
 
     if (!_lockedOnTarget->isInvincible()) {
-      inflictDamage(_lockedOnTarget, getDamageOutput());
-      float knockBackForceX = (_isFacingRight) ? .5f : -.5f; // temporary
-      float knockBackForceY = 1.0f; // temporary
-      knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
+      // If this character is not the Player,
+      // then add a little delay before inflicting damage / knockback.
+      float damageDelay = (dynamic_cast<Player*>(this)) ? 0 : .25f;
+
+      CallbackManager::getInstance()->runAfter([this]() {
+          inflictDamage(_lockedOnTarget, getDamageOutput());
+          float knockBackForceX = (_isFacingRight) ? .5f : -.5f; // temporary
+          float knockBackForceY = 1.0f; // temporary
+          knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
+      }, damageDelay);
     }
   }
 }
