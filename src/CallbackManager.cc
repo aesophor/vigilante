@@ -23,6 +23,13 @@ CallbackManager::CallbackManager()
 
 
 void CallbackManager::runAfter(const function<void ()>& userCallback, float delay) {
+  // If the specified delay is 0 second, then we can
+  // simply invoke `userCallback` and return early.
+  if (delay == 0) {
+    userCallback();
+    return;
+  }
+
   _scene->runAction(Sequence::create(
       CallFunc::create([=]() { ++(this->_pendingCount); }),
       DelayTime::create(delay),
