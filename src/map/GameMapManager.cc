@@ -58,22 +58,22 @@ GameMap* GameMapManager::getGameMap() const {
 }
 
 GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
-  // Clean up previous GameMap.
-  if (_gameMap) {
-    _layer->removeChild(_gameMap->getTmxTiledMap());
-    _gameMap->deleteObjects();
-    _gameMap.reset(); // deletes the underlying GameMap object and _gameMap = nullptr.
-  }
-
   // Remove deceased party member from player's party, remove their
   // b2body and texture, and add them to the party's deceasedMember unordered_set.
   if (_player) {
     for (auto ally : _player->getAllies()) {
       if (ally->isKilled()) {
-        _player->getParty()->dismiss(ally, /*addToMap=*/false);
         _player->getParty()->addDeceasedMember(ally->getCharacterProfile().jsonFileName);
+        _player->getParty()->dismiss(ally, /*addToMap=*/false);
       }
     }
+  }
+
+  // Clean up previous GameMap.
+  if (_gameMap) {
+    _layer->removeChild(_gameMap->getTmxTiledMap());
+    _gameMap->deleteObjects();
+    _gameMap.reset();  // deletes the underlying GameMap object and _gameMap = nullptr.
   }
 
   // Load the new GameMap.
