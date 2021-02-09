@@ -49,6 +49,7 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
     {"playerPartyMemberWait",   &CommandParser::playerPartyMemberWait  },
     {"playerPartyMemberFollow", &CommandParser::playerPartyMemberFollow},
     {"tradeWithPlayer",         &CommandParser::tradeWithPlayer        },
+    {"killCurrentTarget",       &CommandParser::killCurrentTarget      },
   };
  
   // Execute the corresponding command handler from _cmdTable.
@@ -249,6 +250,16 @@ void CommandParser::tradeWithPlayer(const vector<string>&) {
   }
 
   targetNpc->beginTrade();
+  setSuccess();
+}
+
+
+void CommandParser::killCurrentTarget(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  assert(player != nullptr && targetNpc != nullptr);
+
+  targetNpc->receiveDamage(player, 999);
   setSuccess();
 }
 
