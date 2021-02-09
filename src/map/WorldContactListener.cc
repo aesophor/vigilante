@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "Projectile.h"
 #include "character/Character.h"
+#include "character/Player.h"
 #include "character/Npc.h"
 #include "item/Item.h"
 #include "map/GameMap.h"
@@ -174,15 +175,13 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
-
-        if (!p->willInteractOnContact()) {
-          p->createHintBubbleFx();
-        }
         
         if (p->willInteractOnContact()) {
           CallbackManager::getInstance()->runAfter([=]() {
             c->interact(p);
           }, .1f);
+        } else if (!p->willInteractOnContact() && dynamic_cast<Player*>(c)) {
+          p->createHintBubbleFx();
         }
       }
       break;
@@ -197,7 +196,10 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
 
         c->setInteractableObject(i);
-        i->createHintBubbleFx();
+
+        if (dynamic_cast<Player*>(c)) {
+          i->createHintBubbleFx();
+        }
 
         if (i->willInteractOnContact()) {
           CallbackManager::getInstance()->runAfter([=]() {
