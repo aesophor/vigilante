@@ -128,30 +128,6 @@ Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) co
 }
 
 
-/*
-bool Party::hasDeceasedMember(const string& characterJsonFileName) const {
-  auto it = _deceasedMembers.find(characterJsonFileName);
-  return it != _deceasedMembers.end();
-}
-
-void Party::addDeceasedMember(const string& characterJsonFileName) {
-  if (hasDeceasedMember(characterJsonFileName)) {
-    VGLOG(LOG_ERR, "This member is already a deceased member of the party.");
-    return;
-  }
-  _deceasedMembers.insert(characterJsonFileName);
-}
-
-void Party::removeDeceasedMember(const string& characterJsonFileName) {
-  if (!hasDeceasedMember(characterJsonFileName)) {
-    VGLOG(LOG_ERR, "This member is not a deceased member of the party.");
-    return;
-  }
-  _deceasedMembers.erase(characterJsonFileName);
-}
-*/
-
-
 Character* Party::getLeader() const {
   return _leader;
 }
@@ -174,12 +150,6 @@ const unordered_map<string, Party::WaitingLocationInfo>&
 Party::getWaitingMembersLocationInfo() const {
   return _waitingMembersLocationInfo;
 }
-
-/*
-const unordered_set<string>& Party::getDeceasedMembers() const {
-  return _deceasedMembers;
-}
-*/
 
 
 void Party::addMember(shared_ptr<Character> character) {

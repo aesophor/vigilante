@@ -483,10 +483,8 @@ bool Npc::isNpcAllowedToSpawn(const string& jsonFileName) {
 
 void Npc::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
   if (!canSpawn && Npc::isNpcAllowedToSpawn(jsonFileName)) {
-    VGLOG(LOG_INFO, "Inserting %s into spawning blacklist", jsonFileName.c_str());
     Npc::_npcSpawningBlacklist.insert(jsonFileName);
   } else if (canSpawn && !Npc::isNpcAllowedToSpawn(jsonFileName)) {
-    VGLOG(LOG_INFO, "Removing %s from spawning blacklist", jsonFileName.c_str());
     Npc::_npcSpawningBlacklist.erase(jsonFileName);
   }
 }
