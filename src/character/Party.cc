@@ -23,9 +23,12 @@ Party::Party(Character* leader)
 
 
 Character* Party::getMember(const string& characterJsonFileName) const {
-  auto it = std::find_if(_members.begin(), _members.end(), [&](const shared_ptr<Character>& c) {
-      return c->getCharacterProfile().jsonFileName == characterJsonFileName;
-  });
+  auto it = std::find_if(_members.begin(),
+                         _members.end(),
+                         [&characterJsonFileName](const shared_ptr<Character>& c) {
+                             return c->getCharacterProfile().jsonFileName
+                                 == characterJsonFileName;
+                         });
   return (it != _members.end()) ? it->get() : nullptr;
 }
 
