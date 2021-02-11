@@ -12,9 +12,9 @@ namespace vigilante {
 
 class Consumable : public Item, public Keybindable {
  public:
-  struct Profile {
+  struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    virtual ~Profile() = default;
+    ~Profile() = default;
 
     float duration; // sec
 
@@ -38,10 +38,10 @@ class Consumable : public Item, public Keybindable {
 
   explicit Consumable(const std::string& jsonFileName);
   virtual ~Consumable() = default;
-  virtual void import (const std::string& jsonFileName) override; // Importable
+  virtual void import (const std::string& jsonFileName) override;  // Importable
 
-  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override; // Keybindable
-  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override; // Keybindable
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override;  // Keybindable
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override;  // Keybindable
 
   Consumable::Profile& getConsumableProfile();
 
@@ -49,6 +49,6 @@ class Consumable : public Item, public Keybindable {
   Consumable::Profile _consumableProfile;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_CONSUMABLE_H_
+#endif  // VIGILANTE_CONSUMABLE_H_

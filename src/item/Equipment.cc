@@ -50,4 +50,4 @@ Equipment::Profile::Profile(const string& jsonFileName) {
   bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

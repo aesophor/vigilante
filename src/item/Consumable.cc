@@ -32,7 +32,7 @@ Consumable::Profile& Consumable::getConsumableProfile() {
 }
 
 
-Consumable::Profile::Profile(const string& jsonFileName) : hotkey(){
+Consumable::Profile::Profile(const string& jsonFileName) : hotkey() {
   Document json = json_util::parseJson(jsonFileName);
 
   duration = json["duration"].GetFloat();
@@ -53,4 +53,4 @@ Consumable::Profile::Profile(const string& jsonFileName) : hotkey(){
   bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

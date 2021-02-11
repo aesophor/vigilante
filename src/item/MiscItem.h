@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_MISC_ITEM_H_
 #define VIGILANTE_MISC_ITEM_H_
 
@@ -14,6 +14,6 @@ class MiscItem : public Item {
   virtual ~MiscItem() = default;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MISC_ITEM_H_
+#endif  // VIGILANTE_MISC_ITEM_H_

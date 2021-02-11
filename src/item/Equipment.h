@@ -22,9 +22,9 @@ class Equipment : public Item {
     SIZE
   };
 
-  struct Profile {
+  struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    virtual ~Profile() = default;
+    ~Profile() = default;
 
     Equipment::Type equipmentType;
     int bonusPhysicalDamage;
@@ -43,7 +43,7 @@ class Equipment : public Item {
 
   explicit Equipment(const std::string& jsonFileName);
   virtual ~Equipment() = default;
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void import(const std::string& jsonFileName) override;  // Importable
 
   Equipment::Profile& getEquipmentProfile();
 
@@ -51,6 +51,6 @@ class Equipment : public Item {
   Equipment::Profile _equipmentProfile;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_EQUIPMENT_H_
+#endif  // VIGILANTE_EQUIPMENT_H_

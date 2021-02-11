@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Item.h"
 
 #include <json/document.h>
@@ -8,6 +8,7 @@
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "item/MiscItem.h"
+#include "item/Key.h"
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
@@ -33,6 +34,8 @@ unique_ptr<Item> Item::create(const string& jsonFileName) {
     return std::make_unique<Equipment>(jsonFileName);
   } else if (jsonFileName.find("consumable") != jsonFileName.npos) {
     return std::make_unique<Consumable>(jsonFileName);
+  } else if (jsonFileName.find("key") != jsonFileName.npos) {
+    return std::make_unique<Key>(jsonFileName);
   } else if (jsonFileName.find("misc") != jsonFileName.npos) {
     return std::make_unique<MiscItem>(jsonFileName);
   }
@@ -79,7 +82,7 @@ void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, f
 
   bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
     .categoryBits(categoryBits)
-    .maskBits(maskBits | kFeet) // Enable collision detection with feet fixtures
+    .maskBits(maskBits | kFeet)  // Enable collision detection with feet fixtures
     .setSensor(true)
     .setUserData(this)
     .buildFixture();
@@ -131,4 +134,4 @@ Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) 
   desc = json["desc"].GetString();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

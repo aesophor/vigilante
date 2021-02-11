@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ITEM_H_
 #define VIGILANTE_ITEM_H_
 
@@ -37,8 +37,8 @@ class Item : public DynamicActor, public Importable {
   static std::unique_ptr<Item> create(const std::string& jsonFileName);
 
   virtual ~Item() = default;
-  virtual void showOnMap(float x, float y) override; // DynamicActor
-  virtual void import(const std::string& jsonFileName) override; // Importable
+  virtual void showOnMap(float x, float y) override;  // DynamicActor
+  virtual void import(const std::string& jsonFileName) override;  // Importable
 
   Item::Profile& getItemProfile();
   const std::string& getName() const;
