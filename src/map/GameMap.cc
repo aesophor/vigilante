@@ -14,6 +14,7 @@
 #include "character/Party.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
+#include "item/Key.h"
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
@@ -278,10 +279,10 @@ void GameMap::Portal::onInteract(Character* user) {
     if (!canBeUnlockedBy(user)) {
       Notifications::getInstance()->show("This door is locked.");
       return;
-    } else {
-      Notifications::getInstance()->show("Door unlocked.");
-      unlock();
     }
+
+    Notifications::getInstance()->show("Door unlocked.");
+    unlock();
   }
 
   // [IMPORTANT]
@@ -378,7 +379,17 @@ void GameMap::Portal::removeHintBubbleFx() {
 
 
 bool GameMap::Portal::canBeUnlockedBy(Character* user) const {
-  return true;
+  const auto& miscItems = user->getInventory()[Item::Type::MISC];
+  const auto gameMap = GameMapManager::getInstance()->getGameMap();
+
+  return std::find_if(miscItems.begin(),
+                      miscItems.end(),
+                      [gameMap, this](const Item* item) {
+                          const Key* key = dynamic_cast<const Key*>(item);
+                          return key &&
+                            key->getKeyProfile().targetTmxFileName == gameMap->_tmxTiledMapFileName &&
+                            key->getKeyProfile().targetPortalId == getPortalId();
+                      }) != miscItems.end();
 }
 
 bool GameMap::Portal::isLocked() const {
@@ -477,6 +488,20 @@ void GameMap::Portal::setLocked(const string& tmxMapFileName,
 
 void GameMap::Portal::saveLockUnlockState() const {
   GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
+}
+
+
+int GameMap::Portal::getPortalId() const {
+  const auto& portals = GameMapManager::getInstance()->getGameMap()->_portals;
+
+  for (size_t i = 0; i < portals.size(); i++) {
+    if (portals.at(i).get() == this) {
+      return i;
+    }
+  }
+
+  VGLOG(LOG_ERR, "Unable to find the portal ID of: %p", this);
+  return -1;
 }
 
 }  // namespace vigilante

@@ -62,7 +62,8 @@ class GameMap {
 
     // Save the current portal's lock/unlock state in `_allPortalStates`.
     void saveLockUnlockState() const;
-
+    
+    int getPortalId() const;
 
     std::string _targetTmxMapFileName;  // new (target) .tmx filename
     int _targetPortalId;  // the portal id in the new (target) map
