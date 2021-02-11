@@ -32,7 +32,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
     {"Save Game", []() {}},
     {"Load Game", []() {}},
     {"Options",   []() {}},
-    {"Quit",      []() {}}
+    {"Quit",      []() { std::exit(0); }}
   }};
  
   vector<Option*> options;
@@ -48,13 +48,11 @@ void OptionPane::update() {
 }
 
 void OptionPane::handleInput() {
-  auto inputMgr = InputManager::getInstance();
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     _optionListView->selectUp();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     _optionListView->selectDown();
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     _optionListView->confirm();
   }
 }

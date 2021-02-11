@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MainMenuScene.h"
 
 #include <SimpleAudioEngine.h>
 #include "AssetManager.h"
-#include "MainGameScene.h"
+#include "scene/GameScene.h"
 #include "ui/Colorscheme.h"
 
 using std::array;
@@ -26,7 +26,7 @@ const array<string, MainMenuScene::Option::SIZE> MainMenuScene::_kOptionStr = {{
   "Exit"
 }};
 
-const string MainMenuScene::_kCopyrightStr = "© 2018-2020 Aesophor Softworks";
+const string MainMenuScene::_kCopyrightStr = "© 2018-2021 Aesophor Softworks";
 const string MainMenuScene::_kVersionStr = "0.1.0 Alpha";
 
 const int MainMenuScene::_kMenuOptionGap = 20;
@@ -101,7 +101,7 @@ void MainMenuScene::handleInput() {
       case Option::NEW_GAME: {
         InputManager::getInstance()->deactivate();
         SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-        Director::getInstance()->pushScene(MainGameScene::create());
+        Director::getInstance()->pushScene(GameScene::create());
         break;
       }
       case Option::LOAD_GAME:

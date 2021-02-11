@@ -6,7 +6,6 @@
 #include "AssetManager.h"
 #include "Constants.h"
 #include "scene/MainMenuScene.h"
-#include "scene/MainGameScene.h"
 
 //#define USE_AUDIO_ENGINE 1
 #define USE_SIMPLE_AUDIO_ENGINE 1

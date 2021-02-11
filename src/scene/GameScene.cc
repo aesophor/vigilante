@@ -1,5 +1,5 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "MainGameScene.h"
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#include "GameScene.h"
 
 #include <string>
 
@@ -32,7 +32,7 @@ using cocos2d::ui::ImageView;
 
 namespace vigilante {
 
-bool MainGameScene::init() {
+bool GameScene::init() {
   if (!Scene::init()) {
     return false;
   }
@@ -137,11 +137,11 @@ bool MainGameScene::init() {
   _hud->setPlayer(_gameMapManager->getPlayer());
 
   // Tick the box2d world.
-  schedule(schedule_selector(MainGameScene::update));
+  schedule(schedule_selector(GameScene::update));
   return true;
 }
 
-void MainGameScene::update(float delta) {
+void GameScene::update(float delta) {
   // REVIEW this method
   handleInput();
 
@@ -167,7 +167,7 @@ void MainGameScene::update(float delta) {
   vigilante::camera_util::updateShake(_gameCamera, delta);
 }
 
-void MainGameScene::handleInput() {
+void GameScene::handleInput() {
   // First thing first:
   // If there is a specialOnKeyPressed Event Listener,
   // then we should simply let it do its job,
@@ -223,7 +223,16 @@ void MainGameScene::handleInput() {
 }
 
 
-b2World* MainGameScene::getWorld() const {
+void GameScene::startNewGame() {
+
+}
+
+void GameScene::loadGame(const string& gameSaveFilePath) {
+
+}
+
+
+b2World* GameScene::getWorld() const {
   return _gameMapManager->getWorld();
 }
 

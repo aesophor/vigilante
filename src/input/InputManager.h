@@ -23,6 +23,7 @@ class InputManager {
   static InputManager* getInstance();
   virtual ~InputManager() = default;
 
+  bool isActivated() const;
   void activate(cocos2d::Scene* scene);
   void deactivate();
 

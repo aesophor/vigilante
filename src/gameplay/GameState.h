@@ -11,11 +11,14 @@ class GameState {
   explicit GameState();
   virtual ~GameState() = default;
 
+  virtual void load();
+  virtual void save();
+
   const std::string& getFilePath() const;
   void setFilePath(const std::string& filePath);
 
-  friend std::ofstream& operator<<(std::ofstream& os, const GameState& state);
   friend std::ifstream& operator>>(std::ifstream& is, GameState& state);
+  friend std::ofstream& operator<<(std::ofstream& os, const GameState& state);
 
  private:
   std::string _filePath;

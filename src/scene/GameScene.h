@@ -1,6 +1,6 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_MAIN_GAME_SCENE_H_
-#define VIGILANTE_MAIN_GAME_SCENE_H_
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#ifndef VIGILANTE_GAME_SCENE_H_
+#define VIGILANTE_GAME_SCENE_H_
 
 #include <memory>
 
@@ -22,14 +22,17 @@
 
 namespace vigilante {
 
-class MainGameScene : public cocos2d::Scene, public Controllable {
+class GameScene : public cocos2d::Scene, public Controllable {
  public:
-  CREATE_FUNC(MainGameScene);
-  virtual ~MainGameScene() = default;
+  CREATE_FUNC(GameScene);
+  virtual ~GameScene() = default;
 
   virtual bool init() override;  // cocos2d::Scene
   virtual void update(float delta) override;  // cocos2d::Scene
   virtual void handleInput() override;  // Controllable
+
+  void startNewGame();
+  void loadGame(const std::string& gameSaveFilePath);
 
   b2World* getWorld() const;
 
@@ -55,4 +58,4 @@ class MainGameScene : public cocos2d::Scene, public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_MAIN_GAME_SCENE_H_
+#endif  // VIGILANTE_GAME_SCENE_H_

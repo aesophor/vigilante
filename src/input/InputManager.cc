@@ -25,6 +25,10 @@ InputManager::InputManager()
       _specialOnKeyPressed() {}
 
 
+bool InputManager::isActivated() const {
+  return _scene != nullptr;
+}
+
 void InputManager::activate(Scene* scene) {
   _scene = scene;
   _keyboardEvLstnr = EventListenerKeyboard::create();

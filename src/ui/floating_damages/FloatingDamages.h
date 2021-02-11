@@ -42,6 +42,6 @@ class FloatingDamages {
   std::map<Character*, std::deque<FloatingDamages::DamageLabel>> _damageMap;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_FLOATING_DAMAGES_H_
+#endif  // VIGILANTE_FLOATING_DAMAGES_H_
