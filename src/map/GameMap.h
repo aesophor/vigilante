@@ -23,8 +23,11 @@ class GameMap {
  public:
   class Portal : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFileName, int targetPortalId,
-           bool willInteractOnContact, bool isLocked, b2Body* body);
+    Portal(const std::string& targetTmxMapFileName,
+           int targetPortalId,
+           bool willInteractOnContact,
+           bool isLocked,
+           b2Body* body);
     virtual ~Portal();
 
     virtual void onInteract(Character* user) override;  // Interactable
@@ -58,9 +61,7 @@ class GameMap {
     static StateMap _allPortalStates;
 
     // Save the current portal's lock/unlock state in `_allPortalStates`.
-    inline void saveLockUnlockState() const {
-      GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
-    }
+    void saveLockUnlockState() const;
 
 
     std::string _targetTmxMapFileName;  // new (target) .tmx filename

@@ -474,4 +474,9 @@ void GameMap::Portal::setLocked(const string& tmxMapFileName,
   mapIt->second.push_back({targetPortalId, locked});
 }
 
+
+void GameMap::Portal::saveLockUnlockState() const {
+  GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
+}
+
 }  // namespace vigilante
