@@ -33,7 +33,7 @@ const float kSmallFontSize = 12.0f;
 const std::string kMainMenuBg = "Texture/ui/mainmenu_bg.png";
 
 // NewGame initial GameMap
-const std::string kNewGameInitialMap = "Map/prison_cell1.tmx";
+const std::string kNewGameInitialMap = "Map/VampireCastle/PrisonCell.tmx";
 
 // Shade (an overlay image used for screen fadeout/fadein effects)
 const std::string kShade = "Texture/ui/shade.png";
