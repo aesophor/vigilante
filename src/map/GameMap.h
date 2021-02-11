@@ -78,8 +78,8 @@ class GameMap {
 
   void createObjects();
   void deleteObjects();
-  std::unique_ptr<Player> spawnPlayer() const;
-  Item* spawnItem(const std::string& itemJson, float x, float y, int amount=1);
+  std::unique_ptr<Player> createPlayer() const;
+  Item* createItem(const std::string& itemJson, float x, float y, int amount=1);
 
 
   template <typename ReturnType = DynamicActor>
@@ -101,9 +101,9 @@ class GameMap {
   void createPolylines(const std::string& layerName, short categoryBits,
                        bool collidable, float friction);
 
-  void spawnPortals();
-  void spawnNpcs();
-  void spawnChests();
+  void createPortals();
+  void createNpcs();
+  void createChests();
 
   b2World* _world;
   std::unordered_set<b2Body*> _tmxTiledMapBodies;

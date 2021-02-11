@@ -58,9 +58,9 @@ void GameMap::createObjects() {
   createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   
-  spawnPortals();
-  spawnChests();
-  spawnNpcs();
+  createPortals();
+  createChests();
+  createNpcs();
 }
 
 void GameMap::deleteObjects() {
@@ -75,7 +75,7 @@ void GameMap::deleteObjects() {
   }
 }
 
-unique_ptr<Player> GameMap::spawnPlayer() const {
+unique_ptr<Player> GameMap::createPlayer() const {
   auto player = std::make_unique<Player>(asset_manager::kPlayerJson);
 
   const TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
@@ -87,7 +87,7 @@ unique_ptr<Player> GameMap::spawnPlayer() const {
   return player;
 }
 
-Item* GameMap::spawnItem(const string& itemJson, float x, float y, int amount) {
+Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) {
   Item* item = showDynamicActor<Item>(Item::create(itemJson), x, y);
   item->setAmount(amount);
 
@@ -181,7 +181,7 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
   }
 }
 
-void GameMap::spawnPortals() {
+void GameMap::createPortals() {
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -211,7 +211,7 @@ void GameMap::spawnPortals() {
   }
 }
 
-void GameMap::spawnNpcs() {
+void GameMap::createNpcs() {
   auto player = GameMapManager::getInstance()->getPlayer();
 
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
@@ -220,19 +220,9 @@ void GameMap::spawnNpcs() {
     float y = valMap.at("y").asFloat();
     string json = valMap.at("json").asString();
 
-    // Skip this character (don't spawn it)
-    // if it has already been recruited by the player.
-    // FIXME: what if two or more characters with the same name exist in one map?
-    if (player && (player->getParty()->hasDeceasedMember(json) ||
-                   player->getParty()->hasMember(json))) {
-      continue;
+    if (Npc::isNpcAllowedToSpawn(json)) {
+      showDynamicActor(std::make_shared<Npc>(json), x, y);
     }
-
-    if (!Npc::isNpcAllowedToSpawn(json)) {
-      continue;
-    }
-
-    showDynamicActor(std::make_shared<Npc>(json), x, y);
   }
 
 
@@ -251,7 +241,7 @@ void GameMap::spawnNpcs() {
   }
 }
 
-void GameMap::spawnChests() {
+void GameMap::createChests() {
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();

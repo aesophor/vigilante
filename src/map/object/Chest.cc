@@ -82,7 +82,7 @@ void Chest::onInteract(Character*) {
   for (const auto& item : _itemJsons) {
     float x = _body->GetPosition().x;
     float y = _body->GetPosition().y;
-    GameMapManager::getInstance()->getGameMap()->spawnItem(item, x * kPpm, y * kPpm);
+    GameMapManager::getInstance()->getGameMap()->createItem(item, x * kPpm, y * kPpm);
   }
   _itemJsons.clear();
 }

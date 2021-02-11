@@ -171,7 +171,7 @@ void Npc::onKilled() {
   Character::onKilled();
 
   if (!_npcProfile.isRespawnable) {
-    Npc::_npcSpawningBlacklist.insert(_characterProfile.jsonFileName);
+    Npc::setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
   }
 }
 
@@ -214,7 +214,7 @@ void Npc::receiveDamage(Character* source, int damage) {
         float x = _body->GetPosition().x;
         float y = _body->GetPosition().y;
         int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-        GameMapManager::getInstance()->getGameMap()->spawnItem(itemJson, x * kPpm, y * kPpm, amount);
+        GameMapManager::getInstance()->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
       }
     }
   }, .2f);
@@ -479,6 +479,16 @@ void Npc::setNpcsAllowedToAct(bool npcsAllowedToAct) {
 bool Npc::isNpcAllowedToSpawn(const string& jsonFileName) {
   return Npc::_npcSpawningBlacklist.find(jsonFileName)
       == Npc::_npcSpawningBlacklist.end();
+}
+
+void Npc::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
+  if (!canSpawn && Npc::isNpcAllowedToSpawn(jsonFileName)) {
+    VGLOG(LOG_INFO, "Inserting %s into spawning blacklist", jsonFileName.c_str());
+    Npc::_npcSpawningBlacklist.insert(jsonFileName);
+  } else if (canSpawn && !Npc::isNpcAllowedToSpawn(jsonFileName)) {
+    VGLOG(LOG_INFO, "Removing %s from spawning blacklist", jsonFileName.c_str());
+    Npc::_npcSpawningBlacklist.erase(jsonFileName);
+  }
 }
 
 

@@ -101,7 +101,9 @@ class Npc : public Character, public Interactable {
   void setSandboxing(bool sandboxing);
 
   static void setNpcsAllowedToAct(bool npcsAllowedToAct);
+
   static bool isNpcAllowedToSpawn(const std::string& jsonFileName);
+  static void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
 
 
  private:

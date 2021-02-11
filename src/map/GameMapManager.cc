@@ -63,7 +63,6 @@ GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
   if (_player) {
     for (auto ally : _player->getAllies()) {
       if (ally->isKilled()) {
-        _player->getParty()->addDeceasedMember(ally->getCharacterProfile().jsonFileName);
         _player->getParty()->dismiss(ally, /*addToMap=*/false);
       }
     }
@@ -81,9 +80,9 @@ GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
-  // If the player object hasn't been created, spawn it.
+  // If the player object hasn't been created yet, then spawn it.
   if (!_player) {
-    _player = _gameMap->spawnPlayer();
+    _player = _gameMap->createPlayer();
   }
 
   return _gameMap.get();

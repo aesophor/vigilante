@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include "Constants.h"
 #include "character/Character.h"
+#include "character/Npc.h"
 #include "map/GameMapManager.h"
 #include "ui/notifications/Notifications.h"
 #include "util/StringUtil.h"
@@ -18,8 +19,7 @@ namespace vigilante {
 Party::Party(Character* leader)
     : _leader(leader),
       _members(),
-      _waitingMembersLocationInfo(),
-      _deceasedMembers() {}
+      _waitingMembersLocationInfo() {}
 
 
 Character* Party::getMember(const string& characterJsonFileName) const {
@@ -39,6 +39,12 @@ void Party::recruit(Character* targetCharacter) {
   shared_ptr<Character> target
     = std::dynamic_pointer_cast<Character>(
         GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetCharacter));
+
+  // Disable the spawning of this NPC if needed.
+  shared_ptr<Npc> targetNpc = std::dynamic_pointer_cast<Npc>(target);
+  if (!targetNpc->getNpcProfile().isRespawnable) {
+    Npc::setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
+  }
 
   target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);
   addMember(std::move(target));
@@ -122,6 +128,7 @@ Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) co
 }
 
 
+/*
 bool Party::hasDeceasedMember(const string& characterJsonFileName) const {
   auto it = _deceasedMembers.find(characterJsonFileName);
   return it != _deceasedMembers.end();
@@ -142,6 +149,7 @@ void Party::removeDeceasedMember(const string& characterJsonFileName) {
   }
   _deceasedMembers.erase(characterJsonFileName);
 }
+*/
 
 
 Character* Party::getLeader() const {
@@ -167,9 +175,11 @@ Party::getWaitingMembersLocationInfo() const {
   return _waitingMembersLocationInfo;
 }
 
+/*
 const unordered_set<string>& Party::getDeceasedMembers() const {
   return _deceasedMembers;
 }
+*/
 
 
 void Party::addMember(shared_ptr<Character> character) {

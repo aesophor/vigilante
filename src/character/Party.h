@@ -40,15 +40,10 @@ class Party {
   void removeWaitingMember(const std::string& characterJsonFileName);
   Party::WaitingLocationInfo getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const;
 
-  bool hasDeceasedMember(const std::string& characterJsonFileName) const;
-  void addDeceasedMember(const std::string& characterJsonFileName);
-  void removeDeceasedMember(const std::string& characterJsonFileName);
-
   Character* getLeader() const;
   std::unordered_set<Character*> getLeaderAndMembers() const;
   const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
   const std::unordered_map<std::string, Party::WaitingLocationInfo>& getWaitingMembersLocationInfo() const;
-  const std::unordered_set<std::string>& getDeceasedMembers() const;
 
  protected:
   void addMember(std::shared_ptr<Character> character);
@@ -58,7 +53,6 @@ class Party {
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
   std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfo;
-  std::unordered_set<std::string> _deceasedMembers;
 };
 
 }  // namespace vigilante

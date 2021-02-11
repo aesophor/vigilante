@@ -885,7 +885,7 @@ void Character::discardItem(Item* item, int amount) {
   const string& jsonFileName = item->getItemProfile().jsonFileName;
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
-  GameMapManager::getInstance()->getGameMap()->spawnItem(jsonFileName, x * kPpm, y * kPpm, amount);
+  GameMapManager::getInstance()->getGameMap()->createItem(jsonFileName, x * kPpm, y * kPpm, amount);
 
   removeItem(item, amount);
 }
