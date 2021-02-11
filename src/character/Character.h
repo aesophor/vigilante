@@ -91,6 +91,8 @@ class Character : public DynamicActor, public Importable {
   virtual void update(float delta) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
+  virtual void onKilled();
+
   virtual void moveLeft();
   virtual void moveRight();
   virtual void jump();

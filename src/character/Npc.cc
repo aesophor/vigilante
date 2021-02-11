@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
 #include <memory>
@@ -36,6 +36,7 @@ using std::set;
 using std::string;
 using std::vector;
 using std::unique_ptr;
+using std::unordered_set;
 using cocos2d::Vector;
 using cocos2d::Director;
 using cocos2d::Repeat;
@@ -66,6 +67,7 @@ using rapidjson::Document;
 namespace vigilante {
 
 bool Npc::_areNpcsAllowedToAct = true;
+unordered_set<string> Npc::_npcSpawningBlacklist;
 
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
@@ -165,6 +167,15 @@ void Npc::import(const string& jsonFileName) {
 }
 
 
+void Npc::onKilled() {
+  Character::onKilled();
+
+  if (!_npcProfile.isRespawnable) {
+    Npc::_npcSpawningBlacklist.insert(_characterProfile.jsonFileName);
+  }
+}
+
+
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
 
@@ -216,7 +227,7 @@ void Npc::interact(Interactable* target) {
 }
 
 
-void Npc::onInteract(Character* user) {
+void Npc::onInteract(Character*) {
   updateDialogueTreeIfNeeded();
   beginDialogue();
 }
@@ -462,7 +473,12 @@ void Npc::setSandboxing(bool sandboxing) {
 
 
 void Npc::setNpcsAllowedToAct(bool npcsAllowedToAct) {
-  _areNpcsAllowedToAct = npcsAllowedToAct;
+  Npc::_areNpcsAllowedToAct = npcsAllowedToAct;
+}
+
+bool Npc::isNpcAllowedToSpawn(const string& jsonFileName) {
+  return Npc::_npcSpawningBlacklist.find(jsonFileName)
+      == Npc::_npcSpawningBlacklist.end();
 }
 
 
@@ -485,6 +501,7 @@ Npc::Profile::Profile(const string& jsonFileName) {
 
   dialogueTreeJsonFile = json["dialogueTree"].GetString();
   disposition = static_cast<Npc::Disposition>(json["disposition"].GetInt());
+  isRespawnable = json["isRespawnable"].GetBool();
   isRecruitable = json["isRecruitable"].GetBool();
   isUnsheathed = json["isUnsheathed"].GetBool();
   isTradable = json["isTradable"].GetBool();

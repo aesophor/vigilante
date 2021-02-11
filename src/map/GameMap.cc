@@ -227,6 +227,11 @@ void GameMap::spawnNpcs() {
                    player->getParty()->hasMember(json))) {
       continue;
     }
+
+    if (!Npc::isNpcAllowedToSpawn(json)) {
+      continue;
+    }
+
     showDynamicActor(std::make_shared<Npc>(json), x, y);
   }
 

@@ -232,10 +232,10 @@ void Character::update(float delta) {
         runAnimation(State::ATTACKING, false);
         break;
       case State::KILLED:
-        runAnimation(State::KILLED, [=]() {
-          // Execute after the KILLED animation is finished.
-          GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
-          _isKilled = true;
+        // `onKilled()` will be executed after the KILLED animation
+        // has finished.
+        runAnimation(State::KILLED, [this]() {
+          onKilled();
         });
         break;
       case State::IDLE_SHEATHED:
@@ -548,6 +548,12 @@ Character::State Character::getState() const {
 }
 
 
+void Character::onKilled() {
+  _isKilled = true;
+  GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
+}
+
+
 void Character::moveLeft() {
   _isFacingRight = false;
   if (_body->GetLinearVelocity().x >= -_characterProfile.moveSpeed * 2) {
@@ -586,7 +592,7 @@ void Character::jump() {
 void Character::doubleJump() {
   jump();
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     jump();
   }, .25f);
 }
@@ -598,7 +604,7 @@ void Character::jumpDown() {
 
   _fixtures[FixtureType::FEET]->SetSensor(true);
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     _fixtures[FixtureType::FEET]->SetSensor(false);
   }, .25f);
 }
@@ -615,7 +621,7 @@ void Character::getUp() {
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
   }, .8f);
@@ -624,7 +630,7 @@ void Character::sheathWeapon() {
 void Character::unsheathWeapon() {
   _isUnsheathingWeapon = true;
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
@@ -644,7 +650,7 @@ void Character::attack() {
 
   _isAttacking = true;
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     _isAttacking = false;
   }, _characterProfile.attackTime);
 
@@ -678,7 +684,7 @@ void Character::activateSkill(Skill* skill) {
   _isUsingSkill = true;
   _currentlyUsedSkill = skill;
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::getInstance()->runAfter([this]() {
     _isUsingSkill = false;
     // Set _currentState to FORCE_UPDATE so that next time in
     // Character::update the animation is guaranteed to be updated.

@@ -1,9 +1,10 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_NPC_H_
 #define VIGILANTE_NPC_H_
 
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include <cocos2d.h>
 #include "Character.h"
@@ -37,6 +38,7 @@ class Npc : public Character, public Interactable {
 
     std::string dialogueTreeJsonFile;
     Npc::Disposition disposition;
+    bool isRespawnable;
     bool isRecruitable;
     bool isUnsheathed;
     bool isTradable;
@@ -60,6 +62,9 @@ class Npc : public Character, public Interactable {
   virtual void showOnMap(float x, float y) override;  // Character
   virtual void update(float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
+
+  virtual void onKilled() override;  // Character
+
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character
   virtual void interact(Interactable* target) override;  // Character
@@ -96,6 +101,7 @@ class Npc : public Character, public Interactable {
   void setSandboxing(bool sandboxing);
 
   static void setNpcsAllowedToAct(bool npcsAllowedToAct);
+  static bool isNpcAllowedToSpawn(const std::string& jsonFileName);
 
 
  private:
@@ -103,7 +109,12 @@ class Npc : public Character, public Interactable {
                   short bodyCategoryBits=0, short bodyMaskBits=0,
                   short feetMaskBits=0, short weaponMaskBits=0) override;
 
+  // See `map/GameMap.cc` for its usage.
   static bool _areNpcsAllowedToAct;
+
+  // Once those spawn-once NPCs are killed, their jsonFileName
+  // will be inserted into this unordered_set.
+  static std::unordered_set<std::string> _npcSpawningBlacklist;
 
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
