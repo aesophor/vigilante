@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMap.h"
 
+#include <algorithm>
 #include <thread>
 
 #include "std/make_unique.h"
@@ -21,6 +22,7 @@
 #include "util/JsonUtil.h"
 #include "util/RandUtil.h"
 
+using std::pair;
 using std::vector;
 using std::unordered_set;
 using std::string;
@@ -36,6 +38,8 @@ using cocos2d::FadeOut;
 using cocos2d::CallFunc;
 
 namespace vigilante {
+
+GameMap::Portal::StateMap GameMap::Portal::_allPortalStates;
 
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
@@ -186,6 +190,7 @@ void GameMap::spawnPortals() {
     string targetTmxMapFilePath = valMap.at("targetMap").asString();
     int targetPortalId = valMap.at("targetPortalID").asInt();
     bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
+    bool isLocked = valMap.at("isLocked").asBool();
 
     b2BodyBuilder bodyBuilder(_world);
 
@@ -194,7 +199,7 @@ void GameMap::spawnPortals() {
       .buildBody();
 
     _portals.push_back(std::make_unique<Portal>(targetTmxMapFilePath, targetPortalId,
-                                                willInteractOnContact, true, body));
+                                                willInteractOnContact, isLocked, body));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
@@ -258,7 +263,11 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
       _willInteractOnContact(willInteractOnContact),
       _isLocked(isLocked),
       _body(body),
-      _hintBubbleFxSprite() {}
+      _hintBubbleFxSprite() {
+  if (GameMap::Portal::hasSavedLockUnlockState(targetTmxMapFileName, targetPortalId)) {
+    _isLocked = GameMap::Portal::isLocked(targetTmxMapFileName, targetPortalId);
+  }
+}
 
 GameMap::Portal::~Portal() {
   _body->GetWorld()->DestroyBody(_body);
@@ -338,6 +347,11 @@ void GameMap::Portal::onInteract(Character* user) {
   );
 }
 
+
+bool GameMap::Portal::willInteractOnContact() const {
+  return _willInteractOnContact;
+}
+
 void GameMap::Portal::createHintBubbleFx() {
   if (_hintBubbleFxSprite) {
     removeHintBubbleFx();
@@ -373,10 +387,12 @@ bool GameMap::Portal::isLocked() const {
 
 void GameMap::Portal::lock() {
   _isLocked = true;
+  saveLockUnlockState();
 }
 
 void GameMap::Portal::unlock() {
   _isLocked = false;
+  saveLockUnlockState();
 }
 
 
@@ -388,8 +404,74 @@ int GameMap::Portal::getTargetPortalId() const {
   return _targetPortalId;
 }
 
-bool GameMap::Portal::willInteractOnContact() const {
-  return _willInteractOnContact;
+
+bool GameMap::Portal::hasSavedLockUnlockState(const string& tmxMapFileName,
+                                              int targetPortalId) {
+  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
+  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
+    return false;
+  }
+
+  return std::find_if(mapIt->second.begin(),
+                      mapIt->second.end(),
+                      [targetPortalId](const pair<int, bool>& entry) {
+                          return entry.first == targetPortalId;
+                      }) != mapIt->second.end();
+}
+
+bool GameMap::Portal::isLocked(const string& tmxMapFileName,
+                               int targetPortalId) {
+  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
+
+  // If we cannot find the associated vector for this tiled map
+  // in the unordered_map, then simply return false.
+  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
+    VGLOG(LOG_WARN, "Unable to find the corresponding portal vector");
+    return false;
+  }
+
+  // Otherwise, we've found the associated vector of this TiledMap.
+  // Now we should find the corresponding entry in that vector
+  // and return entry.second which holds the lock state of the Portal.
+  for (const auto& entry : mapIt->second) {
+    if (entry.first == targetPortalId) {
+      return entry.second;
+    }
+  }
+
+  // If we end up here, then the vector `mapIt->second` doesn't contain
+  // the corresponding entry. We should simply return false.
+  VGLOG(LOG_WARN, "Unable to find the corresponding entry in the portal vector");
+  return false;
+}
+
+void GameMap::Portal::setLocked(const string& tmxMapFileName,
+                                int targetPortalId,
+                                bool locked) {
+  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
+
+  // If we cannot find the associated vector for this tiled map
+  // in the unordered_map, then insert a new vector which is
+  // initialized with {targetPortalId, locked} and return early.
+  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
+    GameMap::Portal::_allPortalStates.insert({tmxMapFileName, {{targetPortalId, locked}}});
+    return;
+  }
+
+
+  // Otherwise, we've found the associated vector of this TiledMap.
+  // Now we should find the corresponding entry in that vector,
+  // update that entry, and return early.
+  for (auto& entry : mapIt->second) {
+    if (entry.first == targetPortalId) {
+      entry.second = locked;
+      return;
+    }
+  }
+
+  // If we end up here, then the vector `mapIt->second` doesn't contain
+  // the corresponding entry, and thus we have to insert it manually.
+  mapIt->second.push_back({targetPortalId, locked});
 }
 
 }  // namespace vigilante

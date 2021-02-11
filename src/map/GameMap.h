@@ -40,7 +40,29 @@ class GameMap {
     const std::string& getTargetTmxMapFileName() const;
     int getTargetPortalId() const;
 
+
    protected:
+    // The following static methods and `StateMap`
+    // holds the state of *ALL* portals in current game.
+    static bool hasSavedLockUnlockState(const std::string& tmxMapFileName,
+                                        int targetPortalId);
+
+    static bool isLocked(const std::string& tmxMapFileName,
+                         int targetPortalId);
+
+    static void setLocked(const std::string& tmxMapFileName,
+                          int targetPortalId,
+                          bool locked);
+    using StateMap
+      = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
+    static StateMap _allPortalStates;
+
+    // Save the current portal's lock/unlock state in `_allPortalStates`.
+    inline void saveLockUnlockState() const {
+      GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
+    }
+
+
     std::string _targetTmxMapFileName;  // new (target) .tmx filename
     int _targetPortalId;  // the portal id in the new (target) map
     bool _willInteractOnContact;  // interact with the portal on contact?
