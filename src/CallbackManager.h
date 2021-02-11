@@ -1,6 +1,6 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CALLBACK_UTIL_H_
-#define VIGILANTE_CALLBACK_UTIL_H_
+#ifndef VIGILANTE_CALLBACK_MANAGER_H_
+#define VIGILANTE_CALLBACK_MANAGER_H_
 
 #include <atomic>
 #include <functional>
@@ -28,4 +28,4 @@ class CallbackManager {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CALLBACK_UTIL_H_
+#endif  // VIGILANTE_CALLBACK_MANAGER_H_
