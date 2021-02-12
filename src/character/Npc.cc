@@ -32,6 +32,8 @@
 #define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
 #define ENEMY_WEAPON_MASK_BITS kPlayer | kNpc
 
+#define ALLY_FOLLOW_DISTANCE .75f
+
 using std::set;
 using std::string;
 using std::vector;
@@ -312,7 +314,7 @@ void Npc::act(float delta) {
   //     b. target not within attack range -> moveToTarget()
   // (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
   //     a. target belongs to a party -> try to select other member as new _lockedOnTarget
-  //     b. target not belongs to any party -> clear _lockedOnTarget
+  //     b. target doesnt belong to any party -> clear _lockedOnTarget
   // (3) Is following another Character -> moveToTarget()
   // (4) Sandboxing (just moving around wasting its time) -> moveRandomly()
 
@@ -329,7 +331,7 @@ void Npc::act(float delta) {
     setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
   } else if (_party && !isWaitingForPlayer()) {
-    moveToTarget(delta, _party->getLeader(), .5f);
+    moveToTarget(delta, _party->getLeader(), ALLY_FOLLOW_DISTANCE);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
