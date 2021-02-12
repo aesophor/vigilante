@@ -195,6 +195,10 @@ void Character::update(float delta) {
 
   _previousState = _currentState;
   _currentState = getState();
+
+  if (dynamic_cast<Player*>(this)) {
+    VGLOG(LOG_INFO, "Current State = %d", _currentState);
+  }
   
   // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {
@@ -526,6 +530,7 @@ void Character::runAnimation(const string& framesName, float interval) {
 }
 
 
+// FIXME: Maybe clean up this method...
 Character::State Character::getState() const {
   if (_isSetToKill) {
     return State::KILLED;
@@ -537,12 +542,16 @@ Character::State Character::getState() const {
     return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
     return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
-  } else if (_body->GetLinearVelocity().y < -1.0f && !_isTakingDamage) {
+  } else if (_body->GetLinearVelocity().y < -2.0f && !_isTakingDamage) {
     return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
     return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
   } else if (std::abs(_body->GetLinearVelocity().x) > .01f && !_isTakingDamage) {
     return (_isWeaponSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
+  // This one makes platform jumping animation smoother...
+  // but the code looks more ugly :(
+  } else if (std::abs(_body->GetLinearVelocity().y) > .01f && !_isTakingDamage) {
+    return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
   } else {
     return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }
