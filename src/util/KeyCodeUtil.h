@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_KEYCODE_UTIL_H_
 #define VIGILANTE_KEYCODE_UTIL_H_
 
@@ -15,8 +15,8 @@ void init();
 std::string keyCodeToString(cocos2d::EventKeyboard::KeyCode keyCode);
 char keyCodeToAscii(cocos2d::EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed);
 
-} // namespace keycode_util
+}  // namespace keycode_util
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_KEYCODE_UTIL_H_
+#endif  // VIGILANTE_KEYCODE_UTIL_H_

@@ -12,21 +12,18 @@ namespace {
 // Apple's libc++ is retarded... This hash function object isn't
 // necessary when compiling with libstdc++
 #ifdef __APPLE__
-struct KeyCodeHash
-{
-    template <typename T>
-    std::size_t operator()(T t) const
-    {
-        return static_cast<std::size_t>(t);
-    }
+struct KeyCodeHash {
+  template <typename T>
+  std::size_t operator()(T t) const {
+    return static_cast<std::size_t>(t);
+  }
 };
-
 unordered_map<EventKeyboard::KeyCode, string, KeyCodeHash> keyMap;
 #else
 unordered_map<EventKeyboard::KeyCode, string> keyMap;
 #endif
 
-} // namespace
+}  // namespace
 
 
 namespace vigilante {
@@ -169,6 +166,6 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
   }
 }
 
-} // namespace keycode_util
+}  // namespace keycode_util
 
-} // namespace vigilante
+}  // namespace vigilante
