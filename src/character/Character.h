@@ -247,6 +247,7 @@ class Character : public DynamicActor, public Importable {
   bool _isWeaponSheathed;
   bool _isSheathingWeapon;
   bool _isUnsheathingWeapon;
+  bool _isJumpingDisallowed;
   bool _isJumping;
   bool _isDoubleJumping;
   bool _isOnPlatform;

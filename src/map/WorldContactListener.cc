@@ -62,9 +62,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
 
         if (!player->isInvincible()) {
-          enemy->inflictDamage(player, 25);
           float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f; // temporary
           float knockBackForceY = 1.0f; // temporary
+          enemy->inflictDamage(player, 25);
           enemy->knockBack(player, knockBackForceX, knockBackForceY);
         }
       }
@@ -80,9 +80,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* enemy = static_cast<Character*>(enemyFixture->GetUserData());
 
         if (!npc->isInvincible()) {
-          enemy->inflictDamage(npc, 25);
           float knockBackForceX = (npc->isFacingRight()) ? -.25f : .25f; // temporary
           float knockBackForceY = 1.0f; // temporary
+          enemy->inflictDamage(npc, 25);
           enemy->knockBack(npc, knockBackForceX, knockBackForceY);
         }
       }
@@ -343,15 +343,15 @@ void WorldContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldMan
   switch (cDef) {
     // Allow player to pass through platforms and collide on the way down.
     case category_bits::kFeet | category_bits::kPlatform: {
-      b2Fixture* playerBody = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
+      b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* platform = GetTargetFixture(category_bits::kPlatform, fixtureA, fixtureB);
 
-      float playerY = playerBody->GetBody()->GetPosition().y;
+      float playerY = feetFixture->GetBody()->GetPosition().y;
       float platformY = platform->GetBody()->GetPosition().y;
 
       // Enable contact if the player is about to land on the platform.
       // .15f is a value that works fine in my world.
-      contact->SetEnabled((playerY > platformY + .10f));
+      contact->SetEnabled(playerY > platformY + .15f);
       break;
     }
     default:

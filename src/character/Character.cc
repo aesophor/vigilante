@@ -70,6 +70,7 @@ Character::Character(const string& jsonFileName)
       _isWeaponSheathed(true),
       _isSheathingWeapon(),
       _isUnsheathingWeapon(),
+      _isJumpingDisallowed(),
       _isJumping(),
       _isDoubleJumping(),
       _isOnPlatform(),
@@ -556,6 +557,11 @@ void Character::onKilled() {
 
 void Character::moveLeft() {
   _isFacingRight = false;
+
+  if (_isCrouching) {
+    return;
+  }
+
   if (_body->GetLinearVelocity().x >= -_characterProfile.moveSpeed * 2) {
     _body->ApplyLinearImpulse({-_characterProfile.moveSpeed, 0}, _body->GetWorldCenter(), true);
   }
@@ -563,6 +569,11 @@ void Character::moveLeft() {
 
 void Character::moveRight() {
   _isFacingRight = true;
+
+  if (_isCrouching) {
+    return;
+  }
+
   if (_body->GetLinearVelocity().x <= _characterProfile.moveSpeed * 2) {
     _body->ApplyLinearImpulse({_characterProfile.moveSpeed, 0}, _body->GetWorldCenter(), true);
   }
@@ -570,10 +581,12 @@ void Character::moveRight() {
 
 void Character::jump() {
   // Block current jump request if:
-  // 1. This character cannot double jump, and it has already jumped.
-  // 2. This character can double jump, and it has already double jumped.
-  const bool& canDoubleJump = _characterProfile.canDoubleJump;
-  if ((!canDoubleJump && _isJumping) || (canDoubleJump && _isDoubleJumping)) {
+  // 1. This character's timer-based jump lock has not expired yet.
+  // 2. This character cannot double jump, and it has already jumped.
+  // 3. This character can double jump, and it has already double jumped.
+  if (_isJumpingDisallowed ||
+      (!_characterProfile.canDoubleJump && _isJumping) ||
+      (_characterProfile.canDoubleJump && _isDoubleJumping)) {
     return;
   }
 
@@ -581,9 +594,14 @@ void Character::jump() {
     _isDoubleJumping = true;
     runAnimation((_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED, false);
     // Set velocity.y to 0.
-    b2Vec2 velocity = _body->GetLinearVelocity();
+    const b2Vec2& velocity = _body->GetLinearVelocity();
     _body->SetLinearVelocity({velocity.x, 0});
   } 
+
+  _isJumpingDisallowed = true;
+  CallbackManager::getInstance()->runAfter([this]() {
+      _isJumpingDisallowed = false;
+  }, .2f);
 
   _isJumping = true;
   _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
