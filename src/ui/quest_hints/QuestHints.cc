@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestHints.h"
 
 #include "Constants.h"
@@ -17,6 +17,10 @@ QuestHints* QuestHints::getInstance() {
 }
 
 QuestHints::QuestHints()
-    : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
+    : TimedLabelService(STARTING_X,
+                        STARTING_Y,
+                        MAX_LABEL_COUNT,
+                        LABEL_LIFETIME,
+                        LABEL_ALIGNMENT) {}
 
 }  // namespace vigilante
