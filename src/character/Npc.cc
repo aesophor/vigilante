@@ -239,7 +239,7 @@ bool Npc::willInteractOnContact() const {
 }
 
 void Npc::createHintBubbleFx() {
-  if (_hintBubbleFxSprite || _disposition == Npc::Disposition::ENEMY) {
+  if (_hintBubbleFxSprite || _npcProfile.dialogueTreeJsonFile.empty()) {
     return;
   }
 
