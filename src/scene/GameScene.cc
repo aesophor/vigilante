@@ -48,6 +48,13 @@ bool GameScene::init() {
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(0, 0);
 
+  // Initialize CallbackManager.
+  CallbackManager::getInstance()->setScene(this);
+
+  // Initialize Vigilante's utils.
+  vigilante::keycode_util::init();
+  vigilante::rand_util::init();
+
   // Initialize HUD camera.
   _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
   _hudCamera->setDepth(2);
@@ -68,13 +75,11 @@ bool GameScene::init() {
   _hud = Hud::getInstance();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_hud->getLayer(), graphical_layers::kHud);
-  _hud->getLayer()->setPosition(75, winSize.height - 40);
 
   // Initialize console.
   _console = Console::getInstance();
   _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_console->getLayer(), graphical_layers::kConsole);
-  _console->getLayer()->setPosition(10, 10);
 
   // Initialize notifications.
   _notifications = Notifications::getInstance();
@@ -90,6 +95,11 @@ bool GameScene::init() {
   _floatingDamages = FloatingDamages::getInstance();
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
+  // Initialize Control Hints.
+  _controlHints = ControlHints::getInstance();
+  _controlHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_controlHints->getLayer(), graphical_layers::kControlHints);
+
   // Initialize dialogue manager.
   _dialogueManager = DialogueManager::getInstance();
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -97,21 +107,15 @@ bool GameScene::init() {
 
   // Initialize window manager.
   _windowManager = WindowManager::getInstance();
-  _windowManager->setScene(this);
   _windowManager->setDefaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
- 
+  _windowManager->setScene(this);
+
   // Initialize vigilante's exp point table.
   exp_point_table::import(asset_manager::kExpPointTable);
 
   // Initialize vigilante's item price table.
   item_price_table::import(asset_manager::kItemPriceTable);
 
-  // Initialize CallbackManager.
-  CallbackManager::getInstance()->setScene(this);
-
-  // Initialize Vigilante's utils.
-  vigilante::keycode_util::init();
-  vigilante::rand_util::init();
 
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
@@ -132,9 +136,6 @@ bool GameScene::init() {
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _pauseMenu->getLayer()->setVisible(false);
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
-
-  // Misc
-  _hud->setPlayer(_gameMapManager->getPlayer());
 
   // Tick the box2d world.
   schedule(schedule_selector(GameScene::update));

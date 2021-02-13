@@ -13,6 +13,7 @@
 #include "ui/Shade.h"
 #include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
+#include "ui/control_hints/ControlHints.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/floating_damages/FloatingDamages.h"
 #include "ui/notifications/Notifications.h"
@@ -49,6 +50,7 @@ class GameScene : public cocos2d::Scene, public Controllable {
   Console* _console;
   std::unique_ptr<PauseMenu> _pauseMenu;
   WindowManager* _windowManager;
+  ControlHints *_controlHints;
   DialogueManager* _dialogueManager;
   FloatingDamages* _floatingDamages;
   QuestHints* _questHints;
