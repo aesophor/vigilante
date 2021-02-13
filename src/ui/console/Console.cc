@@ -4,6 +4,8 @@
 #include "input/InputManager.h"
 #include "util/Logger.h"
 
+#define CONSOLE_X 10
+#define CONSOLE_Y 10
 #define DEFAULT_HISTORY_SIZE 32
 
 using std::string;
@@ -49,6 +51,7 @@ Console::Console()
   _textField.setDismissKey(EventKeyboard::KeyCode::KEY_GRAVE);
 
   _layer->setVisible(false);
+  _layer->setPosition(CONSOLE_X, CONSOLE_Y);
   _layer->addChild(_textField.getLayout());
 }
 
