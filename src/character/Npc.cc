@@ -241,6 +241,10 @@ bool Npc::willInteractOnContact() const {
 }
 
 void Npc::showHintUI() {
+  if (_npcProfile.dialogueTreeJsonFile.empty()) {
+    return;
+  }
+
   createHintBubbleFx();
   ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Talk");
 }
