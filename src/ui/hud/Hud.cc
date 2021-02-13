@@ -8,6 +8,9 @@
 #include "item/Equipment.h"
 #include "map/GameMapManager.h"
 
+#define HUD_X 75
+#define HUD_Y cocos2d::Director::getInstance()->getWinSize().height - 40
+
 using std::string;
 using std::unique_ptr;
 using cocos2d::Layer;
@@ -51,6 +54,7 @@ Hud::Hud()
   _magickaBar->getLayout()->setPositionY(_magickaBar->getLayout()->getPositionY() - 6.0f);
   _staminaBar->getLayout()->setPositionY(_staminaBar->getLayout()->getPositionY() - 12.0f);
 
+  _layer->setPosition(HUD_X, HUD_Y);
   _layer->addChild(_equippedWeaponBg);
   _layer->addChild(_equippedWeapon);
   _layer->addChild(_healthBar->getLayout());
