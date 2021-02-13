@@ -61,6 +61,7 @@ const int kHud = 86;
 const int kWindowBottom = 88;
 const int kWindowTop = 92;
 const int kDialogue = 94;
+const int kControlHints = 95;
 const int kShade = 96;
 const int kPauseMenu = 98;
 const int kConsole = 100;
