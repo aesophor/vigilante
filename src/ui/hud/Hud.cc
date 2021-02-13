@@ -1,10 +1,12 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Hud.h"
 
 #include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
+#include "character/Player.h"
 #include "item/Equipment.h"
+#include "map/GameMapManager.h"
 
 using std::string;
 using std::unique_ptr;
@@ -32,7 +34,6 @@ Hud* Hud::getInstance() {
 
 Hud::Hud()
     : _layer(Layer::create()),
-      _player(),
       _healthBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
       _magickaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
       _staminaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
@@ -61,8 +62,8 @@ Hud::Hud()
 
 
 void Hud::updateEquippedWeapon() {
-  // Update equipped weapon.
-  Equipment* weapon = _player->getEquipmentSlots()[Equipment::Type::WEAPON];
+  Equipment* weapon = GameMapManager::getInstance()->getPlayer()->getEquipmentSlots()[Equipment::Type::WEAPON];
+
   if (weapon) {
     // Replace weapon icon
     _equippedWeapon->loadTexture(weapon->getIconPath());
@@ -77,8 +78,8 @@ void Hud::updateEquippedWeapon() {
 }
 
 void Hud::updateStatusBars() {
-  // Update status bars.
-  Character::Profile& profile = _player->getCharacterProfile();
+  Character::Profile& profile = GameMapManager::getInstance()->getPlayer()->getCharacterProfile();
+
   _healthBar->update(profile.health, profile.fullHealth);
   _magickaBar->update(profile.magicka, profile.fullMagicka);
   _staminaBar->update(profile.stamina, profile.fullStamina);
@@ -87,10 +88,6 @@ void Hud::updateStatusBars() {
 
 Layer* Hud::getLayer() const {
   return _layer;
-}
-
-void Hud::setPlayer(Player* player) {
-  _player = player;
 }
 
 }  // namespace vigilante
