@@ -94,6 +94,9 @@ const std::string kTextFieldBg = "Texture/ui/text_field_bg.png";
 const std::string kTrade = "Texture/ui/trade/";
 const std::string kTradeBg = kTrade + "trade_bg.png";
 
+// Control Hints
+const std::string kControlHints = "Texture/ui/control_hints/";
+
 // Important items
 const std::string kGoldCoin = "Database/item/misc/gold_coin.json";
 
