@@ -29,10 +29,10 @@ class Chest : public DynamicActor, public Interactable {
   virtual void removeHintBubbleFx() override;  // Interactable
 
   void defineBody(b2BodyType bodyType,
-                  short categoryBits,
-                  short maskBits,
                   float x,
-                  float y);
+                  float y,
+                  short categoryBits,
+                  short maskBits);
 
   static const int _kNumAnimations;
   static const int _kNumFixtures;

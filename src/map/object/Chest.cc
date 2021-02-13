@@ -50,7 +50,11 @@ void Chest::showOnMap(float x, float y) {
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
 }
 
-void Chest::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+void Chest::defineBody(b2BodyType bodyType,
+                       float x,
+                       float y,
+                       short categoryBits,
+                       short maskBits) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
   _body = bodyBuilder.type(bodyType)

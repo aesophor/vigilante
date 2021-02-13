@@ -209,9 +209,14 @@ class Character : public DynamicActor, public Importable {
 
   static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
 
-  virtual void defineBody(b2BodyType bodyType, float x, float y, 
-                          short bodyCategoryBits=0, short bodyMaskBits=0,
-                          short feetMaskBits=0, short weaponMaskBits=0);
+  virtual void defineBody(b2BodyType bodyType,
+                          float x,
+                          float y, 
+                          short bodyCategoryBits=0,
+                          short bodyMaskBits=0,
+                          short feetMaskBits=0,
+                          short weaponMaskBits=0);
+
   virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
 
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
