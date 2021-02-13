@@ -50,6 +50,7 @@ void ControlHints::show(const EventKeyboard::KeyCode keyCode, const string& text
 
   _hints.push_back(ControlHints::Hint(keyCode, text));
   _layer->addChild(_hints.back().getLayout());
+  _layer->setCameraMask(_layer->getCameraMask());
 
   normalize();
 }
@@ -76,7 +77,7 @@ void ControlHints::normalize() {
     return;
   }
 
-  auto winSize = Director::getInstance()->getWinSize();
+  const auto& winSize = Director::getInstance()->getWinSize();
   float nextX = winSize.width;
 
   for (int i = _hints.size() - 1; i >= 0; i--) {
@@ -97,7 +98,6 @@ ControlHints::Hint::Hint(const EventKeyboard::KeyCode keyCode, const string& tex
       _icon(ImageView::create(kControlHints + keycode_util::keyCodeToString(keyCode) + ".png")),
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       _keyCode(keyCode) {
-
   _icon->setAnchorPoint({0, 1});
   _label->setAnchorPoint({0, 1});
   _label->setPositionX(_icon->getContentSize().width + _kIconLabelGap);

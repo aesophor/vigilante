@@ -69,11 +69,12 @@ void TimedLabelService::show(const string& message) {
   // the children that are in the _layer at that moment. If we create a label/sprite
   // afterwards, the mask is the default one, even if we add it as a child of that layer.
   TimedLabel timedLabel(message, _kLabelLifetime, _kAlignment);
-  timedLabel.label->setCameraMask(_layer->getCameraMask());
   timedLabel.label->setPosition(_kStartingX, _kStartingY);
   timedLabel.label->runAction(MoveBy::create(_kMoveUpDuration, {_kDeltaX, _kDeltaY}));
   _labelQueue.push_back(timedLabel);
+
   _layer->addChild(timedLabel.label);
+  _layer->setCameraMask(_layer->getCameraMask());
 }
 
 Layer* TimedLabelService::getLayer() const {

@@ -5,6 +5,7 @@
 
 #include "std/make_unique.h"
 #include "input/InputManager.h"
+#include "scene/SceneManager.h"
 
 #define OPTIONS_COUNT 4
 
@@ -27,12 +28,18 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
   _optionListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_optionListView->getLayout());
 
+  auto quit = []() {
+    InputManager::getInstance()->deactivate();
+    SceneManager::getInstance()->popScene();
+    InputManager::getInstance()->activate(SceneManager::getInstance()->getCurrentScene());
+  };
+
   // Define available Options.
   _options = {{
     {"Save Game", []() {}},
     {"Load Game", []() {}},
     {"Options",   []() {}},
-    {"Quit",      []() { std::exit(0); }}
+    {"Quit",      quit   },
   }};
  
   vector<Option*> options;

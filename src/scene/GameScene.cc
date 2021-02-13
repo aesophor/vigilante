@@ -42,7 +42,7 @@ bool GameScene::init() {
   // USER1 (orthographic): used to render HUD
   // Initialize the default camera from "perspective" to "orthographic",
   // and use it as the game world camera.
-  auto winSize = Director::getInstance()->getWinSize();
+  const auto& winSize = Director::getInstance()->getWinSize();
   VGLOG(LOG_INFO, "winSize: w=%f h=%f", winSize.width, winSize.height);
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
@@ -95,7 +95,7 @@ bool GameScene::init() {
   _floatingDamages = FloatingDamages::getInstance();
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
-  // Initialize Control Hints.
+  // Initialize control hints.
   _controlHints = ControlHints::getInstance();
   _controlHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_controlHints->getLayer(), graphical_layers::kControlHints);
