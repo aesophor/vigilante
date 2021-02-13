@@ -32,8 +32,8 @@ class GameMap {
 
     virtual void onInteract(Character* user) override;  // Interactable
     virtual bool willInteractOnContact() const override;  // Interactable
-    virtual void createHintBubbleFx() override;  // Interactable
-    virtual void removeHintBubbleFx() override;  // Interactable
+    virtual void showHintUI() override;  // Interactable
+    virtual void hideHintUI() override;  // Interactable
 
     bool canBeUnlockedBy(Character* user) const;
     bool isLocked() const;
@@ -45,6 +45,9 @@ class GameMap {
 
 
    protected:
+    virtual void createHintBubbleFx() override;  // Interactable
+    virtual void removeHintBubbleFx() override;  // Interactable
+
     // The following static methods and `StateMap`
     // holds the state of *ALL* portals in current game.
     static bool hasSavedLockUnlockState(const std::string& tmxMapFileName,
@@ -62,7 +65,6 @@ class GameMap {
 
     // Save the current portal's lock/unlock state in `_allPortalStates`.
     void saveLockUnlockState() const;
-    
     int getPortalId() const;
 
     std::string _targetTmxMapFileName;  // new (target) .tmx filename

@@ -15,6 +15,7 @@
 #include "quest/KillTargetObjective.h"
 #include "quest/CollectItemObjective.h"
 #include "ui/WindowManager.h"
+#include "ui/control_hints/ControlHints.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -50,6 +51,7 @@ using cocos2d::Sprite;
 using cocos2d::SpriteFrame;
 using cocos2d::SpriteFrameCache;
 using cocos2d::SpriteBatchNode;
+using cocos2d::EventKeyboard;
 using vigilante::category_bits::kPlayer;
 using vigilante::category_bits::kEnemy;
 using vigilante::category_bits::kNpc;
@@ -238,8 +240,18 @@ bool Npc::willInteractOnContact() const {
   return false;
 }
 
+void Npc::showHintUI() {
+  createHintBubbleFx();
+  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Talk");
+}
+
+void Npc::hideHintUI() {
+  removeHintBubbleFx();
+  ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_CAPITAL_E);
+}
+
 void Npc::createHintBubbleFx() {
-  if (_hintBubbleFxSprite || _npcProfile.dialogueTreeJsonFile.empty()) {
+  if (_hintBubbleFxSprite) {
     return;
   }
 

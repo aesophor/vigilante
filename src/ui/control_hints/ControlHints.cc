@@ -7,7 +7,9 @@
 #include "util/KeyCodeUtil.h"
 #include "util/Logger.h"
 
-#define CONTROL_HINTS_Y 32
+#define CONTROL_HINTS_Y 48
+#define CONTROL_HINTS_RIGHT_PADDING_X 64
+#define CONTROL_HINTS_MAX_ITEMS 3
 
 using std::string;
 using cocos2d::Vec2;
@@ -36,15 +38,25 @@ ControlHints::ControlHints()
     : _layer(Layer::create()),
       _hints() {
   _layer->setPositionY(CONTROL_HINTS_Y);
-
-  //show(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Talk");
-  //show(EventKeyboard::KeyCode::KEY_UP_ARROW, "Open Door");
 }
 
 
+bool ControlHints::isShown(const EventKeyboard::KeyCode keyCode) const {
+  return std::find_if(_hints.begin(),
+                      _hints.end(),
+                      [keyCode](const ControlHints::Hint& hint) {
+                          return keyCode == hint.getKeyCode();
+                      }) != _hints.end();
+}
+
 void ControlHints::show(const EventKeyboard::KeyCode keyCode, const string& text) {
-  if (_hints.size() >= 3) {
-    VGLOG(LOG_WARN, "Unable to add more control hints! Currently have 3.");
+  if (_hints.size() >= CONTROL_HINTS_MAX_ITEMS) {
+    VGLOG(LOG_WARN, "Unable to add more control hints! Currently have %d.",
+          CONTROL_HINTS_MAX_ITEMS);
+    return;
+  }
+
+  if (isShown(keyCode)) {
     return;
   }
 
@@ -78,7 +90,7 @@ void ControlHints::normalize() {
   }
 
   const auto& winSize = Director::getInstance()->getWinSize();
-  float nextX = winSize.width;
+  float nextX = winSize.width - CONTROL_HINTS_RIGHT_PADDING_X;
 
   for (int i = _hints.size() - 1; i >= 0; i--) {
     nextX -= _hints.at(i).getContentSize().width;

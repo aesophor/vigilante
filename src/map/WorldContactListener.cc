@@ -17,6 +17,7 @@
 #include "util/Logger.h"
 
 using std::unique_ptr;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -181,7 +182,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
             c->interact(p);
           }, .1f);
         } else if (!p->willInteractOnContact() && dynamic_cast<Player*>(c)) {
-          p->createHintBubbleFx();
+          p->showHintUI();
         }
       }
       break;
@@ -197,8 +198,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 
         c->setInteractableObject(i);
 
-        if (dynamic_cast<Player*>(c)) {
-          i->createHintBubbleFx();
+        if (dynamic_cast<Player*>(c) ) {
+          i->showHintUI();
         }
 
         if (i->willInteractOnContact()) {
@@ -312,7 +313,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(nullptr);
-        p->removeHintBubbleFx();
+        p->hideHintUI();
       }
       break;
     }
@@ -324,9 +325,8 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture && interactableFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
-
         c->setInteractableObject(nullptr);
-        i->removeHintBubbleFx();
+        i->hideHintUI();
       }
       break;
     }

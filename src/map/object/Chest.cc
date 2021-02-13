@@ -4,12 +4,14 @@
 #include <cocos2d.h>
 #include "Constants.h"
 #include "map/GameMapManager.h"
+#include "ui/control_hints/ControlHints.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
 
 using std::string;
 using std::vector;
 using cocos2d::Sprite;
+using cocos2d::EventKeyboard;
 using vigilante::kPpm;
 using vigilante::category_bits::kInteractable;
 using vigilante::category_bits::kGround;
@@ -89,6 +91,16 @@ void Chest::onInteract(Character*) {
 
 bool Chest::willInteractOnContact() const {
   return false;
+}
+
+void Chest::showHintUI() {
+  createHintBubbleFx();
+  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Open");
+}
+
+void Chest::hideHintUI() {
+  removeHintBubbleFx();
+  ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_CAPITAL_E);
 }
 
 void Chest::createHintBubbleFx() {

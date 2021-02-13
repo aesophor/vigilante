@@ -71,8 +71,8 @@ class Npc : public Character, public Interactable {
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
-  virtual void createHintBubbleFx() override;  // Interactable
-  virtual void removeHintBubbleFx() override;  // Interactable
+  virtual void showHintUI() override;  // Interactable
+  virtual void hideHintUI() override;  // Interactable
 
   void updateDialogueTreeIfNeeded();
   void beginDialogue();
@@ -107,9 +107,17 @@ class Npc : public Character, public Interactable {
 
 
  private:
-  void defineBody(b2BodyType bodyType, float x, float y,
-                  short bodyCategoryBits=0, short bodyMaskBits=0,
-                  short feetMaskBits=0, short weaponMaskBits=0) override;
+  virtual void defineBody(b2BodyType bodyType,
+                          float x,
+                          float y,
+                          short bodyCategoryBits=0,
+                          short bodyMaskBits=0,
+                          short feetMaskBits=0,
+                          short weaponMaskBits=0) override;  // Character
+
+  virtual void createHintBubbleFx() override;  // Interactable
+  virtual void removeHintBubbleFx() override;  // Interactable
+
 
   // See `map/GameMap.cc` for its usage.
   static bool _areNpcsAllowedToAct;

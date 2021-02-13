@@ -14,6 +14,10 @@ class Interactable {
 
   virtual void onInteract(Character* user) = 0;
   virtual bool willInteractOnContact() const = 0;
+  virtual void showHintUI() = 0;
+  virtual void hideHintUI() = 0;
+
+ protected:
   virtual void createHintBubbleFx() = 0;
   virtual void removeHintBubbleFx() = 0;
 };

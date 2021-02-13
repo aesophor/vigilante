@@ -18,6 +18,7 @@
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Shade.h"
+#include "ui/control_hints/ControlHints.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
@@ -37,6 +38,7 @@ using cocos2d::Sequence;
 using cocos2d::FadeIn;
 using cocos2d::FadeOut;
 using cocos2d::CallFunc;
+using cocos2d::EventKeyboard;
 
 namespace vigilante {
 
@@ -346,6 +348,16 @@ void GameMap::Portal::onInteract(Character* user) {
 
 bool GameMap::Portal::willInteractOnContact() const {
   return _willInteractOnContact;
+}
+
+void GameMap::Portal::showHintUI() {
+  createHintBubbleFx();
+  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_UP_ARROW, "Open");
+}
+
+void GameMap::Portal::hideHintUI() {
+  removeHintBubbleFx();
+  ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_UP_ARROW);
 }
 
 void GameMap::Portal::createHintBubbleFx() {

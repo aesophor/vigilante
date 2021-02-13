@@ -18,6 +18,7 @@ class ControlHints {
   static ControlHints* getInstance();
   virtual ~ControlHints() = default;
 
+  bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode) const;
   void show(const cocos2d::EventKeyboard::KeyCode keyCode, const std::string& text);
   void hide(const cocos2d::EventKeyboard::KeyCode keyCode);
 

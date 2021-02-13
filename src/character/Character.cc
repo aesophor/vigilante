@@ -195,10 +195,6 @@ void Character::update(float delta) {
 
   _previousState = _currentState;
   _currentState = getState();
-
-  if (dynamic_cast<Player*>(this)) {
-    VGLOG(LOG_INFO, "Current State = %d", _currentState);
-  }
   
   // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {

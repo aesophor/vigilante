@@ -21,12 +21,18 @@ class Chest : public DynamicActor, public Interactable {
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
+  virtual void showHintUI() override;  // Interactable
+  virtual void hideHintUI() override;  // Interactable
+
+ protected:
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
- protected:
-  void defineBody(b2BodyType bodyType, short categoryBits, short maskBits,
-                  float x, float y);
+  void defineBody(b2BodyType bodyType,
+                  short categoryBits,
+                  short maskBits,
+                  float x,
+                  float y);
 
   static const int _kNumAnimations;
   static const int _kNumFixtures;
