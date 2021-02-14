@@ -1,10 +1,11 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenuDialog.h"
 
 #include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 #include "ui/TableLayout.h"
+#include "ui/control_hints/ControlHints.h"
 
 using std::string;
 using std::unique_ptr;
@@ -87,6 +88,8 @@ void PauseMenuDialog::confirm() {
   _options[0]->setSelected(true);
   _options[_current]->setSelected(false);
   _options[_current]->getHandler()(); // invokes a std::function<void ()>
+
+  ControlHints::getInstance()->setVisible(true);
 }
 
 
@@ -114,6 +117,8 @@ void PauseMenuDialog::setOption(int index, bool visible, const string& text, con
 void PauseMenuDialog::show() {
   update();
   setVisible(true);
+
+  ControlHints::getInstance()->setVisible(false);
 
   // Set the first visible option as selected.
   for (int i = 0; i < (int) _options.size(); i++) {
@@ -194,4 +199,4 @@ void PauseMenuDialog::Option::setHandler(const function<void ()>& handler) {
   _handler = handler;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_PAUSE_MENU_DIALOG_H_
 #define VIGILANTE_PAUSE_MENU_DIALOG_H_
 
@@ -67,6 +67,6 @@ class PauseMenuDialog : public AbstractPane {
   int _current;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_PAUSE_MENU_DIALOG_H_
+#endif  // VIGILANTE_PAUSE_MENU_DIALOG_H_

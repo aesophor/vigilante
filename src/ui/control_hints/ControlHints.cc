@@ -47,7 +47,13 @@ ControlHints::ControlHints()
   // Install Control Hints presets.
   _profiles[ControlHints::Profile::PAUSE_MENU_INVENTORY] = {
     {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
-     "Prev / Next", colorscheme::kWhite},
+     "<Page>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_LEFT_ARROW, EventKeyboard::KeyCode::KEY_RIGHT_ARROW},
+     "<Tab>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+     "Confirm", colorscheme::kWhite},
   };
 
   _profiles[ControlHints::Profile::PAUSE_MENU_EQUIPMENT] = {
