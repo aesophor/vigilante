@@ -41,7 +41,7 @@ class ListView {
 
   void showFrom(int index);  // show n ListViewItems starting from the specified index.
 
-  template <template <typename...> typename ContainerType>
+  template <template <typename...> class ContainerType>
   void setObjects(const ContainerType<T>& objects);
 
   void showScrollBar();
@@ -219,7 +219,7 @@ void ListView<T>::showFrom(int index) {
 }
 
 template <typename T>
-template <template <typename...> typename ContainerType>
+template <template <typename...> class ContainerType>
 void ListView<T>::setObjects(const ContainerType<T>& objects) {
   _objects = std::deque<T>(objects.begin(), objects.end());
 

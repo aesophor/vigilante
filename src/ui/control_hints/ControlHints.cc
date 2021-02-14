@@ -2,15 +2,17 @@
 #include "ControlHints.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include "AssetManager.h"
 #include "util/KeyCodeUtil.h"
 #include "util/Logger.h"
 
 #define CONTROL_HINTS_Y 32
-#define CONTROL_HINTS_RIGHT_PADDING_X 50
+#define CONTROL_HINTS_RIGHT_PADDING_X 64
 #define CONTROL_HINTS_MAX_ITEMS 3
 
+using std::array;
 using std::string;
 using std::vector;
 using cocos2d::Vec2;
@@ -41,11 +43,41 @@ ControlHints::ControlHints()
       _profiles(),
       _currentProfileStack({ControlHints::Profile::GAME}) {
   _layer->setPositionY(CONTROL_HINTS_Y);
+
+  // Install Control Hints presets.
+  _profiles[ControlHints::Profile::PAUSE_MENU_INVENTORY] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+     "Prev / Next", colorscheme::kWhite},
+  };
+
+  _profiles[ControlHints::Profile::PAUSE_MENU_EQUIPMENT] = {
+  };
+
+  _profiles[ControlHints::Profile::PAUSE_MENU_SKILLS] = {
+  };
+
+  _profiles[ControlHints::Profile::PAUSE_MENU_QUESTS] = {
+  };
+
+  _profiles[ControlHints::Profile::PAUSE_MENU_OPTIONS] = {
+  };
+
+  for (auto profile : _profiles) {
+    for (auto& hint : profile) {
+      hint.getLayout()->setVisible(false);
+      _layer->addChild(hint.getLayout());
+    }
+  }
 }
 
 
 ControlHints::Profile ControlHints::getCurrentProfile() const {
   return _currentProfileStack.top();
+}
+
+void ControlHints::switchToProfile(ControlHints::Profile profile) {
+  popProfile();
+  pushProfile(profile);
 }
 
 void ControlHints::pushProfile(ControlHints::Profile profile) {
@@ -61,17 +93,17 @@ void ControlHints::popProfile() {
 }
 
 
-bool ControlHints::isShown(const EventKeyboard::KeyCode keyCode) {
-  auto& hints = getCurrentProfileHints();
+bool ControlHints::isShown(const vector<EventKeyboard::KeyCode>& keyCodes) {
+  const auto& hints = getCurrentProfileHints();
 
   return std::find_if(hints.begin(),
                       hints.end(),
-                      [keyCode](const ControlHints::Hint& hint) {
-                          return keyCode == hint.getKeyCode();
+                      [keyCodes](const ControlHints::Hint& hint) {
+                          return keyCodes == hint.getKeyCodes();
                       }) != hints.end();
 }
 
-void ControlHints::insert(const EventKeyboard::KeyCode keyCode,
+void ControlHints::insert(const vector<EventKeyboard::KeyCode>& keyCodes,
                           const string& text,
                           const Color4B& textColor) {
   auto& hints = getCurrentProfileHints();
@@ -82,18 +114,18 @@ void ControlHints::insert(const EventKeyboard::KeyCode keyCode,
     return;
   }
 
-  if (isShown(keyCode)) {
+  if (isShown(keyCodes)) {
     return;
   }
 
-  hints.push_back(ControlHints::Hint(keyCode, text, textColor));
+  hints.push_back({keyCodes, text, textColor});
   _layer->addChild(hints.back().getLayout());
   _layer->setCameraMask(_layer->getCameraMask());
 
   normalize();
 }
 
-void ControlHints::remove(const EventKeyboard::KeyCode keyCode) {
+void ControlHints::remove(const vector<EventKeyboard::KeyCode>& keyCodes) {
   auto& hints = getCurrentProfileHints();
 
   if (hints.empty()) {
@@ -103,8 +135,8 @@ void ControlHints::remove(const EventKeyboard::KeyCode keyCode) {
 
   hints.erase(std::remove_if(hints.begin(),
                              hints.end(),
-                             [this, keyCode](const ControlHints::Hint& hint) {
-                                 return keyCode == hint.getKeyCode() &&
+                             [this, keyCodes](const ControlHints::Hint& hint) {
+                                 return keyCodes == hint.getKeyCodes() &&
                                    (_layer->removeChild(hint.getLayout()), true);
                              }),
                hints.end());
@@ -133,6 +165,8 @@ void ControlHints::showAll() {
   for (auto& hint : getCurrentProfileHints()) {
     hint.getLayout()->setVisible(true);
   }
+
+  normalize();
 }
 
 void ControlHints::hideAll() {
@@ -160,38 +194,58 @@ Layer* ControlHints::getLayer() const {
 }
 
 
-ControlHints::Hint::Hint(const EventKeyboard::KeyCode keyCode,
+ControlHints::Hint::Hint(const vector<EventKeyboard::KeyCode>& keyCodes,
                          const string& text,
                          const Color4B& textColor)
     : _layout(Layout::create()),
-      _icon(ImageView::create(kControlHints + keycode_util::keyCodeToString(keyCode) + ".png")),
+      _icons(keyCodes.size()),
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
-      _keyCode(keyCode) {
-  _icon->setAnchorPoint({0, 1});
+      _keyCodes(keyCodes) {
 
+  assert(!keyCodes.empty());
+  _layout->setLayoutType(Layout::Type::HORIZONTAL);
+
+  for (size_t i = 0; i < keyCodes.size(); i++) {
+    // Example: Texture/ui/control_hints/E.png
+    string iconPath = kControlHints +
+                      keycode_util::keyCodeToString(keyCodes.at(i)) + ".png";
+
+    _icons[i] = ImageView::create(iconPath);
+    _icons[i]->setAnchorPoint({0, 1});
+    _icons[i]->setPositionX(i * _icons[i]->getContentSize().width);
+    _layout->addChild(_icons[i]);
+  }
+  
   _label->setAnchorPoint({0, 1});
   _label->setTextColor(textColor);
-  _label->setPositionX(_icon->getContentSize().width + _kIconLabelGap);
+  _label->setPositionX(_icons.size() * _icons.front()->getContentSize().width +
+                       _kIconLabelGap);
   _label->getFontAtlas()->setAliasTexParameters();
-
-  _layout->setLayoutType(Layout::Type::HORIZONTAL);
-  _layout->addChild(_icon);
   _layout->addChild(_label);
 }
 
 
 Size ControlHints::Hint::getContentSize() const {
-  const Size& iconSize = _icon->getContentSize();
+  Size ret(0, 0);
+
+  for (auto icon : _icons) {
+    const Size& iconSize = icon->getContentSize();
+    ret.width += iconSize.width;
+    ret.height = std::max(ret.height, iconSize.height);
+  }
+
   const Size& labelSize = _label->getContentSize();
-  return {iconSize.width + labelSize.width, std::max(iconSize.height, labelSize.height)};
+  ret.width += labelSize.width;
+  ret.height = std::max(ret.height, labelSize.height);
+  return ret;
 }
 
 Layout* ControlHints::Hint::getLayout() const {
   return _layout;
 }
 
-EventKeyboard::KeyCode ControlHints::Hint::getKeyCode() const {
-  return _keyCode;
+const vector<EventKeyboard::KeyCode>& ControlHints::Hint::getKeyCodes() const {
+  return _keyCodes;
 }
 
 }  // namespace vigilante

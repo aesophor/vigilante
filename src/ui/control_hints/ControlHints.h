@@ -24,28 +24,29 @@ namespace vigilante {
 
 class ControlHints {
  public:
-  static ControlHints* getInstance();
-  virtual ~ControlHints() = default;
-
-  enum Profile {
+   enum Profile {
+    PAUSE_MENU_INVENTORY,
+    PAUSE_MENU_EQUIPMENT,
+    PAUSE_MENU_SKILLS,
+    PAUSE_MENU_QUESTS,
+    PAUSE_MENU_OPTIONS,
     GAME,
-    PAUSE_MENU,
     SIZE
   };
 
+  static ControlHints* getInstance();
+  virtual ~ControlHints() = default;
+
   ControlHints::Profile getCurrentProfile() const;
+  void switchToProfile(ControlHints::Profile profile);
   void pushProfile(ControlHints::Profile profile);
   void popProfile();
 
-
-  bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode);
-
-  void insert(const cocos2d::EventKeyboard::KeyCode keyCode,
+  bool isShown(const std::vector<cocos2d::EventKeyboard::KeyCode>& keyCodes);
+  void insert(const std::vector<cocos2d::EventKeyboard::KeyCode>& keyCodes,
               const std::string& text,
               const cocos2d::Color4B& textColor=colorscheme::kWhite);
-
-  void remove(const cocos2d::EventKeyboard::KeyCode keyCode);
-
+  void remove(const std::vector<cocos2d::EventKeyboard::KeyCode>& keyCodes);
 
   bool isVisible() const;
   void setVisible(bool visible);
@@ -54,22 +55,21 @@ class ControlHints {
  private:
   class Hint final {
    public:
-    Hint(const cocos2d::EventKeyboard::KeyCode keyCode,
+    Hint(const std::vector<cocos2d::EventKeyboard::KeyCode>& keyCodes,
          const std::string& text,
          const cocos2d::Color4B& textColor);
-    ~Hint() = default;
 
     cocos2d::Size getContentSize() const;
     cocos2d::ui::Layout* getLayout() const;
-    cocos2d::EventKeyboard::KeyCode getKeyCode() const;
+    const std::vector<cocos2d::EventKeyboard::KeyCode>& getKeyCodes() const;
 
    private:
     static const int _kIconLabelGap;
 
     cocos2d::ui::Layout* _layout;
-    cocos2d::ui::ImageView* _icon;
+    std::vector<cocos2d::ui::ImageView*> _icons;
     cocos2d::Label* _label;
-    cocos2d::EventKeyboard::KeyCode _keyCode;
+    std::vector<cocos2d::EventKeyboard::KeyCode> _keyCodes;
   };
 
   ControlHints();
@@ -79,8 +79,8 @@ class ControlHints {
   std::vector<ControlHints::Hint>& getCurrentProfileHints();
 
   static const int _kHintGap;
-  cocos2d::Layer* _layer;
 
+  cocos2d::Layer* _layer;
   std::array<std::vector<ControlHints::Hint>, ControlHints::Profile::SIZE> _profiles;
   std::stack<ControlHints::Profile> _currentProfileStack;  
 };

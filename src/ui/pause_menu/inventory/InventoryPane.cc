@@ -7,6 +7,7 @@
 #include "character/Player.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
+#include "ui/control_hints/ControlHints.h"
 #include "ui/pause_menu/PauseMenu.h"
 
 using std::string;

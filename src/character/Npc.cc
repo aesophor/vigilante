@@ -246,12 +246,12 @@ void Npc::showHintUI() {
   }
 
   createHintBubbleFx();
-  ControlHints::getInstance()->insert(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Talk");
+  ControlHints::getInstance()->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Talk");
 }
 
 void Npc::hideHintUI() {
   removeHintBubbleFx();
-  ControlHints::getInstance()->remove(EventKeyboard::KeyCode::KEY_CAPITAL_E);
+  ControlHints::getInstance()->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }
 
 void Npc::createHintBubbleFx() {

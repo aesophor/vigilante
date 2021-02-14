@@ -4,12 +4,12 @@
 #include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
-#include "ui/control_hints/ControlHints.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
 #include "ui/pause_menu/quest/QuestPane.h"
 #include "ui/pause_menu/option/OptionPane.h"
+#include "util/Logger.h"
 
 #define HEADER_PANE_POS {140, 280}
 #define STATS_PANE_POS {50, 240}
@@ -104,11 +104,17 @@ void PauseMenu::handleInput() {
     getCurrentPane()->update();
     getCurrentPane()->setVisible(true);
 
+    ControlHints::getInstance()->switchToProfile(
+        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
+
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
     getCurrentPane()->setVisible(false);
     _headerPane->selectNext();
     getCurrentPane()->update();
     getCurrentPane()->setVisible(true);
+
+    ControlHints::getInstance()->switchToProfile(
+        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
   }
 
   _panes[_headerPane->getCurrentIndex()]->handleInput();
@@ -150,7 +156,9 @@ bool PauseMenu::isVisible() const {
 void PauseMenu::setVisible(bool visible) {
   if (visible && !isVisible()) {
     _layer->setVisible(true);
-    ControlHints::getInstance()->pushProfile(ControlHints::Profile::PAUSE_MENU);
+    ControlHints::getInstance()->pushProfile(
+        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
+
   } else if (!visible && isVisible()) {
     _layer->setVisible(false);
     ControlHints::getInstance()->popProfile();

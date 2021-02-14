@@ -19,7 +19,7 @@ class TableLayout : public cocos2d::ui::Layout {
     RIGHT
   };
 
-  virtual void removeAllChildren();  // cocos2d::ui::Layout
+  virtual void removeAllChildren() override;  // cocos2d::ui::Layout
 
   virtual void addChild(cocos2d::Node* child) override;
   virtual TableLayout* align(TableLayout::Alignment direction);  // align last added child
