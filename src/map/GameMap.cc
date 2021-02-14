@@ -17,6 +17,7 @@
 #include "item/Key.h"
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
+#include "ui/Colorscheme.h"
 #include "ui/Shade.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/notifications/Notifications.h"
@@ -31,6 +32,7 @@ using std::string;
 using std::thread;
 using std::unique_ptr;
 using std::shared_ptr;
+using cocos2d::Color4B;
 using cocos2d::Director;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
@@ -351,12 +353,21 @@ bool GameMap::Portal::willInteractOnContact() const {
 }
 
 void GameMap::Portal::showHintUI() {
-  createHintBubbleFx();
-  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_UP_ARROW, "Open");
+  //createHintBubbleFx();
+
+  string text = "Open";
+  Color4B textColor = colorscheme::kWhite;
+
+  if (_isLocked && !canBeUnlockedBy(GameMapManager::getInstance()->getPlayer())) {
+    text += " (Locked)";
+    textColor = colorscheme::kRed;
+  }
+
+  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_UP_ARROW, text, textColor);
 }
 
 void GameMap::Portal::hideHintUI() {
-  removeHintBubbleFx();
+  //removeHintBubbleFx();
   ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_UP_ARROW);
 }
 
