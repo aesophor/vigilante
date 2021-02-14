@@ -7,13 +7,14 @@
 #include "util/KeyCodeUtil.h"
 #include "util/Logger.h"
 
-#define CONTROL_HINTS_Y 48
-#define CONTROL_HINTS_RIGHT_PADDING_X 64
+#define CONTROL_HINTS_Y 32
+#define CONTROL_HINTS_RIGHT_PADDING_X 50
 #define CONTROL_HINTS_MAX_ITEMS 3
 
 using std::string;
 using cocos2d::Vec2;
 using cocos2d::Size;
+using cocos2d::Color4B;
 using cocos2d::Layer;
 using cocos2d::Label;
 using cocos2d::Director;
@@ -26,7 +27,7 @@ using vigilante::asset_manager::kControlHints;
 
 namespace vigilante {
 
-const int ControlHints::_kHintGap = 25;
+const int ControlHints::_kHintGap = 16;
 const int ControlHints::Hint::_kIconLabelGap = 4;
 
 ControlHints* ControlHints::getInstance() {
@@ -49,7 +50,9 @@ bool ControlHints::isShown(const EventKeyboard::KeyCode keyCode) const {
                       }) != _hints.end();
 }
 
-void ControlHints::show(const EventKeyboard::KeyCode keyCode, const string& text) {
+void ControlHints::show(const EventKeyboard::KeyCode keyCode,
+                        const string& text,
+                        const Color4B& textColor) {
   if (_hints.size() >= CONTROL_HINTS_MAX_ITEMS) {
     VGLOG(LOG_WARN, "Unable to add more control hints! Currently have %d.",
           CONTROL_HINTS_MAX_ITEMS);
@@ -60,7 +63,7 @@ void ControlHints::show(const EventKeyboard::KeyCode keyCode, const string& text
     return;
   }
 
-  _hints.push_back(ControlHints::Hint(keyCode, text));
+  _hints.push_back(ControlHints::Hint(keyCode, text, textColor));
   _layer->addChild(_hints.back().getLayout());
   _layer->setCameraMask(_layer->getCameraMask());
 
@@ -100,18 +103,30 @@ void ControlHints::normalize() {
 }
 
 
+bool ControlHints::isVisible() const {
+  return _layer->isVisible();
+}
+
+void ControlHints::setVisible(bool visible) {
+  _layer->setVisible(visible);
+}
+
 Layer* ControlHints::getLayer() const {
   return _layer;
 }
 
 
-ControlHints::Hint::Hint(const EventKeyboard::KeyCode keyCode, const string& text)
+ControlHints::Hint::Hint(const EventKeyboard::KeyCode keyCode,
+                         const string& text,
+                         const Color4B& textColor)
     : _layout(Layout::create()),
       _icon(ImageView::create(kControlHints + keycode_util::keyCodeToString(keyCode) + ".png")),
       _label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       _keyCode(keyCode) {
   _icon->setAnchorPoint({0, 1});
+
   _label->setAnchorPoint({0, 1});
+  _label->setTextColor(textColor);
   _label->setPositionX(_icon->getContentSize().width + _kIconLabelGap);
   _label->getFontAtlas()->setAliasTexParameters();
 

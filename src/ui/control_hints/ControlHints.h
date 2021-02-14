@@ -10,6 +10,7 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+#include "ui/Colorscheme.h"
 
 namespace vigilante {
 
@@ -19,15 +20,23 @@ class ControlHints {
   virtual ~ControlHints() = default;
 
   bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode) const;
-  void show(const cocos2d::EventKeyboard::KeyCode keyCode, const std::string& text);
+
+  void show(const cocos2d::EventKeyboard::KeyCode keyCode,
+            const std::string& text,
+            const cocos2d::Color4B& textColor=colorscheme::kWhite);
+
   void hide(const cocos2d::EventKeyboard::KeyCode keyCode);
 
+  bool isVisible() const;
+  void setVisible(bool visible);
   cocos2d::Layer* getLayer() const;
 
  private:
   class Hint final {
    public:
-    Hint(const cocos2d::EventKeyboard::KeyCode keyCode, const std::string& text);
+    Hint(const cocos2d::EventKeyboard::KeyCode keyCode,
+         const std::string& text,
+         const cocos2d::Color4B& textColor);
     ~Hint() = default;
 
     cocos2d::Size getContentSize() const;
