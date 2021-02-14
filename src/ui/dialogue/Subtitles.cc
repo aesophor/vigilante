@@ -85,9 +85,7 @@ void Subtitles::update(float delta) {
 }
 
 void Subtitles::handleInput() {
-  auto inputMgr = InputManager::getInstance();
-
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     showNextSubtitle();
   }
 }

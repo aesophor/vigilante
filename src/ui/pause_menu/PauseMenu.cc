@@ -89,63 +89,35 @@ void PauseMenu::initMainPane(int index, std::unique_ptr<AbstractPane> pane) {
 
 void PauseMenu::update() {
   _statsPane->update();
-  if (_panes[_headerPane->getCurrentIndex()]) {
-    _panes[_headerPane->getCurrentIndex()]->update();
-  }
+  _panes[_headerPane->getCurrentIndex()]->update();
 }
 
 void PauseMenu::handleInput() {
-  InputManager* inputMgr = InputManager::getInstance();
-
   if (_dialog->isVisible()) {
     _dialog->handleInput();
     return;
   }
   
-  // FIXME: when all panes are implemented, this section of code
-  // should be cleaned up.
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Q)) {
-    AbstractPane* oldPane = getCurrentPane();
-    if (oldPane) {
-      oldPane->setVisible(false);
-    }
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_Q)) {
+    getCurrentPane()->setVisible(false);
     _headerPane->selectPrev();
-    AbstractPane* newPane = getCurrentPane();
-    if (newPane) {
-      newPane->update();
-      newPane->setVisible(true);
-    }
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
-    AbstractPane* oldPane = getCurrentPane();
-    if (oldPane) {
-      oldPane->setVisible(false);
-    }
+    getCurrentPane()->update();
+    getCurrentPane()->setVisible(true);
+
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
+    getCurrentPane()->setVisible(false);
     _headerPane->selectNext();
-    AbstractPane* newPane = getCurrentPane();
-    if (newPane) {
-      newPane->update();
-      newPane->setVisible(true);
-    }
+    getCurrentPane()->update();
+    getCurrentPane()->setVisible(true);
   }
 
-  if (_panes[_headerPane->getCurrentIndex()]) {
-    _panes[_headerPane->getCurrentIndex()]->handleInput();
-  }
+  _panes[_headerPane->getCurrentIndex()]->handleInput();
 }
 
 void PauseMenu::show(Pane pane) {
-  AbstractPane* oldPane = getCurrentPane();
-  if (oldPane) {
-    oldPane->setVisible(false);
-  }
-
+  getCurrentPane()->setVisible(false);
   _headerPane->select(static_cast<int>(pane));
-
-  AbstractPane* newPane = getCurrentPane();
-  if (newPane) {
-    newPane->setVisible(true);
-  }
-
+  getCurrentPane()->setVisible(true);
   update();
 }
 

@@ -195,40 +195,39 @@ void Player::handleInput() {
     return;
   }
 
-  auto inputMgr = InputManager::getInstance();
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_E)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
     if (_interactableObject) {
       interact(_interactableObject);
     }
     return;
-  } else if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     if (_portal) {
       interact(_portal);
     }
     return;
   }
 
-  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     crouch();
-    if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
+    if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
       jumpDown();
     }
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
     if (!_isWeaponSheathed) {
       attack();
     }
   }
 
-  if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     moveLeft();
-  } else if (inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     moveRight();
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_R)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_R)) {
     if (_equipmentSlots[Equipment::Type::WEAPON]
         && _isWeaponSheathed && !_isUnsheathingWeapon) {
       unsheathWeapon();
@@ -240,7 +239,7 @@ void Player::handleInput() {
   // Hotkeys
   for (auto keyCode : HotkeyManager::_kBindableKeys) {
     Keybindable* action = HotkeyManager::getInstance()->getHotkeyAction(keyCode);
-    if (inputMgr->isKeyJustPressed(keyCode) && action) {
+    if (IS_KEY_JUST_PRESSED(keyCode) && action) {
       if (dynamic_cast<Skill*>(action)) {
         activateSkill(dynamic_cast<Skill*>(action));
       } else if (dynamic_cast<Consumable*>(action)) {
@@ -249,17 +248,17 @@ void Player::handleInput() {
     }
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_Z)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_Z)) {
     if (!_inRangeItems.empty()) {
       pickupItem(*_inRangeItems.begin());
     }
   }
 
-  if (inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ALT)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ALT)) {
     jump();
   }
 
-  if (_isCrouching && !inputMgr->isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (_isCrouching && !IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     getUp();
   }
 }

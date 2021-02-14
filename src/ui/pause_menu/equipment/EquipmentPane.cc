@@ -26,7 +26,6 @@ namespace vigilante {
 
 EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create(300)),
-      _inputMgr(InputManager::getInstance()),
       _current() {
   Layout* innerLayout = Layout::create();
 
@@ -53,11 +52,11 @@ void EquipmentPane::update() {
 }
 
 void EquipmentPane::handleInput() {
-  if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
     selectUp();
-  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     selectDown();
-  } else if (_inputMgr->isKeyJustPressed(EventKeyboard::KeyCode::KEY_ENTER)) {
+  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     confirm();
   }
 }

@@ -57,7 +57,6 @@ class EquipmentPane : public AbstractPane {
     Equipment* _equipment;
   };
 
-  InputManager* _inputMgr;
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
   int _current;
 };
