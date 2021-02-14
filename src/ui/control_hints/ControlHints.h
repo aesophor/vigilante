@@ -2,8 +2,9 @@
 #ifndef VIGILANTE_CONTROL_HINTS_H_
 #define VIGILANTE_CONTROL_HINTS_H_
 
-#include <string>
+#include <array>
 #include <vector>
+#include <string>
 #include <unordered_map>
 
 #include <cocos2d.h>
@@ -14,18 +15,40 @@
 
 namespace vigilante {
 
+// ControlHints contains a fixed number of "profiles"
+// for the game to switch between.
+//
+// Each profile may contains up to 3 ControlHints::Hint,
+// where a ControlHints::Hint consists of an icon and a label.
+
 class ControlHints {
  public:
   static ControlHints* getInstance();
   virtual ~ControlHints() = default;
 
-  bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode) const;
+  enum class Profile {
+    GAME,
+    PAUSE_MENU_STATS,
+    PAUSE_MENU_INVENTORY,
+    PAUSE_MENU_EQUIPMENT,
+    PAUSE_MENU_SKILLS,
+    PAUSE_MENU_QUESTS,
+    PAUSE_MENU_OPTIONS,
+    SIZE
+  };
 
-  void show(const cocos2d::EventKeyboard::KeyCode keyCode,
-            const std::string& text,
-            const cocos2d::Color4B& textColor=colorscheme::kWhite);
+  ControlHints::Profile getCurrentProfile() const;
+  void setCurrentProfile(ControlHints::Profile currentProfile);
 
-  void hide(const cocos2d::EventKeyboard::KeyCode keyCode);
+
+  bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode);
+
+  void insert(const cocos2d::EventKeyboard::KeyCode keyCode,
+              const std::string& text,
+              const cocos2d::Color4B& textColor=colorscheme::kWhite);
+
+  void remove(const cocos2d::EventKeyboard::KeyCode keyCode);
+
 
   bool isVisible() const;
   void setVisible(bool visible);
@@ -54,11 +77,13 @@ class ControlHints {
 
   ControlHints();
   void normalize();
+  std::vector<ControlHints::Hint>& getCurrentProfileHints();
 
   static const int _kHintGap;
-
   cocos2d::Layer* _layer;
-  std::vector<ControlHints::Hint> _hints;
+
+  ControlHints::Profile _currentProfile;
+  std::array<std::vector<ControlHints::Hint>, ControlHints::Profile::SIZE> _profiles;
 };
 
 }  // namespace vigilante

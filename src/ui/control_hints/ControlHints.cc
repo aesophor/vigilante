@@ -12,6 +12,7 @@
 #define CONTROL_HINTS_MAX_ITEMS 3
 
 using std::string;
+using std::vector;
 using cocos2d::Vec2;
 using cocos2d::Size;
 using cocos2d::Color4B;
@@ -37,23 +38,37 @@ ControlHints* ControlHints::getInstance() {
 
 ControlHints::ControlHints()
     : _layer(Layer::create()),
-      _hints() {
+      _currentProfile(),
+      _profiles() {
   _layer->setPositionY(CONTROL_HINTS_Y);
 }
 
 
-bool ControlHints::isShown(const EventKeyboard::KeyCode keyCode) const {
-  return std::find_if(_hints.begin(),
-                      _hints.end(),
-                      [keyCode](const ControlHints::Hint& hint) {
-                          return keyCode == hint.getKeyCode();
-                      }) != _hints.end();
+ControlHints::Profile ControlHints::getCurrentProfile() const {
+  return _currentProfile;
 }
 
-void ControlHints::show(const EventKeyboard::KeyCode keyCode,
-                        const string& text,
-                        const Color4B& textColor) {
-  if (_hints.size() >= CONTROL_HINTS_MAX_ITEMS) {
+void ControlHints::setCurrentProfile(ControlHints::Profile currentProfile) {
+  _currentProfile = currentProfile;
+}
+
+
+bool ControlHints::isShown(const EventKeyboard::KeyCode keyCode) {
+  auto& hints = getCurrentProfileHints();
+
+  return std::find_if(hints.begin(),
+                      hints.end(),
+                      [keyCode](const ControlHints::Hint& hint) {
+                          return keyCode == hint.getKeyCode();
+                      }) != hints.end();
+}
+
+void ControlHints::insert(const EventKeyboard::KeyCode keyCode,
+                          const string& text,
+                          const Color4B& textColor) {
+  auto& hints = getCurrentProfileHints();
+
+  if (hints.size() >= CONTROL_HINTS_MAX_ITEMS) {
     VGLOG(LOG_WARN, "Unable to add more control hints! Currently have %d.",
           CONTROL_HINTS_MAX_ITEMS);
     return;
@@ -63,43 +78,52 @@ void ControlHints::show(const EventKeyboard::KeyCode keyCode,
     return;
   }
 
-  _hints.push_back(ControlHints::Hint(keyCode, text, textColor));
-  _layer->addChild(_hints.back().getLayout());
+  hints.push_back(ControlHints::Hint(keyCode, text, textColor));
+  _layer->addChild(hints.back().getLayout());
   _layer->setCameraMask(_layer->getCameraMask());
 
   normalize();
 }
 
-void ControlHints::hide(const EventKeyboard::KeyCode keyCode) {
-  if (_hints.empty()) {
+void ControlHints::remove(const EventKeyboard::KeyCode keyCode) {
+  auto& hints = getCurrentProfileHints();
+
+  if (hints.empty()) {
     VGLOG(LOG_WARN, "Unable to remove any more control hints! Currently have 0.");
     return;
   }
 
-  _hints.erase(std::remove_if(_hints.begin(),
-                              _hints.end(),
-                              [this, keyCode](const ControlHints::Hint& hint) {
-                                  return keyCode == hint.getKeyCode() &&
-                                    (_layer->removeChild(hint.getLayout()), true);
-                              }),
-               _hints.end());
+  hints.erase(std::remove_if(hints.begin(),
+                             hints.end(),
+                             [this, keyCode](const ControlHints::Hint& hint) {
+                                 return keyCode == hint.getKeyCode() &&
+                                   (_layer->removeChild(hint.getLayout()), true);
+                             }),
+               hints.end());
 
   normalize();
 }
 
 void ControlHints::normalize() {
-  if (_hints.empty()) {
+  auto& hints = getCurrentProfileHints();
+
+  if (hints.empty()) {
     return;
   }
 
   const auto& winSize = Director::getInstance()->getWinSize();
   float nextX = winSize.width - CONTROL_HINTS_RIGHT_PADDING_X;
 
-  for (int i = _hints.size() - 1; i >= 0; i--) {
-    nextX -= _hints.at(i).getContentSize().width;
+  for (int i = hints.size() - 1; i >= 0; i--) {
+    nextX -= hints.at(i).getContentSize().width;
     nextX -= _kHintGap;
-    _hints.at(i).getLayout()->setPositionX(nextX);
+    hints.at(i).getLayout()->setPositionX(nextX);
   }
+}
+
+
+vector<ControlHints::Hint>& ControlHints::getCurrentProfileHints() {
+  return _profiles.at(_currentProfile);
 }
 
 
