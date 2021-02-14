@@ -8,7 +8,7 @@
 #include "util/KeyCodeUtil.h"
 #include "util/Logger.h"
 
-#define CONTROL_HINTS_Y 32
+#define CONTROL_HINTS_Y 30
 #define CONTROL_HINTS_RIGHT_PADDING_X 64
 #define CONTROL_HINTS_MAX_ITEMS 3
 
