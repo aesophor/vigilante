@@ -155,9 +155,9 @@ void ControlHints::normalize() {
   float nextX = winSize.width - CONTROL_HINTS_RIGHT_PADDING_X;
 
   for (int i = hints.size() - 1; i >= 0; i--) {
-    nextX -= hints.at(i).getContentSize().width;
+    nextX -= hints[i].getContentSize().width;
     nextX -= _kHintGap;
-    hints.at(i).getLayout()->setPositionX(nextX);
+    hints[i].getLayout()->setPositionX(nextX);
   }
 }
 
