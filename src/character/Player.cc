@@ -208,7 +208,7 @@ void Player::handleInput() {
     return;
   }
 
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     crouch();
     if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
       jumpDown();
@@ -221,9 +221,9 @@ void Player::handleInput() {
     }
   }
 
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
     moveLeft();
-  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+  } else if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
     moveRight();
   }
 
@@ -258,7 +258,7 @@ void Player::handleInput() {
     jump();
   }
 
-  if (_isCrouching && !IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+  if (_isCrouching && !IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     getUp();
   }
 }
