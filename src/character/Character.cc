@@ -551,7 +551,7 @@ Character::State Character::getState() const {
   // This one makes platform jumping animation smoother...
   // but the code looks more ugly :(
   } else if (std::abs(_body->GetLinearVelocity().y) > .01f && !_isTakingDamage) {
-    return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
+    return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   } else {
     return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }

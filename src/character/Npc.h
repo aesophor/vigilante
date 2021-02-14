@@ -78,6 +78,9 @@ class Npc : public Character, public Interactable {
   void beginDialogue();
   void beginTrade();
 
+  void onDialogueBegin();
+  void onDialogueEnd();
+
 
   void act(float delta);
   void findNewLockedOnTargetFromParty(Character* killedTarget);

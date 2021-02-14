@@ -279,12 +279,27 @@ void Npc::removeHintBubbleFx() {
 }
 
 
+void Npc::updateDialogueTreeIfNeeded() {
+  // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
+  // See gameplay/DialogueTree.cc
+  string latestDialogueTreeJsonFileName
+    = DialogueTree::getLatestNpcDialogueTree(_characterProfile.jsonFileName);
+
+  if (latestDialogueTreeJsonFileName.empty()) {
+    return;
+  }
+
+  VGLOG(LOG_INFO, "Loading %s's dialogue tree: %s", _characterProfile.jsonFileName.c_str(),
+                                                    latestDialogueTreeJsonFileName.c_str());
+  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName, this);
+}
+
 void Npc::beginDialogue() {
   if (_npcProfile.dialogueTreeJsonFile.empty()) {
     return;
   }
 
-  removeHintBubbleFx();
+  onDialogueBegin();
 
   auto dialogueMgr = DialogueManager::getInstance();
   dialogueMgr->setTargetNpc(this);
@@ -302,19 +317,12 @@ void Npc::beginTrade() {
 }
 
 
-void Npc::updateDialogueTreeIfNeeded() {
-  // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
-  // See gameplay/DialogueTree.cc
-  string latestDialogueTreeJsonFileName
-    = DialogueTree::getLatestNpcDialogueTree(_characterProfile.jsonFileName);
+void Npc::onDialogueBegin() {
+  ControlHints::getInstance()->setVisible(false);
+}
 
-  if (latestDialogueTreeJsonFileName.empty()) {
-    return;
-  }
-
-  VGLOG(LOG_INFO, "Loading %s's dialogue tree: %s", _characterProfile.jsonFileName.c_str(),
-                                                    latestDialogueTreeJsonFileName.c_str());
-  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName, this);
+void Npc::onDialogueEnd() {
+  ControlHints::getInstance()->setVisible(true);
 }
 
 

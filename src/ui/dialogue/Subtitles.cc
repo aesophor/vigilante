@@ -125,8 +125,9 @@ void Subtitles::endSubtitles() {
     MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}),
     CallFunc::create([=]() {
       _isTransitioning = false;
-      Hud::getInstance()->getLayer()->setVisible(true);
       _layer->setVisible(false);
+      Hud::getInstance()->getLayer()->setVisible(true);
+      DialogueManager::getInstance()->getTargetNpc()->onDialogueEnd();
     })
   ));
 }
