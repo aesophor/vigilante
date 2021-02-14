@@ -99,12 +99,12 @@ bool Chest::willInteractOnContact() const {
 
 void Chest::showHintUI() {
   createHintBubbleFx();
-  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Open");
+  ControlHints::getInstance()->insert(EventKeyboard::KeyCode::KEY_CAPITAL_E, "Open");
 }
 
 void Chest::hideHintUI() {
   removeHintBubbleFx();
-  ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_CAPITAL_E);
+  ControlHints::getInstance()->remove(EventKeyboard::KeyCode::KEY_CAPITAL_E);
 }
 
 void Chest::createHintBubbleFx() {

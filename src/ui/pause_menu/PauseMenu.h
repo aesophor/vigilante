@@ -51,6 +51,9 @@ class PauseMenu : public Controllable {
   cocos2d::Layer* getLayer() const;
   PauseMenuDialog* getDialog() const;
 
+  bool isVisible() const;
+  void setVisible(bool visible);
+
  private:
   void initMainPane(int index, std::unique_ptr<AbstractPane> pane);
 

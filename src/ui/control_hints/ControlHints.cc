@@ -38,18 +38,26 @@ ControlHints* ControlHints::getInstance() {
 
 ControlHints::ControlHints()
     : _layer(Layer::create()),
-      _currentProfile(),
-      _profiles() {
+      _profiles(),
+      _currentProfileStack({ControlHints::Profile::GAME}) {
   _layer->setPositionY(CONTROL_HINTS_Y);
 }
 
 
 ControlHints::Profile ControlHints::getCurrentProfile() const {
-  return _currentProfile;
+  return _currentProfileStack.top();
 }
 
-void ControlHints::setCurrentProfile(ControlHints::Profile currentProfile) {
-  _currentProfile = currentProfile;
+void ControlHints::pushProfile(ControlHints::Profile profile) {
+  hideAll();
+  _currentProfileStack.push(profile);
+  showAll();
+}
+
+void ControlHints::popProfile() {
+  hideAll();
+  _currentProfileStack.pop();
+  showAll();
 }
 
 
@@ -121,9 +129,21 @@ void ControlHints::normalize() {
   }
 }
 
+void ControlHints::showAll() {
+  for (auto& hint : getCurrentProfileHints()) {
+    hint.getLayout()->setVisible(true);
+  }
+}
+
+void ControlHints::hideAll() {
+  for (auto& hint : getCurrentProfileHints()) {
+    hint.getLayout()->setVisible(false);
+  }
+}
+
 
 vector<ControlHints::Hint>& ControlHints::getCurrentProfileHints() {
-  return _profiles.at(_currentProfile);
+  return _profiles.at(_currentProfileStack.top());
 }
 
 

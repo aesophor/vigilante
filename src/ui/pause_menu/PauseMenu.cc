@@ -4,6 +4,7 @@
 #include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
+#include "ui/control_hints/ControlHints.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
@@ -72,6 +73,9 @@ PauseMenu::PauseMenu(Player* player)
 
   // Show inventory pane by default.
   _panes.front()->setVisible(true);
+
+  // By default, the PauseMenu should be invisible.
+  _layer->setVisible(false);
 }
 
 void PauseMenu::initMainPane(int index, std::unique_ptr<AbstractPane> pane) {
@@ -164,6 +168,21 @@ Layer* PauseMenu::getLayer() const {
 
 PauseMenuDialog* PauseMenu::getDialog() const {
   return _dialog.get();
+}
+
+
+bool PauseMenu::isVisible() const {
+  return _layer->isVisible();
+}
+
+void PauseMenu::setVisible(bool visible) {
+  if (visible && !isVisible()) {
+    _layer->setVisible(true);
+    ControlHints::getInstance()->pushProfile(ControlHints::Profile::PAUSE_MENU);
+  } else if (!visible && isVisible()) {
+    _layer->setVisible(false);
+    ControlHints::getInstance()->popProfile();
+  }
 }
 
 }  // namespace vigilante

@@ -5,6 +5,7 @@
 
 #include "AssetManager.h"
 #include "Constants.h"
+#include "scene/SceneManager.h"
 #include "scene/MainMenuScene.h"
 
 //#define USE_AUDIO_ENGINE 1
@@ -78,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetsList);
 
   // Create a scene (auto-release object).
-  director->runWithScene(vigilante::MainMenuScene::create());
+  vigilante::SceneManager::getInstance()->runWithScene(vigilante::MainMenuScene::create());
 
   return true;
 }

@@ -134,7 +134,6 @@ bool GameScene::init() {
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>(_gameMapManager->getPlayer());
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _pauseMenu->getLayer()->setVisible(false);
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
 
   // Tick the box2d world.
@@ -146,7 +145,7 @@ void GameScene::update(float delta) {
   // REVIEW this method
   handleInput();
 
-  if (_pauseMenu->getLayer()->isVisible()) {
+  if (_pauseMenu->isVisible()) {
     return;
   }
 
@@ -192,8 +191,8 @@ void GameScene::handleInput() {
       return;
     }
 
-    bool isVisible = !_pauseMenu->getLayer()->isVisible();
-    _pauseMenu->getLayer()->setVisible(isVisible);
+    bool isVisible = !_pauseMenu->isVisible();
+    _pauseMenu->setVisible(isVisible);
     _pauseMenu->update();
     return;
   }
@@ -209,7 +208,7 @@ void GameScene::handleInput() {
     return;
   }
 
-  if (_pauseMenu->getLayer()->isVisible()) {
+  if (_pauseMenu->isVisible()) {
     _pauseMenu->handleInput();
     return;
   }

@@ -363,12 +363,12 @@ void GameMap::Portal::showHintUI() {
     textColor = colorscheme::kRed;
   }
 
-  ControlHints::getInstance()->show(EventKeyboard::KeyCode::KEY_UP_ARROW, text, textColor);
+  ControlHints::getInstance()->insert(EventKeyboard::KeyCode::KEY_UP_ARROW, text, textColor);
 }
 
 void GameMap::Portal::hideHintUI() {
   //removeHintBubbleFx();
-  ControlHints::getInstance()->hide(EventKeyboard::KeyCode::KEY_UP_ARROW);
+  ControlHints::getInstance()->remove(EventKeyboard::KeyCode::KEY_UP_ARROW);
 }
 
 void GameMap::Portal::createHintBubbleFx() {

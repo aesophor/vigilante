@@ -3,8 +3,9 @@
 #define VIGILANTE_CONTROL_HINTS_H_
 
 #include <array>
-#include <vector>
+#include <stack>
 #include <string>
+#include <vector>
 #include <unordered_map>
 
 #include <cocos2d.h>
@@ -26,19 +27,15 @@ class ControlHints {
   static ControlHints* getInstance();
   virtual ~ControlHints() = default;
 
-  enum class Profile {
+  enum Profile {
     GAME,
-    PAUSE_MENU_STATS,
-    PAUSE_MENU_INVENTORY,
-    PAUSE_MENU_EQUIPMENT,
-    PAUSE_MENU_SKILLS,
-    PAUSE_MENU_QUESTS,
-    PAUSE_MENU_OPTIONS,
+    PAUSE_MENU,
     SIZE
   };
 
   ControlHints::Profile getCurrentProfile() const;
-  void setCurrentProfile(ControlHints::Profile currentProfile);
+  void pushProfile(ControlHints::Profile profile);
+  void popProfile();
 
 
   bool isShown(const cocos2d::EventKeyboard::KeyCode keyCode);
@@ -77,13 +74,15 @@ class ControlHints {
 
   ControlHints();
   void normalize();
+  void showAll();
+  void hideAll();
   std::vector<ControlHints::Hint>& getCurrentProfileHints();
 
   static const int _kHintGap;
   cocos2d::Layer* _layer;
 
-  ControlHints::Profile _currentProfile;
   std::array<std::vector<ControlHints::Hint>, ControlHints::Profile::SIZE> _profiles;
+  std::stack<ControlHints::Profile> _currentProfileStack;  
 };
 
 }  // namespace vigilante

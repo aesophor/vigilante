@@ -4,6 +4,7 @@
 #include <SimpleAudioEngine.h>
 #include "AssetManager.h"
 #include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
 
 using std::array;
@@ -101,7 +102,7 @@ void MainMenuScene::handleInput() {
       case Option::NEW_GAME: {
         InputManager::getInstance()->deactivate();
         SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-        Director::getInstance()->pushScene(GameScene::create());
+        SceneManager::getInstance()->pushScene(GameScene::create());
         break;
       }
       case Option::LOAD_GAME:
