@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StaticActor.h"
 
 #include <stdexcept>
@@ -33,7 +33,8 @@ void StaticActor::showOnMap(float x, float y) {
   _isShownOnMap = true;
 
   _bodySprite->setPosition(x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kDefault);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
+                                                      graphical_layers::kDefault);
 }
 
 void StaticActor::removeFromMap() {
@@ -64,8 +65,10 @@ SpriteBatchNode* StaticActor::getBodySpritesheet() const {
 }
 
 
-Animation* StaticActor::createAnimation(const string& textureResDir, string framesName,
-                                        float interval, Animation* fallback) {
+Animation* StaticActor::createAnimation(const string& textureResDir,
+                                        const string& framesName,
+                                        float interval,
+                                        Animation* fallback) {
   FileUtils* fileUtils = FileUtils::getInstance();
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
 
@@ -81,7 +84,8 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
   string framesNamePrefix = StaticActor::getLastDirName(textureResDir);
 
   // Count how many frames (.png) are there in the corresponding directory.
-  // Method: we will use FileUtils to test whether a file exists starting from 0.png, 1.png, ..., n.png
+  // Method: we will use FileUtils to test whether a file exists starting from
+  //         0.png, 1.png, ..., n.png
   string dir = textureResDir + "/" + framesNamePrefix + "_" + framesName;
   size_t frameCount = 0;
   fileUtils->setPopupNotify(false); // disable CCLOG
@@ -95,13 +99,15 @@ Animation* StaticActor::createAnimation(const string& textureResDir, string fram
     if (fallback) {
       return fallback;
     } else {
-      throw runtime_error("Failed to create animations from " + dir + ", but fallback animation is not provided.");
+      throw runtime_error("Failed to create animations from " +
+                          dir + ", but fallback animation is not provided.");
     }
   }
   
   Vector<SpriteFrame*> frames;
   for (size_t i = 0; i < frameCount; i++) {
-    const string& name = framesNamePrefix + "_" + framesName + "/" + std::to_string(i) + ".png";
+    const string& name = framesNamePrefix + "_" + framesName + "/" +
+                         std::to_string(i) + ".png";
     frames.pushBack(frameCache->getSpriteFrameByName(name));
   }
   Animation* animation = Animation::createWithSpriteFrames(frames, interval);
@@ -113,4 +119,4 @@ string StaticActor::getLastDirName(const string& directory) {
   return directory.substr(directory.find_last_of('/') + 1);
 }
 
-} // namespace vigilante
+}  // namespace vigilante
