@@ -128,7 +128,8 @@ bool GameScene::init() {
   InputManager::getInstance()->activate(this);
 
   // Create b2DebugRenderer.
-  _b2dr = b2DebugRenderer::create(getWorld());
+  _b2dr = b2DebugRenderer::create(_gameMapManager->getWorld());
+  _b2dr->setVisible(false);
   addChild(_b2dr);
   
   // Initialize Pause Menu.
@@ -151,7 +152,9 @@ void GameScene::update(float delta) {
 
   // If there are no ongoing GameMap transitions, then step the box2d world.
   if (_shade->getImageView()->getNumberOfRunningActions() == 0) {
-    getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
+    _gameMapManager->getWorld()->Step(1 / kFps,
+                                      kVelocityIterations,
+                                      kPositionIterations);
   }
 
   _gameMapManager->update(delta);
@@ -229,11 +232,6 @@ void GameScene::startNewGame() {
 
 void GameScene::loadGame(const string& gameSaveFilePath) {
 
-}
-
-
-b2World* GameScene::getWorld() const {
-  return _gameMapManager->getWorld();
 }
 
 }  // namespace vigilante

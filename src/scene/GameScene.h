@@ -35,8 +35,6 @@ class GameScene : public cocos2d::Scene, public Controllable {
   void startNewGame();
   void loadGame(const std::string& gameSaveFilePath);
 
-  b2World* getWorld() const;
-
  private:
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
