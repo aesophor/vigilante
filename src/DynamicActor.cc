@@ -1,7 +1,6 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DynamicActor.h"
 
-#include <Box2D/Box2D.h>
 #include "Constants.h"
 #include "map/GameMapManager.h"
 

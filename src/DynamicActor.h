@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_DYNAMIC_ACTOR_H_
 #define VIGILANTE_DYNAMIC_ACTOR_H_
 
@@ -15,8 +15,10 @@ namespace vigilante {
 // 2. a sprite synchronized with its b2Body
 // 3. a spritesheet and several body animations
 //
-// If you need more sprites and animations (e.g., equipment displayed on top of a character),
-// then manually subclass "DynamicActor" and declare them as the members of your subclass.
+// If you need more sprites and animations
+// (e.g., equipment displayed on top of a character),
+// then manually subclass "DynamicActor" and
+// declare them as the members of your subclass.
 
 class DynamicActor : public StaticActor {
  public:
