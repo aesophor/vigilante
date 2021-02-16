@@ -20,6 +20,170 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		294D0D641D0D56D500F7F5D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294D0D631D0D56D500F7F5D4 /* CoreText.framework */; };
 		3A0E168524B69344003BCCA1 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 503AE10317EB98FF00D1A890 /* main.cc */; };
+		3A5B90AD25D7940300F06219 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE225D7940200F06219 /* FloatingDamages.cc */; };
+		3A5B90AE25D7940300F06219 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE225D7940200F06219 /* FloatingDamages.cc */; };
+		3A5B90AF25D7940300F06219 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE325D7940200F06219 /* Shade.cc */; };
+		3A5B90B025D7940300F06219 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE325D7940200F06219 /* Shade.cc */; };
+		3A5B90B125D7940300F06219 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE725D7940200F06219 /* Window.cc */; };
+		3A5B90B225D7940300F06219 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE725D7940200F06219 /* Window.cc */; };
+		3A5B90B325D7940300F06219 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE825D7940200F06219 /* TableLayout.cc */; };
+		3A5B90B425D7940300F06219 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE825D7940200F06219 /* TableLayout.cc */; };
+		3A5B90B525D7940300F06219 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEA25D7940200F06219 /* AmountSelectionWindow.cc */; };
+		3A5B90B625D7940300F06219 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEA25D7940200F06219 /* AmountSelectionWindow.cc */; };
+		3A5B90B725D7940300F06219 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEC25D7940200F06219 /* TabView.cc */; };
+		3A5B90B825D7940300F06219 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEC25D7940200F06219 /* TabView.cc */; };
+		3A5B90B925D7940300F06219 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FED25D7940200F06219 /* TextField.cc */; };
+		3A5B90BA25D7940300F06219 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FED25D7940200F06219 /* TextField.cc */; };
+		3A5B90BB25D7940300F06219 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEF25D7940200F06219 /* TradeListView.cc */; };
+		3A5B90BC25D7940300F06219 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FEF25D7940200F06219 /* TradeListView.cc */; };
+		3A5B90BD25D7940300F06219 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF225D7940200F06219 /* TradeWindow.cc */; };
+		3A5B90BE25D7940300F06219 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF225D7940200F06219 /* TradeWindow.cc */; };
+		3A5B90BF25D7940300F06219 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF325D7940200F06219 /* TimedLabelService.cc */; };
+		3A5B90C025D7940300F06219 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF325D7940200F06219 /* TimedLabelService.cc */; };
+		3A5B90C125D7940300F06219 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF725D7940200F06219 /* DialogueManager.cc */; };
+		3A5B90C225D7940300F06219 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FF725D7940200F06219 /* DialogueManager.cc */; };
+		3A5B90C325D7940300F06219 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFA25D7940200F06219 /* Subtitles.cc */; };
+		3A5B90C425D7940300F06219 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFA25D7940200F06219 /* Subtitles.cc */; };
+		3A5B90C525D7940300F06219 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFB25D7940200F06219 /* DialogueListView.cc */; };
+		3A5B90C625D7940300F06219 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFB25D7940200F06219 /* DialogueListView.cc */; };
+		3A5B90C725D7940300F06219 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFD25D7940200F06219 /* DialogueMenu.cc */; };
+		3A5B90C825D7940300F06219 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FFD25D7940200F06219 /* DialogueMenu.cc */; };
+		3A5B90C925D7940300F06219 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900025D7940200F06219 /* PauseMenuDialog.cc */; };
+		3A5B90CA25D7940300F06219 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900025D7940200F06219 /* PauseMenuDialog.cc */; };
+		3A5B90CB25D7940300F06219 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900425D7940200F06219 /* SkillPane.cc */; };
+		3A5B90CC25D7940300F06219 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900425D7940200F06219 /* SkillPane.cc */; };
+		3A5B90CD25D7940300F06219 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900525D7940200F06219 /* SkillListView.cc */; };
+		3A5B90CE25D7940300F06219 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900525D7940200F06219 /* SkillListView.cc */; };
+		3A5B90CF25D7940300F06219 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900725D7940200F06219 /* AbstractPane.cc */; };
+		3A5B90D025D7940300F06219 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900725D7940200F06219 /* AbstractPane.cc */; };
+		3A5B90D125D7940300F06219 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900A25D7940200F06219 /* OptionListView.cc */; };
+		3A5B90D225D7940300F06219 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900A25D7940200F06219 /* OptionListView.cc */; };
+		3A5B90D325D7940300F06219 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900C25D7940200F06219 /* OptionPane.cc */; };
+		3A5B90D425D7940300F06219 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B900C25D7940200F06219 /* OptionPane.cc */; };
+		3A5B90D525D7940300F06219 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901025D7940200F06219 /* PauseMenu.cc */; };
+		3A5B90D625D7940300F06219 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901025D7940200F06219 /* PauseMenu.cc */; };
+		3A5B90D725D7940300F06219 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901325D7940200F06219 /* QuestListView.cc */; };
+		3A5B90D825D7940300F06219 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901325D7940200F06219 /* QuestListView.cc */; };
+		3A5B90D925D7940300F06219 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901425D7940200F06219 /* QuestPane.cc */; };
+		3A5B90DA25D7940300F06219 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901425D7940200F06219 /* QuestPane.cc */; };
+		3A5B90DB25D7940300F06219 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901725D7940200F06219 /* InventoryPane.cc */; };
+		3A5B90DC25D7940300F06219 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901725D7940200F06219 /* InventoryPane.cc */; };
+		3A5B90DD25D7940300F06219 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901A25D7940200F06219 /* ItemListView.cc */; };
+		3A5B90DE25D7940300F06219 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901A25D7940200F06219 /* ItemListView.cc */; };
+		3A5B90DF25D7940300F06219 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901B25D7940200F06219 /* HeaderPane.cc */; };
+		3A5B90E025D7940300F06219 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901B25D7940200F06219 /* HeaderPane.cc */; };
+		3A5B90E125D7940300F06219 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901C25D7940200F06219 /* StatsPane.cc */; };
+		3A5B90E225D7940300F06219 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901C25D7940200F06219 /* StatsPane.cc */; };
+		3A5B90E325D7940300F06219 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901E25D7940200F06219 /* EquipmentPane.cc */; };
+		3A5B90E425D7940300F06219 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B901E25D7940200F06219 /* EquipmentPane.cc */; };
+		3A5B90E525D7940300F06219 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902125D7940200F06219 /* WindowManager.cc */; };
+		3A5B90E625D7940300F06219 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902125D7940200F06219 /* WindowManager.cc */; };
+		3A5B90E725D7940300F06219 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902525D7940200F06219 /* QuestHints.cc */; };
+		3A5B90E825D7940300F06219 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902525D7940200F06219 /* QuestHints.cc */; };
+		3A5B90E925D7940300F06219 /* ControlHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902825D7940200F06219 /* ControlHints.cc */; };
+		3A5B90EA25D7940300F06219 /* ControlHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902825D7940200F06219 /* ControlHints.cc */; };
+		3A5B90EB25D7940300F06219 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902B25D7940200F06219 /* Notifications.cc */; };
+		3A5B90EC25D7940300F06219 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902B25D7940200F06219 /* Notifications.cc */; };
+		3A5B90ED25D7940300F06219 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandParser.cc */; };
+		3A5B90EE25D7940300F06219 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandParser.cc */; };
+		3A5B90EF25D7940300F06219 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903025D7940200F06219 /* Console.cc */; };
+		3A5B90F025D7940300F06219 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903025D7940200F06219 /* Console.cc */; };
+		3A5B90F125D7940300F06219 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903425D7940200F06219 /* StatusBar.cc */; };
+		3A5B90F225D7940300F06219 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903425D7940200F06219 /* StatusBar.cc */; };
+		3A5B90F325D7940300F06219 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903525D7940200F06219 /* Hud.cc */; };
+		3A5B90F425D7940300F06219 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903525D7940200F06219 /* Hud.cc */; };
+		3A5B90F525D7940300F06219 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903F25D7940300F06219 /* MagicalMissile.cc */; };
+		3A5B90F625D7940300F06219 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903F25D7940300F06219 /* MagicalMissile.cc */; };
+		3A5B90F725D7940300F06219 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904225D7940300F06219 /* ForwardSlash.cc */; };
+		3A5B90F825D7940300F06219 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904225D7940300F06219 /* ForwardSlash.cc */; };
+		3A5B90F925D7940300F06219 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904325D7940300F06219 /* BatForm.cc */; };
+		3A5B90FA25D7940300F06219 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904325D7940300F06219 /* BatForm.cc */; };
+		3A5B90FB25D7940300F06219 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904425D7940300F06219 /* Skill.cc */; };
+		3A5B90FC25D7940300F06219 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904425D7940300F06219 /* Skill.cc */; };
+		3A5B90FD25D7940300F06219 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904525D7940300F06219 /* BackDash.cc */; };
+		3A5B90FE25D7940300F06219 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904525D7940300F06219 /* BackDash.cc */; };
+		3A5B90FF25D7940300F06219 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904C25D7940300F06219 /* Logger.cc */; };
+		3A5B910025D7940300F06219 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904C25D7940300F06219 /* Logger.cc */; };
+		3A5B910125D7940300F06219 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904D25D7940300F06219 /* JsonUtil.cc */; };
+		3A5B910225D7940300F06219 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904D25D7940300F06219 /* JsonUtil.cc */; };
+		3A5B910325D7940300F06219 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904E25D7940300F06219 /* RandUtil.cc */; };
+		3A5B910425D7940300F06219 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B904E25D7940300F06219 /* RandUtil.cc */; };
+		3A5B910525D7940300F06219 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905025D7940300F06219 /* StringUtil.cc */; };
+		3A5B910625D7940300F06219 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905025D7940300F06219 /* StringUtil.cc */; };
+		3A5B910725D7940300F06219 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905125D7940300F06219 /* KeyCodeUtil.cc */; };
+		3A5B910825D7940300F06219 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905125D7940300F06219 /* KeyCodeUtil.cc */; };
+		3A5B910925D7940300F06219 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905525D7940300F06219 /* CameraUtil.cc */; };
+		3A5B910A25D7940300F06219 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905525D7940300F06219 /* CameraUtil.cc */; };
+		3A5B910B25D7940300F06219 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905725D7940300F06219 /* b2BodyBuilder.cc */; };
+		3A5B910C25D7940300F06219 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905725D7940300F06219 /* b2BodyBuilder.cc */; };
+		3A5B910D25D7940300F06219 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905825D7940300F06219 /* b2DebugRenderer.cc */; };
+		3A5B910E25D7940300F06219 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905825D7940300F06219 /* b2DebugRenderer.cc */; };
+		3A5B910F25D7940300F06219 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905F25D7940300F06219 /* InputManager.cc */; };
+		3A5B911025D7940300F06219 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B905F25D7940300F06219 /* InputManager.cc */; };
+		3A5B911125D7940300F06219 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906125D7940300F06219 /* HotkeyManager.cc */; };
+		3A5B911225D7940300F06219 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906125D7940300F06219 /* HotkeyManager.cc */; };
+		3A5B911325D7940300F06219 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906325D7940300F06219 /* StaticActor.cc */; };
+		3A5B911425D7940300F06219 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906325D7940300F06219 /* StaticActor.cc */; };
+		3A5B911525D7940300F06219 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906625D7940300F06219 /* Npc.cc */; };
+		3A5B911625D7940300F06219 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906625D7940300F06219 /* Npc.cc */; };
+		3A5B911725D7940300F06219 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906825D7940300F06219 /* Character.cc */; };
+		3A5B911825D7940300F06219 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906825D7940300F06219 /* Character.cc */; };
+		3A5B911925D7940300F06219 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906A25D7940300F06219 /* Party.cc */; };
+		3A5B911A25D7940300F06219 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906A25D7940300F06219 /* Party.cc */; };
+		3A5B911B25D7940300F06219 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906D25D7940300F06219 /* Player.cc */; };
+		3A5B911C25D7940300F06219 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B906D25D7940300F06219 /* Player.cc */; };
+		3A5B911D25D7940400F06219 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907225D7940300F06219 /* CallbackManager.cc */; };
+		3A5B911E25D7940400F06219 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907225D7940300F06219 /* CallbackManager.cc */; };
+		3A5B911F25D7940400F06219 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907325D7940300F06219 /* DynamicActor.cc */; };
+		3A5B912025D7940400F06219 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907325D7940300F06219 /* DynamicActor.cc */; };
+		3A5B912125D7940400F06219 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907525D7940300F06219 /* GameMapManager.cc */; };
+		3A5B912225D7940400F06219 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907525D7940300F06219 /* GameMapManager.cc */; };
+		3A5B912325D7940400F06219 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907825D7940300F06219 /* FxManager.cc */; };
+		3A5B912425D7940400F06219 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907825D7940300F06219 /* FxManager.cc */; };
+		3A5B912525D7940400F06219 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907A25D7940300F06219 /* Chest.cc */; };
+		3A5B912625D7940400F06219 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907A25D7940300F06219 /* Chest.cc */; };
+		3A5B912725D7940400F06219 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907E25D7940300F06219 /* GameMap.cc */; };
+		3A5B912825D7940400F06219 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907E25D7940300F06219 /* GameMap.cc */; };
+		3A5B912925D7940400F06219 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907F25D7940300F06219 /* WorldContactListener.cc */; };
+		3A5B912A25D7940400F06219 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907F25D7940300F06219 /* WorldContactListener.cc */; };
+		3A5B912B25D7940400F06219 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* AssetManager.cc */; };
+		3A5B912C25D7940400F06219 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* AssetManager.cc */; };
+		3A5B912D25D7940400F06219 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908525D7940300F06219 /* Item.cc */; };
+		3A5B912E25D7940400F06219 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908525D7940300F06219 /* Item.cc */; };
+		3A5B912F25D7940400F06219 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908625D7940300F06219 /* Consumable.cc */; };
+		3A5B913025D7940400F06219 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908625D7940300F06219 /* Consumable.cc */; };
+		3A5B913125D7940400F06219 /* Key.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908725D7940300F06219 /* Key.cc */; };
+		3A5B913225D7940400F06219 /* Key.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908725D7940300F06219 /* Key.cc */; };
+		3A5B913325D7940400F06219 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908925D7940300F06219 /* Equipment.cc */; };
+		3A5B913425D7940400F06219 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908925D7940300F06219 /* Equipment.cc */; };
+		3A5B913525D7940400F06219 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908B25D7940300F06219 /* MiscItem.cc */; };
+		3A5B913625D7940400F06219 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908B25D7940300F06219 /* MiscItem.cc */; };
+		3A5B913725D7940400F06219 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908F25D7940300F06219 /* Quest.cc */; };
+		3A5B913825D7940400F06219 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908F25D7940300F06219 /* Quest.cc */; };
+		3A5B913925D7940400F06219 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909025D7940300F06219 /* CollectItemObjective.cc */; };
+		3A5B913A25D7940400F06219 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909025D7940300F06219 /* CollectItemObjective.cc */; };
+		3A5B913B25D7940400F06219 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909425D7940300F06219 /* QuestBook.cc */; };
+		3A5B913C25D7940400F06219 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909425D7940300F06219 /* QuestBook.cc */; };
+		3A5B913D25D7940400F06219 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909625D7940300F06219 /* KillTargetObjective.cc */; };
+		3A5B913E25D7940400F06219 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909625D7940300F06219 /* KillTargetObjective.cc */; };
+		3A5B913F25D7940400F06219 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909825D7940300F06219 /* ItemPriceTable.cc */; };
+		3A5B914025D7940400F06219 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909825D7940300F06219 /* ItemPriceTable.cc */; };
+		3A5B914125D7940400F06219 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909C25D7940300F06219 /* DialogueTree.cc */; };
+		3A5B914225D7940400F06219 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909C25D7940300F06219 /* DialogueTree.cc */; };
+		3A5B914325D7940400F06219 /* GameState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909D25D7940300F06219 /* GameState.cc */; };
+		3A5B914425D7940400F06219 /* GameState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909D25D7940300F06219 /* GameState.cc */; };
+		3A5B914525D7940400F06219 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909E25D7940300F06219 /* ExpPointTable.cc */; };
+		3A5B914625D7940400F06219 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B909E25D7940300F06219 /* ExpPointTable.cc */; };
+		3A5B914725D7940400F06219 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A125D7940300F06219 /* GLESDebugDraw.cc */; };
+		3A5B914825D7940400F06219 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A125D7940300F06219 /* GLESDebugDraw.cc */; };
+		3A5B914925D7940400F06219 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A325D7940300F06219 /* AppDelegate.cc */; };
+		3A5B914A25D7940400F06219 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A325D7940300F06219 /* AppDelegate.cc */; };
+		3A5B914B25D7940400F06219 /* GameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A725D7940300F06219 /* GameScene.cc */; };
+		3A5B914C25D7940400F06219 /* GameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A725D7940300F06219 /* GameScene.cc */; };
+		3A5B914D25D7940400F06219 /* SceneManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A925D7940300F06219 /* SceneManager.cc */; };
+		3A5B914E25D7940400F06219 /* SceneManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90A925D7940300F06219 /* SceneManager.cc */; };
+		3A5B914F25D7940400F06219 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90AC25D7940300F06219 /* MainMenuScene.cc */; };
+		3A5B915025D7940400F06219 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B90AC25D7940300F06219 /* MainMenuScene.cc */; };
 		3A83514225C2B63F006CD40F /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		3A83516925C2BAB3006CD40F /* Database in Resources */ = {isa = PBXBuildFile; fileRef = 3A83516825C2BAB3006CD40F /* Database */; };
 		3A83516B25C2BABC006CD40F /* Font in Resources */ = {isa = PBXBuildFile; fileRef = 3A83516A25C2BABB006CD40F /* Font */; };
@@ -28,168 +192,6 @@
 		3A83517125C2BAC7006CD40F /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517025C2BAC7006CD40F /* Music */; };
 		3A83517325C2BACC006CD40F /* Sfx in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517225C2BACC006CD40F /* Sfx */; };
 		3A83517525C2BACF006CD40F /* Texture in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517425C2BACF006CD40F /* Texture */; };
-		3AAF51EA25D57CE7008FDBD9 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512225D57CE6008FDBD9 /* FloatingDamages.cc */; };
-		3AAF51EB25D57CE7008FDBD9 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512225D57CE6008FDBD9 /* FloatingDamages.cc */; };
-		3AAF51EC25D57CE7008FDBD9 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512325D57CE6008FDBD9 /* Shade.cc */; };
-		3AAF51ED25D57CE7008FDBD9 /* Shade.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512325D57CE6008FDBD9 /* Shade.cc */; };
-		3AAF51EE25D57CE7008FDBD9 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512725D57CE6008FDBD9 /* Window.cc */; };
-		3AAF51EF25D57CE7008FDBD9 /* Window.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512725D57CE6008FDBD9 /* Window.cc */; };
-		3AAF51F025D57CE7008FDBD9 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512825D57CE6008FDBD9 /* TableLayout.cc */; };
-		3AAF51F125D57CE7008FDBD9 /* TableLayout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512825D57CE6008FDBD9 /* TableLayout.cc */; };
-		3AAF51F225D57CE7008FDBD9 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512A25D57CE6008FDBD9 /* AmountSelectionWindow.cc */; };
-		3AAF51F325D57CE7008FDBD9 /* AmountSelectionWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512A25D57CE6008FDBD9 /* AmountSelectionWindow.cc */; };
-		3AAF51F425D57CE7008FDBD9 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512C25D57CE6008FDBD9 /* TabView.cc */; };
-		3AAF51F525D57CE7008FDBD9 /* TabView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512C25D57CE6008FDBD9 /* TabView.cc */; };
-		3AAF51F625D57CE7008FDBD9 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512D25D57CE6008FDBD9 /* TextField.cc */; };
-		3AAF51F725D57CE7008FDBD9 /* TextField.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512D25D57CE6008FDBD9 /* TextField.cc */; };
-		3AAF51F825D57CE7008FDBD9 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512F25D57CE6008FDBD9 /* TradeListView.cc */; };
-		3AAF51F925D57CE7008FDBD9 /* TradeListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF512F25D57CE6008FDBD9 /* TradeListView.cc */; };
-		3AAF51FA25D57CE7008FDBD9 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513225D57CE6008FDBD9 /* TradeWindow.cc */; };
-		3AAF51FB25D57CE7008FDBD9 /* TradeWindow.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513225D57CE6008FDBD9 /* TradeWindow.cc */; };
-		3AAF51FC25D57CE7008FDBD9 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513325D57CE6008FDBD9 /* TimedLabelService.cc */; };
-		3AAF51FD25D57CE7008FDBD9 /* TimedLabelService.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513325D57CE6008FDBD9 /* TimedLabelService.cc */; };
-		3AAF51FE25D57CE7008FDBD9 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513725D57CE6008FDBD9 /* DialogueManager.cc */; };
-		3AAF51FF25D57CE7008FDBD9 /* DialogueManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513725D57CE6008FDBD9 /* DialogueManager.cc */; };
-		3AAF520025D57CE7008FDBD9 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513A25D57CE6008FDBD9 /* Subtitles.cc */; };
-		3AAF520125D57CE7008FDBD9 /* Subtitles.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513A25D57CE6008FDBD9 /* Subtitles.cc */; };
-		3AAF520225D57CE7008FDBD9 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513B25D57CE6008FDBD9 /* DialogueListView.cc */; };
-		3AAF520325D57CE7008FDBD9 /* DialogueListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513B25D57CE6008FDBD9 /* DialogueListView.cc */; };
-		3AAF520425D57CE7008FDBD9 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513D25D57CE6008FDBD9 /* DialogueMenu.cc */; };
-		3AAF520525D57CE7008FDBD9 /* DialogueMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF513D25D57CE6008FDBD9 /* DialogueMenu.cc */; };
-		3AAF520625D57CE7008FDBD9 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514025D57CE6008FDBD9 /* PauseMenuDialog.cc */; };
-		3AAF520725D57CE7008FDBD9 /* PauseMenuDialog.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514025D57CE6008FDBD9 /* PauseMenuDialog.cc */; };
-		3AAF520825D57CE7008FDBD9 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514425D57CE6008FDBD9 /* SkillPane.cc */; };
-		3AAF520925D57CE7008FDBD9 /* SkillPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514425D57CE6008FDBD9 /* SkillPane.cc */; };
-		3AAF520A25D57CE7008FDBD9 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514525D57CE6008FDBD9 /* SkillListView.cc */; };
-		3AAF520B25D57CE7008FDBD9 /* SkillListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514525D57CE6008FDBD9 /* SkillListView.cc */; };
-		3AAF520C25D57CE7008FDBD9 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514725D57CE6008FDBD9 /* AbstractPane.cc */; };
-		3AAF520D25D57CE7008FDBD9 /* AbstractPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514725D57CE6008FDBD9 /* AbstractPane.cc */; };
-		3AAF520E25D57CE7008FDBD9 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514A25D57CE6008FDBD9 /* OptionListView.cc */; };
-		3AAF520F25D57CE7008FDBD9 /* OptionListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514A25D57CE6008FDBD9 /* OptionListView.cc */; };
-		3AAF521025D57CE7008FDBD9 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514C25D57CE6008FDBD9 /* OptionPane.cc */; };
-		3AAF521125D57CE7008FDBD9 /* OptionPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF514C25D57CE6008FDBD9 /* OptionPane.cc */; };
-		3AAF521225D57CE7008FDBD9 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515025D57CE6008FDBD9 /* PauseMenu.cc */; };
-		3AAF521325D57CE7008FDBD9 /* PauseMenu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515025D57CE6008FDBD9 /* PauseMenu.cc */; };
-		3AAF521425D57CE7008FDBD9 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515325D57CE6008FDBD9 /* QuestListView.cc */; };
-		3AAF521525D57CE7008FDBD9 /* QuestListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515325D57CE6008FDBD9 /* QuestListView.cc */; };
-		3AAF521625D57CE7008FDBD9 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515425D57CE6008FDBD9 /* QuestPane.cc */; };
-		3AAF521725D57CE7008FDBD9 /* QuestPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515425D57CE6008FDBD9 /* QuestPane.cc */; };
-		3AAF521825D57CE7008FDBD9 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515725D57CE6008FDBD9 /* InventoryPane.cc */; };
-		3AAF521925D57CE7008FDBD9 /* InventoryPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515725D57CE6008FDBD9 /* InventoryPane.cc */; };
-		3AAF521A25D57CE7008FDBD9 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515A25D57CE6008FDBD9 /* ItemListView.cc */; };
-		3AAF521B25D57CE7008FDBD9 /* ItemListView.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515A25D57CE6008FDBD9 /* ItemListView.cc */; };
-		3AAF521C25D57CE7008FDBD9 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515B25D57CE6008FDBD9 /* HeaderPane.cc */; };
-		3AAF521D25D57CE7008FDBD9 /* HeaderPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515B25D57CE6008FDBD9 /* HeaderPane.cc */; };
-		3AAF521E25D57CE7008FDBD9 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515C25D57CE6008FDBD9 /* StatsPane.cc */; };
-		3AAF521F25D57CE7008FDBD9 /* StatsPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515C25D57CE6008FDBD9 /* StatsPane.cc */; };
-		3AAF522025D57CE7008FDBD9 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515E25D57CE6008FDBD9 /* EquipmentPane.cc */; };
-		3AAF522125D57CE7008FDBD9 /* EquipmentPane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF515E25D57CE6008FDBD9 /* EquipmentPane.cc */; };
-		3AAF522225D57CE7008FDBD9 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516125D57CE6008FDBD9 /* WindowManager.cc */; };
-		3AAF522325D57CE7008FDBD9 /* WindowManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516125D57CE6008FDBD9 /* WindowManager.cc */; };
-		3AAF522425D57CE7008FDBD9 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516525D57CE6008FDBD9 /* QuestHints.cc */; };
-		3AAF522525D57CE7008FDBD9 /* QuestHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516525D57CE6008FDBD9 /* QuestHints.cc */; };
-		3AAF522625D57CE7008FDBD9 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516825D57CE6008FDBD9 /* Notifications.cc */; };
-		3AAF522725D57CE7008FDBD9 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516825D57CE6008FDBD9 /* Notifications.cc */; };
-		3AAF522825D57CE7008FDBD9 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516C25D57CE6008FDBD9 /* CommandParser.cc */; };
-		3AAF522925D57CE7008FDBD9 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516C25D57CE6008FDBD9 /* CommandParser.cc */; };
-		3AAF522A25D57CE7008FDBD9 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516D25D57CE6008FDBD9 /* Console.cc */; };
-		3AAF522B25D57CE7008FDBD9 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF516D25D57CE6008FDBD9 /* Console.cc */; };
-		3AAF522C25D57CE7008FDBD9 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517125D57CE6008FDBD9 /* StatusBar.cc */; };
-		3AAF522D25D57CE7008FDBD9 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517125D57CE6008FDBD9 /* StatusBar.cc */; };
-		3AAF522E25D57CE7008FDBD9 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517225D57CE6008FDBD9 /* Hud.cc */; };
-		3AAF522F25D57CE7008FDBD9 /* Hud.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517225D57CE6008FDBD9 /* Hud.cc */; };
-		3AAF523025D57CE7008FDBD9 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517C25D57CE6008FDBD9 /* MagicalMissile.cc */; };
-		3AAF523125D57CE7008FDBD9 /* MagicalMissile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517C25D57CE6008FDBD9 /* MagicalMissile.cc */; };
-		3AAF523225D57CE7008FDBD9 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517F25D57CE6008FDBD9 /* ForwardSlash.cc */; };
-		3AAF523325D57CE7008FDBD9 /* ForwardSlash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF517F25D57CE6008FDBD9 /* ForwardSlash.cc */; };
-		3AAF523425D57CE7008FDBD9 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518025D57CE6008FDBD9 /* BatForm.cc */; };
-		3AAF523525D57CE7008FDBD9 /* BatForm.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518025D57CE6008FDBD9 /* BatForm.cc */; };
-		3AAF523625D57CE7008FDBD9 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518125D57CE6008FDBD9 /* Skill.cc */; };
-		3AAF523725D57CE7008FDBD9 /* Skill.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518125D57CE6008FDBD9 /* Skill.cc */; };
-		3AAF523825D57CE7008FDBD9 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518225D57CE6008FDBD9 /* BackDash.cc */; };
-		3AAF523925D57CE7008FDBD9 /* BackDash.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518225D57CE6008FDBD9 /* BackDash.cc */; };
-		3AAF523A25D57CE7008FDBD9 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518925D57CE6008FDBD9 /* Logger.cc */; };
-		3AAF523B25D57CE7008FDBD9 /* Logger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518925D57CE6008FDBD9 /* Logger.cc */; };
-		3AAF523C25D57CE7008FDBD9 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518A25D57CE6008FDBD9 /* JsonUtil.cc */; };
-		3AAF523D25D57CE7008FDBD9 /* JsonUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518A25D57CE6008FDBD9 /* JsonUtil.cc */; };
-		3AAF523E25D57CE7008FDBD9 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518B25D57CE6008FDBD9 /* RandUtil.cc */; };
-		3AAF523F25D57CE7008FDBD9 /* RandUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518B25D57CE6008FDBD9 /* RandUtil.cc */; };
-		3AAF524025D57CE7008FDBD9 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518D25D57CE6008FDBD9 /* StringUtil.cc */; };
-		3AAF524125D57CE7008FDBD9 /* StringUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518D25D57CE6008FDBD9 /* StringUtil.cc */; };
-		3AAF524225D57CE7008FDBD9 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518E25D57CE6008FDBD9 /* KeyCodeUtil.cc */; };
-		3AAF524325D57CE7008FDBD9 /* KeyCodeUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF518E25D57CE6008FDBD9 /* KeyCodeUtil.cc */; };
-		3AAF524425D57CE7008FDBD9 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519225D57CE6008FDBD9 /* CameraUtil.cc */; };
-		3AAF524525D57CE7008FDBD9 /* CameraUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519225D57CE6008FDBD9 /* CameraUtil.cc */; };
-		3AAF524625D57CE7008FDBD9 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519425D57CE6008FDBD9 /* b2BodyBuilder.cc */; };
-		3AAF524725D57CE7008FDBD9 /* b2BodyBuilder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519425D57CE6008FDBD9 /* b2BodyBuilder.cc */; };
-		3AAF524825D57CE7008FDBD9 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519525D57CE6008FDBD9 /* b2DebugRenderer.cc */; };
-		3AAF524925D57CE7008FDBD9 /* b2DebugRenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519525D57CE6008FDBD9 /* b2DebugRenderer.cc */; };
-		3AAF524A25D57CE7008FDBD9 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519C25D57CE6008FDBD9 /* InputManager.cc */; };
-		3AAF524B25D57CE7008FDBD9 /* InputManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519C25D57CE6008FDBD9 /* InputManager.cc */; };
-		3AAF524C25D57CE7008FDBD9 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519E25D57CE6008FDBD9 /* HotkeyManager.cc */; };
-		3AAF524D25D57CE7008FDBD9 /* HotkeyManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF519E25D57CE6008FDBD9 /* HotkeyManager.cc */; };
-		3AAF524E25D57CE7008FDBD9 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A025D57CE6008FDBD9 /* StaticActor.cc */; };
-		3AAF524F25D57CE7008FDBD9 /* StaticActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A025D57CE6008FDBD9 /* StaticActor.cc */; };
-		3AAF525025D57CE7008FDBD9 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A325D57CE6008FDBD9 /* Npc.cc */; };
-		3AAF525125D57CE7008FDBD9 /* Npc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A325D57CE6008FDBD9 /* Npc.cc */; };
-		3AAF525225D57CE7008FDBD9 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A525D57CE6008FDBD9 /* Character.cc */; };
-		3AAF525325D57CE7008FDBD9 /* Character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A525D57CE6008FDBD9 /* Character.cc */; };
-		3AAF525425D57CE7008FDBD9 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A725D57CE6008FDBD9 /* Party.cc */; };
-		3AAF525525D57CE7008FDBD9 /* Party.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51A725D57CE6008FDBD9 /* Party.cc */; };
-		3AAF525625D57CE7008FDBD9 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51AA25D57CE6008FDBD9 /* Player.cc */; };
-		3AAF525725D57CE7008FDBD9 /* Player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51AA25D57CE6008FDBD9 /* Player.cc */; };
-		3AAF525825D57CE7008FDBD9 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51AF25D57CE6008FDBD9 /* CallbackManager.cc */; };
-		3AAF525925D57CE7008FDBD9 /* CallbackManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51AF25D57CE6008FDBD9 /* CallbackManager.cc */; };
-		3AAF525A25D57CE7008FDBD9 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B025D57CE6008FDBD9 /* DynamicActor.cc */; };
-		3AAF525B25D57CE7008FDBD9 /* DynamicActor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B025D57CE6008FDBD9 /* DynamicActor.cc */; };
-		3AAF525C25D57CE7008FDBD9 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B225D57CE6008FDBD9 /* GameMapManager.cc */; };
-		3AAF525D25D57CE7008FDBD9 /* GameMapManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B225D57CE6008FDBD9 /* GameMapManager.cc */; };
-		3AAF525E25D57CE7008FDBD9 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B525D57CE6008FDBD9 /* FxManager.cc */; };
-		3AAF525F25D57CE7008FDBD9 /* FxManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B525D57CE6008FDBD9 /* FxManager.cc */; };
-		3AAF526025D57CE7008FDBD9 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B725D57CE6008FDBD9 /* Chest.cc */; };
-		3AAF526125D57CE7008FDBD9 /* Chest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51B725D57CE6008FDBD9 /* Chest.cc */; };
-		3AAF526225D57CE7008FDBD9 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BB25D57CE6008FDBD9 /* GameMap.cc */; };
-		3AAF526325D57CE7008FDBD9 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BB25D57CE6008FDBD9 /* GameMap.cc */; };
-		3AAF526425D57CE7008FDBD9 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BC25D57CE6008FDBD9 /* WorldContactListener.cc */; };
-		3AAF526525D57CE7008FDBD9 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BC25D57CE6008FDBD9 /* WorldContactListener.cc */; };
-		3AAF526625D57CE7008FDBD9 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BE25D57CE6008FDBD9 /* AssetManager.cc */; };
-		3AAF526725D57CE7008FDBD9 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51BE25D57CE6008FDBD9 /* AssetManager.cc */; };
-		3AAF526825D57CE7008FDBD9 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C225D57CE6008FDBD9 /* Item.cc */; };
-		3AAF526925D57CE7008FDBD9 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C225D57CE6008FDBD9 /* Item.cc */; };
-		3AAF526A25D57CE7008FDBD9 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C325D57CE6008FDBD9 /* Consumable.cc */; };
-		3AAF526B25D57CE7008FDBD9 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C325D57CE6008FDBD9 /* Consumable.cc */; };
-		3AAF526C25D57CE7008FDBD9 /* Key.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C425D57CE6008FDBD9 /* Key.cc */; };
-		3AAF526D25D57CE7008FDBD9 /* Key.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C425D57CE6008FDBD9 /* Key.cc */; };
-		3AAF526E25D57CE7008FDBD9 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C625D57CE6008FDBD9 /* Equipment.cc */; };
-		3AAF526F25D57CE7008FDBD9 /* Equipment.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C625D57CE6008FDBD9 /* Equipment.cc */; };
-		3AAF527025D57CE7008FDBD9 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C825D57CE6008FDBD9 /* MiscItem.cc */; };
-		3AAF527125D57CE7008FDBD9 /* MiscItem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51C825D57CE6008FDBD9 /* MiscItem.cc */; };
-		3AAF527225D57CE7008FDBD9 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51CC25D57CE6008FDBD9 /* Quest.cc */; };
-		3AAF527325D57CE7008FDBD9 /* Quest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51CC25D57CE6008FDBD9 /* Quest.cc */; };
-		3AAF527425D57CE7008FDBD9 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51CD25D57CE6008FDBD9 /* CollectItemObjective.cc */; };
-		3AAF527525D57CE7008FDBD9 /* CollectItemObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51CD25D57CE6008FDBD9 /* CollectItemObjective.cc */; };
-		3AAF527625D57CE7008FDBD9 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D125D57CE6008FDBD9 /* QuestBook.cc */; };
-		3AAF527725D57CE7008FDBD9 /* QuestBook.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D125D57CE6008FDBD9 /* QuestBook.cc */; };
-		3AAF527825D57CE7008FDBD9 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D325D57CE6008FDBD9 /* KillTargetObjective.cc */; };
-		3AAF527925D57CE7008FDBD9 /* KillTargetObjective.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D325D57CE6008FDBD9 /* KillTargetObjective.cc */; };
-		3AAF527A25D57CE7008FDBD9 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D525D57CE6008FDBD9 /* ItemPriceTable.cc */; };
-		3AAF527B25D57CE7008FDBD9 /* ItemPriceTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D525D57CE6008FDBD9 /* ItemPriceTable.cc */; };
-		3AAF527C25D57CE7008FDBD9 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D925D57CE6008FDBD9 /* DialogueTree.cc */; };
-		3AAF527D25D57CE7008FDBD9 /* DialogueTree.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51D925D57CE6008FDBD9 /* DialogueTree.cc */; };
-		3AAF527E25D57CE7008FDBD9 /* GameState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DA25D57CE6008FDBD9 /* GameState.cc */; };
-		3AAF527F25D57CE7008FDBD9 /* GameState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DA25D57CE6008FDBD9 /* GameState.cc */; };
-		3AAF528025D57CE7008FDBD9 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DB25D57CE6008FDBD9 /* ExpPointTable.cc */; };
-		3AAF528125D57CE7008FDBD9 /* ExpPointTable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DB25D57CE6008FDBD9 /* ExpPointTable.cc */; };
-		3AAF528225D57CE7008FDBD9 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DE25D57CE6008FDBD9 /* GLESDebugDraw.cc */; };
-		3AAF528325D57CE7008FDBD9 /* GLESDebugDraw.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51DE25D57CE6008FDBD9 /* GLESDebugDraw.cc */; };
-		3AAF528425D57CE7008FDBD9 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E025D57CE6008FDBD9 /* AppDelegate.cc */; };
-		3AAF528525D57CE7008FDBD9 /* AppDelegate.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E025D57CE6008FDBD9 /* AppDelegate.cc */; };
-		3AAF528625D57CE7008FDBD9 /* GameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E425D57CE7008FDBD9 /* GameScene.cc */; };
-		3AAF528725D57CE7008FDBD9 /* GameScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E425D57CE7008FDBD9 /* GameScene.cc */; };
-		3AAF528825D57CE7008FDBD9 /* SceneManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E625D57CE7008FDBD9 /* SceneManager.cc */; };
-		3AAF528925D57CE7008FDBD9 /* SceneManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E625D57CE7008FDBD9 /* SceneManager.cc */; };
-		3AAF528A25D57CE7008FDBD9 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E925D57CE7008FDBD9 /* MainMenuScene.cc */; };
-		3AAF528B25D57CE7008FDBD9 /* MainMenuScene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF51E925D57CE7008FDBD9 /* MainMenuScene.cc */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
 		5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5087E76717EB910900C73F5D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -268,6 +270,183 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		294D0D631D0D56D500F7F5D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
+		3A5B8FE125D7940200F06219 /* FloatingDamages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingDamages.h; sourceTree = "<group>"; };
+		3A5B8FE225D7940200F06219 /* FloatingDamages.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingDamages.cc; sourceTree = "<group>"; };
+		3A5B8FE325D7940200F06219 /* Shade.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shade.cc; sourceTree = "<group>"; };
+		3A5B8FE425D7940200F06219 /* AmountSelectionWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmountSelectionWindow.h; sourceTree = "<group>"; };
+		3A5B8FE525D7940200F06219 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
+		3A5B8FE625D7940200F06219 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		3A5B8FE725D7940200F06219 /* Window.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cc; sourceTree = "<group>"; };
+		3A5B8FE825D7940200F06219 /* TableLayout.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableLayout.cc; sourceTree = "<group>"; };
+		3A5B8FE925D7940200F06219 /* Colorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colorscheme.h; sourceTree = "<group>"; };
+		3A5B8FEA25D7940200F06219 /* AmountSelectionWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmountSelectionWindow.cc; sourceTree = "<group>"; };
+		3A5B8FEB25D7940200F06219 /* ListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListView.h; sourceTree = "<group>"; };
+		3A5B8FEC25D7940200F06219 /* TabView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TabView.cc; sourceTree = "<group>"; };
+		3A5B8FED25D7940200F06219 /* TextField.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextField.cc; sourceTree = "<group>"; };
+		3A5B8FEF25D7940200F06219 /* TradeListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeListView.cc; sourceTree = "<group>"; };
+		3A5B8FF025D7940200F06219 /* TradeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeListView.h; sourceTree = "<group>"; };
+		3A5B8FF125D7940200F06219 /* TradeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeWindow.h; sourceTree = "<group>"; };
+		3A5B8FF225D7940200F06219 /* TradeWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeWindow.cc; sourceTree = "<group>"; };
+		3A5B8FF325D7940200F06219 /* TimedLabelService.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedLabelService.cc; sourceTree = "<group>"; };
+		3A5B8FF425D7940200F06219 /* TimedLabelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedLabelService.h; sourceTree = "<group>"; };
+		3A5B8FF525D7940200F06219 /* TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextField.h; sourceTree = "<group>"; };
+		3A5B8FF725D7940200F06219 /* DialogueManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueManager.cc; sourceTree = "<group>"; };
+		3A5B8FF825D7940200F06219 /* DialogueListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueListView.h; sourceTree = "<group>"; };
+		3A5B8FF925D7940200F06219 /* DialogueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueManager.h; sourceTree = "<group>"; };
+		3A5B8FFA25D7940200F06219 /* Subtitles.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Subtitles.cc; sourceTree = "<group>"; };
+		3A5B8FFB25D7940200F06219 /* DialogueListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueListView.cc; sourceTree = "<group>"; };
+		3A5B8FFC25D7940200F06219 /* DialogueMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueMenu.h; sourceTree = "<group>"; };
+		3A5B8FFD25D7940200F06219 /* DialogueMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueMenu.cc; sourceTree = "<group>"; };
+		3A5B8FFE25D7940200F06219 /* Subtitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subtitles.h; sourceTree = "<group>"; };
+		3A5B900025D7940200F06219 /* PauseMenuDialog.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenuDialog.cc; sourceTree = "<group>"; };
+		3A5B900125D7940200F06219 /* StatsPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsPane.h; sourceTree = "<group>"; };
+		3A5B900325D7940200F06219 /* SkillPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPane.h; sourceTree = "<group>"; };
+		3A5B900425D7940200F06219 /* SkillPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillPane.cc; sourceTree = "<group>"; };
+		3A5B900525D7940200F06219 /* SkillListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillListView.cc; sourceTree = "<group>"; };
+		3A5B900625D7940200F06219 /* SkillListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillListView.h; sourceTree = "<group>"; };
+		3A5B900725D7940200F06219 /* AbstractPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPane.cc; sourceTree = "<group>"; };
+		3A5B900825D7940200F06219 /* PauseMenuDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenuDialog.h; sourceTree = "<group>"; };
+		3A5B900A25D7940200F06219 /* OptionListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionListView.cc; sourceTree = "<group>"; };
+		3A5B900B25D7940200F06219 /* OptionPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPane.h; sourceTree = "<group>"; };
+		3A5B900C25D7940200F06219 /* OptionPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionPane.cc; sourceTree = "<group>"; };
+		3A5B900D25D7940200F06219 /* OptionListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionListView.h; sourceTree = "<group>"; };
+		3A5B900E25D7940200F06219 /* PauseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
+		3A5B900F25D7940200F06219 /* AbstractPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPane.h; sourceTree = "<group>"; };
+		3A5B901025D7940200F06219 /* PauseMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cc; sourceTree = "<group>"; };
+		3A5B901225D7940200F06219 /* QuestListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestListView.h; sourceTree = "<group>"; };
+		3A5B901325D7940200F06219 /* QuestListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestListView.cc; sourceTree = "<group>"; };
+		3A5B901425D7940200F06219 /* QuestPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestPane.cc; sourceTree = "<group>"; };
+		3A5B901525D7940200F06219 /* QuestPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestPane.h; sourceTree = "<group>"; };
+		3A5B901725D7940200F06219 /* InventoryPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryPane.cc; sourceTree = "<group>"; };
+		3A5B901825D7940200F06219 /* InventoryPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryPane.h; sourceTree = "<group>"; };
+		3A5B901925D7940200F06219 /* ItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListView.h; sourceTree = "<group>"; };
+		3A5B901A25D7940200F06219 /* ItemListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemListView.cc; sourceTree = "<group>"; };
+		3A5B901B25D7940200F06219 /* HeaderPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeaderPane.cc; sourceTree = "<group>"; };
+		3A5B901C25D7940200F06219 /* StatsPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatsPane.cc; sourceTree = "<group>"; };
+		3A5B901E25D7940200F06219 /* EquipmentPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquipmentPane.cc; sourceTree = "<group>"; };
+		3A5B901F25D7940200F06219 /* EquipmentPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentPane.h; sourceTree = "<group>"; };
+		3A5B902025D7940200F06219 /* HeaderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderPane.h; sourceTree = "<group>"; };
+		3A5B902125D7940200F06219 /* WindowManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cc; sourceTree = "<group>"; };
+		3A5B902225D7940200F06219 /* TabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabView.h; sourceTree = "<group>"; };
+		3A5B902425D7940200F06219 /* QuestHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestHints.h; sourceTree = "<group>"; };
+		3A5B902525D7940200F06219 /* QuestHints.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestHints.cc; sourceTree = "<group>"; };
+		3A5B902625D7940200F06219 /* Shade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shade.h; sourceTree = "<group>"; };
+		3A5B902825D7940200F06219 /* ControlHints.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlHints.cc; sourceTree = "<group>"; };
+		3A5B902925D7940200F06219 /* ControlHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlHints.h; sourceTree = "<group>"; };
+		3A5B902B25D7940200F06219 /* Notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifications.cc; sourceTree = "<group>"; };
+		3A5B902C25D7940200F06219 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
+		3A5B902E25D7940200F06219 /* CommandParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandParser.h; sourceTree = "<group>"; };
+		3A5B902F25D7940200F06219 /* CommandParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParser.cc; sourceTree = "<group>"; };
+		3A5B903025D7940200F06219 /* Console.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cc; sourceTree = "<group>"; };
+		3A5B903125D7940200F06219 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		3A5B903325D7940200F06219 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
+		3A5B903425D7940200F06219 /* StatusBar.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatusBar.cc; sourceTree = "<group>"; };
+		3A5B903525D7940200F06219 /* Hud.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cc; sourceTree = "<group>"; };
+		3A5B903625D7940200F06219 /* StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
+		3A5B903725D7940200F06219 /* TableLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableLayout.h; sourceTree = "<group>"; };
+		3A5B903825D7940300F06219 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
+		3A5B903925D7940300F06219 /* Importable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Importable.h; sourceTree = "<group>"; };
+		3A5B903A25D7940300F06219 /* StaticActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticActor.h; sourceTree = "<group>"; };
+		3A5B903C25D7940300F06219 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
+		3A5B903D25D7940300F06219 /* BatForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatForm.h; sourceTree = "<group>"; };
+		3A5B903E25D7940300F06219 /* ForwardSlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardSlash.h; sourceTree = "<group>"; };
+		3A5B903F25D7940300F06219 /* MagicalMissile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicalMissile.cc; sourceTree = "<group>"; };
+		3A5B904025D7940300F06219 /* BackDash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackDash.h; sourceTree = "<group>"; };
+		3A5B904125D7940300F06219 /* MagicalMissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalMissile.h; sourceTree = "<group>"; };
+		3A5B904225D7940300F06219 /* ForwardSlash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ForwardSlash.cc; sourceTree = "<group>"; };
+		3A5B904325D7940300F06219 /* BatForm.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BatForm.cc; sourceTree = "<group>"; };
+		3A5B904425D7940300F06219 /* Skill.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cc; sourceTree = "<group>"; };
+		3A5B904525D7940300F06219 /* BackDash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackDash.cc; sourceTree = "<group>"; };
+		3A5B904725D7940300F06219 /* JsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtil.h; sourceTree = "<group>"; };
+		3A5B904925D7940300F06219 /* SetVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVector.h; sourceTree = "<group>"; };
+		3A5B904A25D7940300F06219 /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
+		3A5B904B25D7940300F06219 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Algorithm.h; sourceTree = "<group>"; };
+		3A5B904C25D7940300F06219 /* Logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cc; sourceTree = "<group>"; };
+		3A5B904D25D7940300F06219 /* JsonUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtil.cc; sourceTree = "<group>"; };
+		3A5B904E25D7940300F06219 /* RandUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandUtil.cc; sourceTree = "<group>"; };
+		3A5B904F25D7940300F06219 /* KeyCodeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodeUtil.h; sourceTree = "<group>"; };
+		3A5B905025D7940300F06219 /* StringUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cc; sourceTree = "<group>"; };
+		3A5B905125D7940300F06219 /* KeyCodeUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyCodeUtil.cc; sourceTree = "<group>"; };
+		3A5B905225D7940300F06219 /* RandUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandUtil.h; sourceTree = "<group>"; };
+		3A5B905325D7940300F06219 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		3A5B905425D7940300F06219 /* CameraUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraUtil.h; sourceTree = "<group>"; };
+		3A5B905525D7940300F06219 /* CameraUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraUtil.cc; sourceTree = "<group>"; };
+		3A5B905725D7940300F06219 /* b2BodyBuilder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BodyBuilder.cc; sourceTree = "<group>"; };
+		3A5B905825D7940300F06219 /* b2DebugRenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2DebugRenderer.cc; sourceTree = "<group>"; };
+		3A5B905925D7940300F06219 /* b2BodyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BodyBuilder.h; sourceTree = "<group>"; };
+		3A5B905A25D7940300F06219 /* b2DebugRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2DebugRenderer.h; sourceTree = "<group>"; };
+		3A5B905B25D7940300F06219 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		3A5B905D25D7940300F06219 /* Keybindable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keybindable.h; sourceTree = "<group>"; };
+		3A5B905E25D7940300F06219 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		3A5B905F25D7940300F06219 /* InputManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cc; sourceTree = "<group>"; };
+		3A5B906025D7940300F06219 /* HotkeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyManager.h; sourceTree = "<group>"; };
+		3A5B906125D7940300F06219 /* HotkeyManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HotkeyManager.cc; sourceTree = "<group>"; };
+		3A5B906225D7940300F06219 /* CallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackManager.h; sourceTree = "<group>"; };
+		3A5B906325D7940300F06219 /* StaticActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticActor.cc; sourceTree = "<group>"; };
+		3A5B906425D7940300F06219 /* Interactable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactable.h; sourceTree = "<group>"; };
+		3A5B906625D7940300F06219 /* Npc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Npc.cc; sourceTree = "<group>"; };
+		3A5B906725D7940300F06219 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		3A5B906825D7940300F06219 /* Character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cc; sourceTree = "<group>"; };
+		3A5B906925D7940300F06219 /* Npc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Npc.h; sourceTree = "<group>"; };
+		3A5B906A25D7940300F06219 /* Party.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Party.cc; sourceTree = "<group>"; };
+		3A5B906B25D7940300F06219 /* Party.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
+		3A5B906C25D7940300F06219 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		3A5B906D25D7940300F06219 /* Player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cc; sourceTree = "<group>"; };
+		3A5B906E25D7940300F06219 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		3A5B906F25D7940300F06219 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
+		3A5B907125D7940300F06219 /* make_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = make_unique.h; sourceTree = "<group>"; };
+		3A5B907225D7940300F06219 /* CallbackManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallbackManager.cc; sourceTree = "<group>"; };
+		3A5B907325D7940300F06219 /* DynamicActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicActor.cc; sourceTree = "<group>"; };
+		3A5B907525D7940300F06219 /* GameMapManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMapManager.cc; sourceTree = "<group>"; };
+		3A5B907625D7940300F06219 /* FxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FxManager.h; sourceTree = "<group>"; };
+		3A5B907725D7940300F06219 /* GameMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMap.h; sourceTree = "<group>"; };
+		3A5B907825D7940300F06219 /* FxManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FxManager.cc; sourceTree = "<group>"; };
+		3A5B907A25D7940300F06219 /* Chest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chest.cc; sourceTree = "<group>"; };
+		3A5B907B25D7940300F06219 /* Chest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chest.h; sourceTree = "<group>"; };
+		3A5B907C25D7940300F06219 /* GameMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMapManager.h; sourceTree = "<group>"; };
+		3A5B907D25D7940300F06219 /* WorldContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldContactListener.h; sourceTree = "<group>"; };
+		3A5B907E25D7940300F06219 /* GameMap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMap.cc; sourceTree = "<group>"; };
+		3A5B907F25D7940300F06219 /* WorldContactListener.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContactListener.cc; sourceTree = "<group>"; };
+		3A5B908025D7940300F06219 /* DynamicActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicActor.h; sourceTree = "<group>"; };
+		3A5B908125D7940300F06219 /* AssetManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cc; sourceTree = "<group>"; };
+		3A5B908325D7940300F06219 /* Consumable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Consumable.h; sourceTree = "<group>"; };
+		3A5B908425D7940300F06219 /* Key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Key.h; sourceTree = "<group>"; };
+		3A5B908525D7940300F06219 /* Item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cc; sourceTree = "<group>"; };
+		3A5B908625D7940300F06219 /* Consumable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Consumable.cc; sourceTree = "<group>"; };
+		3A5B908725D7940300F06219 /* Key.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Key.cc; sourceTree = "<group>"; };
+		3A5B908825D7940300F06219 /* Equipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Equipment.h; sourceTree = "<group>"; };
+		3A5B908925D7940300F06219 /* Equipment.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Equipment.cc; sourceTree = "<group>"; };
+		3A5B908A25D7940300F06219 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		3A5B908B25D7940300F06219 /* MiscItem.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscItem.cc; sourceTree = "<group>"; };
+		3A5B908C25D7940300F06219 /* MiscItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscItem.h; sourceTree = "<group>"; };
+		3A5B908E25D7940300F06219 /* TalkToTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkToTargetObjective.h; sourceTree = "<group>"; };
+		3A5B908F25D7940300F06219 /* Quest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quest.cc; sourceTree = "<group>"; };
+		3A5B909025D7940300F06219 /* CollectItemObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollectItemObjective.cc; sourceTree = "<group>"; };
+		3A5B909125D7940300F06219 /* Quest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quest.h; sourceTree = "<group>"; };
+		3A5B909225D7940300F06219 /* CollectItemObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectItemObjective.h; sourceTree = "<group>"; };
+		3A5B909325D7940300F06219 /* QuestBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestBook.h; sourceTree = "<group>"; };
+		3A5B909425D7940300F06219 /* QuestBook.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestBook.cc; sourceTree = "<group>"; };
+		3A5B909525D7940300F06219 /* KillTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillTargetObjective.h; sourceTree = "<group>"; };
+		3A5B909625D7940300F06219 /* KillTargetObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KillTargetObjective.cc; sourceTree = "<group>"; };
+		3A5B909825D7940300F06219 /* ItemPriceTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemPriceTable.cc; sourceTree = "<group>"; };
+		3A5B909925D7940300F06219 /* ItemPriceTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemPriceTable.h; sourceTree = "<group>"; };
+		3A5B909A25D7940300F06219 /* DialogueTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueTree.h; sourceTree = "<group>"; };
+		3A5B909B25D7940300F06219 /* ExpPointTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpPointTable.h; sourceTree = "<group>"; };
+		3A5B909C25D7940300F06219 /* DialogueTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueTree.cc; sourceTree = "<group>"; };
+		3A5B909D25D7940300F06219 /* GameState.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cc; sourceTree = "<group>"; };
+		3A5B909E25D7940300F06219 /* ExpPointTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpPointTable.cc; sourceTree = "<group>"; };
+		3A5B909F25D7940300F06219 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		3A5B90A125D7940300F06219 /* GLESDebugDraw.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLESDebugDraw.cc; sourceTree = "<group>"; };
+		3A5B90A225D7940300F06219 /* GLESDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESDebugDraw.h; sourceTree = "<group>"; };
+		3A5B90A325D7940300F06219 /* AppDelegate.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cc; sourceTree = "<group>"; };
+		3A5B90A425D7940300F06219 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		3A5B90A525D7940300F06219 /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
+		3A5B90A725D7940300F06219 /* GameScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cc; sourceTree = "<group>"; };
+		3A5B90A825D7940300F06219 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
+		3A5B90A925D7940300F06219 /* SceneManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cc; sourceTree = "<group>"; };
+		3A5B90AA25D7940300F06219 /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
+		3A5B90AB25D7940300F06219 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		3A5B90AC25D7940300F06219 /* MainMenuScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScene.cc; sourceTree = "<group>"; };
 		3A83516825C2BAB3006CD40F /* Database */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Database; path = ../Resources/Database; sourceTree = "<group>"; };
 		3A83516A25C2BABB006CD40F /* Font */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Font; path = ../Resources/Font; sourceTree = "<group>"; };
 		3A83516C25C2BAC0006CD40F /* Gameplay */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Gameplay; path = ../Resources/Gameplay; sourceTree = "<group>"; };
@@ -275,188 +454,13 @@
 		3A83517025C2BAC7006CD40F /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = ../Resources/Music; sourceTree = "<group>"; };
 		3A83517225C2BACC006CD40F /* Sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sfx; path = ../Resources/Sfx; sourceTree = "<group>"; };
 		3A83517425C2BACF006CD40F /* Texture */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Texture; path = ../Resources/Texture; sourceTree = "<group>"; };
-		3AAF512125D57CE6008FDBD9 /* FloatingDamages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingDamages.h; sourceTree = "<group>"; };
-		3AAF512225D57CE6008FDBD9 /* FloatingDamages.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingDamages.cc; sourceTree = "<group>"; };
-		3AAF512325D57CE6008FDBD9 /* Shade.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shade.cc; sourceTree = "<group>"; };
-		3AAF512425D57CE6008FDBD9 /* AmountSelectionWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmountSelectionWindow.h; sourceTree = "<group>"; };
-		3AAF512525D57CE6008FDBD9 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		3AAF512625D57CE6008FDBD9 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		3AAF512725D57CE6008FDBD9 /* Window.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cc; sourceTree = "<group>"; };
-		3AAF512825D57CE6008FDBD9 /* TableLayout.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableLayout.cc; sourceTree = "<group>"; };
-		3AAF512925D57CE6008FDBD9 /* Colorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colorscheme.h; sourceTree = "<group>"; };
-		3AAF512A25D57CE6008FDBD9 /* AmountSelectionWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmountSelectionWindow.cc; sourceTree = "<group>"; };
-		3AAF512B25D57CE6008FDBD9 /* ListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListView.h; sourceTree = "<group>"; };
-		3AAF512C25D57CE6008FDBD9 /* TabView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TabView.cc; sourceTree = "<group>"; };
-		3AAF512D25D57CE6008FDBD9 /* TextField.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextField.cc; sourceTree = "<group>"; };
-		3AAF512F25D57CE6008FDBD9 /* TradeListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeListView.cc; sourceTree = "<group>"; };
-		3AAF513025D57CE6008FDBD9 /* TradeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeListView.h; sourceTree = "<group>"; };
-		3AAF513125D57CE6008FDBD9 /* TradeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeWindow.h; sourceTree = "<group>"; };
-		3AAF513225D57CE6008FDBD9 /* TradeWindow.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TradeWindow.cc; sourceTree = "<group>"; };
-		3AAF513325D57CE6008FDBD9 /* TimedLabelService.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedLabelService.cc; sourceTree = "<group>"; };
-		3AAF513425D57CE6008FDBD9 /* TimedLabelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedLabelService.h; sourceTree = "<group>"; };
-		3AAF513525D57CE6008FDBD9 /* TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextField.h; sourceTree = "<group>"; };
-		3AAF513725D57CE6008FDBD9 /* DialogueManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueManager.cc; sourceTree = "<group>"; };
-		3AAF513825D57CE6008FDBD9 /* DialogueListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueListView.h; sourceTree = "<group>"; };
-		3AAF513925D57CE6008FDBD9 /* DialogueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueManager.h; sourceTree = "<group>"; };
-		3AAF513A25D57CE6008FDBD9 /* Subtitles.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Subtitles.cc; sourceTree = "<group>"; };
-		3AAF513B25D57CE6008FDBD9 /* DialogueListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueListView.cc; sourceTree = "<group>"; };
-		3AAF513C25D57CE6008FDBD9 /* DialogueMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueMenu.h; sourceTree = "<group>"; };
-		3AAF513D25D57CE6008FDBD9 /* DialogueMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueMenu.cc; sourceTree = "<group>"; };
-		3AAF513E25D57CE6008FDBD9 /* Subtitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subtitles.h; sourceTree = "<group>"; };
-		3AAF514025D57CE6008FDBD9 /* PauseMenuDialog.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenuDialog.cc; sourceTree = "<group>"; };
-		3AAF514125D57CE6008FDBD9 /* StatsPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsPane.h; sourceTree = "<group>"; };
-		3AAF514325D57CE6008FDBD9 /* SkillPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPane.h; sourceTree = "<group>"; };
-		3AAF514425D57CE6008FDBD9 /* SkillPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillPane.cc; sourceTree = "<group>"; };
-		3AAF514525D57CE6008FDBD9 /* SkillListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillListView.cc; sourceTree = "<group>"; };
-		3AAF514625D57CE6008FDBD9 /* SkillListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillListView.h; sourceTree = "<group>"; };
-		3AAF514725D57CE6008FDBD9 /* AbstractPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPane.cc; sourceTree = "<group>"; };
-		3AAF514825D57CE6008FDBD9 /* PauseMenuDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenuDialog.h; sourceTree = "<group>"; };
-		3AAF514A25D57CE6008FDBD9 /* OptionListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionListView.cc; sourceTree = "<group>"; };
-		3AAF514B25D57CE6008FDBD9 /* OptionPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPane.h; sourceTree = "<group>"; };
-		3AAF514C25D57CE6008FDBD9 /* OptionPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionPane.cc; sourceTree = "<group>"; };
-		3AAF514D25D57CE6008FDBD9 /* OptionListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionListView.h; sourceTree = "<group>"; };
-		3AAF514E25D57CE6008FDBD9 /* PauseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
-		3AAF514F25D57CE6008FDBD9 /* AbstractPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPane.h; sourceTree = "<group>"; };
-		3AAF515025D57CE6008FDBD9 /* PauseMenu.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cc; sourceTree = "<group>"; };
-		3AAF515225D57CE6008FDBD9 /* QuestListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestListView.h; sourceTree = "<group>"; };
-		3AAF515325D57CE6008FDBD9 /* QuestListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestListView.cc; sourceTree = "<group>"; };
-		3AAF515425D57CE6008FDBD9 /* QuestPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestPane.cc; sourceTree = "<group>"; };
-		3AAF515525D57CE6008FDBD9 /* QuestPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestPane.h; sourceTree = "<group>"; };
-		3AAF515725D57CE6008FDBD9 /* InventoryPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryPane.cc; sourceTree = "<group>"; };
-		3AAF515825D57CE6008FDBD9 /* InventoryPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryPane.h; sourceTree = "<group>"; };
-		3AAF515925D57CE6008FDBD9 /* ItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListView.h; sourceTree = "<group>"; };
-		3AAF515A25D57CE6008FDBD9 /* ItemListView.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemListView.cc; sourceTree = "<group>"; };
-		3AAF515B25D57CE6008FDBD9 /* HeaderPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeaderPane.cc; sourceTree = "<group>"; };
-		3AAF515C25D57CE6008FDBD9 /* StatsPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatsPane.cc; sourceTree = "<group>"; };
-		3AAF515E25D57CE6008FDBD9 /* EquipmentPane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquipmentPane.cc; sourceTree = "<group>"; };
-		3AAF515F25D57CE6008FDBD9 /* EquipmentPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentPane.h; sourceTree = "<group>"; };
-		3AAF516025D57CE6008FDBD9 /* HeaderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderPane.h; sourceTree = "<group>"; };
-		3AAF516125D57CE6008FDBD9 /* WindowManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cc; sourceTree = "<group>"; };
-		3AAF516225D57CE6008FDBD9 /* TabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabView.h; sourceTree = "<group>"; };
-		3AAF516425D57CE6008FDBD9 /* QuestHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestHints.h; sourceTree = "<group>"; };
-		3AAF516525D57CE6008FDBD9 /* QuestHints.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestHints.cc; sourceTree = "<group>"; };
-		3AAF516625D57CE6008FDBD9 /* Shade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shade.h; sourceTree = "<group>"; };
-		3AAF516825D57CE6008FDBD9 /* Notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifications.cc; sourceTree = "<group>"; };
-		3AAF516925D57CE6008FDBD9 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
-		3AAF516B25D57CE6008FDBD9 /* CommandParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandParser.h; sourceTree = "<group>"; };
-		3AAF516C25D57CE6008FDBD9 /* CommandParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParser.cc; sourceTree = "<group>"; };
-		3AAF516D25D57CE6008FDBD9 /* Console.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cc; sourceTree = "<group>"; };
-		3AAF516E25D57CE6008FDBD9 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
-		3AAF517025D57CE6008FDBD9 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
-		3AAF517125D57CE6008FDBD9 /* StatusBar.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatusBar.cc; sourceTree = "<group>"; };
-		3AAF517225D57CE6008FDBD9 /* Hud.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cc; sourceTree = "<group>"; };
-		3AAF517325D57CE6008FDBD9 /* StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
-		3AAF517425D57CE6008FDBD9 /* TableLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableLayout.h; sourceTree = "<group>"; };
-		3AAF517525D57CE6008FDBD9 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
-		3AAF517625D57CE6008FDBD9 /* Importable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Importable.h; sourceTree = "<group>"; };
-		3AAF517725D57CE6008FDBD9 /* StaticActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticActor.h; sourceTree = "<group>"; };
-		3AAF517925D57CE6008FDBD9 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
-		3AAF517A25D57CE6008FDBD9 /* BatForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatForm.h; sourceTree = "<group>"; };
-		3AAF517B25D57CE6008FDBD9 /* ForwardSlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardSlash.h; sourceTree = "<group>"; };
-		3AAF517C25D57CE6008FDBD9 /* MagicalMissile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicalMissile.cc; sourceTree = "<group>"; };
-		3AAF517D25D57CE6008FDBD9 /* BackDash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackDash.h; sourceTree = "<group>"; };
-		3AAF517E25D57CE6008FDBD9 /* MagicalMissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalMissile.h; sourceTree = "<group>"; };
-		3AAF517F25D57CE6008FDBD9 /* ForwardSlash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ForwardSlash.cc; sourceTree = "<group>"; };
-		3AAF518025D57CE6008FDBD9 /* BatForm.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BatForm.cc; sourceTree = "<group>"; };
-		3AAF518125D57CE6008FDBD9 /* Skill.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cc; sourceTree = "<group>"; };
-		3AAF518225D57CE6008FDBD9 /* BackDash.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackDash.cc; sourceTree = "<group>"; };
-		3AAF518425D57CE6008FDBD9 /* JsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtil.h; sourceTree = "<group>"; };
-		3AAF518625D57CE6008FDBD9 /* SetVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVector.h; sourceTree = "<group>"; };
-		3AAF518725D57CE6008FDBD9 /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
-		3AAF518825D57CE6008FDBD9 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Algorithm.h; sourceTree = "<group>"; };
-		3AAF518925D57CE6008FDBD9 /* Logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cc; sourceTree = "<group>"; };
-		3AAF518A25D57CE6008FDBD9 /* JsonUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtil.cc; sourceTree = "<group>"; };
-		3AAF518B25D57CE6008FDBD9 /* RandUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandUtil.cc; sourceTree = "<group>"; };
-		3AAF518C25D57CE6008FDBD9 /* KeyCodeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodeUtil.h; sourceTree = "<group>"; };
-		3AAF518D25D57CE6008FDBD9 /* StringUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cc; sourceTree = "<group>"; };
-		3AAF518E25D57CE6008FDBD9 /* KeyCodeUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyCodeUtil.cc; sourceTree = "<group>"; };
-		3AAF518F25D57CE6008FDBD9 /* RandUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandUtil.h; sourceTree = "<group>"; };
-		3AAF519025D57CE6008FDBD9 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
-		3AAF519125D57CE6008FDBD9 /* CameraUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraUtil.h; sourceTree = "<group>"; };
-		3AAF519225D57CE6008FDBD9 /* CameraUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraUtil.cc; sourceTree = "<group>"; };
-		3AAF519425D57CE6008FDBD9 /* b2BodyBuilder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BodyBuilder.cc; sourceTree = "<group>"; };
-		3AAF519525D57CE6008FDBD9 /* b2DebugRenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2DebugRenderer.cc; sourceTree = "<group>"; };
-		3AAF519625D57CE6008FDBD9 /* b2BodyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BodyBuilder.h; sourceTree = "<group>"; };
-		3AAF519725D57CE6008FDBD9 /* b2DebugRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2DebugRenderer.h; sourceTree = "<group>"; };
-		3AAF519825D57CE6008FDBD9 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
-		3AAF519A25D57CE6008FDBD9 /* Keybindable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keybindable.h; sourceTree = "<group>"; };
-		3AAF519B25D57CE6008FDBD9 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
-		3AAF519C25D57CE6008FDBD9 /* InputManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cc; sourceTree = "<group>"; };
-		3AAF519D25D57CE6008FDBD9 /* HotkeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyManager.h; sourceTree = "<group>"; };
-		3AAF519E25D57CE6008FDBD9 /* HotkeyManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HotkeyManager.cc; sourceTree = "<group>"; };
-		3AAF519F25D57CE6008FDBD9 /* CallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackManager.h; sourceTree = "<group>"; };
-		3AAF51A025D57CE6008FDBD9 /* StaticActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticActor.cc; sourceTree = "<group>"; };
-		3AAF51A125D57CE6008FDBD9 /* Interactable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactable.h; sourceTree = "<group>"; };
-		3AAF51A325D57CE6008FDBD9 /* Npc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Npc.cc; sourceTree = "<group>"; };
-		3AAF51A425D57CE6008FDBD9 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		3AAF51A525D57CE6008FDBD9 /* Character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cc; sourceTree = "<group>"; };
-		3AAF51A625D57CE6008FDBD9 /* Npc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Npc.h; sourceTree = "<group>"; };
-		3AAF51A725D57CE6008FDBD9 /* Party.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Party.cc; sourceTree = "<group>"; };
-		3AAF51A825D57CE6008FDBD9 /* Party.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
-		3AAF51A925D57CE6008FDBD9 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		3AAF51AA25D57CE6008FDBD9 /* Player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cc; sourceTree = "<group>"; };
-		3AAF51AB25D57CE6008FDBD9 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		3AAF51AC25D57CE6008FDBD9 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
-		3AAF51AE25D57CE6008FDBD9 /* make_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = make_unique.h; sourceTree = "<group>"; };
-		3AAF51AF25D57CE6008FDBD9 /* CallbackManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallbackManager.cc; sourceTree = "<group>"; };
-		3AAF51B025D57CE6008FDBD9 /* DynamicActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicActor.cc; sourceTree = "<group>"; };
-		3AAF51B225D57CE6008FDBD9 /* GameMapManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMapManager.cc; sourceTree = "<group>"; };
-		3AAF51B325D57CE6008FDBD9 /* FxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FxManager.h; sourceTree = "<group>"; };
-		3AAF51B425D57CE6008FDBD9 /* GameMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMap.h; sourceTree = "<group>"; };
-		3AAF51B525D57CE6008FDBD9 /* FxManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FxManager.cc; sourceTree = "<group>"; };
-		3AAF51B725D57CE6008FDBD9 /* Chest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chest.cc; sourceTree = "<group>"; };
-		3AAF51B825D57CE6008FDBD9 /* Chest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chest.h; sourceTree = "<group>"; };
-		3AAF51B925D57CE6008FDBD9 /* GameMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameMapManager.h; sourceTree = "<group>"; };
-		3AAF51BA25D57CE6008FDBD9 /* WorldContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldContactListener.h; sourceTree = "<group>"; };
-		3AAF51BB25D57CE6008FDBD9 /* GameMap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMap.cc; sourceTree = "<group>"; };
-		3AAF51BC25D57CE6008FDBD9 /* WorldContactListener.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContactListener.cc; sourceTree = "<group>"; };
-		3AAF51BD25D57CE6008FDBD9 /* DynamicActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicActor.h; sourceTree = "<group>"; };
-		3AAF51BE25D57CE6008FDBD9 /* AssetManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cc; sourceTree = "<group>"; };
-		3AAF51C025D57CE6008FDBD9 /* Consumable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Consumable.h; sourceTree = "<group>"; };
-		3AAF51C125D57CE6008FDBD9 /* Key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Key.h; sourceTree = "<group>"; };
-		3AAF51C225D57CE6008FDBD9 /* Item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cc; sourceTree = "<group>"; };
-		3AAF51C325D57CE6008FDBD9 /* Consumable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Consumable.cc; sourceTree = "<group>"; };
-		3AAF51C425D57CE6008FDBD9 /* Key.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Key.cc; sourceTree = "<group>"; };
-		3AAF51C525D57CE6008FDBD9 /* Equipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Equipment.h; sourceTree = "<group>"; };
-		3AAF51C625D57CE6008FDBD9 /* Equipment.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Equipment.cc; sourceTree = "<group>"; };
-		3AAF51C725D57CE6008FDBD9 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		3AAF51C825D57CE6008FDBD9 /* MiscItem.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscItem.cc; sourceTree = "<group>"; };
-		3AAF51C925D57CE6008FDBD9 /* MiscItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscItem.h; sourceTree = "<group>"; };
-		3AAF51CB25D57CE6008FDBD9 /* TalkToTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkToTargetObjective.h; sourceTree = "<group>"; };
-		3AAF51CC25D57CE6008FDBD9 /* Quest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quest.cc; sourceTree = "<group>"; };
-		3AAF51CD25D57CE6008FDBD9 /* CollectItemObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollectItemObjective.cc; sourceTree = "<group>"; };
-		3AAF51CE25D57CE6008FDBD9 /* Quest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quest.h; sourceTree = "<group>"; };
-		3AAF51CF25D57CE6008FDBD9 /* CollectItemObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectItemObjective.h; sourceTree = "<group>"; };
-		3AAF51D025D57CE6008FDBD9 /* QuestBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestBook.h; sourceTree = "<group>"; };
-		3AAF51D125D57CE6008FDBD9 /* QuestBook.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuestBook.cc; sourceTree = "<group>"; };
-		3AAF51D225D57CE6008FDBD9 /* KillTargetObjective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillTargetObjective.h; sourceTree = "<group>"; };
-		3AAF51D325D57CE6008FDBD9 /* KillTargetObjective.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KillTargetObjective.cc; sourceTree = "<group>"; };
-		3AAF51D525D57CE6008FDBD9 /* ItemPriceTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemPriceTable.cc; sourceTree = "<group>"; };
-		3AAF51D625D57CE6008FDBD9 /* ItemPriceTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemPriceTable.h; sourceTree = "<group>"; };
-		3AAF51D725D57CE6008FDBD9 /* DialogueTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogueTree.h; sourceTree = "<group>"; };
-		3AAF51D825D57CE6008FDBD9 /* ExpPointTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpPointTable.h; sourceTree = "<group>"; };
-		3AAF51D925D57CE6008FDBD9 /* DialogueTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DialogueTree.cc; sourceTree = "<group>"; };
-		3AAF51DA25D57CE6008FDBD9 /* GameState.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cc; sourceTree = "<group>"; };
-		3AAF51DB25D57CE6008FDBD9 /* ExpPointTable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpPointTable.cc; sourceTree = "<group>"; };
-		3AAF51DC25D57CE6008FDBD9 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
-		3AAF51DE25D57CE6008FDBD9 /* GLESDebugDraw.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLESDebugDraw.cc; sourceTree = "<group>"; };
-		3AAF51DF25D57CE6008FDBD9 /* GLESDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESDebugDraw.h; sourceTree = "<group>"; };
-		3AAF51E025D57CE6008FDBD9 /* AppDelegate.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cc; sourceTree = "<group>"; };
-		3AAF51E125D57CE6008FDBD9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		3AAF51E225D57CE7008FDBD9 /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
-		3AAF51E425D57CE7008FDBD9 /* GameScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cc; sourceTree = "<group>"; };
-		3AAF51E525D57CE7008FDBD9 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
-		3AAF51E625D57CE7008FDBD9 /* SceneManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cc; sourceTree = "<group>"; };
-		3AAF51E725D57CE7008FDBD9 /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
-		3AAF51E825D57CE7008FDBD9 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
-		3AAF51E925D57CE7008FDBD9 /* MainMenuScene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScene.cc; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE10317EB98FF00D1A890 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = mac/main.cc; sourceTree = "<group>"; tabWidth = 2; };
 		503AE10417EB98FF00D1A890 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = mac/Prefix.pch; sourceTree = "<group>"; };
 		503AE11117EB99EE00D1A890 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		503AE11A17EB9C5A00D1A890 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		5087E76F17EB910900C73F5D /* Vigilante-desktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vigilante-desktop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5087E76F17EB910900C73F5D /* Vigilante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vigilante.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5087E78817EB974C00C73F5D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5087E78A17EB975400C73F5D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -520,7 +524,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* Vigilante-mobile.app */,
-				5087E76F17EB910900C73F5D /* Vigilante-desktop.app */,
+				5087E76F17EB910900C73F5D /* Vigilante.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -555,7 +559,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF511E25D57CE6008FDBD9 /* src */,
+				3A5B8FDE25D7940200F06219 /* src */,
 				3A83517425C2BACF006CD40F /* Texture */,
 				3A83517225C2BACC006CD40F /* Sfx */,
 				3A83517025C2BAC7006CD40F /* Music */,
@@ -599,409 +603,419 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3AAF511E25D57CE6008FDBD9 /* src */ = {
+		3A5B8FDE25D7940200F06219 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF511F25D57CE6008FDBD9 /* ui */,
-				3AAF517525D57CE6008FDBD9 /* AssetManager.h */,
-				3AAF517625D57CE6008FDBD9 /* Importable.h */,
-				3AAF517725D57CE6008FDBD9 /* StaticActor.h */,
-				3AAF517825D57CE6008FDBD9 /* skill */,
-				3AAF518325D57CE6008FDBD9 /* util */,
-				3AAF519925D57CE6008FDBD9 /* input */,
-				3AAF519F25D57CE6008FDBD9 /* CallbackManager.h */,
-				3AAF51A025D57CE6008FDBD9 /* StaticActor.cc */,
-				3AAF51A125D57CE6008FDBD9 /* Interactable.h */,
-				3AAF51A225D57CE6008FDBD9 /* character */,
-				3AAF51AB25D57CE6008FDBD9 /* Constants.h */,
-				3AAF51AC25D57CE6008FDBD9 /* Projectile.h */,
-				3AAF51AD25D57CE6008FDBD9 /* std */,
-				3AAF51AF25D57CE6008FDBD9 /* CallbackManager.cc */,
-				3AAF51B025D57CE6008FDBD9 /* DynamicActor.cc */,
-				3AAF51B125D57CE6008FDBD9 /* map */,
-				3AAF51BD25D57CE6008FDBD9 /* DynamicActor.h */,
-				3AAF51BE25D57CE6008FDBD9 /* AssetManager.cc */,
-				3AAF51BF25D57CE6008FDBD9 /* item */,
-				3AAF51CA25D57CE6008FDBD9 /* quest */,
-				3AAF51D425D57CE6008FDBD9 /* gameplay */,
-				3AAF51DD25D57CE6008FDBD9 /* gl */,
-				3AAF51E025D57CE6008FDBD9 /* AppDelegate.cc */,
-				3AAF51E125D57CE6008FDBD9 /* AppDelegate.h */,
-				3AAF51E225D57CE7008FDBD9 /* Controllable.h */,
-				3AAF51E325D57CE7008FDBD9 /* scene */,
+				3A5B90A325D7940300F06219 /* AppDelegate.cc */,
+				3A5B908125D7940300F06219 /* AssetManager.cc */,
+				3A5B907225D7940300F06219 /* CallbackManager.cc */,
+				3A5B907325D7940300F06219 /* DynamicActor.cc */,
+				3A5B906325D7940300F06219 /* StaticActor.cc */,
+				3A5B90A425D7940300F06219 /* AppDelegate.h */,
+				3A5B903825D7940300F06219 /* AssetManager.h */,
+				3A5B906225D7940300F06219 /* CallbackManager.h */,
+				3A5B906E25D7940300F06219 /* Constants.h */,
+				3A5B90A525D7940300F06219 /* Controllable.h */,
+				3A5B908025D7940300F06219 /* DynamicActor.h */,
+				3A5B903925D7940300F06219 /* Importable.h */,
+				3A5B906425D7940300F06219 /* Interactable.h */,
+				3A5B906F25D7940300F06219 /* Projectile.h */,
+				3A5B903A25D7940300F06219 /* StaticActor.h */,
+				3A5B906525D7940300F06219 /* character */,
+				3A5B909725D7940300F06219 /* gameplay */,
+				3A5B90A025D7940300F06219 /* gl */,
+				3A5B905C25D7940300F06219 /* input */,
+				3A5B908225D7940300F06219 /* item */,
+				3A5B907425D7940300F06219 /* map */,
+				3A5B908D25D7940300F06219 /* quest */,
+				3A5B90A625D7940300F06219 /* scene */,
+				3A5B903B25D7940300F06219 /* skill */,
+				3A5B907025D7940300F06219 /* std */,
+				3A5B8FDF25D7940200F06219 /* ui */,
+				3A5B904625D7940300F06219 /* util */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		3AAF511F25D57CE6008FDBD9 /* ui */ = {
+		3A5B8FDF25D7940200F06219 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF512025D57CE6008FDBD9 /* floating_damages */,
-				3AAF512325D57CE6008FDBD9 /* Shade.cc */,
-				3AAF512425D57CE6008FDBD9 /* AmountSelectionWindow.h */,
-				3AAF512525D57CE6008FDBD9 /* WindowManager.h */,
-				3AAF512625D57CE6008FDBD9 /* Window.h */,
-				3AAF512725D57CE6008FDBD9 /* Window.cc */,
-				3AAF512825D57CE6008FDBD9 /* TableLayout.cc */,
-				3AAF512925D57CE6008FDBD9 /* Colorscheme.h */,
-				3AAF512A25D57CE6008FDBD9 /* AmountSelectionWindow.cc */,
-				3AAF512B25D57CE6008FDBD9 /* ListView.h */,
-				3AAF512C25D57CE6008FDBD9 /* TabView.cc */,
-				3AAF512D25D57CE6008FDBD9 /* TextField.cc */,
-				3AAF512E25D57CE6008FDBD9 /* trade */,
-				3AAF513325D57CE6008FDBD9 /* TimedLabelService.cc */,
-				3AAF513425D57CE6008FDBD9 /* TimedLabelService.h */,
-				3AAF513525D57CE6008FDBD9 /* TextField.h */,
-				3AAF513625D57CE6008FDBD9 /* dialogue */,
-				3AAF513F25D57CE6008FDBD9 /* pause_menu */,
-				3AAF516125D57CE6008FDBD9 /* WindowManager.cc */,
-				3AAF516225D57CE6008FDBD9 /* TabView.h */,
-				3AAF516325D57CE6008FDBD9 /* quest_hints */,
-				3AAF516625D57CE6008FDBD9 /* Shade.h */,
-				3AAF516725D57CE6008FDBD9 /* notifications */,
-				3AAF516A25D57CE6008FDBD9 /* console */,
-				3AAF516F25D57CE6008FDBD9 /* hud */,
-				3AAF517425D57CE6008FDBD9 /* TableLayout.h */,
+				3A5B8FEA25D7940200F06219 /* AmountSelectionWindow.cc */,
+				3A5B8FE325D7940200F06219 /* Shade.cc */,
+				3A5B8FE825D7940200F06219 /* TableLayout.cc */,
+				3A5B8FEC25D7940200F06219 /* TabView.cc */,
+				3A5B8FED25D7940200F06219 /* TextField.cc */,
+				3A5B8FF325D7940200F06219 /* TimedLabelService.cc */,
+				3A5B8FE725D7940200F06219 /* Window.cc */,
+				3A5B902125D7940200F06219 /* WindowManager.cc */,
+				3A5B8FE425D7940200F06219 /* AmountSelectionWindow.h */,
+				3A5B8FE925D7940200F06219 /* Colorscheme.h */,
+				3A5B8FEB25D7940200F06219 /* ListView.h */,
+				3A5B902625D7940200F06219 /* Shade.h */,
+				3A5B903725D7940200F06219 /* TableLayout.h */,
+				3A5B902225D7940200F06219 /* TabView.h */,
+				3A5B8FF525D7940200F06219 /* TextField.h */,
+				3A5B8FF425D7940200F06219 /* TimedLabelService.h */,
+				3A5B8FE625D7940200F06219 /* Window.h */,
+				3A5B8FE525D7940200F06219 /* WindowManager.h */,
+				3A5B902D25D7940200F06219 /* console */,
+				3A5B902725D7940200F06219 /* control_hints */,
+				3A5B8FF625D7940200F06219 /* dialogue */,
+				3A5B8FE025D7940200F06219 /* floating_damages */,
+				3A5B903225D7940200F06219 /* hud */,
+				3A5B902A25D7940200F06219 /* notifications */,
+				3A5B8FFF25D7940200F06219 /* pause_menu */,
+				3A5B902325D7940200F06219 /* quest_hints */,
+				3A5B8FEE25D7940200F06219 /* trade */,
 			);
 			path = ui;
 			sourceTree = "<group>";
 		};
-		3AAF512025D57CE6008FDBD9 /* floating_damages */ = {
+		3A5B8FE025D7940200F06219 /* floating_damages */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF512125D57CE6008FDBD9 /* FloatingDamages.h */,
-				3AAF512225D57CE6008FDBD9 /* FloatingDamages.cc */,
+				3A5B8FE125D7940200F06219 /* FloatingDamages.h */,
+				3A5B8FE225D7940200F06219 /* FloatingDamages.cc */,
 			);
 			path = floating_damages;
 			sourceTree = "<group>";
 		};
-		3AAF512E25D57CE6008FDBD9 /* trade */ = {
+		3A5B8FEE25D7940200F06219 /* trade */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF512F25D57CE6008FDBD9 /* TradeListView.cc */,
-				3AAF513025D57CE6008FDBD9 /* TradeListView.h */,
-				3AAF513125D57CE6008FDBD9 /* TradeWindow.h */,
-				3AAF513225D57CE6008FDBD9 /* TradeWindow.cc */,
+				3A5B8FEF25D7940200F06219 /* TradeListView.cc */,
+				3A5B8FF025D7940200F06219 /* TradeListView.h */,
+				3A5B8FF125D7940200F06219 /* TradeWindow.h */,
+				3A5B8FF225D7940200F06219 /* TradeWindow.cc */,
 			);
 			path = trade;
 			sourceTree = "<group>";
 		};
-		3AAF513625D57CE6008FDBD9 /* dialogue */ = {
+		3A5B8FF625D7940200F06219 /* dialogue */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF513725D57CE6008FDBD9 /* DialogueManager.cc */,
-				3AAF513825D57CE6008FDBD9 /* DialogueListView.h */,
-				3AAF513925D57CE6008FDBD9 /* DialogueManager.h */,
-				3AAF513A25D57CE6008FDBD9 /* Subtitles.cc */,
-				3AAF513B25D57CE6008FDBD9 /* DialogueListView.cc */,
-				3AAF513C25D57CE6008FDBD9 /* DialogueMenu.h */,
-				3AAF513D25D57CE6008FDBD9 /* DialogueMenu.cc */,
-				3AAF513E25D57CE6008FDBD9 /* Subtitles.h */,
+				3A5B8FF725D7940200F06219 /* DialogueManager.cc */,
+				3A5B8FF825D7940200F06219 /* DialogueListView.h */,
+				3A5B8FF925D7940200F06219 /* DialogueManager.h */,
+				3A5B8FFA25D7940200F06219 /* Subtitles.cc */,
+				3A5B8FFB25D7940200F06219 /* DialogueListView.cc */,
+				3A5B8FFC25D7940200F06219 /* DialogueMenu.h */,
+				3A5B8FFD25D7940200F06219 /* DialogueMenu.cc */,
+				3A5B8FFE25D7940200F06219 /* Subtitles.h */,
 			);
 			path = dialogue;
 			sourceTree = "<group>";
 		};
-		3AAF513F25D57CE6008FDBD9 /* pause_menu */ = {
+		3A5B8FFF25D7940200F06219 /* pause_menu */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF514025D57CE6008FDBD9 /* PauseMenuDialog.cc */,
-				3AAF514125D57CE6008FDBD9 /* StatsPane.h */,
-				3AAF514225D57CE6008FDBD9 /* skill */,
-				3AAF514725D57CE6008FDBD9 /* AbstractPane.cc */,
-				3AAF514825D57CE6008FDBD9 /* PauseMenuDialog.h */,
-				3AAF514925D57CE6008FDBD9 /* option */,
-				3AAF514E25D57CE6008FDBD9 /* PauseMenu.h */,
-				3AAF514F25D57CE6008FDBD9 /* AbstractPane.h */,
-				3AAF515025D57CE6008FDBD9 /* PauseMenu.cc */,
-				3AAF515125D57CE6008FDBD9 /* quest */,
-				3AAF515625D57CE6008FDBD9 /* inventory */,
-				3AAF515B25D57CE6008FDBD9 /* HeaderPane.cc */,
-				3AAF515C25D57CE6008FDBD9 /* StatsPane.cc */,
-				3AAF515D25D57CE6008FDBD9 /* equipment */,
-				3AAF516025D57CE6008FDBD9 /* HeaderPane.h */,
+				3A5B900025D7940200F06219 /* PauseMenuDialog.cc */,
+				3A5B900125D7940200F06219 /* StatsPane.h */,
+				3A5B900225D7940200F06219 /* skill */,
+				3A5B900725D7940200F06219 /* AbstractPane.cc */,
+				3A5B900825D7940200F06219 /* PauseMenuDialog.h */,
+				3A5B900925D7940200F06219 /* option */,
+				3A5B900E25D7940200F06219 /* PauseMenu.h */,
+				3A5B900F25D7940200F06219 /* AbstractPane.h */,
+				3A5B901025D7940200F06219 /* PauseMenu.cc */,
+				3A5B901125D7940200F06219 /* quest */,
+				3A5B901625D7940200F06219 /* inventory */,
+				3A5B901B25D7940200F06219 /* HeaderPane.cc */,
+				3A5B901C25D7940200F06219 /* StatsPane.cc */,
+				3A5B901D25D7940200F06219 /* equipment */,
+				3A5B902025D7940200F06219 /* HeaderPane.h */,
 			);
 			path = pause_menu;
 			sourceTree = "<group>";
 		};
-		3AAF514225D57CE6008FDBD9 /* skill */ = {
+		3A5B900225D7940200F06219 /* skill */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF514325D57CE6008FDBD9 /* SkillPane.h */,
-				3AAF514425D57CE6008FDBD9 /* SkillPane.cc */,
-				3AAF514525D57CE6008FDBD9 /* SkillListView.cc */,
-				3AAF514625D57CE6008FDBD9 /* SkillListView.h */,
+				3A5B900325D7940200F06219 /* SkillPane.h */,
+				3A5B900425D7940200F06219 /* SkillPane.cc */,
+				3A5B900525D7940200F06219 /* SkillListView.cc */,
+				3A5B900625D7940200F06219 /* SkillListView.h */,
 			);
 			path = skill;
 			sourceTree = "<group>";
 		};
-		3AAF514925D57CE6008FDBD9 /* option */ = {
+		3A5B900925D7940200F06219 /* option */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF514A25D57CE6008FDBD9 /* OptionListView.cc */,
-				3AAF514B25D57CE6008FDBD9 /* OptionPane.h */,
-				3AAF514C25D57CE6008FDBD9 /* OptionPane.cc */,
-				3AAF514D25D57CE6008FDBD9 /* OptionListView.h */,
+				3A5B900A25D7940200F06219 /* OptionListView.cc */,
+				3A5B900B25D7940200F06219 /* OptionPane.h */,
+				3A5B900C25D7940200F06219 /* OptionPane.cc */,
+				3A5B900D25D7940200F06219 /* OptionListView.h */,
 			);
 			path = option;
 			sourceTree = "<group>";
 		};
-		3AAF515125D57CE6008FDBD9 /* quest */ = {
+		3A5B901125D7940200F06219 /* quest */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF515225D57CE6008FDBD9 /* QuestListView.h */,
-				3AAF515325D57CE6008FDBD9 /* QuestListView.cc */,
-				3AAF515425D57CE6008FDBD9 /* QuestPane.cc */,
-				3AAF515525D57CE6008FDBD9 /* QuestPane.h */,
+				3A5B901225D7940200F06219 /* QuestListView.h */,
+				3A5B901325D7940200F06219 /* QuestListView.cc */,
+				3A5B901425D7940200F06219 /* QuestPane.cc */,
+				3A5B901525D7940200F06219 /* QuestPane.h */,
 			);
 			path = quest;
 			sourceTree = "<group>";
 		};
-		3AAF515625D57CE6008FDBD9 /* inventory */ = {
+		3A5B901625D7940200F06219 /* inventory */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF515725D57CE6008FDBD9 /* InventoryPane.cc */,
-				3AAF515825D57CE6008FDBD9 /* InventoryPane.h */,
-				3AAF515925D57CE6008FDBD9 /* ItemListView.h */,
-				3AAF515A25D57CE6008FDBD9 /* ItemListView.cc */,
+				3A5B901725D7940200F06219 /* InventoryPane.cc */,
+				3A5B901825D7940200F06219 /* InventoryPane.h */,
+				3A5B901925D7940200F06219 /* ItemListView.h */,
+				3A5B901A25D7940200F06219 /* ItemListView.cc */,
 			);
 			path = inventory;
 			sourceTree = "<group>";
 		};
-		3AAF515D25D57CE6008FDBD9 /* equipment */ = {
+		3A5B901D25D7940200F06219 /* equipment */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF515E25D57CE6008FDBD9 /* EquipmentPane.cc */,
-				3AAF515F25D57CE6008FDBD9 /* EquipmentPane.h */,
+				3A5B901E25D7940200F06219 /* EquipmentPane.cc */,
+				3A5B901F25D7940200F06219 /* EquipmentPane.h */,
 			);
 			path = equipment;
 			sourceTree = "<group>";
 		};
-		3AAF516325D57CE6008FDBD9 /* quest_hints */ = {
+		3A5B902325D7940200F06219 /* quest_hints */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF516425D57CE6008FDBD9 /* QuestHints.h */,
-				3AAF516525D57CE6008FDBD9 /* QuestHints.cc */,
+				3A5B902425D7940200F06219 /* QuestHints.h */,
+				3A5B902525D7940200F06219 /* QuestHints.cc */,
 			);
 			path = quest_hints;
 			sourceTree = "<group>";
 		};
-		3AAF516725D57CE6008FDBD9 /* notifications */ = {
+		3A5B902725D7940200F06219 /* control_hints */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF516825D57CE6008FDBD9 /* Notifications.cc */,
-				3AAF516925D57CE6008FDBD9 /* Notifications.h */,
+				3A5B902825D7940200F06219 /* ControlHints.cc */,
+				3A5B902925D7940200F06219 /* ControlHints.h */,
+			);
+			path = control_hints;
+			sourceTree = "<group>";
+		};
+		3A5B902A25D7940200F06219 /* notifications */ = {
+			isa = PBXGroup;
+			children = (
+				3A5B902B25D7940200F06219 /* Notifications.cc */,
+				3A5B902C25D7940200F06219 /* Notifications.h */,
 			);
 			path = notifications;
 			sourceTree = "<group>";
 		};
-		3AAF516A25D57CE6008FDBD9 /* console */ = {
+		3A5B902D25D7940200F06219 /* console */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF516B25D57CE6008FDBD9 /* CommandParser.h */,
-				3AAF516C25D57CE6008FDBD9 /* CommandParser.cc */,
-				3AAF516D25D57CE6008FDBD9 /* Console.cc */,
-				3AAF516E25D57CE6008FDBD9 /* Console.h */,
+				3A5B902E25D7940200F06219 /* CommandParser.h */,
+				3A5B902F25D7940200F06219 /* CommandParser.cc */,
+				3A5B903025D7940200F06219 /* Console.cc */,
+				3A5B903125D7940200F06219 /* Console.h */,
 			);
 			path = console;
 			sourceTree = "<group>";
 		};
-		3AAF516F25D57CE6008FDBD9 /* hud */ = {
+		3A5B903225D7940200F06219 /* hud */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF517025D57CE6008FDBD9 /* Hud.h */,
-				3AAF517125D57CE6008FDBD9 /* StatusBar.cc */,
-				3AAF517225D57CE6008FDBD9 /* Hud.cc */,
-				3AAF517325D57CE6008FDBD9 /* StatusBar.h */,
+				3A5B903325D7940200F06219 /* Hud.h */,
+				3A5B903425D7940200F06219 /* StatusBar.cc */,
+				3A5B903525D7940200F06219 /* Hud.cc */,
+				3A5B903625D7940200F06219 /* StatusBar.h */,
 			);
 			path = hud;
 			sourceTree = "<group>";
 		};
-		3AAF517825D57CE6008FDBD9 /* skill */ = {
+		3A5B903B25D7940300F06219 /* skill */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF517925D57CE6008FDBD9 /* Skill.h */,
-				3AAF517A25D57CE6008FDBD9 /* BatForm.h */,
-				3AAF517B25D57CE6008FDBD9 /* ForwardSlash.h */,
-				3AAF517C25D57CE6008FDBD9 /* MagicalMissile.cc */,
-				3AAF517D25D57CE6008FDBD9 /* BackDash.h */,
-				3AAF517E25D57CE6008FDBD9 /* MagicalMissile.h */,
-				3AAF517F25D57CE6008FDBD9 /* ForwardSlash.cc */,
-				3AAF518025D57CE6008FDBD9 /* BatForm.cc */,
-				3AAF518125D57CE6008FDBD9 /* Skill.cc */,
-				3AAF518225D57CE6008FDBD9 /* BackDash.cc */,
+				3A5B903C25D7940300F06219 /* Skill.h */,
+				3A5B903D25D7940300F06219 /* BatForm.h */,
+				3A5B903E25D7940300F06219 /* ForwardSlash.h */,
+				3A5B903F25D7940300F06219 /* MagicalMissile.cc */,
+				3A5B904025D7940300F06219 /* BackDash.h */,
+				3A5B904125D7940300F06219 /* MagicalMissile.h */,
+				3A5B904225D7940300F06219 /* ForwardSlash.cc */,
+				3A5B904325D7940300F06219 /* BatForm.cc */,
+				3A5B904425D7940300F06219 /* Skill.cc */,
+				3A5B904525D7940300F06219 /* BackDash.cc */,
 			);
 			path = skill;
 			sourceTree = "<group>";
 		};
-		3AAF518325D57CE6008FDBD9 /* util */ = {
+		3A5B904625D7940300F06219 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF518425D57CE6008FDBD9 /* JsonUtil.h */,
-				3AAF518525D57CE6008FDBD9 /* ds */,
-				3AAF518925D57CE6008FDBD9 /* Logger.cc */,
-				3AAF518A25D57CE6008FDBD9 /* JsonUtil.cc */,
-				3AAF518B25D57CE6008FDBD9 /* RandUtil.cc */,
-				3AAF518C25D57CE6008FDBD9 /* KeyCodeUtil.h */,
-				3AAF518D25D57CE6008FDBD9 /* StringUtil.cc */,
-				3AAF518E25D57CE6008FDBD9 /* KeyCodeUtil.cc */,
-				3AAF518F25D57CE6008FDBD9 /* RandUtil.h */,
-				3AAF519025D57CE6008FDBD9 /* Logger.h */,
-				3AAF519125D57CE6008FDBD9 /* CameraUtil.h */,
-				3AAF519225D57CE6008FDBD9 /* CameraUtil.cc */,
-				3AAF519325D57CE6008FDBD9 /* box2d */,
-				3AAF519825D57CE6008FDBD9 /* StringUtil.h */,
+				3A5B904725D7940300F06219 /* JsonUtil.h */,
+				3A5B904825D7940300F06219 /* ds */,
+				3A5B904C25D7940300F06219 /* Logger.cc */,
+				3A5B904D25D7940300F06219 /* JsonUtil.cc */,
+				3A5B904E25D7940300F06219 /* RandUtil.cc */,
+				3A5B904F25D7940300F06219 /* KeyCodeUtil.h */,
+				3A5B905025D7940300F06219 /* StringUtil.cc */,
+				3A5B905125D7940300F06219 /* KeyCodeUtil.cc */,
+				3A5B905225D7940300F06219 /* RandUtil.h */,
+				3A5B905325D7940300F06219 /* Logger.h */,
+				3A5B905425D7940300F06219 /* CameraUtil.h */,
+				3A5B905525D7940300F06219 /* CameraUtil.cc */,
+				3A5B905625D7940300F06219 /* box2d */,
+				3A5B905B25D7940300F06219 /* StringUtil.h */,
 			);
 			path = util;
 			sourceTree = "<group>";
 		};
-		3AAF518525D57CE6008FDBD9 /* ds */ = {
+		3A5B904825D7940300F06219 /* ds */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF518625D57CE6008FDBD9 /* SetVector.h */,
-				3AAF518725D57CE6008FDBD9 /* CircularBuffer.h */,
-				3AAF518825D57CE6008FDBD9 /* Algorithm.h */,
+				3A5B904925D7940300F06219 /* SetVector.h */,
+				3A5B904A25D7940300F06219 /* CircularBuffer.h */,
+				3A5B904B25D7940300F06219 /* Algorithm.h */,
 			);
 			path = ds;
 			sourceTree = "<group>";
 		};
-		3AAF519325D57CE6008FDBD9 /* box2d */ = {
+		3A5B905625D7940300F06219 /* box2d */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF519425D57CE6008FDBD9 /* b2BodyBuilder.cc */,
-				3AAF519525D57CE6008FDBD9 /* b2DebugRenderer.cc */,
-				3AAF519625D57CE6008FDBD9 /* b2BodyBuilder.h */,
-				3AAF519725D57CE6008FDBD9 /* b2DebugRenderer.h */,
+				3A5B905725D7940300F06219 /* b2BodyBuilder.cc */,
+				3A5B905825D7940300F06219 /* b2DebugRenderer.cc */,
+				3A5B905925D7940300F06219 /* b2BodyBuilder.h */,
+				3A5B905A25D7940300F06219 /* b2DebugRenderer.h */,
 			);
 			path = box2d;
 			sourceTree = "<group>";
 		};
-		3AAF519925D57CE6008FDBD9 /* input */ = {
+		3A5B905C25D7940300F06219 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF519A25D57CE6008FDBD9 /* Keybindable.h */,
-				3AAF519B25D57CE6008FDBD9 /* InputManager.h */,
-				3AAF519C25D57CE6008FDBD9 /* InputManager.cc */,
-				3AAF519D25D57CE6008FDBD9 /* HotkeyManager.h */,
-				3AAF519E25D57CE6008FDBD9 /* HotkeyManager.cc */,
+				3A5B905D25D7940300F06219 /* Keybindable.h */,
+				3A5B905E25D7940300F06219 /* InputManager.h */,
+				3A5B905F25D7940300F06219 /* InputManager.cc */,
+				3A5B906025D7940300F06219 /* HotkeyManager.h */,
+				3A5B906125D7940300F06219 /* HotkeyManager.cc */,
 			);
 			path = input;
 			sourceTree = "<group>";
 		};
-		3AAF51A225D57CE6008FDBD9 /* character */ = {
+		3A5B906525D7940300F06219 /* character */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51A325D57CE6008FDBD9 /* Npc.cc */,
-				3AAF51A425D57CE6008FDBD9 /* Player.h */,
-				3AAF51A525D57CE6008FDBD9 /* Character.cc */,
-				3AAF51A625D57CE6008FDBD9 /* Npc.h */,
-				3AAF51A725D57CE6008FDBD9 /* Party.cc */,
-				3AAF51A825D57CE6008FDBD9 /* Party.h */,
-				3AAF51A925D57CE6008FDBD9 /* Character.h */,
-				3AAF51AA25D57CE6008FDBD9 /* Player.cc */,
+				3A5B906625D7940300F06219 /* Npc.cc */,
+				3A5B906725D7940300F06219 /* Player.h */,
+				3A5B906825D7940300F06219 /* Character.cc */,
+				3A5B906925D7940300F06219 /* Npc.h */,
+				3A5B906A25D7940300F06219 /* Party.cc */,
+				3A5B906B25D7940300F06219 /* Party.h */,
+				3A5B906C25D7940300F06219 /* Character.h */,
+				3A5B906D25D7940300F06219 /* Player.cc */,
 			);
 			path = character;
 			sourceTree = "<group>";
 		};
-		3AAF51AD25D57CE6008FDBD9 /* std */ = {
+		3A5B907025D7940300F06219 /* std */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51AE25D57CE6008FDBD9 /* make_unique.h */,
+				3A5B907125D7940300F06219 /* make_unique.h */,
 			);
 			path = std;
 			sourceTree = "<group>";
 		};
-		3AAF51B125D57CE6008FDBD9 /* map */ = {
+		3A5B907425D7940300F06219 /* map */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51B225D57CE6008FDBD9 /* GameMapManager.cc */,
-				3AAF51B325D57CE6008FDBD9 /* FxManager.h */,
-				3AAF51B425D57CE6008FDBD9 /* GameMap.h */,
-				3AAF51B525D57CE6008FDBD9 /* FxManager.cc */,
-				3AAF51B625D57CE6008FDBD9 /* object */,
-				3AAF51B925D57CE6008FDBD9 /* GameMapManager.h */,
-				3AAF51BA25D57CE6008FDBD9 /* WorldContactListener.h */,
-				3AAF51BB25D57CE6008FDBD9 /* GameMap.cc */,
-				3AAF51BC25D57CE6008FDBD9 /* WorldContactListener.cc */,
+				3A5B907525D7940300F06219 /* GameMapManager.cc */,
+				3A5B907625D7940300F06219 /* FxManager.h */,
+				3A5B907725D7940300F06219 /* GameMap.h */,
+				3A5B907825D7940300F06219 /* FxManager.cc */,
+				3A5B907925D7940300F06219 /* object */,
+				3A5B907C25D7940300F06219 /* GameMapManager.h */,
+				3A5B907D25D7940300F06219 /* WorldContactListener.h */,
+				3A5B907E25D7940300F06219 /* GameMap.cc */,
+				3A5B907F25D7940300F06219 /* WorldContactListener.cc */,
 			);
 			path = map;
 			sourceTree = "<group>";
 		};
-		3AAF51B625D57CE6008FDBD9 /* object */ = {
+		3A5B907925D7940300F06219 /* object */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51B725D57CE6008FDBD9 /* Chest.cc */,
-				3AAF51B825D57CE6008FDBD9 /* Chest.h */,
+				3A5B907A25D7940300F06219 /* Chest.cc */,
+				3A5B907B25D7940300F06219 /* Chest.h */,
 			);
 			path = object;
 			sourceTree = "<group>";
 		};
-		3AAF51BF25D57CE6008FDBD9 /* item */ = {
+		3A5B908225D7940300F06219 /* item */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51C025D57CE6008FDBD9 /* Consumable.h */,
-				3AAF51C125D57CE6008FDBD9 /* Key.h */,
-				3AAF51C225D57CE6008FDBD9 /* Item.cc */,
-				3AAF51C325D57CE6008FDBD9 /* Consumable.cc */,
-				3AAF51C425D57CE6008FDBD9 /* Key.cc */,
-				3AAF51C525D57CE6008FDBD9 /* Equipment.h */,
-				3AAF51C625D57CE6008FDBD9 /* Equipment.cc */,
-				3AAF51C725D57CE6008FDBD9 /* Item.h */,
-				3AAF51C825D57CE6008FDBD9 /* MiscItem.cc */,
-				3AAF51C925D57CE6008FDBD9 /* MiscItem.h */,
+				3A5B908325D7940300F06219 /* Consumable.h */,
+				3A5B908425D7940300F06219 /* Key.h */,
+				3A5B908525D7940300F06219 /* Item.cc */,
+				3A5B908625D7940300F06219 /* Consumable.cc */,
+				3A5B908725D7940300F06219 /* Key.cc */,
+				3A5B908825D7940300F06219 /* Equipment.h */,
+				3A5B908925D7940300F06219 /* Equipment.cc */,
+				3A5B908A25D7940300F06219 /* Item.h */,
+				3A5B908B25D7940300F06219 /* MiscItem.cc */,
+				3A5B908C25D7940300F06219 /* MiscItem.h */,
 			);
 			path = item;
 			sourceTree = "<group>";
 		};
-		3AAF51CA25D57CE6008FDBD9 /* quest */ = {
+		3A5B908D25D7940300F06219 /* quest */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51CB25D57CE6008FDBD9 /* TalkToTargetObjective.h */,
-				3AAF51CC25D57CE6008FDBD9 /* Quest.cc */,
-				3AAF51CD25D57CE6008FDBD9 /* CollectItemObjective.cc */,
-				3AAF51CE25D57CE6008FDBD9 /* Quest.h */,
-				3AAF51CF25D57CE6008FDBD9 /* CollectItemObjective.h */,
-				3AAF51D025D57CE6008FDBD9 /* QuestBook.h */,
-				3AAF51D125D57CE6008FDBD9 /* QuestBook.cc */,
-				3AAF51D225D57CE6008FDBD9 /* KillTargetObjective.h */,
-				3AAF51D325D57CE6008FDBD9 /* KillTargetObjective.cc */,
+				3A5B908E25D7940300F06219 /* TalkToTargetObjective.h */,
+				3A5B908F25D7940300F06219 /* Quest.cc */,
+				3A5B909025D7940300F06219 /* CollectItemObjective.cc */,
+				3A5B909125D7940300F06219 /* Quest.h */,
+				3A5B909225D7940300F06219 /* CollectItemObjective.h */,
+				3A5B909325D7940300F06219 /* QuestBook.h */,
+				3A5B909425D7940300F06219 /* QuestBook.cc */,
+				3A5B909525D7940300F06219 /* KillTargetObjective.h */,
+				3A5B909625D7940300F06219 /* KillTargetObjective.cc */,
 			);
 			path = quest;
 			sourceTree = "<group>";
 		};
-		3AAF51D425D57CE6008FDBD9 /* gameplay */ = {
+		3A5B909725D7940300F06219 /* gameplay */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51D525D57CE6008FDBD9 /* ItemPriceTable.cc */,
-				3AAF51D625D57CE6008FDBD9 /* ItemPriceTable.h */,
-				3AAF51D725D57CE6008FDBD9 /* DialogueTree.h */,
-				3AAF51D825D57CE6008FDBD9 /* ExpPointTable.h */,
-				3AAF51D925D57CE6008FDBD9 /* DialogueTree.cc */,
-				3AAF51DA25D57CE6008FDBD9 /* GameState.cc */,
-				3AAF51DB25D57CE6008FDBD9 /* ExpPointTable.cc */,
-				3AAF51DC25D57CE6008FDBD9 /* GameState.h */,
+				3A5B909825D7940300F06219 /* ItemPriceTable.cc */,
+				3A5B909925D7940300F06219 /* ItemPriceTable.h */,
+				3A5B909A25D7940300F06219 /* DialogueTree.h */,
+				3A5B909B25D7940300F06219 /* ExpPointTable.h */,
+				3A5B909C25D7940300F06219 /* DialogueTree.cc */,
+				3A5B909D25D7940300F06219 /* GameState.cc */,
+				3A5B909E25D7940300F06219 /* ExpPointTable.cc */,
+				3A5B909F25D7940300F06219 /* GameState.h */,
 			);
 			path = gameplay;
 			sourceTree = "<group>";
 		};
-		3AAF51DD25D57CE6008FDBD9 /* gl */ = {
+		3A5B90A025D7940300F06219 /* gl */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51DE25D57CE6008FDBD9 /* GLESDebugDraw.cc */,
-				3AAF51DF25D57CE6008FDBD9 /* GLESDebugDraw.h */,
+				3A5B90A125D7940300F06219 /* GLESDebugDraw.cc */,
+				3A5B90A225D7940300F06219 /* GLESDebugDraw.h */,
 			);
 			path = gl;
 			sourceTree = "<group>";
 		};
-		3AAF51E325D57CE7008FDBD9 /* scene */ = {
+		3A5B90A625D7940300F06219 /* scene */ = {
 			isa = PBXGroup;
 			children = (
-				3AAF51E425D57CE7008FDBD9 /* GameScene.cc */,
-				3AAF51E525D57CE7008FDBD9 /* MainMenuScene.h */,
-				3AAF51E625D57CE7008FDBD9 /* SceneManager.cc */,
-				3AAF51E725D57CE7008FDBD9 /* SceneManager.h */,
-				3AAF51E825D57CE7008FDBD9 /* GameScene.h */,
-				3AAF51E925D57CE7008FDBD9 /* MainMenuScene.cc */,
+				3A5B90A725D7940300F06219 /* GameScene.cc */,
+				3A5B90A825D7940300F06219 /* MainMenuScene.h */,
+				3A5B90A925D7940300F06219 /* SceneManager.cc */,
+				3A5B90AA25D7940300F06219 /* SceneManager.h */,
+				3A5B90AB25D7940300F06219 /* GameScene.h */,
+				3A5B90AC25D7940300F06219 /* MainMenuScene.cc */,
 			);
 			path = scene;
 			sourceTree = "<group>";
@@ -1047,9 +1061,9 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* Vigilante-mobile.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5087E73D17EB910900C73F5D /* Vigilante-desktop */ = {
+		5087E73D17EB910900C73F5D /* Vigilante */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Vigilante-desktop" */;
+			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Vigilante" */;
 			buildPhases = (
 				5087E74817EB910900C73F5D /* Resources */,
 				5087E75617EB910900C73F5D /* Sources */,
@@ -1060,9 +1074,9 @@
 			dependencies = (
 				1AC6FB16180E9959004C840B /* PBXTargetDependency */,
 			);
-			name = "Vigilante-desktop";
+			name = Vigilante;
 			productName = iphone;
-			productReference = 5087E76F17EB910900C73F5D /* Vigilante-desktop.app */;
+			productReference = 5087E76F17EB910900C73F5D /* Vigilante.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1094,7 +1108,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Vigilante-mobile */,
-				5087E73D17EB910900C73F5D /* Vigilante-desktop */,
+				5087E73D17EB910900C73F5D /* Vigilante */,
 			);
 		};
 /* End PBXProject section */
@@ -1156,90 +1170,91 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AAF51EA25D57CE7008FDBD9 /* FloatingDamages.cc in Sources */,
-				3AAF523025D57CE7008FDBD9 /* MagicalMissile.cc in Sources */,
-				3AAF522C25D57CE7008FDBD9 /* StatusBar.cc in Sources */,
-				3AAF522A25D57CE7008FDBD9 /* Console.cc in Sources */,
-				3AAF528625D57CE7008FDBD9 /* GameScene.cc in Sources */,
-				3AAF526C25D57CE7008FDBD9 /* Key.cc in Sources */,
-				3AAF524225D57CE7008FDBD9 /* KeyCodeUtil.cc in Sources */,
-				3AAF527225D57CE7008FDBD9 /* Quest.cc in Sources */,
-				3AAF524425D57CE7008FDBD9 /* CameraUtil.cc in Sources */,
-				3AAF522E25D57CE7008FDBD9 /* Hud.cc in Sources */,
-				3AAF51F825D57CE7008FDBD9 /* TradeListView.cc in Sources */,
-				3AAF523C25D57CE7008FDBD9 /* JsonUtil.cc in Sources */,
-				3AAF520A25D57CE7008FDBD9 /* SkillListView.cc in Sources */,
-				3AAF523625D57CE7008FDBD9 /* Skill.cc in Sources */,
-				3AAF51FA25D57CE7008FDBD9 /* TradeWindow.cc in Sources */,
-				3AAF521425D57CE7008FDBD9 /* QuestListView.cc in Sources */,
-				3AAF526425D57CE7008FDBD9 /* WorldContactListener.cc in Sources */,
-				3AAF521025D57CE7008FDBD9 /* OptionPane.cc in Sources */,
-				3AAF51F625D57CE7008FDBD9 /* TextField.cc in Sources */,
-				3AAF526025D57CE7008FDBD9 /* Chest.cc in Sources */,
-				3AAF523225D57CE7008FDBD9 /* ForwardSlash.cc in Sources */,
-				3AAF528225D57CE7008FDBD9 /* GLESDebugDraw.cc in Sources */,
-				3AAF524025D57CE7008FDBD9 /* StringUtil.cc in Sources */,
-				3AAF51F425D57CE7008FDBD9 /* TabView.cc in Sources */,
-				3AAF522825D57CE7008FDBD9 /* CommandParser.cc in Sources */,
-				3AAF522425D57CE7008FDBD9 /* QuestHints.cc in Sources */,
-				3AAF527825D57CE7008FDBD9 /* KillTargetObjective.cc in Sources */,
-				3AAF526625D57CE7008FDBD9 /* AssetManager.cc in Sources */,
+				3A5B912B25D7940400F06219 /* AssetManager.cc in Sources */,
+				3A5B913925D7940400F06219 /* CollectItemObjective.cc in Sources */,
+				3A5B910B25D7940300F06219 /* b2BodyBuilder.cc in Sources */,
+				3A5B914125D7940400F06219 /* DialogueTree.cc in Sources */,
+				3A5B914D25D7940400F06219 /* SceneManager.cc in Sources */,
+				3A5B911325D7940300F06219 /* StaticActor.cc in Sources */,
+				3A5B90F325D7940300F06219 /* Hud.cc in Sources */,
+				3A5B913325D7940400F06219 /* Equipment.cc in Sources */,
+				3A5B90AD25D7940300F06219 /* FloatingDamages.cc in Sources */,
+				3A5B90FB25D7940300F06219 /* Skill.cc in Sources */,
+				3A5B914325D7940400F06219 /* GameState.cc in Sources */,
+				3A5B912D25D7940400F06219 /* Item.cc in Sources */,
+				3A5B910D25D7940300F06219 /* b2DebugRenderer.cc in Sources */,
+				3A5B90BB25D7940300F06219 /* TradeListView.cc in Sources */,
+				3A5B90CD25D7940300F06219 /* SkillListView.cc in Sources */,
+				3A5B90BD25D7940300F06219 /* TradeWindow.cc in Sources */,
+				3A5B913725D7940400F06219 /* Quest.cc in Sources */,
+				3A5B90D725D7940300F06219 /* QuestListView.cc in Sources */,
+				3A5B90D325D7940300F06219 /* OptionPane.cc in Sources */,
+				3A5B912925D7940400F06219 /* WorldContactListener.cc in Sources */,
+				3A5B90B925D7940300F06219 /* TextField.cc in Sources */,
+				3A5B911925D7940300F06219 /* Party.cc in Sources */,
+				3A5B90B725D7940300F06219 /* TabView.cc in Sources */,
+				3A5B90ED25D7940300F06219 /* CommandParser.cc in Sources */,
+				3A5B90E725D7940300F06219 /* QuestHints.cc in Sources */,
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
-				3AAF526225D57CE7008FDBD9 /* GameMap.cc in Sources */,
-				3AAF525A25D57CE7008FDBD9 /* DynamicActor.cc in Sources */,
-				3AAF525825D57CE7008FDBD9 /* CallbackManager.cc in Sources */,
-				3AAF525E25D57CE7008FDBD9 /* FxManager.cc in Sources */,
-				3AAF527025D57CE7008FDBD9 /* MiscItem.cc in Sources */,
-				3AAF523E25D57CE7008FDBD9 /* RandUtil.cc in Sources */,
-				3AAF526E25D57CE7008FDBD9 /* Equipment.cc in Sources */,
-				3AAF528025D57CE7008FDBD9 /* ExpPointTable.cc in Sources */,
-				3AAF523A25D57CE7008FDBD9 /* Logger.cc in Sources */,
-				3AAF524825D57CE7008FDBD9 /* b2DebugRenderer.cc in Sources */,
-				3AAF51EC25D57CE7008FDBD9 /* Shade.cc in Sources */,
-				3AAF51F025D57CE7008FDBD9 /* TableLayout.cc in Sources */,
-				3AAF527625D57CE7008FDBD9 /* QuestBook.cc in Sources */,
-				3AAF527A25D57CE7008FDBD9 /* ItemPriceTable.cc in Sources */,
-				3AAF520225D57CE7008FDBD9 /* DialogueListView.cc in Sources */,
-				3AAF528A25D57CE7008FDBD9 /* MainMenuScene.cc in Sources */,
-				3AAF520025D57CE7008FDBD9 /* Subtitles.cc in Sources */,
-				3AAF51EE25D57CE7008FDBD9 /* Window.cc in Sources */,
-				3AAF525425D57CE7008FDBD9 /* Party.cc in Sources */,
-				3AAF528425D57CE7008FDBD9 /* AppDelegate.cc in Sources */,
-				3AAF524E25D57CE7008FDBD9 /* StaticActor.cc in Sources */,
-				3AAF521625D57CE7008FDBD9 /* QuestPane.cc in Sources */,
-				3AAF525625D57CE7008FDBD9 /* Player.cc in Sources */,
-				3AAF528825D57CE7008FDBD9 /* SceneManager.cc in Sources */,
-				3AAF521E25D57CE7008FDBD9 /* StatsPane.cc in Sources */,
-				3AAF522025D57CE7008FDBD9 /* EquipmentPane.cc in Sources */,
-				3AAF520625D57CE7008FDBD9 /* PauseMenuDialog.cc in Sources */,
-				3AAF524C25D57CE7008FDBD9 /* HotkeyManager.cc in Sources */,
-				3AAF527E25D57CE7008FDBD9 /* GameState.cc in Sources */,
-				3AAF526825D57CE7008FDBD9 /* Item.cc in Sources */,
-				3AAF525025D57CE7008FDBD9 /* Npc.cc in Sources */,
+				3A5B90AF25D7940300F06219 /* Shade.cc in Sources */,
+				3A5B90B325D7940300F06219 /* TableLayout.cc in Sources */,
+				3A5B90C525D7940300F06219 /* DialogueListView.cc in Sources */,
+				3A5B90C325D7940300F06219 /* Subtitles.cc in Sources */,
+				3A5B90E925D7940300F06219 /* ControlHints.cc in Sources */,
+				3A5B914925D7940400F06219 /* AppDelegate.cc in Sources */,
+				3A5B910325D7940300F06219 /* RandUtil.cc in Sources */,
+				3A5B911B25D7940300F06219 /* Player.cc in Sources */,
+				3A5B911F25D7940400F06219 /* DynamicActor.cc in Sources */,
+				3A5B910725D7940300F06219 /* KeyCodeUtil.cc in Sources */,
+				3A5B90B125D7940300F06219 /* Window.cc in Sources */,
+				3A5B914525D7940400F06219 /* ExpPointTable.cc in Sources */,
+				3A5B911D25D7940400F06219 /* CallbackManager.cc in Sources */,
+				3A5B90D925D7940300F06219 /* QuestPane.cc in Sources */,
+				3A5B912F25D7940400F06219 /* Consumable.cc in Sources */,
+				3A5B911725D7940300F06219 /* Character.cc in Sources */,
+				3A5B910925D7940300F06219 /* CameraUtil.cc in Sources */,
+				3A5B914725D7940400F06219 /* GLESDebugDraw.cc in Sources */,
+				3A5B913125D7940400F06219 /* Key.cc in Sources */,
+				3A5B90E125D7940300F06219 /* StatsPane.cc in Sources */,
+				3A5B913F25D7940400F06219 /* ItemPriceTable.cc in Sources */,
+				3A5B910525D7940300F06219 /* StringUtil.cc in Sources */,
+				3A5B90F125D7940300F06219 /* StatusBar.cc in Sources */,
+				3A5B912125D7940400F06219 /* GameMapManager.cc in Sources */,
+				3A5B90F925D7940300F06219 /* BatForm.cc in Sources */,
+				3A5B914F25D7940400F06219 /* MainMenuScene.cc in Sources */,
+				3A5B913D25D7940400F06219 /* KillTargetObjective.cc in Sources */,
+				3A5B913525D7940400F06219 /* MiscItem.cc in Sources */,
+				3A5B90E325D7940300F06219 /* EquipmentPane.cc in Sources */,
+				3A5B913B25D7940400F06219 /* QuestBook.cc in Sources */,
+				3A5B90C925D7940300F06219 /* PauseMenuDialog.cc in Sources */,
+				3A5B911125D7940300F06219 /* HotkeyManager.cc in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
-				3AAF524625D57CE7008FDBD9 /* b2BodyBuilder.cc in Sources */,
-				3AAF522625D57CE7008FDBD9 /* Notifications.cc in Sources */,
-				3AAF523825D57CE7008FDBD9 /* BackDash.cc in Sources */,
-				3AAF523425D57CE7008FDBD9 /* BatForm.cc in Sources */,
-				3AAF524A25D57CE7008FDBD9 /* InputManager.cc in Sources */,
-				3AAF521C25D57CE7008FDBD9 /* HeaderPane.cc in Sources */,
-				3AAF51F225D57CE7008FDBD9 /* AmountSelectionWindow.cc in Sources */,
-				3AAF520E25D57CE7008FDBD9 /* OptionListView.cc in Sources */,
-				3AAF51FE25D57CE7008FDBD9 /* DialogueManager.cc in Sources */,
-				3AAF522225D57CE7008FDBD9 /* WindowManager.cc in Sources */,
-				3AAF51FC25D57CE7008FDBD9 /* TimedLabelService.cc in Sources */,
-				3AAF521225D57CE7008FDBD9 /* PauseMenu.cc in Sources */,
+				3A5B912325D7940400F06219 /* FxManager.cc in Sources */,
+				3A5B90F725D7940300F06219 /* ForwardSlash.cc in Sources */,
+				3A5B90DF25D7940300F06219 /* HeaderPane.cc in Sources */,
+				3A5B90B525D7940300F06219 /* AmountSelectionWindow.cc in Sources */,
+				3A5B90D125D7940300F06219 /* OptionListView.cc in Sources */,
+				3A5B90EB25D7940300F06219 /* Notifications.cc in Sources */,
+				3A5B90C125D7940300F06219 /* DialogueManager.cc in Sources */,
+				3A5B90FD25D7940300F06219 /* BackDash.cc in Sources */,
+				3A5B90EF25D7940300F06219 /* Console.cc in Sources */,
+				3A5B90E525D7940300F06219 /* WindowManager.cc in Sources */,
+				3A5B911525D7940300F06219 /* Npc.cc in Sources */,
+				3A5B912525D7940400F06219 /* Chest.cc in Sources */,
+				3A5B90BF25D7940300F06219 /* TimedLabelService.cc in Sources */,
+				3A5B90D525D7940300F06219 /* PauseMenu.cc in Sources */,
+				3A5B90F525D7940300F06219 /* MagicalMissile.cc in Sources */,
+				3A5B914B25D7940400F06219 /* GameScene.cc in Sources */,
+				3A5B90FF25D7940300F06219 /* Logger.cc in Sources */,
+				3A5B912725D7940400F06219 /* GameMap.cc in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
-				3AAF520825D57CE7008FDBD9 /* SkillPane.cc in Sources */,
-				3AAF527425D57CE7008FDBD9 /* CollectItemObjective.cc in Sources */,
-				3AAF520425D57CE7008FDBD9 /* DialogueMenu.cc in Sources */,
-				3AAF526A25D57CE7008FDBD9 /* Consumable.cc in Sources */,
-				3AAF527C25D57CE7008FDBD9 /* DialogueTree.cc in Sources */,
-				3AAF521A25D57CE7008FDBD9 /* ItemListView.cc in Sources */,
-				3AAF525C25D57CE7008FDBD9 /* GameMapManager.cc in Sources */,
-				3AAF525225D57CE7008FDBD9 /* Character.cc in Sources */,
-				3AAF520C25D57CE7008FDBD9 /* AbstractPane.cc in Sources */,
-				3AAF521825D57CE7008FDBD9 /* InventoryPane.cc in Sources */,
+				3A5B90CB25D7940300F06219 /* SkillPane.cc in Sources */,
+				3A5B90C725D7940300F06219 /* DialogueMenu.cc in Sources */,
+				3A5B90DD25D7940300F06219 /* ItemListView.cc in Sources */,
+				3A5B910125D7940300F06219 /* JsonUtil.cc in Sources */,
+				3A5B910F25D7940300F06219 /* InputManager.cc in Sources */,
+				3A5B90CF25D7940300F06219 /* AbstractPane.cc in Sources */,
+				3A5B90DB25D7940300F06219 /* InventoryPane.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,88 +1262,89 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AAF521525D57CE7008FDBD9 /* QuestListView.cc in Sources */,
-				3AAF524125D57CE7008FDBD9 /* StringUtil.cc in Sources */,
-				3AAF528125D57CE7008FDBD9 /* ExpPointTable.cc in Sources */,
-				3AAF520125D57CE7008FDBD9 /* Subtitles.cc in Sources */,
-				3AAF51ED25D57CE7008FDBD9 /* Shade.cc in Sources */,
-				3AAF526F25D57CE7008FDBD9 /* Equipment.cc in Sources */,
-				3AAF522F25D57CE7008FDBD9 /* Hud.cc in Sources */,
-				3AAF527D25D57CE7008FDBD9 /* DialogueTree.cc in Sources */,
-				3AAF528725D57CE7008FDBD9 /* GameScene.cc in Sources */,
-				3AAF51F725D57CE7008FDBD9 /* TextField.cc in Sources */,
-				3AAF522525D57CE7008FDBD9 /* QuestHints.cc in Sources */,
-				3AAF520925D57CE7008FDBD9 /* SkillPane.cc in Sources */,
-				3AAF527125D57CE7008FDBD9 /* MiscItem.cc in Sources */,
-				3AAF528925D57CE7008FDBD9 /* SceneManager.cc in Sources */,
-				3AAF520B25D57CE7008FDBD9 /* SkillListView.cc in Sources */,
-				3AAF527525D57CE7008FDBD9 /* CollectItemObjective.cc in Sources */,
-				3AAF522125D57CE7008FDBD9 /* EquipmentPane.cc in Sources */,
-				3AAF522925D57CE7008FDBD9 /* CommandParser.cc in Sources */,
-				3AAF51F125D57CE7008FDBD9 /* TableLayout.cc in Sources */,
-				3AAF526925D57CE7008FDBD9 /* Item.cc in Sources */,
-				3AAF520D25D57CE7008FDBD9 /* AbstractPane.cc in Sources */,
-				3AAF526B25D57CE7008FDBD9 /* Consumable.cc in Sources */,
-				3AAF51F325D57CE7008FDBD9 /* AmountSelectionWindow.cc in Sources */,
-				3AAF521125D57CE7008FDBD9 /* OptionPane.cc in Sources */,
-				3AAF521925D57CE7008FDBD9 /* InventoryPane.cc in Sources */,
-				3AAF51FD25D57CE7008FDBD9 /* TimedLabelService.cc in Sources */,
-				3AAF528B25D57CE7008FDBD9 /* MainMenuScene.cc in Sources */,
-				3AAF520325D57CE7008FDBD9 /* DialogueListView.cc in Sources */,
-				3AAF520525D57CE7008FDBD9 /* DialogueMenu.cc in Sources */,
-				3AAF528325D57CE7008FDBD9 /* GLESDebugDraw.cc in Sources */,
-				3AAF524D25D57CE7008FDBD9 /* HotkeyManager.cc in Sources */,
-				3AAF522325D57CE7008FDBD9 /* WindowManager.cc in Sources */,
-				3AAF523725D57CE7008FDBD9 /* Skill.cc in Sources */,
-				3AAF524525D57CE7008FDBD9 /* CameraUtil.cc in Sources */,
-				3AAF526525D57CE7008FDBD9 /* WorldContactListener.cc in Sources */,
-				3AAF527B25D57CE7008FDBD9 /* ItemPriceTable.cc in Sources */,
-				3AAF523925D57CE7008FDBD9 /* BackDash.cc in Sources */,
-				3AAF51FB25D57CE7008FDBD9 /* TradeWindow.cc in Sources */,
-				3AAF523F25D57CE7008FDBD9 /* RandUtil.cc in Sources */,
-				3AAF523125D57CE7008FDBD9 /* MagicalMissile.cc in Sources */,
-				3AAF523D25D57CE7008FDBD9 /* JsonUtil.cc in Sources */,
-				3AAF521B25D57CE7008FDBD9 /* ItemListView.cc in Sources */,
-				3AAF520725D57CE7008FDBD9 /* PauseMenuDialog.cc in Sources */,
-				3AAF520F25D57CE7008FDBD9 /* OptionListView.cc in Sources */,
-				3AAF527F25D57CE7008FDBD9 /* GameState.cc in Sources */,
-				3AAF527725D57CE7008FDBD9 /* QuestBook.cc in Sources */,
-				3AAF525325D57CE7008FDBD9 /* Character.cc in Sources */,
-				3AAF527925D57CE7008FDBD9 /* KillTargetObjective.cc in Sources */,
-				3AAF528525D57CE7008FDBD9 /* AppDelegate.cc in Sources */,
-				3AAF525525D57CE7008FDBD9 /* Party.cc in Sources */,
-				3AAF51F525D57CE7008FDBD9 /* TabView.cc in Sources */,
-				3AAF526325D57CE7008FDBD9 /* GameMap.cc in Sources */,
-				3AAF522D25D57CE7008FDBD9 /* StatusBar.cc in Sources */,
-				3AAF525925D57CE7008FDBD9 /* CallbackManager.cc in Sources */,
-				3AAF51FF25D57CE7008FDBD9 /* DialogueManager.cc in Sources */,
-				3AAF526125D57CE7008FDBD9 /* Chest.cc in Sources */,
-				3AAF523B25D57CE7008FDBD9 /* Logger.cc in Sources */,
-				3AAF524B25D57CE7008FDBD9 /* InputManager.cc in Sources */,
-				3AAF521D25D57CE7008FDBD9 /* HeaderPane.cc in Sources */,
-				3AAF51EF25D57CE7008FDBD9 /* Window.cc in Sources */,
-				3AAF51EB25D57CE7008FDBD9 /* FloatingDamages.cc in Sources */,
-				3AAF524925D57CE7008FDBD9 /* b2DebugRenderer.cc in Sources */,
-				3AAF525725D57CE7008FDBD9 /* Player.cc in Sources */,
-				3AAF51F925D57CE7008FDBD9 /* TradeListView.cc in Sources */,
-				3AAF525D25D57CE7008FDBD9 /* GameMapManager.cc in Sources */,
-				3AAF523325D57CE7008FDBD9 /* ForwardSlash.cc in Sources */,
-				3AAF525125D57CE7008FDBD9 /* Npc.cc in Sources */,
+				3A5B912E25D7940400F06219 /* Item.cc in Sources */,
+				3A5B90D825D7940300F06219 /* QuestListView.cc in Sources */,
+				3A5B90C425D7940300F06219 /* Subtitles.cc in Sources */,
+				3A5B914425D7940400F06219 /* GameState.cc in Sources */,
+				3A5B90B025D7940300F06219 /* Shade.cc in Sources */,
+				3A5B912025D7940400F06219 /* DynamicActor.cc in Sources */,
+				3A5B90F025D7940300F06219 /* Console.cc in Sources */,
+				3A5B912625D7940400F06219 /* Chest.cc in Sources */,
+				3A5B910625D7940300F06219 /* StringUtil.cc in Sources */,
+				3A5B913625D7940400F06219 /* MiscItem.cc in Sources */,
+				3A5B910025D7940300F06219 /* Logger.cc in Sources */,
+				3A5B913425D7940400F06219 /* Equipment.cc in Sources */,
+				3A5B90BA25D7940300F06219 /* TextField.cc in Sources */,
+				3A5B911625D7940300F06219 /* Npc.cc in Sources */,
+				3A5B90E825D7940300F06219 /* QuestHints.cc in Sources */,
+				3A5B90CC25D7940300F06219 /* SkillPane.cc in Sources */,
+				3A5B90EC25D7940300F06219 /* Notifications.cc in Sources */,
+				3A5B910E25D7940300F06219 /* b2DebugRenderer.cc in Sources */,
+				3A5B90CE25D7940300F06219 /* SkillListView.cc in Sources */,
+				3A5B913025D7940400F06219 /* Consumable.cc in Sources */,
+				3A5B90E425D7940300F06219 /* EquipmentPane.cc in Sources */,
+				3A5B90B425D7940300F06219 /* TableLayout.cc in Sources */,
+				3A5B911025D7940300F06219 /* InputManager.cc in Sources */,
+				3A5B911225D7940300F06219 /* HotkeyManager.cc in Sources */,
+				3A5B90D025D7940300F06219 /* AbstractPane.cc in Sources */,
+				3A5B90EA25D7940300F06219 /* ControlHints.cc in Sources */,
+				3A5B90B625D7940300F06219 /* AmountSelectionWindow.cc in Sources */,
+				3A5B914625D7940400F06219 /* ExpPointTable.cc in Sources */,
+				3A5B911A25D7940300F06219 /* Party.cc in Sources */,
+				3A5B911C25D7940300F06219 /* Player.cc in Sources */,
+				3A5B911825D7940300F06219 /* Character.cc in Sources */,
+				3A5B90D425D7940300F06219 /* OptionPane.cc in Sources */,
+				3A5B910425D7940300F06219 /* RandUtil.cc in Sources */,
+				3A5B913825D7940400F06219 /* Quest.cc in Sources */,
+				3A5B90DC25D7940300F06219 /* InventoryPane.cc in Sources */,
+				3A5B90C025D7940300F06219 /* TimedLabelService.cc in Sources */,
+				3A5B912425D7940400F06219 /* FxManager.cc in Sources */,
+				3A5B910825D7940300F06219 /* KeyCodeUtil.cc in Sources */,
+				3A5B90FA25D7940300F06219 /* BatForm.cc in Sources */,
+				3A5B914225D7940400F06219 /* DialogueTree.cc in Sources */,
+				3A5B90F425D7940300F06219 /* Hud.cc in Sources */,
+				3A5B913E25D7940400F06219 /* KillTargetObjective.cc in Sources */,
+				3A5B913225D7940400F06219 /* Key.cc in Sources */,
+				3A5B911425D7940300F06219 /* StaticActor.cc in Sources */,
+				3A5B90C625D7940300F06219 /* DialogueListView.cc in Sources */,
+				3A5B910A25D7940300F06219 /* CameraUtil.cc in Sources */,
+				3A5B914825D7940400F06219 /* GLESDebugDraw.cc in Sources */,
+				3A5B90C825D7940300F06219 /* DialogueMenu.cc in Sources */,
+				3A5B912A25D7940400F06219 /* WorldContactListener.cc in Sources */,
+				3A5B90E625D7940300F06219 /* WindowManager.cc in Sources */,
+				3A5B912225D7940400F06219 /* GameMapManager.cc in Sources */,
+				3A5B910C25D7940300F06219 /* b2BodyBuilder.cc in Sources */,
+				3A5B90BE25D7940300F06219 /* TradeWindow.cc in Sources */,
+				3A5B90DE25D7940300F06219 /* ItemListView.cc in Sources */,
+				3A5B913C25D7940400F06219 /* QuestBook.cc in Sources */,
+				3A5B911E25D7940400F06219 /* CallbackManager.cc in Sources */,
+				3A5B914E25D7940400F06219 /* SceneManager.cc in Sources */,
+				3A5B90CA25D7940300F06219 /* PauseMenuDialog.cc in Sources */,
+				3A5B90F825D7940300F06219 /* ForwardSlash.cc in Sources */,
+				3A5B90D225D7940300F06219 /* OptionListView.cc in Sources */,
+				3A5B90B825D7940300F06219 /* TabView.cc in Sources */,
+				3A5B90FE25D7940300F06219 /* BackDash.cc in Sources */,
+				3A5B90F225D7940300F06219 /* StatusBar.cc in Sources */,
+				3A5B915025D7940400F06219 /* MainMenuScene.cc in Sources */,
+				3A5B90C225D7940300F06219 /* DialogueManager.cc in Sources */,
+				3A5B90E025D7940300F06219 /* HeaderPane.cc in Sources */,
+				3A5B90EE25D7940300F06219 /* CommandParser.cc in Sources */,
+				3A5B913A25D7940400F06219 /* CollectItemObjective.cc in Sources */,
+				3A5B90B225D7940300F06219 /* Window.cc in Sources */,
+				3A5B90AE25D7940300F06219 /* FloatingDamages.cc in Sources */,
+				3A5B90BC25D7940300F06219 /* TradeListView.cc in Sources */,
+				3A5B914025D7940400F06219 /* ItemPriceTable.cc in Sources */,
+				3A5B90FC25D7940300F06219 /* Skill.cc in Sources */,
+				3A5B90F625D7940300F06219 /* MagicalMissile.cc in Sources */,
 				3A0E168524B69344003BCCA1 /* main.cc in Sources */,
-				3AAF525F25D57CE7008FDBD9 /* FxManager.cc in Sources */,
-				3AAF524F25D57CE7008FDBD9 /* StaticActor.cc in Sources */,
-				3AAF521725D57CE7008FDBD9 /* QuestPane.cc in Sources */,
-				3AAF521325D57CE7008FDBD9 /* PauseMenu.cc in Sources */,
-				3AAF522725D57CE7008FDBD9 /* Notifications.cc in Sources */,
-				3AAF524325D57CE7008FDBD9 /* KeyCodeUtil.cc in Sources */,
-				3AAF527325D57CE7008FDBD9 /* Quest.cc in Sources */,
-				3AAF523525D57CE7008FDBD9 /* BatForm.cc in Sources */,
-				3AAF524725D57CE7008FDBD9 /* b2BodyBuilder.cc in Sources */,
-				3AAF521F25D57CE7008FDBD9 /* StatsPane.cc in Sources */,
-				3AAF522B25D57CE7008FDBD9 /* Console.cc in Sources */,
-				3AAF526725D57CE7008FDBD9 /* AssetManager.cc in Sources */,
-				3AAF526D25D57CE7008FDBD9 /* Key.cc in Sources */,
-				3AAF525B25D57CE7008FDBD9 /* DynamicActor.cc in Sources */,
+				3A5B90DA25D7940300F06219 /* QuestPane.cc in Sources */,
+				3A5B90D625D7940300F06219 /* PauseMenu.cc in Sources */,
+				3A5B912C25D7940400F06219 /* AssetManager.cc in Sources */,
+				3A5B90E225D7940300F06219 /* StatsPane.cc in Sources */,
+				3A5B910225D7940300F06219 /* JsonUtil.cc in Sources */,
+				3A5B914C25D7940400F06219 /* GameScene.cc in Sources */,
+				3A5B914A25D7940400F06219 /* AppDelegate.cc in Sources */,
+				3A5B912825D7940400F06219 /* GameMap.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1543,7 +1559,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Vigilante-desktop" */ = {
+		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Vigilante" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5087E76D17EB910900C73F5D /* Debug */,
