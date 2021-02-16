@@ -27,7 +27,9 @@ Console::Console()
       _cmdHistory() {
 
   auto onSubmit = [this]() {
-    executeCmd(_textField.getString(), /*showNotification=*/true);
+    executeCmd(_textField.getString(), 
+               /*showNotification=*/true,
+               /*saveInHistory=*/true);
     _textField.clear();
   };
 
@@ -64,11 +66,16 @@ void Console::update(float delta) {
 }
 
 
-void Console::executeCmd(const string& cmd, bool showNotification) {
+void Console::executeCmd(const string& cmd,
+                         bool showNotification,
+                         bool saveInHistory) {
   VGLOG(LOG_INFO, "Executing: %s", cmd.c_str());
   _cmdParser.parse(cmd, showNotification);
-  _cmdHistory.push(cmd);
-  _cmdHistory._current = _cmdHistory._tail;
+
+  if (saveInHistory) {
+    _cmdHistory.push(cmd);
+    _cmdHistory._current = _cmdHistory._tail;
+  }
 }
 
 

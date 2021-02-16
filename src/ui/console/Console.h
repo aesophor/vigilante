@@ -18,7 +18,9 @@ class Console {
   virtual ~Console() = default;
 
   virtual void update(float delta);
-  virtual void executeCmd(const std::string& cmd, bool showNotification=false);
+  virtual void executeCmd(const std::string& cmd,
+                          bool showNotification=false,
+                          bool saveInHistory=false);
 
   bool isVisible() const;
   void setVisible(bool visible);
