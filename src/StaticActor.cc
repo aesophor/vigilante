@@ -34,7 +34,6 @@ bool StaticActor::showOnMap(float x, float y) {
   _bodySprite->setPosition(x, y);
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
                                                       graphical_layers::kDefault);
-
   _isShownOnMap = true;
   return true;
 }
