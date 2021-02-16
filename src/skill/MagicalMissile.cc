@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MagicalMissile.h"
 
 #include <functional>
@@ -10,6 +10,12 @@
 #include "map/GameMapManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/Logger.h"
+
+#define MAGICAL_MISSILE_NUM_ANIMATIONS MagicalMissile::AnimationType::SIZE
+#define MAGICAL_MISSILE_NUM_FIXTURES 1
+
+#define MAGICAL_MISSILE_CATEOGRY_BITS kProjectile
+#define MAGICAL_MISSILE_MASK_BITS kPlayer | kEnemy | kWall
 
 using std::string;
 using std::function;
@@ -37,7 +43,7 @@ using vigilante::category_bits::kWall;
 namespace vigilante {
 
 MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
-    : DynamicActor(AnimationType::SIZE, 1),
+    : DynamicActor(MAGICAL_MISSILE_NUM_ANIMATIONS, MAGICAL_MISSILE_NUM_FIXTURES),
       _skillProfile(jsonFileName),
       _user(user),
       _hasActivated(),
@@ -45,18 +51,23 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
       _launchFxSprite() {}
 
 
-void MagicalMissile::showOnMap(float x, float y) {
+bool MagicalMissile::showOnMap(float x, float y) {
   if (_isShownOnMap) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
-  short categoryBits = kProjectile;
-  short maskBits = kPlayer | kEnemy | kWall;
-  defineBody(b2BodyType::b2_kinematicBody, categoryBits, maskBits, x, y);
+  defineBody(b2BodyType::b2_kinematicBody,
+             x,
+             y,
+             MAGICAL_MISSILE_CATEOGRY_BITS,
+             MAGICAL_MISSILE_MASK_BITS);
 
   defineTexture(_skillProfile.textureResDir, x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet,
+                                                      graphical_layers::kSpell);
+
+  _isShownOnMap = true;
+  return true;
 }
 
 void MagicalMissile::update(float delta) {
@@ -192,7 +203,11 @@ string MagicalMissile::getIconPath() const {
 }
 
 
-void MagicalMissile::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+void MagicalMissile::defineBody(b2BodyType bodyType,
+                                float x,
+                                float y,
+                                short categoryBits,
+                                short maskBits) {
   float spellOffset = _user->getCharacterProfile().attackRange / kPpm;
   spellOffset = (_user->isFacingRight()) ? spellOffset : -spellOffset;
 
@@ -236,4 +251,4 @@ void MagicalMissile::defineTexture(const string& textureResDir, float x, float y
   _bodySpritesheet->getTexture()->setAliasTexParameters();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

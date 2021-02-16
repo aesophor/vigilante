@@ -97,8 +97,9 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
 
   float offsetX = rand_util::randFloat(-.3f, .3f);
   float offsetY = 3.0f;
-  item->getBody()->ApplyLinearImpulse({offsetX, offsetY}, item->getBody()->GetWorldCenter(), true);
-
+  item->getBody()->ApplyLinearImpulse({offsetX, offsetY},
+                                      item->getBody()->GetWorldCenter(),
+                                      true);
   return item;
 }
 

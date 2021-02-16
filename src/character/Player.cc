@@ -70,11 +70,10 @@ Player::Player(const std::string& jsonFileName)
 }
 
 
-void Player::showOnMap(float x, float y) {
+bool Player::showOnMap(float x, float y) {
   if (_isShownOnMap || _isKilled) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
   // Construct b2Body and b2Fixtures
   defineBody(b2BodyType::b2_dynamicBody, x, y,
@@ -93,27 +92,9 @@ void Player::showOnMap(float x, float y) {
       gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
-}
 
-void Player::removeFromMap() {
-  if (!_isShownOnMap) {
-    return;
-  }
-
-  _isShownOnMap = false;
-
-  if (!_isKilled) {
-    _body->GetWorld()->DestroyBody(_body);
-  }
-
-  GameMapManager* gmMgr = GameMapManager::getInstance();
-  gmMgr->getLayer()->removeChild(_bodySpritesheet);
-  for (auto equipment : _equipmentSlots) {
-    if (equipment) {
-      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->removeChild(_equipmentSpritesheets[type]);
-    }
-  }
+  _isShownOnMap = true;
+  return true;
 }
 
 

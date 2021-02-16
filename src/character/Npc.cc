@@ -111,11 +111,10 @@ void Npc::update(float delta) {
   }
 }
 
-void Npc::showOnMap(float x, float y) {
+bool Npc::showOnMap(float x, float y) {
   if (_isShownOnMap || _isKilled) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
   // Construct b2Body and b2Fixtures.
   // The category/mask bits of each fixture are set in Npc::setDisposition()
@@ -133,6 +132,9 @@ void Npc::showOnMap(float x, float y) {
       gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
+
+  _isShownOnMap = true;
+  return true;
 }
 
 void Npc::defineBody(b2BodyType bodyType, float x, float y,

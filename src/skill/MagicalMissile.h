@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_MAGICAL_MISSILE_H_
 #define VIGILANTE_MAGICAL_MISSILE_H_
 
@@ -19,26 +19,31 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   MagicalMissile(const std::string& jsonFileName, Character* user);
   virtual ~MagicalMissile() = default;
 
-  virtual void showOnMap(float x, float y) override; // DynamicActor
-  virtual void update(float delta) override; // DynamicActor
+  virtual bool showOnMap(float x, float y) override;  // DynamicActor
+  virtual void update(float delta) override;  // DynamicActor
 
-  virtual Character* getUser() const override; // Projectile
-  virtual int getDamage() const override; // Projectile
-  virtual void onHit(Character* target) override; // Projectile
+  virtual Character* getUser() const override;  // Projectile
+  virtual int getDamage() const override;  // Projectile
+  virtual void onHit(Character* target) override;  // Projectile
 
-  virtual void import(const std::string& jsonFileName) override; // Skill
-  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override; // Skill
-  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override; // Skill
-  virtual bool canActivate() override; // Skill
-  virtual void activate() override; // Skill
+  virtual void import(const std::string& jsonFileName) override;  // Skill
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override;  // Skill
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override;  // Skill
+  virtual bool canActivate() override;  // Skill
+  virtual void activate() override;  // Skill
 
-  virtual Skill::Profile& getSkillProfile() override; // Skill
-  virtual const std::string& getName() const override; // Skill
-  virtual const std::string& getDesc() const override; // Skill
-  virtual std::string getIconPath() const override; // Skill
+  virtual Skill::Profile& getSkillProfile() override;  // Skill
+  virtual const std::string& getName() const override;  // Skill
+  virtual const std::string& getDesc() const override;  // Skill
+  virtual std::string getIconPath() const override;  // Skill
   
  private:
-  virtual void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
+  virtual void defineBody(b2BodyType bodyType,
+                          float x,
+                          float y,
+                          short categoryBits,
+                          short maskBits);
+
   virtual void defineTexture(const std::string& textureResPath, float x, float y);
 
   Skill::Profile _skillProfile;
@@ -47,7 +52,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   bool _hasActivated;
   bool _hasHit;
 
-  cocos2d::Sprite* _launchFxSprite; // sprite of launching fx
+  cocos2d::Sprite* _launchFxSprite;  // sprite of launching fx
 
   enum AnimationType {
     LAUNCH_FX,
@@ -57,6 +62,6 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   };
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_MAGICAL_MISSILE_H_
+#endif  // VIGILANTE_MAGICAL_MISSILE_H_

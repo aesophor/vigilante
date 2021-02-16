@@ -59,7 +59,7 @@ class Npc : public Character, public Interactable {
   explicit Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
 
-  virtual void showOnMap(float x, float y) override;  // Character
+  virtual bool showOnMap(float x, float y) override;  // Character
   virtual void update(float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
 

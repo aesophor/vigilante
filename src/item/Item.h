@@ -37,7 +37,7 @@ class Item : public DynamicActor, public Importable {
   static std::unique_ptr<Item> create(const std::string& jsonFileName);
 
   virtual ~Item() = default;
-  virtual void showOnMap(float x, float y) override;  // DynamicActor
+  virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   Item::Profile& getItemProfile();
@@ -51,10 +51,12 @@ class Item : public DynamicActor, public Importable {
 
  protected:
   explicit Item(const std::string& jsonFileName);
-  void defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y);
 
-  static const int _kNumAnimations;
-  static const int _kNumFixtures;
+  void defineBody(b2BodyType bodyType,
+                  float x,
+                  float y,
+                  short categoryBits,
+                  short maskBits);
 
   Item::Profile _itemProfile;
   int _amount;

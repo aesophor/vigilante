@@ -26,22 +26,23 @@ StaticActor::StaticActor(size_t numAnimations)
       _bodyAnimations(numAnimations) {}
 
 
-void StaticActor::showOnMap(float x, float y) {
+bool StaticActor::showOnMap(float x, float y) {
   if (_isShownOnMap) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
   _bodySprite->setPosition(x, y);
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
                                                       graphical_layers::kDefault);
+
+  _isShownOnMap = true;
+  return true;
 }
 
-void StaticActor::removeFromMap() {
+bool StaticActor::removeFromMap() {
   if (!_isShownOnMap) {
-    return;
+    return false;
   }
-  _isShownOnMap = false;
 
   // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
   GameMapManager::getInstance()->getLayer()->removeChild(
@@ -49,6 +50,9 @@ void StaticActor::removeFromMap() {
   );
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;
+
+  _isShownOnMap = false;
+  return true;
 }
 
 void StaticActor::setPosition(float x, float y) {

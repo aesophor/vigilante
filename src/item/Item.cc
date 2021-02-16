@@ -14,6 +14,12 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
+#define ITEM_NUM_ANIMATIONS 0
+#define ITEM_NUM_FIXTURES 2
+
+#define ITEM_CATEGORY_BITS kItem
+#define ITEM_MASK_BITS kGround | kPlatform | kWall
+
 using std::string;
 using std::unique_ptr;
 using cocos2d::Sprite;
@@ -25,9 +31,6 @@ using vigilante::category_bits::kPlatform;
 using rapidjson::Document;
 
 namespace vigilante {
-
-const int Item::_kNumAnimations = 0;
-const int Item::_kNumFixtures = 2;
 
 unique_ptr<Item> Item::create(const string& jsonFileName) {
   if (jsonFileName.find("equipment") != jsonFileName.npos) {
@@ -45,7 +48,7 @@ unique_ptr<Item> Item::create(const string& jsonFileName) {
 }
 
 Item::Item(const string& jsonFileName)
-    : DynamicActor(_kNumAnimations, _kNumFixtures),
+    : DynamicActor(ITEM_NUM_ANIMATIONS, ITEM_NUM_FIXTURES),
       _itemProfile(jsonFileName),
       _amount(1) {
   _bodySprite = Sprite::create(getIconPath());
@@ -53,19 +56,24 @@ Item::Item(const string& jsonFileName)
 }
 
 
-void Item::showOnMap(float x, float y) {
+bool Item::showOnMap(float x, float y) {
   if (_isShownOnMap) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
-  short categoryBits = kItem;
-  short maskBits = kGround | kPlatform | kWall;
-  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);  
+  defineBody(b2BodyType::b2_dynamicBody,
+             x,
+             y,
+             ITEM_CATEGORY_BITS,
+             ITEM_MASK_BITS);  
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, 33);
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
+                                                      graphical_layers::kItem);
+
+  _isShownOnMap = true;
+  return true;
 }
 
 void Item::import(const string& jsonFileName) {
@@ -73,7 +81,11 @@ void Item::import(const string& jsonFileName) {
 }
 
 
-void Item::defineBody(b2BodyType bodyType, short categoryBits, short maskBits, float x, float y) {
+void Item::defineBody(b2BodyType bodyType,
+                      float x,
+                      float y,
+                      short categoryBits,
+                      short maskBits) {
   b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
 
   _body = bodyBuilder.type(bodyType)

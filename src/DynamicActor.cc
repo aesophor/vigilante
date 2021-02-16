@@ -6,7 +6,6 @@
 
 using std::vector;
 using std::unique_ptr;
-using cocos2d::Node;
 
 namespace vigilante {
 
@@ -16,21 +15,19 @@ DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
       _fixtures(numFixtures) {}
 
 
-void DynamicActor::removeFromMap() {
-  StaticActor::removeFromMap();
-
-  if (!_isShownOnMap) {
-    return;
+bool DynamicActor::removeFromMap() {
+  if (!StaticActor::removeFromMap()) {
+    return false;
   }
-
   destroyBody();
+  return true;
 }
 
 void DynamicActor::setPosition(float x, float y) {
   _body->SetTransform({x, y}, 0);
 }
 
-void DynamicActor::update(float delta) {
+void DynamicActor::update(float) {
   // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();
   _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);

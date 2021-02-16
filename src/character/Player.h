@@ -18,8 +18,7 @@ class Player : public Character, public Controllable {
   explicit Player(const std::string& jsonFileName);
   virtual ~Player() = default;
 
-  virtual void showOnMap(float x, float y) override;  // Character
-  virtual void removeFromMap() override;  // Character
+  virtual bool showOnMap(float x, float y) override;  // Character
   
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character

@@ -25,8 +25,8 @@ class DynamicActor : public StaticActor {
   explicit DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
   virtual ~DynamicActor() = default;
 
-  virtual void showOnMap(float x, float y) override = 0;  // StaticActor
-  virtual void removeFromMap() override;  // StaticActor:
+  virtual bool showOnMap(float x, float y) override = 0;  // StaticActor
+  virtual bool removeFromMap() override;  // StaticActor:
   virtual void setPosition(float x, float y) override;  // StaticActor
   virtual void update(float delta);
   virtual void destroyBody();

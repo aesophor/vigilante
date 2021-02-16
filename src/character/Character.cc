@@ -119,18 +119,15 @@ Character::Character(const string& jsonFileName)
 }
 
 
-void Character::removeFromMap() {
-  if (!_isShownOnMap) {
-    return;
+bool Character::removeFromMap() {
+  if (!StaticActor::removeFromMap()) {
+    return false;
   }
-  _isShownOnMap = false;
 
   if (!_isKilled) {
-    _body->GetWorld()->DestroyBody(_body);
+    destroyBody();
   }
 
-  // Remove _bodySpritesheet
-  GameMapManager::getInstance()->getLayer()->removeChild(_bodySpritesheet);
   // Remove _equipmentSpritesheets
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
@@ -139,6 +136,8 @@ void Character::removeFromMap() {
       );
     }
   }
+
+  return true;
 }
 
 void Character::update(float delta) {

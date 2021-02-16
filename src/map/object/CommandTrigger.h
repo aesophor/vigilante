@@ -1,23 +1,18 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CHEST_H_
-#define VIGILANTE_CHEST_H_
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#ifndef VIGILANTE_COMMAND_TRIGGER_H_
+#define VIGILANTE_COMMAND_TRIGGER_H_
 
-#include <string>
-#include <vector>
-
-#include <cocos2d.h>
 #include "DynamicActor.h"
 #include "Interactable.h"
 
 namespace vigilante {
 
-class Chest : public DynamicActor, public Interactable {
+class CommandTrigger : public DynamicActor, public Interactable {
  public:
-  Chest();
-  explicit Chest(const std::string& itemsJson);
-  virtual ~Chest() = default;
+  CommandTrigger();
+  virtual ~CommandTrigger() = default;
 
-  virtual bool showOnMap(float x, float y) override;  // DynamicActor
+  virtual void showOnMap(float x, float y) override;  // DynamicActor
 
   virtual void onInteract(Character* user) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
@@ -33,13 +28,8 @@ class Chest : public DynamicActor, public Interactable {
                   float y,
                   short categoryBits,
                   short maskBits);
-
-  cocos2d::Sprite* _hintBubbleFxSprite;
-
-  std::vector<std::string> _itemJsons;
-  bool _isOpened;
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CHEST_H_
+#endif  // VIGILANTE_COMMAND_TRIGGER_H_

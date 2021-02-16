@@ -49,6 +49,7 @@ const int kSpell = 20;
 
 const int kNpcBody = 24;
 const int kEnemyBody = 25;
+const int kItem = 28;
 const int kPlayerBody = 30;
 const int kEquipment = 37;
 

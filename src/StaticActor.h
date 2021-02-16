@@ -18,8 +18,10 @@ class StaticActor {
   virtual ~StaticActor() = default;
 
   // Show and hide the sprite in the game map.
-  virtual void showOnMap(float x, float y);
-  virtual void removeFromMap();
+  // showOnMap() and removeFromMap() both return a bool
+  // which indicates if the operation is successful.
+  virtual bool showOnMap(float x, float y);
+  virtual bool removeFromMap();
   virtual void setPosition(float x, float y);
 
   cocos2d::Sprite* getBodySprite() const;

@@ -1,12 +1,17 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
-#include <cocos2d.h>
 #include "Constants.h"
 #include "map/GameMapManager.h"
 #include "ui/control_hints/ControlHints.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
+
+#define CHEST_NUM_ANIMATIONS 0
+#define CHEST_NUM_FIXTURES 2
+
+#define ITEM_CATEGORY_BITS kInteractable
+#define ITEM_MASK_BITS kGround | kPlatform | kWall
 
 using std::string;
 using std::vector;
@@ -21,11 +26,8 @@ using vigilante::category_bits::kFeet;
 
 namespace vigilante {
 
-const int Chest::_kNumAnimations = 0;
-const int Chest::_kNumFixtures = 2;
-
 Chest::Chest()
-    : DynamicActor(_kNumAnimations, _kNumFixtures),
+    : DynamicActor(CHEST_NUM_ANIMATIONS, CHEST_NUM_FIXTURES),
       _hintBubbleFxSprite(), 
       _itemJsons(),
       _isOpened() {}
@@ -35,19 +37,23 @@ Chest::Chest(const string& itemJsons) : Chest() {
 }
 
 
-void Chest::showOnMap(float x, float y) {
+bool Chest::showOnMap(float x, float y) {
   if (_isShownOnMap) {
-    return;
+    return false;
   }
-  _isShownOnMap = true;
 
-  short categoryBits = kInteractable;
-  short maskBits = kGround | kPlatform | kWall;
-  defineBody(b2BodyType::b2_dynamicBody, categoryBits, maskBits, x, y);
+  defineBody(b2BodyType::b2_dynamicBody,
+             x,
+             y,
+             ITEM_CATEGORY_BITS,
+             ITEM_MASK_BITS);
 
   _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
   _bodySprite->getTexture()->setAliasTexParameters();
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
+
+  _isShownOnMap = true;
+  return true;
 }
 
 void Chest::defineBody(b2BodyType bodyType,
@@ -98,6 +104,10 @@ bool Chest::willInteractOnContact() const {
 }
 
 void Chest::showHintUI() {
+  if (_isOpened) {
+    return;
+  }
+
   createHintBubbleFx();
   ControlHints::getInstance()->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Open");
 }
