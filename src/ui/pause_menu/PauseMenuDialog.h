@@ -52,6 +52,8 @@ class PauseMenuDialog : public AbstractPane {
     void setHandler(const std::function<void ()>& handler);
 
    private:
+    static const int _kIconLabelGap;
+
     cocos2d::ui::Layout* _layout;
     cocos2d::ui::ImageView* _icon;
     cocos2d::Label* _label;

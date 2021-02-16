@@ -20,6 +20,8 @@ using vigilante::asset_manager::kDialogueTriangle;
 
 namespace vigilante {
 
+const int PauseMenuDialog::Option::_kIconLabelGap = 1;
+
 PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create()),
       _message(Label::createWithTTF("", kBoldFont, kRegularFontSize)),
@@ -44,7 +46,7 @@ void PauseMenuDialog::update() {
     optionWidth = std::max(optionWidth, option->getWidth());
   }
 
-  for (int i = (int) _options.size() - 1; i >= 0; i--) {
+  for (int i = _options.size() - 1; i >= 0; i--) {
     if (!_options[i]->isVisible()) {
       continue;
     }
@@ -155,7 +157,7 @@ PauseMenuDialog::Option::Option(const string& text, const function<void ()>& han
 
   _label->setAnchorPoint({0, 1});
   _label->getFontAtlas()->setAliasTexParameters();
-  _label->setPositionX(_icon->getContentSize().width + 5); // 5 is gap between icon and label
+  _label->setPositionX(_icon->getContentSize().width + _kIconLabelGap);
 
   _layout->setAnchorPoint({0, 1});
   _layout->addChild(_icon);
