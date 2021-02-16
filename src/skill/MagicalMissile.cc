@@ -105,9 +105,7 @@ void MagicalMissile::onHit(Character* target) {
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
     CallFunc::create([=]() {
       GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
-
-      shared_ptr<Skill> key(shared_ptr<Skill>(), this); 
-      _user->getActiveSkills().erase(key);
+      _user->removeActiveSkill(this);
     })
   ));
 
@@ -150,12 +148,11 @@ void MagicalMissile::activate() {
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
-  shared_ptr<Skill> key(shared_ptr<Skill>(), this);
-  auto it = _user->getActiveSkills().find(key);
-  if (it != _user->getActiveSkills().end()) {
-    auto actor = std::dynamic_pointer_cast<DynamicActor>(*it);
-    GameMapManager::getInstance()->getGameMap()->showDynamicActor(std::move(actor), x, y);
-  }
+  shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
+  assert(activeCopy);
+  auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
+  GameMapManager::getInstance()->getGameMap()->showDynamicActor(std::move(actor), x, y);
+
 
   // Set up kinematicBody's moving speed.
   _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;

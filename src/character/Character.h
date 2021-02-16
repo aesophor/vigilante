@@ -170,7 +170,8 @@ class Character : public DynamicActor, public Importable {
   void setPortal(GameMap::Portal* portal);
 
   const SkillBook& getSkillBook() const;
-  std::unordered_set<std::shared_ptr<Skill>>& getActiveSkills();
+  std::shared_ptr<Skill> getActiveSkill(Skill* skill) const;
+  void removeActiveSkill(Skill* skill);
   Skill* getCurrentlyUsedSkill() const;
 
   bool isWaitingForPartyLeader() const;
@@ -295,8 +296,6 @@ class Character : public DynamicActor, public Importable {
   // Currently used skill.
   Character::SkillBook _skillBook;
   std::unordered_map<std::string, std::unique_ptr<Skill>> _skillMapper;
-
-  //std::vector<std::unique_ptr<Skill>> _skills;
   std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
   Skill* _currentlyUsedSkill;
 

@@ -1122,9 +1122,15 @@ const Character::SkillBook& Character::getSkillBook() const {
   return _skillBook;
 }
 
-unordered_set<shared_ptr<Skill>>& Character::getActiveSkills() {
-  // FIXME: make add/remove/get consistent with allies
-  return _activeSkills;
+shared_ptr<Skill> Character::getActiveSkill(Skill* skill) const {
+  shared_ptr<Skill> key(shared_ptr<Skill>(), skill);
+  auto it = _activeSkills.find(key);
+  return (it != _activeSkills.end()) ? *it : nullptr;
+}
+
+void Character::removeActiveSkill(Skill* skill) {
+  shared_ptr<Skill> key(shared_ptr<Skill>(), skill);
+  _activeSkills.erase(key);
 }
 
 Skill* Character::getCurrentlyUsedSkill() const {

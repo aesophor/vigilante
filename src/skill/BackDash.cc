@@ -49,9 +49,7 @@ void BackDash::activate() {
 
   CallbackManager::getInstance()->runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
-
-    shared_ptr<Skill> key(shared_ptr<Skill>(), this);
-    _user->getActiveSkills().erase(key);
+    _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
 }
 

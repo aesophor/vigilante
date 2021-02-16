@@ -58,9 +58,7 @@ void BatForm::activate() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
-
-    shared_ptr<Skill> key(shared_ptr<Skill>(), this);
-    _user->getActiveSkills().erase(key);
+    _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
 }
 
