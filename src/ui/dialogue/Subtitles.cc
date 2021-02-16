@@ -10,7 +10,7 @@
 #include "ui/hud/Hud.h"
 #include "util/ds/Algorithm.h"
 
-#define SHOW_CHAR_INTERVAL .04f
+#define SHOW_CHAR_INTERVAL .03f
 #define LETTERBOX_HEIGHT 50
 #define LETTERBOX_TRANSITION_DURATION 1.0f
 #define SUBTITLES_Y 38
