@@ -44,6 +44,8 @@ void Party::recruit(Character* targetCharacter) {
         GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetCharacter));
 
   // Disable the spawning of this NPC if needed.
+  // For instance, if this NPC is a spawn-once only NPC and is already killed,
+  // then we wouldn't want to respawn it.
   shared_ptr<Npc> targetNpc = std::dynamic_pointer_cast<Npc>(target);
   if (!targetNpc->getNpcProfile().isRespawnable) {
     Npc::setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
@@ -53,7 +55,8 @@ void Party::recruit(Character* targetCharacter) {
   addMember(std::move(target));
 
   Notifications::getInstance()->show(
-      string_util::format("%s is now following you.", targetCharacter->getCharacterProfile().name.c_str()));
+      string_util::format("%s is now following you.",
+                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
@@ -72,7 +75,8 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   }
 
   Notifications::getInstance()->show(
-      string_util::format("%s has left your party.", targetCharacter->getCharacterProfile().name.c_str()));
+      string_util::format("%s has left your party.",
+                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 
@@ -85,14 +89,16 @@ void Party::askMemberToWait(Character* targetCharacter) {
                    targetPos.y);
 
   Notifications::getInstance()->show(
-      string_util::format("%s will be waiting for you.", targetCharacter->getCharacterProfile().name.c_str()));
+      string_util::format("%s will be waiting for you.",
+                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::askMemberToFollow(Character* targetCharacter) {
   removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
 
   Notifications::getInstance()->show(
-      string_util::format("%s is now following you.", targetCharacter->getCharacterProfile().name.c_str()));
+      string_util::format("%s is now following you.",
+                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 
