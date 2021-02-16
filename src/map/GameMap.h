@@ -21,6 +21,39 @@ class Player;
 
 class GameMap {
  public:
+
+  class Trigger : public Interactable {
+   public:
+    Trigger(const std::vector<std::string>& cmds,
+            const bool canBeTriggeredOnlyOnce,
+            const bool canBeTriggeredOnlyByPlayer,
+            b2Body* body);
+    virtual ~Trigger();
+
+    // Executes certain commands via ui/console/Console.cc
+    // when the player's body collides with `this->_body`
+    virtual void onInteract(Character* user) override;  // Interactable
+    virtual bool willInteractOnContact() const override;  // Interactable
+    virtual void showHintUI() override {}  // Interactable
+    virtual void hideHintUI() override {}  // Interactable
+
+    bool canBeTriggeredOnlyOnce() const;
+    bool canBeTriggeredOnlyByPlayer() const;
+    bool hasTriggered() const;
+    void setTriggered(bool triggered);
+
+   protected:
+    virtual void createHintBubbleFx() override {}  // Interactable
+    virtual void removeHintBubbleFx() override {}  // Interactable
+
+    std::vector<std::string> _cmds;
+    bool _canBeTriggeredOnlyOnce;
+    bool _canBeTriggeredOnlyByPlayer;
+    bool _hasTriggered;
+    b2Body* _body;
+  };
+
+
   class Portal : public Interactable {
    public:
     Portal(const std::string& targetTmxMapFileName,
@@ -103,6 +136,7 @@ class GameMap {
   void createPolylines(const std::string& layerName, short categoryBits,
                        bool collidable, float friction);
 
+  void createTriggers();
   void createPortals();
   void createNpcs();
   void createChests();
@@ -113,6 +147,7 @@ class GameMap {
   std::string _tmxTiledMapFileName;
 
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
+  std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
 
   friend class GameMapManager;

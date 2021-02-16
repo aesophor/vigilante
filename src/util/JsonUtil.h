@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_JSON_UTIL_H_
 #define VIGILANTE_JSON_UTIL_H_
 
@@ -12,10 +12,9 @@ namespace vigilante {
 namespace json_util {
 
 rapidjson::Document parseJson(const std::string& jsonFileName);
-std::vector<std::string> splitString(const std::string& s, const char delimiter=',');
 
-} // namespace json_util
+}  // namespace json_util
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_JSON_UTIL_H_
+#endif  // VIGILANTE_JSON_UTIL_H_

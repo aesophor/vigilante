@@ -19,10 +19,11 @@
 #include "map/object/Chest.h"
 #include "ui/Colorscheme.h"
 #include "ui/Shade.h"
+#include "ui/console/Console.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
-#include "util/JsonUtil.h"
+#include "util/StringUtil.h"
 #include "util/RandUtil.h"
 
 using std::pair;
@@ -51,6 +52,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
       _tmxTiledMapFileName(tmxMapFileName),
       _dynamicActors(),
+      _triggers(),
       _portals() {}
 
 
@@ -61,7 +63,8 @@ void GameMap::createObjects() {
   createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
   createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
   createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
-  
+
+  createTriggers();
   createPortals();
   createChests();
   createNpcs();
@@ -186,6 +189,37 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
   }
 }
 
+void GameMap::createTriggers() {
+  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Trigger")->getObjects()) {
+    const auto& valMap = rectObj.asValueMap();
+    float x = valMap.at("x").asFloat();
+    float y = valMap.at("y").asFloat();
+    float w = valMap.at("width").asFloat();
+    float h = valMap.at("height").asFloat();
+    vector<string> cmds = string_util::split(valMap.at("cmds").asString(), ';');
+    bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
+    bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
+
+    b2BodyBuilder bodyBuilder(_world);
+
+    b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
+      .position(x + w / 2, y + h / 2, kPpm)
+      .buildBody();
+
+    _triggers.push_back(std::make_unique<GameMap::Trigger>(cmds,
+                                                           canBeTriggeredOnlyOnce,
+                                                           canBeTriggeredOnlyByPlayer,
+                                                           body));
+
+    bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
+      .categoryBits(category_bits::kInteractable)
+      .setSensor(true)
+      .friction(0)
+      .setUserData(_triggers.back().get())
+      .buildFixture();
+  }
+}
+
 void GameMap::createPortals() {
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
@@ -204,8 +238,11 @@ void GameMap::createPortals() {
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    _portals.push_back(std::make_unique<Portal>(targetTmxMapFilePath, targetPortalId,
-                                                willInteractOnContact, isLocked, body));
+    _portals.push_back(std::make_unique<GameMap::Portal>(targetTmxMapFilePath,
+                                                         targetPortalId,
+                                                         willInteractOnContact,
+                                                         isLocked,
+                                                         body));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
@@ -229,17 +266,19 @@ void GameMap::createNpcs() {
   }
 
   auto player = GameMapManager::getInstance()->getPlayer();
-  if (player) {
-    for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
-      const string& characterJsonFileName = p.first;
-      const Party::WaitingLocationInfo& location = p.second;
+  if (!player) {
+    return;
+  }
 
-      // If this Npc is waiting for its leader in the current map,
-      // then we should show it on this map.
-      if (location.tmxMapFileName == _tmxTiledMapFileName) {
-        player->getParty()->getMember(characterJsonFileName)->showOnMap(location.x * kPpm,
-                                                                        location.y * kPpm);
-      }
+  for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
+    const string& characterJsonFileName = p.first;
+    const Party::WaitingLocationInfo& location = p.second;
+
+    // If this Npc is waiting for its leader in the current map,
+    // then we should show it on this map.
+    if (location.tmxMapFileName == _tmxTiledMapFileName) {
+      player->getParty()->getMember(characterJsonFileName)->showOnMap(location.x * kPpm,
+                                                                      location.y * kPpm);
     }
   }
 }
@@ -253,6 +292,61 @@ void GameMap::createChests() {
     showDynamicActor(std::make_shared<Chest>(items), x, y);
   }
 }
+
+
+
+GameMap::Trigger::Trigger(const vector<string>& cmds,
+                          const bool canBeTriggeredOnlyOnce,
+                          const bool canBeTriggeredOnlyByPlayer,
+                          b2Body* body)
+    : _cmds(cmds),
+      _canBeTriggeredOnlyOnce(canBeTriggeredOnlyOnce),
+      _canBeTriggeredOnlyByPlayer(canBeTriggeredOnlyByPlayer),
+      _hasTriggered(),
+      _body(body) {}
+
+GameMap::Trigger::~Trigger() {
+  _body->GetWorld()->DestroyBody(_body);
+}
+
+
+void GameMap::Trigger::onInteract(Character* user) {
+  if (_canBeTriggeredOnlyOnce && _hasTriggered) {
+    return;
+  }
+
+  if (_canBeTriggeredOnlyByPlayer && !dynamic_cast<Player*>(user)) {
+    return;
+  }
+
+  _hasTriggered = true;
+
+  for (const auto& cmd : _cmds) {
+    Console::getInstance()->executeCmd(cmd);
+  }
+}
+
+bool GameMap::Trigger::willInteractOnContact() const {
+  return true;
+}
+
+
+bool GameMap::Trigger::canBeTriggeredOnlyOnce() const {
+  return _canBeTriggeredOnlyOnce;
+}
+
+bool GameMap::Trigger::canBeTriggeredOnlyByPlayer() const {
+  return _canBeTriggeredOnlyByPlayer;
+}
+
+bool GameMap::Trigger::hasTriggered() const {
+  return _hasTriggered;
+}
+
+void GameMap::Trigger::setTriggered(bool triggered) {
+  _hasTriggered = triggered;
+}
+
 
 
 GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,

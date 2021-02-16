@@ -1,11 +1,9 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "JsonUtil.h"
 
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-
-#include <cocos2d.h>
 
 using std::string;
 using std::vector;
@@ -36,19 +34,6 @@ Document parseJson(const string& jsonFileName) {
   return json;
 }
 
-vector<string> splitString(const string& s, const char delimiter) {
-  stringstream ss(s);
-  string t;
-  vector<string> tokens;
+}  // namespace json_util
 
-  while (std::getline(ss, t, delimiter)) {
-    if (t.length() > 0) {
-      tokens.push_back(t);
-    }
-  }
-  return tokens;
-}
-
-} // namespace json_util
-
-} // namespace vigilante
+}  // namespace vigilante

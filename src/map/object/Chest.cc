@@ -6,6 +6,7 @@
 #include "ui/control_hints/ControlHints.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/StringUtil.h"
 
 #define CHEST_NUM_ANIMATIONS 0
 #define CHEST_NUM_FIXTURES 2
@@ -33,7 +34,7 @@ Chest::Chest()
       _isOpened() {}
 
 Chest::Chest(const string& itemJsons) : Chest() {
-  _itemJsons = json_util::splitString(itemJsons);
+  _itemJsons = string_util::split(itemJsons);
 }
 
 
