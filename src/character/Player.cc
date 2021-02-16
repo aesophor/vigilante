@@ -75,6 +75,8 @@ bool Player::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   // Construct b2Body and b2Fixtures
   defineBody(b2BodyType::b2_dynamicBody, x, y,
              PLAYER_BODY_CATEGORY_BITS,
@@ -93,7 +95,6 @@ bool Player::showOnMap(float x, float y) {
     }
   }
 
-  _isShownOnMap = true;
   return true;
 }
 

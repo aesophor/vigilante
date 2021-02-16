@@ -723,10 +723,9 @@ void Character::activateSkill(Skill* skill) {
   }
 
   // Create an extra copy of this skill object and activate it.
-  unique_ptr<Skill> copiedSkill(Skill::create(skill->getSkillProfile().jsonFileName, this));
-  Skill* copiedSkillRaw = copiedSkill.get();
-  _activeSkills.insert(std::move(copiedSkill));
-  copiedSkillRaw->activate();
+  shared_ptr<Skill> copiedSkill(Skill::create(skill->getSkillProfile().jsonFileName, this));
+  _activeSkills.insert(copiedSkill);
+  copiedSkill->activate();
   
   Hud::getInstance()->updateStatusBars();
 }

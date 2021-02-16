@@ -31,10 +31,11 @@ bool StaticActor::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   _bodySprite->setPosition(x, y);
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
                                                       graphical_layers::kDefault);
-  _isShownOnMap = true;
   return true;
 }
 
@@ -43,14 +44,14 @@ bool StaticActor::removeFromMap() {
     return false;
   }
 
+  _isShownOnMap = false;
+
   // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
   GameMapManager::getInstance()->getLayer()->removeChild(
     (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
   );
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;
-
-  _isShownOnMap = false;
   return true;
 }
 

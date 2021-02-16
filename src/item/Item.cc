@@ -61,6 +61,8 @@ bool Item::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   defineBody(b2BodyType::b2_dynamicBody,
              x,
              y,
@@ -71,8 +73,6 @@ bool Item::showOnMap(float x, float y) {
   _bodySprite->getTexture()->setAliasTexParameters();
   GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
                                                       graphical_layers::kItem);
-
-  _isShownOnMap = true;
   return true;
 }
 

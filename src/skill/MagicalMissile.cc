@@ -56,6 +56,8 @@ bool MagicalMissile::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   defineBody(b2BodyType::b2_kinematicBody,
              x,
              y,
@@ -65,8 +67,6 @@ bool MagicalMissile::showOnMap(float x, float y) {
   defineTexture(_skillProfile.textureResDir, x, y);
   GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet,
                                                       graphical_layers::kSpell);
-
-  _isShownOnMap = true;
   return true;
 }
 
@@ -78,7 +78,8 @@ void MagicalMissile::update(float delta) {
   float y = _body->GetPosition().y * kPpm;
   GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
 
-  if (!_hasHit && (x < 0 || x > gameMap->getWidth() || y < 0 || y > gameMap->getHeight())) {
+  if (!_hasHit &&
+      (x < 0 || x > gameMap->getWidth() || y < 0 || y > gameMap->getHeight())) {
     onHit(nullptr);
   }
 }
@@ -143,12 +144,11 @@ void MagicalMissile::activate() {
   }
 
   _hasActivated = true;
+  float x = _user->getBody()->GetPosition().x;
+  float y = _user->getBody()->GetPosition().y;
 
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
-
-  float x = _user->getBody()->GetPosition().x;
-  float y = _user->getBody()->GetPosition().y;
 
   shared_ptr<Skill> key(shared_ptr<Skill>(), this);
   auto it = _user->getActiveSkills().find(key);
@@ -158,7 +158,7 @@ void MagicalMissile::activate() {
   }
 
   // Set up kinematicBody's moving speed.
-  _flyingSpeed = (_user->isFacingRight()) ? 3.5f : -3.5f;
+  _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;
   _body->SetLinearVelocity({_flyingSpeed, 0});
 
   if (!_user->isFacingRight()) {
@@ -170,7 +170,7 @@ void MagicalMissile::activate() {
   _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
 
   // Play launch fx animation.
-  b2Vec2 spellUserBodyPos = _user->getBody()->GetPosition();
+  const b2Vec2& spellUserBodyPos = _user->getBody()->GetPosition();
   x = spellUserBodyPos.x * kPpm;
   y = spellUserBodyPos.y * kPpm;
   float offset = _user->getCharacterProfile().attackRange;

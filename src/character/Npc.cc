@@ -116,6 +116,8 @@ bool Npc::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   // Construct b2Body and b2Fixtures.
   // The category/mask bits of each fixture are set in Npc::setDisposition()
   // based on the disposition of this npc.
@@ -133,7 +135,6 @@ bool Npc::showOnMap(float x, float y) {
     }
   }
 
-  _isShownOnMap = true;
   return true;
 }
 

@@ -42,6 +42,8 @@ bool Chest::showOnMap(float x, float y) {
     return false;
   }
 
+  _isShownOnMap = true;
+
   defineBody(b2BodyType::b2_dynamicBody,
              x,
              y,
@@ -50,9 +52,8 @@ bool Chest::showOnMap(float x, float y) {
 
   _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
   _bodySprite->getTexture()->setAliasTexParameters();
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
-
-  _isShownOnMap = true;
+  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
+                                                      graphical_layers::kChest);
   return true;
 }
 

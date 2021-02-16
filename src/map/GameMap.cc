@@ -217,8 +217,6 @@ void GameMap::createPortals() {
 }
 
 void GameMap::createNpcs() {
-  auto player = GameMapManager::getInstance()->getPlayer();
-
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -230,7 +228,7 @@ void GameMap::createNpcs() {
     }
   }
 
-
+  auto player = GameMapManager::getInstance()->getPlayer();
   if (player) {
     for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
       const string& characterJsonFileName = p.first;
