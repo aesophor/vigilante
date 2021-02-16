@@ -45,6 +45,7 @@ ControlHints::ControlHints()
   _layer->setPositionY(CONTROL_HINTS_Y);
 
   // Install Control Hints presets.
+  // FIXME: maybe refactor this shit...
   _profiles[ControlHints::Profile::PAUSE_MENU_INVENTORY] = {
     {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
      "<Page>", colorscheme::kWhite},
@@ -57,15 +58,41 @@ ControlHints::ControlHints()
   };
 
   _profiles[ControlHints::Profile::PAUSE_MENU_EQUIPMENT] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+     "<Page>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+     "Confirm", colorscheme::kWhite},
   };
 
   _profiles[ControlHints::Profile::PAUSE_MENU_SKILLS] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+     "<Page>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_LEFT_ARROW, EventKeyboard::KeyCode::KEY_RIGHT_ARROW},
+     "<Tab>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+     "Confirm", colorscheme::kWhite},
   };
 
   _profiles[ControlHints::Profile::PAUSE_MENU_QUESTS] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+     "<Page>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_LEFT_ARROW, EventKeyboard::KeyCode::KEY_RIGHT_ARROW},
+     "<Tab>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+     "Confirm", colorscheme::kWhite},
   };
 
   _profiles[ControlHints::Profile::PAUSE_MENU_OPTIONS] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+     "<Page>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+     "Confirm", colorscheme::kWhite},
   };
 
   for (auto profile : _profiles) {
