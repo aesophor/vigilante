@@ -29,6 +29,7 @@ class DynamicActor : public StaticActor {
   virtual void removeFromMap() override;  // StaticActor:
   virtual void setPosition(float x, float y) override;  // StaticActor
   virtual void update(float delta);
+  virtual void destroyBody();
 
   b2Body* getBody() const;
   std::vector<b2Fixture*>& getFixtures();

@@ -19,8 +19,11 @@ DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
 void DynamicActor::removeFromMap() {
   StaticActor::removeFromMap();
 
-  _body->GetWorld()->DestroyBody(_body);
-  _body = nullptr;
+  if (!_isShownOnMap) {
+    return;
+  }
+
+  destroyBody();
 }
 
 void DynamicActor::setPosition(float x, float y) {
@@ -31,6 +34,14 @@ void DynamicActor::update(float delta) {
   // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();
   _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
+}
+
+void DynamicActor::destroyBody() {
+  if (!_body) {
+    return;
+  }
+  _body->GetWorld()->DestroyBody(_body);
+  _body = nullptr;
 }
 
 
