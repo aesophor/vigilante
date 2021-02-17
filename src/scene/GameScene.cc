@@ -120,7 +120,6 @@ bool GameScene::init() {
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = GameMapManager::getInstance();
-  _gameMapManager->loadGameMap(asset_manager::kNewGameInitialMap);
   addChild(_gameMapManager->getLayer());
   
   // Initialize InputManager.
@@ -133,17 +132,22 @@ bool GameScene::init() {
   addChild(_b2dr);
   
   // Initialize Pause Menu.
-  _pauseMenu = std::make_unique<PauseMenu>(_gameMapManager->getPlayer());
+  _pauseMenu = PauseMenu::getInstance();
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
 
   // Tick the box2d world.
   schedule(schedule_selector(GameScene::update));
+
+  startNewGame();
   return true;
 }
 
 void GameScene::update(float delta) {
-  // REVIEW this method
+  if (!_gameMapManager->getGameMap()) {
+    return;
+  }
+
   handleInput();
 
   if (_pauseMenu->isVisible()) {
@@ -222,12 +226,14 @@ void GameScene::handleInput() {
     return;
   }
 
-  _gameMapManager->getPlayer()->handleInput();
+  if (_gameMapManager->getPlayer()) {
+    _gameMapManager->getPlayer()->handleInput();
+  }
 }
 
 
 void GameScene::startNewGame() {
-
+  _gameMapManager->loadGameMap(asset_manager::kNewGameInitialMap);
 }
 
 void GameScene::loadGame(const string& gameSaveFilePath) {

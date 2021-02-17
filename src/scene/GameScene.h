@@ -46,7 +46,7 @@ class GameScene : public cocos2d::Scene, public Controllable {
   Shade* _shade;
   Hud* _hud;
   Console* _console;
-  std::unique_ptr<PauseMenu> _pauseMenu;
+  PauseMenu* _pauseMenu;
   WindowManager* _windowManager;
   ControlHints *_controlHints;
   DialogueManager* _dialogueManager;

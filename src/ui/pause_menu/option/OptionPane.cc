@@ -6,6 +6,7 @@
 #include "std/make_unique.h"
 #include "input/InputManager.h"
 #include "scene/SceneManager.h"
+#include "scene/GameScene.h"
 
 #define OPTIONS_COUNT 4
 

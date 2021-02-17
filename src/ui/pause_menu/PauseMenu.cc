@@ -36,13 +36,18 @@ const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
   "OPTIONS"
 };
 
-PauseMenu::PauseMenu(Player* player)
+PauseMenu* PauseMenu::getInstance() {
+  static PauseMenu instance;
+  return &instance;
+}
+
+PauseMenu::PauseMenu()
     : _layer(Layer::create()),
       _background(ImageView::create(kPauseMenuBg)),
       _headerPane(std::make_unique<HeaderPane>(this)),
       _statsPane(std::make_unique<StatsPane>(this)),
       _dialog(std::make_unique<PauseMenuDialog>(this)),
-      _player(player) {
+      _player() {
   // Scale the bg image to fill the entire visible area.
   const auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -88,6 +93,10 @@ void PauseMenu::initMainPane(int index, std::unique_ptr<AbstractPane> pane) {
 
 
 void PauseMenu::update() {
+  if (!_player) {
+    return;
+  }
+
   _statsPane->update();
   _panes[_headerPane->getCurrentIndex()]->update();
 }

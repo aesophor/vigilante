@@ -26,6 +26,8 @@ class PauseMenuDialog;
 
 class PauseMenu : public Controllable {
  public:
+  static PauseMenu* getInstance();
+
   // To add a new pane to the pause menu, add it to the enum below,
   // as well as the string literal to the following static const std::array.
   enum Pane {
@@ -38,7 +40,6 @@ class PauseMenu : public Controllable {
   };
   static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
 
-  explicit PauseMenu(Player* character);
   virtual ~PauseMenu() = default;
 
   void update();
@@ -56,6 +57,7 @@ class PauseMenu : public Controllable {
   void setVisible(bool visible);
 
  private:
+  PauseMenu();
   void initMainPane(int index, std::unique_ptr<AbstractPane> pane);
 
   cocos2d::Layer* _layer;
