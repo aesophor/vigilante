@@ -367,7 +367,7 @@ GameMap::Portal::~Portal() {
 }
 
 void GameMap::Portal::onInteract(Character* user) {
-  maybeUnlockPortal(user);
+  maybeUnlockPortalAs(user);
 
   if (_isLocked) {
     return;
@@ -457,7 +457,7 @@ void GameMap::Portal::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
-void GameMap::Portal::maybeUnlockPortal(Character *user) {
+void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
   if (!_isLocked) {
     return;
   }

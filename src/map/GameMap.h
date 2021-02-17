@@ -83,7 +83,7 @@ class GameMap {
 
     // Try to unlock the portal as `user`.
     // If the portal is already unlocked, then this is a no-op.
-    void maybeUnlockPortal(Character* user);
+    void maybeUnlockPortalAs(Character* user);
 
     // The following static methods and `StateMap`
     // holds the state of *ALL* portals in current game.
