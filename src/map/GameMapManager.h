@@ -28,7 +28,8 @@ class GameMapManager {
 
   void update(float delta);
 
-  // Safely loads the specified GameMap using a worker thread in background.
+  // Safely loads the specified GameMap using a worker thread
+  // which executes independently in background.
   //
   // IMPORTANT: When the function returns, the new GameMap will *NOT*
   //            have been loaded.

@@ -377,10 +377,10 @@ void GameMap::Portal::onInteract(Character* user) {
   int targetPortalId = _targetPortalId;
 
   auto afterLoadingGameMap = [user, newMapFileName, targetPortalId]() {
-    GameMap* newMap = GameMapManager::getInstance()->getGameMap();
-
-    const b2Vec2 portalPos
-      = newMap->_portals.at(targetPortalId)->_body->GetPosition();
+    const b2Vec2& portalPos = GameMapManager::getInstance()
+      ->getGameMap()
+      ->_portals.at(targetPortalId)
+      ->_body->GetPosition();
 
     // Place the user and its party members at the portal.
     user->setPosition(portalPos.x, portalPos.y);
@@ -394,12 +394,10 @@ void GameMap::Portal::onInteract(Character* user) {
     //     Whether it will be shown again is determined in
     //     GameMap::spawnNpcs().
     for (auto ally : user->getAllies()) {
-      assert(ally->getParty() != nullptr);
-
       if (!ally->isWaitingForPartyLeader()) {
         ally->setPosition(portalPos.x, portalPos.y);
       } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
-            ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
+                 ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
         ally->removeFromMap();
       }
     }

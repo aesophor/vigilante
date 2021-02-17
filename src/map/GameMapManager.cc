@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMapManager.h"
 
 #include <thread>
@@ -64,15 +64,11 @@ void GameMapManager::update(float delta) {
 
 void GameMapManager::loadGameMap(const string& tmxMapFileName,
                                  const function<void ()>& afterLoadingGameMap) {
-  // Worker thread lambda
-  auto workerThread = [this, tmxMapFileName, afterLoadingGameMap]() {
+  auto workerThreadLambda = [this, tmxMapFileName, afterLoadingGameMap]() {
     // Pauses all NPCs from acting, preventing new callbacks
     // from being generated.
     Npc::setNpcsAllowedToAct(false);
 
-    // [IMPORTANT]
-    // Before loading the new GameMap, we need to make sure that
-    // all pending callbacks have finished executing.
     // Block this thread with a spinlock until all callbacks have finished.
     while (CallbackManager::getInstance()->getPendingCount() > 0);
 
@@ -90,10 +86,12 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
   };
 
   // 1. Fade in the shade
-  // 2. Create another thread which executes the above lambda in parallel.
+  // 2. Create another thread which executes the above lambda independently.
   Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
       FadeIn::create(Shade::_kFadeInTime),
-      CallFunc::create([workerThread]() { thread(workerThread).detach(); })
+      CallFunc::create([workerThreadLambda]() {
+        thread(workerThreadLambda).detach();
+      })
   ));
 }
 
@@ -130,6 +128,14 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
 }
 
 
+void GameMapManager::createDustFx(Character* character) {
+  const b2Vec2& feetPos = character->getBody()->GetPosition();
+  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
+  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
+  _fxMgr->createFx("Texture/fx/dust", "white", x, y, 1, 10.0f);
+}
+
+
 Layer* GameMapManager::getLayer() const {
   return _layer;
 }
@@ -148,14 +154,6 @@ GameMap* GameMapManager::getGameMap() const {
 
 Player* GameMapManager::getPlayer() const {
   return _player.get();
-}
-
-
-void GameMapManager::createDustFx(Character* character) {
-  const b2Vec2& feetPos = character->getBody()->GetPosition();
-  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
-  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
-  _fxMgr->createFx("Texture/fx/dust", "white", x, y, 1, 10.0f);
 }
 
 }  // namespace vigilante
