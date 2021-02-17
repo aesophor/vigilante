@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Shade.h"
 
 #include "AssetManager.h"
@@ -30,4 +30,4 @@ ImageView* Shade::getImageView() const {
   return _imageView;
 }
 
-} // namespace vigilante
+}  // namespace vigilante
