@@ -1,23 +1,32 @@
 // Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMapManager.h"
 
+#include <thread>
+
 #include <Box2D/Box2D.h>
 #include "std/make_unique.h"
 #include "AssetManager.h"
+#include "CallbackManager.h"
 #include "Constants.h"
+#include "character/Npc.h"
 #include "character/Player.h"
 #include "item/Equipment.h"
 #include "skill/MagicalMissile.h"
+#include "ui/Shade.h"
+#include "ui/pause_menu/PauseMenu.h"
 #include "util/box2d/b2BodyBuilder.h"
 
-using std::set;
 using std::string;
-using std::unique_ptr;
-using std::shared_ptr;
+using std::thread;
+using std::function;
 using cocos2d::Director;
 using cocos2d::Layer;
 using cocos2d::TMXTiledMap;
 using cocos2d::TMXObjectGroup;
+using cocos2d::Sequence;
+using cocos2d::FadeIn;
+using cocos2d::FadeOut;
+using cocos2d::CallFunc;
 
 namespace vigilante {
 
@@ -53,11 +62,42 @@ void GameMapManager::update(float delta) {
 }
 
 
-GameMap* GameMapManager::getGameMap() const {
-  return _gameMap.get();
+void GameMapManager::loadGameMap(const string& tmxMapFileName,
+                                 const function<void ()>& afterLoadingGameMap) {
+  // Worker thread lambda
+  auto workerThread = [this, tmxMapFileName, afterLoadingGameMap]() {
+    // Pauses all NPCs from acting, preventing new callbacks
+    // from being generated.
+    Npc::setNpcsAllowedToAct(false);
+
+    // [IMPORTANT]
+    // Before loading the new GameMap, we need to make sure that
+    // all pending callbacks have finished executing.
+    // Block this thread with a spinlock until all callbacks have finished.
+    while (CallbackManager::getInstance()->getPendingCount() > 0);
+
+    // No pending callbacks. Now it's safe to load the new GameMap.
+    Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
+        CallFunc::create([this, tmxMapFileName, afterLoadingGameMap]() {
+          doLoadGameMap(tmxMapFileName);
+          afterLoadingGameMap();
+        }),
+        FadeOut::create(Shade::_kFadeOutTime)
+    ));
+
+    // Resume NPCs to act.
+    Npc::setNpcsAllowedToAct(true);
+  };
+
+  // 1. Fade in the shade
+  // 2. Create another thread which executes the above lambda in parallel.
+  Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
+      FadeIn::create(Shade::_kFadeInTime),
+      CallFunc::create([workerThread]() { thread(workerThread).detach(); })
+  ));
 }
 
-GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
+GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   // Remove deceased party member from player's party, remove their
   // b2body and texture, and add them to the party's deceasedMember unordered_set.
   if (_player) {
@@ -83,26 +123,31 @@ GameMap* GameMapManager::loadGameMap(const string& tmxMapFileName) {
   // If the player object hasn't been created yet, then spawn it.
   if (!_player) {
     _player = _gameMap->createPlayer();
+    PauseMenu::getInstance()->setPlayer(_player.get());
   }
 
   return _gameMap.get();
 }
 
 
-Player* GameMapManager::getPlayer() const {
-  return _player.get();
+Layer* GameMapManager::getLayer() const {
+  return _layer;
 }
 
 b2World* GameMapManager::getWorld() const {
   return _world.get();
 }
 
-Layer* GameMapManager::getLayer() const {
-  return _layer;
-}
-
 FxManager* GameMapManager::getFxManager() const {
   return _fxMgr.get();
+}
+
+GameMap* GameMapManager::getGameMap() const {
+  return _gameMap.get();
+}
+
+Player* GameMapManager::getPlayer() const {
+  return _player.get();
 }
 
 

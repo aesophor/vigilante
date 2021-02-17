@@ -367,77 +367,46 @@ GameMap::Portal::~Portal() {
 }
 
 void GameMap::Portal::onInteract(Character* user) {
-  if (isLocked()) {
-    if (!canBeUnlockedBy(user)) {
-      Notifications::getInstance()->show("This door is locked.");
-      return;
-    }
+  maybeUnlockPortal(user);
 
-    Notifications::getInstance()->show("Door unlocked.");
-    unlock();
+  if (_isLocked) {
+    return;
   }
 
-  // [IMPORTANT]
-  // Before loading the new GameMap, we need to make sure that
-  // all pending callbacks have finished executing.
+  string newMapFileName = _targetTmxMapFileName;
+  int targetPortalId = _targetPortalId;
 
-  // Pause all Npcs from acting, which prevents new callbacks
-  // from being generated.
-  Npc::setNpcsAllowedToAct(false);
+  auto afterLoadingGameMap = [user, newMapFileName, targetPortalId]() {
+    GameMap* newMap = GameMapManager::getInstance()->getGameMap();
 
-  Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
-      FadeIn::create(Shade::_kFadeInTime),
-      CallFunc::create([this, user]() {
-        // We'll create another thread and use spinlock to wait until
-        // all callbacks have finished executing before loading the new GameMap
-        // and faded out the shade.
-        thread([this, user]() {
-          while (CallbackManager::getInstance()->getPendingCount() > 0);
+    const b2Vec2 portalPos
+      = newMap->_portals.at(targetPortalId)->_body->GetPosition();
 
-          Shade::getInstance()->getImageView()->runAction(Sequence::create(
-              CallFunc::create([this, user]() {
-                // Load target GameMap.
-                // Note that after calling GameMapManager::loadGameMap(),
-                // all instances of Portal in current GameMap will be freed,
-                // so we MUST NOT refer to this->blah anymore, or there'll be UAF bugs.
-                const string newMapFileName = _targetTmxMapFileName;
-                const int targetPortalId = _targetPortalId;
-                const GameMap* newMap = GameMapManager::getInstance()->loadGameMap(newMapFileName);
-                const b2Vec2 portalPos = newMap->_portals.at(targetPortalId)->_body->GetPosition();
+    // Place the user and its party members at the portal.
+    user->setPosition(portalPos.x, portalPos.y);
 
-                // Place the user and its party members at the portal.
-                user->setPosition(portalPos.x, portalPos.y);
+    // How should we handle user's allies?
+    // (1) If `ally` is not waiting for its party leader,
+    //     then teleport the ally's body to its party leader.
+    // (2) If `ally` is waiting for its party leader,
+    //     AND if this new map is not where `ally` is waiting at,
+    //     then we'll remove it from the map temporarily.
+    //     Whether it will be shown again is determined in
+    //     GameMap::spawnNpcs().
+    for (auto ally : user->getAllies()) {
+      assert(ally->getParty() != nullptr);
 
-                // How should we handle user's allies?
-                // (1) If `ally` is not waiting for its party leader,
-                //     then teleport the ally's body to its party leader.
-                // (2) If `ally` is waiting for its party leader,
-                //     AND if this new map is not where `ally` is waiting at,
-                //     then we'll remove it from the map temporarily.
-                //     Whether it will be shown again is determined in
-                //     GameMap::spawnNpcs().
-                for (auto ally : user->getAllies()) {
-                  assert(ally->getParty() != nullptr);
+      if (!ally->isWaitingForPartyLeader()) {
+        ally->setPosition(portalPos.x, portalPos.y);
+      } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
+            ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
+        ally->removeFromMap();
+      }
+    }
+  };
 
-                  if (!ally->isWaitingForPartyLeader()) {
-                    ally->setPosition(portalPos.x, portalPos.y);
-                  } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
-                        ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
-                    ally->removeFromMap();
-                  }
-                }
-              }),
-              FadeOut::create(Shade::_kFadeOutTime),
-              nullptr
-            )
-          );
-
-          // Resume Npcs to act.
-          Npc::setNpcsAllowedToAct(true);
-        }).detach();
-      })
-    )
-  );
+  GameMapManager::getInstance()->loadGameMap(newMapFileName,
+                                             afterLoadingGameMap);
 }
 
 
@@ -488,6 +457,18 @@ void GameMap::Portal::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
+void GameMap::Portal::maybeUnlockPortal(Character *user) {
+  if (!_isLocked) {
+    return;
+  }
+
+  if (!canBeUnlockedBy(user)) {
+    Notifications::getInstance()->show("This door is locked.");
+  } else {
+    Notifications::getInstance()->show("Door unlocked.");
+    unlock();
+  }
+}
 
 bool GameMap::Portal::canBeUnlockedBy(Character* user) const {
   const auto& miscItems = user->getInventory()[Item::Type::MISC];

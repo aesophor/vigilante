@@ -81,6 +81,10 @@ class GameMap {
     virtual void createHintBubbleFx() override;  // Interactable
     virtual void removeHintBubbleFx() override;  // Interactable
 
+    // Try to unlock the portal as `user`.
+    // If the portal is already unlocked, then this is a no-op.
+    void maybeUnlockPortal(Character* user);
+
     // The following static methods and `StateMap`
     // holds the state of *ALL* portals in current game.
     static bool hasSavedLockUnlockState(const std::string& tmxMapFileName,
