@@ -35,6 +35,9 @@ void InputManager::activate(Scene* scene) {
 
   // Capture "this" by value.
   _keyboardEvLstnr->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
+      _isCapsLocked = !_isCapsLocked;
+    }
 
     if (!_specialOnKeyPressed) {
       // We keep track of which keys have been pressed
@@ -46,10 +49,6 @@ void InputManager::activate(Scene* scene) {
       // Execute the additional onKeyPressed handler for special events.
       // (e.g., prompting for a hotkey, receiving TextField input, etc)
       _specialOnKeyPressed(keyCode, e);
-    }
-
-    if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
-      _isCapsLocked = !_isCapsLocked;
     }
   };
 

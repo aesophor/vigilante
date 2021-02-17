@@ -4,6 +4,7 @@
 #include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
+#include "map/GameMapManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
 #include "ui/pause_menu/skill/SkillPane.h"
@@ -46,8 +47,7 @@ PauseMenu::PauseMenu()
       _background(ImageView::create(kPauseMenuBg)),
       _headerPane(std::make_unique<HeaderPane>(this)),
       _statsPane(std::make_unique<StatsPane>(this)),
-      _dialog(std::make_unique<PauseMenuDialog>(this)),
-      _player() {
+      _dialog(std::make_unique<PauseMenuDialog>(this)) {
   // Scale the bg image to fill the entire visible area.
   const auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -93,7 +93,7 @@ void PauseMenu::initMainPane(int index, std::unique_ptr<AbstractPane> pane) {
 
 
 void PauseMenu::update() {
-  if (!_player) {
+  if (!getPlayer()) {
     return;
   }
 
@@ -138,11 +138,7 @@ void PauseMenu::show(Pane pane) {
 
 
 Player* PauseMenu::getPlayer() const {
-  return _player;
-}
-
-void PauseMenu::setPlayer(Player* player) {
-  _player = player;
+  return GameMapManager::getInstance()->getPlayer();
 }
 
 AbstractPane* PauseMenu::getCurrentPane() const {

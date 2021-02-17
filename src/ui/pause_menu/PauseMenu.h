@@ -19,6 +19,7 @@
 
 namespace vigilante {
 
+// Forward Declaration
 class Player;
 class HeaderPane;
 class StatsPane;
@@ -46,12 +47,11 @@ class PauseMenu : public Controllable {
   virtual void handleInput() override;
   void show(PauseMenu::Pane pane);
 
-  Player* getPlayer() const;
-  void setPlayer(Player* character);
 
   AbstractPane* getCurrentPane() const;
   cocos2d::Layer* getLayer() const;
   PauseMenuDialog* getDialog() const;
+  Player* getPlayer() const;
 
   bool isVisible() const;
   void setVisible(bool visible);
@@ -67,8 +67,6 @@ class PauseMenu : public Controllable {
   std::unique_ptr<StatsPane> _statsPane;
   std::unique_ptr<PauseMenuDialog> _dialog;
   std::array<std::unique_ptr<AbstractPane>, PauseMenu::Pane::SIZE> _panes;
-
-  Player* _player;
 };
 
 }  // namespace vigilante

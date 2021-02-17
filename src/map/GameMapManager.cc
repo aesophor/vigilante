@@ -120,7 +120,6 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   // If the player object hasn't been created yet, then spawn it.
   if (!_player) {
     _player = _gameMap->createPlayer();
-    PauseMenu::getInstance()->setPlayer(_player.get());
   }
 
   return _gameMap.get();
