@@ -35,7 +35,7 @@
 
 #define ALLY_FOLLOW_DISTANCE .75f
 
-using std::set;
+using std::atomic;
 using std::string;
 using std::vector;
 using std::unique_ptr;
@@ -70,7 +70,7 @@ using rapidjson::Document;
 
 namespace vigilante {
 
-bool Npc::_areNpcsAllowedToAct = true;
+atomic<bool> Npc::_areNpcsAllowedToAct(true);
 unordered_set<string> Npc::_npcSpawningBlacklist;
 
 Npc::Npc(const string& jsonFileName)

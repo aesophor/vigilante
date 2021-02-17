@@ -2,6 +2,7 @@
 #ifndef VIGILANTE_NPC_H_
 #define VIGILANTE_NPC_H_
 
+#include <atomic>
 #include <string>
 #include <vector>
 #include <unordered_set>
@@ -123,7 +124,7 @@ class Npc : public Character, public Interactable {
 
 
   // See `map/GameMap.cc` for its usage.
-  static bool _areNpcsAllowedToAct;
+  static std::atomic<bool> _areNpcsAllowedToAct;
 
   // Once those spawn-once NPCs are killed, their jsonFileName
   // will be inserted into this unordered_set.
