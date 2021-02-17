@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
 #define VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
 
