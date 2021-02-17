@@ -55,6 +55,7 @@ const int kEquipment = 37;
 
 const int kDefault = 50;
 
+const int kFx = 70;
 const int kFloatingDamage = 80;
 const int kNotification = 82;
 const int kQuestHint = 84;

@@ -85,7 +85,7 @@ Sprite* FxManager::createFx(const string& textureResDir,
   SpriteBatchNode* spritesheet = SpriteBatchNode::create(spritesheetFileName);
   spritesheet->addChild(sprite);
   spritesheet->getTexture()->setAliasTexParameters();
-  gameMapLayer->addChild(spritesheet, 80);  // FIXME
+  gameMapLayer->addChild(spritesheet, graphical_layers::kFx);
 
   // Run animation.
   Animate* animate = Animate::create(_animationCache[cacheKey]);
