@@ -9,6 +9,7 @@
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "item/Item.h"
+#include "map/FxManager.h"
 #include "map/GameMap.h"
 #include "map/GameMapManager.h"
 #include "skill/Skill.h"
@@ -36,7 +37,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setDoubleJumping(false);
         c->setOnPlatform(false);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        FxManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -49,7 +50,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setDoubleJumping(false);
         c->setOnPlatform(true);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        FxManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -241,7 +242,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        FxManager::getInstance()->createDustFx(c);
       }
       break;
     }
@@ -252,7 +253,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setOnPlatform(false);
         // Create dust effect.
-        GameMapManager::getInstance()->createDustFx(c);
+        FxManager::getInstance()->createDustFx(c);
       }
       break;
     }

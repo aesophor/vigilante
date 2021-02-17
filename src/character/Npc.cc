@@ -262,13 +262,8 @@ void Npc::createHintBubbleFx() {
     return;
   }
 
-  const b2Vec2& bodyPos = _body->GetPosition();
-  float x = bodyPos.x * kPpm;
-  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
-
   _hintBubbleFxSprite
-    = GameMapManager::getInstance()->getFxManager()->createFx(
-        "Texture/fx/hint_bubble", "dialogue_available", x, y, -1, 45.0f);
+    = FxManager::getInstance()->createHintBubbleFx(_body, "dialogue_available");
 }
 
 void Npc::removeHintBubbleFx() {
@@ -276,8 +271,7 @@ void Npc::removeHintBubbleFx() {
     return;
   }
 
-  _hintBubbleFxSprite->stopAllActions();
-  _hintBubbleFxSprite->removeFromParent();
+  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 

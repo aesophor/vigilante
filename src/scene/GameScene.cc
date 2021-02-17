@@ -121,6 +121,9 @@ bool GameScene::init() {
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = GameMapManager::getInstance();
   addChild(_gameMapManager->getLayer());
+
+  // Initialize FxManager.
+  _fxManager = FxManager::getInstance();
   
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.

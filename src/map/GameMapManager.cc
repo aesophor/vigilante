@@ -39,7 +39,6 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
       _worldContactListener(std::make_unique<WorldContactListener>()),
       _world(std::make_unique<b2World>(gravity)),
-      _fxMgr(std::make_unique<FxManager>(_layer)),
       _gameMap(),
       _player() {
   _world->SetAllowSleeping(true);
@@ -128,24 +127,12 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
 }
 
 
-void GameMapManager::createDustFx(Character* character) {
-  const b2Vec2& feetPos = character->getBody()->GetPosition();
-  float x = feetPos.x * kPpm;// - 32.f / kPpm / 2;
-  float y = (feetPos.y - .1f) * kPpm;// - 32.f / kPpm / .065f;
-  _fxMgr->createFx("Texture/fx/dust", "white", x, y, 1, 10.0f);
-}
-
-
 Layer* GameMapManager::getLayer() const {
   return _layer;
 }
 
 b2World* GameMapManager::getWorld() const {
   return _world.get();
-}
-
-FxManager* GameMapManager::getFxManager() const {
-  return _fxMgr.get();
 }
 
 GameMap* GameMapManager::getGameMap() const {

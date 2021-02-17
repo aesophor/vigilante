@@ -8,6 +8,7 @@
 #include <ui/UIImageView.h>
 #include <Box2D/Box2D.h>
 #include "Controllable.h"
+#include "map/FxManager.h"
 #include "map/GameMapManager.h"
 #include "ui/WindowManager.h"
 #include "ui/Shade.h"
@@ -54,6 +55,7 @@ class GameScene : public cocos2d::Scene, public Controllable {
   QuestHints* _questHints;
   Notifications* _notifications;
   GameMapManager* _gameMapManager;
+  FxManager* _fxManager;
 };
 
 }  // namespace vigilante

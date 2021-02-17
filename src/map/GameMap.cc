@@ -15,6 +15,7 @@
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "item/Key.h"
+#include "map/FxManager.h"
 #include "map/GameMapManager.h"
 #include "map/object/Chest.h"
 #include "ui/Colorscheme.h"
@@ -436,13 +437,8 @@ void GameMap::Portal::createHintBubbleFx() {
     removeHintBubbleFx();
   }
 
-  const b2Vec2& bodyPos = _body->GetPosition();
-  float x = bodyPos.x * kPpm;
-  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
-
   _hintBubbleFxSprite
-    = GameMapManager::getInstance()->getFxManager()->createFx(
-        "Texture/fx/hint_bubble", "portal_available", x, y, -1, 45.0f);
+    = FxManager::getInstance()->createHintBubbleFx(_body, "portal_available");
 }
 
 void GameMap::Portal::removeHintBubbleFx() {
@@ -450,8 +446,7 @@ void GameMap::Portal::removeHintBubbleFx() {
     return;
   }
 
-  _hintBubbleFxSprite->stopAllActions();
-  _hintBubbleFxSprite->removeFromParent();
+  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 

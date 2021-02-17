@@ -1,7 +1,8 @@
-// Copyright (c) 2018-2020 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
 #include "Constants.h"
+#include "map/FxManager.h"
 #include "map/GameMapManager.h"
 #include "ui/control_hints/ControlHints.h"
 #include "util/box2d/b2BodyBuilder.h"
@@ -128,13 +129,8 @@ void Chest::createHintBubbleFx() {
     return;
   }
 
-  const b2Vec2& bodyPos = _body->GetPosition();
-  float x = bodyPos.x * kPpm;
-  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
-
   _hintBubbleFxSprite
-    = GameMapManager::getInstance()->getFxManager()->createFx(
-        "Texture/fx/hint_bubble", "dialogue_available", x, y, -1, 45.0f);
+    = FxManager::getInstance()->createHintBubbleFx(_body, "dialogue_available");
 }
 
 void Chest::removeHintBubbleFx() {
@@ -142,8 +138,7 @@ void Chest::removeHintBubbleFx() {
     return;
   }
 
-  _hintBubbleFxSprite->stopAllActions();
-  _hintBubbleFxSprite->removeFromParent();
+  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 
