@@ -4,7 +4,6 @@
 #include <thread>
 
 #include <Box2D/Box2D.h>
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"

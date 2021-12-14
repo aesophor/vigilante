@@ -5,8 +5,6 @@
 #include <string>
 #include <memory>
 
-#include "std/make_unique.h"
-
 #define DEFAULT_CAPACITY 32
 
 namespace vigilante {

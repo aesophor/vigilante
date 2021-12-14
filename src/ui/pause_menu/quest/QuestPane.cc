@@ -1,7 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestPane.h"
 
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "input/InputManager.h"
 #include "util/Logger.h"

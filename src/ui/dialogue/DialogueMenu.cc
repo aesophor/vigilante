@@ -1,7 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueMenu.h"
 
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "character/Npc.h"
 #include "input/InputManager.h"

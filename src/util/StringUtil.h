@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "std/make_unique.h"
-
 namespace vigilante {
 
 namespace string_util {

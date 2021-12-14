@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <thread>
 
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"

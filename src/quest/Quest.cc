@@ -4,7 +4,6 @@
 #include <algorithm>
 
 #include <json/document.h>
-#include "std/make_unique.h"
 #include "quest/CollectItemObjective.h"
 #include "quest/KillTargetObjective.h"
 #include "ui/console/Console.h"

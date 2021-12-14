@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "std/make_unique.h"
 #include "quest/KillTargetObjective.h"
 #include "ui/quest_hints/QuestHints.h"
 #include "util/ds/Algorithm.h"

@@ -13,7 +13,6 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"

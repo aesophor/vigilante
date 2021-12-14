@@ -5,7 +5,6 @@
 #include <stack>
 
 #include <cocos2d.h>
-#include "std/make_unique.h"
 #include "character/Npc.h"
 #include "util/ds/Algorithm.h"
 #include "util/JsonUtil.h"

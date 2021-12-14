@@ -394,7 +394,6 @@
 		3A5B906D25D7940300F06219 /* Player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cc; sourceTree = "<group>"; };
 		3A5B906E25D7940300F06219 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		3A5B906F25D7940300F06219 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
-		3A5B907125D7940300F06219 /* make_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = make_unique.h; sourceTree = "<group>"; };
 		3A5B907225D7940300F06219 /* CallbackManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallbackManager.cc; sourceTree = "<group>"; };
 		3A5B907325D7940300F06219 /* DynamicActor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicActor.cc; sourceTree = "<group>"; };
 		3A5B907525D7940300F06219 /* GameMapManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMapManager.cc; sourceTree = "<group>"; };
@@ -630,7 +629,6 @@
 				3A5B908D25D7940300F06219 /* quest */,
 				3A5B90A625D7940300F06219 /* scene */,
 				3A5B903B25D7940300F06219 /* skill */,
-				3A5B907025D7940300F06219 /* std */,
 				3A5B8FDF25D7940200F06219 /* ui */,
 				3A5B904625D7940300F06219 /* util */,
 			);
@@ -915,14 +913,6 @@
 				3A5B906D25D7940300F06219 /* Player.cc */,
 			);
 			path = character;
-			sourceTree = "<group>";
-		};
-		3A5B907025D7940300F06219 /* std */ = {
-			isa = PBXGroup;
-			children = (
-				3A5B907125D7940300F06219 /* make_unique.h */,
-			);
-			path = std;
 			sourceTree = "<group>";
 		};
 		3A5B907425D7940300F06219 /* map */ = {
@@ -1436,7 +1426,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = x86_64;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -1467,7 +1457,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = x86_64;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

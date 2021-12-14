@@ -4,7 +4,6 @@
 #include <memory>
 
 #include <json/document.h>
-#include "std/make_unique.h"
 #include "AssetManager.h"
 #include "CallbackManager.h"
 #include "Constants.h"

@@ -1,8 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueManager.h"
 
-#include "std/make_unique.h"
-
 using std::unique_ptr;
 using cocos2d::Layer;
 

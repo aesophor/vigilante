@@ -3,7 +3,6 @@
 
 #include <cocos2d.h>
 #include <json/document.h>
-#include "std/make_unique.h"
 #include "skill/BatForm.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"

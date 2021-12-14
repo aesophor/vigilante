@@ -25,8 +25,6 @@
 #include <cstring>
 #include <memory>
 
-#include "std/make_unique.h"
-
 using std::unique_ptr;
 using cocos2d::GLProgram;
 using cocos2d::GLProgramCache;
