@@ -1,6 +1,12 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AppDelegate.h"
 
+#ifdef __linux__
+extern "C" {
+#include <unistd.h>
+}
+#endif
+
 #include <string>
 
 #include "AssetManager.h"
@@ -74,6 +80,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
   // set FPS. the default value is 1.0/60 if you don't call this
   director->setAnimationInterval(1.0f / 60);
+
+#ifdef __linux__
+  chdir("Resources");
+#endif
 
   // Load resources
   vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetsList);
