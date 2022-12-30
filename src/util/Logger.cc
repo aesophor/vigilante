@@ -2,19 +2,17 @@
 #include "Logger.h"
 
 extern "C" {
-#include <execinfo.h> // backtrace*
-#include <signal.h> // signal
-#include <stdlib.h> // exit
-#include <unistd.h> // close
-#include <fcntl.h> // open
+#include <execinfo.h>  // backtrace*
+#include <signal.h>  // signal
+#include <stdlib.h>  // exit
+#include <unistd.h>  // close
+#include <fcntl.h>  // open
 }
 
 #define NUM_STACKTRACE_FUNC 10
 #define LOG_FILENAME "vigilante.log"
 
-namespace vigilante {
-
-namespace logger {
+namespace vigilante::logger {
 
 void segvHandler(int) {
   void* array[10];
@@ -27,6 +25,4 @@ void segvHandler(int) {
   exit(EXIT_FAILURE);
 }
 
-} // namespace logger
-
-} // namespace vigilante
+}  // namespace vigilante::logger

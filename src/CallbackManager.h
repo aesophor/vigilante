@@ -16,8 +16,8 @@ class CallbackManager {
 
   void runAfter(const std::function<void ()>& userCallback, float delay);
 
-  int getPendingCount() const;
-  void setScene(cocos2d::Scene* scene);
+  inline int getPendingCount() const { return _pendingCount; }
+  inline void setScene(cocos2d::Scene* scene) { _scene = scene; }
 
  private:
   CallbackManager();

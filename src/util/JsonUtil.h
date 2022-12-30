@@ -7,14 +7,10 @@
 
 #include <json/document.h>
 
-namespace vigilante {
-
-namespace json_util {
+namespace vigilante::json_util {
 
 rapidjson::Document parseJson(const std::string& jsonFileName);
 
-}  // namespace json_util
-
-}  // namespace vigilante
+}  // namespace vigilante::json_util
 
 #endif  // VIGILANTE_JSON_UTIL_H_

@@ -24,8 +24,8 @@ class StaticActor {
   virtual bool removeFromMap();
   virtual void setPosition(float x, float y);
 
-  cocos2d::Sprite* getBodySprite() const;
-  cocos2d::SpriteBatchNode* getBodySpritesheet() const;
+  inline cocos2d::Sprite* getBodySprite() const { return _bodySprite; }
+  inline cocos2d::SpriteBatchNode* getBodySpritesheet() const { return _bodySpritesheet; }
 
   // Create animation from Texture/{category}/{entityName}/{entityName}_{frameName}
   // e.g., to create the animation of "slime" "killed", pass the following arguments

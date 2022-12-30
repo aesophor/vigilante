@@ -3,6 +3,7 @@
 
 #include <cocos2d.h>
 #include <json/document.h>
+
 #include "skill/BatForm.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
@@ -10,8 +11,7 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
-using std::string;
-using std::unique_ptr;
+using namespace std;
 using rapidjson::Document;
 
 namespace vigilante {

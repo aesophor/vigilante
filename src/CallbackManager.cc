@@ -3,12 +3,8 @@
 
 #include <atomic>
 
-using std::atomic;
-using std::function;
-using cocos2d::Scene;
-using cocos2d::DelayTime;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -20,7 +16,6 @@ CallbackManager* CallbackManager::getInstance() {
 CallbackManager::CallbackManager()
     : _scene(),
       _pendingCount(0) {}
-
 
 void CallbackManager::runAfter(const function<void ()>& userCallback, float delay) {
   // If the specified delay is 0 second, then we can
@@ -38,15 +33,6 @@ void CallbackManager::runAfter(const function<void ()>& userCallback, float dela
       nullptr
     )
   );
-}
-
-
-int CallbackManager::getPendingCount() const {
-  return _pendingCount;
-}
-
-void CallbackManager::setScene(Scene* scene) {
-  _scene = scene;
 }
 
 }  // namespace vigilante

@@ -8,10 +8,8 @@
 #define CONSOLE_Y 10
 #define DEFAULT_HISTORY_SIZE 32
 
-using std::string;
-using cocos2d::Layer;
-using cocos2d::Event;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -57,14 +55,12 @@ Console::Console()
   _layer->addChild(_textField.getLayout());
 }
 
-
 void Console::update(float delta) {
   if (!_layer->isVisible()) {
     return;
   }
   _textField.update(delta);
 }
-
 
 void Console::executeCmd(const string& cmd,
                          bool showNotification,
@@ -78,7 +74,6 @@ void Console::executeCmd(const string& cmd,
   }
 }
 
-
 bool Console::isVisible() const {
   return _layer->isVisible();
 }
@@ -87,11 +82,6 @@ void Console::setVisible(bool visible) {
   _layer->setVisible(visible);
   _textField.setReceivingInput(visible);
 }
-
-Layer* Console::getLayer() const {
-  return _layer;
-}
-
 
 Console::CommandHistory::CommandHistory()
     : CircularBuffer<string>(DEFAULT_HISTORY_SIZE), _current(_tail) {}

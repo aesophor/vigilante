@@ -1,31 +1,21 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StatsPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "character/Player.h"
 #include "ui/Colorscheme.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "util/StringUtil.h"
 
-using std::string;
-using cocos2d::Label;
-using cocos2d::Layer;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kStatsBg;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
-const float StatsPane::_kPadLeft = 10.0f;
-const float StatsPane::_kPadRight = 10.0f;
-const float StatsPane::_kRowHeight = 16.0f;
-const float StatsPane::_kSectionHeight = 8.0f;
-
 StatsPane::StatsPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create()), // install TableLayout to base class
-      _background(ImageView::create(kStatsBg)),
+      _background(ui::ImageView::create(kStatsBg)),
       _name(Label::createWithTTF("Aesophor", kRegularFont, kRegularFontSize)),
       _level(Label::createWithTTF("Level 1", kRegularFont, kRegularFontSize)), 
       _health(Label::createWithTTF("100 / 100", kRegularFont, kRegularFontSize)),
@@ -72,7 +62,6 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
   addEntry("INT", _int);
   addEntry("LUK", _luk);
 }
-
 
 void StatsPane::update() {
   Character::Profile& profile = _pauseMenu->getPlayer()->getCharacterProfile();

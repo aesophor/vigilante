@@ -1,27 +1,24 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "util/Logger.h"
 
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kInventoryBg;
-using vigilante::asset_manager::kTabRegular;
-using vigilante::asset_manager::kTabHighlighted;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 QuestPane::QuestPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _background(ImageView::create(kInventoryBg)),
-      _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _questListView(std::make_unique<QuestListView>(pauseMenu)) {
+      _background(ui::ImageView::create(kInventoryBg)),
+      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
+      _questListView(make_unique<QuestListView>(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 
-  _layout->setLayoutType(Layout::Type::ABSOLUTE);
+  _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
   _layout->addChild(_background);
 
@@ -31,12 +28,11 @@ QuestPane::QuestPane(PauseMenu* pauseMenu)
   _tabView->addTab("DONE");
   _tabView->selectTab(0);
   _layout->addChild(_tabView->getLayout());
-  
+
   // Place item list view.
   _questListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_questListView->getLayout());
 }
-
 
 void QuestPane::update() {
   switch (_tabView->getSelectedTab()->getIndex()) {

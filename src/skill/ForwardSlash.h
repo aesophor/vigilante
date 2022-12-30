@@ -16,14 +16,14 @@ class ForwardSlash : public Skill {
   virtual ~ForwardSlash() = default;
 
   virtual void import(const std::string& jsonFileName) override; // Skill
-  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override; // Skill
-  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override; // Skill
+  virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; } // Skill
+  virtual void setHotkey(cocos2d::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; } // Skill
   virtual bool canActivate() override; // Skill
   virtual void activate() override; // Skill
 
-  virtual Skill::Profile& getSkillProfile() override; // Skill
-  virtual const std::string& getName() const override; // Skill
-  virtual const std::string& getDesc() const override; // Skill
+  virtual Skill::Profile& getSkillProfile() override { return _skillProfile; } // Skill
+  virtual const std::string& getName() const override { return _skillProfile.name; } // Skill
+  virtual const std::string& getDesc() const override { return _skillProfile.desc; } // Skill
   virtual std::string getIconPath() const override; // Skill
 
  private:

@@ -3,14 +3,13 @@
 
 #include "util/Logger.h"
 
-using cocos2d::Vec2;
-using cocos2d::Node;
-using cocos2d::ui::Layout;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
 TableLayout* TableLayout::create(float tableWidth, float rowHeight) {
-  TableLayout* tableLayout = new (std::nothrow) TableLayout;
+  TableLayout* tableLayout = new (nothrow) TableLayout;
   if (tableLayout && tableLayout->init(tableWidth, rowHeight)) {
     tableLayout->autorelease();
     return tableLayout;
@@ -20,7 +19,7 @@ TableLayout* TableLayout::create(float tableWidth, float rowHeight) {
 }
 
 bool TableLayout::init(float tableWidth, float rowHeight) {
-  if (!Layout::init()) {
+  if (!ui::Layout::init()) {
     return false;
   }
   _tableWidth = tableWidth;
@@ -29,14 +28,13 @@ bool TableLayout::init(float tableWidth, float rowHeight) {
   return true;
 }
 
-
 void TableLayout::removeAllChildren() {
-  Layout::removeAllChildren();
+  ui::Layout::removeAllChildren();
   reset();
 }
 
 void TableLayout::addChild(Node* child) {
-  Layout::addChild(child);
+  ui::Layout::addChild(child);
   child->setAnchorPoint({0, 1});
   child->setPosition(_nextChildPosition);
   
@@ -123,7 +121,6 @@ TableLayout* TableLayout::padBottom(float padding) {
   return this;
 }
 
-
 TableLayout* TableLayout::spaceX(float spacing) {
   _nextChildPosition.x += spacing;
   return this;
@@ -133,7 +130,6 @@ TableLayout* TableLayout::spaceY(float spacing) {
   _nextChildPosition.y += spacing;
   return this;
 }
-
 
 TableLayout* TableLayout::row(float height) {
   _nextChildPosition.x = 0;
@@ -148,48 +144,6 @@ TableLayout* TableLayout::row() {
 void TableLayout::reset() {
   _lastAddedChild = nullptr;
   _nextChildPosition = {0, 0};
-}
-
-
-float TableLayout::getTableWidth() const {
-  return _tableWidth;
-}
-
-float TableLayout::getRowHeight() const {
-  return _rowHeight;
-}
-
-Vec2 TableLayout::getNextChildPosition() const {
-  return _nextChildPosition;
-}
-
-float TableLayout::getNextChildPositionX() const {
-  return _nextChildPosition.x;
-}
-
-float TableLayout::getNextChildPositionY() const {
-  return _nextChildPosition.y;
-}
-
-
-void TableLayout::setTableWidth(float tableWidth) {
-  _tableWidth = tableWidth;
-}
-
-void TableLayout::setRowHeight(float rowHeight) {
-  _rowHeight = rowHeight;
-}
-
-void TableLayout::setNextChildPosition(const Vec2& pos) {
-  _nextChildPosition = pos;
-}
-
-void TableLayout::setNextChildPositionX(float x) {
-  _nextChildPosition.x = x;
-}
-
-void TableLayout::setNextChildPositionY(float y) {
-  _nextChildPosition.y = y;
 }
 
 }  // namespace vigilante

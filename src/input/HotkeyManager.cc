@@ -5,9 +5,8 @@
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/Logger.h"
 
-using std::array;
-using cocos2d::Event;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -25,7 +24,6 @@ HotkeyManager* HotkeyManager::getInstance() {
 }
 
 HotkeyManager::HotkeyManager() : _hotkeys() {}
-
 
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
   for (size_t i = 0; i < _kBindableKeys.size(); i++) {
@@ -81,4 +79,4 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
   InputManager::getInstance()->setSpecialOnKeyPressed(onKeyPressedEvLstnr);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

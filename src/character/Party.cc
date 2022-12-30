@@ -9,10 +9,7 @@
 #include "ui/notifications/Notifications.h"
 #include "util/StringUtil.h"
 
-using std::string;
-using std::shared_ptr;
-using std::unordered_map;
-using std::unordered_set;
+using namespace std;
 
 namespace vigilante {
 
@@ -20,7 +17,6 @@ Party::Party(Character* leader)
     : _leader(leader),
       _members(),
       _waitingMembersLocationInfo() {}
-
 
 Character* Party::getMember(const string& characterJsonFileName) const {
   auto it = std::find_if(_members.begin(),
@@ -65,7 +61,7 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   }
 
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
-  
+
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
   target->removeFromMap();
 
@@ -101,7 +97,6 @@ void Party::askMemberToFollow(Character* targetCharacter) {
                           targetCharacter->getCharacterProfile().name.c_str()));
 }
 
-
 bool Party::hasWaitingMember(const string& characterJsonFileName) const {
   auto it = _waitingMembersLocationInfo.find(characterJsonFileName);
   return it != _waitingMembersLocationInfo.end();
@@ -136,11 +131,6 @@ Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) co
   return it->second;
 }
 
-
-Character* Party::getLeader() const {
-  return _leader;
-}
-
 unordered_set<Character*> Party::getLeaderAndMembers() const {
   unordered_set<Character*> allMembers;
 
@@ -150,16 +140,6 @@ unordered_set<Character*> Party::getLeaderAndMembers() const {
   }
   return allMembers;
 }
-
-const unordered_set<shared_ptr<Character>>& Party::getMembers() const {
-  return _members;
-}
-
-const unordered_map<string, Party::WaitingLocationInfo>&
-Party::getWaitingMembersLocationInfo() const {
-  return _waitingMembersLocationInfo;
-}
-
 
 void Party::addMember(shared_ptr<Character> character) {
   character->setParty(_leader->getParty());

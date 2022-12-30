@@ -2,30 +2,35 @@
 #ifndef VIGILANTE_CIRCULAR_BUFFER_H_
 #define VIGILANTE_CIRCULAR_BUFFER_H_
 
-#include <string>
 #include <memory>
-
-#define DEFAULT_CAPACITY 32
+#include <string>
 
 namespace vigilante {
 
 template <typename T>
 class CircularBuffer {
+  static inline constexpr int kDefaultCapacity = 32;
+
  public:
-  explicit CircularBuffer(int capacity=DEFAULT_CAPACITY);
+  explicit CircularBuffer(int capacity = kDefaultCapacity)
+    : _data(std::make_unique<T[]>(capacity)),
+      _head(),
+      _tail(),
+      _size(),
+      _capacity(capacity) {}
   virtual ~CircularBuffer() = default;
-  T& operator[] (size_t i);
+  T& operator[] (size_t i) { return _data[i]; }
 
   void push(T val);
   void pop();
   void clear();
 
-  size_t size() const;
-  size_t capacity() const;
-  bool empty() const;
-  bool full() const;
-  T front() const;
-  T back() const;
+  inline size_t size() const { return _size; }
+  inline size_t capacity() const { return _capacity; }
+  inline bool empty() const { return _tail == _head; }
+  inline bool full() const { return (_tail + 1) % (int) _capacity == _head; }
+  inline T front() const { return _data[_head]; }
+  inline T back() const { return _data[(_tail - 1 < 0) ? _capacity - 1 : _tail - 1]; }
 
  protected:
   std::unique_ptr<T[]> _data;
@@ -34,18 +39,6 @@ class CircularBuffer {
   size_t _size;
   const size_t _capacity;
 };
-
-
-
-template <typename T>
-CircularBuffer<T>::CircularBuffer(int capacity)
-    : _data(std::make_unique<T[]>(capacity)), _head(), _tail(), _size(), _capacity(capacity) {}
-
-template <typename T>
-T& CircularBuffer<T>::operator[] (size_t i) {
-  return _data[i];
-}
-
 
 template <typename T>
 void CircularBuffer<T>::push(T val) {
@@ -74,37 +67,6 @@ template <typename T>
 void CircularBuffer<T>::clear() {
   _tail = 0;
   _head = 0;
-}
-
-
-template <typename T>
-size_t CircularBuffer<T>::size() const {
-  return _size;
-}
-
-template <typename T>
-size_t CircularBuffer<T>::capacity() const {
-  return _capacity;
-}
-
-template <typename T>
-bool CircularBuffer<T>::empty() const {
-  return _tail == _head;
-}
-
-template <typename T>
-bool CircularBuffer<T>::full() const {
-  return (_tail + 1) % (int) _capacity == _head;
-}
-
-template <typename T>
-T CircularBuffer<T>::front() const {
-  return _data[_head];
-}
-
-template <typename T>
-T CircularBuffer<T>::back() const {
-  return _data[(_tail - 1 < 0) ? _capacity - 1 : _tail - 1];
 }
 
 }  // namespace vigilante

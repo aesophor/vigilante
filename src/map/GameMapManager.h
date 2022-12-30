@@ -57,11 +57,11 @@ class GameMapManager {
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
-
-  cocos2d::Layer* getLayer() const;
-  b2World* getWorld() const;
-  GameMap* getGameMap() const;
-  Player* getPlayer() const;
+    
+  inline cocos2d::Layer* getLayer() const { return _layer; }
+  inline b2World* getWorld() const { return _world.get(); }
+  inline GameMap* getGameMap() const { return _gameMap.get(); }
+  inline Player* getPlayer() const { return _player.get(); }
 
  private:
   explicit GameMapManager(const b2Vec2& gravity);

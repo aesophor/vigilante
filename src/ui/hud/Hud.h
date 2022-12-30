@@ -2,12 +2,13 @@
 #ifndef VIGILANTE_HUD_H_
 #define VIGILANTE_HUD_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
+
 #include "StatusBar.h"
 
 namespace vigilante {
@@ -20,12 +21,12 @@ class Hud {
   void updateEquippedWeapon();
   void updateStatusBars();
 
-  cocos2d::Layer* getLayer() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
   Hud();
 
-  static const float _kBarLength;
+  static inline constexpr float _kBarLength = 75.0f;
 
   cocos2d::Layer* _layer;
   std::unique_ptr<StatusBar> _healthBar;

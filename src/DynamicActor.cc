@@ -4,8 +4,7 @@
 #include "Constants.h"
 #include "map/GameMapManager.h"
 
-using std::vector;
-using std::unique_ptr;
+using namespace std;
 
 namespace vigilante {
 
@@ -13,7 +12,6 @@ DynamicActor::DynamicActor(size_t numAnimations, size_t numFixtures)
     : StaticActor(numAnimations),
       _body(),
       _fixtures(numFixtures) {}
-
 
 bool DynamicActor::removeFromMap() {
   if (!StaticActor::removeFromMap()) {
@@ -40,16 +38,6 @@ void DynamicActor::destroyBody() {
   _body->GetWorld()->DestroyBody(_body);
   _body = nullptr;
 }
-
-
-b2Body* DynamicActor::getBody() const {
-  return _body;
-}
-
-vector<b2Fixture*>& DynamicActor::getFixtures() {
-  return _fixtures;
-}
-
 
 void DynamicActor::setCategoryBits(b2Fixture* fixture, const short categoryBits) {
   b2Filter filter = fixture->GetFilterData();

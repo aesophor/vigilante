@@ -3,9 +3,8 @@
 
 #include <unordered_map>
 
-using std::string;
-using std::unordered_map;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace {
 
@@ -26,9 +25,7 @@ unordered_map<EventKeyboard::KeyCode, string> keyMap;
 }  // namespace
 
 
-namespace vigilante {
-
-namespace keycode_util {
+namespace vigilante::keycode_util {
 
 void init() {
   ::keyMap[EventKeyboard::KeyCode::KEY_BACK] = "BACK";
@@ -166,6 +163,4 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
   }
 }
 
-}  // namespace keycode_util
-
-}  // namespace vigilante
+}  // namespace vigilante::keycode_util

@@ -20,14 +20,13 @@ class DialogueManager : public Controllable {
   void update(float delta);
   virtual void handleInput() override;
 
-  cocos2d::Layer* getLayer() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
+  inline Npc* getTargetNpc() const { return _targetNpc; }
+  inline Subtitles* getSubtitles() const { return _subtitles.get(); }
+  inline void setTargetNpc(Npc* npc) { _targetNpc = npc; }
+  inline DialogueMenu* getDialogueMenu() const { return _dialogueMenu.get(); }
 
-  Npc* getTargetNpc() const;
-  Subtitles* getSubtitles() const;
-  DialogueMenu* getDialogueMenu() const;
   Dialogue* getCurrentDialogue() const;
-
-  void setTargetNpc(Npc* npc);
   void setCurrentDialogue(Dialogue* dialogue) const;
 
  private:

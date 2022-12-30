@@ -2,12 +2,13 @@
 #ifndef VIGILANTE_TEXT_FIELD_H_
 #define VIGILANTE_TEXT_FIELD_H_
 
-#include <string>
 #include <functional>
+#include <string>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
+
 #include "input/InputManager.h"
 
 namespace vigilante {
@@ -19,20 +20,23 @@ class TextField {
 
   virtual void update(float delta);
 
-  virtual const std::string& getString() const;
+  virtual const std::string& getString() const { return _buffer; }
   virtual void setString(const std::string& s);
   virtual void clear();
 
-  bool isReceivingInput() const;
+  inline bool isReceivingInput() const { return _isReceivingInput; }
   void setReceivingInput(bool receivingInput);
 
-  void setOnSubmit(const std::function<void ()>& onSubmit);
-  void setOnDismiss(const std::function<void ()>& onDismiss);
-  void setExtraOnKeyPressed(const InputManager::OnKeyPressedEvLstnr& extraOnKeyPressed);
+  inline void setOnSubmit(const std::function<void ()>& onSubmit) { _onSubmit = onSubmit; }
+  inline void setOnDismiss(const std::function<void ()>& onDismiss) { _onDismiss = onDismiss; }
+  inline void setExtraOnKeyPressed(const InputManager::OnKeyPressedEvLstnr& extraOnKeyPressed) {
+    _extraOnKeyPressed = extraOnKeyPressed;
+  }
+  inline void setDismissKey(cocos2d::EventKeyboard::KeyCode dismissKey) {
+    _dismissKey = dismissKey;
+  }
 
-  void setDismissKey(cocos2d::EventKeyboard::KeyCode dismissKey);
-
-  cocos2d::ui::Layout* getLayout() const;
+  inline cocos2d::ui::Layout* getLayout() const { return _layout; }
 
  private:
   virtual void toggleCursor();

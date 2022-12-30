@@ -24,16 +24,16 @@ class TabView {
     Tab(TabView* parent, const std::string& text);
     virtual ~Tab() = default;
 
-    bool isSelected() const;
+    inline int getIndex() const { return _index; }
+    inline bool isSelected() const { return _isSelected; }
     void setIsSelected(bool isSelected);
-    int getIndex() const;
 
    private:
     TabView* _parent;
     cocos2d::ui::ImageView* _background;
     cocos2d::Label* _label;
-    bool _isSelected;
     int _index;
+    bool _isSelected;
   };
 
   virtual void addTab(const std::string& text);
@@ -42,7 +42,7 @@ class TabView {
   virtual void selectNext();
 
   TabView::Tab* getSelectedTab() const;
-  cocos2d::ui::Layout* getLayout() const;
+  inline cocos2d::ui::Layout* getLayout() const { return _layout; }
 
  protected:
   cocos2d::ui::Layout* _layout;

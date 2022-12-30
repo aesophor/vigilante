@@ -2,6 +2,7 @@
 #include "WorldContactListener.h"
 
 #include <cocos2d.h>
+
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "Projectile.h"
@@ -17,8 +18,8 @@
 #include "skill/ForwardSlash.h"
 #include "util/Logger.h"
 
-using std::unique_ptr;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -172,12 +173,12 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kPortal: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
-      
+
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
         c->setPortal(p);
-        
+
         if (p->willInteractOnContact()) {
           CallbackManager::getInstance()->runAfter([=]() {
             c->interact(p);
@@ -192,7 +193,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kInteractable: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* interactableFixture = GetTargetFixture(category_bits::kInteractable, fixtureA, fixtureB);
-      
+
       if (feetFixture && interactableFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
@@ -215,7 +216,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     case category_bits::kProjectile | category_bits::kEnemy: {
       b2Fixture* projectileFixture = GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
       b2Fixture* enemyFixture = GetTargetFixture(category_bits::kEnemy, fixtureA, fixtureB);
-      
+
       if (projectileFixture && enemyFixture) {
         DynamicActor* p = static_cast<DynamicActor*>(projectileFixture->GetUserData());
         Character* c = static_cast<Character*>(enemyFixture->GetUserData());

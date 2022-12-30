@@ -10,7 +10,6 @@ namespace vigilante {
 
 // A vector that contains a set of unique objects of type Key
 // where the order of iteration is the order of insertion.
-
 template <typename Key>
 class SetVector {
  public:
@@ -46,7 +45,6 @@ class SetVector {
   
   virtual ~SetVector() = default;
 
-
   void insert(Key key) {
     auto it = _set.find(key);
     if (it != _set.end()) {
@@ -72,7 +70,6 @@ class SetVector {
     _vec.clear();
   }
   
-
   bool empty() const {
     return _vec.empty();
   }
@@ -96,7 +93,6 @@ class SetVector {
   const_iterator end() const {
     return _vec.end();
   }
-
 
   Key& front() {
     return _vec.front();

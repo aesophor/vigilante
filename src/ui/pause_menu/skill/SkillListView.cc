@@ -14,29 +14,26 @@
 #define WIDTH 289.5
 #define HEIGHT 120
 #define ITEM_GAP_HEIGHT 25
-#define REGULAR_BG vigilante::asset_manager::kItemRegular
-#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 SkillListView::SkillListView(PauseMenu* pauseMenu)
-    : ListView<Skill*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Skill*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
-
+      _descLabel(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Skill* skill) {
     assert(skill != nullptr);
 
-    ImageView* icon = listViewItem->getIcon();
+    ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
     icon->loadTexture(skill->getIconPath());
@@ -59,7 +56,6 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
-
 
 void SkillListView::confirm() {
   Skill* skill = getSelectedObject();
@@ -90,7 +86,6 @@ void SkillListView::confirm() {
   dialog->show();
 }
 
-
 void SkillListView::selectUp() {
   ListView<Skill*>::selectUp();
 
@@ -112,7 +107,6 @@ void SkillListView::selectDown() {
   Skill* selectedSkill = getSelectedObject();
   _descLabel->setString((selectedSkill) ? selectedSkill->getDesc() : "");
 }
-
 
 void SkillListView::showSkillsByType(Skill::Type skillType) {
   // Show player skills in SkillListView.

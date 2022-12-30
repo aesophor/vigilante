@@ -17,8 +17,8 @@ class CollectItemObjective : public Quest::Objective {
 
   virtual bool isCompleted() const override;
 
-  const std::string& getItemName() const;
-  int getAmount() const;
+  inline const std::string& getItemName() const { return _itemName; }
+  inline int getAmount() const { return _amount; }
 
  private:
   std::string _itemName;

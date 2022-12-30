@@ -2,10 +2,10 @@
 #include "Equipment.h"
 
 #include <json/document.h>
+
 #include "util/JsonUtil.h"
 
-using std::array;
-using std::string;
+using namespace std;
 using rapidjson::Document;
 
 namespace vigilante {
@@ -28,11 +28,6 @@ void Equipment::import(const string& jsonFileName) {
   Item::import(jsonFileName);
   _equipmentProfile = Equipment::Profile(jsonFileName);
 }
-
-Equipment::Profile& Equipment::getEquipmentProfile() {
-  return _equipmentProfile;
-}
-
 
 Equipment::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);

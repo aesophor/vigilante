@@ -48,9 +48,9 @@ class ControlHints {
               const cocos2d::Color4B& textColor=colorscheme::kWhite);
   void remove(const std::vector<cocos2d::EventKeyboard::KeyCode>& keyCodes);
 
-  bool isVisible() const;
-  void setVisible(bool visible);
-  cocos2d::Layer* getLayer() const;
+  inline bool isVisible() const { return _layer->isVisible(); }
+  inline void setVisible(bool visible) { _layer->setVisible(visible); }
+  inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
   class Hint final {
@@ -60,11 +60,13 @@ class ControlHints {
          const cocos2d::Color4B& textColor);
 
     cocos2d::Size getContentSize() const;
-    cocos2d::ui::Layout* getLayout() const;
-    const std::vector<cocos2d::EventKeyboard::KeyCode>& getKeyCodes() const;
+    inline cocos2d::ui::Layout* getLayout() const { return _layout; }
+    inline const std::vector<cocos2d::EventKeyboard::KeyCode>& getKeyCodes() const {
+      return _keyCodes;
+    }
 
    private:
-    static const int _kIconLabelGap;
+    static inline constexpr int _kIconLabelGap = 4;
 
     cocos2d::ui::Layout* _layout;
     std::vector<cocos2d::ui::ImageView*> _icons;
@@ -78,11 +80,11 @@ class ControlHints {
   void hideAll();
   std::vector<ControlHints::Hint>& getCurrentProfileHints();
 
-  static const int _kHintGap;
+  static inline constexpr int _kHintGap = 16;
 
   cocos2d::Layer* _layer;
   std::array<std::vector<ControlHints::Hint>, ControlHints::Profile::SIZE> _profiles;
-  std::stack<ControlHints::Profile> _currentProfileStack;  
+  std::stack<ControlHints::Profile> _currentProfileStack;
 };
 
 }  // namespace vigilante

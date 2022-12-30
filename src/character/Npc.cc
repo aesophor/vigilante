@@ -4,7 +4,8 @@
 #include <memory>
 
 #include <json/document.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -34,43 +35,12 @@
 
 #define ALLY_FOLLOW_DISTANCE .75f
 
-using std::atomic;
-using std::string;
-using std::vector;
-using std::unique_ptr;
-using std::unordered_set;
-using cocos2d::Vector;
-using cocos2d::Director;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Animation;
-using cocos2d::Animate;
-using cocos2d::Action;
-using cocos2d::Sprite;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteFrameCache;
-using cocos2d::SpriteBatchNode;
-using cocos2d::EventKeyboard;
-using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kNpc;
-using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kMeleeWeapon;
-using vigilante::category_bits::kItem;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kPlatform;
-using vigilante::category_bits::kPivotMarker;
-using vigilante::category_bits::kCliffMarker;
-using vigilante::category_bits::kWall;
-using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kInteractable;
-using vigilante::category_bits::kProjectile;
+using namespace std;
+using namespace vigilante::category_bits;
 using rapidjson::Document;
+USING_NS_CC;
 
 namespace vigilante {
-
-atomic<bool> Npc::_areNpcsAllowedToAct(true);
-unordered_set<string> Npc::_npcSpawningBlacklist;
 
 Npc::Npc(const string& jsonFileName)
     : Character(jsonFileName),
@@ -206,7 +176,7 @@ void Npc::receiveDamage(Character* source, int damage) {
 
   // Give exp point to source character.
   source->addExp(_characterProfile.exp);
- 
+
   // Drop items. (Here we'll use a callback to drop items
   // since creating fixtures during collision callback will crash)
   // See: https://github.com/libgdx/libgdx/issues/2730
@@ -381,7 +351,7 @@ void Npc::moveToTarget(float delta, Character* target, float followDistance) {
 
   const b2Vec2& thisPos = _body->GetPosition();
   const b2Vec2& targetPos = target->getBody()->GetPosition();
-  
+
   // If this character is already close enough to the target character,
   // we could return at once.
   if (std::abs(thisPos.x - targetPos.x) <= followDistance) {
@@ -440,32 +410,13 @@ void Npc::reverseDirection() {
   _isMovingRight = !_isMovingRight;
 }
 
-
 bool Npc::isInPlayerParty() const {
-  return (_party) ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
+  return _party ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
 }
 
 bool Npc::isWaitingForPlayer() const {
   return isInPlayerParty() && _party->hasWaitingMember(_characterProfile.jsonFileName);
 }
-
-
-Npc::Profile& Npc::getNpcProfile() {
-  return _npcProfile;
-}
-
-DialogueTree& Npc::getDialogueTree() {
-  return _dialogueTree;
-}
-
-Npc::Disposition Npc::getDisposition() const {
-  return _disposition;
-}
-
-bool Npc::isSandboxing() const {
-  return _isSandboxing;
-}
-
 
 void Npc::setDisposition(Npc::Disposition disposition) {
   _disposition = disposition;
@@ -489,18 +440,8 @@ void Npc::setDisposition(Npc::Disposition disposition) {
   }
 }
 
-void Npc::setSandboxing(bool sandboxing) {
-  _isSandboxing = sandboxing;
-}
-
-
-void Npc::setNpcsAllowedToAct(bool npcsAllowedToAct) {
-  Npc::_areNpcsAllowedToAct = npcsAllowedToAct;
-}
-
 bool Npc::isNpcAllowedToSpawn(const string& jsonFileName) {
-  return Npc::_npcSpawningBlacklist.find(jsonFileName)
-      == Npc::_npcSpawningBlacklist.end();
+  return Npc::_npcSpawningBlacklist.find(jsonFileName) == Npc::_npcSpawningBlacklist.end();
 }
 
 void Npc::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {

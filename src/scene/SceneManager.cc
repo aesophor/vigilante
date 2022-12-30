@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SceneManager.h"
 
-using cocos2d::Director;
-using cocos2d::Scene;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -10,7 +10,6 @@ SceneManager* SceneManager::getInstance() {
   static SceneManager instance;
   return &instance;
 }
-
 
 SceneManager::SceneManager()
     : _director(Director::getInstance()),

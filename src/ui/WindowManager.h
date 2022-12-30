@@ -24,13 +24,13 @@ class WindowManager {
   // Pop the top window off the internal window stack and unrender it.
   std::unique_ptr<Window> pop();
 
-  Window* top() const;
-  bool isEmpty() const;
-  int getSize() const;
-  uint16_t getDefaultCameraMask() const;
+    inline Window* top() const { return isEmpty() ? nullptr : _windows.back().get(); }
+  inline bool isEmpty() const { return _windows.empty(); }
+  inline int getSize() const { return _windows.size(); }
+  inline uint16_t getDefaultCameraMask() const { return _defaultCameraMask; }
 
-  void setScene(cocos2d::Scene* scene);
-  void setDefaultCameraMask(uint16_t cameraMask);
+  inline void setScene(cocos2d::Scene* scene) { _scene = scene; }
+  inline void setDefaultCameraMask(uint16_t cameraMask) { _defaultCameraMask = cameraMask; }
 
  private:
   WindowManager();

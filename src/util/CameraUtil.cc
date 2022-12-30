@@ -4,10 +4,7 @@
 #include "Constants.h"
 #include "util/RandUtil.h"
 
-using cocos2d::Director;
-using cocos2d::Camera;
-using cocos2d::TMXTiledMap;
-using cocos2d::Vec2;
+USING_NS_CC;
 
 namespace {
 
@@ -17,12 +14,9 @@ float power = 0;
 float currentPower = 0;
 Vec2 pos;
 
-} // namespace
+}  // namespace
 
-
-namespace vigilante {
-
-namespace camera_util {
+namespace vigilante::camera_util {
 
 void boundCamera(Camera* camera, GameMap* gameMap) {
   auto winSize = Director::getInstance()->getWinSize();
@@ -62,7 +56,6 @@ void boundCamera(Camera* camera, GameMap* gameMap) {
   camera->setPosition(position);
 }
 
-
 void lerpToTarget(Camera* camera, const b2Vec2& target) {
   auto winSize = Director::getInstance()->getWinSize();
   Vec2 position = camera->getPosition();
@@ -70,7 +63,6 @@ void lerpToTarget(Camera* camera, const b2Vec2& target) {
   position.y = camera->getPositionY() + ((target.y * kPpm - winSize.height / 2) - camera->getPositionY()) * .1f;
   camera->setPosition(position);
 }
-
 
 void shake(float rumblePower, float rumbleDuration) {
   ::power = rumblePower;
@@ -96,6 +88,4 @@ void updateShake(Camera* camera, float delta) {
   }
 }
 
-} // namespace camera_util
-
-} // namespace vigilante
+} // namespace vigilante::camera_util

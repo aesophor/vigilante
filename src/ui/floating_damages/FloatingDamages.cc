@@ -1,33 +1,18 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "FloatingDamages.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "ui/Colorscheme.h"
 
-using std::map;
-using std::deque;
-using std::string;
-using cocos2d::Layer;
-using cocos2d::Label;
-using cocos2d::MoveBy;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
-using vigilante::kPpm;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
-
-const float FloatingDamages::kDeltaX = 0.0f;
-const float FloatingDamages::kDeltaY = 10.0f;
-
-const float FloatingDamages::kMoveUpDuration = .2f;
-const float FloatingDamages::kFadeDuration = .2f;
 
 FloatingDamages* FloatingDamages::getInstance() {
   static FloatingDamages instance;
@@ -35,7 +20,6 @@ FloatingDamages* FloatingDamages::getInstance() {
 }
 
 FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
-
 
 void FloatingDamages::update(float delta) {
   deque<map<Character*, deque<DamageLabel>>::iterator> trash;
@@ -98,20 +82,11 @@ void FloatingDamages::show(Character* character, int damage) {
   _layer->addChild(dmg.label);
 }
 
-Layer* FloatingDamages::getLayer() const {
-  return _layer;
-}
-
-
 FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
     : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
       lifetime(lifetime),
       timer() {
   label->getFontAtlas()->setAliasTexParameters();
-}
-
-bool FloatingDamages::DamageLabel::operator==(const DamageLabel& other) {
-  return this->label == other.label;
 }
 
 }  // namespace vigilante

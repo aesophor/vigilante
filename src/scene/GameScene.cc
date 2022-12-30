@@ -4,7 +4,8 @@
 #include <string>
 
 #include <SimpleAudioEngine.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
@@ -20,15 +21,8 @@
 #include "util/RandUtil.h"
 #include "util/Logger.h"
 
-using std::string;
-using std::unique_ptr;
-using cocos2d::Vec3;
-using cocos2d::Camera;
-using cocos2d::CameraFlag;
-using cocos2d::Director;
-using cocos2d::Layer;
-using cocos2d::EventKeyboard;
-using cocos2d::ui::ImageView;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -65,7 +59,7 @@ bool GameScene::init() {
   _hudCamera->lookAt(eyePos);
   _hudCamera->setPosition(0, 0);
   addChild(_hudCamera);
-  
+
   // Initialize shade.
   _shade = Shade::getInstance();
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -111,10 +105,10 @@ bool GameScene::init() {
   _windowManager->setScene(this);
 
   // Initialize vigilante's exp point table.
-  exp_point_table::import(asset_manager::kExpPointTable);
+  exp_point_table::import(assets::kExpPointTable);
 
   // Initialize vigilante's item price table.
-  item_price_table::import(asset_manager::kItemPriceTable);
+  item_price_table::import(assets::kItemPriceTable);
 
 
   // Initialize GameMapManager.
@@ -124,7 +118,7 @@ bool GameScene::init() {
 
   // Initialize FxManager.
   _fxManager = FxManager::getInstance();
-  
+
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
   InputManager::getInstance()->activate(this);
@@ -133,7 +127,7 @@ bool GameScene::init() {
   _b2dr = b2DebugRenderer::create(_gameMapManager->getWorld());
   _b2dr->setVisible(false);
   addChild(_b2dr);
-  
+
   // Initialize Pause Menu.
   _pauseMenu = PauseMenu::getInstance();
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -234,9 +228,8 @@ void GameScene::handleInput() {
   }
 }
 
-
 void GameScene::startNewGame() {
-  _gameMapManager->loadGameMap(asset_manager::kNewGameInitialMap);
+  _gameMapManager->loadGameMap(assets::kNewGameInitialMap);
 }
 
 void GameScene::loadGame(const string& gameSaveFilePath) {

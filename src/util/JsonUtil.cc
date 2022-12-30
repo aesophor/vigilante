@@ -2,19 +2,13 @@
 #include "JsonUtil.h"
 
 #include <fstream>
-#include <sstream>
 #include <stdexcept>
+#include <sstream>
 
-using std::string;
-using std::vector;
-using std::ifstream;
-using std::stringstream;
-using std::runtime_error;
+using namespace std;
 using rapidjson::Document;
 
-namespace vigilante {
-
-namespace json_util {
+namespace vigilante::json_util {
 
 Document parseJson(const string& jsonFileName) {
   ifstream fin(jsonFileName);
@@ -34,6 +28,4 @@ Document parseJson(const string& jsonFileName) {
   return json;
 }
 
-}  // namespace json_util
-
-}  // namespace vigilante
+}  // namespace vigilante::json_util

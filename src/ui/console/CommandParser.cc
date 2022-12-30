@@ -15,12 +15,7 @@
 
 #define DEFAULT_ERR_MSG "unable to parse this line"
 
-using std::string;
-using std::vector;
-using std::unique_ptr;
-using std::shared_ptr;
-using std::out_of_range;
-using std::invalid_argument;
+using namespace std;
 
 using CmdTable = std::unordered_map<std::string,
       void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;

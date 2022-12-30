@@ -40,14 +40,14 @@ class Item : public DynamicActor, public Importable {
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
-  Item::Profile& getItemProfile();
-  const std::string& getName() const;
-  const std::string& getDesc() const;
+  inline Item::Profile& getItemProfile() { return _itemProfile; }
+  inline const std::string& getName() const { return _itemProfile.name; }
+  inline const std::string& getDesc() const { return _itemProfile.desc; }
   std::string getIconPath() const;
   bool isGold() const;
 
-  int getAmount() const;
-  void setAmount(int amount);
+  inline int getAmount() const { return _amount; }
+  inline void setAmount(int amount) { _amount = amount; }
 
  protected:
   explicit Item(const std::string& jsonFileName);

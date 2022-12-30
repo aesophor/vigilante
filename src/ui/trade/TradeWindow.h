@@ -24,9 +24,9 @@ class TradeWindow : public Window {
 
   void toggleBuySell();
 
-  bool isTradingWithAlly() const;
-  Character* getBuyer() const;
-  Character* getSeller() const;
+  inline bool isTradingWithAlly() const { return _isTradingWithAlly; }
+  inline Character* getBuyer() const { return _buyer; }
+  inline Character* getSeller() const { return _seller; }
 
  private:
   cocos2d::ui::ImageView* _contentBackground;

@@ -56,7 +56,6 @@ class Npc : public Character, public Interactable {
     FIXTURE_SIZE
   };
 
-
   explicit Npc(const std::string& jsonFileName);
   virtual ~Npc() = default;
 
@@ -82,7 +81,6 @@ class Npc : public Character, public Interactable {
   void onDialogueBegin();
   void onDialogueEnd();
 
-
   void act(float delta);
   void findNewLockedOnTargetFromParty(Character* killedTarget);
   void moveToTarget(float delta, Character* target, float followDistance);
@@ -95,20 +93,20 @@ class Npc : public Character, public Interactable {
   bool isInPlayerParty() const;
   bool isWaitingForPlayer() const;
 
-  
-  Npc::Profile& getNpcProfile();
-  DialogueTree& getDialogueTree();
-  Npc::Disposition getDisposition() const;
-  bool isSandboxing() const;
-
+  inline Npc::Profile& getNpcProfile() { return _npcProfile; }
+  inline DialogueTree& getDialogueTree() { return _dialogueTree; }
+  inline Npc::Disposition getDisposition() const { return _disposition; }
   void setDisposition(Npc::Disposition disposition);
-  void setSandboxing(bool sandboxing);
 
-  static void setNpcsAllowedToAct(bool npcsAllowedToAct);
+  inline bool isSandboxing() const { return _isSandboxing; }
+  inline void setSandboxing(bool sandboxing) { _isSandboxing = sandboxing; }
+
+  static inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
+    Npc::_areNpcsAllowedToAct = npcsAllowedToAct;
+  }
 
   static bool isNpcAllowedToSpawn(const std::string& jsonFileName);
   static void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
-
 
  private:
   virtual void defineBody(b2BodyType bodyType,
@@ -122,13 +120,12 @@ class Npc : public Character, public Interactable {
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
-
   // See `map/GameMap.cc` for its usage.
-  static std::atomic<bool> _areNpcsAllowedToAct;
+  static inline std::atomic<bool> _areNpcsAllowedToAct{true};
 
   // Once those spawn-once NPCs are killed, their jsonFileName
   // will be inserted into this unordered_set.
-  static std::unordered_set<std::string> _npcSpawningBlacklist;
+  static inline std::unordered_set<std::string> _npcSpawningBlacklist;
 
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;

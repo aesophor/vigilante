@@ -7,9 +7,8 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
-using std::string;
-using std::shared_ptr;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -19,17 +18,8 @@ BatForm::BatForm(const string& jsonFileName, Character* user)
       _user(user),
       _hasActivated() {}
 
-
 void BatForm::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
-}
-
-EventKeyboard::KeyCode BatForm::getHotkey() const {
-  return _skillProfile.hotkey;
-}
-
-void BatForm::setHotkey(EventKeyboard::KeyCode hotkey) {
-  _skillProfile.hotkey = hotkey;
 }
 
 bool BatForm::canActivate() {
@@ -60,19 +50,6 @@ void BatForm::activate() {
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
-}
-
-
-Skill::Profile& BatForm::getSkillProfile() {
-  return _skillProfile;
-}
-
-const string& BatForm::getName() const {
-  return _skillProfile.name;
-}
-
-const string& BatForm::getDesc() const {
-  return _skillProfile.desc;
 }
 
 string BatForm::getIconPath() const {

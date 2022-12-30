@@ -4,9 +4,7 @@
 #include <ctime>
 #include <random>
 
-namespace vigilante {
-
-namespace rand_util {
+namespace vigilante::rand_util {
 
 void init() {
   srand(time(nullptr));
@@ -20,6 +18,4 @@ float randFloat(float min, float max) {
   return (float(rand()) / (float(RAND_MAX) + 1.0)) * (max - min) + min;
 }
 
-} // namespace rand_util
-
-} // namespace vigilante
+}  // namespace vigilante::rand_util

@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "ui/TableLayout.h"
 #include "util/Logger.h"
 
@@ -16,44 +16,26 @@
 #define CONTENT_MARGIN_TOP 25
 #define CONTENT_MARGIN_BOTTOM 30
 
-using std::string;
-using cocos2d::Vec2;
-using cocos2d::Size;
-using cocos2d::Node;
-using cocos2d::Vector;
-using cocos2d::Label;
-using cocos2d::Layer;
-using cocos2d::Director;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kWindowContentBg;
-using vigilante::asset_manager::kWindowTopLeftBg;
-using vigilante::asset_manager::kWindowTopRightBg;
-using vigilante::asset_manager::kWindowBottomLeftBg;
-using vigilante::asset_manager::kWindowBottomRightBg;
-using vigilante::asset_manager::kWindowTopBg;
-using vigilante::asset_manager::kWindowLeftBg;
-using vigilante::asset_manager::kWindowRightBg;
-using vigilante::asset_manager::kWindowBottomBg;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 Window::Window(float width, float height)
     : _layer(Layer::create()),
       _layout(TableLayout::create(width, DEFAULT_ROW_HEIGHT)),
-      _contentLayout(Layout::create()),
+      _contentLayout(ui::Layout::create()),
       _titleLabel(Label::createWithTTF(DEFAULT_TITLE, kBoldFont, kRegularFontSize)),
-      _contentBg(ImageView::create(kWindowContentBg)),
-      _topLeftBg(ImageView::create(kWindowTopLeftBg)),
-      _topRightBg(ImageView::create(kWindowTopRightBg)),
-      _bottomLeftBg(ImageView::create(kWindowBottomLeftBg)),
-      _bottomRightBg(ImageView::create(kWindowBottomRightBg)),
-      _topBg(ImageView::create(kWindowTopBg)),
-      _leftBg(ImageView::create(kWindowLeftBg)),
-      _rightBg(ImageView::create(kWindowRightBg)),
-      _bottomBg(ImageView::create(kWindowBottomBg)),
+      _contentBg(ui::ImageView::create(kWindowContentBg)),
+      _topLeftBg(ui::ImageView::create(kWindowTopLeftBg)),
+      _topRightBg(ui::ImageView::create(kWindowTopRightBg)),
+      _bottomLeftBg(ui::ImageView::create(kWindowBottomLeftBg)),
+      _bottomRightBg(ui::ImageView::create(kWindowBottomRightBg)),
+      _topBg(ui::ImageView::create(kWindowTopBg)),
+      _leftBg(ui::ImageView::create(kWindowLeftBg)),
+      _rightBg(ui::ImageView::create(kWindowRightBg)),
+      _bottomBg(ui::ImageView::create(kWindowBottomBg)),
       _position(0, 0),  // Calculated in Window::normalize()
       _size(width, height) {
 
@@ -71,7 +53,6 @@ Window::Window(float width, float height)
 
   normalize(/*init=*/true);
 }
-
 
 void Window::move(const Vec2& position) {
   setPosition(position);
@@ -93,36 +74,6 @@ void Window::resize(float width, float height) {
   normalize();
 }
 
-
-Layer* Window::getLayer() const {
-  return _layer;
-}
-
-Layout* Window::getLayout() const {
-  return _layout;
-}
-
-Layout* Window::getContentLayout() const {
-  return _contentLayout;
-}
-
-string Window::getTitle() const {
-  return _titleLabel->getString();
-}
-
-bool Window::isVisible() const {
-  return _isVisible;
-}
-
-const Vec2& Window::getPosition() const {
-  return _position;
-}
-
-const Size& Window::getSize() const {
-  return _size;
-}
-
-
 void Window::setTitle(const string& title) {
   _titleLabel->setString(title);
   normalize();
@@ -132,7 +83,6 @@ void Window::setVisible(bool visible) {
   _isVisible = visible;
   _layer->setVisible(visible);
 }
-
 
 void Window::normalize(bool init) {
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
@@ -145,7 +95,6 @@ void Window::normalize(bool init) {
   if (!init) {
     layout->removeAllChildren();
   }
-
 
   const auto winSize = Director::getInstance()->getWinSize();
   _position.x = winSize.width / 2 - _size.width / 2;
@@ -186,13 +135,12 @@ void Window::normalize(bool init) {
     layout->release();
   }
 
-  
-  // Reposition `_contentLayout` 
+  // Reposition `_contentLayout`
   const float contentX = _position.x + CONTENT_MARGIN_LEFT;
   const float contentY = _position.y - CONTENT_MARGIN_TOP;
   _contentLayout->setAnchorPoint({0, 1});
   _contentLayout->setPosition({contentX, contentY - 15});  // FIXME: remove this literal
- 
+
   if (init) {
     _layer->addChild(_contentLayout);
   } else {
@@ -201,7 +149,6 @@ void Window::normalize(bool init) {
     _layer->addChild(_contentLayout);  // child's refCount += 1
     _contentLayout->release();
   }
-
 
   // Place the title label slightly below the window's upper edge.
   const float titleX = _position.x + _size.width / 2;
@@ -217,14 +164,6 @@ void Window::normalize(bool init) {
     _layer->addChild(_titleLabel);  // child's refCount += 1
     _titleLabel->release();
   }
-}
-
-void Window::setPosition(const Vec2& position) {
-  _position = position;
-}
-
-void Window::setSize(const Size& size) {
-  _size = size;
 }
 
 }  // namespace vigilante

@@ -2,14 +2,15 @@
 #ifndef VIGILANTE_EQUIPMENT_PANE_H_
 #define VIGILANTE_EQUIPMENT_PANE_H_
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+
 #include "input/InputManager.h"
 #include "item/Equipment.h"
 #include "ui/pause_menu/AbstractPane.h"
@@ -39,11 +40,11 @@ class EquipmentPane : public AbstractPane {
     EquipmentItem(EquipmentPane* parent, const std::string& title, float x, float y);
     virtual ~EquipmentItem() = default;
 
-    Equipment* getEquipment() const;
+    inline Equipment* getEquipment() const { return _equipment; }
     void setEquipment(Equipment* equipment);
 
     void setSelected(bool selected) const;
-    cocos2d::ui::Layout* getLayout() const;
+    inline cocos2d::ui::Layout* getLayout() const { return _layout; }
 
    private:
     static const int _kEquipmentIconSize;

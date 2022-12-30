@@ -2,12 +2,13 @@
 #ifndef VIGILANTE_HEADER_PANE_H_
 #define VIGILANTE_HEADER_PANE_H_
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
+
 #include "ui/pause_menu/AbstractPane.h"
 
 namespace vigilante {
@@ -23,7 +24,7 @@ class HeaderPane : public AbstractPane {
   void select(int index);
   void selectPrev();
   void selectNext();
-  int getCurrentIndex() const;
+  inline int getCurrentIndex() const { return _currentIndex; }
 
  private:
   enum Options {
@@ -34,8 +35,8 @@ class HeaderPane : public AbstractPane {
     OPTIONS
   };
 
-  static const float _kOptionGap;
-  static const int _kOptionCount;
+  static inline constexpr float _kOptionGap = 30.0f;
+  static inline constexpr int _kOptionCount = 5;
 
   std::vector<cocos2d::Label*> _labels;
   int _currentIndex;

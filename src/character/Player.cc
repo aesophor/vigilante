@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
@@ -28,47 +28,18 @@
 #define PLAYER_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractable
 #define PLAYER_WEAPON_MASK_BITS kEnemy
 
-using std::string;
-using std::vector;
-using std::shared_ptr;
-using cocos2d::Vector;
-using cocos2d::Director;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Animation;
-using cocos2d::Animate;
-using cocos2d::Action;
-using cocos2d::Sprite;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteFrameCache;
-using cocos2d::SpriteBatchNode;
-using cocos2d::FadeIn;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
-using cocos2d::EventKeyboard;
-using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kNpc;
-using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kMeleeWeapon;
-using vigilante::category_bits::kItem;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kPlatform;
-using vigilante::category_bits::kWall;
-using vigilante::category_bits::kPortal;
-using vigilante::category_bits::kInteractable;
-using vigilante::category_bits::kProjectile;
+using namespace std;
+using namespace vigilante::category_bits;
+USING_NS_CC;
 
 namespace vigilante {
 
 Player::Player(const std::string& jsonFileName)
     : Character(jsonFileName),
-      _questBook(asset_manager::kQuestsList) {
+      _questBook(assets::kQuestsList) {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
 }
-
 
 bool Player::showOnMap(float x, float y) {
   if (_isShownOnMap || _isKilled) {
@@ -98,11 +69,10 @@ bool Player::showOnMap(float x, float y) {
   return true;
 }
 
-
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
   camera_util::shake(8, .1f);
-  
+
   if (target->isSetToKill()) {
     Notifications::getInstance()->show(
         string_util::format("Acquired %d exp", target->getCharacterProfile().exp)
@@ -126,7 +96,6 @@ void Player::receiveDamage(Character* source, int damage) {
 
   Hud::getInstance()->updateStatusBars();
 }
-
 
 void Player::addItem(shared_ptr<Item> item, int amount) {
   Character::addItem(item, amount);
@@ -171,12 +140,10 @@ void Player::addExp(const int exp) {
   }
 }
 
-
 void Player::handleInput() {
   if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
     return;
   }
-
 
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
     if (_interactableObject) {
@@ -245,7 +212,6 @@ void Player::handleInput() {
   }
 }
 
-
 void Player::updateKillTargetObjectives(Character* killedCharacter) {
   if (!killedCharacter->isSetToKill()) {
     return;
@@ -258,11 +224,6 @@ void Player::updateKillTargetObjectives(Character* killedCharacter) {
     }
   }
   _questBook.update(Quest::Objective::Type::KILL);
-}
-
-
-QuestBook& Player::getQuestBook() {
-  return _questBook;
 }
 
 }  // namespace vigilante

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Hud.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "item/Equipment.h"
@@ -10,24 +10,11 @@
 #define HUD_X 75
 #define HUD_Y cocos2d::Director::getInstance()->getWinSize().height - 40
 
-using std::string;
-using std::unique_ptr;
-using cocos2d::Layer;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kBarLeftPadding;
-using vigilante::asset_manager::kBarRightPadding;
-using vigilante::asset_manager::kHealthBar;
-using vigilante::asset_manager::kMagickaBar;
-using vigilante::asset_manager::kStaminaBar;
-using vigilante::asset_manager::kEquippedWeaponBg;
-using vigilante::asset_manager::kEquippedWeaponDescBg;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
-
-const float Hud::_kBarLength = 75.0f;
 
 Hud* Hud::getInstance() {
   static Hud instance;
@@ -36,12 +23,12 @@ Hud* Hud::getInstance() {
 
 Hud::Hud()
     : _layer(Layer::create()),
-      _healthBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
-      _magickaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
-      _staminaBar(std::make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
-      _equippedWeaponBg(ImageView::create(kEquippedWeaponBg)),
-      _equippedWeapon(ImageView::create()),
-      _equippedWeaponDescBg(ImageView::create(kEquippedWeaponDescBg)),
+      _healthBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
+      _magickaBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
+      _staminaBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
+      _equippedWeaponBg(ui::ImageView::create(kEquippedWeaponBg)),
+      _equippedWeapon(ui::ImageView::create()),
+      _equippedWeaponDescBg(ui::ImageView::create(kEquippedWeaponDescBg)),
       _equippedWeaponDesc(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
   _equippedWeaponBg->setPosition({-20, -15});
   _equippedWeaponDescBg->setPosition({33, -25});
@@ -63,7 +50,6 @@ Hud::Hud()
   _layer->addChild(_equippedWeaponDesc);
 }
 
-
 void Hud::updateEquippedWeapon() {
   Equipment* weapon = GameMapManager::getInstance()->getPlayer()->getEquipmentSlots()[Equipment::Type::WEAPON];
 
@@ -75,7 +61,7 @@ void Hud::updateEquippedWeapon() {
     // Update weapon desc label
     _equippedWeaponDesc->setString(weapon->getItemProfile().name);
   } else {
-    _equippedWeapon->loadTexture(asset_manager::kEmptyImage);
+    _equippedWeapon->loadTexture(assets::kEmptyImage);
     _equippedWeaponDesc->setString("");
   }
 }
@@ -86,11 +72,6 @@ void Hud::updateStatusBars() {
   _healthBar->update(profile.health, profile.fullHealth);
   _magickaBar->update(profile.magicka, profile.fullMagicka);
   _staminaBar->update(profile.stamina, profile.fullStamina);
-}
-
-
-Layer* Hud::getLayer() const {
-  return _layer;
 }
 
 }  // namespace vigilante

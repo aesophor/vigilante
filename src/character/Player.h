@@ -19,7 +19,7 @@ class Player : public Character, public Controllable {
   virtual ~Player() = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
-  
+
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character
 
@@ -32,10 +32,9 @@ class Player : public Character, public Controllable {
 
   virtual void handleInput() override;  // Controllable
 
-
   void updateKillTargetObjectives(Character* killedCharacter);
 
-  QuestBook& getQuestBook();
+  inline QuestBook& getQuestBook() { return _questBook; }
 
  private:
   QuestBook _questBook;

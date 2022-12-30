@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "ui/console/Console.h"
 #include "ui/dialogue/DialogueManager.h"
@@ -15,30 +15,18 @@
 #define LETTERBOX_TRANSITION_DURATION 1.0f
 #define SUBTITLES_Y 38
 
-using std::string;
-using std::queue;
-using std::vector;
-using cocos2d::Director;
-using cocos2d::Layer;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using cocos2d::MoveBy;
-using cocos2d::Sequence;
-using cocos2d::CallFunc;
-using vigilante::asset_manager::kShade;
-using vigilante::asset_manager::kDialogueTriangle;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 Subtitles::Subtitles()
     : _layer(Layer::create()),
       _label(Label::createWithTTF("", kRegularFont, kRegularFontSize)),
-      _nextSubtitleIcon(ImageView::create(kDialogueTriangle)),
-      _upperLetterbox(ImageView::create(kShade)),
-      _lowerLetterbox(ImageView::create(kShade)),
+      _nextSubtitleIcon(ui::ImageView::create(kDialogueTriangle)),
+      _upperLetterbox(ui::ImageView::create(kShade)),
+      _lowerLetterbox(ui::ImageView::create(kShade)),
       _currentSubtitle(""),
       _isTransitioning(),
       _timer() {
@@ -64,7 +52,6 @@ Subtitles::Subtitles()
   _layer->addChild(_nextSubtitleIcon);
   _layer->setVisible(false);
 }
-
 
 void Subtitles::update(float delta) {
   if (!_layer->isVisible() || _label->getString().size()  == _currentSubtitle.text.size()) {
@@ -164,13 +151,5 @@ void Subtitles::showNextSubtitle() {
     dialogueMenu->getLayer()->setVisible(true);
   }
 }
-
-
-Layer* Subtitles::getLayer() const {
-  return _layer;
-}
-
-
-Subtitles::Subtitle::Subtitle(const string& text) : text(text) {}
 
 }  // namespace vigilante

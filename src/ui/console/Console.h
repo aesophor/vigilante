@@ -25,7 +25,7 @@ class Console {
   bool isVisible() const;
   void setVisible(bool visible);
 
-  cocos2d::Layer* getLayer() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
   Console();

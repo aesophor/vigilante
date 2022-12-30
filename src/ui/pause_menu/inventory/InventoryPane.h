@@ -2,13 +2,14 @@
 #ifndef VIGILANTE_INVENTORY_PANE_H_
 #define VIGILANTE_INVENTORY_PANE_H_
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
+
 #include "item/Equipment.h"
 #include "ui/TabView.h"
 #include "ui/pause_menu/AbstractPane.h"

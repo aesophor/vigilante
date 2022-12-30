@@ -2,12 +2,13 @@
 #ifndef VIGILANTE_AMOUNT_SELECTION_WINDOW_H_
 #define VIGILANTE_AMOUNT_SELECTION_WINDOW_H_
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
 #include <ui/UILayout.h>
+
 #include "ui/Window.h"
 #include "ui/TextField.h"
 #include "character/Character.h"
@@ -24,7 +25,7 @@ class AmountSelectionWindow : public Window {
   virtual void update(float delta) override;  // Window
   virtual void handleInput() override;  // Window
 
-  TextField* getTextField();
+  inline TextField* getTextField() { return &_textField; }
 
  private:
   cocos2d::ui::ImageView* _contentBackground;

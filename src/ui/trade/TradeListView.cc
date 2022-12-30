@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "gameplay/ItemPriceTable.h"
 #include "ui/AmountSelectionWindow.h"
@@ -16,35 +16,31 @@
 #define WIDTH 289.5
 #define HEIGHT 120
 #define ITEM_GAP_HEIGHT 25
-#define REGULAR_BG vigilante::asset_manager::kItemRegular
-#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-#define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
 #define EMPTY_ITEM_NAME "---"
 
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 TradeListView::TradeListView(TradeWindow* tradeWindow)
-    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
       _tradeWindow(tradeWindow),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
-
+      _descLabel(Label::createWithTTF("", assets::kRegularFont, assets::kRegularFontSize)) {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [this](ListViewItem* listViewItem, Item* item) {
     assert(item != nullptr);
 
-    ImageView* icon = listViewItem->getIcon();
+    ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
-   
-    icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
+
+    icon->loadTexture((item) ? item->getIconPath() : kEmptyImage);
     label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
 
     // Display item price if not trading with ally.
@@ -138,7 +134,6 @@ void TradeListView::selectDown() {
   _descLabel->setString(selectedItem->getDesc());
 }
 
-
 void TradeListView::showCharactersItemByType(Character* owner, Item::Type itemType) {
   // Show the owner's items of the specified type.
   setObjects(owner->getInventory()[itemType]);
@@ -146,7 +141,6 @@ void TradeListView::showCharactersItemByType(Character* owner, Item::Type itemTy
   // Update description label.
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
-
 
 void TradeListView::doTrade(Character* buyer,
                             Character* seller,

@@ -24,6 +24,7 @@
 
 #include <cocos2d.h>
 #include <Box2D/Box2D.h>
+
 #include "gl/GLESDebugDraw.h"
 
 class b2DebugRenderer : public cocos2d::Sprite {
@@ -41,4 +42,4 @@ class b2DebugRenderer : public cocos2d::Sprite {
   cocos2d::CustomCommand _customCmd;
 };
 
-#endif // VIGILANTE_B2_DEBUG_RENDERER_H_
+#endif  // VIGILANTE_B2_DEBUG_RENDERER_H_

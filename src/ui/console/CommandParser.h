@@ -3,8 +3,8 @@
 #define VIGILANTE_COMMAND_PARSER_H_
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 namespace vigilante {
 

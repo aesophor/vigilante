@@ -7,9 +7,8 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
-using std::string;
-using std::shared_ptr;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -19,17 +18,8 @@ BackDash::BackDash(const string& jsonFileName, Character* user)
       _user(user),
       _hasActivated() {}
 
-
 void BackDash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
-}
-
-EventKeyboard::KeyCode BackDash::getHotkey() const {
-  return _skillProfile.hotkey;
-}
-
-void BackDash::setHotkey(EventKeyboard::KeyCode hotkey) {
-  _skillProfile.hotkey = hotkey;
 }
 
 bool BackDash::canActivate() {
@@ -51,19 +41,6 @@ void BackDash::activate() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
-}
-
-
-Skill::Profile& BackDash::getSkillProfile() {
-  return _skillProfile;
-}
-
-const string& BackDash::getName() const {
-  return _skillProfile.name;
-}
-
-const string& BackDash::getDesc() const {
-  return _skillProfile.desc;
 }
 
 string BackDash::getIconPath() const {

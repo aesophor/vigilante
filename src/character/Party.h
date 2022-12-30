@@ -31,7 +31,6 @@ class Party {
   void askMemberToWait(Character* targetCharacter);  // wait in a specific map
   void askMemberToFollow(Character* targetCharacter);  // resume following
 
-
   bool hasWaitingMember(const std::string& characterJsonFileName) const;
   void addWaitingMember(const std::string& characterJsonFileName,
                         const std::string& currentTmxMapFileName,
@@ -40,10 +39,14 @@ class Party {
   void removeWaitingMember(const std::string& characterJsonFileName);
   Party::WaitingLocationInfo getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const;
 
-  Character* getLeader() const;
+  inline const std::unordered_set<std::shared_ptr<Character>>& getMembers() const { return _members; }
+  inline Character* getLeader() const { return _leader; }
   std::unordered_set<Character*> getLeaderAndMembers() const;
-  const std::unordered_set<std::shared_ptr<Character>>& getMembers() const;
-  const std::unordered_map<std::string, Party::WaitingLocationInfo>& getWaitingMembersLocationInfo() const;
+
+  inline const std::unordered_map<std::string, Party::WaitingLocationInfo>&
+  getWaitingMembersLocationInfo() const {
+    return _waitingMembersLocationInfo;
+  }
 
  protected:
   void addMember(std::shared_ptr<Character> character);

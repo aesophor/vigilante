@@ -21,11 +21,7 @@
  */
 #include "b2DebugRenderer.h"
 
-using cocos2d::Director;
-using cocos2d::Renderer;
-using cocos2d::Mat4;
-using cocos2d::MATRIX_STACK_TYPE;
-
+USING_NS_CC;
 
 b2DebugRenderer* b2DebugRenderer::create(b2World* world) {
   b2DebugRenderer *pRet = new b2DebugRenderer(world);

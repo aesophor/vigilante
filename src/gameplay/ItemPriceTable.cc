@@ -7,10 +7,7 @@
 
 #include "util/Logger.h"
 
-using std::string;
-using std::unordered_map;
-using std::ifstream;
-using std::runtime_error;
+using namespace std;
 
 namespace vigilante {
 

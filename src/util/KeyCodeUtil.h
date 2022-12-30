@@ -6,17 +6,12 @@
 
 #include <cocos2d.h>
 
-namespace vigilante {
-
-namespace keycode_util {
+namespace vigilante::keycode_util {
 
 void init();
-
 std::string keyCodeToString(cocos2d::EventKeyboard::KeyCode keyCode);
 char keyCodeToAscii(cocos2d::EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed);
 
-}  // namespace keycode_util
-
-}  // namespace vigilante
+}  // namespace vigilante::keycode_util
 
 #endif  // VIGILANTE_KEYCODE_UTIL_H_

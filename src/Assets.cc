@@ -1,25 +1,23 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "AssetManager.h"
+#include "Assets.h"
 
 extern "C" {
 #include <unistd.h>
 }
+
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
 #include <stdexcept>
 
 #include <cocos2d.h>
+
 #include "util/Logger.h"
 
-using std::string;
-using std::ifstream;
-using std::runtime_error;
-using cocos2d::SpriteFrameCache;
+using namespace std;
+USING_NS_CC;
 
-namespace vigilante {
-
-namespace asset_manager {
+namespace vigilante::assets {
 
 void loadSpritesheets(const string& spritesheetsListFileName) {
   char buf[256] = {0};
@@ -41,6 +39,4 @@ void loadSpritesheets(const string& spritesheetsListFileName) {
   }
 }
 
-}  // namespace asset_manager
-
-}  // namespace vigilante
+}  // namespace vigilante::assets

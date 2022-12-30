@@ -9,6 +9,7 @@
 
 #include <cocos2d.h>
 #include <Box2D/Box2D.h>
+
 #include "DynamicActor.h"
 #include "Interactable.h"
 #include "item/Item.h"
@@ -21,7 +22,6 @@ class Player;
 
 class GameMap {
  public:
-
   class Trigger : public Interactable {
    public:
     Trigger(const std::vector<std::string>& cmds,
@@ -33,14 +33,14 @@ class GameMap {
     // Executes certain commands via ui/console/Console.cc
     // when the player's body collides with `this->_body`
     virtual void onInteract(Character* user) override;  // Interactable
-    virtual bool willInteractOnContact() const override;  // Interactable
+    virtual bool willInteractOnContact() const override { return true; }  // Interactable
     virtual void showHintUI() override {}  // Interactable
     virtual void hideHintUI() override {}  // Interactable
 
-    bool canBeTriggeredOnlyOnce() const;
-    bool canBeTriggeredOnlyByPlayer() const;
-    bool hasTriggered() const;
-    void setTriggered(bool triggered);
+    inline bool canBeTriggeredOnlyOnce() const { return _canBeTriggeredOnlyOnce; }
+    inline bool canBeTriggeredOnlyByPlayer() const { return _canBeTriggeredOnlyByPlayer; }
+    inline bool hasTriggered() const { return _hasTriggered; }
+    inline void setTriggered(bool triggered) { _hasTriggered = triggered; }
 
    protected:
     virtual void createHintBubbleFx() override {}  // Interactable
@@ -52,7 +52,6 @@ class GameMap {
     bool _hasTriggered;
     b2Body* _body;
   };
-
 
   class Portal : public Interactable {
    public:
@@ -69,13 +68,12 @@ class GameMap {
     virtual void hideHintUI() override;  // Interactable
 
     bool canBeUnlockedBy(Character* user) const;
-    bool isLocked() const;
+    inline bool isLocked() const { return _isLocked; }
     void lock();
     void unlock();
 
-    const std::string& getTargetTmxMapFileName() const;
-    int getTargetPortalId() const;
-
+    inline const std::string& getTargetTmxMapFileName() const { return _targetTmxMapFileName; }
+    inline int getTargetPortalId() const { return _targetPortalId; }
 
    protected:
     virtual void createHintBubbleFx() override;  // Interactable
@@ -98,7 +96,7 @@ class GameMap {
                           bool locked);
     using StateMap
       = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
-    static StateMap _allPortalStates;
+    static inline StateMap _allPortalStates;
 
     // Save the current portal's lock/unlock state in `_allPortalStates`.
     void saveLockUnlockState() const;
@@ -120,17 +118,15 @@ class GameMap {
   std::unique_ptr<Player> createPlayer() const;
   Item* createItem(const std::string& itemJson, float x, float y, int amount=1);
 
-
   template <typename ReturnType = DynamicActor>
   ReturnType* showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y);
 
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-
-  std::unordered_set<b2Body*>& getTmxTiledMapBodies();
-  cocos2d::TMXTiledMap* getTmxTiledMap() const;
-  const std::string& getTmxTiledMapFileName() const;
+  inline std::unordered_set<b2Body*>& getTmxTiledMapBodies() { return _tmxTiledMapBodies; }
+  inline cocos2d::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
+  inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
   float getWidth() const;
   float getHeight() const;
 
@@ -157,8 +153,6 @@ class GameMap {
   friend class GameMapManager;
 };
 
-
-
 template <typename ReturnType>
 ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {
   ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
@@ -174,7 +168,6 @@ ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float
   _dynamicActors.insert(std::move(actor));
   return shownActor;
 }
-
 
 template <typename ReturnType>
 std::shared_ptr<ReturnType> GameMap::removeDynamicActor(DynamicActor* actor) {

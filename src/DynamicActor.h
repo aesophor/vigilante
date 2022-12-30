@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <Box2D/Box2D.h>
+
 #include "StaticActor.h"
 
 namespace vigilante {
@@ -31,8 +32,8 @@ class DynamicActor : public StaticActor {
   virtual void update(float delta);
   virtual void destroyBody();
 
-  b2Body* getBody() const;
-  std::vector<b2Fixture*>& getFixtures();
+  inline b2Body* getBody() const { return _body; }
+  inline std::vector<b2Fixture*>& getFixtures() { return _fixtures; }
 
  protected:
   static void setCategoryBits(b2Fixture* fixture, const short categoryBits);

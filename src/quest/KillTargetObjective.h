@@ -17,10 +17,10 @@ class KillTargetObjective : public Quest::Objective {
 
   virtual bool isCompleted() const override;
 
-  const std::string& getCharacterName() const;
-  int getTargetAmount() const;
-  int getCurrentAmount() const;
-  void incrementCurrentAmount();
+  inline const std::string& getCharacterName() const { return _characterName; }
+  inline int getTargetAmount() const { return _targetAmount; }
+  inline int getCurrentAmount() const { return _currentAmount; }
+  inline void incrementCurrentAmount() { _currentAmount++; }
 
  private:
   std::string _characterName;

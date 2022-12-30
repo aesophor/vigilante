@@ -3,12 +3,9 @@
 
 #include <sstream>
 
-using std::string;
-using std::vector;
+using namespace std;
 
-namespace vigilante {
-
-namespace string_util {
+namespace vigilante::string_util {
 
 vector<string> split(const string& s, const char delimiter) {
   std::stringstream ss(s);
@@ -64,6 +61,4 @@ string& toLower(string& s) {
   return s;
 }
 
-} // namespace string_util
-
-} // namespace vigilante
+}  // namespace vigilante::string_util

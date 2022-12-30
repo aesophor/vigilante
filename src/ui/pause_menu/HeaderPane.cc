@@ -1,27 +1,21 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "HeaderPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "ui/Colorscheme.h"
 #include "ui/pause_menu/PauseMenu.h"
 
-using std::array;
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using vigilante::asset_manager::kTitleFont;
-using vigilante::asset_manager::kRegularFontSize;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
-
-const float HeaderPane::_kOptionGap = 30.0f;
-const int HeaderPane::_kOptionCount = 5;
 
 HeaderPane::HeaderPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
       _currentIndex() {
-  _layout->setLayoutType(Layout::Type::RELATIVE);
-  _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
+  _layout->setLayoutType(ui::Layout::Type::RELATIVE);
+  _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
 
   float nextX = 0;
   for (int i = 0; i < PauseMenu::Pane::SIZE; i++) {
@@ -37,7 +31,6 @@ HeaderPane::HeaderPane(PauseMenu* pauseMenu)
 
   select(PauseMenu::Pane::INVENTORY);
 }
-
 
 void HeaderPane::update() {
 
@@ -62,10 +55,6 @@ void HeaderPane::selectPrev() {
 
 void HeaderPane::selectNext() {
   select((_currentIndex + 1) % _kOptionCount);
-}
-
-int HeaderPane::getCurrentIndex() const {
-  return _currentIndex;
 }
 
 } // namespace vigilante

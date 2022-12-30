@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AmountSelectionWindow.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "character/Player.h"
 #include "input/InputManager.h"
 #include "util/StringUtil.h"
@@ -11,19 +11,15 @@
 #define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_TOP 5
 #define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_BOTTOM 15
 
-using std::string;
-using std::function;
-using cocos2d::Size;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kTextFieldBg;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 AmountSelectionWindow::AmountSelectionWindow()
     : Window(),
-      _contentBackground(ImageView::create(kTextFieldBg)),
+      _contentBackground(ui::ImageView::create(kTextFieldBg)),
       _textField("1") {
 
   setTitle("How many?");
@@ -39,7 +35,7 @@ AmountSelectionWindow::AmountSelectionWindow()
   _contentBackground->setAnchorPoint({0, 1});
   _contentBackground->setPosition({0, 15});
 
-  _contentLayout->setLayoutType(Layout::Type::ABSOLUTE);
+  _contentLayout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _contentLayout->setAnchorPoint({0, 1});
   _contentLayout->addChild(_contentBackground, 0);
 
@@ -56,18 +52,12 @@ AmountSelectionWindow::~AmountSelectionWindow() {
   }
 }
 
-
 void AmountSelectionWindow::update(float delta) {
   _textField.update(delta);
 }
 
 void AmountSelectionWindow::handleInput() {
 
-}
-
-
-TextField* AmountSelectionWindow::getTextField() {
-  return &_textField;
 }
 
 }  // namespace vigilante

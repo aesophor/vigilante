@@ -7,9 +7,8 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
-using std::string;
-using std::shared_ptr;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -19,17 +18,8 @@ ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
       _user(user),
       _hasActivated() {}
 
-
 void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
-}
-
-EventKeyboard::KeyCode ForwardSlash::getHotkey() const {
-  return _skillProfile.hotkey;
-}
-
-void ForwardSlash::setHotkey(EventKeyboard::KeyCode hotkey) {
-  _skillProfile.hotkey = hotkey;
 }
 
 bool ForwardSlash::canActivate() {
@@ -60,19 +50,6 @@ void ForwardSlash::activate() {
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
-}
-
-
-Skill::Profile& ForwardSlash::getSkillProfile() {
-  return _skillProfile;
-}
-
-const string& ForwardSlash::getName() const {
-  return _skillProfile.name;
-}
-
-const string& ForwardSlash::getDesc() const {
-  return _skillProfile.desc;
 }
 
 string ForwardSlash::getIconPath() const {

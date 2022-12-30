@@ -7,22 +7,8 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
-using std::string;
-using cocos2d::FileUtils;
-using cocos2d::Layer;
-using cocos2d::Vector;
-using cocos2d::Sequence;
-using cocos2d::CallFunc;
-using cocos2d::FiniteTimeAction;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Action;
-using cocos2d::Animate;
-using cocos2d::Animation;
-using cocos2d::Sprite;
-using cocos2d::SpriteBatchNode;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteFrameCache;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -30,7 +16,6 @@ FxManager* FxManager::getInstance() {
   static FxManager instance;
   return &instance;
 }
-
 
 void FxManager::createDustFx(Character* c) {
   const b2Vec2& feetPos = c->getBody()->GetPosition();
@@ -48,7 +33,6 @@ Sprite* FxManager::createHintBubbleFx(const b2Body* body,
 
   return createFx("Texture/fx/hint_bubble", framesName, x, y, -1, 45);
 }
-
 
 Sprite* FxManager::createFx(const string& textureResDir,
                             const string& framesName,

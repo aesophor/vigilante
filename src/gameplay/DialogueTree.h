@@ -30,10 +30,10 @@ class DialogueTree : public Importable {
     explicit Node(DialogueTree* tree);
     ~Node() = default;
 
-    const std::string& getNodeName() const;
-    const std::vector<std::string>& getLines() const;
-    const std::vector<std::string>& getCmds() const;
-    const std::string& getChildrenRef() const;
+    inline const std::string& getNodeName() const { return _nodeName; }
+    inline const std::vector<std::string>& getLines() const { return _lines; }
+    inline const std::vector<std::string>& getCmds() const { return _cmds; }
+    inline const std::string& getChildrenRef() const { return _childrenRef; }
     std::vector<Node*> getChildren() const;
 
    private:
@@ -60,17 +60,17 @@ class DialogueTree : public Importable {
 
   DialogueTree::Node* getNode(const std::string& nodeName) const;
   
-  DialogueTree::Node* getRootNode() const;
-  DialogueTree::Node* getCurrentNode() const;
-  void setCurrentNode(DialogueTree::Node* node);
-  void resetCurrentNode();
+  inline DialogueTree::Node* getRootNode() const { return _rootNode.get(); }
+  inline DialogueTree::Node* getCurrentNode() const { return _currentNode; }
+  inline void setCurrentNode(DialogueTree::Node* node) { _currentNode = node; }
+  inline void resetCurrentNode() { _currentNode = _rootNode.get(); }
 
   static std::string getLatestNpcDialogueTree(const std::string& npcJsonFileName);
   static void setLatestNpcDialogueTree(const std::string& npcJsonFileName,
                                        const std::string& dialogueTreeJsonFileName);
 
  private:
-  static std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
+  static inline std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
 
   // <nodeName, DialogueTree::Node*>
   std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;

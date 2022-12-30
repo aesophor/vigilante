@@ -10,16 +10,10 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
-using std::pair;
-using std::stack;
-using std::string;
-using std::vector;
-using std::unordered_map;
+using namespace std;
 using rapidjson::Document;
 
 namespace vigilante {
-
-unordered_map<string, string> DialogueTree::_latestNpcDialogueTree;
 
 DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
     : _nodeMapper(),
@@ -55,7 +49,6 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   return *this;
 }
 
-
 void DialogueTree::import(const string& jsonFileName) {
   if (jsonFileName.empty()) {
     return;
@@ -73,7 +66,6 @@ void DialogueTree::import(const string& jsonFileName) {
     rapidjson::Value::Object jsonNode = st.top().first;
     DialogueTree::Node* parent = st.top().second;
     st.pop();
-
 
     // Construct this node.
     auto node = std::make_unique<DialogueTree::Node>(this);
@@ -99,7 +91,6 @@ void DialogueTree::import(const string& jsonFileName) {
         st.push({children[i].GetObject(), node.get()});
       }
     }
-
 
     if (!_rootNode) {
       _rootNode = std::move(node);
@@ -175,32 +166,10 @@ void DialogueTree::update() {
   }
 }
 
-
 DialogueTree::Node* DialogueTree::getNode(const string& nodeName) const {
   auto it = _nodeMapper.find(nodeName);
-  if (it == _nodeMapper.end()) {
-    return nullptr;
-  }
-  return it->second;
+  return it == _nodeMapper.end() ? nullptr : it->second;
 }
-
-
-DialogueTree::Node* DialogueTree::getRootNode() const {
-  return _rootNode.get();
-}
-
-DialogueTree::Node* DialogueTree::getCurrentNode() const {
-  return _currentNode;
-}
-
-void DialogueTree::setCurrentNode(DialogueTree::Node* node) {
-  _currentNode = node;
-}
-
-void DialogueTree::resetCurrentNode() {
-  _currentNode = _rootNode.get();
-}
-
 
 string DialogueTree::getLatestNpcDialogueTree(const string& npcJsonFileName) {
   auto it = _latestNpcDialogueTree.find(npcJsonFileName);
@@ -213,21 +182,8 @@ void DialogueTree::setLatestNpcDialogueTree(const string& npcJsonFileName,
 }
 
 
-
 DialogueTree::Node::Node(DialogueTree* tree)
     : _tree(tree), _nodeName(), _lines(), _cmds(), _children() {}
-
-const string& DialogueTree::Node::getNodeName() const {
-  return _nodeName;
-}
-
-const vector<string>& DialogueTree::Node::getLines() const {
-  return _lines;
-}
-
-const vector<string>& DialogueTree::Node::getCmds() const {
-  return _cmds;
-}
 
 vector<DialogueTree::Node*> DialogueTree::Node::getChildren() const {
   if (_childrenRef.empty()) {

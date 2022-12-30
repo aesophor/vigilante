@@ -21,7 +21,7 @@ class Key : public MiscItem {
   explicit Key(const std::string& jsonFileName);
   virtual ~Key() = default;
 
-  const Key::Profile& getKeyProfile() const;
+  inline const Key::Profile& getKeyProfile() const { return _keyProfile; }
 
  private:
   Key::Profile _keyProfile;

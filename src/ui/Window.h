@@ -8,7 +8,7 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
-#include "AssetManager.h"
+
 #include "Controllable.h"
 
 namespace vigilante {
@@ -17,7 +17,7 @@ class Window : public Controllable {
  public:
   Window(float width=300, float height=150);
   virtual ~Window() = default;
-  
+
   virtual void update(float delta) = 0;
   virtual void handleInput() = 0;  // Controllable
 
@@ -26,13 +26,13 @@ class Window : public Controllable {
   virtual void resize(const cocos2d::Size& size);
   virtual void resize(float width, float height);
 
-  cocos2d::Layer* getLayer() const;
-  cocos2d::ui::Layout* getLayout() const;
-  cocos2d::ui::Layout* getContentLayout() const;
-  std::string getTitle() const;
-  bool isVisible() const;
-  const cocos2d::Vec2& getPosition() const;
-  const cocos2d::Size& getSize() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
+  inline cocos2d::ui::Layout* getLayout() const { return _layout; }
+  inline cocos2d::ui::Layout* getContentLayout() const { return _contentLayout; }
+  inline std::string getTitle() const { return _titleLabel->getString(); }
+  inline bool isVisible() const { return _isVisible; }
+  inline const cocos2d::Vec2& getPosition() const { return _position; }
+  inline const cocos2d::Size& getSize() const { return _size; }
 
   void setTitle(const std::string& title);
   void setVisible(bool visible);
@@ -42,8 +42,8 @@ class Window : public Controllable {
   // `_contentLayout` at the correct position.
   void normalize(bool init=false);
 
-  void setPosition(const cocos2d::Vec2& position);
-  void setSize(const cocos2d::Size& size);
+  inline void setPosition(const cocos2d::Vec2& position) { _position = position; }
+  inline void setSize(const cocos2d::Size& size) { _size = size; }
 
   cocos2d::Layer* _layer;
 
@@ -61,7 +61,6 @@ class Window : public Controllable {
   cocos2d::ui::ImageView* _rightBg;
   cocos2d::ui::ImageView* _bottomBg;
   
-
   bool _isVisible;
   cocos2d::Vec2 _position;
   cocos2d::Size _size;

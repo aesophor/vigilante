@@ -8,6 +8,7 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+
 #include "AbstractPane.h"
 #include "ui/TableLayout.h"
 
@@ -23,10 +24,10 @@ class StatsPane : public AbstractPane {
  private:
   void addEntry(const std::string& title, cocos2d::Label* label) const;
 
-  static const float _kPadLeft;
-  static const float _kPadRight;
-  static const float _kRowHeight;
-  static const float _kSectionHeight;
+  static inline constexpr float _kPadLeft = 10.0f;
+  static inline constexpr float _kPadRight = 10.0f;
+  static inline constexpr float _kRowHeight = 16.0f;
+  static inline constexpr float _kSectionHeight = 8.0f;
 
   cocos2d::ui::ImageView* _background;
 

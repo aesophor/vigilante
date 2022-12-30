@@ -2,15 +2,16 @@
 #ifndef VIGILANTE_PAUSE_MENU_DIALOG_H_
 #define VIGILANTE_PAUSE_MENU_DIALOG_H_
 
+#include <functional>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-#include <functional>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/PauseMenu.h"
 
@@ -40,19 +41,19 @@ class PauseMenuDialog : public AbstractPane {
     virtual ~Option() = default;
 
     float getWidth() const;
-    void setSelected(bool selected) const;
-    bool isVisible() const;
-    void setVisible(bool visible) const;
-    cocos2d::ui::Layout* getLayout() const;
+    inline void setSelected(bool selected) const { _icon->setVisible(selected); }
+    inline bool isVisible() const { return _layout->isVisible(); }
+    inline void setVisible(bool visible) const { _layout->setVisible(visible); }
+    inline cocos2d::ui::Layout* getLayout() const { return _layout; }
 
-    std::string getText() const;
-    void setText(const std::string& text) const;
+    inline std::string getText() const { return _label->getString(); }
+    inline void setText(const std::string& text) const { _label->setString(text); }
 
-    const std::function<void ()>& getHandler() const;
-    void setHandler(const std::function<void ()>& handler);
+    inline const std::function<void ()>& getHandler() const { return _handler; }
+    inline void setHandler(const std::function<void ()>& handler) { _handler = handler; }
 
    private:
-    static const int _kIconLabelGap;
+    static inline constexpr int _kIconLabelGap = 1;
 
     cocos2d::ui::Layout* _layout;
     cocos2d::ui::ImageView* _icon;

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueListView.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "gameplay/DialogueTree.h"
 #include "ui/console/Console.h"
@@ -12,27 +12,25 @@
 #define WIDTH 0  /* The position of _scrollBar will be updated dynamically */
 #define HEIGHT 53
 #define ITEM_GAP_HEIGHT 15
-#define REGULAR_BG vigilante::asset_manager::kEmptyImage
-#define HIGHLIGHTED_BG vigilante::asset_manager::kEmptyImage
 
-using cocos2d::Director;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
-    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kEmptyImage, kEmptyImage),
       _dialogueMenu(dialogMenu) {
 
   _setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {
-    listViewItem->getIcon()->loadTexture((selected) ? asset_manager::kDialogueTriangle :
-                                                      asset_manager::kEmptyImage);
+    listViewItem->getIcon()->loadTexture((selected) ? kDialogueTriangle : kEmptyImage);
   };
 
   _setObjectCallback = [](ListView::ListViewItem* listViewItem, Dialogue* dialogue) {
     listViewItem->getLabel()->setString(dialogue->getLines().front());
   };
 }
-
 
 void DialogueListView::confirm() {
   auto dialogueMgr = DialogueManager::getInstance();
@@ -58,7 +56,6 @@ void DialogueListView::confirm() {
   dialogueMgr->getTargetNpc()->getDialogueTree().update();
   dialogueMenu->getLayer()->setVisible(false);
 }
-
 
 void DialogueListView::updatePosition() {
   auto winSize = Director::getInstance()->getWinSize();

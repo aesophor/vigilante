@@ -4,69 +4,67 @@
 
 namespace vigilante {
 
-const float kFps = 60.0f;
-const int kVelocityIterations = 6;
-const int kPositionIterations = 2;
+inline constexpr float kFps = 60.0f;
+inline constexpr int kVelocityIterations = 6;
+inline constexpr int kPositionIterations = 2;
 
-const float kPpm = 100;
-const int kVirtualWidth = 600;
-const int kVirtualHeight = 300;
+inline constexpr float kPpm = 100;
+inline constexpr int kVirtualWidth = 600;
+inline constexpr int kVirtualHeight = 300;
 
-const int kGravity = -10;
-const int kGroundFriction = 3;
-const int kWallFriction = 0;
+inline constexpr int kGravity = -10;
+inline constexpr int kGroundFriction = 3;
+inline constexpr int kWallFriction = 0;
 
-const int kIconSize = 16;
-
+inline constexpr int kIconSize = 16;
 
 namespace category_bits {
 
-const short kGround = 1;
-const short kPlatform = 2;
-const short kFeet = 4;
-const short kWall = 8;
-const short kPivotMarker = 16;
-const short kCliffMarker = 32;
-const short kPortal = 64;
-const short kInteractable = 128;
+inline constexpr short kGround = 1;
+inline constexpr short kPlatform = 2;
+inline constexpr short kFeet = 4;
+inline constexpr short kWall = 8;
+inline constexpr short kPivotMarker = 16;
+inline constexpr short kCliffMarker = 32;
+inline constexpr short kPortal = 64;
+inline constexpr short kInteractable = 128;
 
-const short kPlayer = 256;
-const short kEnemy = 512;
-const short kNpc = 1024;
-const short kItem = 2048;
-const short kMeleeWeapon = 4096;
-const short kProjectile = 8192;
-const short kDestroyed = 16384;
+inline constexpr short kPlayer = 256;
+inline constexpr short kEnemy = 512;
+inline constexpr short kNpc = 1024;
+inline constexpr short kItem = 2048;
+inline constexpr short kMeleeWeapon = 4096;
+inline constexpr short kProjectile = 8192;
+inline constexpr short kDestroyed = 16384;
 
 }  // namespace category_bits
 
-
 namespace graphical_layers {
 
-const int kTmxTiledMap = 0;
-const int kChest = 15;
-const int kSpell = 20;
+inline constexpr int kTmxTiledMap = 0;
+inline constexpr int kChest = 15;
+inline constexpr int kSpell = 20;
 
-const int kNpcBody = 24;
-const int kEnemyBody = 25;
-const int kItem = 28;
-const int kPlayerBody = 30;
-const int kEquipment = 37;
+inline constexpr int kNpcBody = 24;
+inline constexpr int kEnemyBody = 25;
+inline constexpr int kItem = 28;
+inline constexpr int kPlayerBody = 30;
+inline constexpr int kEquipment = 37;
 
-const int kDefault = 50;
+inline constexpr int kDefault = 50;
 
-const int kFx = 70;
-const int kFloatingDamage = 80;
-const int kNotification = 82;
-const int kQuestHint = 84;
-const int kHud = 86;
-const int kWindowBottom = 88;
-const int kWindowTop = 92;
-const int kDialogue = 94;
-const int kShade = 96;
-const int kPauseMenu = 98;
-const int kControlHints = 99;
-const int kConsole = 100;
+inline constexpr int kFx = 70;
+inline constexpr int kFloatingDamage = 80;
+inline constexpr int kNotification = 82;
+inline constexpr int kQuestHint = 84;
+inline constexpr int kHud = 86;
+inline constexpr int kWindowBottom = 88;
+inline constexpr int kWindowTop = 92;
+inline constexpr int kDialogue = 94;
+inline constexpr int kShade = 96;
+inline constexpr int kPauseMenu = 98;
+inline constexpr int kControlHints = 99;
+inline constexpr int kConsole = 100;
 
 }  // namespace graphical_layers
 

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "util/box2d/b2BodyBuilder.h"
+#include "b2BodyBuilder.h"
 
-using std::unique_ptr;
+using namespace std;
 
 namespace vigilante {
 
@@ -26,7 +26,6 @@ b2BodyBuilder& b2BodyBuilder::operator= (const b2BodyBuilder& bodyBuilder) {
   _userData = bodyBuilder._userData;
   return *this;
 }
-
 
 b2BodyBuilder& b2BodyBuilder::type(b2BodyType bodyType) {
   _bdef.type = bodyType;
@@ -138,4 +137,4 @@ b2Fixture* b2BodyBuilder::buildFixture() {
   return _fixture;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

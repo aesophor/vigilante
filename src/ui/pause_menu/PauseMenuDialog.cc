@@ -1,25 +1,16 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenuDialog.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "ui/TableLayout.h"
 #include "ui/control_hints/ControlHints.h"
 
-using std::string;
-using std::unique_ptr;
-using std::function;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kDialogueTriangle;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
-
-const int PauseMenuDialog::Option::_kIconLabelGap = 1;
 
 PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create()),
@@ -33,7 +24,6 @@ PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
   addOption("option2");
   addOption("option3");
 }
-
 
 void PauseMenuDialog::update() {
   const auto& winSize = cocos2d::Director::getInstance()->getWinSize();
@@ -93,7 +83,6 @@ void PauseMenuDialog::confirm() {
   ControlHints::getInstance()->setVisible(true);
 }
 
-
 void PauseMenuDialog::reset() {
   setMessage("");
   _options[_current]->setSelected(false);
@@ -131,7 +120,6 @@ void PauseMenuDialog::show() {
   }
 }
 
-
 void PauseMenuDialog::addOption(const string& text, const function<void ()>& handler) {
   _options.push_back(std::make_unique<Option>(text, handler));
   _layout->addChild(_options.back()->getLayout());
@@ -145,10 +133,9 @@ void PauseMenuDialog::clearOptions() {
   }
 }
 
-
 PauseMenuDialog::Option::Option(const string& text, const function<void ()>& handler)
-    : _layout(Layout::create()),
-      _icon(ImageView::create(kDialogueTriangle)),
+    : _layout(ui::Layout::create()),
+      _icon(ui::ImageView::create(kDialogueTriangle)),
       _label(Label::createWithTTF(text, kBoldFont, kRegularFontSize)),
       _handler(handler) {
   _icon->setAnchorPoint({0, 1});
@@ -165,39 +152,6 @@ PauseMenuDialog::Option::Option(const string& text, const function<void ()>& han
 
 float PauseMenuDialog::Option::getWidth() const {
   return _icon->getContentSize().width + _label->getContentSize().width;
-}
-
-void PauseMenuDialog::Option::setSelected(bool selected) const {
-  _icon->setVisible(selected);
-}
-
-bool PauseMenuDialog::Option::isVisible() const {
-  return _layout->isVisible();
-}
-
-void PauseMenuDialog::Option::setVisible(bool visible) const {
-  _layout->setVisible(visible);
-}
-
-Layout* PauseMenuDialog::Option::getLayout() const {
-  return _layout;
-}
-
-
-string PauseMenuDialog::Option::getText() const {
-  return _label->getString();
-}
-
-void PauseMenuDialog::Option::setText(const string& text) const {
-  _label->setString(text);
-}
-
-const function<void ()>& PauseMenuDialog::Option::getHandler() const {
-  return _handler;
-}
-
-void PauseMenuDialog::Option::setHandler(const function<void ()>& handler) {
-  _handler = handler;
 }
 
 }  // namespace vigilante

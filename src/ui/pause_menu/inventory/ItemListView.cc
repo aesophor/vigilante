@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ItemListView.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "input/Keybindable.h"
@@ -16,36 +16,31 @@
 #define WIDTH 289.5
 #define HEIGHT 120
 #define ITEM_GAP_HEIGHT 25
-#define REGULAR_BG vigilante::asset_manager::kItemRegular
-#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-#define EMPTY_ITEM_ICON vigilante::asset_manager::kEmptyImage
 #define EMPTY_ITEM_NAME "---"
 
-using std::deque;
-using std::vector;
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::ImageView;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 ItemListView::ItemListView(PauseMenu* pauseMenu)
-    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
+      _descLabel(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
 
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
-    ImageView* icon = listViewItem->getIcon();
+    ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
-    icon->loadTexture((item) ? item->getIconPath() : EMPTY_ITEM_ICON);
-    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
+    icon->loadTexture(item ? item->getIconPath() : kEmptyImage);
+    label->setString(item ? item->getName() : EMPTY_ITEM_NAME);
 
     if (!item) {
       return;
@@ -74,7 +69,6 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
-
 
 void ItemListView::confirm() {
   Item* item = getSelectedObject();
@@ -112,10 +106,9 @@ void ItemListView::confirm() {
   dialog->show();
 }
 
-
 void ItemListView::selectUp() {
   ListView<Item*>::selectUp();
-  
+
   if (_objects.empty()) {
     return;
   }
@@ -135,13 +128,12 @@ void ItemListView::selectDown() {
   _descLabel->setString((selectedItem) ? selectedItem->getDesc() : "Unequip");
 }
 
-
 void ItemListView::showItemsByType(Item::Type itemType) {
   // Show items of the specified type in ItemListView.
   setObjects(_pauseMenu->getPlayer()->getInventory()[itemType]);
 
   // Update description label.
-  _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
+  _descLabel->setString(_objects.size() > 0 ? _objects[_current]->getDesc() : "");
 }
 
 void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
@@ -168,7 +160,7 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
 
   // Update description label. The first item is an empty item,
   // Selecting it will unequip current equipment.
-  _descLabel->setString((_objects.size() > 0) ? "Unequip" : "");
+  _descLabel->setString(_objects.size() > 0 ? "Unequip" : "");
 }
 
 }  // namespace vigilante

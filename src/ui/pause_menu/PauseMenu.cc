@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenu.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
@@ -16,15 +16,9 @@
 #define DIALOG_POS {50, 30}
 #define MAIN_PANE_POS {230, 240} // InventoryPane, EquipmentPane... etc
 
-using std::array;
-using std::string;
-using std::unique_ptr;
-using cocos2d::Director;
-using cocos2d::Label;
-using cocos2d::Layer;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kPauseMenuBg;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -43,10 +37,10 @@ PauseMenu* PauseMenu::getInstance() {
 
 PauseMenu::PauseMenu()
     : _layer(Layer::create()),
-      _background(ImageView::create(kPauseMenuBg)),
-      _headerPane(std::make_unique<HeaderPane>(this)),
-      _statsPane(std::make_unique<StatsPane>(this)),
-      _dialog(std::make_unique<PauseMenuDialog>(this)) {
+      _background(ui::ImageView::create(kPauseMenuBg)),
+      _headerPane(make_unique<HeaderPane>(this)),
+      _statsPane(make_unique<StatsPane>(this)),
+      _dialog(make_unique<PauseMenuDialog>(this)) {
   // Scale the bg image to fill the entire visible area.
   const auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -69,11 +63,11 @@ PauseMenu::PauseMenu()
   _layer->addChild(_dialog->getLayout());
 
   // Initialize Main Panes.
-  initMainPane(0, std::make_unique<InventoryPane>(this));
-  initMainPane(1, std::make_unique<EquipmentPane>(this));
-  initMainPane(2, std::make_unique<SkillPane>(this));
-  initMainPane(3, std::make_unique<QuestPane>(this));
-  initMainPane(4, std::make_unique<OptionPane>(this));
+  initMainPane(0, make_unique<InventoryPane>(this));
+  initMainPane(1, make_unique<EquipmentPane>(this));
+  initMainPane(2, make_unique<SkillPane>(this));
+  initMainPane(3, make_unique<QuestPane>(this));
+  initMainPane(4, make_unique<OptionPane>(this));
 
   // Show inventory pane by default.
   _panes.front()->setVisible(true);
@@ -82,14 +76,13 @@ PauseMenu::PauseMenu()
   _layer->setVisible(false);
 }
 
-void PauseMenu::initMainPane(int index, std::unique_ptr<AbstractPane> pane) {
+void PauseMenu::initMainPane(int index, unique_ptr<AbstractPane> pane) {
   pane->setPosition(MAIN_PANE_POS);
   pane->setVisible(false);
   _layer->addChild(pane->getLayout());
 
   _panes[index] = std::move(pane);
 }
-
 
 void PauseMenu::update() {
   if (!getPlayer()) {
@@ -105,7 +98,7 @@ void PauseMenu::handleInput() {
     _dialog->handleInput();
     return;
   }
-  
+
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_Q)) {
     getCurrentPane()->setVisible(false);
     _headerPane->selectPrev();
@@ -135,26 +128,12 @@ void PauseMenu::show(Pane pane) {
   update();
 }
 
-
 Player* PauseMenu::getPlayer() const {
   return GameMapManager::getInstance()->getPlayer();
 }
 
 AbstractPane* PauseMenu::getCurrentPane() const {
   return _panes[_headerPane->getCurrentIndex()].get();
-}
-
-Layer* PauseMenu::getLayer() const {
-  return _layer;
-}
-
-PauseMenuDialog* PauseMenu::getDialog() const {
-  return _dialog.get();
-}
-
-
-bool PauseMenu::isVisible() const {
-  return _layer->isVisible();
 }
 
 void PauseMenu::setVisible(bool visible) {

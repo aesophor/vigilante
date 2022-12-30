@@ -6,16 +6,8 @@
 #include "Constants.h"
 #include "map/GameMapManager.h"
 
-using std::string;
-using std::runtime_error;
-using cocos2d::Node;
-using cocos2d::FileUtils;
-using cocos2d::Vector;
-using cocos2d::Animation;
-using cocos2d::Sprite;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteBatchNode;
-using cocos2d::SpriteFrameCache;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -24,7 +16,6 @@ StaticActor::StaticActor(size_t numAnimations)
       _bodySprite(),
       _bodySpritesheet(),
       _bodyAnimations(numAnimations) {}
-
 
 bool StaticActor::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -58,16 +49,6 @@ bool StaticActor::removeFromMap() {
 void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);
 }
-
-
-Sprite* StaticActor::getBodySprite() const {
-  return _bodySprite;
-}
-
-SpriteBatchNode* StaticActor::getBodySpritesheet() const {
-  return _bodySpritesheet;
-}
-
 
 Animation* StaticActor::createAnimation(const string& textureResDir,
                                         const string& framesName,

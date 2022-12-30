@@ -1,32 +1,23 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "EquipmentPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "input/InputManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
-using std::string;
-using std::unique_ptr;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kTitleFont;
-using vigilante::asset_manager::kBoldFont;
-using vigilante::asset_manager::kRegularFontSize;
-using vigilante::asset_manager::kEquipmentRegular;
-using vigilante::asset_manager::kEquipmentHighlighted;
-using vigilante::asset_manager::kEmptyImage;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create(300)),
       _current() {
-  Layout* innerLayout = Layout::create();
+  ui::Layout* innerLayout = ui::Layout::create();
 
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
     EquipmentPane* parent = this;
@@ -99,8 +90,8 @@ const int EquipmentPane::EquipmentItem::_kEquipmentIconSize = 16;
 EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string& title, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(300)), // FIXME: remove this literal
-      _background(ImageView::create(kEquipmentRegular)),
-      _icon(ImageView::create(kEmptyImage)),
+      _background(ui::ImageView::create(kEquipmentRegular)),
+      _icon(ui::ImageView::create(kEmptyImage)),
       _equipmentTypeLabel(Label::createWithTTF(title, kTitleFont, kRegularFontSize)),
       _equipmentNameLabel(Label::createWithTTF("---", kBoldFont, kRegularFontSize)),
       _equipment() {
@@ -125,10 +116,6 @@ EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string&
   _layout->align(TableLayout::Alignment::CENTER)->padTop(1);
 }
 
-Equipment* EquipmentPane::EquipmentItem::getEquipment() const {
-  return _equipment;
-}
-
 void EquipmentPane::EquipmentItem::setEquipment(Equipment* equipment) {
   _equipment = equipment;
 
@@ -142,11 +129,7 @@ void EquipmentPane::EquipmentItem::setEquipment(Equipment* equipment) {
 }
 
 void EquipmentPane::EquipmentItem::setSelected(bool selected) const {
-  _background->loadTexture((selected) ? kEquipmentHighlighted : kEquipmentRegular);
-}
-
-Layout* EquipmentPane::EquipmentItem::getLayout() const {
-  return _layout;
+  _background->loadTexture(selected ? kEquipmentHighlighted : kEquipmentRegular);
 }
 
 } // namespace vigilante

@@ -5,7 +5,7 @@
 #include "item/Item.h"
 #include "map/GameMapManager.h"
 
-using std::string;
+using namespace std;
 
 namespace vigilante {
 
@@ -16,17 +16,8 @@ CollectItemObjective::CollectItemObjective(const string& desc,
       _itemName(itemName),
       _amount(amount) {}
 
-
 bool CollectItemObjective::isCompleted() const {
   return GameMapManager::getInstance()->getPlayer()->getItemAmount(_itemName) >= _amount;
-}
-
-const string& CollectItemObjective::getItemName() const {
-  return _itemName;
-}
-
-int CollectItemObjective::getAmount() const {
-  return _amount;
 }
 
 }  // namespace vigilante

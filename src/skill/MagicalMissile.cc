@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
@@ -17,28 +17,9 @@
 #define MAGICAL_MISSILE_CATEOGRY_BITS kProjectile
 #define MAGICAL_MISSILE_MASK_BITS kPlayer | kEnemy | kWall
 
-using std::string;
-using std::function;
-using std::shared_ptr;
-using cocos2d::FileUtils;
-using cocos2d::Vector;
-using cocos2d::Director;
-using cocos2d::Action;
-using cocos2d::Animate;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Sprite;
-using cocos2d::SpriteFrame;
-using cocos2d::SpriteBatchNode;
-using cocos2d::SpriteFrameCache;
-using cocos2d::Animation;
-using cocos2d::EventKeyboard;
-using vigilante::category_bits::kProjectile;
-using vigilante::category_bits::kPlayer;
-using vigilante::category_bits::kEnemy;
-using vigilante::category_bits::kWall;
+using namespace std;
+using namespace vigilante::category_bits;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -49,7 +30,6 @@ MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
       _hasActivated(),
       _hasHit(),
       _launchFxSprite() {}
-
 
 bool MagicalMissile::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -89,10 +69,6 @@ int MagicalMissile::getDamage() const {
   return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
 }
 
-Character* MagicalMissile::getUser() const {
-  return _user;
-}
-
 void MagicalMissile::onHit(Character* target) {
   if (_hasHit) {
     return;
@@ -118,17 +94,8 @@ void MagicalMissile::onHit(Character* target) {
   }
 }
 
-
 void MagicalMissile::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);
-}
-
-EventKeyboard::KeyCode MagicalMissile::getHotkey() const {
-  return _skillProfile.hotkey;
-}
-
-void MagicalMissile::setHotkey(EventKeyboard::KeyCode hotkey) {
-  _skillProfile.hotkey = hotkey;
 }
 
 bool MagicalMissile::canActivate() {
@@ -182,23 +149,9 @@ void MagicalMissile::activate() {
   ));
 }
 
-
-Skill::Profile& MagicalMissile::getSkillProfile() {
-  return _skillProfile;
-}
-
-const string& MagicalMissile::getName() const {
-  return _skillProfile.name;
-}
-
-const string& MagicalMissile::getDesc() const {
-  return _skillProfile.desc;
-}
-
 string MagicalMissile::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
 }
-
 
 void MagicalMissile::defineBody(b2BodyType bodyType,
                                 float x,

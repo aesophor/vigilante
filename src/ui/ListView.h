@@ -13,7 +13,8 @@
 #include <2d/CCLabel.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "Constants.h"
 #include "ui/TableLayout.h"
 #include "util/ds/SetVector.h"
@@ -26,10 +27,10 @@ template <typename T>
 class ListView {
  public:
   ListView(int visibleItemCount, float width, float height, float itemGapHeight,
-           const std::string& regularBg=asset_manager::kEmptyImage,
-           const std::string& highlightedBg=asset_manager::kEmptyImage,
-           const std::string& font=asset_manager::kRegularFont,
-           const float fontSize=asset_manager::kRegularFontSize);
+           const std::string& regularBg=assets::kEmptyImage,
+           const std::string& highlightedBg=assets::kEmptyImage,
+           const std::string& font=assets::kRegularFont,
+           const float fontSize=assets::kRegularFontSize);
   virtual ~ListView() = default;
 
   virtual void confirm() = 0;
@@ -79,10 +80,9 @@ class ListView {
     T _object;
   };
 
-
   cocos2d::ui::Layout* _layout;
   cocos2d::ui::ImageView* _scrollBar;
- 
+
   std::vector<std::unique_ptr<ListViewItem>> _listViewItems;
   std::deque<T> _objects;
 
@@ -108,14 +108,12 @@ class ListView {
   friend class ListViewItem;
 };
 
-
-
 template <typename T>
 ListView<T>::ListView(int visibleItemCount, float width, float height, float itemGapHeight,
                       const std::string& regularBg, const std::string& highlightedBg,
                       const std::string& font, const float fontSize)
     : _layout(cocos2d::ui::Layout::create()),
-      _scrollBar(cocos2d::ui::ImageView::create(asset_manager::kScrollBar)),
+      _scrollBar(cocos2d::ui::ImageView::create(assets::kScrollBar)),
       _visibleItemCount(visibleItemCount),
       _width(width),
       _height(height),
@@ -140,7 +138,6 @@ ListView<T>::ListView(int visibleItemCount, float width, float height, float ite
     _layout->addChild(_listViewItems[i]->getLayout());
   }
 }
-
 
 template <typename T>
 void ListView<T>::selectUp() {
@@ -189,7 +186,6 @@ void ListView<T>::scrollDown() {
   showFrom(++_firstVisibleIndex);
 }
 
-
 template <typename T>
 void ListView<T>::showFrom(int index) {
   // Show n items starting from the given index.
@@ -237,7 +233,6 @@ void ListView<T>::setObjects(const ContainerType<T>& objects) {
   }
 }
 
-
 template <typename T>
 void ListView<T>::showScrollBar() {
   _showScrollBar = true;
@@ -249,7 +244,6 @@ void ListView<T>::hideScrollBar() {
   _showScrollBar = false;
   _scrollBar->setVisible(false);
 }
-
 
 template <typename T>
 T ListView<T>::getSelectedObject() const {
@@ -284,8 +278,6 @@ cocos2d::Size ListView<T>::getContentSize() const {
   return retSize;
 }
 
-
-
 template <typename T>
 const int ListView<T>::ListViewItem::_kListViewIconSize = 16;
 
@@ -294,7 +286,7 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
     : _parent(parent),
       _layout(TableLayout::create(parent->_width)),
       _background(cocos2d::ui::ImageView::create(parent->_regularBg)),
-      _icon(cocos2d::ui::ImageView::create(asset_manager::kEmptyImage)),
+      _icon(cocos2d::ui::ImageView::create(assets::kEmptyImage)),
       _label(cocos2d::Label::createWithTTF("---", parent->_font, parent->_fontSize)),
       _object() {
   _icon->setScale((float) _kListViewIconSize / kIconSize);
@@ -312,7 +304,6 @@ ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
   _layout->addChild(_label);
   _layout->padTop(1);
 }
-
 
 template <typename T>
 void ListView<T>::ListViewItem::setSelected(bool selected) {

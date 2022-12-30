@@ -84,8 +84,8 @@
 		3A5B90EA25D7940300F06219 /* ControlHints.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902825D7940200F06219 /* ControlHints.cc */; };
 		3A5B90EB25D7940300F06219 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902B25D7940200F06219 /* Notifications.cc */; };
 		3A5B90EC25D7940300F06219 /* Notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902B25D7940200F06219 /* Notifications.cc */; };
-		3A5B90ED25D7940300F06219 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandParser.cc */; };
-		3A5B90EE25D7940300F06219 /* CommandParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandParser.cc */; };
+		3A5B90ED25D7940300F06219 /* CommandHandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandHandler.cc */; };
+		3A5B90EE25D7940300F06219 /* CommandHandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B902F25D7940200F06219 /* CommandHandler.cc */; };
 		3A5B90EF25D7940300F06219 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903025D7940200F06219 /* Console.cc */; };
 		3A5B90F025D7940300F06219 /* Console.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903025D7940200F06219 /* Console.cc */; };
 		3A5B90F125D7940300F06219 /* StatusBar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B903425D7940200F06219 /* StatusBar.cc */; };
@@ -146,8 +146,8 @@
 		3A5B912825D7940400F06219 /* GameMap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907E25D7940300F06219 /* GameMap.cc */; };
 		3A5B912925D7940400F06219 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907F25D7940300F06219 /* WorldContactListener.cc */; };
 		3A5B912A25D7940400F06219 /* WorldContactListener.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B907F25D7940300F06219 /* WorldContactListener.cc */; };
-		3A5B912B25D7940400F06219 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* AssetManager.cc */; };
-		3A5B912C25D7940400F06219 /* AssetManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* AssetManager.cc */; };
+		3A5B912B25D7940400F06219 /* Assets.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* Assets.cc */; };
+		3A5B912C25D7940400F06219 /* Assets.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908125D7940300F06219 /* Assets.cc */; };
 		3A5B912D25D7940400F06219 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908525D7940300F06219 /* Item.cc */; };
 		3A5B912E25D7940400F06219 /* Item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908525D7940300F06219 /* Item.cc */; };
 		3A5B912F25D7940400F06219 /* Consumable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B908625D7940300F06219 /* Consumable.cc */; };
@@ -335,8 +335,8 @@
 		3A5B902925D7940200F06219 /* ControlHints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlHints.h; sourceTree = "<group>"; };
 		3A5B902B25D7940200F06219 /* Notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifications.cc; sourceTree = "<group>"; };
 		3A5B902C25D7940200F06219 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
-		3A5B902E25D7940200F06219 /* CommandParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandParser.h; sourceTree = "<group>"; };
-		3A5B902F25D7940200F06219 /* CommandParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParser.cc; sourceTree = "<group>"; };
+		3A5B902E25D7940200F06219 /* CommandHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandHandler.h; sourceTree = "<group>"; };
+		3A5B902F25D7940200F06219 /* CommandHandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandHandler.cc; sourceTree = "<group>"; };
 		3A5B903025D7940200F06219 /* Console.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cc; sourceTree = "<group>"; };
 		3A5B903125D7940200F06219 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		3A5B903325D7940200F06219 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
@@ -344,7 +344,7 @@
 		3A5B903525D7940200F06219 /* Hud.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cc; sourceTree = "<group>"; };
 		3A5B903625D7940200F06219 /* StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
 		3A5B903725D7940200F06219 /* TableLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableLayout.h; sourceTree = "<group>"; };
-		3A5B903825D7940300F06219 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
+		3A5B903825D7940300F06219 /* Assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assets.h; sourceTree = "<group>"; };
 		3A5B903925D7940300F06219 /* Importable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Importable.h; sourceTree = "<group>"; };
 		3A5B903A25D7940300F06219 /* StaticActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticActor.h; sourceTree = "<group>"; };
 		3A5B903C25D7940300F06219 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
@@ -407,7 +407,7 @@
 		3A5B907E25D7940300F06219 /* GameMap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMap.cc; sourceTree = "<group>"; };
 		3A5B907F25D7940300F06219 /* WorldContactListener.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContactListener.cc; sourceTree = "<group>"; };
 		3A5B908025D7940300F06219 /* DynamicActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicActor.h; sourceTree = "<group>"; };
-		3A5B908125D7940300F06219 /* AssetManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cc; sourceTree = "<group>"; };
+		3A5B908125D7940300F06219 /* Assets.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cc; sourceTree = "<group>"; };
 		3A5B908325D7940300F06219 /* Consumable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Consumable.h; sourceTree = "<group>"; };
 		3A5B908425D7940300F06219 /* Key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Key.h; sourceTree = "<group>"; };
 		3A5B908525D7940300F06219 /* Item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cc; sourceTree = "<group>"; };
@@ -606,12 +606,12 @@
 			isa = PBXGroup;
 			children = (
 				3A5B90A325D7940300F06219 /* AppDelegate.cc */,
-				3A5B908125D7940300F06219 /* AssetManager.cc */,
+				3A5B908125D7940300F06219 /* Assets.cc */,
 				3A5B907225D7940300F06219 /* CallbackManager.cc */,
 				3A5B907325D7940300F06219 /* DynamicActor.cc */,
 				3A5B906325D7940300F06219 /* StaticActor.cc */,
 				3A5B90A425D7940300F06219 /* AppDelegate.h */,
-				3A5B903825D7940300F06219 /* AssetManager.h */,
+				3A5B903825D7940300F06219 /* Assets.h */,
 				3A5B906225D7940300F06219 /* CallbackManager.h */,
 				3A5B906E25D7940300F06219 /* Constants.h */,
 				3A5B90A525D7940300F06219 /* Controllable.h */,
@@ -810,8 +810,8 @@
 		3A5B902D25D7940200F06219 /* console */ = {
 			isa = PBXGroup;
 			children = (
-				3A5B902E25D7940200F06219 /* CommandParser.h */,
-				3A5B902F25D7940200F06219 /* CommandParser.cc */,
+				3A5B902E25D7940200F06219 /* CommandHandler.h */,
+				3A5B902F25D7940200F06219 /* CommandHandler.cc */,
 				3A5B903025D7940200F06219 /* Console.cc */,
 				3A5B903125D7940200F06219 /* Console.h */,
 			);
@@ -1160,7 +1160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A5B912B25D7940400F06219 /* AssetManager.cc in Sources */,
+				3A5B912B25D7940400F06219 /* Assets.cc in Sources */,
 				3A5B913925D7940400F06219 /* CollectItemObjective.cc in Sources */,
 				3A5B910B25D7940300F06219 /* b2BodyBuilder.cc in Sources */,
 				3A5B914125D7940400F06219 /* DialogueTree.cc in Sources */,
@@ -1183,7 +1183,7 @@
 				3A5B90B925D7940300F06219 /* TextField.cc in Sources */,
 				3A5B911925D7940300F06219 /* Party.cc in Sources */,
 				3A5B90B725D7940300F06219 /* TabView.cc in Sources */,
-				3A5B90ED25D7940300F06219 /* CommandParser.cc in Sources */,
+				3A5B90ED25D7940300F06219 /* CommandHandler.cc in Sources */,
 				3A5B90E725D7940300F06219 /* QuestHints.cc in Sources */,
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
 				3A5B90AF25D7940300F06219 /* Shade.cc in Sources */,
@@ -1318,7 +1318,7 @@
 				3A5B915025D7940400F06219 /* MainMenuScene.cc in Sources */,
 				3A5B90C225D7940300F06219 /* DialogueManager.cc in Sources */,
 				3A5B90E025D7940300F06219 /* HeaderPane.cc in Sources */,
-				3A5B90EE25D7940300F06219 /* CommandParser.cc in Sources */,
+				3A5B90EE25D7940300F06219 /* CommandHandler.cc in Sources */,
 				3A5B913A25D7940400F06219 /* CollectItemObjective.cc in Sources */,
 				3A5B90B225D7940300F06219 /* Window.cc in Sources */,
 				3A5B90AE25D7940300F06219 /* FloatingDamages.cc in Sources */,
@@ -1329,7 +1329,7 @@
 				3A0E168524B69344003BCCA1 /* main.cc in Sources */,
 				3A5B90DA25D7940300F06219 /* QuestPane.cc in Sources */,
 				3A5B90D625D7940300F06219 /* PauseMenu.cc in Sources */,
-				3A5B912C25D7940400F06219 /* AssetManager.cc in Sources */,
+				3A5B912C25D7940400F06219 /* Assets.cc in Sources */,
 				3A5B90E225D7940300F06219 /* StatsPane.cc in Sources */,
 				3A5B910225D7940300F06219 /* JsonUtil.cc in Sources */,
 				3A5B914C25D7940400F06219 /* GameScene.cc in Sources */,

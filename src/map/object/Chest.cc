@@ -15,16 +15,9 @@
 #define ITEM_CATEGORY_BITS kInteractable
 #define ITEM_MASK_BITS kGround | kPlatform | kWall
 
-using std::string;
-using std::vector;
-using cocos2d::Sprite;
-using cocos2d::EventKeyboard;
-using vigilante::kPpm;
-using vigilante::category_bits::kInteractable;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kPlatform;
-using vigilante::category_bits::kWall;
-using vigilante::category_bits::kFeet;
+using namespace std;
+using namespace vigilante::category_bits;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -37,7 +30,6 @@ Chest::Chest()
 Chest::Chest(const string& itemJsons) : Chest() {
   _itemJsons = string_util::split(itemJsons);
 }
-
 
 bool Chest::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -84,7 +76,6 @@ void Chest::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-
 void Chest::onInteract(Character*) {
   if (_isOpened) {
     return;
@@ -100,10 +91,6 @@ void Chest::onInteract(Character*) {
     GameMapManager::getInstance()->getGameMap()->createItem(item, x * kPpm, y * kPpm);
   }
   _itemJsons.clear();
-}
-
-bool Chest::willInteractOnContact() const {
-  return false;
 }
 
 void Chest::showHintUI() {

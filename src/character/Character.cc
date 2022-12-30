@@ -5,7 +5,8 @@
 #include <cassert>
 
 #include <json/document.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "Player.h"
@@ -18,25 +19,9 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
-using std::set;
-using std::array;
-using std::unordered_set;
-using std::string;
-using std::function;
-using std::unique_ptr;
-using std::shared_ptr;
-using cocos2d::Director;
-using cocos2d::Sequence;
-using cocos2d::CallFunc;
-using cocos2d::Repeat;
-using cocos2d::RepeatForever;
-using cocos2d::Animation;
-using cocos2d::Animate;
-using cocos2d::Action;
-using cocos2d::Sprite;
-using cocos2d::FileUtils;
-using cocos2d::SpriteBatchNode;
+using namespace std;
 using rapidjson::Document;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -194,7 +179,7 @@ void Character::update(float delta) {
 
   _previousState = _currentState;
   _currentState = getState();
-  
+
   // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {
     switch(_currentState) {
@@ -252,7 +237,6 @@ void Character::update(float delta) {
 void Character::import(const string& jsonFileName) {
   _characterProfile = Character::Profile(jsonFileName);
 }
-
 
 void Character::defineBody(b2BodyType bodyType,
                            float x,
@@ -354,7 +338,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
         fallback
     );
   }
-  
+
   // Select a frame as default look for this sprite.
   string framePrefix = StaticActor::getLastDirName(bodyTextureResDir);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
@@ -379,7 +363,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
   const string& textureResDir = equipment->getItemProfile().textureResDir;
-  
+
   CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
   CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_UNSHEATHED, fallback);
@@ -446,7 +430,6 @@ Animation* Character::getEquipmentAttackAnimation(const Equipment::Type type) co
                                       _equipmentExtraAttackAnimations[type][_attackAnimationIdx - 1];
 }
 
-
 void Character::runAnimation(State state, bool loop) {
   // Update body animation.
   Animate* animate = Animate::create((state != State::ATTACKING) ? _bodyAnimations[state] :
@@ -470,7 +453,7 @@ void Character::runAnimation(State state, bool loop) {
                                                 dynamic_cast<Action*>(Repeat::create(animate, 1)));
   }
 
-  // If `state` is ATTACKING, then increment `_attackAnimationIdx` 
+  // If `state` is ATTACKING, then increment `_attackAnimationIdx`
   // and wrap around when needed.
   if (state == State::ATTACKING) {
     _attackAnimationIdx = (_attackAnimationIdx + 1) % _kAttackAnimationIdxMax;
@@ -499,7 +482,7 @@ void Character::runAnimation(State state, const function<void ()>& func) const {
 void Character::runAnimation(const string& framesName, float interval) {
   // Try to load the target framesName under this character's textureResDir.
   Animation* bodyAnimation = nullptr;
-  
+
   if (_skillBodyAnimations.find(framesName) != _skillBodyAnimations.end()) {
     bodyAnimation = _skillBodyAnimations[framesName];
   } else {
@@ -528,8 +511,6 @@ void Character::runAnimation(const string& framesName, float interval) {
   }
 }
 
-
-// FIXME: Maybe clean up this method...
 Character::State Character::getState() const {
   if (_isSetToKill) {
     return State::KILLED;
@@ -540,28 +521,22 @@ Character::State Character::getState() const {
   } else if (_isUnsheathingWeapon) {
     return State::UNSHEATHING_WEAPON;
   } else if (_isJumping) {
-    return (_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
+    return _isWeaponSheathed ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
   } else if (_body->GetLinearVelocity().y < -2.0f && !_isTakingDamage) {
-    return (_isWeaponSheathed) ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
+    return _isWeaponSheathed ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
-    return (_isWeaponSheathed) ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
+    return _isWeaponSheathed ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
   } else if (std::abs(_body->GetLinearVelocity().x) > .01f && !_isTakingDamage) {
-    return (_isWeaponSheathed) ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
-  // This one makes platform jumping animation smoother...
-  // but the code looks more ugly :(
-  } else if (std::abs(_body->GetLinearVelocity().y) > .01f && !_isTakingDamage) {
-    return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
+    return _isWeaponSheathed ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
-    return (_isWeaponSheathed) ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
+    return _isWeaponSheathed ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }
 }
-
 
 void Character::onKilled() {
   _isKilled = true;
   GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
 }
-
 
 void Character::moveLeft() {
   _isFacingRight = false;
@@ -604,7 +579,7 @@ void Character::jump() {
     // Set velocity.y to 0.
     const b2Vec2& velocity = _body->GetLinearVelocity();
     _body->SetLinearVelocity({velocity.x, 0});
-  } 
+  }
 
   _isJumpingDisallowed = true;
   CallbackManager::getInstance()->runAfter([this]() {
@@ -726,7 +701,7 @@ void Character::activateSkill(Skill* skill) {
   shared_ptr<Skill> copiedSkill(Skill::create(skill->getSkillProfile().jsonFileName, this));
   _activeSkills.insert(copiedSkill);
   copiedSkill->activate();
-  
+
   Hud::getInstance()->updateStatusBars();
 }
 
@@ -758,7 +733,7 @@ void Character::receiveDamage(Character* source, int damage) {
   CallbackManager::getInstance()->runAfter([this]() {
     _isTakingDamage = false;
   }, .25f);
-  
+
   if (_characterProfile.health <= 0) {
     _characterProfile.health = 0;
 
@@ -809,7 +784,7 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
 
 void Character::removeItem(Item* item, int amount) {
   Item* existingItemObj = getExistingItemObj(item);
-  
+
   if (!existingItemObj || amount == 0) {
     VGLOG(LOG_WARN, "Unable to remove such item!");
     return;
@@ -902,7 +877,7 @@ void Character::unequip(Equipment::Type equipmentType) {
 }
 
 void Character::pickupItem(Item* item) {
-  shared_ptr<Item> i = GameMapManager::getInstance()->getGameMap()->removeDynamicActor<Item>(item); 
+  shared_ptr<Item> i = GameMapManager::getInstance()->getGameMap()->removeDynamicActor<Item>(item);
   addItem(std::move(i), item->getAmount());
 }
 
@@ -930,9 +905,8 @@ void Character::addExp(const int exp) {
   }
 }
 
-
 void Character::addSkill(unique_ptr<Skill> skill) {
-  assert(skill != nullptr);
+  assert(skill);
 
   auto it = _skillMapper.find(skill->getName());
   if (it != _skillMapper.end()) {
@@ -945,7 +919,7 @@ void Character::addSkill(unique_ptr<Skill> skill) {
 }
 
 void Character::removeSkill(Skill* skill) {
-  assert(skill != nullptr);
+  assert(skill);
 
   auto it = _skillMapper.find(skill->getName());
   if (it == _skillMapper.end()) {
@@ -957,169 +931,21 @@ void Character::removeSkill(Skill* skill) {
   _skillMapper.erase(skill->getName());
 }
 
-
 int Character::getGoldBalance() const {
-  return getItemAmount(Item::create(asset_manager::kGoldCoin)->getName());
+  return getItemAmount(Item::create(assets::kGoldCoin)->getName());
 }
 
 void Character::addGold(const int amount) {
-  addItem(Item::create(asset_manager::kGoldCoin), amount);
+  addItem(Item::create(assets::kGoldCoin), amount);
 }
 
 void Character::removeGold(const int amount) {
-  removeItem(Item::create(asset_manager::kGoldCoin).get(), amount);
+  removeItem(Item::create(assets::kGoldCoin).get(), amount);
 }
-
-
-bool Character::isFacingRight() const {
-  return _isFacingRight;
-}
-
-bool Character::isJumping() const {
-  return _isJumping;
-}
-
-bool Character::isDoubleJumping() const {
-  return _isDoubleJumping;
-}
-
-bool Character::isOnPlatform() const {
-  return _isOnPlatform;
-}
-
-bool Character::isAttacking() const {
-  return _isAttacking;
-}
-
-bool Character::isUsingSkill() const {
-  return _isUsingSkill;
-}
-
-bool Character::isCrouching() const {
-  return _isCrouching;
-}
-
-bool Character::isInvincible() const {
-  return _isInvincible;
-}
-
-bool Character::isKilled() const {
-  return _isKilled;
-}
-
-bool Character::isSetToKill() const {
-  return _isSetToKill;
-}
-
-bool Character::isWeaponSheathed() const {
-  return _isWeaponSheathed;
-}
-
-bool Character::isSheathingWeapon() const {
-  return _isSheathingWeapon;
-}
-
-bool Character::isUnsheathingWeapon() const {
-  return _isUnsheathingWeapon;
-}
-
-
-void Character::setJumping(bool jumping) {
-  _isJumping = jumping;
-}
-
-void Character::setDoubleJumping(bool doubleJumping) {
-  _isDoubleJumping = doubleJumping;
-}
-
-void Character::setOnPlatform(bool onPlatform) {
-  _isOnPlatform = onPlatform;
-}
-
-void Character::setAttacking(bool attacking) {
-  _isAttacking = attacking;
-}
-
-void Character::setUsingSkill(bool usingSkill) {
-  _isUsingSkill = usingSkill;
-}
-
-void Character::setCrouching(bool crouching) {
-  _isCrouching = crouching;
-}
-
-void Character::setInvincible(bool invincible) {
-  _isInvincible = invincible;
-}
-
-
-Character::Profile& Character::getCharacterProfile() {
-  return _characterProfile;
-}
-
-
-set<Character*>& Character::getInRangeTargets() {
-  return _inRangeTargets;
-}
-
-Character* Character::getLockedOnTarget() const {
-  return _lockedOnTarget;
-}
-
-void Character::setLockedOnTarget(Character* target) {
-  _lockedOnTarget = target;
-}
-
-bool Character::isAlerted() const {
-  return _isAlerted;
-}
-
-void Character::setAlerted(bool alerted) {
-  _isAlerted = alerted;
-}
-
-
-set<Item*>& Character::getInRangeItems() {
-  return _inRangeItems;
-}
-
-
-const Character::Inventory& Character::getInventory() const {
-  return _inventory;
-}
-
-const Character::EquipmentSlots& Character::getEquipmentSlots() const {
-  return _equipmentSlots;
-}
-
 
 int Character::getItemAmount(const string& itemName) const {
-  if (_itemMapper.find(itemName) == _itemMapper.end()) {
-    return 0;
-  }
-  return _itemMapper.at(itemName)->getAmount();
-}
-
-
-Interactable* Character::getInteractableObject() const {
-  return _interactableObject;
-}
-
-void Character::setInteractableObject(Interactable* interactableObject) {
-  _interactableObject = interactableObject;
-}
-
-GameMap::Portal* Character::getPortal() const {
-  return _portal;
-}
-
-void Character::setPortal(GameMap::Portal* portal) {
-  _portal = portal;
-}
-
-
-const Character::SkillBook& Character::getSkillBook() const {
-  return _skillBook;
+  auto it = _itemMapper.find(itemName);
+  return it == _itemMapper.end() ? 0 : it->second->getAmount();
 }
 
 shared_ptr<Skill> Character::getActiveSkill(Skill* skill) const {
@@ -1133,11 +959,6 @@ void Character::removeActiveSkill(Skill* skill) {
   _activeSkills.erase(key);
 }
 
-Skill* Character::getCurrentlyUsedSkill() const {
-  return _currentlyUsedSkill;
-}
-
-
 bool Character::isWaitingForPartyLeader() const {
   return _party && _party->hasWaitingMember(_characterProfile.jsonFileName);
 }
@@ -1148,40 +969,23 @@ unordered_set<Character*> Character::getAllies() const {
   }
 
   unordered_set<Character*> ret;
-
   for (const auto& member : _party->getMembers()) {
     ret.insert(member.get());
   }
-
-  Character* leader = _party->getLeader();
-  if (leader != this) {
+  if (Character* leader = _party->getLeader(); leader != this) {
     ret.insert(leader);
   }
-
   return ret;
 }
-
-shared_ptr<Party> Character::getParty() const {
-  return _party;
-}
-
-void Character::setParty(shared_ptr<Party> party) {
-  _party = party;
-}
-
-
 
 int Character::getDamageOutput() const {
   int output = _characterProfile.baseMeleeDamage;
 
-  Equipment* weapon = _equipmentSlots[Equipment::Type::WEAPON];
-  if (weapon) {
+  if (Equipment* weapon = _equipmentSlots[Equipment::Type::WEAPON]) {
     output += weapon->getEquipmentProfile().bonusPhysicalDamage;
   }
-
   return output + rand_util::randInt(-5, 5); // temporary
 }
-
 
 void Character::regenHealth(int deltaHealth) {
   const int& fullHealth = _characterProfile.fullHealth;
@@ -1206,8 +1010,6 @@ void Character::regenStamina(int deltaStamina) {
   stamina += deltaStamina;
   stamina = (stamina > fullStamina) ? fullStamina : stamina;
 }
-
-
 
 Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);

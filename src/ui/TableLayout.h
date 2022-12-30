@@ -37,17 +37,17 @@ class TableLayout : public cocos2d::ui::Layout {
 
   void reset();
   
-  float getTableWidth() const;
-  float getRowHeight() const;
-  cocos2d::Vec2 getNextChildPosition() const;
-  float getNextChildPositionX() const;
-  float getNextChildPositionY() const;
+  inline float getTableWidth() const { return _tableWidth; }
+  inline float getRowHeight() const { return _rowHeight; }
+  inline cocos2d::Vec2 getNextChildPosition() const { return _nextChildPosition; }
+  inline float getNextChildPositionX() const { return _nextChildPosition.x; }
+  inline float getNextChildPositionY() const { return _nextChildPosition.y; }
 
-  void setTableWidth(float tableWidth);
-  void setRowHeight(float rowHeight);
-  void setNextChildPosition(const cocos2d::Vec2& pos);
-  void setNextChildPositionX(float x);
-  void setNextChildPositionY(float y);
+  inline void setTableWidth(float tableWidth) { _tableWidth = tableWidth; }
+  inline void setRowHeight(float rowHeight) { _rowHeight = rowHeight; }
+  inline void setNextChildPosition(const cocos2d::Vec2& pos) { _nextChildPosition = pos; }
+  inline void setNextChildPositionX(float x) { _nextChildPosition.x = x; }
+  inline void setNextChildPositionY(float y) { _nextChildPosition.y = y; }
 
  protected:
   float _tableWidth;  // the width of this table layout

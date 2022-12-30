@@ -2,7 +2,8 @@
 #include "Item.h"
 
 #include <json/document.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "Constants.h"
 #include "item/Equipment.h"
 #include "item/Consumable.h"
@@ -19,15 +20,10 @@
 #define ITEM_CATEGORY_BITS kItem
 #define ITEM_MASK_BITS kGround | kPlatform | kWall
 
-using std::string;
-using std::unique_ptr;
-using cocos2d::Sprite;
-using vigilante::category_bits::kItem;
-using vigilante::category_bits::kFeet;
-using vigilante::category_bits::kWall;
-using vigilante::category_bits::kGround;
-using vigilante::category_bits::kPlatform;
+using namespace std;
+using namespace vigilante::category_bits;
 using rapidjson::Document;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -54,7 +50,6 @@ Item::Item(const string& jsonFileName)
   _bodySprite->getTexture()->setAliasTexParameters();
 }
 
-
 bool Item::showOnMap(float x, float y) {
   if (_isShownOnMap) {
     return false;
@@ -66,7 +61,7 @@ bool Item::showOnMap(float x, float y) {
              x,
              y,
              ITEM_CATEGORY_BITS,
-             ITEM_MASK_BITS);  
+             ITEM_MASK_BITS);
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
@@ -78,7 +73,6 @@ bool Item::showOnMap(float x, float y) {
 void Item::import(const string& jsonFileName) {
   _itemProfile = Item::Profile(jsonFileName);
 }
-
 
 void Item::defineBody(b2BodyType bodyType,
                       float x,
@@ -105,36 +99,13 @@ void Item::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-
-Item::Profile& Item::getItemProfile() {
-  return _itemProfile;
-}
-
-const string& Item::getName() const {
-  return _itemProfile.name;
-}
-
-const string& Item::getDesc() const {
-  return _itemProfile.desc;
-}
-
 string Item::getIconPath() const {
   return _itemProfile.textureResDir + "/icon.png";
 }
 
 bool Item::isGold() const {
-  return _itemProfile.jsonFileName == asset_manager::kGoldCoin;
+  return _itemProfile.jsonFileName == assets::kGoldCoin;
 }
-
-
-int Item::getAmount() const {
-  return _amount;
-}
-
-void Item::setAmount(int amount) {
-  _amount = amount;
-}
-
 
 Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);

@@ -25,10 +25,9 @@
 #include <cstring>
 #include <memory>
 
-using std::unique_ptr;
+using namespace std;
 using cocos2d::GLProgram;
 using cocos2d::GLProgramCache;
-
 
 GLESDebugDraw::GLESDebugDraw() : _ratio(1.0f) {
   initShader();
@@ -37,7 +36,6 @@ GLESDebugDraw::GLESDebugDraw() : _ratio(1.0f) {
 GLESDebugDraw::GLESDebugDraw(float32 ratio) : _ratio(ratio) {
   initShader();
 }
-
 
 void GLESDebugDraw::initShader() {
   _shaderProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_U_COLOR);
@@ -49,7 +47,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int vertexCount, con
   _shaderProgram->setUniformsForBuiltins();
 
   unique_ptr<b2Vec2[]> vertices = std::make_unique<b2Vec2[]>(vertexCount);
-  
+
   for (int i = 0; i < vertexCount; i++) {
     vertices[i] = old_vertices[i];
     vertices[i] *= _ratio;

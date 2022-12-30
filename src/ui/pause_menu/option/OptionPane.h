@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_OPTION_PANE_H_
 #define VIGILANTE_OPTION_PANE_H_
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/option/OptionListView.h"
@@ -25,6 +25,6 @@ class OptionPane : public AbstractPane {
   std::unique_ptr<OptionListView> _optionListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_OPTION_PANE_H_
+#endif  // VIGILANTE_OPTION_PANE_H_

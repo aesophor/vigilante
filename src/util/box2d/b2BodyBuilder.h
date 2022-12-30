@@ -46,6 +46,6 @@ class b2BodyBuilder {
   void* _userData;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_B2_BODY_BUILDER_H_
+#endif  // VIGILANTE_B2_BODY_BUILDER_H_

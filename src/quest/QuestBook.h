@@ -2,10 +2,10 @@
 #ifndef VIGILANTE_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_BOOK_H_
 
-#include <string>
-#include <vector>
 #include <memory>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "Quest.h"
 

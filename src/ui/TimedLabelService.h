@@ -13,13 +13,16 @@ class TimedLabelService {
  public:
   struct TimedLabel {
     using Alignment = cocos2d::Vec2;
-    static const Alignment kLeft;
-    static const Alignment kCenter;
-    static const Alignment kRight;
+    static inline Alignment kLeft = {0, 1};
+    static inline Alignment kCenter = {0.5, 1};
+    static inline Alignment kRight = {1, 1};
 
     TimedLabel(const std::string& text, float lifetime,
                TimedLabel::Alignment alignment);
-    bool operator== (const TimedLabel& other);
+
+    bool operator== (const TimedLabel& other) {
+      return label == other.label;
+    }
 
     cocos2d::Label* label;
     float lifetime;
@@ -30,17 +33,17 @@ class TimedLabelService {
 
   void update(float delta);
   void show(const std::string& message);
-  cocos2d::Layer* getLayer() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
 
  protected:
   TimedLabelService(int startingX, int startingY,
                     uint8_t maxLabelCount, uint8_t labelLifetime,
                     TimedLabelService::TimedLabel::Alignment alignment);
 
-  static const float _kMoveUpDuration;
-  static const float _kFadeDuration;
-  static const float _kDeltaX;
-  static const float _kDeltaY;
+  static inline constexpr float _kMoveUpDuration = .2f;
+  static inline constexpr float _kFadeDuration = 1.0f;
+  static inline constexpr float _kDeltaX = 0.0f;
+  static inline constexpr float _kDeltaY = 13.0f;
  
   cocos2d::Layer* _layer;
   std::deque<TimedLabelService::TimedLabel> _labelQueue;

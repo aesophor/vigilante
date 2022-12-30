@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TradeWindow.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "character/Player.h"
 #include "input/InputManager.h"
 #include "util/StringUtil.h"
@@ -11,20 +11,17 @@
 #define TRADE_WINDOW_CONTENT_MARGIN_TOP 30
 #define TRADE_WINDOW_CONTENT_MARGIN_BOTTOM 40
 
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kTradeBg;
-using vigilante::asset_manager::kTabRegular;
-using vigilante::asset_manager::kTabHighlighted;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 TradeWindow::TradeWindow(Character* buyer, Character* seller)
     : Window(),
-      _contentBackground(ImageView::create(kTradeBg)),
-      _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _tradeListView(std::make_unique<TradeListView>(this)),
+      _contentBackground(ui::ImageView::create(kTradeBg)),
+      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
+      _tradeListView(make_unique<TradeListView>(this)),
       _isTradingWithAlly(seller->getAllies().find(buyer) != seller->getAllies().end()),
       _buyer(buyer),
       _seller(seller) {
@@ -36,7 +33,7 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
 
   _contentBackground->setAnchorPoint({0, 1});
 
-  _contentLayout->setLayoutType(Layout::Type::ABSOLUTE);
+  _contentLayout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _contentLayout->setAnchorPoint({0, 1});
   _contentLayout->addChild(_contentBackground, 0);
 
@@ -58,19 +55,19 @@ TradeWindow::TradeWindow(Character* buyer, Character* seller)
 
 void TradeWindow::update(float) {
   if (_isTradingWithAlly) {
-    setTitle((dynamic_cast<Player*>(_buyer)) ? 
+    setTitle((dynamic_cast<Player*>(_buyer)) ?
         string_util::format("Receiving from: %s", _seller->getCharacterProfile().name.c_str()) :
         string_util::format("Giving to: %s", _buyer->getCharacterProfile().name.c_str())
     );
   } else {
-    setTitle((dynamic_cast<Player*>(_buyer)) ? 
+    setTitle((dynamic_cast<Player*>(_buyer)) ?
         string_util::format("Buying from: %s", _seller->getCharacterProfile().name.c_str()) :
         string_util::format("Selling to: %s", _buyer->getCharacterProfile().name.c_str())
     );
   }
-  
+
   Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
-  _tradeListView->showCharactersItemByType(_seller, selectedItemType); 
+  _tradeListView->showCharactersItemByType(_seller, selectedItemType);
 }
 
 void TradeWindow::handleInput() {
@@ -92,23 +89,9 @@ void TradeWindow::handleInput() {
   }
 }
 
-
 void TradeWindow::toggleBuySell() {
   std::swap(_buyer, _seller);
   update(0);
-}
-
-
-bool TradeWindow::isTradingWithAlly() const {
-  return _isTradingWithAlly;
-}
-
-Character* TradeWindow::getBuyer() const {
-  return _buyer;
-}
-
-Character* TradeWindow::getSeller() const {
-  return _seller;
 }
 
 }  // namespace vigilante

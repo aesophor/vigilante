@@ -1,17 +1,15 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AbstractPane.h"
 
-using cocos2d::Vec2;
-using cocos2d::ui::Layout;
+USING_NS_CC;
 
 namespace vigilante {
 
 AbstractPane::AbstractPane(PauseMenu* pauseMenu)
-    : _pauseMenu(pauseMenu), _layout(Layout::create()) {}
+    : _pauseMenu(pauseMenu), _layout(ui::Layout::create()) {}
 
-AbstractPane::AbstractPane(PauseMenu* pauseMenu, Layout* layout)
+AbstractPane::AbstractPane(PauseMenu* pauseMenu, ui::Layout* layout)
     : _pauseMenu(pauseMenu), _layout(layout) {}
-
 
 bool AbstractPane::isVisible() const {
   if (_layout) {
@@ -28,15 +26,6 @@ void AbstractPane::setVisible(bool visible) const {
 
 void AbstractPane::setPosition(const Vec2& pos) const {
   _layout->setPosition(pos);
-}
-
-
-PauseMenu* AbstractPane::getPauseMenu() const {
-  return _pauseMenu;
-}
-
-Layout* AbstractPane::getLayout() const {
-  return _layout;
 }
 
 } // namespace vigilante

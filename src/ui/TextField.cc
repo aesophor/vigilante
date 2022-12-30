@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TextField.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 #include "util/KeyCodeUtil.h"
 
@@ -10,19 +10,14 @@
 
 #define DEFAULT_DISMISS_KEY EventKeyboard::KeyCode::KEY_ENTER
 
-using std::string;
-using std::function;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::Event;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 TextField::TextField(const string& defaultText)
-    : _layout(Layout::create()),
+    : _layout(ui::Layout::create()),
       _label(Label::createWithTTF(CURSOR_CHAR, kRegularFont, kRegularFontSize)),
       _buffer(),
       _onSubmit(),
@@ -74,7 +69,6 @@ TextField::TextField(const string& defaultText)
   }
 }
 
-
 void TextField::update(float delta) {
   _timer += delta;
 
@@ -82,11 +76,6 @@ void TextField::update(float delta) {
     _timer = 0;
     toggleCursor();
   }
-}
-
-
-const string& TextField::getString() const {
-  return _buffer;
 }
 
 void TextField::setString(const string& s) {
@@ -98,15 +87,9 @@ void TextField::clear() {
   setString("");
 }
 
-
 void TextField::toggleCursor() {
   _label->setString((_isCursorVisible) ? _buffer : _buffer + CURSOR_CHAR);
   _isCursorVisible = !_isCursorVisible;
-}
-
-
-bool TextField::isReceivingInput() const {
-  return _isReceivingInput;
 }
 
 void TextField::setReceivingInput(bool receivingInput) {
@@ -118,28 +101,6 @@ void TextField::setReceivingInput(bool receivingInput) {
   }
 
   _isReceivingInput = receivingInput;
-}
-
-void TextField::setOnSubmit(const function<void ()>& onSubmit) {
-  _onSubmit = onSubmit;
-}
-
-void TextField::setOnDismiss(const function<void ()>& onDismiss) {
-  _onDismiss = onDismiss;
-}
-
-void TextField::setExtraOnKeyPressed(const InputManager::OnKeyPressedEvLstnr& extraOnKeyPressed) {
-  _extraOnKeyPressed = extraOnKeyPressed;
-}
-
-
-void TextField::setDismissKey(EventKeyboard::KeyCode dismissKey) {
-  _dismissKey = dismissKey;
-}
-
-
-Layout* TextField::getLayout() const {
-  return _layout;
 }
 
 }  // namespace vigilante

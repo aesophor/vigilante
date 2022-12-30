@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueManager.h"
 
-using std::unique_ptr;
-using cocos2d::Layer;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -19,7 +19,6 @@ DialogueManager::DialogueManager()
   _layer->addChild(_dialogueMenu->getLayer());
 }
 
-
 void DialogueManager::update(float delta) {
   _subtitles->update(delta);
 }
@@ -32,30 +31,8 @@ void DialogueManager::handleInput() {
   }
 }
 
-
-Layer* DialogueManager::getLayer() const {
-  return _layer;
-}
-
-Npc* DialogueManager::getTargetNpc() const {
-  return _targetNpc;
-}
-
-Subtitles* DialogueManager::getSubtitles() const {
-  return _subtitles.get();
-}
-
-DialogueMenu* DialogueManager::getDialogueMenu() const {
-  return _dialogueMenu.get();
-}
-
 Dialogue* DialogueManager::getCurrentDialogue() const {
   return (_targetNpc) ? _targetNpc->getDialogueTree().getCurrentNode() : nullptr;
-}
-
-
-void DialogueManager::setTargetNpc(Npc* npc) {
-  _targetNpc = npc;
 }
 
 void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {

@@ -3,12 +3,11 @@
 #define VIGILANTE_LOGGER_H_
 
 #include <array>
-#include <string>
 #include <memory>
+#include <string>
 
 #include <cocos2d.h>
 
-// Log severity
 #define LOG_ERR vigilante::logger::Severity::ERROR
 #define LOG_WARN vigilante::logger::Severity::WARNING
 #define LOG_INFO vigilante::logger::Severity::INFO
@@ -21,10 +20,7 @@
       (__LINE__),\
       ##__VA_ARGS__)
 
-
-namespace vigilante {
-
-namespace logger {
+namespace vigilante::logger {
 
 enum Severity {
   ERROR,
@@ -32,18 +28,15 @@ enum Severity {
   INFO,
   SIZE
 };
+
 const std::array<std::string, Severity::SIZE> _kSeverityStr = {{
   "ERROR",
   "WARNING",
   "INFO"
 }};
 
-
-// SIGSEGV handler
 void segvHandler(int);
 
-} // namespace logger
-
-} // namespace vigilante
+}  // namespace vigilante::logger
 
 #endif // VIGILANTE_LOGGER_H_

@@ -2,17 +2,18 @@
 #ifndef VIGILANTE_CHARACTER_H_
 #define VIGILANTE_CHARACTER_H_
 
-#include <set>
 #include <array>
-#include <vector>
+#include <functional>
+#include <memory>
+#include <set>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <string>
-#include <memory>
-#include <functional>
+#include <vector>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
+
 #include "DynamicActor.h"
 #include "Importable.h"
 #include "Interactable.h"
@@ -27,7 +28,7 @@
 namespace vigilante {
 
 class Character : public DynamicActor, public Importable {
- public: 
+ public:
   using Inventory = std::array<SetVector<Item*>, Item::Type::SIZE>;
   using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
   using SkillBook = std::array<SetVector<Skill*>, Skill::Type::SIZE>;
@@ -119,7 +120,7 @@ class Character : public DynamicActor, public Importable {
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
   virtual void addExp(const int exp);
-  
+
   virtual void addSkill(std::unique_ptr<Skill> skill);
   virtual void removeSkill(Skill* skill);
 
@@ -127,60 +128,61 @@ class Character : public DynamicActor, public Importable {
   void addGold(const int amount);
   void removeGold(const int amount);
 
-  bool isFacingRight() const;
-  bool isJumping() const;
-  bool isDoubleJumping() const;
-  bool isOnPlatform() const;
-  bool isAttacking() const;
-  bool isUsingSkill() const;
-  bool isCrouching() const;
-  bool isInvincible() const;
-  bool isKilled() const;
-  bool isSetToKill() const;
-  bool isWeaponSheathed() const;
-  bool isSheathingWeapon() const;
-  bool isUnsheathingWeapon() const;
+  inline bool isFacingRight() const { return _isFacingRight; }
+  inline bool isJumping() const { return _isJumping; }
+  inline bool isDoubleJumping() const { return _isDoubleJumping; }
+  inline bool isOnPlatform() const { return _isOnPlatform; }
+  inline bool isAttacking() const { return _isAttacking; }
+  inline bool isUsingSkill() const { return _isUsingSkill; }
+  inline bool isCrouching() const { return _isCrouching; }
+  inline bool isInvincible() const { return _isInvincible; }
+  inline bool isKilled() const { return _isKilled; }
+  inline bool isSetToKill() const { return _isSetToKill; }
+  inline bool isWeaponSheathed() const { return _isWeaponSheathed; }
+  inline bool isSheathingWeapon() const { return _isSheathingWeapon; }
+  inline bool isUnsheathingWeapon() const { return _isUnsheathingWeapon; }
 
-  void setJumping(bool jumping);
-  void setDoubleJumping(bool doubleJumping);
-  void setOnPlatform(bool onPlatform);
-  void setAttacking(bool attacking);
-  void setUsingSkill(bool usingSkill);
-  void setCrouching(bool crouching);
-  void setInvincible(bool invincible);
+  inline void setJumping(bool jumping) { _isJumping = jumping; }
+  inline void setDoubleJumping(bool doubleJumping) { _isDoubleJumping = doubleJumping; }
+  inline void setOnPlatform(bool onPlatform) { _isOnPlatform = onPlatform; }
+  inline void setAttacking(bool attacking) { _isAttacking = attacking; }
+  inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
+  inline void setCrouching(bool crouching) { _isCrouching = crouching; }
+  inline void setInvincible(bool invincible) { _isInvincible = invincible; }
 
-  Character::Profile& getCharacterProfile();
+  inline Character::Profile& getCharacterProfile() { return _characterProfile; }
 
-  std::set<Character*>& getInRangeTargets();
-  Character* getLockedOnTarget() const;
-  void setLockedOnTarget(Character* target);
-  bool isAlerted() const;
-  void setAlerted(bool alerted);
+  inline std::set<Character*>& getInRangeTargets() { return _inRangeTargets; }
+  inline Character* getLockedOnTarget() const { return _lockedOnTarget; }
+  inline void setLockedOnTarget(Character* target) { _lockedOnTarget = target; }
+  inline bool isAlerted() const { return _isAlerted; }
+  inline void setAlerted(bool alerted) { _isAlerted = alerted; }
 
-  std::set<Item*>& getInRangeItems();
+  inline std::set<Item*>& getInRangeItems() { return _inRangeItems; }
 
-  const Inventory& getInventory() const;
-  const EquipmentSlots& getEquipmentSlots() const;
+  inline const Inventory& getInventory() const { return _inventory; }
+  inline const EquipmentSlots& getEquipmentSlots() const { return _equipmentSlots; }
   int getItemAmount(const std::string& itemName) const;
 
-  Interactable* getInteractableObject() const;
-  void setInteractableObject(Interactable* interactableObject);
+  inline Interactable* getInteractableObject() const { return _interactableObject; }
+  inline void setInteractableObject(Interactable* interactableObject) {
+    _interactableObject = interactableObject;
+  }
 
-  GameMap::Portal* getPortal() const;
-  void setPortal(GameMap::Portal* portal);
+  inline GameMap::Portal* getPortal() const { return _portal; }
+  inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
 
-  const SkillBook& getSkillBook() const;
+  inline const SkillBook& getSkillBook() const { return _skillBook; }
   std::shared_ptr<Skill> getActiveSkill(Skill* skill) const;
+  inline Skill* getCurrentlyUsedSkill() const { return _currentlyUsedSkill; }
   void removeActiveSkill(Skill* skill);
-  Skill* getCurrentlyUsedSkill() const;
 
   bool isWaitingForPartyLeader() const;
   std::unordered_set<Character*> getAllies() const;
-  std::shared_ptr<Party> getParty() const;
-  void setParty(std::shared_ptr<Party> party);
+  inline std::shared_ptr<Party> getParty() const { return _party; }
+  inline void setParty(std::shared_ptr<Party> party) { _party = party; }
 
   int getDamageOutput() const;
-  
 
  protected:
   explicit Character(const std::string& jsonFileName);
@@ -212,7 +214,7 @@ class Character : public DynamicActor, public Importable {
 
   virtual void defineBody(b2BodyType bodyType,
                           float x,
-                          float y, 
+                          float y,
                           short bodyCategoryBits=0,
                           short bodyMaskBits=0,
                           short feetMaskBits=0,
@@ -232,7 +234,6 @@ class Character : public DynamicActor, public Importable {
   void runAnimation(const std::string& framesName, float interval);
 
   Character::State getState() const;
-
 
   // Characater data.
   Character::Profile _characterProfile;
@@ -285,20 +286,17 @@ class Character : public DynamicActor, public Importable {
 
   // For each item, at most one copy of Item* is kept in memory.
   Item* getExistingItemObj(Item* item) const;
-  std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;   
-
+  std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;
 
   // The interactable object / portal to which this character is near.
   Interactable* _interactableObject;
   GameMap::Portal* _portal;
-
 
   // Currently used skill.
   Character::SkillBook _skillBook;
   std::unordered_map<std::string, std::unique_ptr<Skill>> _skillMapper;
   std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
   Skill* _currentlyUsedSkill;
-
 
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],
@@ -307,7 +305,7 @@ class Character : public DynamicActor, public Importable {
   int _attackAnimationIdx;
   std::vector<cocos2d::Animation*> _bodyExtraAttackAnimations;
   std::array<std::vector<cocos2d::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
- 
+
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment
   // has their own animation!

@@ -23,8 +23,8 @@ class AbstractPane {
   void setVisible(bool visible) const;
   void setPosition(const cocos2d::Vec2& pos) const;
 
-  PauseMenu* getPauseMenu() const;
-  cocos2d::ui::Layout* getLayout() const;
+  inline PauseMenu* getPauseMenu() const { return _pauseMenu; }
+  inline cocos2d::ui::Layout* getLayout() const { return _layout; }
 
  protected:
   explicit AbstractPane(PauseMenu* pauseMenu); // install cocos2d's UILayout

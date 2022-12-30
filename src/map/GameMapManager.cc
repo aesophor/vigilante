@@ -4,7 +4,8 @@
 #include <thread>
 
 #include <Box2D/Box2D.h>
-#include "AssetManager.h"
+
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Npc.h"
@@ -15,17 +16,8 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "util/box2d/b2BodyBuilder.h"
 
-using std::string;
-using std::thread;
-using std::function;
-using cocos2d::Director;
-using cocos2d::Layer;
-using cocos2d::TMXTiledMap;
-using cocos2d::TMXObjectGroup;
-using cocos2d::Sequence;
-using cocos2d::FadeIn;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -59,7 +51,6 @@ void GameMapManager::update(float delta) {
   }
 }
 
-
 void GameMapManager::loadGameMap(const string& tmxMapFileName,
                                  const function<void ()>& afterLoadingGameMap) {
   auto workerThreadLambda = [this, tmxMapFileName, afterLoadingGameMap]() {
@@ -76,7 +67,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
           doLoadGameMap(tmxMapFileName);
           afterLoadingGameMap();
         }),
-        FadeOut::create(Shade::_kFadeOutTime)
+        FadeOut::create(Shade::kFadeOutTime)
     ));
 
     // Resume NPCs to act.
@@ -86,7 +77,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
   // 1. Fade in the shade
   // 2. Create another thread which executes the above lambda independently.
   Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
-      FadeIn::create(Shade::_kFadeInTime),
+      FadeIn::create(Shade::kFadeInTime),
       CallFunc::create([workerThreadLambda]() {
         thread(workerThreadLambda).detach();
       })
@@ -122,23 +113,6 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   return _gameMap.get();
-}
-
-
-Layer* GameMapManager::getLayer() const {
-  return _layer;
-}
-
-b2World* GameMapManager::getWorld() const {
-  return _world.get();
-}
-
-GameMap* GameMapManager::getGameMap() const {
-  return _gameMap.get();
-}
-
-Player* GameMapManager::getPlayer() const {
-  return _player.get();
 }
 
 }  // namespace vigilante

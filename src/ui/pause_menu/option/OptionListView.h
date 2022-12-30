@@ -2,8 +2,8 @@
 #ifndef VIGILANTE_OPTION_LIST_VIEW_H_
 #define VIGILANTE_OPTION_LIST_VIEW_H_
 
-#include <string>
 #include <functional>
+#include <string>
 
 #include "ui/ListView.h"
 

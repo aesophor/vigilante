@@ -19,7 +19,9 @@ class StatusBar {
   virtual ~StatusBar() = default;
   void update(int currentVal, int fullVal);
 
-  cocos2d::ui::Layout* getLayout() const;
+  cocos2d::ui::Layout* getLayout() const {
+    return _layout;
+  }
 
  private:
   cocos2d::ui::Layout* _layout;

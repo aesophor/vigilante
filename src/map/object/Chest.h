@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <cocos2d.h>
+
 #include "DynamicActor.h"
 #include "Interactable.h"
 
@@ -20,7 +21,7 @@ class Chest : public DynamicActor, public Interactable {
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
 
   virtual void onInteract(Character* user) override;  // Interactable
-  virtual bool willInteractOnContact() const override;  // Interactable
+  virtual bool willInteractOnContact() const override { return false; }  // Interactable
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable
 

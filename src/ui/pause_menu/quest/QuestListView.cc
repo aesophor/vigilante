@@ -11,22 +11,20 @@
 #define WIDTH 289.5
 #define HEIGHT 120
 #define ITEM_GAP_HEIGHT 25
-#define REGULAR_BG vigilante::asset_manager::kItemRegular
-#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-using std::string;
-using cocos2d::Label;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 QuestListView::QuestListView(PauseMenu* pauseMenu)
-    : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Quest*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
       _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", asset_manager::kRegularFont, asset_manager::kRegularFontSize)) {
-
+      _descLabel(Label::createWithTTF("", kRegularFont, kRegularFontSize)) {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Quest* quest) {
@@ -43,7 +41,6 @@ QuestListView::QuestListView(PauseMenu* pauseMenu)
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
-
 
 void QuestListView::confirm() {
   Quest* quest = getSelectedObject();
@@ -76,7 +73,6 @@ void QuestListView::confirm() {
   */
 }
 
-
 void QuestListView::selectUp() {
   ListView<Quest*>::selectUp();
 
@@ -98,7 +94,6 @@ void QuestListView::selectDown() {
   Quest* selectedQuest = getSelectedObject();
   _descLabel->setString((selectedQuest) ? generateDesc(selectedQuest) : "");
 }
-
 
 void QuestListView::showAllQuests() {
   // Show player skills in QuestListView.
@@ -126,7 +121,6 @@ void QuestListView::showCompletedQuests() {
   // Update description label.
   _descLabel->setString((!_objects.empty())? generateDesc(_objects[_current]) : "");
 }
-
 
 string QuestListView::generateDesc(const Quest* q) {
   string text = q->getQuestProfile().desc;

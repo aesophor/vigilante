@@ -7,10 +7,7 @@
 
 #include "util/Logger.h"
 
-using std::string;
-using std::array;
-using std::ifstream;
-using std::runtime_error;
+using namespace std;
 
 namespace vigilante {
 
@@ -19,7 +16,6 @@ namespace {
 array<int, exp_point_table::kLevelCap> levelUpExp;
 
 }  // namespace
-
 
 namespace exp_point_table {
 

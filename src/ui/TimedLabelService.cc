@@ -1,25 +1,13 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TimedLabelService.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 
-using std::string;
-using cocos2d::Layer;
-using cocos2d::Label;
-using cocos2d::MoveBy;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
-using cocos2d::Sequence;
-using cocos2d::CameraFlag;
-using vigilante::asset_manager::kRegularFont;
-using vigilante::asset_manager::kRegularFontSize;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
-
-const float TimedLabelService::_kDeltaX = 0.0f;
-const float TimedLabelService::_kDeltaY = 13.0f;
-const float TimedLabelService::_kMoveUpDuration = .2f;
-const float TimedLabelService::_kFadeDuration = 1.0f;
 
 TimedLabelService::TimedLabelService(int startingX, int startingY,
                                      uint8_t maxLabelCount, uint8_t labelLifetime,
@@ -30,7 +18,6 @@ TimedLabelService::TimedLabelService(int startingX, int startingY,
       _kMaxLabelCount(maxLabelCount),
       _kLabelLifetime(labelLifetime),
       _kAlignment(alignment) {}
-
 
 void TimedLabelService::update(float delta) {
   for (auto& notification : _labelQueue) {
@@ -77,15 +64,6 @@ void TimedLabelService::show(const string& message) {
   _layer->setCameraMask(_layer->getCameraMask());
 }
 
-Layer* TimedLabelService::getLayer() const {
-  return _layer;
-}
-
-
-const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kLeft = {0, 1};
-const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kCenter = {0.5, 1};
-const TimedLabelService::TimedLabel::Alignment TimedLabelService::TimedLabel::kRight = {1, 1};
-
 TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime,
                                           TimedLabel::Alignment alignment)
     : label(Label::createWithTTF(text, kRegularFont, kRegularFontSize)),
@@ -93,10 +71,6 @@ TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime,
       timer() {
   label->setAnchorPoint(alignment);
   label->getFontAtlas()->setAliasTexParameters();
-}
-
-bool TimedLabelService::TimedLabel::operator==(const TimedLabel& other) {
-  return this->label == other.label;
 }
 
 }  // namespace vigilante

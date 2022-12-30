@@ -25,11 +25,11 @@ class Subtitles : public Controllable {
   void endSubtitles();
   void showNextSubtitle();
 
-  cocos2d::Layer* getLayer() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
   struct Subtitle {
-    explicit Subtitle(const std::string& text);
+    explicit Subtitle(const std::string& text) : text(text) {}
     std::string text;
   };
 

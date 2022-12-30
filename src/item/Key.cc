@@ -3,7 +3,7 @@
 
 #include "util/JsonUtil.h"
 
-using std::string;
+using namespace std;
 using rapidjson::Document;
 
 namespace vigilante {
@@ -11,11 +11,6 @@ namespace vigilante {
 Key::Key(const string& jsonFileName)
     : MiscItem(jsonFileName),
       _keyProfile(jsonFileName) {}
-
-const Key::Profile& Key::getKeyProfile() const {
-  return _keyProfile;
-}
-
 
 Key::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);

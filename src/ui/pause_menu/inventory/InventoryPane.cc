@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "InventoryPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "character/Player.h"
 #include "input/InputManager.h"
@@ -9,28 +9,22 @@
 #include "ui/control_hints/ControlHints.h"
 #include "ui/pause_menu/PauseMenu.h"
 
-using std::string;
-using cocos2d::Label;
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kInventoryBg;
-using vigilante::asset_manager::kTabRegular;
-using vigilante::asset_manager::kTabHighlighted;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 InventoryPane::InventoryPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _background(ImageView::create(kInventoryBg)),
-      _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _itemListView(std::make_unique<ItemListView>(pauseMenu)),
+      _background(ui::ImageView::create(kInventoryBg)),
+      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
+      _itemListView(make_unique<ItemListView>(pauseMenu)),
       _isSelectingEquipment(),
       _selectingEquipmentType() {
-
   _background->setAnchorPoint({0, 1});
 
-  _layout->setLayoutType(Layout::Type::ABSOLUTE);
+  _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
   _layout->addChild(_background);
 
@@ -45,7 +39,6 @@ InventoryPane::InventoryPane(PauseMenu* pauseMenu)
   _itemListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_itemListView->getLayout());
 }
-
 
 void InventoryPane::update() {
   Item::Type selectedItemType = static_cast<Item::Type>(_tabView->getSelectedTab()->getIndex());
@@ -82,7 +75,6 @@ void InventoryPane::handleInput() {
     }
   }
 }
-
 
 void InventoryPane::selectEquipment(Equipment::Type equipmentType) {
   // Switch into equipment selection mode.

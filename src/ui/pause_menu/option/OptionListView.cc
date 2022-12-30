@@ -10,20 +10,18 @@
 #define WIDTH 289.5
 #define HEIGHT 120
 #define ITEM_GAP_HEIGHT 25
-#define REGULAR_BG vigilante::asset_manager::kItemRegular
-#define HIGHLIGHTED_BG vigilante::asset_manager::kItemHighlighted
 
 #define DESC_LABEL_X 5
 #define DESC_LABEL_Y -132
 
-using cocos2d::Label;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 OptionListView::OptionListView(PauseMenu* pauseMenu)
-    : ListView<Option*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, REGULAR_BG, HIGHLIGHTED_BG),
+    : ListView<Option*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
       _pauseMenu(pauseMenu) {
-
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Option* option) {
@@ -31,7 +29,6 @@ OptionListView::OptionListView(PauseMenu* pauseMenu)
     label->setString(option->first);
   };
 }
-
 
 void OptionListView::confirm() {
   const auto& optionHandler = getSelectedObject()->second;

@@ -4,8 +4,8 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include "Importable.h"
 
@@ -15,7 +15,6 @@ class Quest : public Importable {
  public:
   explicit Quest(const std::string& jsonFileName);
   virtual ~Quest() = default;
-
 
   class Objective {
    public:
@@ -32,8 +31,8 @@ class Quest : public Importable {
 
     virtual bool isCompleted() const = 0;
 
-    Objective::Type getObjectiveType() const;
-    const std::string& getDesc() const;
+    inline Objective::Type getObjectiveType() const { return _objectiveType; }
+    inline const std::string& getDesc() const { return _desc; }
 
    protected:
     Objective(Objective::Type objectiveType, const std::string& desc);
@@ -41,7 +40,6 @@ class Quest : public Importable {
     Objective::Type _objectiveType;
     std::string _desc;
   };
-
 
   struct Stage final {
     std::string getHint() const;
@@ -52,7 +50,6 @@ class Quest : public Importable {
     std::vector<std::string> cmds;
   };
 
-
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
 
@@ -62,17 +59,20 @@ class Quest : public Importable {
     std::vector<Quest::Stage> stages;
   };
 
-
   virtual void import(const std::string& jsonFileName) override;  // Importable
   
   void unlock();
   void advanceStage();
 
-  bool isUnlocked() const;
-  bool isCompleted() const;
+  inline bool isUnlocked() const { return _isUnlocked; }
+  inline bool isCompleted() const {
+    return _currentStageIdx >= (int) _questProfile.stages.size();
+  }
 
-  const Quest::Profile& getQuestProfile() const;
-  const Quest::Stage& getCurrentStage() const;
+  inline const Quest::Profile& getQuestProfile() const { return _questProfile; }
+  inline const Quest::Stage& getCurrentStage() const {
+    return _questProfile.stages.at(_currentStageIdx);
+  }
 
  private:
   Quest::Profile _questProfile;

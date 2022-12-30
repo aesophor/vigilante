@@ -3,13 +3,14 @@
 #define VIGILANTE_PAUSE_MENU_H_
 
 #include <array>
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <cocos2d.h>
 #include <2d/CCLabel.h>
 #include <ui/UIImageView.h>
+
 #include "Controllable.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/pause_menu/HeaderPane.h"
@@ -47,13 +48,12 @@ class PauseMenu : public Controllable {
   virtual void handleInput() override;
   void show(PauseMenu::Pane pane);
 
-
   AbstractPane* getCurrentPane() const;
-  cocos2d::Layer* getLayer() const;
-  PauseMenuDialog* getDialog() const;
+  inline cocos2d::Layer* getLayer() const { return _layer; }
+  inline PauseMenuDialog* getDialog() const { return _dialog.get(); }
   Player* getPlayer() const;
 
-  bool isVisible() const;
+  inline bool isVisible() const { return _layer->isVisible(); }
   void setVisible(bool visible);
 
  private:

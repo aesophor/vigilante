@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <thread>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Character.h"
@@ -26,26 +26,10 @@
 #include "util/StringUtil.h"
 #include "util/RandUtil.h"
 
-using std::pair;
-using std::vector;
-using std::unordered_set;
-using std::string;
-using std::thread;
-using std::unique_ptr;
-using std::shared_ptr;
-using cocos2d::Color4B;
-using cocos2d::Director;
-using cocos2d::TMXTiledMap;
-using cocos2d::TMXObjectGroup;
-using cocos2d::Sequence;
-using cocos2d::FadeIn;
-using cocos2d::FadeOut;
-using cocos2d::CallFunc;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
-
-GameMap::Portal::StateMap GameMap::Portal::_allPortalStates;
 
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
@@ -54,7 +38,6 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _dynamicActors(),
       _triggers(),
       _portals() {}
-
 
 void GameMap::createObjects() {
   // Create box2d objects from layers.
@@ -83,7 +66,7 @@ void GameMap::deleteObjects() {
 }
 
 unique_ptr<Player> GameMap::createPlayer() const {
-  auto player = std::make_unique<Player>(asset_manager::kPlayerJson);
+  auto player = std::make_unique<Player>(assets::kPlayerJson);
 
   const TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
   const auto& valMap = objGroup->getObjects().at(0).asValueMap();
@@ -106,19 +89,6 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
   return item;
 }
 
-
-unordered_set<b2Body*>& GameMap::getTmxTiledMapBodies() {
-  return _tmxTiledMapBodies;
-}
-
-const string& GameMap::getTmxTiledMapFileName() const {
-  return _tmxTiledMapFileName;
-}
-
-TMXTiledMap* GameMap::getTmxTiledMap() const {
-  return _tmxTiledMap;
-}
-
 float GameMap::getWidth() const {
   return _tmxTiledMap->getMapSize().width * _tmxTiledMap->getTileSize().width;
 }
@@ -127,13 +97,10 @@ float GameMap::getHeight() const {
   return _tmxTiledMap->getMapSize().height * _tmxTiledMap->getTileSize().height;
 }
 
-
 void GameMap::createRectangles(const string& layerName, short categoryBits,
                                bool collidable, float friction) {
-  TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup(layerName);
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
-  
-  for (const auto& rectObj : objGroup->getObjects()) {
+  for (const auto& rectObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
@@ -326,29 +293,6 @@ void GameMap::Trigger::onInteract(Character* user) {
   }
 }
 
-bool GameMap::Trigger::willInteractOnContact() const {
-  return true;
-}
-
-
-bool GameMap::Trigger::canBeTriggeredOnlyOnce() const {
-  return _canBeTriggeredOnlyOnce;
-}
-
-bool GameMap::Trigger::canBeTriggeredOnlyByPlayer() const {
-  return _canBeTriggeredOnlyByPlayer;
-}
-
-bool GameMap::Trigger::hasTriggered() const {
-  return _hasTriggered;
-}
-
-void GameMap::Trigger::setTriggered(bool triggered) {
-  _hasTriggered = triggered;
-}
-
-
-
 GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
                         bool willInteractOnContact, bool isLocked, b2Body* body)
     : _targetTmxMapFileName(targetTmxMapFileName),
@@ -476,10 +420,6 @@ bool GameMap::Portal::canBeUnlockedBy(Character* user) const {
                       }) != miscItems.end();
 }
 
-bool GameMap::Portal::isLocked() const {
-  return _isLocked;
-}
-
 void GameMap::Portal::lock() {
   _isLocked = true;
   saveLockUnlockState();
@@ -489,16 +429,6 @@ void GameMap::Portal::unlock() {
   _isLocked = false;
   saveLockUnlockState();
 }
-
-
-const string& GameMap::Portal::getTargetTmxMapFileName() const {
-  return _targetTmxMapFileName;
-}
-
-int GameMap::Portal::getTargetPortalId() const {
-  return _targetPortalId;
-}
-
 
 bool GameMap::Portal::hasSavedLockUnlockState(const string& tmxMapFileName,
                                               int targetPortalId) {
@@ -569,18 +499,16 @@ void GameMap::Portal::setLocked(const string& tmxMapFileName,
   mapIt->second.push_back({targetPortalId, locked});
 }
 
-
 void GameMap::Portal::saveLockUnlockState() const {
   GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
 }
-
 
 int GameMap::Portal::getPortalId() const {
   const auto& portals = GameMapManager::getInstance()->getGameMap()->_portals;
 
   for (size_t i = 0; i < portals.size(); i++) {
     if (portals.at(i).get() == this) {
-      return i;
+      return static_cast<int>(i);
     }
   }
 

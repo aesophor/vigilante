@@ -7,6 +7,7 @@
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
 #include <Box2D/Box2D.h>
+
 #include "Controllable.h"
 #include "map/FxManager.h"
 #include "map/GameMapManager.h"
@@ -40,7 +41,6 @@ class GameScene : public cocos2d::Scene, public Controllable {
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
   b2DebugRenderer* _b2dr;  // autorelease object
-
 
   // For singleton classes, use raw pointers here.
   // Otherwise, use smart pointers (prefer unique_ptr<>).

@@ -9,7 +9,7 @@ extern "C" {
 
 #include <string>
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "scene/SceneManager.h"
 #include "scene/MainMenuScene.h"
@@ -29,10 +29,9 @@ using namespace cocos2d::experimental;
 using namespace CocosDenshion;
 #endif
 
-using std::string;
+using namespace std;
 using vigilante::kVirtualWidth;
 using vigilante::kVirtualHeight;
-
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(1280, 800);
@@ -86,7 +85,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
 
   // Load resources
-  vigilante::asset_manager::loadSpritesheets(vigilante::asset_manager::kSpritesheetsList);
+  vigilante::assets::loadSpritesheets(vigilante::assets::kSpritesheetsList);
 
   // Create a scene (auto-release object).
   vigilante::SceneManager::getInstance()->runWithScene(vigilante::MainMenuScene::create());

@@ -1,26 +1,23 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "SkillPane.h"
 
-#include "AssetManager.h"
+#include "Assets.h"
 #include "input/InputManager.h"
 
-using cocos2d::ui::Layout;
-using cocos2d::ui::ImageView;
-using cocos2d::EventKeyboard;
-using vigilante::asset_manager::kInventoryBg;
-using vigilante::asset_manager::kTabRegular;
-using vigilante::asset_manager::kTabHighlighted;
+using namespace std;
+using namespace vigilante::assets;
+USING_NS_CC;
 
 namespace vigilante {
 
 SkillPane::SkillPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu),
-      _background(ImageView::create(kInventoryBg)),
-      _tabView(std::make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _skillListView(std::make_unique<SkillListView>(pauseMenu)) {
+      _background(ui::ImageView::create(kInventoryBg)),
+      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
+      _skillListView(make_unique<SkillListView>(pauseMenu)) {
   _background->setAnchorPoint({0, 1});
 
-  _layout->setLayoutType(Layout::Type::ABSOLUTE);
+  _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
   _layout->addChild(_background);
 

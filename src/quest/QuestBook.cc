@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestBook.h"
 
-#include <fstream>
 #include <algorithm>
+#include <fstream>
 #include <stdexcept>
 
 #include "quest/KillTargetObjective.h"
@@ -11,12 +11,7 @@
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
-using std::string;
-using std::vector;
-using std::ifstream;
-using std::unique_ptr;
-using std::unordered_map;
-using std::runtime_error;
+using namespace std;
 
 namespace vigilante {
 

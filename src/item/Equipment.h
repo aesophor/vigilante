@@ -45,7 +45,7 @@ class Equipment : public Item {
   virtual ~Equipment() = default;
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
-  Equipment::Profile& getEquipmentProfile();
+  inline Equipment::Profile& getEquipmentProfile() { return _equipmentProfile; }
 
  private:
   Equipment::Profile _equipmentProfile;
