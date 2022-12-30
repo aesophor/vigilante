@@ -45,7 +45,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     // When a character lands on a platform, make following changes.
     case category_bits::kFeet | category_bits::kPlatform: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      if (feetFixture) {
+      if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.01f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setJumping(false);
         c->setDoubleJumping(false);
