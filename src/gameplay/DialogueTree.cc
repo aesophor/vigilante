@@ -146,7 +146,7 @@ void DialogueTree::import(const string& jsonFileName) {
 
 void DialogueTree::update() {
   if (_toggleJoinPartyNode) {
-    if (!_owner->isInPlayerParty()) {
+    if (!_owner->isPlayerLeaderOfParty()) {
       _toggleJoinPartyNode->_lines.front() = "Follow me.";
       _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
     } else {
@@ -154,7 +154,7 @@ void DialogueTree::update() {
       _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
     }
   }
-  
+
   if (_toggleWaitNode) {
     if (!_owner->isWaitingForPlayer()) {
       _toggleWaitNode->_lines.front() = "Wait here.";

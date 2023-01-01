@@ -69,7 +69,8 @@ void FloatingDamages::show(Character* character, int damage) {
 
   // Display the new floating damage label.
   DamageLabel dmg(std::to_string(damage), 1.5f);
-  if (dynamic_cast<Player*>(character) || dynamic_cast<Npc*>(character)->isInPlayerParty()) {
+  if (dynamic_cast<Player*>(character) ||
+      dynamic_cast<Npc*>(character)->isPlayerLeaderOfParty()) {
     dmg.label->setTextColor(colorscheme::kRed);
   }
   const auto& characterPos = character->getBody()->GetPosition();

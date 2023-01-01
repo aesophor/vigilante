@@ -9,8 +9,9 @@
 
 #include <cocos2d.h>
 
-#include "Character.h"
 #include "Interactable.h"
+#include "character/Character.h"
+#include "character/PathFinder.h"
 #include "gameplay/DialogueTree.h"
 
 namespace vigilante {
@@ -85,8 +86,11 @@ class Npc : public Character, public Interactable {
 
   void act(float delta);
   void findNewLockedOnTargetFromParty(Character* killedTarget);
-  void moveToTarget(float delta, const b2Vec2& targetPos, float followDist);
+  bool isTooFarAwayFromTarget(Character* target) const;
+  void teleportToTarget(Character* target);
+  void teleportToTarget(const b2Vec2& targetPos);
   void moveToTarget(float delta, Character* target, float followDist);
+  void moveToTarget(float delta, const b2Vec2& targetPos, float followDist);
   void moveRandomly(float delta,
                     int minMoveDuration, int maxMoveDuration,
                     int minWaitDuration, int maxWaitDuration);
@@ -94,7 +98,8 @@ class Npc : public Character, public Interactable {
   void reverseDirection();
   b2Vec2 findNearestHigherPlatform(float delta);
 
-  bool isInPlayerParty() const;
+  bool isPlayerLeaderOfParty() const;
+  bool isWaitingForPartyLeader() const;
   bool isWaitingForPlayer() const;
 
   inline Npc::Profile& getNpcProfile() { return _npcProfile; }
@@ -126,6 +131,7 @@ class Npc : public Character, public Interactable {
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
+  static inline constexpr float kAllyTeleportDist = 2.5f;
   static inline constexpr float kAllyFollowDist = .75f;
   static inline constexpr float kMoveDestFollowDist = .2f;
   static inline constexpr float kMoveDestOffsetFromPlatform = .2f;
@@ -144,17 +150,14 @@ class Npc : public Character, public Interactable {
 
   cocos2d::Sprite* _hintBubbleFxSprite;
 
-  // The following variables are used in Npc::moveToClosestReachablePlatform()
   b2Vec2 _moveDest;
 
-  // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;
   float _moveDuration;
   float _moveTimer;
   float _waitDuration;
   float _waitTimer;
 
-  // The following variables are used in Npc::jumpIfStucked()
   float _calculateDistanceTimer;
   b2Vec2 _lastStoppedPosition;
 };

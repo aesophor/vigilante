@@ -6,8 +6,9 @@
 #include <string>
 
 #include <Box2D/Box2D.h>
-#include "Character.h"
+
 #include "Controllable.h"
+#include "character/Character.h"
 #include "item/Equipment.h"
 #include "quest/QuestBook.h"
 

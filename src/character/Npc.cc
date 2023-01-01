@@ -301,9 +301,10 @@ void Npc::onDialogueEnd() {
 // (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
 //     a. target belongs to a party -> try to select other member as new _lockedOnTarget
 //     b. target doesnt belong to any party -> clear _lockedOnTarget
-// (3) Has a target destination (_moveDest) to travel to
-// (4) Is following another Character -> moveToTarget()
-// (5) Sandboxing (just moving around wasting its time) -> moveRandomly()
+// (3) If too far away from the party leader, teleport to the leader.
+// (4) Has a target destination (_moveDest) to travel to
+// (5) Is following another Character -> moveToTarget()
+// (6) Sandboxing (just moving around wasting its time) -> moveRandomly()
 void Npc::act(float delta) {
   if (_isKilled || _isSetToKill || _isAttacking) {
     return;
@@ -319,9 +320,12 @@ void Npc::act(float delta) {
     Character* killedTarget = _lockedOnTarget;
     setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
+  } else if (_party && isTooFarAwayFromTarget(_party->getLeader())) {
+    clearMoveDest();
+    teleportToTarget(_party->getLeader());
   } else if (_moveDest.x || _moveDest.y) {
     moveToTarget(delta, _moveDest, Npc::kMoveDestFollowDist);
-  } else if (_party && !isWaitingForPlayer()) {
+  } else if (_party && !isWaitingForPartyLeader()) {
     moveToTarget(delta, _party->getLeader(), Npc::kAllyFollowDist);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
@@ -341,26 +345,25 @@ void Npc::findNewLockedOnTargetFromParty(Character* killedTarget) {
   }
 }
 
-void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
+bool Npc::isTooFarAwayFromTarget(Character* target) const {
   const b2Vec2& thisPos = _body->GetPosition();
+  const b2Vec2& targetPos = target->getBody()->GetPosition();
 
-  if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
-    _moveDest.SetZero();
+  return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > kAllyTeleportDist;
+}
+
+void Npc::teleportToTarget(Character* target) {
+  if (!target->getBody()) {
+    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
+                    target->getCharacterProfile().name.c_str());
     return;
   }
 
-  if (targetPos.y > thisPos.y + Npc::kMoveDestOffsetFromPlatform) {
-    _moveDest = findNearestHigherPlatform(delta);
-  } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
-    // Sometimes when Npcs are too close to each other,
-    // they will stuck in the same place, unable to attack each other.
-    // This is most likely because they are facing at the wrong direction.
-    _isFacingRight = targetPos.x - thisPos.x > 0;
+  teleportToTarget(target->getBody()->GetPosition());
+}
 
-    (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
-  }
-
-  jumpIfStucked(delta, /*checkInterval=*/.5f);
+void Npc::teleportToTarget(const b2Vec2& targetPos) {
+  setPosition(targetPos.x, targetPos.y);
 }
 
 void Npc::moveToTarget(float delta, Character* target, float followDist) {
@@ -371,6 +374,28 @@ void Npc::moveToTarget(float delta, Character* target, float followDist) {
   }
 
   moveToTarget(delta, target->getBody()->GetPosition(), followDist);
+}
+
+void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
+  const b2Vec2& thisPos = _body->GetPosition();
+
+  if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
+    _moveDest.SetZero();
+    return;
+  }
+
+  if (targetPos.y > thisPos.y + followDist) {
+    _moveDest = findNearestHigherPlatform(delta);
+  } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
+    // Sometimes when two Npcs are too close to each other,
+    // they will stuck in the same place, unable to attack each other.
+    // This is most likely because they are facing at the wrong direction.
+    _isFacingRight = targetPos.x > thisPos.x;
+
+    (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
+  }
+
+  jumpIfStucked(delta, /*checkInterval=*/.5f);
 }
 
 void Npc::moveRandomly(float delta,
@@ -444,12 +469,25 @@ b2Vec2 Npc::findNearestHigherPlatform(float delta) {
   return targetPos;
 }
 
-bool Npc::isInPlayerParty() const {
+bool Npc::isPlayerLeaderOfParty() const {
   return _party ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
 }
 
 bool Npc::isWaitingForPlayer() const {
-  return isInPlayerParty() && _party->hasWaitingMember(_characterProfile.jsonFileName);
+  if (!_party) {
+    return false;
+  }
+
+  return isPlayerLeaderOfParty() &&
+    _party->hasWaitingMember(_characterProfile.jsonFileName);
+}
+
+bool Npc::isWaitingForPartyLeader() const {
+  if (!_party) {
+    return false;
+  }
+
+  return _party->hasWaitingMember(_characterProfile.jsonFileName);
 }
 
 void Npc::setDisposition(Npc::Disposition disposition) {

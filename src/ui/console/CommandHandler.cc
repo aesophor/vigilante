@@ -167,7 +167,7 @@ void CommandHandler::joinPlayerParty(const vector<string>&) {
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
-  if (targetNpc->isInPlayerParty()) {
+  if (targetNpc->isPlayerLeaderOfParty()) {
     setError("This Npc is already in player's party.");
     return;
   }
@@ -181,7 +181,7 @@ void CommandHandler::leavePlayerParty(const vector<string>&) {
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
-  if (!targetNpc->isInPlayerParty()) {
+  if (!targetNpc->isPlayerLeaderOfParty()) {
     setError("This Npc has not joined player's party yet.");
     return;
   }
@@ -195,7 +195,7 @@ void CommandHandler::playerPartyMemberWait(const vector<string>&) {
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
-  if (!targetNpc->isInPlayerParty()) {
+  if (!targetNpc->isPlayerLeaderOfParty()) {
     setError("This Npc has not joined player's party yet.");
     return;
   }
@@ -214,7 +214,7 @@ void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
-  if (!targetNpc->isInPlayerParty()) {
+  if (!targetNpc->isPlayerLeaderOfParty()) {
     setError("This Npc has not joined player's party yet.");
     return;
   }
