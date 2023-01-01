@@ -103,7 +103,6 @@ Character::Character(const string& jsonFileName)
   }
 }
 
-
 bool Character::removeFromMap() {
   if (!StaticActor::removeFromMap()) {
     return false;

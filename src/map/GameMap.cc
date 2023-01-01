@@ -35,17 +35,31 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
       _tmxTiledMapFileName(tmxMapFileName),
+      _tmxTiledMapBodies(),
+      _tmxTiledMapPlatformBodies(),
       _dynamicActors(),
       _triggers(),
       _portals() {}
 
 void GameMap::createObjects() {
+  std::list<b2Body*> bodies;
+
   // Create box2d objects from layers.
-  createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
-  createPolylines("Wall", category_bits::kWall, true, kWallFriction);
-  createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
-  createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
-  createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
+  bodies = createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
+  _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  bodies = createPolylines("Wall", category_bits::kWall, true, kWallFriction);
+  _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  bodies = createRectangles("Platform", category_bits::kPlatform, true, kGroundFriction);
+  _tmxTiledMapPlatformBodies.insert(_tmxTiledMapPlatformBodies.end(), bodies.begin(), bodies.end());
+  _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  bodies = createPolylines("PivotMarker", category_bits::kPivotMarker, false, 0);
+  _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  bodies = createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
+  _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
 
   createTriggers();
   createPortals();
@@ -97,9 +111,11 @@ float GameMap::getHeight() const {
   return _tmxTiledMap->getMapSize().height * _tmxTiledMap->getTileSize().height;
 }
 
-void GameMap::createRectangles(const string& layerName, short categoryBits,
-                               bool collidable, float friction) {
+std::list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
+                                             bool collidable, float friction) {
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
+  std::list<b2Body*> bodies;
+
   for (const auto& rectObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -119,12 +135,15 @@ void GameMap::createRectangles(const string& layerName, short categoryBits,
       .friction(friction)
       .buildFixture();
 
-    _tmxTiledMapBodies.insert(body);
+    bodies.emplace_back(body);
   }
+
+  return bodies;
 }
 
-void GameMap::createPolylines(const string& layerName, short categoryBits,
-                              bool collidable, float friction) {
+std::list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBits,
+                                            bool collidable, float friction) {
+  std::list<b2Body*> bodies;
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
   for (const auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
@@ -152,8 +171,10 @@ void GameMap::createPolylines(const string& layerName, short categoryBits,
       .friction(friction)
       .buildFixture();
 
-    _tmxTiledMapBodies.insert(body);
+    bodies.emplace_back(body);
   }
+
+  return bodies;
 }
 
 void GameMap::createTriggers() {
@@ -261,7 +282,6 @@ void GameMap::createChests() {
 }
 
 
-
 GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
@@ -275,7 +295,6 @@ GameMap::Trigger::Trigger(const vector<string>& cmds,
 GameMap::Trigger::~Trigger() {
   _body->GetWorld()->DestroyBody(_body);
 }
-
 
 void GameMap::Trigger::onInteract(Character* user) {
   if (_canBeTriggeredOnlyOnce && _hasTriggered) {
@@ -350,7 +369,6 @@ void GameMap::Portal::onInteract(Character* user) {
   GameMapManager::getInstance()->loadGameMap(newMapFileName,
                                              afterLoadingGameMap);
 }
-
 
 bool GameMap::Portal::willInteractOnContact() const {
   return _willInteractOnContact;

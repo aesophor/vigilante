@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
+#include <cmath>
+#include <limits>
 #include <memory>
 
 #include <json/document.h>
@@ -33,8 +35,6 @@
 #define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
 #define ENEMY_WEAPON_MASK_BITS kPlayer | kNpc
 
-#define ALLY_FOLLOW_DISTANCE .75f
-
 using namespace std;
 using namespace vigilante::category_bits;
 using rapidjson::Document;
@@ -49,6 +49,7 @@ Npc::Npc(const string& jsonFileName)
       _disposition(_npcProfile.disposition),
       _isSandboxing(_npcProfile.shouldSandbox),
       _hintBubbleFxSprite(),
+      _moveDest(0.0f, 0.0f),
       _isMovingRight(),
       _moveDuration(),
       _moveTimer(),
@@ -142,7 +143,6 @@ void Npc::import(const string& jsonFileName) {
   _npcProfile = Npc::Profile(jsonFileName);
 }
 
-
 void Npc::onKilled() {
   Character::onKilled();
 
@@ -151,6 +151,13 @@ void Npc::onKilled() {
   }
 }
 
+void Npc::onMapChanged() {
+  clearMoveDest();
+
+  if (_isKilled && _party) {
+    _party->dismiss(this, /*addToMap=*/false);
+  }
+}
 
 void Npc::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
@@ -168,7 +175,6 @@ void Npc::inflictDamage(Character* target, int damage) {
 void Npc::receiveDamage(Character* source, int damage) {
   Character::receiveDamage(source, damage);
   _isAlerted = true;
-
 
   if (!_isSetToKill) {
     return;
@@ -201,7 +207,6 @@ void Npc::interact(Interactable* target) {
     Character::interact(target);
   }
 }
-
 
 void Npc::onInteract(Character*) {
   updateDialogueTreeIfNeeded();
@@ -244,7 +249,6 @@ void Npc::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
-
 void Npc::updateDialogueTreeIfNeeded() {
   // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
   // See gameplay/DialogueTree.cc
@@ -282,7 +286,6 @@ void Npc::beginTrade() {
       std::make_unique<TradeWindow>(/*buyer=*/player, /*seller=*/this));
 }
 
-
 void Npc::onDialogueBegin() {
   ControlHints::getInstance()->setVisible(false);
 }
@@ -291,37 +294,35 @@ void Npc::onDialogueEnd() {
   ControlHints::getInstance()->setVisible(true);
 }
 
-
+// This Npc may perform one of the following actions:
+// (1) Has `_lockedOnTarget` and `_lockedOnTarget` is not dead yet:
+//     a. target is within attack range -> attack()
+//     b. target not within attack range -> moveToTarget()
+// (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
+//     a. target belongs to a party -> try to select other member as new _lockedOnTarget
+//     b. target doesnt belong to any party -> clear _lockedOnTarget
+// (3) Has a target destination (_moveDest) to travel to
+// (4) Is following another Character -> moveToTarget()
+// (5) Sandboxing (just moving around wasting its time) -> moveRandomly()
 void Npc::act(float delta) {
   if (_isKilled || _isSetToKill || _isAttacking) {
     return;
   }
 
-
-  // This Npc may perform one of the following actions:
-  // (1) Has `_lockedOnTarget` and `_lockedOnTarget` is not dead yet:
-  //     a. target is within attack range -> attack()
-  //     b. target not within attack range -> moveToTarget()
-  // (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
-  //     a. target belongs to a party -> try to select other member as new _lockedOnTarget
-  //     b. target doesnt belong to any party -> clear _lockedOnTarget
-  // (3) Is following another Character -> moveToTarget()
-  // (4) Sandboxing (just moving around wasting its time) -> moveRandomly()
-
   if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
-
-    if (!_inRangeTargets.empty()) {  // target is within attack range
+    if (!_inRangeTargets.empty()) {
       attack();
-    } else {  // target not within attack range
+    } else {
       moveToTarget(delta, _lockedOnTarget, _characterProfile.attackRange / kPpm);
     }
-
   } else if (_lockedOnTarget && _lockedOnTarget->isSetToKill()) {
     Character* killedTarget = _lockedOnTarget;
     setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
+  } else if (_moveDest.x || _moveDest.y) {
+    moveToTarget(delta, _moveDest, Npc::kMoveDestFollowDist);
   } else if (_party && !isWaitingForPlayer()) {
-    moveToTarget(delta, _party->getLeader(), ALLY_FOLLOW_DISTANCE);
+    moveToTarget(delta, _party->getLeader(), Npc::kAllyFollowDist);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
@@ -340,31 +341,36 @@ void Npc::findNewLockedOnTargetFromParty(Character* killedTarget) {
   }
 }
 
-void Npc::moveToTarget(float delta, Character* target, float followDistance) {
-  assert(_body != nullptr);
+void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
+  const b2Vec2& thisPos = _body->GetPosition();
 
+  if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
+    _moveDest.SetZero();
+    return;
+  }
+
+  if (targetPos.y > thisPos.y + Npc::kMoveDestOffsetFromPlatform) {
+    _moveDest = findNearestHigherPlatform(delta);
+  } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
+    // Sometimes when Npcs are too close to each other,
+    // they will stuck in the same place, unable to attack each other.
+    // This is most likely because they are facing at the wrong direction.
+    _isFacingRight = targetPos.x - thisPos.x > 0;
+
+    (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
+  }
+
+  jumpIfStucked(delta, /*checkInterval=*/.5f);
+}
+
+void Npc::moveToTarget(float delta, Character* target, float followDist) {
   if (!target->getBody()) {
     VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
                     target->getCharacterProfile().name.c_str());
     return;
   }
 
-  const b2Vec2& thisPos = _body->GetPosition();
-  const b2Vec2& targetPos = target->getBody()->GetPosition();
-
-  // If this character is already close enough to the target character,
-  // we could return at once.
-  if (std::abs(thisPos.x - targetPos.x) <= followDistance) {
-    return;
-  }
-
-  // Sometimes when Npcs are too close to each other,
-  // they will stuck in the same place, unable to attack each other.
-  // This is most likely because they are facing at the wrong direction.
-  _isFacingRight = targetPos.x - thisPos.x > 0;
-
-  (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
-  jumpIfStucked(delta, /*checkInterval=*/.5f);
+  moveToTarget(delta, target->getBody()->GetPosition(), followDist);
 }
 
 void Npc::moveRandomly(float delta,
@@ -410,6 +416,34 @@ void Npc::reverseDirection() {
   _isMovingRight = !_isMovingRight;
 }
 
+b2Vec2 Npc::findNearestHigherPlatform(float delta) {
+  const b2Vec2& thisPos = _body->GetPosition();
+  const b2Body* closestPlatformBody = nullptr;
+  float minDist = numeric_limits<float>::max();
+
+  GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
+  for (auto platformBody : gameMap->getTmxTiledMapPlatformBodies()) {
+    const b2Vec2& platformPos = platformBody->GetPosition();
+    if (platformPos.y < thisPos.y) {
+      continue;
+    }
+
+    const float dist = std::abs(platformPos.y - thisPos.y);
+    if (dist < minDist) {
+      closestPlatformBody = platformBody;
+      minDist = dist;
+    }
+  }
+
+  if (!closestPlatformBody) {
+    return b2Vec2(0, 0);
+  }
+
+  b2Vec2 targetPos = closestPlatformBody->GetPosition();
+  targetPos.y += Npc::kMoveDestOffsetFromPlatform;
+  return targetPos;
+}
+
 bool Npc::isInPlayerParty() const {
   return _party ? dynamic_cast<Player*>(_party->getLeader()) != nullptr : false;
 }
@@ -451,7 +485,6 @@ void Npc::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
     Npc::_npcSpawningBlacklist.erase(jsonFileName);
   }
 }
-
 
 Npc::Profile::Profile(const string& jsonFileName) {
   Document json = json_util::parseJson(jsonFileName);

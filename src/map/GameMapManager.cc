@@ -85,13 +85,11 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
 }
 
 GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
-  // Remove deceased party member from player's party, remove their
-  // b2body and texture, and add them to the party's deceasedMember unordered_set.
+  // Remove deceased party member from player's party,
+  // and remove their b2body and texture.
   if (_player) {
     for (auto ally : _player->getAllies()) {
-      if (ally->isKilled()) {
-        _player->getParty()->dismiss(ally, /*addToMap=*/false);
-      }
+      ally->onMapChanged();
     }
   }
 

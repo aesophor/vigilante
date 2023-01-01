@@ -2,10 +2,11 @@
 #ifndef VIGILANTE_GAME_MAP_H_
 #define VIGILANTE_GAME_MAP_H_
 
+#include <list>
+#include <memory>
+#include <string>
 #include <unordered_set>
 #include <vector>
-#include <string>
-#include <memory>
 
 #include <cocos2d.h>
 #include <Box2D/Box2D.h>
@@ -110,6 +111,15 @@ class GameMap {
     cocos2d::Sprite* _hintBubbleFxSprite;
   };
 
+  enum class PhysicalLayer {
+    GROUND,
+    WALL,
+    PLATFORM,
+    PivotMarker,
+    CliffMarker,
+    SIZE
+  };
+
   GameMap(b2World* world, const std::string& tmxMapFileName);
   virtual ~GameMap() = default;
 
@@ -124,17 +134,18 @@ class GameMap {
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-  inline std::unordered_set<b2Body*>& getTmxTiledMapBodies() { return _tmxTiledMapBodies; }
+  inline const std::list<b2Body*>
+  getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
   inline cocos2d::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
   float getWidth() const;
   float getHeight() const;
 
  private:
-  void createRectangles(const std::string& layerName, short categoryBits,
-                        bool collidable, float friction);
-  void createPolylines(const std::string& layerName, short categoryBits,
-                       bool collidable, float friction);
+  std::list<b2Body*> createRectangles(const std::string& layerName, short categoryBits,
+                                      bool collidable, float friction);
+  std::list<b2Body*> createPolylines(const std::string& layerName, short categoryBits,
+                                     bool collidable, float friction);
 
   void createTriggers();
   void createPortals();
@@ -142,9 +153,10 @@ class GameMap {
   void createChests();
 
   b2World* _world;
-  std::unordered_set<b2Body*> _tmxTiledMapBodies;
   cocos2d::TMXTiledMap* _tmxTiledMap;
   std::string _tmxTiledMapFileName;
+  std::list<b2Body*> _tmxTiledMapBodies;
+  std::list<b2Body*> _tmxTiledMapPlatformBodies;
 
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;

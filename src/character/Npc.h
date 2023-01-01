@@ -4,10 +4,11 @@
 
 #include <atomic>
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
 #include <cocos2d.h>
+
 #include "Character.h"
 #include "Interactable.h"
 #include "gameplay/DialogueTree.h"
@@ -64,6 +65,7 @@ class Npc : public Character, public Interactable {
   virtual void import(const std::string& jsonFileName) override;  // Character
 
   virtual void onKilled() override;  // Character
+  virtual void onMapChanged() override;  // Character
 
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character
@@ -83,12 +85,14 @@ class Npc : public Character, public Interactable {
 
   void act(float delta);
   void findNewLockedOnTargetFromParty(Character* killedTarget);
-  void moveToTarget(float delta, Character* target, float followDistance);
+  void moveToTarget(float delta, const b2Vec2& targetPos, float followDist);
+  void moveToTarget(float delta, Character* target, float followDist);
   void moveRandomly(float delta,
                     int minMoveDuration, int maxMoveDuration,
                     int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
   void reverseDirection();
+  b2Vec2 findNearestHigherPlatform(float delta);
 
   bool isInPlayerParty() const;
   bool isWaitingForPlayer() const;
@@ -100,6 +104,8 @@ class Npc : public Character, public Interactable {
 
   inline bool isSandboxing() const { return _isSandboxing; }
   inline void setSandboxing(bool sandboxing) { _isSandboxing = sandboxing; }
+
+  inline void clearMoveDest() { _moveDest.SetZero(); }
 
   static inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
     Npc::_areNpcsAllowedToAct = npcsAllowedToAct;
@@ -120,6 +126,10 @@ class Npc : public Character, public Interactable {
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
+  static inline constexpr float kAllyFollowDist = .75f;
+  static inline constexpr float kMoveDestFollowDist = .2f;
+  static inline constexpr float kMoveDestOffsetFromPlatform = .2f;
+
   // See `map/GameMap.cc` for its usage.
   static inline std::atomic<bool> _areNpcsAllowedToAct{true};
 
@@ -133,6 +143,9 @@ class Npc : public Character, public Interactable {
   bool _isSandboxing;
 
   cocos2d::Sprite* _hintBubbleFxSprite;
+
+  // The following variables are used in Npc::moveToClosestReachablePlatform()
+  b2Vec2 _moveDest;
 
   // The following variables are used in Npc::moveRandomly()
   bool _isMovingRight;
