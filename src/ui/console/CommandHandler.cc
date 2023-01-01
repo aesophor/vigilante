@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "CommandParser.h"
+#include "CommandHandler.h"
 
 #include <memory>
 
@@ -18,16 +18,16 @@
 using namespace std;
 
 using CmdTable = std::unordered_map<std::string,
-      void (vigilante::CommandParser::*)(const std::vector<std::string>&)>;
+      void (vigilante::CommandHandler::*)(const std::vector<std::string>&)>;
 
 namespace vigilante {
 
-CommandParser::CommandParser() : _success(), _errMsg() {}
+CommandHandler::CommandHandler() : _success(), _errMsg() {}
 
-void CommandParser::parse(const string& cmd, bool showNotification) {
+bool CommandHandler::handle(const string& cmd, bool showNotification) {
   vector<string> args;
   if (cmd.empty() || (args = string_util::split(cmd)).empty()) {
-    return;
+    return false;
   }
 
   _success = false;
@@ -35,22 +35,23 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
 
   // Command handler table.
   static const CmdTable cmdTable = {
-    {"startQuest",              &CommandParser::startQuest             },
-    {"addItem",                 &CommandParser::addItem                },
-    {"removeItem",              &CommandParser::removeItem             },
-    {"updateDialogueTree",      &CommandParser::updateDialogueTree     },
-    {"joinPlayerParty",         &CommandParser::joinPlayerParty        },
-    {"leavePlayerParty",        &CommandParser::leavePlayerParty       },
-    {"playerPartyMemberWait",   &CommandParser::playerPartyMemberWait  },
-    {"playerPartyMemberFollow", &CommandParser::playerPartyMemberFollow},
-    {"tradeWithPlayer",         &CommandParser::tradeWithPlayer        },
-    {"killCurrentTarget",       &CommandParser::killCurrentTarget      },
+    {"startQuest",              &CommandHandler::startQuest             },
+    {"addItem",                 &CommandHandler::addItem                },
+    {"removeItem",              &CommandHandler::removeItem             },
+    {"updateDialogueTree",      &CommandHandler::updateDialogueTree     },
+    {"joinPlayerParty",         &CommandHandler::joinPlayerParty        },
+    {"leavePlayerParty",        &CommandHandler::leavePlayerParty       },
+    {"playerPartyMemberWait",   &CommandHandler::playerPartyMemberWait  },
+    {"playerPartyMemberFollow", &CommandHandler::playerPartyMemberFollow},
+    {"tradeWithPlayer",         &CommandHandler::tradeWithPlayer        },
+    {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
   };
- 
+
   // Execute the corresponding command handler from _cmdTable.
   // The obtained value from _cmdTable is a class member function pointer.
   CmdTable::const_iterator it = cmdTable.find(args[0]);
   if (it != cmdTable.end()) {
+    VGLOG(LOG_INFO, "Executing cmd: [%s].", cmd.c_str());
     (this->*((*it).second))(args);
   }
 
@@ -62,19 +63,20 @@ void CommandParser::parse(const string& cmd, bool showNotification) {
   if (showNotification) {
     Notifications::getInstance()->show((_success) ? cmd : _errMsg);
   }
+
+  return _success;
 }
 
-void CommandParser::setSuccess() {
+void CommandHandler::setSuccess() {
   _success = true;
 }
 
-void CommandParser::setError(const string& errMsg) {
+void CommandHandler::setError(const string& errMsg) {
   _success = false;
   _errMsg = errMsg;
 }
 
-
-void CommandParser::startQuest(const vector<string>& args) {
+void CommandHandler::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
     setError("usage: startQuest <quest>");
     return;
@@ -84,8 +86,7 @@ void CommandParser::startQuest(const vector<string>& args) {
   setSuccess();
 }
 
-
-void CommandParser::addItem(const vector<string>& args) {
+void CommandHandler::addItem(const vector<string>& args) {
   if (args.size() < 2) {
     setError("usage: addItem <itemName> [amount]");
     return;
@@ -117,8 +118,7 @@ void CommandParser::addItem(const vector<string>& args) {
   setSuccess();
 }
 
-
-void CommandParser::removeItem(const vector<string>& args) {
+void CommandHandler::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
     setError("usage: removeItem <itemName> [amount]");
     return;
@@ -150,21 +150,19 @@ void CommandParser::removeItem(const vector<string>& args) {
   setSuccess();
 }
 
-
-void CommandParser::updateDialogueTree(const vector<string>& args) {
+void CommandHandler::updateDialogueTree(const vector<string>& args) {
   if (args.size() < 3) {
     setError("usage: updateDialogueTree <npcJson> <dialogueTreeJson>");
     return;
   }
 
   // TODO: Maybe add some argument check here?
- 
+
   DialogueTree::setLatestNpcDialogueTree(args[1], args[2]);
   setSuccess();
 }
 
-
-void CommandParser::joinPlayerParty(const vector<string>&) {
+void CommandHandler::joinPlayerParty(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
@@ -178,8 +176,7 @@ void CommandParser::joinPlayerParty(const vector<string>&) {
   setSuccess();
 }
 
-
-void CommandParser::leavePlayerParty(const vector<string>&) {
+void CommandHandler::leavePlayerParty(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
@@ -193,8 +190,7 @@ void CommandParser::leavePlayerParty(const vector<string>&) {
   setSuccess();
 }
 
-
-void CommandParser::playerPartyMemberWait(const vector<string>&) {
+void CommandHandler::playerPartyMemberWait(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
@@ -213,8 +209,7 @@ void CommandParser::playerPartyMemberWait(const vector<string>&) {
   setSuccess();
 }
 
-
-void CommandParser::playerPartyMemberFollow(const vector<string>&) {
+void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
@@ -233,8 +228,7 @@ void CommandParser::playerPartyMemberFollow(const vector<string>&) {
   setSuccess();
 }
 
-
-void CommandParser::tradeWithPlayer(const vector<string>&) {
+void CommandHandler::tradeWithPlayer(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
@@ -248,8 +242,7 @@ void CommandParser::tradeWithPlayer(const vector<string>&) {
   setSuccess();
 }
 
-
-void CommandParser::killCurrentTarget(const vector<string>&) {
+void CommandHandler::killCurrentTarget(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
   Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);

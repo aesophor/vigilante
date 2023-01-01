@@ -1,6 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COMMAND_PARSER_H_
-#define VIGILANTE_COMMAND_PARSER_H_
+#ifndef VIGILANTE_COMMAND_HANDLER_H_
+#define VIGILANTE_COMMAND_HANDLER_H_
 
 #include <string>
 #include <unordered_map>
@@ -8,12 +8,12 @@
 
 namespace vigilante {
 
-class CommandParser {
+class CommandHandler {
  public:
-  CommandParser();
-  virtual ~CommandParser() = default;
+  CommandHandler();
+  virtual ~CommandHandler() = default;
 
-  void parse(const std::string& cmd, bool showNotification);
+  bool handle(const std::string& cmd, bool showNotification);
 
  private:
   void setSuccess();
@@ -37,4 +37,4 @@ class CommandParser {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_COMMAND_PARSER_H_
+#endif  // VIGILANTE_COMMAND_HANDLER_H_

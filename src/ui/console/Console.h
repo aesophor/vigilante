@@ -6,8 +6,9 @@
 #include <string>
 
 #include <cocos2d.h>
+
 #include "ui/TextField.h"
-#include "ui/console/CommandParser.h"
+#include "ui/console/CommandHandler.h"
 #include "util/ds/CircularBuffer.h"
 
 namespace vigilante {
@@ -49,7 +50,7 @@ class Console {
   cocos2d::Layer* _layer;
 
   TextField _textField;
-  CommandParser _cmdParser;
+  CommandHandler _cmdHandler;
   CommandHistory _cmdHistory;
 };
 

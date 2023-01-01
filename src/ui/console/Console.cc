@@ -21,11 +21,11 @@ Console* Console::getInstance() {
 Console::Console()
     : _layer(Layer::create()),
       _textField(),
-      _cmdParser(),
+      _cmdHandler(),
       _cmdHistory() {
 
   auto onSubmit = [this]() {
-    executeCmd(_textField.getString(), 
+    executeCmd(_textField.getString(),
                /*showNotification=*/true,
                /*saveInHistory=*/true);
     _textField.clear();
@@ -65,8 +65,9 @@ void Console::update(float delta) {
 void Console::executeCmd(const string& cmd,
                          bool showNotification,
                          bool saveInHistory) {
-  VGLOG(LOG_INFO, "Executing: %s", cmd.c_str());
-  _cmdParser.parse(cmd, showNotification);
+  if (!_cmdHandler.handle(cmd, showNotification)) {
+    VGLOG(LOG_INFO, "Failed to handle cmd: [%s].", cmd.c_str());
+  }
 
   if (saveInHistory) {
     _cmdHistory.push(cmd);
