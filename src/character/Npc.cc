@@ -324,9 +324,9 @@ void Npc::act(float delta) {
     clearMoveDest();
     teleportToTarget(_party->getLeader());
   } else if (_moveDest.x || _moveDest.y) {
-    moveToTarget(delta, _moveDest, Npc::kMoveDestFollowDist);
+    moveToTarget(delta, _moveDest, Npc::_kMoveDestFollowDist);
   } else if (_party && !isWaitingForPartyLeader()) {
-    moveToTarget(delta, _party->getLeader(), Npc::kAllyFollowDist);
+    moveToTarget(delta, _party->getLeader(), Npc::_kAllyFollowDist);
   } else if (_isSandboxing) {
     moveRandomly(delta, 0, 5, 0, 5);
   }
@@ -349,7 +349,7 @@ bool Npc::isTooFarAwayFromTarget(Character* target) const {
   const b2Vec2& thisPos = _body->GetPosition();
   const b2Vec2& targetPos = target->getBody()->GetPosition();
 
-  return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > kAllyTeleportDist;
+  return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > Npc::_kAllyTeleportDist;
 }
 
 void Npc::teleportToTarget(Character* target) {
@@ -378,24 +378,24 @@ void Npc::moveToTarget(float delta, Character* target, float followDist) {
 
 void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
   const b2Vec2& thisPos = _body->GetPosition();
-
   if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
     _moveDest.SetZero();
     return;
   }
 
-  if (targetPos.y > thisPos.y + followDist) {
-    _moveDest = findNearestHigherPlatform(delta);
+  PathFinder* pathFinder = GameMapManager::getInstance()->getGameMap()->getPathFinder();
+  if (auto nextHop = pathFinder->findOptimalNextHop(thisPos, targetPos, followDist)) {
+    _moveDest = *nextHop;
   } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
-    // Sometimes when two Npcs are too close to each other,
-    // they will stuck in the same place, unable to attack each other.
-    // This is most likely because they are facing at the wrong direction.
-    _isFacingRight = targetPos.x > thisPos.x;
-
     (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
   }
 
-  jumpIfStucked(delta, /*checkInterval=*/.5f);
+  // Sometimes when two Npcs are too close to each other,
+  // they will stuck in the same place, unable to attack each other.
+  // This is most likely because they are facing at the wrong direction.
+  _isFacingRight = targetPos.x > thisPos.x;
+
+  jumpIfStucked(delta, Npc::_kJumpCheckInterval);
 }
 
 void Npc::moveRandomly(float delta,
@@ -439,34 +439,6 @@ void Npc::jumpIfStucked(float delta, float checkInterval) {
 
 void Npc::reverseDirection() {
   _isMovingRight = !_isMovingRight;
-}
-
-b2Vec2 Npc::findNearestHigherPlatform(float delta) {
-  const b2Vec2& thisPos = _body->GetPosition();
-  const b2Body* closestPlatformBody = nullptr;
-  float minDist = numeric_limits<float>::max();
-
-  GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
-  for (auto platformBody : gameMap->getTmxTiledMapPlatformBodies()) {
-    const b2Vec2& platformPos = platformBody->GetPosition();
-    if (platformPos.y < thisPos.y) {
-      continue;
-    }
-
-    const float dist = std::abs(platformPos.y - thisPos.y);
-    if (dist < minDist) {
-      closestPlatformBody = platformBody;
-      minDist = dist;
-    }
-  }
-
-  if (!closestPlatformBody) {
-    return b2Vec2(0, 0);
-  }
-
-  b2Vec2 targetPos = closestPlatformBody->GetPosition();
-  targetPos.y += Npc::kMoveDestOffsetFromPlatform;
-  return targetPos;
 }
 
 bool Npc::isPlayerLeaderOfParty() const {

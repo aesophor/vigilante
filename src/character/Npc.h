@@ -11,7 +11,6 @@
 
 #include "Interactable.h"
 #include "character/Character.h"
-#include "character/PathFinder.h"
 #include "gameplay/DialogueTree.h"
 
 namespace vigilante {
@@ -96,7 +95,6 @@ class Npc : public Character, public Interactable {
                     int minWaitDuration, int maxWaitDuration);
   void jumpIfStucked(float delta, float checkInterval);
   void reverseDirection();
-  b2Vec2 findNearestHigherPlatform(float delta);
 
   bool isPlayerLeaderOfParty() const;
   bool isWaitingForPartyLeader() const;
@@ -130,11 +128,11 @@ class Npc : public Character, public Interactable {
 
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
-
-  static inline constexpr float kAllyTeleportDist = 2.5f;
-  static inline constexpr float kAllyFollowDist = .75f;
-  static inline constexpr float kMoveDestFollowDist = .2f;
-  static inline constexpr float kMoveDestOffsetFromPlatform = .2f;
+                                               //
+  static inline constexpr float _kAllyTeleportDist = 2.5f;
+  static inline constexpr float _kAllyFollowDist = .75f;
+  static inline constexpr float _kMoveDestFollowDist = .2f;
+  static inline constexpr float _kJumpCheckInterval = .5f;
 
   // See `map/GameMap.cc` for its usage.
   static inline std::atomic<bool> _areNpcsAllowedToAct{true};

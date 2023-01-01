@@ -8,12 +8,13 @@
 #include <unordered_set>
 #include <vector>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
 
 #include "DynamicActor.h"
 #include "Interactable.h"
 #include "item/Item.h"
+#include "map/PathFinder.h"
 #include "util/Logger.h"
 
 namespace vigilante {
@@ -134,14 +135,17 @@ class GameMap {
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-  inline const std::list<b2Body*>
-  getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
   inline cocos2d::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
+  inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
+  inline const std::list<b2Body*>
+  getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
+
   float getWidth() const;
   float getHeight() const;
 
  private:
+  cocos2d::ValueVector getObjects(const std::string& layerName);
   std::list<b2Body*> createRectangles(const std::string& layerName, short categoryBits,
                                       bool collidable, float friction);
   std::list<b2Body*> createPolylines(const std::string& layerName, short categoryBits,
@@ -161,6 +165,8 @@ class GameMap {
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
+
+  std::unique_ptr<PathFinder> _pathFinder;
 
   friend class GameMapManager;
 };

@@ -19,6 +19,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		294D0D641D0D56D500F7F5D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294D0D631D0D56D500F7F5D4 /* CoreText.framework */; };
+		3A05001E2961E3CF00D621CA /* PathFinder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A05001C2961E3CF00D621CA /* PathFinder.cc */; };
+		3A05001F2961E3CF00D621CA /* PathFinder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A05001C2961E3CF00D621CA /* PathFinder.cc */; };
 		3A0E168524B69344003BCCA1 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 503AE10317EB98FF00D1A890 /* main.cc */; };
 		3A5B90AD25D7940300F06219 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE225D7940200F06219 /* FloatingDamages.cc */; };
 		3A5B90AE25D7940300F06219 /* FloatingDamages.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B8FE225D7940200F06219 /* FloatingDamages.cc */; };
@@ -270,6 +272,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		294D0D631D0D56D500F7F5D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
+		3A05001C2961E3CF00D621CA /* PathFinder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathFinder.cc; sourceTree = "<group>"; };
+		3A05001D2961E3CF00D621CA /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
 		3A5B8FE125D7940200F06219 /* FloatingDamages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingDamages.h; sourceTree = "<group>"; };
 		3A5B8FE225D7940200F06219 /* FloatingDamages.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingDamages.cc; sourceTree = "<group>"; };
 		3A5B8FE325D7940200F06219 /* Shade.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shade.cc; sourceTree = "<group>"; };
@@ -918,6 +922,8 @@
 		3A5B907425D7940300F06219 /* map */ = {
 			isa = PBXGroup;
 			children = (
+				3A05001C2961E3CF00D621CA /* PathFinder.cc */,
+				3A05001D2961E3CF00D621CA /* PathFinder.h */,
 				3A5B907525D7940300F06219 /* GameMapManager.cc */,
 				3A5B907625D7940300F06219 /* FxManager.h */,
 				3A5B907725D7940300F06219 /* GameMap.h */,
@@ -1236,6 +1242,7 @@
 				3A5B90F525D7940300F06219 /* MagicalMissile.cc in Sources */,
 				3A5B914B25D7940400F06219 /* GameScene.cc in Sources */,
 				3A5B90FF25D7940300F06219 /* Logger.cc in Sources */,
+				3A05001E2961E3CF00D621CA /* PathFinder.cc in Sources */,
 				3A5B912725D7940400F06219 /* GameMap.cc in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
 				3A5B90CB25D7940300F06219 /* SkillPane.cc in Sources */,
@@ -1322,6 +1329,7 @@
 				3A5B913A25D7940400F06219 /* CollectItemObjective.cc in Sources */,
 				3A5B90B225D7940300F06219 /* Window.cc in Sources */,
 				3A5B90AE25D7940300F06219 /* FloatingDamages.cc in Sources */,
+				3A05001F2961E3CF00D621CA /* PathFinder.cc in Sources */,
 				3A5B90BC25D7940300F06219 /* TradeListView.cc in Sources */,
 				3A5B914025D7940400F06219 /* ItemPriceTable.cc in Sources */,
 				3A5B90FC25D7940300F06219 /* Skill.cc in Sources */,

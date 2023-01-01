@@ -23,6 +23,7 @@
 #include "ui/control_hints/ControlHints.h"
 #include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/Logger.h"
 #include "util/StringUtil.h"
 #include "util/RandUtil.h"
 
@@ -39,7 +40,8 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _tmxTiledMapPlatformBodies(),
       _dynamicActors(),
       _triggers(),
-      _portals() {}
+      _portals(),
+      _pathFinder(std::make_unique<SimplePathFinder>()) {}
 
 void GameMap::createObjects() {
   std::list<b2Body*> bodies;
@@ -111,12 +113,22 @@ float GameMap::getHeight() const {
   return _tmxTiledMap->getMapSize().height * _tmxTiledMap->getTileSize().height;
 }
 
+cocos2d::ValueVector GameMap::getObjects(const string& layerName) {
+  auto objectGroup = _tmxTiledMap->getObjectGroup(layerName);
+  if (!objectGroup) {
+    VGLOG(LOG_INFO, "Failed to get object object group: [%s]", layerName.c_str());
+    return {};
+  }
+
+  return objectGroup->getObjects();
+}
+
 std::list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
                                              bool collidable, float friction) {
   //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   std::list<b2Body*> bodies;
 
-  for (const auto& rectObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
+  for (const auto& rectObj : getObjects(layerName)) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
@@ -146,7 +158,7 @@ std::list<b2Body*> GameMap::createPolylines(const string& layerName, short categ
   std::list<b2Body*> bodies;
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
-  for (const auto& lineObj : _tmxTiledMap->getObjectGroup(layerName)->getObjects()) {
+  for (const auto& lineObj : getObjects(layerName)) {
     const auto& valMap = lineObj.asValueMap();
     float xRef = valMap.at("x").asFloat();
     float yRef = valMap.at("y").asFloat();
@@ -178,7 +190,7 @@ std::list<b2Body*> GameMap::createPolylines(const string& layerName, short categ
 }
 
 void GameMap::createTriggers() {
-  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Trigger")->getObjects()) {
+  for (const auto& rectObj : getObjects("Trigger")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
@@ -209,7 +221,7 @@ void GameMap::createTriggers() {
 }
 
 void GameMap::createPortals() {
-  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Portal")->getObjects()) {
+  for (const auto& rectObj : getObjects("Portal")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
@@ -242,7 +254,7 @@ void GameMap::createPortals() {
 }
 
 void GameMap::createNpcs() {
-  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Npcs")->getObjects()) {
+  for (const auto& rectObj : getObjects("Npcs")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
@@ -272,7 +284,7 @@ void GameMap::createNpcs() {
 }
 
 void GameMap::createChests() {
-  for (const auto& rectObj : _tmxTiledMap->getObjectGroup("Chest")->getObjects()) {
+  for (const auto& rectObj : getObjects("Chest")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
