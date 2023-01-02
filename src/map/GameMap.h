@@ -137,6 +137,7 @@ class GameMap {
 
   inline cocos2d::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
+  inline const std::string& getBgmFileName() const { return _bgmFileName; }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::list<b2Body*>
   getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
@@ -159,6 +160,7 @@ class GameMap {
   b2World* _world;
   cocos2d::TMXTiledMap* _tmxTiledMap;
   std::string _tmxTiledMapFileName;
+  std::string _bgmFileName;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
 

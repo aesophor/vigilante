@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <thread>
 
+#include "AudioManager.h"
 #include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -28,6 +29,7 @@
 #include "util/RandUtil.h"
 
 using namespace std;
+using namespace vigilante::assets;
 USING_NS_CC;
 
 namespace vigilante {
@@ -36,6 +38,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
     : _world(world),
       _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
       _tmxTiledMapFileName(tmxMapFileName),
+      _bgmFileName(_tmxTiledMap->getProperty("bgm").asString()),
       _tmxTiledMapBodies(),
       _tmxTiledMapPlatformBodies(),
       _dynamicActors(),
@@ -439,8 +442,10 @@ void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
 
   if (!canBeUnlockedBy(user)) {
     Notifications::getInstance()->show("This door is locked.");
+    AudioManager::getInstance()->playSfx(kSfxDoorLocked);
   } else {
     Notifications::getInstance()->show("Door unlocked.");
+    AudioManager::getInstance()->playSfx(kSfxDoorUnlocked);
     unlock();
   }
 }

@@ -5,6 +5,7 @@
 
 #include <Box2D/Box2D.h>
 
+#include "AudioManager.h"
 #include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -85,6 +86,8 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
 }
 
 GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
+  std::string oldBgmFileName;
+
   // Remove deceased party member from player's party,
   // and remove their b2body and texture.
   if (_player) {
@@ -95,6 +98,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
 
   // Clean up previous GameMap.
   if (_gameMap) {
+    oldBgmFileName = _gameMap->getBgmFileName();
     _layer->removeChild(_gameMap->getTmxTiledMap());
     _gameMap->deleteObjects();
     _gameMap.reset();  // deletes the underlying GameMap object and _gameMap = nullptr.
@@ -108,6 +112,11 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   // If the player object hasn't been created yet, then spawn it.
   if (!_player) {
     _player = _gameMap->createPlayer();
+  }
+
+  if (oldBgmFileName != _gameMap->getBgmFileName()) {
+    AudioManager::getInstance()->stopBgm();
+    AudioManager::getInstance()->playBgm(_gameMap->getBgmFileName());
   }
 
   return _gameMap.get();

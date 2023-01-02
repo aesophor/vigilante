@@ -19,14 +19,14 @@ USING_NS_CC;
 
 namespace vigilante::assets {
 
-void loadSpritesheets(const string& spritesheetsListFileName) {
+void loadSpritesheets(const fs::path& spritesheetsListFileName) {
   char buf[256] = {0};
   getcwd(buf, 256);
   std::cout << buf << std::endl;
 
   ifstream fin(spritesheetsListFileName);
   if (!fin.is_open()) {
-    throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName);
+    throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName.native());
   }
 
   VGLOG(LOG_INFO, "Loading textures...");

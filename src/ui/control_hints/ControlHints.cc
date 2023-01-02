@@ -207,8 +207,8 @@ ControlHints::Hint::Hint(const vector<EventKeyboard::KeyCode>& keyCodes,
 
   for (size_t i = 0; i < keyCodes.size(); i++) {
     // Example: Texture/ui/control_hints/E.png
-    string iconPath = kControlHints +
-                      keycode_util::keyCodeToString(keyCodes.at(i)) + ".png";
+    std::string iconFileName = keycode_util::keyCodeToString(keyCodes.at(i)) + ".png";
+    fs::path iconPath = kControlHintsDir / iconFileName;
 
     _icons[i] = ui::ImageView::create(iconPath);
     _icons[i]->setAnchorPoint({0, 1});

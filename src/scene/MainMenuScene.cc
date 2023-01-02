@@ -1,14 +1,13 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MainMenuScene.h"
 
-#include <SimpleAudioEngine.h>
+#include "AudioManager.h"
 #include "Assets.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
 
 using namespace std;
-using CocosDenshion::SimpleAudioEngine;
 USING_NS_CC;
 
 namespace vigilante {
@@ -50,8 +49,8 @@ bool MainMenuScene::init() {
   // Initialize InputManager.
   InputManager::getInstance()->activate(this);
 
-  // Play main theme Bgm.
-  SimpleAudioEngine::getInstance()->playBackgroundMusic(assets::kMainThemeBgm.c_str(), true);
+  // Play main menu Bgm.
+  AudioManager::getInstance()->playBgm(assets::kMainThemeBgm);
 
   schedule(schedule_selector(MainMenuScene::update));
   return true;
@@ -80,7 +79,7 @@ void MainMenuScene::handleInput() {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
         InputManager::getInstance()->deactivate();
-        SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        AudioManager::getInstance()->stopBgm();
         SceneManager::getInstance()->pushScene(GameScene::create());
         break;
       }

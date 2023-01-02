@@ -6,6 +6,7 @@
 
 #include <json/document.h>
 
+#include "AudioManager.h"
 #include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -20,6 +21,7 @@
 #include "util/Logger.h"
 
 using namespace std;
+using namespace vigilante::assets;
 using rapidjson::Document;
 USING_NS_CC;
 
@@ -856,6 +858,8 @@ void Character::equip(Equipment* equipment) {
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
   GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+
+  AudioManager::getInstance()->playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -873,6 +877,8 @@ void Character::unequip(Equipment::Type equipmentType) {
   _equipmentSlots[equipmentType] = nullptr;
   addItem(_itemMapper.find(e->getItemProfile().name)->second, 1);
   GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
+
+  AudioManager::getInstance()->playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::pickupItem(Item* item) {

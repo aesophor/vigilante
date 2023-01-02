@@ -40,7 +40,7 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
     ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
-    icon->loadTexture((item) ? item->getIconPath() : kEmptyImage);
+    icon->loadTexture((item) ? item->getIconPath() : kEmptyImage.native());
     label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
 
     // Display item price if not trading with ally.
