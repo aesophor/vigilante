@@ -128,7 +128,7 @@ class Npc : public Character, public Interactable {
 
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
-                                               //
+
   static inline constexpr float _kAllyTeleportDist = 2.5f;
   static inline constexpr float _kAllyFollowDist = .75f;
   static inline constexpr float _kMoveDestFollowDist = .2f;

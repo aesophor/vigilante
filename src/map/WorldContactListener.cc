@@ -198,9 +198,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
 
-        c->setInteractableObject(i);
-
-        if (dynamic_cast<Player*>(c) ) {
+        if (dynamic_cast<Player*>(c)) {
           i->showHintUI();
         }
 
@@ -208,6 +206,8 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
           CallbackManager::getInstance()->runAfter([=]() {
             c->interact(i);
           }, .1f);
+        } else {
+          c->setInteractableObject(i);
         }
       }
       break;

@@ -30,6 +30,7 @@ class CommandHandler {
   void playerPartyMemberFollow(const std::vector<std::string>& args);
   void tradeWithPlayer(const std::vector<std::string>& args);
   void killCurrentTarget(const std::vector<std::string>& args);
+  void interact(const std::vector<std::string>& args);
 
   bool _success;
   std::string _errMsg;

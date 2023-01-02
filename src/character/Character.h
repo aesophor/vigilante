@@ -143,6 +143,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isSheathingWeapon() const { return _isSheathingWeapon; }
   inline bool isUnsheathingWeapon() const { return _isUnsheathingWeapon; }
 
+  inline void setFacingRight(bool facingRight) { _isFacingRight = facingRight; }
   inline void setJumping(bool jumping) { _isJumping = jumping; }
   inline void setDoubleJumping(bool doubleJumping) { _isDoubleJumping = doubleJumping; }
   inline void setOnPlatform(bool onPlatform) { _isOnPlatform = onPlatform; }

@@ -86,10 +86,13 @@ unique_ptr<Player> GameMap::createPlayer() const {
 
   const TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
   const auto& valMap = objGroup->getObjects().at(0).asValueMap();
-  float x = valMap.at("x").asFloat();
-  float y = valMap.at("y").asFloat();
+  const float x = valMap.at("x").asFloat();
+  const float y = valMap.at("y").asFloat();
+  const bool isFacingRight = valMap.at("isFacingRight").asBool();
 
   player->showOnMap(x, y);
+  player->setFacingRight(isFacingRight);
+
   return player;
 }
 

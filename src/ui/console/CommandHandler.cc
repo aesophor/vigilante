@@ -45,6 +45,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"playerPartyMemberFollow", &CommandHandler::playerPartyMemberFollow},
     {"tradeWithPlayer",         &CommandHandler::tradeWithPlayer        },
     {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
+    {"interact",                &CommandHandler::interact               },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -248,6 +249,23 @@ void CommandHandler::killCurrentTarget(const vector<string>&) {
   assert(player != nullptr && targetNpc != nullptr);
 
   targetNpc->receiveDamage(player, 999);
+  setSuccess();
+}
+
+void CommandHandler::interact(const vector<string>&) {
+  Player* player = GameMapManager::getInstance()->getPlayer();
+  Interactable* interactable = player->getInteractableObject();
+
+  if (!player) {
+    setError("No player.");
+    return;
+  }
+  if (!interactable) {
+    setError("No nearby interactable objects.");
+    return;
+  }
+
+  player->interact(interactable);
   setSuccess();
 }
 
