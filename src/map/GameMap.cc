@@ -86,13 +86,14 @@ unique_ptr<Player> GameMap::createPlayer() const {
 
   const TMXObjectGroup* objGroup = _tmxTiledMap->getObjectGroup("Player");
   const auto& valMap = objGroup->getObjects().at(0).asValueMap();
-  const float x = valMap.at("x").asFloat();
-  const float y = valMap.at("y").asFloat();
-  const bool isFacingRight = valMap.at("isFacingRight").asBool();
+  float x = valMap.at("x").asFloat();
+  float y = valMap.at("y").asFloat();
+
+  if (auto it = valMap.find("isFacingRight"); it != valMap.end()) {
+    player->setFacingRight(it->second.asBool());
+  }
 
   player->showOnMap(x, y);
-  player->setFacingRight(isFacingRight);
-
   return player;
 }
 
@@ -263,8 +264,13 @@ void GameMap::createNpcs() {
     float y = valMap.at("y").asFloat();
     string json = valMap.at("json").asString();
 
+    auto npc = std::make_shared<Npc>(json);
+    if (auto it = valMap.find("isFacingRight"); it != valMap.end()) {
+      npc->setFacingRight(it->second.asBool());
+    }
+
     if (Npc::isNpcAllowedToSpawn(json)) {
-      showDynamicActor(std::make_shared<Npc>(json), x, y);
+      showDynamicActor(std::move(npc), x, y);
     }
   }
 
