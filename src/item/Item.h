@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ITEM_H_
 #define VIGILANTE_ITEM_H_
 
@@ -41,6 +41,7 @@ class Item : public DynamicActor, public Importable {
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   inline Item::Profile& getItemProfile() { return _itemProfile; }
+  inline const Item::Profile& getItemProfile() const { return _itemProfile; }
   inline const std::string& getName() const { return _itemProfile.name; }
   inline const std::string& getDesc() const { return _itemProfile.desc; }
   std::string getIconPath() const;

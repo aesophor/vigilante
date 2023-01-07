@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_EQUIPMENT_H_
 #define VIGILANTE_EQUIPMENT_H_
 
@@ -46,6 +46,9 @@ class Equipment : public Item {
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   inline Equipment::Profile& getEquipmentProfile() { return _equipmentProfile; }
+  inline const Equipment::Profile& getEquipmentProfile() const {
+    return _equipmentProfile;
+  }
 
  private:
   Equipment::Profile _equipmentProfile;

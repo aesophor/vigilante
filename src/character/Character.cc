@@ -311,31 +311,21 @@ void Character::defineTexture(const string& bodyTextureResDir, float x, float y)
 }
 
 void Character::loadBodyAnimations(const string& bodyTextureResDir) {
-#define CREATE_BODY_ANIMATION(state, fallback)         \
-  do {                                                 \
-    _bodyAnimations[state] = createAnimation(          \
-        _characterProfile.textureResDir,               \
-        _kCharacterStateStr[state],                    \
-        _characterProfile.frameIntervals[state] / kPpm, \
-        fallback                                       \
-    );                                                 \
-  } while (0)
-
-  CREATE_BODY_ANIMATION(State::IDLE_SHEATHED, nullptr);
+  createBodyAnimation(State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _bodyAnimations[State::IDLE_SHEATHED];
-  CREATE_BODY_ANIMATION(State::IDLE_UNSHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::RUNNING_SHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::RUNNING_UNSHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::JUMPING_SHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::JUMPING_UNSHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::FALLING_SHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::FALLING_UNSHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::CROUCHING_SHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::CROUCHING_UNSHEATHED, fallback);
-  CREATE_BODY_ANIMATION(State::SHEATHING_WEAPON, fallback);
-  CREATE_BODY_ANIMATION(State::UNSHEATHING_WEAPON, fallback);
-  CREATE_BODY_ANIMATION(State::ATTACKING, fallback);
-  CREATE_BODY_ANIMATION(State::KILLED, fallback);
+  createBodyAnimation(State::IDLE_UNSHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_SHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_UNSHEATHED, fallback);
+  createBodyAnimation(State::JUMPING_SHEATHED, fallback);
+  createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
+  createBodyAnimation(State::FALLING_SHEATHED, fallback);
+  createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
+  createBodyAnimation(State::CROUCHING_SHEATHED, fallback);
+  createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
+  createBodyAnimation(State::SHEATHING_WEAPON, fallback);
+  createBodyAnimation(State::UNSHEATHING_WEAPON, fallback);
+  createBodyAnimation(State::ATTACKING, fallback);
+  createBodyAnimation(State::KILLED, fallback);
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -359,34 +349,24 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
 }
 
 void Character::loadEquipmentAnimations(Equipment* equipment) {
-#define CREATE_EQUIPMENT_ANIMATION(equipment, state, fallback)                                     \
-  do {                                                                                             \
-    _equipmentAnimations[equipment->getEquipmentProfile().equipmentType][state] = createAnimation( \
-        equipment->getItemProfile().textureResDir,                                                 \
-        _kCharacterStateStr[state],                                                                \
-        _characterProfile.frameIntervals[state] / kPpm,                                             \
-        fallback                                                                                   \
-    );                                                                                             \
-  } while (0)
-
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
   const string& textureResDir = equipment->getItemProfile().textureResDir;
 
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_SHEATHED, nullptr);
+  createEquipmentAnimation(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::IDLE_UNSHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::RUNNING_SHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::RUNNING_UNSHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::JUMPING_SHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::JUMPING_UNSHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::FALLING_SHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::FALLING_UNSHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::CROUCHING_SHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::CROUCHING_UNSHEATHED, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::SHEATHING_WEAPON, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::UNSHEATHING_WEAPON, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::ATTACKING, fallback);
-  CREATE_EQUIPMENT_ANIMATION(equipment, State::KILLED, fallback);
+  createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::JUMPING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
+  createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
+  createEquipmentAnimation(equipment, State::ATTACKING, fallback);
+  createEquipmentAnimation(equipment, State::KILLED, fallback);
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -399,7 +379,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   }
 
   // Select a frame as default look for this sprite.
-  string framePrefix = StaticActor::getLastDirName(textureResDir);
+  const string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _equipmentSprites[type]->setScale(_characterProfile.spriteScaleX,
                                     _characterProfile.spriteScaleY);
@@ -407,6 +387,25 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
+}
+
+void Character::createBodyAnimation(const Character::State state,
+                                    cocos2d::Animation* fallbackAnimation) {
+  _bodyAnimations[state]
+    = createAnimation(_characterProfile.textureResDir,
+                      _kCharacterStateStr[state],
+                      _characterProfile.frameIntervals[state] / kPpm,
+                      fallbackAnimation);
+}
+
+void Character::createEquipmentAnimation(const Equipment* equipment,
+                                         const Character::State state,
+                                         cocos2d::Animation* fallbackAnimation) {
+  _equipmentAnimations[equipment->getEquipmentProfile().equipmentType][state]
+    = createAnimation(equipment->getItemProfile().textureResDir,
+                      _kCharacterStateStr[state],
+                      _characterProfile.frameIntervals[state] / kPpm,
+                      fallbackAnimation);
 }
 
 int Character::getExtraAttackAnimationsCount() const {

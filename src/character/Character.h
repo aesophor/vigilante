@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_CHARACTER_H_
 #define VIGILANTE_CHARACTER_H_
 
@@ -220,9 +220,6 @@ class Character : public DynamicActor, public Importable {
   virtual void regenMagicka(int deltaMagicka);
   virtual void regenStamina(int deltaStamina);
 
-  static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
-  static const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr;
-
   virtual void defineBody(b2BodyType bodyType,
                           float x,
                           float y,
@@ -236,6 +233,12 @@ class Character : public DynamicActor, public Importable {
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
   virtual void loadEquipmentAnimations(Equipment* equipment);
 
+  void createBodyAnimation(const Character::State state,
+                           cocos2d::Animation* fallbackAnimation);
+  void createEquipmentAnimation(const Equipment* equipment,
+                                const Character::State state,
+                                cocos2d::Animation* fallbackAnimation);
+
   int getExtraAttackAnimationsCount() const;
   cocos2d::Animation* getBodyAttackAnimation() const;
   cocos2d::Animation* getEquipmentAttackAnimation(const Equipment::Type type) const;
@@ -246,6 +249,9 @@ class Character : public DynamicActor, public Importable {
 
   Character::State getState() const;
   std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
+
+  static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
+  static const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr;
 
   // Characater data.
   Character::Profile _characterProfile;
