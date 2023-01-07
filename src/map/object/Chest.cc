@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
+#include "AudioManager.h"
+#include "Assets.h"
 #include "Constants.h"
 #include "map/FxManager.h"
 #include "map/GameMapManager.h"
@@ -16,6 +18,7 @@
 #define ITEM_MASK_BITS kGround | kPlatform | kWall
 
 using namespace std;
+using namespace vigilante::assets;
 using namespace vigilante::category_bits;
 USING_NS_CC;
 
@@ -23,7 +26,7 @@ namespace vigilante {
 
 Chest::Chest()
     : DynamicActor(CHEST_NUM_ANIMATIONS, CHEST_NUM_FIXTURES),
-      _hintBubbleFxSprite(), 
+      _hintBubbleFxSprite(),
       _itemJsons(),
       _isOpened() {}
 
@@ -80,10 +83,11 @@ void Chest::onInteract(Character*) {
   if (_isOpened) {
     return;
   }
-  _isOpened = true;
 
+  _isOpened = true;
   _bodySprite->setTexture("Texture/interactable_object/chest/chest_open.png");
   _bodySprite->getTexture()->setAliasTexParameters();
+  AudioManager::getInstance()->playSfx(kSfxChestOpened);
 
   for (const auto& item : _itemJsons) {
     float x = _body->GetPosition().x;

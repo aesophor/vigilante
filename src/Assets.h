@@ -100,6 +100,7 @@ inline const fs::path kMainThemeBgm = kMusicDir / "MainMenu.mp3";
 // Sound Effects
 inline const fs::path kSfxOpenClosePauseMenu = kSfxDir / "inventory" / "open_and_close.wav";
 inline const fs::path kSfxEquipUnequipItem = kSfxDir / "inventory" / "equip.wav";
+inline const fs::path kSfxChestOpened = kSfxDir / "environment" / "chest_opened.mp3";
 inline const fs::path kSfxDoorLocked = kSfxDir / "environment" / "locked.mp3";
 inline const fs::path kSfxDoorUnlocked = kSfxDir / "environment" / "unlocked.mp3";
 
