@@ -373,8 +373,7 @@ void WorldContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldMan
       }
 
       // Enable contact if the player is about to land on the platform.
-      // .15f is a value that works fine in my world.
-      constexpr float kOffset = .15f;
+      constexpr float kOffset = .18f;
       contact->SetEnabled(playerPos.x > platformMinX &&
                           playerPos.x < platformMaxX &&
                           playerPos.y > platformPos.y + kOffset);
