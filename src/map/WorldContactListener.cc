@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "WorldContactListener.h"
 
+#include <limits>
+
 #include <cocos2d.h>
 
 #include "CallbackManager.h"
@@ -355,12 +357,27 @@ void WorldContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldMan
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* platform = GetTargetFixture(category_bits::kPlatform, fixtureA, fixtureB);
 
-      float playerY = feetFixture->GetBody()->GetPosition().y;
-      float platformY = platform->GetBody()->GetPosition().y;
+      const auto& playerPos = feetFixture->GetBody()->GetPosition();
+      const auto& platformPos = platform->GetBody()->GetPosition();
+
+      auto platformShape = static_cast<b2PolygonShape*>(platform->GetShape());
+      float platformMinX = numeric_limits<float>::max();
+      float platformMaxX = numeric_limits<float>::lowest();
+      for (int i = 0; i < 4; i++) {
+        b2Vec2 point = platformShape->m_vertices[i];
+        point.x += platformPos.x;
+        point.y += platformPos.y;
+
+        platformMinX = std::min(platformMinX, point.x);
+        platformMaxX = std::max(platformMaxX, point.x);
+      }
 
       // Enable contact if the player is about to land on the platform.
       // .15f is a value that works fine in my world.
-      contact->SetEnabled(playerY > platformY + .15f);
+      constexpr float kOffset = .15f;
+      contact->SetEnabled(playerPos.x > platformMinX &&
+                          playerPos.x < platformMaxX &&
+                          playerPos.y > platformPos.y + kOffset);
       break;
     }
     default:
