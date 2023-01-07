@@ -27,4 +27,12 @@ void AudioManager::playSfx(const string& filename) {
   SimpleAudioEngine::getInstance()->playEffect(filename.c_str(), loop);
 }
 
+void AudioManager::setBgmVolume(const float volume) {
+  SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(volume);
+}
+
+void AudioManager::setSfxVolume(const float volume) {
+  SimpleAudioEngine::getInstance()->setEffectsVolume(volume);
+}
+
 }  // namespace vigilante
