@@ -44,6 +44,12 @@ const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr
   "killed"
 }};
 
+const array<string, Character::Sfx::SFX_SIZE> Character::_kCharacterSfxStr = {{
+  "jump",
+  "hurt",
+  "killed",
+}};
+
 Character::Character(const string& jsonFileName)
     : DynamicActor(State::STATE_SIZE, FixtureType::FIXTURE_SIZE),
       _characterProfile(jsonFileName),
@@ -309,7 +315,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     _bodyAnimations[state] = createAnimation(          \
         _characterProfile.textureResDir,               \
         _kCharacterStateStr[state],                    \
-        _characterProfile.frameInterval[state] / kPpm, \
+        _characterProfile.frameIntervals[state] / kPpm, \
         fallback                                       \
     );                                                 \
   } while (0)
@@ -335,7 +341,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     _bodyExtraAttackAnimations[i] = createAnimation(
         bodyTextureResDir,
         "attacking" + std::to_string(1 + i),
-        _characterProfile.frameInterval[State::ATTACKING] / kPpm,
+        _characterProfile.frameIntervals[State::ATTACKING] / kPpm,
         fallback
     );
   }
@@ -357,7 +363,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
     _equipmentAnimations[equipment->getEquipmentProfile().equipmentType][state] = createAnimation( \
         equipment->getItemProfile().textureResDir,                                                 \
         _kCharacterStateStr[state],                                                                \
-        _characterProfile.frameInterval[state] / kPpm,                                             \
+        _characterProfile.frameIntervals[state] / kPpm,                                             \
         fallback                                                                                   \
     );                                                                                             \
   } while (0)
@@ -386,7 +392,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
     _equipmentExtraAttackAnimations[type][i] = createAnimation(
         textureResDir,
         "attacking" + std::to_string(1 + i),
-        _characterProfile.frameInterval[State::ATTACKING] / kPpm,
+        _characterProfile.frameIntervals[State::ATTACKING] / kPpm,
         fallback
     );
   }
@@ -534,9 +540,26 @@ Character::State Character::getState() const {
   }
 }
 
+optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
+  if (auto fileName = _characterProfile.sfxFileNames[sfx]; fileName.size()) {
+    return fileName;
+  }
+  return nullopt;
+}
+
 void Character::onKilled() {
   _isKilled = true;
   GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
+
+  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED)) {
+    AudioManager::getInstance()->playSfx(*sfxFileName);
+  }
+}
+
+void Character::onFallToGroundOrPlatform() {
+  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP)) {
+    AudioManager::getInstance()->playSfx(*sfxFileName);
+  }
 }
 
 void Character::moveLeft() {
@@ -754,6 +777,10 @@ void Character::receiveDamage(Character* source, int damage) {
   }
 
   FloatingDamages::getInstance()->show(this, damage);
+
+  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
+    AudioManager::getInstance()->playSfx(*sfxFileName);
+  }
 }
 
 void Character::lockOn(Character* target) {
@@ -1026,8 +1053,11 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   spriteScaleY = json["spriteScaleY"].GetFloat();
 
   for (int i = 0; i < Character::State::STATE_SIZE; i++) {
-    float interval = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
-    frameInterval.push_back(interval);
+    frameIntervals[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
+  }
+
+  for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
+    sfxFileNames[i] = json["sfx"][Character::_kCharacterSfxStr[i].c_str()].GetString();
   }
 
   name = json["name"].GetString();

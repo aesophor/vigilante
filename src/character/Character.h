@@ -5,6 +5,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -28,6 +29,33 @@
 namespace vigilante {
 
 class Character : public DynamicActor, public Importable {
+ protected:
+  enum State {
+    IDLE_SHEATHED,
+    IDLE_UNSHEATHED,
+    RUNNING_SHEATHED,
+    RUNNING_UNSHEATHED,
+    JUMPING_SHEATHED,
+    JUMPING_UNSHEATHED,
+    FALLING_SHEATHED,
+    FALLING_UNSHEATHED,
+    CROUCHING_SHEATHED,
+    CROUCHING_UNSHEATHED,
+    SHEATHING_WEAPON,
+    UNSHEATHING_WEAPON,
+    ATTACKING,
+    KILLED,
+    STATE_SIZE,
+    FORCE_UPDATE
+  };
+
+  enum Sfx {
+    SFX_JUMP,
+    SFX_HURT,
+    SFX_KILLED,
+    SFX_SIZE,
+  };
+
  public:
   using Inventory = std::array<SetVector<Item*>, Item::Type::SIZE>;
   using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
@@ -43,7 +71,8 @@ class Character : public DynamicActor, public Importable {
     float spriteOffsetY;
     float spriteScaleX;
     float spriteScaleY;
-    std::vector<float> frameInterval;
+    std::array<float, Character::State::STATE_SIZE> frameIntervals;
+    std::array<std::string, Character::Sfx::SFX_SIZE> sfxFileNames;
 
     std::string name;
     int level;
@@ -93,6 +122,7 @@ class Character : public DynamicActor, public Importable {
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   virtual void onKilled();
+  virtual void onFallToGroundOrPlatform();
   virtual void onMapChanged() {}
 
   virtual void moveLeft();
@@ -193,26 +223,8 @@ class Character : public DynamicActor, public Importable {
   virtual void regenMagicka(int deltaMagicka);
   virtual void regenStamina(int deltaStamina);
 
-  enum State {
-    IDLE_SHEATHED,
-    IDLE_UNSHEATHED,
-    RUNNING_SHEATHED,
-    RUNNING_UNSHEATHED,
-    JUMPING_SHEATHED,
-    JUMPING_UNSHEATHED,
-    FALLING_SHEATHED,
-    FALLING_UNSHEATHED,
-    CROUCHING_SHEATHED,
-    CROUCHING_UNSHEATHED,
-    SHEATHING_WEAPON,
-    UNSHEATHING_WEAPON,
-    ATTACKING,
-    KILLED,
-    STATE_SIZE,
-    FORCE_UPDATE
-  };
-
   static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
+  static const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr;
 
   virtual void defineBody(b2BodyType bodyType,
                           float x,
@@ -236,6 +248,7 @@ class Character : public DynamicActor, public Importable {
   void runAnimation(const std::string& framesName, float interval);
 
   Character::State getState() const;
+  std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
 
   // Characater data.
   Character::Profile _characterProfile;

@@ -37,6 +37,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setDoubleJumping(false);
         c->setOnPlatform(false);
+        c->onFallToGroundOrPlatform();
         // Create dust effect.
         FxManager::getInstance()->createDustFx(c);
       }
@@ -50,6 +51,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setDoubleJumping(false);
         c->setOnPlatform(true);
+        c->onFallToGroundOrPlatform();
         // Create dust effect.
         FxManager::getInstance()->createDustFx(c);
       }

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "AudioManager.h"
 #include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -69,6 +70,12 @@ bool Player::showOnMap(float x, float y) {
   return true;
 }
 
+void Player::attack() {
+  Character::attack();
+
+  AudioManager::getInstance()->playSfx("Sfx/combat/sword_attack.mp3");
+}
+
 void Player::inflictDamage(Character* target, int damage) {
   Character::inflictDamage(target, damage);
   camera_util::shake(8, .1f);
@@ -80,6 +87,8 @@ void Player::inflictDamage(Character* target, int damage) {
 
     updateKillTargetObjectives(target);
   }
+
+  AudioManager::getInstance()->playSfx("Sfx/combat/sword_hit.mp3");
 }
 
 void Player::receiveDamage(Character* source, int damage) {
