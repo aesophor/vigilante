@@ -47,7 +47,7 @@ b2BodyBuilder& b2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm)
   _shape = std::make_unique<b2PolygonShape>();
   _fdef.shape = _shape.get();
 
-  b2PolygonShape* shape = dynamic_cast<b2PolygonShape*>(_shape.get());
+  b2PolygonShape* shape = static_cast<b2PolygonShape*>(_shape.get());
   shape->SetAsBox(hw / ppm, hh / ppm);
   return *this;
 }
@@ -56,7 +56,7 @@ b2BodyBuilder& b2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t c
   _shape = std::make_unique<b2PolygonShape>();
   _fdef.shape = _shape.get();
 
-  b2PolygonShape* shape = dynamic_cast<b2PolygonShape*>(_shape.get());
+  b2PolygonShape* shape = static_cast<b2PolygonShape*>(_shape.get());
   b2Vec2 scaledVertices[count];
   for (size_t i = 0; i < count; i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
@@ -69,7 +69,7 @@ b2BodyBuilder& b2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t 
   _shape = std::make_unique<b2ChainShape>();
   _fdef.shape = _shape.get();
 
-  b2ChainShape* shape = dynamic_cast<b2ChainShape*>(_shape.get());
+  b2ChainShape* shape = static_cast<b2ChainShape*>(_shape.get());
   b2Vec2 scaledVertices[count];
   for (size_t i = 0; i < count; i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
@@ -82,7 +82,7 @@ b2BodyBuilder& b2BodyBuilder::newEdgeShapeFixture(const b2Vec2& vertex1, const b
   _shape = std::make_unique<b2EdgeShape>();
   _fdef.shape = _shape.get();
 
-  b2EdgeShape* shape = dynamic_cast<b2EdgeShape*>(_shape.get());
+  b2EdgeShape* shape = static_cast<b2EdgeShape*>(_shape.get());
   b2Vec2 scaledVertex1 = {vertex1.x / ppm, vertex1.y / ppm};
   b2Vec2 scaledVertex2 = {vertex2.x / ppm, vertex2.y / ppm};
   shape->Set(scaledVertex1, scaledVertex2);
@@ -93,7 +93,7 @@ b2BodyBuilder& b2BodyBuilder::newCircleFixture(const b2Vec2& centerPos, int radi
   _shape = std::make_unique<b2CircleShape>();
   _fdef.shape = _shape.get();
 
-  b2CircleShape* shape = dynamic_cast<b2CircleShape*>(_shape.get());
+  b2CircleShape* shape = static_cast<b2CircleShape*>(_shape.get());
   shape->m_p.Set(centerPos.x / ppm, centerPos.y / ppm);
   shape->m_radius = radius / ppm;
   return *this;

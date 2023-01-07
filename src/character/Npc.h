@@ -76,6 +76,8 @@ class Npc : public Character, public Interactable {
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable
 
+  void dropItems();
+
   void updateDialogueTreeIfNeeded();
   void beginDialogue();
   void beginTrade();

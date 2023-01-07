@@ -141,11 +141,11 @@ void Character::update(float delta) {
   // Flip the sprite if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
-    auto shape = dynamic_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    auto shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {-_characterProfile.attackRange / kPpm, 0};
   } else if (_isFacingRight && _bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(false);
-    auto shape = dynamic_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
+    auto shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
     shape->m_p = {_characterProfile.attackRange / kPpm, 0};
   }
 
@@ -278,7 +278,6 @@ void Character::defineBody(b2BodyType bodyType,
     .setUserData(this)
     .buildFixture();
 
-
   // Create feet fixture.
   b2Vec2 feetVertices[4];
   feetVertices[0] = {(-bw / 2 + 1) / scaleFactor, 0};
@@ -291,7 +290,6 @@ void Character::defineBody(b2BodyType bodyType,
     .maskBits(feetMaskBits)
     .setUserData(this)
     .buildFixture();
-
 
   // Create weapon fixture.
   float atkRange = _characterProfile.attackRange;

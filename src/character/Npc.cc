@@ -145,6 +145,7 @@ void Npc::import(const string& jsonFileName) {
 
 void Npc::onKilled() {
   Character::onKilled();
+  dropItems();
 
   if (!_npcProfile.isRespawnable) {
     Npc::setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
@@ -180,26 +181,7 @@ void Npc::receiveDamage(Character* source, int damage) {
     return;
   }
 
-  // Give exp point to source character.
   source->addExp(_characterProfile.exp);
-
-  // Drop items. (Here we'll use a callback to drop items
-  // since creating fixtures during collision callback will crash)
-  // See: https://github.com/libgdx/libgdx/issues/2730
-  CallbackManager::getInstance()->runAfter([=]() {
-    for (const auto& i : _npcProfile.droppedItems) {
-      const string& itemJson = i.first;
-      float dropChance = i.second.chance;
-
-      float randChance = rand_util::randInt(0, 100);
-      if (randChance <= dropChance) {
-        float x = _body->GetPosition().x;
-        float y = _body->GetPosition().y;
-        int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-        GameMapManager::getInstance()->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
-      }
-    }
-  }, .2f);
 }
 
 void Npc::interact(Interactable* target) {
@@ -247,6 +229,25 @@ void Npc::removeHintBubbleFx() {
 
   FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
+}
+
+void Npc::dropItems() {
+  // We'll use a callback to drop items since creating fixtures during collision callback
+  // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
+  CallbackManager::getInstance()->runAfter([=]() {
+    for (const auto& i : _npcProfile.droppedItems) {
+      const string& itemJson = i.first;
+      float dropChance = i.second.chance;
+
+      float randChance = rand_util::randInt(0, 100);
+      if (randChance <= dropChance) {
+        float x = _body->GetPosition().x;
+        float y = _body->GetPosition().y;
+        int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
+        GameMapManager::getInstance()->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
+      }
+    }
+  }, .2f);
 }
 
 void Npc::updateDialogueTreeIfNeeded() {
