@@ -254,18 +254,18 @@ void CommandHandler::killCurrentTarget(const vector<string>&) {
 
 void CommandHandler::interact(const vector<string>&) {
   Player* player = GameMapManager::getInstance()->getPlayer();
-  Interactable* interactable = player->getInteractableObject();
+  const auto& interactables = player->getInRangeInteractables();
 
   if (!player) {
     setError("No player.");
     return;
   }
-  if (!interactable) {
+  if (interactables.empty()) {
     setError("No nearby interactable objects.");
     return;
   }
 
-  player->interact(interactable);
+  player->interact(*interactables.begin());
   setSuccess();
 }
 

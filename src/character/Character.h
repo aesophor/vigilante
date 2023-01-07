@@ -6,7 +6,6 @@
 #include <functional>
 #include <memory>
 #include <optional>
-#include <set>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -184,22 +183,20 @@ class Character : public DynamicActor, public Importable {
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
 
-  inline std::set<Character*>& getInRangeTargets() { return _inRangeTargets; }
+  inline std::unordered_set<Character*>& getInRangeTargets() { return _inRangeTargets; }
   inline Character* getLockedOnTarget() const { return _lockedOnTarget; }
   inline void setLockedOnTarget(Character* target) { _lockedOnTarget = target; }
   inline bool isAlerted() const { return _isAlerted; }
   inline void setAlerted(bool alerted) { _isAlerted = alerted; }
 
-  inline std::set<Item*>& getInRangeItems() { return _inRangeItems; }
+  inline std::unordered_set<Item*>& getInRangeItems() { return _inRangeItems; }
+  inline std::unordered_set<Interactable*>& getInRangeInteractables() {
+    return _inRangeInteractables;
+  }
 
   inline const Inventory& getInventory() const { return _inventory; }
   inline const EquipmentSlots& getEquipmentSlots() const { return _equipmentSlots; }
   int getItemAmount(const std::string& itemName) const;
-
-  inline Interactable* getInteractableObject() const { return _interactableObject; }
-  inline void setInteractableObject(Interactable* interactableObject) {
-    _interactableObject = interactableObject;
-  }
 
   inline GameMap::Portal* getPortal() const { return _portal; }
   inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
@@ -284,13 +281,13 @@ class Character : public DynamicActor, public Importable {
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is
   // within (attack) range.
-  std::set<Character*> _inRangeTargets;
+  std::unordered_set<Character*> _inRangeTargets;
   Character* _lockedOnTarget;
   bool _isAlerted;
 
-  // When player are close enough to the items dropped in the world,
-  // the pointers to the items are stored here.
-  std::set<Item*> _inRangeItems;
+  // Nearby items and interactable objects.
+  std::unordered_set<Item*> _inRangeItems;
+  std::unordered_set<Interactable*> _inRangeInteractables;
 
   // Character's inventory and equipment slots.
   // These two types are aliased. See the beginning of this class.
@@ -303,8 +300,7 @@ class Character : public DynamicActor, public Importable {
   Item* getExistingItemObj(Item* item) const;
   std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;
 
-  // The interactable object / portal to which this character is near.
-  Interactable* _interactableObject;
+  // The portal to which this character is near.
   GameMap::Portal* _portal;
 
   // Currently used skill.

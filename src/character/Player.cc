@@ -155,8 +155,8 @@ void Player::handleInput() {
   }
 
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
-    if (_interactableObject) {
-      interact(_interactableObject);
+    if (_inRangeInteractables.size()) {
+      interact(*_inRangeInteractables.begin());
     }
     return;
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {

@@ -200,16 +200,21 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
 
-        if (dynamic_cast<Player*>(c)) {
-          i->showHintUI();
-        }
-
         if (i->willInteractOnContact()) {
           CallbackManager::getInstance()->runAfter([=]() {
             c->interact(i);
           }, .1f);
-        } else {
-          c->setInteractableObject(i);
+          return;
+        }
+
+        auto& interactables = c->getInRangeInteractables();
+        if (interactables.size()) {
+          (*interactables.begin())->hideHintUI();
+        }
+        interactables.insert(i);
+
+        if (dynamic_cast<Player*>(c)) {
+          (*interactables.begin())->showHintUI();
         }
       }
       break;
@@ -312,7 +317,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kPortal: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* portalFixture = GetTargetFixture(category_bits::kPortal, fixtureA, fixtureB);
-      
+
       if (feetFixture && portalFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         GameMap::Portal* p = static_cast<GameMap::Portal*>(portalFixture->GetUserData());
@@ -325,11 +330,11 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     case category_bits::kFeet | category_bits::kInteractable: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       b2Fixture* interactableFixture = GetTargetFixture(category_bits::kInteractable, fixtureA, fixtureB);
-      
+
       if (feetFixture && interactableFixture) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
-        c->setInteractableObject(nullptr);
+        c->getInRangeInteractables().erase(i);
         i->hideHintUI();
       }
       break;
