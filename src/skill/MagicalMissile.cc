@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "Assets.h"
+#include "AudioManager.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
@@ -52,7 +52,7 @@ bool MagicalMissile::showOnMap(float x, float y) {
 
 void MagicalMissile::update(float delta) {
   DynamicActor::update(delta);
-  
+
   // If _body goes out of map, then we can delete this object.
   float x = _body->GetPosition().x * kPpm;
   float y = _body->GetPosition().y * kPpm;
@@ -63,7 +63,6 @@ void MagicalMissile::update(float delta) {
     onHit(nullptr);
   }
 }
-
 
 int MagicalMissile::getDamage() const {
   return _skillProfile.physicalDamage + _skillProfile.magicalDamage;
@@ -92,6 +91,9 @@ void MagicalMissile::onHit(Character* target) {
     _user->knockBack(target, knockBackForceX, knockBackForceY);
     _user->inflictDamage(target, getDamage());
   }
+
+  // Play sound effect.
+  AudioManager::getInstance()->playSfx(_skillProfile.sfxHit);
 }
 
 void MagicalMissile::import(const string& jsonFileName) {
@@ -119,7 +121,6 @@ void MagicalMissile::activate() {
   assert(activeCopy);
   auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
   GameMapManager::getInstance()->getGameMap()->showDynamicActor(std::move(actor), x, y);
-
 
   // Set up kinematicBody's moving speed.
   _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;
@@ -195,7 +196,7 @@ void MagicalMissile::defineTexture(const string& textureResDir, float x, float y
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
   _bodySprite->setPosition(x, y);
-  
+
   _bodySpritesheet->addChild(_launchFxSprite);
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters();

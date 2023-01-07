@@ -38,7 +38,7 @@ class Skill : public Importable, public Keybindable {
     std::string textureResDir;  // the animation of skill itself
     std::string name;
     std::string desc;
-    
+
     int requiredLevel;
     float cooldown;
 
@@ -48,6 +48,9 @@ class Skill : public Importable, public Keybindable {
     int deltaHealth;
     int deltaMagicka;
     int deltaStamina;
+
+    std::string sfxActivate;
+    std::string sfxHit;
 
     cocos2d::EventKeyboard::KeyCode hotkey;
   };

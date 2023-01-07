@@ -31,7 +31,6 @@ unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   return nullptr;
 }
 
-
 Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName), hotkey() {
   Document json = json_util::parseJson(jsonFileName);
 
@@ -53,6 +52,9 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   deltaHealth = json["deltaHealth"].GetInt();
   deltaMagicka = json["deltaMagicka"].GetInt();
   deltaStamina = json["deltaStamina"].GetInt();
+
+  sfxActivate = json["sfxActivate"].GetString();
+  sfxHit = json["sfxHit"].GetString();
 }
 
 }  // namespace vigilante

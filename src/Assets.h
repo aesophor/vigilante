@@ -16,6 +16,8 @@ inline const fs::path kFontDir = "Font";
 inline const fs::path kMapDir = "Map";
 inline const fs::path kMusicDir = "Music";
 inline const fs::path kSfxDir = "Sfx";
+inline const fs::path kSfxEnvDir = kSfxDir / "environment";
+inline const fs::path kSfxInvDir = kSfxDir / "inventory";
 inline const fs::path kTextureDir = "Texture";
 inline const fs::path kUIDir = kTextureDir / "ui";
 
@@ -98,11 +100,11 @@ inline const fs::path kGoldCoin = kDataDir / "item/misc/gold_coin.json";
 inline const fs::path kMainThemeBgm = kMusicDir / "MainMenu.mp3";
 
 // Sound Effects
-inline const fs::path kSfxOpenClosePauseMenu = kSfxDir / "inventory" / "open_and_close.wav";
-inline const fs::path kSfxEquipUnequipItem = kSfxDir / "inventory" / "equip.wav";
-inline const fs::path kSfxChestOpened = kSfxDir / "environment" / "chest_opened.mp3";
-inline const fs::path kSfxDoorLocked = kSfxDir / "environment" / "locked.mp3";
-inline const fs::path kSfxDoorUnlocked = kSfxDir / "environment" / "unlocked.mp3";
+inline const fs::path kSfxOpenClosePauseMenu = kSfxInvDir / "open_and_close.wav";
+inline const fs::path kSfxEquipUnequipItem = kSfxInvDir / "equip.wav";
+inline const fs::path kSfxChestOpened = kSfxEnvDir / "chest_opened.mp3";
+inline const fs::path kSfxDoorLocked = kSfxEnvDir / "locked.mp3";
+inline const fs::path kSfxDoorUnlocked = kSfxEnvDir / "unlocked.mp3";
 
 void loadSpritesheets(const fs::path& spritesheetsListFileName);
 

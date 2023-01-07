@@ -1,11 +1,9 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ForwardSlash.h"
 
-#include <memory>
-
+#include "AudioManager.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
-#include "map/GameMapManager.h"
 
 using namespace std;
 USING_NS_CC;
@@ -50,6 +48,9 @@ void ForwardSlash::activate() {
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);
+
+  // Play sound effect.
+  AudioManager::getInstance()->playSfx(_skillProfile.sfxActivate);
 }
 
 string ForwardSlash::getIconPath() const {
