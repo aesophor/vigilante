@@ -132,7 +132,6 @@ cocos2d::ValueVector GameMap::getObjects(const string& layerName) {
 
 std::list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
                                              bool collidable, float friction) {
-  //log("%s\n", _map->getProperty("backgroundMusic").asString().c_str());
   std::list<b2Body*> bodies;
 
   for (const auto& rectObj : getObjects(layerName)) {

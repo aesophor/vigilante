@@ -86,7 +86,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
 }
 
 GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
-  std::string oldBgmFileName;
+  string oldBgmFileName;
 
   // Remove deceased party member from player's party,
   // and remove their b2body and texture.
