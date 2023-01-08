@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "AudioManager.h"
+#include "Audio.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
@@ -93,7 +93,7 @@ void MagicalMissile::onHit(Character* target) {
   }
 
   // Play sound effect.
-  AudioManager::getInstance()->playSfx(_skillProfile.sfxHit);
+  Audio::getInstance()->playSfx(_skillProfile.sfxHit);
 }
 
 void MagicalMissile::import(const string& jsonFileName) {

@@ -5,8 +5,8 @@
 
 #include <Box2D/Box2D.h>
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Npc.h"
@@ -115,8 +115,8 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   if (oldBgmFileName != _gameMap->getBgmFileName()) {
-    AudioManager::getInstance()->stopBgm();
-    AudioManager::getInstance()->playBgm(_gameMap->getBgmFileName());
+    Audio::getInstance()->stopBgm();
+    Audio::getInstance()->playBgm(_gameMap->getBgmFileName());
   }
 
   return _gameMap.get();

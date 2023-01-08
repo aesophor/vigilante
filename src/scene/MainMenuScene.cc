@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MainMenuScene.h"
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
@@ -50,7 +50,7 @@ bool MainMenuScene::init() {
   InputManager::getInstance()->activate(this);
 
   // Play main menu Bgm.
-  AudioManager::getInstance()->playBgm(assets::kMainThemeBgm);
+  Audio::getInstance()->playBgm(assets::kMainThemeBgm);
 
   schedule(schedule_selector(MainMenuScene::update));
   return true;
@@ -78,8 +78,8 @@ void MainMenuScene::handleInput() {
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
+        Audio::getInstance()->stopBgm();
         InputManager::getInstance()->deactivate();
-        AudioManager::getInstance()->stopBgm();
         SceneManager::getInstance()->pushScene(GameScene::create());
         break;
       }

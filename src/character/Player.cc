@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
@@ -73,7 +73,7 @@ bool Player::showOnMap(float x, float y) {
 void Player::attack() {
   Character::attack();
 
-  AudioManager::getInstance()->playSfx("Sfx/combat/sword_attack.mp3");
+  Audio::getInstance()->playSfx("Sfx/combat/sword_attack.mp3");
 }
 
 void Player::inflictDamage(Character* target, int damage) {
@@ -88,7 +88,7 @@ void Player::inflictDamage(Character* target, int damage) {
     updateKillTargetObjectives(target);
   }
 
-  AudioManager::getInstance()->playSfx("Sfx/combat/sword_hit.mp3");
+  Audio::getInstance()->playSfx("Sfx/combat/sword_hit.mp3");
 }
 
 void Player::receiveDamage(Character* source, int damage) {

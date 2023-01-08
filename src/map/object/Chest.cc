@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "Constants.h"
 #include "map/FxManager.h"
 #include "map/GameMapManager.h"
@@ -87,7 +87,7 @@ void Chest::onInteract(Character*) {
   _isOpened = true;
   _bodySprite->setTexture("Texture/interactable_object/chest/chest_open.png");
   _bodySprite->getTexture()->setAliasTexParameters();
-  AudioManager::getInstance()->playSfx(kSfxChestOpened);
+  Audio::getInstance()->playSfx(kSfxChestOpened);
 
   for (const auto& item : _itemJsons) {
     float x = _body->GetPosition().x;

@@ -1,14 +1,14 @@
 // Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_AUDIO_MANAGER_H_
-#define VIGILANTE_AUDIO_MANAGER_H_
+#ifndef VIGILANTE_AUDIO_H_
+#define VIGILANTE_AUDIO_H_
 
 #include <string>
 
 namespace vigilante {
 
-class AudioManager {
+class Audio {
  public:
-  static AudioManager* getInstance();
+  static Audio* getInstance();
 
   void playBgm(const std::string& filename);
   void stopBgm();
@@ -19,9 +19,9 @@ class AudioManager {
   void setSfxVolume(const float volume);
 
  private:
-  AudioManager() = default;
+  Audio() = default;
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_AUDIO_MANAGER_H_
+#endif  // VIGILANTE_AUDIO_H_

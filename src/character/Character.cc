@@ -6,8 +6,8 @@
 
 #include <json/document.h>
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "Player.h"
@@ -550,13 +550,13 @@ void Character::onKilled() {
   GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
 
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED)) {
-    AudioManager::getInstance()->playSfx(*sfxFileName);
+    Audio::getInstance()->playSfx(*sfxFileName);
   }
 }
 
 void Character::onFallToGroundOrPlatform() {
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP)) {
-    AudioManager::getInstance()->playSfx(*sfxFileName);
+    Audio::getInstance()->playSfx(*sfxFileName);
   }
 }
 
@@ -777,7 +777,7 @@ void Character::receiveDamage(Character* source, int damage) {
   FloatingDamages::getInstance()->show(this, damage);
 
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
-    AudioManager::getInstance()->playSfx(*sfxFileName);
+    Audio::getInstance()->playSfx(*sfxFileName);
   }
 }
 
@@ -884,7 +884,7 @@ void Character::equip(Equipment* equipment) {
   loadEquipmentAnimations(equipment);
   GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 
-  AudioManager::getInstance()->playSfx(kSfxEquipUnequipItem);
+  Audio::getInstance()->playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -903,7 +903,7 @@ void Character::unequip(Equipment::Type equipmentType) {
   addItem(_itemMapper.find(e->getItemProfile().name)->second, 1);
   GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 
-  AudioManager::getInstance()->playSfx(kSfxEquipUnequipItem);
+  Audio::getInstance()->playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::pickupItem(Item* item) {

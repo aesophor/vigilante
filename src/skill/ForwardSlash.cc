@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ForwardSlash.h"
 
-#include "AudioManager.h"
+#include "Audio.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
 
@@ -50,7 +50,7 @@ void ForwardSlash::activate() {
   }, _skillProfile.framesDuration);
 
   // Play sound effect.
-  AudioManager::getInstance()->playSfx(_skillProfile.sfxActivate);
+  Audio::getInstance()->playSfx(_skillProfile.sfxActivate);
 }
 
 string ForwardSlash::getIconPath() const {

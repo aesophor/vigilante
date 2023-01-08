@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <thread>
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Character.h"
@@ -441,10 +441,10 @@ void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
 
   if (!canBeUnlockedBy(user)) {
     Notifications::getInstance()->show("This door is locked.");
-    AudioManager::getInstance()->playSfx(kSfxDoorLocked);
+    Audio::getInstance()->playSfx(kSfxDoorLocked);
   } else {
     Notifications::getInstance()->show("Door unlocked.");
-    AudioManager::getInstance()->playSfx(kSfxDoorUnlocked);
+    Audio::getInstance()->playSfx(kSfxDoorUnlocked);
     unlock();
   }
 }

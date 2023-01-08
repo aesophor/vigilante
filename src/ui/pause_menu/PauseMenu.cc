@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "PauseMenu.h"
 
-#include "AudioManager.h"
 #include "Assets.h"
+#include "Audio.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
 #include "ui/pause_menu/inventory/InventoryPane.h"
@@ -148,7 +148,7 @@ void PauseMenu::setVisible(bool visible) {
     ControlHints::getInstance()->popProfile();
   }
 
-  AudioManager::getInstance()->playSfx(kSfxOpenClosePauseMenu);
+  Audio::getInstance()->playSfx(kSfxOpenClosePauseMenu);
 }
 
 }  // namespace vigilante
