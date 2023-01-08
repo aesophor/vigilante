@@ -14,11 +14,6 @@ USING_NS_CC;
 
 namespace vigilante {
 
-FloatingDamages* FloatingDamages::getInstance() {
-  static FloatingDamages instance;
-  return &instance;
-}
-
 FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
 
 void FloatingDamages::update(float delta) {

@@ -14,8 +14,8 @@ namespace vigilante {
 
 class DialogueManager : public Controllable {
  public:
-  static DialogueManager* getInstance();
-  virtual ~DialogueManager() = default;
+  DialogueManager();
+  virtual ~DialogueManager() override = default;
 
   void update(float delta);
   virtual void handleInput() override;
@@ -30,8 +30,6 @@ class DialogueManager : public Controllable {
   void setCurrentDialogue(Dialogue* dialogue) const;
 
  private:
-  DialogueManager();
-
   cocos2d::Layer* _layer;
 
   Npc* _targetNpc;

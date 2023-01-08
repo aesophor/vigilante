@@ -13,10 +13,9 @@ namespace vigilante {
 // Forward Declaration
 class Character;
 
-class FxManager {
+class FxManager final {
  public:
-  static FxManager* getInstance();
-  virtual ~FxManager() = default;
+  FxManager();
 
   void createDustFx(Character* c);
   cocos2d::Sprite* createHintBubbleFx(const b2Body* body,
@@ -25,8 +24,6 @@ class FxManager {
   void removeFx(cocos2d::Sprite* sprite);
 
  private:
-  FxManager() = default;
-
   cocos2d::Sprite* createFx(const std::string& textureResDir,
                             const std::string& framesName,
                             float x,

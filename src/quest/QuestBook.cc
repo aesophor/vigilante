@@ -6,7 +6,8 @@
 #include <stdexcept>
 
 #include "quest/KillTargetObjective.h"
-#include "ui/quest_hints/QuestHints.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/ds/Algorithm.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
@@ -29,6 +30,8 @@ QuestBook::QuestBook(const string& questsListFileName) {
 
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
+  auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
+
   VGLOG(LOG_INFO, "Updating quests");
   for (const auto quest : _inProgressQuests) {
     if (quest->getCurrentStage().objective->getObjectiveType() != objectiveType) {
@@ -41,7 +44,7 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
       if (quest->isCompleted()) {
         markCompleted(quest);
       } else {
-        QuestHints::getInstance()->show(quest->getCurrentStage().objective->getDesc());
+        questHints->show(quest->getCurrentStage().objective->getDesc());
       }
     }
   }
@@ -61,10 +64,11 @@ void QuestBook::startQuest(Quest* quest) {
 
   // Add this quest to _inProgressQuests.
   _inProgressQuests.push_back(quest);
-
   quest->advanceStage();
-  QuestHints::getInstance()->show("Started: " + quest->getQuestProfile().title);
-  QuestHints::getInstance()->show(quest->getCurrentStage().objective->getDesc());
+  
+  auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
+  questHints->show("Started: " + quest->getQuestProfile().title);
+  questHints->show(quest->getCurrentStage().objective->getDesc());
 }
 
 void QuestBook::markCompleted(Quest* quest) {
@@ -78,10 +82,10 @@ void QuestBook::markCompleted(Quest* quest) {
   // and add it to _completedQuests.
   _inProgressQuests.erase(
       std::remove(_inProgressQuests.begin(), _inProgressQuests.end(), quest), _inProgressQuests.end());
-
   _completedQuests.push_back(quest);
-
-  QuestHints::getInstance()->show("Completed: " + quest->getQuestProfile().title);
+  
+  auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
+  questHints->show("Completed: " + quest->getQuestProfile().title);
 }
 
 

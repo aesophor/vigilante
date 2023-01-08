@@ -1,8 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameScene.h"
 
-#include <string>
-
 #include <SimpleAudioEngine.h>
 
 #include "Assets.h"
@@ -11,8 +9,6 @@
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "gameplay/ItemPriceTable.h"
-#include "input/InputManager.h"
-#include "map/GameMap.h"
 #include "skill/Skill.h"
 #include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
@@ -22,6 +18,7 @@
 #include "util/Logger.h"
 
 using namespace std;
+using namespace vigilante::assets;
 USING_NS_CC;
 
 namespace vigilante {
@@ -30,6 +27,16 @@ bool GameScene::init() {
   if (!Scene::init()) {
     return false;
   }
+  
+  // Initialize vigilante's exp point table.
+  exp_point_table::import(kExpPointTable);
+
+  // Initialize vigilante's item price table.
+  item_price_table::import(kItemPriceTable);
+
+  // Initialize InputManager.
+  // InputManager keep tracks of which keys are pressed.
+  InputManager::the().activate(this);
 
   // Camera note:
   // DEFAULT (orthographic): used to render tilemaps/game objects
@@ -61,82 +68,70 @@ bool GameScene::init() {
   addChild(_hudCamera);
 
   // Initialize shade.
-  _shade = Shade::getInstance();
+  _shade = std::make_unique<Shade>();
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  printf("_shade->getImageView(): %p\n", _shade->getImageView());
   addChild(_shade->getImageView(), graphical_layers::kShade);
 
   // Initialize HUD.
-  _hud = Hud::getInstance();
+  _hud = std::make_unique<Hud>();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_hud->getLayer(), graphical_layers::kHud);
 
   // Initialize console.
-  _console = Console::getInstance();
+  _console = std::make_unique<Console>();
   _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_console->getLayer(), graphical_layers::kConsole);
 
   // Initialize notifications.
-  _notifications = Notifications::getInstance();
+  _notifications = std::make_unique<Notifications>();
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_notifications->getLayer(), graphical_layers::kNotification);
 
   // Initialize quest hints.
-  _questHints = QuestHints::getInstance();
+  _questHints = std::make_unique<QuestHints>();
   _questHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
 
   // Initialize floating damages.
-  _floatingDamages = FloatingDamages::getInstance();
+  _floatingDamages = std::make_unique<FloatingDamages>();
   addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
 
   // Initialize control hints.
-  _controlHints = ControlHints::getInstance();
+  _controlHints = std::make_unique<ControlHints>();
   _controlHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_controlHints->getLayer(), graphical_layers::kControlHints);
 
   // Initialize dialogue manager.
-  _dialogueManager = DialogueManager::getInstance();
+  _dialogueManager = std::make_unique<DialogueManager>();
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
 
   // Initialize window manager.
-  _windowManager = WindowManager::getInstance();
+  _windowManager = std::make_unique<WindowManager>();
   _windowManager->setDefaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   _windowManager->setScene(this);
 
-  // Initialize vigilante's exp point table.
-  exp_point_table::import(assets::kExpPointTable);
-
-  // Initialize vigilante's item price table.
-  item_price_table::import(assets::kItemPriceTable);
-
-
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
-  _gameMapManager = GameMapManager::getInstance();
+  _gameMapManager = std::make_unique<GameMapManager>(b2Vec2{0, kGravity});
   addChild(_gameMapManager->getLayer());
 
   // Initialize FxManager.
-  _fxManager = FxManager::getInstance();
+  _fxManager = std::make_unique<FxManager>();
 
-  // Initialize InputManager.
-  // InputManager keep tracks of which keys are pressed.
-  InputManager::getInstance()->activate(this);
+  // Initialize Pause Menu.
+  _pauseMenu = std::make_unique<PauseMenu>();
+  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
 
   // Create b2DebugRenderer.
   _b2dr = b2DebugRenderer::create(_gameMapManager->getWorld());
   _b2dr->setVisible(false);
   addChild(_b2dr);
-
-  // Initialize Pause Menu.
-  _pauseMenu = PauseMenu::getInstance();
-  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
-
+  
   // Tick the box2d world.
   schedule(schedule_selector(GameScene::update));
-
-  startNewGame();
   return true;
 }
 
@@ -153,9 +148,7 @@ void GameScene::update(float delta) {
 
   // If there are no ongoing GameMap transitions, then step the box2d world.
   if (_shade->getImageView()->getNumberOfRunningActions() == 0) {
-    _gameMapManager->getWorld()->Step(1 / kFps,
-                                      kVelocityIterations,
-                                      kPositionIterations);
+    _gameMapManager->getWorld()->Step(1 / kFps, kVelocityIterations, kPositionIterations);
   }
 
   _gameMapManager->update(delta);
@@ -176,7 +169,7 @@ void GameScene::handleInput() {
   // If there is a specialOnKeyPressed Event Listener,
   // then we should simply let it do its job,
   // and return immediately so that we won't interfere with it.
-  if (InputManager::getInstance()->hasSpecialOnKeyPressed()) {
+  if (InputManager::the().hasSpecialOnKeyPressed()) {
     return;
   }
 
@@ -229,7 +222,7 @@ void GameScene::handleInput() {
 }
 
 void GameScene::startNewGame() {
-  _gameMapManager->loadGameMap(assets::kNewGameInitialMap);
+  _gameMapManager->loadGameMap(kNewGameInitialMap);
 }
 
 void GameScene::loadGame(const string& gameSaveFilePath) {

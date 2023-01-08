@@ -9,12 +9,7 @@
 
 namespace vigilante {
 
-Notifications* Notifications::getInstance() {
-  static Notifications instance;
-  return &instance;
-}
-
 Notifications::Notifications()
     : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
 
-} // namespace vigilante
+}  // namespace vigilante

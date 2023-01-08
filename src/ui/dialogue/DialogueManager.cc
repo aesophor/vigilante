@@ -6,11 +6,6 @@ USING_NS_CC;
 
 namespace vigilante {
 
-DialogueManager* DialogueManager::getInstance() {
-  static DialogueManager instance;
-  return &instance;
-}
-
 DialogueManager::DialogueManager()
     : _layer(Layer::create()),
       _subtitles(std::make_unique<Subtitles>()),

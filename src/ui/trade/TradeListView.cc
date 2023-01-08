@@ -4,8 +4,9 @@
 #include <memory>
 
 #include "Assets.h"
-#include "input/InputManager.h"
 #include "gameplay/ItemPriceTable.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/AmountSelectionWindow.h"
 #include "ui/WindowManager.h"
 #include "ui/notifications/Notifications.h"
@@ -84,14 +85,15 @@ void TradeListView::confirm() {
       const string& buf = wRaw->getTextField()->getString();
       int amount = 0;
 
+      auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
       try {
         amount = std::stoi(buf);
       } catch (const std::invalid_argument& ex) {
-        Notifications::getInstance()->show("Invalid amount");
+        notifications->show("Invalid amount");
       } catch (const std::out_of_range& ex) {
-        Notifications::getInstance()->show("Amount too large or too small");
+        notifications->show("Amount too large or too small");
       } catch (...) {
-        Notifications::getInstance()->show("Unknown error while parsing amount");
+        notifications->show("Unknown error while parsing amount");
       }
 
       doTrade(buyer, seller, item, amount);
@@ -100,13 +102,16 @@ void TradeListView::confirm() {
     auto onDismiss = []() {
       // Close AmountSelectionWindow which
       // should be at the top at this moment.
-      WindowManager::getInstance()->pop();
+      auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
+      wm->pop();
     };
 
     w->getTextField()->setOnSubmit(onSubmit);
     w->getTextField()->setOnDismiss(onDismiss);
     w->getTextField()->setReceivingInput(true);
-    WindowManager::getInstance()->push(std::move(w));
+    
+    auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
+    wm->push(std::move(w));
   }
 }
 
@@ -150,22 +155,21 @@ void TradeListView::doTrade(Character* buyer,
     return;
   }
 
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   const int price = item_price_table::getPrice(item);
 
   // Check if `amount` is valid.
   if (amount > item->getAmount()) {
-    Notifications::getInstance()->show("Invalid amount");
+    notifications->show("Invalid amount");
     return;
   }
 
   if (!_tradeWindow->isTradingWithAlly()) {
-    // Check if the buyer has sufficient amount of gold.
     if (buyer->getGoldBalance() < price * amount) {
-      Notifications::getInstance()->show("The buyer doesn't have sufficient amount of gold.");
+      notifications->show("The buyer doesn't have sufficient amount of gold.");
       return;
     }
 
-    // Transfer funds
     if (!item->isGold()) {
       buyer->removeGold(price * amount);
       seller->addGold(price * amount);

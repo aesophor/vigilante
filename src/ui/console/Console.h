@@ -13,10 +13,9 @@
 
 namespace vigilante {
 
-class Console {
+class Console final {
  public:
-  static Console* getInstance();
-  virtual ~Console() = default;
+  Console();
 
   virtual void update(float delta);
   virtual void executeCmd(const std::string& cmd,
@@ -29,8 +28,6 @@ class Console {
   inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
-  Console();
-
   class CommandHistory : public CircularBuffer<std::string> {
    public:
     friend class Console;

@@ -4,12 +4,13 @@
 #include "Assets.h"
 #include "Audio.h"
 #include "input/InputManager.h"
-#include "map/GameMapManager.h"
-#include "ui/pause_menu/inventory/InventoryPane.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/pause_menu/equipment/EquipmentPane.h"
-#include "ui/pause_menu/skill/SkillPane.h"
-#include "ui/pause_menu/quest/QuestPane.h"
+#include "ui/pause_menu/inventory/InventoryPane.h"
 #include "ui/pause_menu/option/OptionPane.h"
+#include "ui/pause_menu/quest/QuestPane.h"
+#include "ui/pause_menu/skill/SkillPane.h"
 #include "util/Logger.h"
 
 #define HEADER_PANE_POS {140, 280}
@@ -30,11 +31,6 @@ const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
   "QUESTS",
   "OPTIONS"
 };
-
-PauseMenu* PauseMenu::getInstance() {
-  static PauseMenu instance;
-  return &instance;
-}
 
 PauseMenu::PauseMenu()
     : _layer(Layer::create()),
@@ -106,8 +102,8 @@ void PauseMenu::handleInput() {
     getCurrentPane()->update();
     getCurrentPane()->setVisible(true);
 
-    ControlHints::getInstance()->switchToProfile(
-        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->switchToProfile(static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
 
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
     getCurrentPane()->setVisible(false);
@@ -115,8 +111,8 @@ void PauseMenu::handleInput() {
     getCurrentPane()->update();
     getCurrentPane()->setVisible(true);
 
-    ControlHints::getInstance()->switchToProfile(
-        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->switchToProfile(static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
   }
 
   _panes[_headerPane->getCurrentIndex()]->handleInput();
@@ -130,7 +126,8 @@ void PauseMenu::show(Pane pane) {
 }
 
 Player* PauseMenu::getPlayer() const {
-  return GameMapManager::getInstance()->getPlayer();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  return gmMgr->getPlayer();
 }
 
 AbstractPane* PauseMenu::getCurrentPane() const {
@@ -140,15 +137,18 @@ AbstractPane* PauseMenu::getCurrentPane() const {
 void PauseMenu::setVisible(bool visible) {
   if (visible && !isVisible()) {
     _layer->setVisible(true);
-    ControlHints::getInstance()->pushProfile(
-        static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
+    
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->pushProfile(static_cast<ControlHints::Profile>(_headerPane->getCurrentIndex()));
 
   } else if (!visible && isVisible()) {
     _layer->setVisible(false);
-    ControlHints::getInstance()->popProfile();
+    
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->popProfile();
   }
 
-  Audio::getInstance()->playSfx(kSfxOpenClosePauseMenu);
+  Audio::the().playSfx(kSfxOpenClosePauseMenu);
 }
 
 }  // namespace vigilante

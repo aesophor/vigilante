@@ -8,7 +8,7 @@ namespace vigilante {
 
 class Audio {
  public:
-  static Audio* getInstance();
+  static Audio& the();
 
   void playBgm(const std::string& filename);
   void stopBgm();

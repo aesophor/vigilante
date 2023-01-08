@@ -6,15 +6,12 @@
 
 namespace vigilante {
 
-class Notifications : public TimedLabelService {
+class Notifications final : public TimedLabelService {
  public:
-  static Notifications* getInstance();
-  virtual ~Notifications() = default;
-
- private:
   Notifications();
+  virtual ~Notifications() override = default;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_NOTIFICATIONS_H_
+#endif  // VIGILANTE_NOTIFICATIONS_H_

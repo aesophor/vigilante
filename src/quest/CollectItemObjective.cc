@@ -3,7 +3,8 @@
 
 #include "character/Player.h"
 #include "item/Item.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 using namespace std;
 
@@ -17,7 +18,8 @@ CollectItemObjective::CollectItemObjective(const string& desc,
       _amount(amount) {}
 
 bool CollectItemObjective::isCompleted() const {
-  return GameMapManager::getInstance()->getPlayer()->getItemAmount(_itemName) >= _amount;
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  return gmMgr->getPlayer()->getItemAmount(_itemName) >= _amount;
 }
 
 }  // namespace vigilante

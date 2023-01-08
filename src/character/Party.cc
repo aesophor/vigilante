@@ -2,11 +2,12 @@
 #include "Party.h"
 
 #include <Box2D/Box2D.h>
+
 #include "Constants.h"
 #include "character/Character.h"
 #include "character/Npc.h"
-#include "map/GameMapManager.h"
-#include "ui/notifications/Notifications.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/StringUtil.h"
 
 using namespace std;
@@ -33,11 +34,11 @@ bool Party::hasMember(const string& characterJsonFileName) const {
 }
 
 void Party::recruit(Character* targetCharacter) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
   shared_ptr<Character> target
-    = std::dynamic_pointer_cast<Character>(
-        GameMapManager::getInstance()->getGameMap()->removeDynamicActor(targetCharacter));
+    = std::dynamic_pointer_cast<Character>(gmMgr->getGameMap()->removeDynamicActor(targetCharacter));
 
   // Disable the spawning of this NPC if needed.
   // For instance, if this NPC is a spawn-once only NPC and is already killed,
@@ -50,9 +51,9 @@ void Party::recruit(Character* targetCharacter) {
   target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);
   addMember(std::move(target));
 
-  Notifications::getInstance()->show(
-      string_util::format("%s is now following you.",
-                          targetCharacter->getCharacterProfile().name.c_str()));
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show(string_util::format("%s is now following you.",
+                                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
@@ -66,35 +67,37 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   target->removeFromMap();
 
   if (addToMap) {
-    GameMapManager::getInstance()->getGameMap()->showDynamicActor(
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+    gmMgr->getGameMap()->showDynamicActor(
         std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
   }
 
-  Notifications::getInstance()->show(
-      string_util::format("%s has left your party.",
-                          targetCharacter->getCharacterProfile().name.c_str()));
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show(string_util::format("%s has left your party.",
+                                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 
 void Party::askMemberToWait(Character* targetCharacter) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
   addWaitingMember(targetCharacter->getCharacterProfile().jsonFileName,
-                   GameMapManager::getInstance()->getGameMap()->getTmxTiledMapFileName(),
+                   gmMgr->getGameMap()->getTmxTiledMapFileName(),
                    targetPos.x,
                    targetPos.y);
 
-  Notifications::getInstance()->show(
-      string_util::format("%s will be waiting for you.",
-                          targetCharacter->getCharacterProfile().name.c_str()));
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show(string_util::format("%s will be waiting for you.",
+                                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 void Party::askMemberToFollow(Character* targetCharacter) {
   removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
 
-  Notifications::getInstance()->show(
-      string_util::format("%s is now following you.",
-                          targetCharacter->getCharacterProfile().name.c_str()));
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show(string_util::format("%s is now following you.",
+                                          targetCharacter->getCharacterProfile().name.c_str()));
 }
 
 bool Party::hasWaitingMember(const string& characterJsonFileName) const {

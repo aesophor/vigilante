@@ -6,9 +6,9 @@ USING_NS_CC;
 
 namespace vigilante {
 
-SceneManager* SceneManager::getInstance() {
+SceneManager& SceneManager::the() {
   static SceneManager instance;
-  return &instance;
+  return instance;
 }
 
 SceneManager::SceneManager()
@@ -28,10 +28,6 @@ void SceneManager::pushScene(Scene* scene) {
 void SceneManager::popScene() {
   _director->popScene();
   _scenes.pop();
-}
-
-Scene* SceneManager::getCurrentScene() const {
-  return _scenes.top();
 }
 
 }  // namespace vigilante

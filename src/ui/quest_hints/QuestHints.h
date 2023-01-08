@@ -6,13 +6,10 @@
 
 namespace vigilante {
 
-class QuestHints : public TimedLabelService {
+class QuestHints final : public TimedLabelService {
  public:
-  static QuestHints* getInstance();
-  virtual ~QuestHints() = default;
-
- private:
   QuestHints();
+  virtual ~QuestHints() override = default;
 };
 
 }  // namespace vigilante

@@ -6,22 +6,26 @@
 
 #include <cocos2d.h>
 
+#include "scene/GameScene.h"
+
 namespace vigilante {
 
 // cocos2d-x's Director is a pile of bullshit because
 // it doesn't allow me to fucking pop a scene and
 // get the next scene immediately, so I end up implementing
 // this class.
-
 class SceneManager final {
  public:
-  static SceneManager* getInstance();
-  virtual ~SceneManager() = default;
+  static SceneManager& the();
 
   void runWithScene(cocos2d::Scene* scene);
   void pushScene(cocos2d::Scene* scene);
   void popScene();
-  cocos2d::Scene* getCurrentScene() const;
+  
+  template <typename T = cocos2d::Scene>
+  T* getCurrentScene() const {
+    return dynamic_cast<T*>(_scenes.top());
+  }
 
  private:
   SceneManager();

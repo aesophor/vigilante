@@ -9,7 +9,8 @@
 #include "item/Consumable.h"
 #include "item/MiscItem.h"
 #include "item/Key.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
@@ -65,8 +66,10 @@ bool Item::showOnMap(float x, float y) {
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
-                                                      graphical_layers::kItem);
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kItem);
+
   return true;
 }
 
@@ -79,7 +82,8 @@ void Item::defineBody(b2BodyType bodyType,
                       float y,
                       short categoryBits,
                       short maskBits) {
-  b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  b2BodyBuilder bodyBuilder(gmMgr->getWorld());
 
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)

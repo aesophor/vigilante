@@ -8,9 +8,9 @@ using namespace CocosDenshion;
 
 namespace vigilante {
 
-Audio* Audio::getInstance() {
+Audio& Audio::the() {
   static Audio instance;
-  return &instance;
+  return instance;
 }
 
 void Audio::playBgm(const string& filename) {

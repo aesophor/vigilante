@@ -5,6 +5,8 @@
 
 #include "Constants.h"
 #include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 using namespace std;
 USING_NS_CC;
@@ -23,10 +25,11 @@ bool StaticActor::showOnMap(float x, float y) {
   }
 
   _isShownOnMap = true;
-
   _bodySprite->setPosition(x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
-                                                      graphical_layers::kDefault);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kDefault);
+  
   return true;
 }
 
@@ -38,9 +41,9 @@ bool StaticActor::removeFromMap() {
   _isShownOnMap = false;
 
   // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
-  GameMapManager::getInstance()->getLayer()->removeChild(
-    (_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite)
-  );
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->removeChild((_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite));
+
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;
   return true;

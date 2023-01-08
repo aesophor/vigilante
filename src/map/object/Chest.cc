@@ -4,9 +4,8 @@
 #include "Assets.h"
 #include "Audio.h"
 #include "Constants.h"
-#include "map/FxManager.h"
-#include "map/GameMapManager.h"
-#include "ui/control_hints/ControlHints.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
@@ -49,8 +48,10 @@ bool Chest::showOnMap(float x, float y) {
 
   _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
   _bodySprite->getTexture()->setAliasTexParameters();
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySprite,
-                                                      graphical_layers::kChest);
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
+
   return true;
 }
 
@@ -59,7 +60,8 @@ void Chest::defineBody(b2BodyType bodyType,
                        float y,
                        short categoryBits,
                        short maskBits) {
-  b2BodyBuilder bodyBuilder(GameMapManager::getInstance()->getWorld());
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  b2BodyBuilder bodyBuilder(gmMgr->getWorld());
 
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)
@@ -87,14 +89,17 @@ void Chest::onInteract(Character*) {
   _isOpened = true;
   _bodySprite->setTexture("Texture/interactable_object/chest/chest_open.png");
   _bodySprite->getTexture()->setAliasTexParameters();
-  Audio::getInstance()->playSfx(kSfxChestOpened);
 
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   for (const auto& item : _itemJsons) {
     float x = _body->GetPosition().x;
     float y = _body->GetPosition().y;
-    GameMapManager::getInstance()->getGameMap()->createItem(item, x * kPpm, y * kPpm);
+    gmMgr->getGameMap()->createItem(item, x * kPpm, y * kPpm);
   }
+  
   _itemJsons.clear();
+  
+  Audio::the().playSfx(kSfxChestOpened);
 }
 
 void Chest::showHintUI() {
@@ -103,12 +108,16 @@ void Chest::showHintUI() {
   }
 
   createHintBubbleFx();
-  ControlHints::getInstance()->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Open");
+  
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Open");
 }
 
 void Chest::hideHintUI() {
   removeHintBubbleFx();
-  ControlHints::getInstance()->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
+  
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }
 
 void Chest::createHintBubbleFx() {
@@ -120,8 +129,8 @@ void Chest::createHintBubbleFx() {
     return;
   }
 
-  _hintBubbleFxSprite
-    = FxManager::getInstance()->createHintBubbleFx(_body, "dialogue_available");
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  _hintBubbleFxSprite = fxMgr->createHintBubbleFx(_body, "dialogue_available");
 }
 
 void Chest::removeHintBubbleFx() {
@@ -129,7 +138,8 @@ void Chest::removeHintBubbleFx() {
     return;
   }
 
-  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  fxMgr->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 

@@ -4,10 +4,8 @@
 #include <vector>
 
 #include "Assets.h"
-#include "input/InputManager.h"
-#include "ui/console/Console.h"
-#include "ui/dialogue/DialogueManager.h"
-#include "ui/hud/Hud.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/ds/Algorithm.h"
 
 #define SHOW_CHAR_INTERVAL .03f
@@ -85,9 +83,11 @@ void Subtitles::beginSubtitles() {
   if (_isTransitioning || _subtitleQueue.empty()) {
     return;
   }
+  
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->getLayer()->setVisible(false);
 
   _isTransitioning = true;
-  Hud::getInstance()->getLayer()->setVisible(false);
   _layer->setVisible(true);
   _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
@@ -103,7 +103,7 @@ void Subtitles::endSubtitles() {
   if (_isTransitioning) {
     return;
   }
-
+  
   _isTransitioning = true;
   _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
@@ -111,8 +111,12 @@ void Subtitles::endSubtitles() {
     CallFunc::create([=]() {
       _isTransitioning = false;
       _layer->setVisible(false);
-      Hud::getInstance()->getLayer()->setVisible(true);
-      DialogueManager::getInstance()->getTargetNpc()->onDialogueEnd();
+      
+      auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+      hud->getLayer()->setVisible(true);
+      
+      auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+      dialogueMgr->getTargetNpc()->onDialogueEnd();
     })
   ));
 }
@@ -132,13 +136,14 @@ void Subtitles::showNextSubtitle() {
   _label->setString("");
 
   // If all subtitles has been displayed, show DialogueMenu if possible.
-  DialogueManager* dialogueMgr = DialogueManager::getInstance();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
   DialogueListView* dialogueListView = dialogueMenu->getDialogueListView();
   Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
 
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : currentDialogue->getCmds()) {
-    Console::getInstance()->executeCmd(cmd);
+    console->executeCmd(cmd);
   }
 
   vector<DialogueTree::Node*> children = currentDialogue->getChildren();

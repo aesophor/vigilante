@@ -11,10 +11,9 @@
 namespace vigilante {
 
 // A simple stacking/floating window manager.
-class WindowManager {
+class WindowManager final {
  public:
-  static WindowManager* getInstance();
-  virtual ~WindowManager() = default;
+  WindowManager();
 
   void update(float delta);
 
@@ -24,7 +23,7 @@ class WindowManager {
   // Pop the top window off the internal window stack and unrender it.
   std::unique_ptr<Window> pop();
 
-    inline Window* top() const { return isEmpty() ? nullptr : _windows.back().get(); }
+  inline Window* top() const { return isEmpty() ? nullptr : _windows.back().get(); }
   inline bool isEmpty() const { return _windows.empty(); }
   inline int getSize() const { return _windows.size(); }
   inline uint16_t getDefaultCameraMask() const { return _defaultCameraMask; }
@@ -33,8 +32,6 @@ class WindowManager {
   inline void setDefaultCameraMask(uint16_t cameraMask) { _defaultCameraMask = cameraMask; }
 
  private:
-  WindowManager();
-
   const size_t _kMaxWindowCount;
 
   cocos2d::Scene* _scene;

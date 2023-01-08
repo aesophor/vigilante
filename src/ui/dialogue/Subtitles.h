@@ -15,7 +15,7 @@ namespace vigilante {
 class Subtitles : public Controllable {
  public:
   Subtitles();
-  virtual ~Subtitles() = default;
+  virtual ~Subtitles() override = default;
 
   void update(float delta);
   virtual void handleInput() override;  // Controllable

@@ -4,7 +4,8 @@
 #include "Assets.h"
 #include "Constants.h"
 #include "gameplay/DialogueTree.h"
-#include "ui/console/Console.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/dialogue/DialogueListView.h"
 
@@ -33,12 +34,13 @@ DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
 }
 
 void DialogueListView::confirm() {
-  auto dialogueMgr = DialogueManager::getInstance();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   auto dialogueMenu = dialogueMgr->getDialogueMenu();
   auto subtitles = dialogueMgr->getSubtitles();
 
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : getSelectedObject()->getCmds()) {
-    Console::getInstance()->executeCmd(cmd);
+    console->executeCmd(cmd);
   }
 
   if (getSelectedObject()->getChildren().empty()) {

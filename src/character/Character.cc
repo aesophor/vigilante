@@ -12,9 +12,8 @@
 #include "Constants.h"
 #include "Player.h"
 #include "gameplay/ExpPointTable.h"
-#include "map/GameMapManager.h"
-#include "ui/hud/Hud.h"
-#include "ui/floating_damages/FloatingDamages.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/RandUtil.h"
 #include "util/JsonUtil.h"
@@ -122,11 +121,11 @@ bool Character::removeFromMap() {
   }
 
   // Remove _equipmentSpritesheets
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
-      GameMapManager::getInstance()->getLayer()->removeChild(
-          _equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]
-      );
+      gmMgr->getLayer()->removeChild(
+          _equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]);
     }
   }
 
@@ -177,7 +176,9 @@ void Character::update(float delta) {
     regenHealth(_baseRegenDeltaHealth);
     regenMagicka(_baseRegenDeltaMagicka);
     regenStamina(_baseRegenDeltaStamina);
-    Hud::getInstance()->updateStatusBars();
+    
+    auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+    hud->updateStatusBars();
   }
 
   // Don't update character's state if he/she is using skill.
@@ -253,8 +254,8 @@ void Character::defineBody(b2BodyType bodyType,
                            short bodyMaskBits,
                            short feetMaskBits,
                            short weaponMaskBits) {
-  b2World* world = GameMapManager::getInstance()->getWorld();
-  b2BodyBuilder bodyBuilder(world);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  b2BodyBuilder bodyBuilder(gmMgr->getWorld());
 
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)
@@ -547,16 +548,18 @@ optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
 
 void Character::onKilled() {
   _isKilled = true;
-  GameMapManager::getInstance()->getWorld()->DestroyBody(_body);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getWorld()->DestroyBody(_body);
 
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED)) {
-    Audio::getInstance()->playSfx(*sfxFileName);
+    Audio::the().playSfx(*sfxFileName);
   }
 }
 
 void Character::onFallToGroundOrPlatform() {
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP)) {
-    Audio::getInstance()->playSfx(*sfxFileName);
+    Audio::the().playSfx(*sfxFileName);
   }
 }
 
@@ -724,7 +727,8 @@ void Character::activateSkill(Skill* skill) {
   _activeSkills.insert(copiedSkill);
   copiedSkill->activate();
 
-  Hud::getInstance()->updateStatusBars();
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {
@@ -774,10 +778,11 @@ void Character::receiveDamage(Character* source, int damage) {
     // TODO: play hurt sound.
   }
 
-  FloatingDamages::getInstance()->show(this, damage);
+  auto floatingDamages = SceneManager::the().getCurrentScene<GameScene>()->getFloatingDamages();
+  floatingDamages->show(this, damage);
 
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
-    Audio::getInstance()->playSfx(*sfxFileName);
+    Audio::the().playSfx(*sfxFileName);
   }
 }
 
@@ -867,8 +872,10 @@ void Character::useItem(Consumable* consumable) {
   profile.moveSpeed += consumableProfile.bonusMoveSpeed;
   profile.jumpHeight += consumableProfile.bonusJumpHeight;
 
-  Hud::getInstance()->updateStatusBars();
   removeItem(consumable, 1);
+
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 void Character::equip(Equipment* equipment) {
@@ -882,9 +889,11 @@ void Character::equip(Equipment* equipment) {
 
   // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  GameMapManager::getInstance()->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 
-  Audio::getInstance()->playSfx(kSfxEquipUnequipItem);
+  Audio::the().playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::unequip(Equipment::Type equipmentType) {
@@ -901,13 +910,16 @@ void Character::unequip(Equipment::Type equipmentType) {
   Equipment* e = _equipmentSlots[equipmentType];
   _equipmentSlots[equipmentType] = nullptr;
   addItem(_itemMapper.find(e->getItemProfile().name)->second, 1);
-  GameMapManager::getInstance()->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 
-  Audio::getInstance()->playSfx(kSfxEquipUnequipItem);
+  Audio::the().playSfx(kSfxEquipUnequipItem);
 }
 
 void Character::pickupItem(Item* item) {
-  shared_ptr<Item> i = GameMapManager::getInstance()->getGameMap()->removeDynamicActor<Item>(item);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  shared_ptr<Item> i = gmMgr->getGameMap()->removeDynamicActor<Item>(item);
   addItem(std::move(i), item->getAmount());
 }
 
@@ -915,7 +927,9 @@ void Character::discardItem(Item* item, int amount) {
   const string& jsonFileName = item->getItemProfile().jsonFileName;
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
-  GameMapManager::getInstance()->getGameMap()->createItem(jsonFileName, x * kPpm, y * kPpm, amount);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getGameMap()->createItem(jsonFileName, x * kPpm, y * kPpm, amount);
 
   removeItem(item, amount);
 }

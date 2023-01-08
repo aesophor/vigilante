@@ -7,9 +7,8 @@
 #include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
 #include "item/Item.h"
-#include "map/GameMapManager.h"
-#include "ui/dialogue/DialogueManager.h"
-#include "ui/notifications/Notifications.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
@@ -62,7 +61,8 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   }
 
   if (showNotification) {
-    Notifications::getInstance()->show((_success) ? cmd : _errMsg);
+    auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+    notifications->show((_success) ? cmd : _errMsg);
   }
 
   return _success;
@@ -83,7 +83,8 @@ void CommandHandler::startQuest(const vector<string>& args) {
     return;
   }
 
-  GameMapManager::getInstance()->getPlayer()->getQuestBook().startQuest(args[1]);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getPlayer()->getQuestBook().startQuest(args[1]);
   setSuccess();
 }
 
@@ -115,7 +116,8 @@ void CommandHandler::addItem(const vector<string>& args) {
   }
 
   unique_ptr<Item> item = Item::create(args[1]);
-  GameMapManager::getInstance()->getPlayer()->addItem(std::move(item), amount);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getPlayer()->addItem(std::move(item), amount);
   setSuccess();
 }
 
@@ -147,7 +149,8 @@ void CommandHandler::removeItem(const vector<string>& args) {
   }
 
   unique_ptr<Item> item = Item::create(args[1]);
-  GameMapManager::getInstance()->getPlayer()->removeItem(item.get(), amount);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getPlayer()->removeItem(item.get(), amount);
   setSuccess();
 }
 
@@ -164,8 +167,11 @@ void CommandHandler::updateDialogueTree(const vector<string>& args) {
 }
 
 void CommandHandler::joinPlayerParty(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   if (targetNpc->isPlayerLeaderOfParty()) {
@@ -178,8 +184,11 @@ void CommandHandler::joinPlayerParty(const vector<string>&) {
 }
 
 void CommandHandler::leavePlayerParty(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   if (!targetNpc->isPlayerLeaderOfParty()) {
@@ -192,8 +201,11 @@ void CommandHandler::leavePlayerParty(const vector<string>&) {
 }
 
 void CommandHandler::playerPartyMemberWait(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   if (!targetNpc->isPlayerLeaderOfParty()) {
@@ -211,8 +223,11 @@ void CommandHandler::playerPartyMemberWait(const vector<string>&) {
 }
 
 void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   if (!targetNpc->isPlayerLeaderOfParty()) {
@@ -230,8 +245,11 @@ void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
 }
 
 void CommandHandler::tradeWithPlayer(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   if (!targetNpc->getNpcProfile().isTradable) {
@@ -244,8 +262,11 @@ void CommandHandler::tradeWithPlayer(const vector<string>&) {
 }
 
 void CommandHandler::killCurrentTarget(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  Npc* targetNpc = DialogueManager::getInstance()->getTargetNpc();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  Player* player = gmMgr->getPlayer();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
   assert(player != nullptr && targetNpc != nullptr);
 
   targetNpc->receiveDamage(player, 999);
@@ -253,13 +274,15 @@ void CommandHandler::killCurrentTarget(const vector<string>&) {
 }
 
 void CommandHandler::interact(const vector<string>&) {
-  Player* player = GameMapManager::getInstance()->getPlayer();
-  const auto& interactables = player->getInRangeInteractables();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
 
+  Player* player = gmMgr->getPlayer();
   if (!player) {
     setError("No player.");
     return;
   }
+
+  const auto& interactables = player->getInRangeInteractables();
   if (interactables.empty()) {
     setError("No nearby interactable objects.");
     return;

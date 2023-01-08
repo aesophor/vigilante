@@ -29,9 +29,9 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
   _layout->addChild(_optionListView->getLayout());
 
   auto quit = []() {
-    InputManager::getInstance()->deactivate();
-    SceneManager::getInstance()->popScene();
-    InputManager::getInstance()->activate(SceneManager::getInstance()->getCurrentScene());
+    InputManager::the().deactivate();
+    SceneManager::the().popScene();
+    InputManager::the().activate(SceneManager::the().getCurrentScene());
   };
 
   // Define available Options.

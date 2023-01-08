@@ -13,10 +13,9 @@
 
 namespace vigilante {
 
-class Hud {
+class Hud final {
  public:
-  static Hud* getInstance();
-  virtual ~Hud() = default;
+  Hud();
 
   void updateEquippedWeapon();
   void updateStatusBars();
@@ -24,8 +23,6 @@ class Hud {
   inline cocos2d::Layer* getLayer() const { return _layer; }
 
  private:
-  Hud();
-
   static inline constexpr float _kBarLength = 75.0f;
 
   cocos2d::Layer* _layer;

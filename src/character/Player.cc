@@ -9,18 +9,15 @@
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
-#include "input/InputManager.h"
 #include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "skill/Skill.h"
 #include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "quest/KillTargetObjective.h"
-#include "ui/Shade.h"
-#include "ui/hud/Hud.h"
-#include "ui/notifications/Notifications.h"
 #include "util/CameraUtil.h"
 #include "util/StringUtil.h"
 
@@ -58,7 +55,8 @@ bool Player::showOnMap(float x, float y) {
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
-  GameMapManager* gmMgr = GameMapManager::getInstance();
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
@@ -73,7 +71,7 @@ bool Player::showOnMap(float x, float y) {
 void Player::attack() {
   Character::attack();
 
-  Audio::getInstance()->playSfx("Sfx/combat/sword_attack.mp3");
+  Audio::the().playSfx("Sfx/combat/sword_attack.mp3");
 }
 
 void Player::inflictDamage(Character* target, int damage) {
@@ -81,14 +79,13 @@ void Player::inflictDamage(Character* target, int damage) {
   camera_util::shake(8, .1f);
 
   if (target->isSetToKill()) {
-    Notifications::getInstance()->show(
-        string_util::format("Acquired %d exp", target->getCharacterProfile().exp)
-    );
+    auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+    notifications->show(string_util::format("Acquired %d exp", target->getCharacterProfile().exp));
 
     updateKillTargetObjectives(target);
   }
 
-  Audio::getInstance()->playSfx("Sfx/combat/sword_hit.mp3");
+  Audio::the().playSfx("Sfx/combat/sword_hit.mp3");
 }
 
 void Player::receiveDamage(Character* source, int damage) {
@@ -103,35 +100,41 @@ void Player::receiveDamage(Character* source, int damage) {
     _isInvincible = false;
   }, 1.0f);
 
-  Hud::getInstance()->updateStatusBars();
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 void Player::addItem(shared_ptr<Item> item, int amount) {
   Character::addItem(item, amount);
 
-  Notifications::getInstance()->show((amount > 1) ?
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show((amount > 1) ?
       string_util::format("Acquired item: %s (%d).", item->getName().c_str(), amount) :
-      string_util::format("Acquired item: %s.", item->getName().c_str())
-  );
+      string_util::format("Acquired item: %s.", item->getName().c_str()));
 }
 
 void Player::removeItem(Item* item, int amount) {
+  const string itemName = item->getName();
   Character::removeItem(item, amount);
 
-  Notifications::getInstance()->show((amount > 1) ?
-      string_util::format("Removed item: %s (%d).", item->getName().c_str(), amount) :
-      string_util::format("Removed item: %s.", item->getName().c_str())
-  );
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show((amount > 1) ?
+      string_util::format("Removed item: %s (%d).", itemName.c_str(), amount) :
+      string_util::format("Removed item: %s.", itemName.c_str()));
 }
 
 void Player::equip(Equipment* equipment) {
   Character::equip(equipment);
-  Hud::getInstance()->updateEquippedWeapon();
+  
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateEquippedWeapon();
 }
 
 void Player::unequip(Equipment::Type equipmentType) {
   Character::unequip(equipmentType);
-  Hud::getInstance()->updateEquippedWeapon();
+  
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateEquippedWeapon();
 }
 
 void Player::pickupItem(Item* item) {
@@ -144,8 +147,8 @@ void Player::addExp(const int exp) {
   Character::addExp(exp);
 
   if (_characterProfile.level > originalLevel) {
-    Notifications::getInstance()->show(
-        string_util::format("Congrats! You are now level %d.", _characterProfile.level));
+    auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+    notifications->show(string_util::format("Congrats! You are now level %d.", _characterProfile.level));
   }
 }
 

@@ -12,13 +12,10 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "item/Item.h"
-#include "map/GameMapManager.h"
-#include "map/FxManager.h"
 #include "quest/KillTargetObjective.h"
 #include "quest/CollectItemObjective.h"
-#include "ui/WindowManager.h"
-#include "ui/control_hints/ControlHints.h"
-#include "ui/dialogue/DialogueManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/RandUtil.h"
@@ -96,7 +93,8 @@ bool Npc::showOnMap(float x, float y) {
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
-  GameMapManager* gmMgr = GameMapManager::getInstance();
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
@@ -205,12 +203,16 @@ void Npc::showHintUI() {
   }
 
   createHintBubbleFx();
-  ControlHints::getInstance()->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Talk");
+  
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Talk");
 }
 
 void Npc::hideHintUI() {
   removeHintBubbleFx();
-  ControlHints::getInstance()->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
+  
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }
 
 void Npc::createHintBubbleFx() {
@@ -218,8 +220,8 @@ void Npc::createHintBubbleFx() {
     return;
   }
 
-  _hintBubbleFxSprite
-    = FxManager::getInstance()->createHintBubbleFx(_body, "dialogue_available");
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  _hintBubbleFxSprite = fxMgr->createHintBubbleFx(_body, "dialogue_available");
 }
 
 void Npc::removeHintBubbleFx() {
@@ -227,11 +229,14 @@ void Npc::removeHintBubbleFx() {
     return;
   }
 
-  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  fxMgr->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 
 void Npc::dropItems() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
   CallbackManager::getInstance()->runAfter([=]() {
@@ -244,7 +249,7 @@ void Npc::dropItems() {
         float x = _body->GetPosition().x;
         float y = _body->GetPosition().y;
         int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-        GameMapManager::getInstance()->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
+        gmMgr->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
       }
     }
   }, .2f);
@@ -272,7 +277,7 @@ void Npc::beginDialogue() {
 
   onDialogueBegin();
 
-  auto dialogueMgr = DialogueManager::getInstance();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   dialogueMgr->setTargetNpc(this);
   for (const auto& line : _dialogueTree.getCurrentNode()->getLines()) {
     dialogueMgr->getSubtitles()->addSubtitle(line);
@@ -281,18 +286,20 @@ void Npc::beginDialogue() {
 }
 
 void Npc::beginTrade() {
-  auto player = GameMapManager::getInstance()->getPlayer();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
 
-  WindowManager::getInstance()->push(
-      std::make_unique<TradeWindow>(/*buyer=*/player, /*seller=*/this));
+  wm->push(std::make_unique<TradeWindow>(/*buyer=*/gmMgr->getPlayer(), /*seller=*/this));
 }
 
 void Npc::onDialogueBegin() {
-  ControlHints::getInstance()->setVisible(false);
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(false);
 }
 
 void Npc::onDialogueEnd() {
-  ControlHints::getInstance()->setVisible(true);
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(true);
 }
 
 // This Npc may perform one of the following actions:
@@ -384,7 +391,8 @@ void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
     return;
   }
 
-  PathFinder* pathFinder = GameMapManager::getInstance()->getGameMap()->getPathFinder();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  PathFinder* pathFinder = gmMgr->getGameMap()->getPathFinder();
   if (auto nextHop = pathFinder->findOptimalNextHop(thisPos, targetPos, followDist)) {
     _moveDest = *nextHop;
   } else if (std::abs(targetPos.x - thisPos.x) > .2f) {

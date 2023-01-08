@@ -47,10 +47,10 @@ bool MainMenuScene::init() {
   addChild(versionLabel);
 
   // Initialize InputManager.
-  InputManager::getInstance()->activate(this);
+  InputManager::the().activate(this);
 
   // Play main menu Bgm.
-  Audio::getInstance()->playBgm(assets::kMainThemeBgm);
+  Audio::the().playBgm(assets::kMainThemeBgm);
 
   schedule(schedule_selector(MainMenuScene::update));
   return true;
@@ -67,20 +67,19 @@ void MainMenuScene::handleInput() {
     }
     _labels[_current--]->setTextColor(vigilante::colorscheme::kWhite);
     _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
-
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     if (_current == static_cast<int>(Option::SIZE) - 1) {
       return;
     }
     _labels[_current++]->setTextColor(vigilante::colorscheme::kWhite);
     _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
-
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
-        Audio::getInstance()->stopBgm();
-        InputManager::getInstance()->deactivate();
-        SceneManager::getInstance()->pushScene(GameScene::create());
+        Audio::the().stopBgm();
+        InputManager::the().deactivate();
+        SceneManager::the().pushScene(GameScene::create());
+        SceneManager::the().getCurrentScene<GameScene>()->startNewGame();
         break;
       }
       case Option::LOAD_GAME:

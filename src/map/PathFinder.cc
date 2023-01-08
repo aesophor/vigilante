@@ -3,7 +3,8 @@
 
 #include <limits>
 
-#include <map/GameMapManager.h>
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 using namespace std;
 
@@ -19,7 +20,9 @@ optional<b2Vec2> SimplePathFinder::findOptimalNextHop(const b2Vec2& srcPos,
   const b2Body* closestPlatformBody = nullptr;
   float minDist = numeric_limits<float>::max();
 
-  GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
+  GameMap* gameMap = SceneManager::the().getCurrentScene<GameScene>()->
+      getGameMapManager()->getGameMap();
+
   for (auto platformBody : gameMap->getTmxTiledMapPlatformBodies()) {
     const b2Vec2& platformPos = platformBody->GetPosition();
     if (platformPos.y < srcPos.y) {

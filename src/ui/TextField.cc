@@ -56,8 +56,9 @@ TextField::TextField(const string& defaultText)
       return;
     }
 
-    auto inputMgr = InputManager::getInstance();
-    char c = keycode_util::keyCodeToAscii(keyCode, inputMgr->isCapsLocked(), inputMgr->isShiftPressed());
+    char c = keycode_util::keyCodeToAscii(keyCode,
+        InputManager::the().isCapsLocked(), InputManager::the().isShiftPressed());
+    
     if (c != 0x00) {
       _buffer += c;
       _label->setString(_buffer + CURSOR_CHAR);
@@ -95,9 +96,9 @@ void TextField::toggleCursor() {
 void TextField::setReceivingInput(bool receivingInput) {
   // Avoid repeatedly setting/clearing the same _onKeyPressed event listener
   if (receivingInput && !_isReceivingInput) {
-    InputManager::getInstance()->setSpecialOnKeyPressed(_onKeyPressed);
+    InputManager::the().setSpecialOnKeyPressed(_onKeyPressed);
   } else if (!receivingInput && _isReceivingInput) {
-    InputManager::getInstance()->clearSpecialOnKeyPressed();
+    InputManager::the().clearSpecialOnKeyPressed();
   }
 
   _isReceivingInput = receivingInput;

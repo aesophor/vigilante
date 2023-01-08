@@ -9,9 +9,9 @@ USING_NS_CC;
 
 namespace vigilante {
 
-InputManager* InputManager::getInstance() {
+InputManager& InputManager::the() {
   static InputManager instance;
-  return &instance;
+  return instance;
 }
 
 InputManager::InputManager()

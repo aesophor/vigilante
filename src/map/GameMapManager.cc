@@ -12,20 +12,15 @@
 #include "character/Npc.h"
 #include "character/Player.h"
 #include "item/Equipment.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "skill/MagicalMissile.h"
-#include "ui/Shade.h"
-#include "ui/pause_menu/PauseMenu.h"
 #include "util/box2d/b2BodyBuilder.h"
 
 using namespace std;
 USING_NS_CC;
 
 namespace vigilante {
-
-GameMapManager* GameMapManager::getInstance() {
-  static GameMapManager instance({0, kGravity});
-  return &instance;
-}
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer(Layer::create()),
@@ -54,7 +49,10 @@ void GameMapManager::update(float delta) {
 
 void GameMapManager::loadGameMap(const string& tmxMapFileName,
                                  const function<void ()>& afterLoadingGameMap) {
-  auto workerThreadLambda = [this, tmxMapFileName, afterLoadingGameMap]() {
+  auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
+  printf("inside: shade->getImageView(): %p\n", shade->getImageView());
+
+  auto workerThreadLambda = [this, shade, tmxMapFileName, afterLoadingGameMap]() {
     // Pauses all NPCs from acting, preventing new callbacks
     // from being generated.
     Npc::setNpcsAllowedToAct(false);
@@ -63,7 +61,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
     while (CallbackManager::getInstance()->getPendingCount() > 0);
 
     // No pending callbacks. Now it's safe to load the new GameMap.
-    Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
+    shade->getImageView()->runAction(Sequence::createWithTwoActions(
         CallFunc::create([this, tmxMapFileName, afterLoadingGameMap]() {
           doLoadGameMap(tmxMapFileName);
           afterLoadingGameMap();
@@ -77,7 +75,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
 
   // 1. Fade in the shade
   // 2. Create another thread which executes the above lambda independently.
-  Shade::getInstance()->getImageView()->runAction(Sequence::createWithTwoActions(
+  shade->getImageView()->runAction(Sequence::createWithTwoActions(
       FadeIn::create(Shade::kFadeInTime),
       CallFunc::create([workerThreadLambda]() {
         thread(workerThreadLambda).detach();
@@ -115,8 +113,8 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   if (oldBgmFileName != _gameMap->getBgmFileName()) {
-    Audio::getInstance()->stopBgm();
-    Audio::getInstance()->playBgm(_gameMap->getBgmFileName());
+    Audio::the().stopBgm();
+    Audio::the().playBgm(_gameMap->getBgmFileName());
   }
 
   return _gameMap.get();

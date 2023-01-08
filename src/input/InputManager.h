@@ -11,20 +11,19 @@
 #include "input/Keybindable.h"
 
 #define IS_KEY_PRESSED(keyCode) \
-  InputManager::getInstance()->isKeyPressed(keyCode)
+  InputManager::the().isKeyPressed(keyCode)
 
 #define IS_KEY_JUST_PRESSED(keyCode) \
-  InputManager::getInstance()->isKeyJustPressed(keyCode)
+  InputManager::the().isKeyJustPressed(keyCode)
 
 namespace vigilante {
 
-class InputManager {
+class InputManager final {
  public:
   using OnKeyPressedEvLstnr =
     std::function<void (cocos2d::EventKeyboard::KeyCode, cocos2d::Event*)>;
 
-  static InputManager* getInstance();
-  virtual ~InputManager() = default;
+  static InputManager& the();
 
   void activate(cocos2d::Scene* scene);
   void deactivate();

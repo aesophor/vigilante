@@ -9,15 +9,13 @@
 
 using namespace std;
 
-namespace vigilante {
-
 namespace {
 
 unordered_map<string, int> prices;
 
 }  // namespace
-  
-namespace item_price_table {
+
+namespace vigilante::item_price_table {
 
 void import(const string& tableFileName) {
   ifstream fin(tableFileName);
@@ -37,9 +35,14 @@ void import(const string& tableFileName) {
 }
 
 int getPrice(Item* item) {
-  return prices.at(item->getItemProfile().jsonFileName);
+  const string& itemJsonFileName = item->getItemProfile().jsonFileName;
+  auto it = prices.find(itemJsonFileName);
+  if (it == prices.end()) {
+    VGLOG(LOG_ERR, "Failed to find the price of [%s].", itemJsonFileName.c_str());
+    return 0;
+  }
+
+  return it->second;
 }
 
-}  // namespace item_price_table
-
-}  // namespace vigilante
+}  // namespace vigilante::item_price_table

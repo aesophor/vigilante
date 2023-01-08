@@ -7,6 +7,8 @@
 
 #include "quest/CollectItemObjective.h"
 #include "quest/KillTargetObjective.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/console/Console.h"
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
@@ -37,8 +39,9 @@ void Quest::advanceStage() {
   // Execute the commands that are supposed to run after
   // this stage is completed.
   if (_currentStageIdx >= 0) {
+    auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
     for (const auto& cmd : getCurrentStage().cmds) {
-      Console::getInstance()->executeCmd(cmd);
+      console->executeCmd(cmd);
     }
   }
   ++_currentStageIdx;

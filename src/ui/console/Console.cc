@@ -13,11 +13,6 @@ USING_NS_CC;
 
 namespace vigilante {
 
-Console* Console::getInstance() {
-  static Console instance;
-  return &instance;
-}
-
 Console::Console()
     : _layer(Layer::create()),
       _textField(),
@@ -98,7 +93,7 @@ bool Console::CommandHistory::canGoForward() const {
 void Console::CommandHistory::goBack() {
   _current--;
   if (_current < 0) {
-    _current = capacity() - 1;
+    _current = static_cast<int>(capacity()) - 1;
   }
 }
 

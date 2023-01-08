@@ -12,10 +12,9 @@ namespace vigilante {
 
 class Character;
 
-class FloatingDamages {
- public:
-  static FloatingDamages* getInstance();
-  virtual ~FloatingDamages() = default;
+class FloatingDamages final {
+ public:  
+  FloatingDamages();
 
   void update(float delta);
   void show(Character* character, int damage);
@@ -30,8 +29,6 @@ class FloatingDamages {
     float lifetime;
     float timer;
   };
-
-  FloatingDamages();
 
   static inline constexpr float kDeltaX = 0.0f;
   static inline constexpr float kDeltaY = 10.0f;

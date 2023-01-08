@@ -10,11 +10,6 @@ USING_NS_CC;
 
 namespace vigilante {
 
-WindowManager* WindowManager::getInstance() {
-  static WindowManager instance;
-  return &instance;
-}
-
 WindowManager::WindowManager()
     : _kMaxWindowCount(kWindowTop - kWindowBottom + 1),
       _scene(),

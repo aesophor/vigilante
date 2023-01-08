@@ -3,21 +3,23 @@
 #define VIGILANTE_GAME_SCENE_H_
 
 #include <memory>
+#include <string>
 
+#include <Box2D/Box2D.h>
 #include <cocos2d.h>
 #include <ui/UIImageView.h>
-#include <Box2D/Box2D.h>
 
 #include "Controllable.h"
-#include "map/FxManager.h"
+#include "input/InputManager.h"
 #include "map/GameMapManager.h"
+#include "map/FxManager.h"
 #include "ui/WindowManager.h"
 #include "ui/Shade.h"
-#include "ui/hud/Hud.h"
 #include "ui/console/Console.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/floating_damages/FloatingDamages.h"
+#include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
@@ -28,7 +30,7 @@ namespace vigilante {
 class GameScene : public cocos2d::Scene, public Controllable {
  public:
   CREATE_FUNC(GameScene);
-  virtual ~GameScene() = default;
+  virtual ~GameScene() override = default;
 
   virtual bool init() override;  // cocos2d::Scene
   virtual void update(float delta) override;  // cocos2d::Scene
@@ -36,6 +38,19 @@ class GameScene : public cocos2d::Scene, public Controllable {
 
   void startNewGame();
   void loadGame(const std::string& gameSaveFilePath);
+  
+  inline Shade* getShade() const { return _shade.get(); }
+  inline Hud* getHud() const { return _hud.get(); }
+  inline Console* getConsole() const { return _console.get(); }
+  inline PauseMenu* getPauseMenu() const { return _pauseMenu.get(); }
+  inline WindowManager* getWindowManager() const { return _windowManager.get(); }
+  inline ControlHints* getControlHints() const { return _controlHints.get(); }
+  inline DialogueManager* getDialogueManager() const { return _dialogueManager.get(); }
+  inline FloatingDamages* getFloatingDamages() const { return _floatingDamages.get(); }
+  inline QuestHints* getQuestHints() const { return _questHints.get(); }
+  inline Notifications* getNotifications() const { return _notifications.get(); }
+  inline GameMapManager* getGameMapManager() const { return _gameMapManager.get(); }
+  inline FxManager* getFxManager() const { return _fxManager.get(); }
 
  private:
   cocos2d::Camera* _gameCamera;
@@ -44,18 +59,18 @@ class GameScene : public cocos2d::Scene, public Controllable {
 
   // For singleton classes, use raw pointers here.
   // Otherwise, use smart pointers (prefer unique_ptr<>).
-  Shade* _shade;
-  Hud* _hud;
-  Console* _console;
-  PauseMenu* _pauseMenu;
-  WindowManager* _windowManager;
-  ControlHints *_controlHints;
-  DialogueManager* _dialogueManager;
-  FloatingDamages* _floatingDamages;
-  QuestHints* _questHints;
-  Notifications* _notifications;
-  GameMapManager* _gameMapManager;
-  FxManager* _fxManager;
+  std::unique_ptr<Shade> _shade;
+  std::unique_ptr<Hud> _hud;
+  std::unique_ptr<Console> _console;
+  std::unique_ptr<PauseMenu> _pauseMenu;
+  std::unique_ptr<WindowManager> _windowManager;
+  std::unique_ptr<ControlHints> _controlHints;
+  std::unique_ptr<DialogueManager> _dialogueManager;
+  std::unique_ptr<FloatingDamages> _floatingDamages;
+  std::unique_ptr<QuestHints> _questHints;
+  std::unique_ptr<Notifications> _notifications;
+  std::unique_ptr<GameMapManager> _gameMapManager;
+  std::unique_ptr<FxManager> _fxManager;
 };
 
 }  // namespace vigilante

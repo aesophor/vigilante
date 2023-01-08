@@ -2,29 +2,26 @@
 #ifndef VIGILANTE_GAMEMAP_MANAGER_H_
 #define VIGILANTE_GAMEMAP_MANAGER_H_
 
+#include <functional>
+#include <memory>
 #include <set>
 #include <string>
-#include <memory>
-#include <functional>
 
 #include <cocos2d.h>
 #include <Box2D/Box2D.h>
-#include "GameMap.h"
-#include "WorldContactListener.h"
+
 #include "Controllable.h"
 #include "character/Character.h"
+#include "character/Player.h"
 #include "item/Item.h"
+#include "map/GameMap.h"
+#include "map/WorldContactListener.h"
 
 namespace vigilante {
 
-// Forward Declaration
-class Player;
-
-class GameMapManager {
+class GameMapManager final {
  public:
-  static GameMapManager* getInstance();
-  virtual ~GameMapManager() = default;
-
+  explicit GameMapManager(const b2Vec2& gravity);
   void update(float delta);
 
   // Safely loads the specified GameMap using a worker thread
@@ -64,8 +61,6 @@ class GameMapManager {
   inline Player* getPlayer() const { return _player.get(); }
 
  private:
-  explicit GameMapManager(const b2Vec2& gravity);
-
   // Internal function - NOT safe if used with CallbackManager!
   // Used by GameMap::loadGameMap().
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);

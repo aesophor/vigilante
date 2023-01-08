@@ -5,17 +5,15 @@
 #include "StaticActor.h"
 #include "DynamicActor.h"
 #include "character/Character.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 using namespace std;
 USING_NS_CC;
 
 namespace vigilante {
 
-FxManager* FxManager::getInstance() {
-  static FxManager instance;
-  return &instance;
-}
+FxManager::FxManager() : _animationCache() {}
 
 void FxManager::createDustFx(Character* c) {
   const b2Vec2& feetPos = c->getBody()->GetPosition();
@@ -40,8 +38,9 @@ Sprite* FxManager::createFx(const string& textureResDir,
                             float y,
                             unsigned int loopCount,
                             float frameInterval) {
-  bool shouldRepeatForever = loopCount == (unsigned int) -1;
-  Layer* gameMapLayer = GameMapManager::getInstance()->getLayer();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Layer* gameMapLayer = gmMgr->getLayer();
+  bool shouldRepeatForever = loopCount == static_cast<unsigned int>(-1);
 
   // If the cocos2d::Animation* is not present in cache,
   // then create one and cache this animation object.

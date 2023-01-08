@@ -22,7 +22,7 @@ namespace vigilante {
 class Character;
 class Player;
 
-class GameMap {
+class GameMap final {
  public:
   class Trigger : public Interactable {
    public:
@@ -122,7 +122,6 @@ class GameMap {
   };
 
   GameMap(b2World* world, const std::string& tmxMapFileName);
-  virtual ~GameMap() = default;
 
   void createObjects();
   void deleteObjects();

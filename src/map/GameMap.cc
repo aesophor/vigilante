@@ -15,14 +15,10 @@
 #include "item/Equipment.h"
 #include "item/Consumable.h"
 #include "item/Key.h"
-#include "map/FxManager.h"
-#include "map/GameMapManager.h"
 #include "map/object/Chest.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
-#include "ui/Shade.h"
-#include "ui/console/Console.h"
-#include "ui/control_hints/ControlHints.h"
-#include "ui/notifications/Notifications.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/Logger.h"
 #include "util/StringUtil.h"
@@ -276,7 +272,8 @@ void GameMap::createNpcs() {
     }
   }
 
-  auto player = GameMapManager::getInstance()->getPlayer();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
   if (!player) {
     return;
   }
@@ -330,8 +327,9 @@ void GameMap::Trigger::onInteract(Character* user) {
 
   _hasTriggered = true;
 
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : _cmds) {
-    Console::getInstance()->executeCmd(cmd);
+    console->executeCmd(cmd);
   }
 }
 
@@ -362,11 +360,10 @@ void GameMap::Portal::onInteract(Character* user) {
   string newMapFileName = _targetTmxMapFileName;
   int targetPortalId = _targetPortalId;
 
-  auto afterLoadingGameMap = [user, newMapFileName, targetPortalId]() {
-    const b2Vec2& portalPos = GameMapManager::getInstance()
-      ->getGameMap()
-      ->_portals.at(targetPortalId)
-      ->_body->GetPosition();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto afterLoadingGameMap = [user, newMapFileName, targetPortalId, gmMgr]() {
+    const b2Vec2& portalPos
+      = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
 
     // Place the user and its party members at the portal.
     user->setPosition(portalPos.x, portalPos.y);
@@ -389,8 +386,7 @@ void GameMap::Portal::onInteract(Character* user) {
     }
   };
 
-  GameMapManager::getInstance()->loadGameMap(newMapFileName,
-                                             afterLoadingGameMap);
+  gmMgr->loadGameMap(newMapFileName, afterLoadingGameMap);
 }
 
 bool GameMap::Portal::willInteractOnContact() const {
@@ -403,17 +399,21 @@ void GameMap::Portal::showHintUI() {
   string text = "Open";
   Color4B textColor = colorscheme::kWhite;
 
-  if (_isLocked && !canBeUnlockedBy(GameMapManager::getInstance()->getPlayer())) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (_isLocked && !canBeUnlockedBy(gmMgr->getPlayer())) {
     text += " (Locked)";
     textColor = colorscheme::kRed;
   }
 
-  ControlHints::getInstance()->insert({EventKeyboard::KeyCode::KEY_UP_ARROW}, text, textColor);
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->insert({EventKeyboard::KeyCode::KEY_UP_ARROW}, text, textColor);
 }
 
 void GameMap::Portal::hideHintUI() {
   //removeHintBubbleFx();
-  ControlHints::getInstance()->remove({EventKeyboard::KeyCode::KEY_UP_ARROW});
+
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->remove({EventKeyboard::KeyCode::KEY_UP_ARROW});
 }
 
 void GameMap::Portal::createHintBubbleFx() {
@@ -421,8 +421,8 @@ void GameMap::Portal::createHintBubbleFx() {
     removeHintBubbleFx();
   }
 
-  _hintBubbleFxSprite
-    = FxManager::getInstance()->createHintBubbleFx(_body, "portal_available");
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  _hintBubbleFxSprite = fxMgr->createHintBubbleFx(_body, "portal_available");
 }
 
 void GameMap::Portal::removeHintBubbleFx() {
@@ -430,7 +430,8 @@ void GameMap::Portal::removeHintBubbleFx() {
     return;
   }
 
-  FxManager::getInstance()->removeFx(_hintBubbleFxSprite);
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  fxMgr->removeFx(_hintBubbleFxSprite);
   _hintBubbleFxSprite = nullptr;
 }
 
@@ -439,19 +440,22 @@ void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
     return;
   }
 
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   if (!canBeUnlockedBy(user)) {
-    Notifications::getInstance()->show("This door is locked.");
-    Audio::getInstance()->playSfx(kSfxDoorLocked);
+    notifications->show("This door is locked.");
+    Audio::the().playSfx(kSfxDoorLocked);
+    return;
   } else {
-    Notifications::getInstance()->show("Door unlocked.");
-    Audio::getInstance()->playSfx(kSfxDoorUnlocked);
+    notifications->show("Door unlocked.");
+    Audio::the().playSfx(kSfxDoorUnlocked);
     unlock();
   }
 }
 
 bool GameMap::Portal::canBeUnlockedBy(Character* user) const {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto gameMap = gmMgr->getGameMap();
   const auto& miscItems = user->getInventory()[Item::Type::MISC];
-  const auto gameMap = GameMapManager::getInstance()->getGameMap();
 
   return std::find_if(miscItems.begin(),
                       miscItems.end(),
@@ -547,7 +551,8 @@ void GameMap::Portal::saveLockUnlockState() const {
 }
 
 int GameMap::Portal::getPortalId() const {
-  const auto& portals = GameMapManager::getInstance()->getGameMap()->_portals;
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  const auto& portals = gmMgr->getGameMap()->_portals;
 
   for (size_t i = 0; i < portals.size(); i++) {
     if (portals.at(i).get() == this) {

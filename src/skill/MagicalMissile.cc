@@ -7,7 +7,8 @@
 #include "Audio.h"
 #include "Constants.h"
 #include "character/Character.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/Logger.h"
 
@@ -45,8 +46,9 @@ bool MagicalMissile::showOnMap(float x, float y) {
              MAGICAL_MISSILE_MASK_BITS);
 
   defineTexture(_skillProfile.textureResDir, x, y);
-  GameMapManager::getInstance()->getLayer()->addChild(_bodySpritesheet,
-                                                      graphical_layers::kSpell);
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
   return true;
 }
 
@@ -56,7 +58,9 @@ void MagicalMissile::update(float delta) {
   // If _body goes out of map, then we can delete this object.
   float x = _body->GetPosition().x * kPpm;
   float y = _body->GetPosition().y * kPpm;
-  GameMap* gameMap = GameMapManager::getInstance()->getGameMap();
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  GameMap* gameMap = gmMgr->getGameMap();
 
   if (!_hasHit &&
       (x < 0 || x > gameMap->getWidth() || y < 0 || y > gameMap->getHeight())) {
@@ -75,11 +79,12 @@ void MagicalMissile::onHit(Character* target) {
 
   _hasHit = true;
   _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
-
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   _bodySprite->runAction(Sequence::createWithTwoActions(
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
     CallFunc::create([=]() {
-      GameMapManager::getInstance()->getGameMap()->removeDynamicActor(this);
+      gmMgr->getGameMap()->removeDynamicActor(this);
       _user->removeActiveSkill(this);
     })
   ));
@@ -93,7 +98,7 @@ void MagicalMissile::onHit(Character* target) {
   }
 
   // Play sound effect.
-  Audio::getInstance()->playSfx(_skillProfile.sfxHit);
+  Audio::the().playSfx(_skillProfile.sfxHit);
 }
 
 void MagicalMissile::import(const string& jsonFileName) {
@@ -120,7 +125,8 @@ void MagicalMissile::activate() {
   shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
   assert(activeCopy);
   auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
-  GameMapManager::getInstance()->getGameMap()->showDynamicActor(std::move(actor), x, y);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getGameMap()->showDynamicActor(std::move(actor), x, y);
 
   // Set up kinematicBody's moving speed.
   _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;

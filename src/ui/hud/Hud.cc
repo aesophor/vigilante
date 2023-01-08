@@ -5,7 +5,8 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "item/Equipment.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 #define HUD_X 75
 #define HUD_Y cocos2d::Director::getInstance()->getWinSize().height - 40
@@ -15,11 +16,6 @@ using namespace vigilante::assets;
 USING_NS_CC;
 
 namespace vigilante {
-
-Hud* Hud::getInstance() {
-  static Hud instance;
-  return &instance;
-}
 
 Hud::Hud()
     : _layer(Layer::create()),
@@ -51,7 +47,8 @@ Hud::Hud()
 }
 
 void Hud::updateEquippedWeapon() {
-  Equipment* weapon = GameMapManager::getInstance()->getPlayer()->getEquipmentSlots()[Equipment::Type::WEAPON];
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Equipment* weapon = gmMgr->getPlayer()->getEquipmentSlots()[Equipment::Type::WEAPON];
 
   if (weapon) {
     // Replace weapon icon
@@ -67,7 +64,8 @@ void Hud::updateEquippedWeapon() {
 }
 
 void Hud::updateStatusBars() {
-  Character::Profile& profile = GameMapManager::getInstance()->getPlayer()->getCharacterProfile();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Character::Profile& profile = gmMgr->getPlayer()->getCharacterProfile();
 
   _healthBar->update(profile.health, profile.fullHealth);
   _magickaBar->update(profile.magicka, profile.fullMagicka);

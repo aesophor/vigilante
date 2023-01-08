@@ -2,9 +2,9 @@
 #include "PauseMenuDialog.h"
 
 #include "Assets.h"
-#include "input/InputManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/TableLayout.h"
-#include "ui/control_hints/ControlHints.h"
 
 using namespace std;
 using namespace vigilante::assets;
@@ -80,7 +80,8 @@ void PauseMenuDialog::confirm() {
   _options[_current]->setSelected(false);
   _options[_current]->getHandler()(); // invokes a std::function<void ()>
 
-  ControlHints::getInstance()->setVisible(true);
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(true);
 }
 
 void PauseMenuDialog::reset() {
@@ -108,7 +109,8 @@ void PauseMenuDialog::show() {
   update();
   setVisible(true);
 
-  ControlHints::getInstance()->setVisible(false);
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(false);
 
   // Set the first visible option as selected.
   for (int i = 0; i < (int) _options.size(); i++) {

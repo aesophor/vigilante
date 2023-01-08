@@ -12,9 +12,8 @@
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "item/Item.h"
-#include "map/FxManager.h"
-#include "map/GameMap.h"
-#include "map/GameMapManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "skill/Skill.h"
 #include "skill/MagicalMissile.h"
 #include "skill/ForwardSlash.h"
@@ -40,8 +39,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setDoubleJumping(false);
         c->setOnPlatform(false);
         c->onFallToGroundOrPlatform();
-        // Create dust effect.
-        FxManager::getInstance()->createDustFx(c);
+
+        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+        fxMgr->createDustFx(c);
       }
       break;
     }
@@ -54,8 +54,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setDoubleJumping(false);
         c->setOnPlatform(true);
         c->onFallToGroundOrPlatform();
-        // Create dust effect.
-        FxManager::getInstance()->createDustFx(c);
+
+        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+        fxMgr->createDustFx(c);
       }
       break;
     }
@@ -251,8 +252,9 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
-        // Create dust effect.
-        FxManager::getInstance()->createDustFx(c);
+
+        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+        fxMgr->createDustFx(c);
       }
       break;
     }
@@ -262,8 +264,9 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.5f) {
         Character* c = static_cast<Character*>(feetFixture->GetUserData());
         c->setOnPlatform(false);
-        // Create dust effect.
-        FxManager::getInstance()->createDustFx(c);
+
+        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+        fxMgr->createDustFx(c);
       }
       break;
     }
@@ -387,7 +390,6 @@ void WorldContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldMan
 void WorldContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
 
 }
-
 
 b2Fixture* WorldContactListener::GetTargetFixture(short targetCategoryBits, b2Fixture* f1, b2Fixture* f2) const {
   b2Fixture* targetFixture = nullptr;

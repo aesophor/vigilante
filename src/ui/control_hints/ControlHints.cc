@@ -18,11 +18,6 @@ USING_NS_CC;
 
 namespace vigilante {
 
-ControlHints* ControlHints::getInstance() {
-  static ControlHints instance;
-  return &instance;
-}
-
 ControlHints::ControlHints()
     : _layer(Layer::create()),
       _profiles(),

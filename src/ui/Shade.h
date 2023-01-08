@@ -7,19 +7,16 @@
 
 namespace vigilante {
 
-class Shade {
+class Shade final {
  public:
-  static Shade* getInstance();
-  virtual ~Shade() = default;
+  Shade();
+
+  inline cocos2d::ui::ImageView* getImageView() const { return _imageView; }
 
   static inline constexpr float kFadeOutTime = .65f;
   static inline constexpr float kFadeInTime = .3f;
 
-  cocos2d::ui::ImageView* getImageView() const { return _imageView; }
-
  private:
-  Shade();
-
   cocos2d::ui::ImageView* _imageView;
 };
 

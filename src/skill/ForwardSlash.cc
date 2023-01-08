@@ -50,7 +50,7 @@ void ForwardSlash::activate() {
   }, _skillProfile.framesDuration);
 
   // Play sound effect.
-  Audio::getInstance()->playSfx(_skillProfile.sfxActivate);
+  Audio::the().playSfx(_skillProfile.sfxActivate);
 }
 
 string ForwardSlash::getIconPath() const {

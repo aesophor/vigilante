@@ -22,7 +22,7 @@ namespace vigilante {
 // Each profile may contains up to 3 ControlHints::Hint,
 // where a ControlHints::Hint consists of an icon and a label.
 
-class ControlHints {
+class ControlHints final {
  public:
    enum Profile {
     PAUSE_MENU_INVENTORY,
@@ -34,8 +34,7 @@ class ControlHints {
     SIZE
   };
 
-  static ControlHints* getInstance();
-  virtual ~ControlHints() = default;
+  ControlHints();
 
   ControlHints::Profile getCurrentProfile() const;
   void switchToProfile(ControlHints::Profile profile);
@@ -74,7 +73,6 @@ class ControlHints {
     std::vector<cocos2d::EventKeyboard::KeyCode> _keyCodes;
   };
 
-  ControlHints();
   void normalize();
   void showAll();
   void hideAll();

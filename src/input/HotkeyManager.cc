@@ -73,10 +73,10 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
     pauseMenuDialog->getPauseMenu()->update();
     
     // Everything done. Now it is safe to clear this functor.
-    InputManager::getInstance()->clearSpecialOnKeyPressed();
+    InputManager::the().clearSpecialOnKeyPressed();
   };
 
-  InputManager::getInstance()->setSpecialOnKeyPressed(onKeyPressedEvLstnr);
+  InputManager::the().setSpecialOnKeyPressed(onKeyPressedEvLstnr);
 }
 
 }  // namespace vigilante

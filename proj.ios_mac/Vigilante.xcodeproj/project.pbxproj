@@ -194,8 +194,8 @@
 		3A83517125C2BAC7006CD40F /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517025C2BAC7006CD40F /* Music */; };
 		3A83517325C2BACC006CD40F /* Sfx in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517225C2BACC006CD40F /* Sfx */; };
 		3A83517525C2BACF006CD40F /* Texture in Resources */ = {isa = PBXBuildFile; fileRef = 3A83517425C2BACF006CD40F /* Texture */; };
-		3A8C84D22962F1BD00E2C5C9 /* AudioManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C84D12962F1BD00E2C5C9 /* AudioManager.cc */; };
-		3A8C84D32962F1BD00E2C5C9 /* AudioManager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C84D12962F1BD00E2C5C9 /* AudioManager.cc */; };
+		3A8C84D22962F1BD00E2C5C9 /* Audio.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C84D12962F1BD00E2C5C9 /* Audio.cc */; };
+		3A8C84D32962F1BD00E2C5C9 /* Audio.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C84D12962F1BD00E2C5C9 /* Audio.cc */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
 		5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5087E76717EB910900C73F5D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -458,8 +458,8 @@
 		3A83517025C2BAC7006CD40F /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = ../Resources/Music; sourceTree = "<group>"; };
 		3A83517225C2BACC006CD40F /* Sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sfx; path = ../Resources/Sfx; sourceTree = "<group>"; };
 		3A83517425C2BACF006CD40F /* Texture */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Texture; path = ../Resources/Texture; sourceTree = "<group>"; };
-		3A8C84D02962F1BD00E2C5C9 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
-		3A8C84D12962F1BD00E2C5C9 /* AudioManager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManager.cc; sourceTree = "<group>"; };
+		3A8C84D02962F1BD00E2C5C9 /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
+		3A8C84D12962F1BD00E2C5C9 /* Audio.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cc; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE10317EB98FF00D1A890 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = mac/main.cc; sourceTree = "<group>"; tabWidth = 2; };
@@ -611,8 +611,8 @@
 		3A5B8FDE25D7940200F06219 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3A8C84D12962F1BD00E2C5C9 /* AudioManager.cc */,
-				3A8C84D02962F1BD00E2C5C9 /* AudioManager.h */,
+				3A8C84D12962F1BD00E2C5C9 /* Audio.cc */,
+				3A8C84D02962F1BD00E2C5C9 /* Audio.h */,
 				3A5B90A325D7940300F06219 /* AppDelegate.cc */,
 				3A5B908125D7940300F06219 /* Assets.cc */,
 				3A5B907225D7940300F06219 /* CallbackManager.cc */,
@@ -1200,7 +1200,7 @@
 				3A5B90B325D7940300F06219 /* TableLayout.cc in Sources */,
 				3A5B90C525D7940300F06219 /* DialogueListView.cc in Sources */,
 				3A5B90C325D7940300F06219 /* Subtitles.cc in Sources */,
-				3A8C84D22962F1BD00E2C5C9 /* AudioManager.cc in Sources */,
+				3A8C84D22962F1BD00E2C5C9 /* Audio.cc in Sources */,
 				3A5B90E925D7940300F06219 /* ControlHints.cc in Sources */,
 				3A5B914925D7940400F06219 /* AppDelegate.cc in Sources */,
 				3A5B910325D7940300F06219 /* RandUtil.cc in Sources */,
@@ -1302,7 +1302,7 @@
 				3A5B90C025D7940300F06219 /* TimedLabelService.cc in Sources */,
 				3A5B912425D7940400F06219 /* FxManager.cc in Sources */,
 				3A5B910825D7940300F06219 /* KeyCodeUtil.cc in Sources */,
-				3A8C84D32962F1BD00E2C5C9 /* AudioManager.cc in Sources */,
+				3A8C84D32962F1BD00E2C5C9 /* Audio.cc in Sources */,
 				3A5B90FA25D7940300F06219 /* BatForm.cc in Sources */,
 				3A5B914225D7940400F06219 /* DialogueTree.cc in Sources */,
 				3A5B90F425D7940300F06219 /* Hud.cc in Sources */,
