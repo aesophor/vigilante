@@ -41,12 +41,12 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
     {"Options",   []() {}},
     {"Quit",      quit   },
   }};
- 
+
   vector<Option*> options;
   for (auto& o : _options) {
     options.push_back(&o);
   }
-  _optionListView->setObjects(options); 
+  _optionListView->setObjects(options);
 }
 
 

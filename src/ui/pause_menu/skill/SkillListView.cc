@@ -5,7 +5,8 @@
 
 #include "character/Player.h"
 #include "input/Keybindable.h"
-#include "input/HotkeyManager.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/KeyCodeUtil.h"
@@ -67,17 +68,18 @@ void SkillListView::confirm() {
   dialog->reset();
   dialog->setMessage("What would you like to do with " + skill->getName() + "?");
 
+  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
   dialog->setOption(0, true, "Assign", [=]() {
     dialog->reset();
     dialog->setMessage("Press a key to assign to...");
     dialog->setOption(2, true, "Cancel");
     dialog->show();
-    HotkeyManager::getInstance()->promptHotkey(skill, dialog);
+    hotkeyMgr->promptHotkey(skill, dialog);
   });
 
   if (static_cast<bool>(skill->getHotkey())) {
     dialog->setOption(1, true, "Clear", [=]() {
-      HotkeyManager::getInstance()->clearHotkeyAction(skill->getHotkey());
+      hotkeyMgr->clearHotkeyAction(skill->getHotkey());
       //showSkills();
     });
   }

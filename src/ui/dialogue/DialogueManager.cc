@@ -9,7 +9,8 @@ namespace vigilante {
 DialogueManager::DialogueManager()
     : _layer(Layer::create()),
       _subtitles(std::make_unique<Subtitles>()),
-      _dialogueMenu(std::make_unique<DialogueMenu>()) {
+      _dialogueMenu(std::make_unique<DialogueMenu>()),
+      _latestNpcDialogueTree() {
   _layer->addChild(_subtitles->getLayer());
   _layer->addChild(_dialogueMenu->getLayer());
 }
@@ -35,6 +36,16 @@ void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {
     return;
   }
   _targetNpc->getDialogueTree().setCurrentNode(dialogue);
+}
+
+string DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFileName) {
+  auto it = _latestNpcDialogueTree.find(npcJsonFileName);
+  return (it != _latestNpcDialogueTree.end()) ? it->second : "";
+}
+
+void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFileName,
+                                               const string& dialogueTreeJsonFileName) {
+  _latestNpcDialogueTree[npcJsonFileName] = dialogueTreeJsonFileName;
 }
 
 }  // namespace vigilante

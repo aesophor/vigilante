@@ -162,7 +162,8 @@ void CommandHandler::updateDialogueTree(const vector<string>& args) {
 
   // TODO: Maybe add some argument check here?
 
-  DialogueTree::setLatestNpcDialogueTree(args[1], args[2]);
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  dialogueMgr->setLatestNpcDialogueTree(args[1], args[2]);
   setSuccess();
 }
 

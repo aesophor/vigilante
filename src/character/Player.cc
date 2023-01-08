@@ -9,7 +9,6 @@
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
-#include "input/HotkeyManager.h"
 #include "input/Keybindable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
@@ -95,7 +94,7 @@ void Player::receiveDamage(Character* source, int damage) {
   _fixtures[FixtureType::BODY]->SetSensor(true);
   _isInvincible = true;
 
-  CallbackManager::getInstance()->runAfter([&](){
+  CallbackManager::the().runAfter([&](){
     _fixtures[FixtureType::BODY]->SetSensor(false);
     _isInvincible = false;
   }, 1.0f);
@@ -197,9 +196,9 @@ void Player::handleInput() {
     }
   }
 
-  // Hotkeys
+  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
   for (auto keyCode : HotkeyManager::_kBindableKeys) {
-    Keybindable* action = HotkeyManager::getInstance()->getHotkeyAction(keyCode);
+    Keybindable* action = hotkeyMgr->getHotkeyAction(keyCode);
     if (IS_KEY_JUST_PRESSED(keyCode) && action) {
       if (dynamic_cast<Skill*>(action)) {
         activateSkill(dynamic_cast<Skill*>(action));

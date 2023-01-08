@@ -37,7 +37,7 @@ void BackDash::activate() {
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
   _user->getBody()->SetLinearDamping(4.0f);
 
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::the().runAfter([=]() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);

@@ -24,7 +24,7 @@ namespace vigilante {
 class DynamicActor : public StaticActor {
  public:
   explicit DynamicActor(size_t numAnimations=1, size_t numFixtures=1);
-  virtual ~DynamicActor() = default;
+  virtual ~DynamicActor() override = default;
 
   virtual bool showOnMap(float x, float y) override = 0;  // StaticActor
   virtual bool removeFromMap() override;  // StaticActor:

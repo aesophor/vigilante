@@ -27,7 +27,7 @@ bool GameScene::init() {
   if (!Scene::init()) {
     return false;
   }
-  
+
   // Initialize vigilante's exp point table.
   exp_point_table::import(kExpPointTable);
 
@@ -37,6 +37,9 @@ bool GameScene::init() {
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.
   InputManager::the().activate(this);
+
+  // Initialize HotkeyManager.
+  _hotkeyManager = std::make_unique<HotkeyManager>();
 
   // Camera note:
   // DEFAULT (orthographic): used to render tilemaps/game objects
@@ -50,7 +53,7 @@ bool GameScene::init() {
   _gameCamera->setPosition(0, 0);
 
   // Initialize CallbackManager.
-  CallbackManager::getInstance()->setScene(this);
+  CallbackManager::the().setScene(this);
 
   // Initialize Vigilante's utils.
   vigilante::keycode_util::init();
@@ -129,7 +132,7 @@ bool GameScene::init() {
   _b2dr = b2DebugRenderer::create(_gameMapManager->getWorld());
   _b2dr->setVisible(false);
   addChild(_b2dr);
-  
+
   // Tick the box2d world.
   schedule(schedule_selector(GameScene::update));
   return true;

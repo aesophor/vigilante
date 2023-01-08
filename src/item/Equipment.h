@@ -24,7 +24,6 @@ class Equipment : public Item {
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    ~Profile() = default;
 
     Equipment::Type equipmentType;
     int bonusPhysicalDamage;
@@ -42,7 +41,8 @@ class Equipment : public Item {
   static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
   explicit Equipment(const std::string& jsonFileName);
-  virtual ~Equipment() = default;
+  virtual ~Equipment() override = default;
+
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   inline Equipment::Profile& getEquipmentProfile() { return _equipmentProfile; }

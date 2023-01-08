@@ -185,7 +185,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setPortal(p);
 
         if (p->willInteractOnContact()) {
-          CallbackManager::getInstance()->runAfter([=]() {
+          CallbackManager::the().runAfter([=]() {
             c->interact(p);
           }, .1f);
         } else if (!p->willInteractOnContact() && dynamic_cast<Player*>(c)) {
@@ -204,7 +204,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Interactable* i = static_cast<Interactable*>(interactableFixture->GetUserData());
 
         if (i->willInteractOnContact()) {
-          CallbackManager::getInstance()->runAfter([=]() {
+          CallbackManager::the().runAfter([=]() {
             c->interact(i);
           }, .1f);
           return;

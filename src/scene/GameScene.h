@@ -11,6 +11,7 @@
 
 #include "Controllable.h"
 #include "input/InputManager.h"
+#include "input/HotkeyManager.h"
 #include "map/GameMapManager.h"
 #include "map/FxManager.h"
 #include "ui/WindowManager.h"
@@ -38,7 +39,7 @@ class GameScene : public cocos2d::Scene, public Controllable {
 
   void startNewGame();
   void loadGame(const std::string& gameSaveFilePath);
-  
+
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
   inline Console* getConsole() const { return _console.get(); }
@@ -51,6 +52,7 @@ class GameScene : public cocos2d::Scene, public Controllable {
   inline Notifications* getNotifications() const { return _notifications.get(); }
   inline GameMapManager* getGameMapManager() const { return _gameMapManager.get(); }
   inline FxManager* getFxManager() const { return _fxManager.get(); }
+  inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
 
  private:
   cocos2d::Camera* _gameCamera;
@@ -59,18 +61,19 @@ class GameScene : public cocos2d::Scene, public Controllable {
 
   // For singleton classes, use raw pointers here.
   // Otherwise, use smart pointers (prefer unique_ptr<>).
+  std::unique_ptr<HotkeyManager> _hotkeyManager;
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
   std::unique_ptr<Console> _console;
-  std::unique_ptr<PauseMenu> _pauseMenu;
-  std::unique_ptr<WindowManager> _windowManager;
+  std::unique_ptr<Notifications> _notifications;
+  std::unique_ptr<QuestHints> _questHints;
+  std::unique_ptr<FloatingDamages> _floatingDamages;
   std::unique_ptr<ControlHints> _controlHints;
   std::unique_ptr<DialogueManager> _dialogueManager;
-  std::unique_ptr<FloatingDamages> _floatingDamages;
-  std::unique_ptr<QuestHints> _questHints;
-  std::unique_ptr<Notifications> _notifications;
+  std::unique_ptr<WindowManager> _windowManager;
   std::unique_ptr<GameMapManager> _gameMapManager;
   std::unique_ptr<FxManager> _fxManager;
+  std::unique_ptr<PauseMenu> _pauseMenu;
 };
 
 }  // namespace vigilante

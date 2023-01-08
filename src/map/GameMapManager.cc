@@ -27,7 +27,10 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
       _worldContactListener(std::make_unique<WorldContactListener>()),
       _world(std::make_unique<b2World>(gravity)),
       _gameMap(),
-      _player() {
+      _player(),
+      _npcSpawningBlacklist(),
+      _areNpcsAllowedToAct(true),
+      _allPortalStates() {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
@@ -55,10 +58,10 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
   auto workerThreadLambda = [this, shade, tmxMapFileName, afterLoadingGameMap]() {
     // Pauses all NPCs from acting, preventing new callbacks
     // from being generated.
-    Npc::setNpcsAllowedToAct(false);
+    setNpcsAllowedToAct(false);
 
     // Block this thread with a spinlock until all callbacks have finished.
-    while (CallbackManager::getInstance()->getPendingCount() > 0);
+    while (CallbackManager::the().getPendingCount() > 0);
 
     // No pending callbacks. Now it's safe to load the new GameMap.
     shade->getImageView()->runAction(Sequence::createWithTwoActions(
@@ -70,7 +73,7 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
     ));
 
     // Resume NPCs to act.
-    Npc::setNpcsAllowedToAct(true);
+    setNpcsAllowedToAct(true);
   };
 
   // 1. Fade in the shade
@@ -118,6 +121,83 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   return _gameMap.get();
+}
+
+bool GameMapManager::isNpcAllowedToSpawn(const string& jsonFileName) const {
+  return _npcSpawningBlacklist.find(jsonFileName) == _npcSpawningBlacklist.end();
+}
+
+void GameMapManager::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
+  if (!canSpawn && isNpcAllowedToSpawn(jsonFileName)) {
+    _npcSpawningBlacklist.insert(jsonFileName);
+  } else if (canSpawn && !isNpcAllowedToSpawn(jsonFileName)) {
+    _npcSpawningBlacklist.erase(jsonFileName);
+  }
+}
+
+bool GameMapManager::hasSavedPortalLockUnlockState(const string& tmxMapFileName,
+                                                   int targetPortalId) const {
+  auto mapIt = _allPortalStates.find(tmxMapFileName);
+  if (mapIt == _allPortalStates.end()) {
+    return false;
+  }
+
+  return std::find_if(mapIt->second.begin(),
+                      mapIt->second.end(),
+                      [targetPortalId](const pair<int, bool>& entry) {
+                          return entry.first == targetPortalId;
+                      }) != mapIt->second.end();
+}
+
+bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
+                                    int targetPortalId) const {
+  // If we cannot find the associated vector for this tiled map
+  // in the unordered_map, then simply return false.
+  auto it = _allPortalStates.find(tmxMapFileName);
+  if (it == _allPortalStates.end()) {
+    VGLOG(LOG_WARN, "Unable to find the corresponding portal vector");
+    return false;
+  }
+
+  // Otherwise, we've found the associated vector of this TiledMap.
+  // Now we should find the corresponding entry in that vector
+  // and return entry.second which holds the lock state of the Portal.
+  for (const auto& entry : it->second) {
+    if (entry.first == targetPortalId) {
+      return entry.second;
+    }
+  }
+
+  // If we end up here, then the vector `it->second` doesn't contain
+  // the corresponding entry. We should simply return false.
+  VGLOG(LOG_WARN, "Unable to find the corresponding entry in the portal vector");
+  return false;
+}
+
+void GameMapManager::setPortalLocked(const string& tmxMapFileName,
+                                     int targetPortalId, bool locked) {
+  // If we cannot find the associated vector for this tiled map
+  // in the unordered_map, then insert a new vector which is
+  // initialized with {targetPortalId, locked} and return early.
+  auto it = _allPortalStates.find(tmxMapFileName);
+  if (it == _allPortalStates.end()) {
+    _allPortalStates.insert({tmxMapFileName, {{targetPortalId, locked}}});
+    return;
+  }
+
+  // Otherwise, we've found the associated vector of this TiledMap.
+  // Now we should find the corresponding entry in that vector,
+  // update that entry, and return early.
+  for (auto& entry : it->second) {
+    if (entry.first == targetPortalId) {
+      entry.second = locked;
+      return;
+    }
+  }
+
+  // If we end up here, then the vector `it->second` doesn't contain
+  // the corresponding entry, and thus we have to insert it manually.
+  it->second.push_back({targetPortalId, locked});
 }
 
 }  // namespace vigilante

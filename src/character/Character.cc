@@ -607,7 +607,7 @@ void Character::jump() {
   }
 
   _isJumpingDisallowed = true;
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
       _isJumpingDisallowed = false;
   }, .2f);
 
@@ -618,7 +618,7 @@ void Character::jump() {
 void Character::doubleJump() {
   jump();
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     jump();
   }, .25f);
 }
@@ -630,7 +630,7 @@ void Character::jumpDown() {
 
   _fixtures[FixtureType::FEET]->SetSensor(true);
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _fixtures[FixtureType::FEET]->SetSensor(false);
   }, .25f);
 }
@@ -647,7 +647,7 @@ void Character::getUp() {
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _isSheathingWeapon = false;
     _isWeaponSheathed = true;
   }, .8f);
@@ -656,7 +656,7 @@ void Character::sheathWeapon() {
 void Character::unsheathWeapon() {
   _isUnsheathingWeapon = true;
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
@@ -676,7 +676,7 @@ void Character::attack() {
 
   _isAttacking = true;
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _isAttacking = false;
   }, _characterProfile.attackTime);
 
@@ -689,7 +689,7 @@ void Character::attack() {
       // then add a little delay before inflicting damage / knockback.
       float damageDelay = (dynamic_cast<Player*>(this)) ? 0 : .25f;
 
-      CallbackManager::getInstance()->runAfter([this]() {
+      CallbackManager::the().runAfter([this]() {
           inflictDamage(_lockedOnTarget, getDamageOutput());
           float knockBackForceX = (_isFacingRight) ? .5f : -.5f; // temporary
           float knockBackForceY = 1.0f; // temporary
@@ -710,7 +710,7 @@ void Character::activateSkill(Skill* skill) {
   _isUsingSkill = true;
   _currentlyUsedSkill = skill;
 
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _isUsingSkill = false;
     // Set _currentState to FORCE_UPDATE so that next time in
     // Character::update the animation is guaranteed to be updated.
@@ -756,7 +756,7 @@ void Character::receiveDamage(Character* source, int damage) {
   _characterProfile.health -= damage;
 
   _isTakingDamage = true;
-  CallbackManager::getInstance()->runAfter([this]() {
+  CallbackManager::the().runAfter([this]() {
     _isTakingDamage = false;
   }, .25f);
 

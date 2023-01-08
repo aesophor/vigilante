@@ -171,17 +171,6 @@ DialogueTree::Node* DialogueTree::getNode(const string& nodeName) const {
   return it == _nodeMapper.end() ? nullptr : it->second;
 }
 
-string DialogueTree::getLatestNpcDialogueTree(const string& npcJsonFileName) {
-  auto it = _latestNpcDialogueTree.find(npcJsonFileName);
-  return (it != _latestNpcDialogueTree.end()) ? it->second : "";
-}
-
-void DialogueTree::setLatestNpcDialogueTree(const string& npcJsonFileName,
-                                            const string& dialogueTreeJsonFileName) {
-  _latestNpcDialogueTree[npcJsonFileName] = dialogueTreeJsonFileName;
-}
-
-
 DialogueTree::Node::Node(DialogueTree* tree)
     : _tree(tree), _nodeName(), _lines(), _cmds(), _children() {}
 

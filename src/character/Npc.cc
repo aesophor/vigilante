@@ -73,7 +73,8 @@ void Npc::update(float delta) {
                                      b2bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y);
   }
 
-  if (_areNpcsAllowedToAct) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (gmMgr->areNpcsAllowedToAct()) {
     act(delta);
   }
 }
@@ -93,7 +94,7 @@ bool Npc::showOnMap(float x, float y) {
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
   for (auto equipment : _equipmentSlots) {
@@ -146,7 +147,8 @@ void Npc::onKilled() {
   dropItems();
 
   if (!_npcProfile.isRespawnable) {
-    Npc::setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+    gmMgr->setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
   }
 }
 
@@ -239,7 +241,7 @@ void Npc::dropItems() {
 
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
-  CallbackManager::getInstance()->runAfter([=]() {
+  CallbackManager::the().runAfter([=]() {
     for (const auto& i : _npcProfile.droppedItems) {
       const string& itemJson = i.first;
       float dropChance = i.second.chance;
@@ -256,11 +258,9 @@ void Npc::dropItems() {
 }
 
 void Npc::updateDialogueTreeIfNeeded() {
-  // Fetch the latest update from DialogueTree::_latestNpcDialogueTree.
-  // See gameplay/DialogueTree.cc
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   string latestDialogueTreeJsonFileName
-    = DialogueTree::getLatestNpcDialogueTree(_characterProfile.jsonFileName);
-
+    = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFileName);
   if (latestDialogueTreeJsonFileName.empty()) {
     return;
   }
@@ -490,18 +490,6 @@ void Npc::setDisposition(Npc::Disposition disposition) {
     default:
       VGLOG(LOG_ERR, "Invalid disposition for user: %s", _characterProfile.name.c_str());
       break;
-  }
-}
-
-bool Npc::isNpcAllowedToSpawn(const string& jsonFileName) {
-  return Npc::_npcSpawningBlacklist.find(jsonFileName) == Npc::_npcSpawningBlacklist.end();
-}
-
-void Npc::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
-  if (!canSpawn && Npc::isNpcAllowedToSpawn(jsonFileName)) {
-    Npc::_npcSpawningBlacklist.insert(jsonFileName);
-  } else if (canSpawn && !Npc::isNpcAllowedToSpawn(jsonFileName)) {
-    Npc::_npcSpawningBlacklist.erase(jsonFileName);
   }
 }
 

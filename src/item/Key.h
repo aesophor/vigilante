@@ -12,14 +12,13 @@ class Key : public MiscItem {
  public:
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    ~Profile() = default;
 
     std::string targetTmxFileName;
     int targetPortalId;
   };
 
   explicit Key(const std::string& jsonFileName);
-  virtual ~Key() = default;
+  virtual ~Key() override = default;
 
   inline const Key::Profile& getKeyProfile() const { return _keyProfile; }
 

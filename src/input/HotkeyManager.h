@@ -6,16 +6,16 @@
 #include <functional>
 
 #include <cocos2d.h>
+
 #include "input/Keybindable.h"
 
 namespace vigilante {
 
 class PauseMenuDialog;
 
-class HotkeyManager {
+class HotkeyManager final {
  public:
-  static HotkeyManager* getInstance();
-  virtual ~HotkeyManager() = default;
+  HotkeyManager();
 
   enum BindableKeys {
     LEFT_SHIFT,
@@ -34,8 +34,6 @@ class HotkeyManager {
   void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:
-  HotkeyManager();
-
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
 };
 

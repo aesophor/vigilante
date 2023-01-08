@@ -45,7 +45,7 @@ void Party::recruit(Character* targetCharacter) {
   // then we wouldn't want to respawn it.
   shared_ptr<Npc> targetNpc = std::dynamic_pointer_cast<Npc>(target);
   if (!targetNpc->getNpcProfile().isRespawnable) {
-    Npc::setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
+    gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
   }
 
   target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);

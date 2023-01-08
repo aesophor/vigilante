@@ -2,10 +2,11 @@
 #ifndef VIGILANTE_GAMEMAP_MANAGER_H_
 #define VIGILANTE_GAMEMAP_MANAGER_H_
 
+#include <atomic>
 #include <functional>
 #include <memory>
-#include <set>
 #include <string>
+#include <unordered_set>
 
 #include <cocos2d.h>
 #include <Box2D/Box2D.h>
@@ -54,7 +55,21 @@ class GameMapManager final {
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
-    
+
+  bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
+  void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
+
+  inline bool areNpcsAllowedToAct() const { return _areNpcsAllowedToAct; }
+  inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
+    _areNpcsAllowedToAct = npcsAllowedToAct;
+  }
+
+  bool hasSavedPortalLockUnlockState(const std::string& tmxMapFileName,
+                                     int targetPortalId) const;
+  bool isPortalLocked(const std::string& tmxMapFileName, int targetPortalId) const;
+  void setPortalLocked(const std::string& tmxMapFileName, int targetPortalId,
+                       bool locked);
+
   inline cocos2d::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
@@ -70,6 +85,13 @@ class GameMapManager final {
   std::unique_ptr<b2World> _world;
   std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
+
+  std::unordered_set<std::string> _npcSpawningBlacklist;
+  std::atomic<bool> _areNpcsAllowedToAct;
+
+  using PortalStateMap
+    = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
+  PortalStateMap _allPortalStates;
 };
 
 }  // namespace vigilante

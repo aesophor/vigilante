@@ -256,6 +256,8 @@ void GameMap::createPortals() {
 }
 
 void GameMap::createNpcs() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+
   for (const auto& rectObj : getObjects("Npcs")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -267,12 +269,11 @@ void GameMap::createNpcs() {
       npc->setFacingRight(it->second.asBool());
     }
 
-    if (Npc::isNpcAllowedToSpawn(json)) {
+    if (gmMgr->isNpcAllowedToSpawn(json)) {
       showDynamicActor(std::move(npc), x, y);
     }
   }
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
   if (!player) {
     return;
@@ -341,8 +342,9 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
       _isLocked(isLocked),
       _body(body),
       _hintBubbleFxSprite() {
-  if (GameMap::Portal::hasSavedLockUnlockState(targetTmxMapFileName, targetPortalId)) {
-    _isLocked = GameMap::Portal::isLocked(targetTmxMapFileName, targetPortalId);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (gmMgr->hasSavedPortalLockUnlockState(targetTmxMapFileName, targetPortalId)) {
+    _isLocked = gmMgr->isPortalLocked(targetTmxMapFileName, targetPortalId);
   }
 }
 
@@ -477,77 +479,9 @@ void GameMap::Portal::unlock() {
   saveLockUnlockState();
 }
 
-bool GameMap::Portal::hasSavedLockUnlockState(const string& tmxMapFileName,
-                                              int targetPortalId) {
-  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
-  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
-    return false;
-  }
-
-  return std::find_if(mapIt->second.begin(),
-                      mapIt->second.end(),
-                      [targetPortalId](const pair<int, bool>& entry) {
-                          return entry.first == targetPortalId;
-                      }) != mapIt->second.end();
-}
-
-bool GameMap::Portal::isLocked(const string& tmxMapFileName,
-                               int targetPortalId) {
-  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
-
-  // If we cannot find the associated vector for this tiled map
-  // in the unordered_map, then simply return false.
-  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
-    VGLOG(LOG_WARN, "Unable to find the corresponding portal vector");
-    return false;
-  }
-
-  // Otherwise, we've found the associated vector of this TiledMap.
-  // Now we should find the corresponding entry in that vector
-  // and return entry.second which holds the lock state of the Portal.
-  for (const auto& entry : mapIt->second) {
-    if (entry.first == targetPortalId) {
-      return entry.second;
-    }
-  }
-
-  // If we end up here, then the vector `mapIt->second` doesn't contain
-  // the corresponding entry. We should simply return false.
-  VGLOG(LOG_WARN, "Unable to find the corresponding entry in the portal vector");
-  return false;
-}
-
-void GameMap::Portal::setLocked(const string& tmxMapFileName,
-                                int targetPortalId,
-                                bool locked) {
-  auto mapIt = GameMap::Portal::_allPortalStates.find(tmxMapFileName);
-
-  // If we cannot find the associated vector for this tiled map
-  // in the unordered_map, then insert a new vector which is
-  // initialized with {targetPortalId, locked} and return early.
-  if (mapIt == GameMap::Portal::_allPortalStates.end()) {
-    GameMap::Portal::_allPortalStates.insert({tmxMapFileName, {{targetPortalId, locked}}});
-    return;
-  }
-
-
-  // Otherwise, we've found the associated vector of this TiledMap.
-  // Now we should find the corresponding entry in that vector,
-  // update that entry, and return early.
-  for (auto& entry : mapIt->second) {
-    if (entry.first == targetPortalId) {
-      entry.second = locked;
-      return;
-    }
-  }
-
-  // If we end up here, then the vector `mapIt->second` doesn't contain
-  // the corresponding entry, and thus we have to insert it manually.
-  mapIt->second.push_back({targetPortalId, locked});
-}
-
 void GameMap::Portal::saveLockUnlockState() const {
-  GameMap::Portal::setLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->setPortalLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
 }
 
 int GameMap::Portal::getPortalId() const {

@@ -21,9 +21,8 @@ class Item : public DynamicActor, public Importable {
     SIZE
   };
 
-  struct Profile {
+  struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    virtual ~Profile() = default;
 
     std::string jsonFileName;
     Item::Type itemType;
@@ -36,7 +35,8 @@ class Item : public DynamicActor, public Importable {
   // based on the json passed in.
   static std::unique_ptr<Item> create(const std::string& jsonFileName);
 
-  virtual ~Item() = default;
+  virtual ~Item() override = default;
+
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
 

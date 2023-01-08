@@ -15,7 +15,6 @@ class Consumable : public Item, public Keybindable {
  public:
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    ~Profile() = default;
 
     float duration; // sec
 
@@ -38,7 +37,8 @@ class Consumable : public Item, public Keybindable {
   };
 
   explicit Consumable(const std::string& jsonFileName);
-  virtual ~Consumable() = default;
+  virtual ~Consumable() override = default;
+
   virtual void import (const std::string& jsonFileName) override;  // Importable
 
   virtual cocos2d::EventKeyboard::KeyCode getHotkey() const override;  // Keybindable

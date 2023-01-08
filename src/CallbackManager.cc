@@ -8,9 +8,9 @@ USING_NS_CC;
 
 namespace vigilante {
 
-CallbackManager* CallbackManager::getInstance() {
+CallbackManager& CallbackManager::the() {
   static CallbackManager instance;
-  return &instance;
+  return instance;
 }
 
 CallbackManager::CallbackManager()

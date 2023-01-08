@@ -2,10 +2,8 @@
 #ifndef VIGILANTE_NPC_H_
 #define VIGILANTE_NPC_H_
 
-#include <atomic>
 #include <string>
-#include <unordered_set>
-#include <vector>
+#include <unordered_map>
 
 #include <cocos2d.h>
 
@@ -28,7 +26,6 @@ class Npc : public Character, public Interactable {
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    ~Profile() = default;
 
     struct DroppedItemData {
       int chance;
@@ -58,7 +55,7 @@ class Npc : public Character, public Interactable {
   };
 
   explicit Npc(const std::string& jsonFileName);
-  virtual ~Npc() = default;
+  virtual ~Npc() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
   virtual void update(float delta) override;  // Character
@@ -112,13 +109,6 @@ class Npc : public Character, public Interactable {
 
   inline void clearMoveDest() { _moveDest.SetZero(); }
 
-  static inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
-    Npc::_areNpcsAllowedToAct = npcsAllowedToAct;
-  }
-
-  static bool isNpcAllowedToSpawn(const std::string& jsonFileName);
-  static void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
-
  private:
   virtual void defineBody(b2BodyType bodyType,
                           float x,
@@ -135,13 +125,6 @@ class Npc : public Character, public Interactable {
   static inline constexpr float _kAllyFollowDist = .75f;
   static inline constexpr float _kMoveDestFollowDist = .2f;
   static inline constexpr float _kJumpCheckInterval = .5f;
-
-  // See `map/GameMap.cc` for its usage.
-  static inline std::atomic<bool> _areNpcsAllowedToAct{true};
-
-  // Once those spawn-once NPCs are killed, their jsonFileName
-  // will be inserted into this unordered_set.
-  static inline std::unordered_set<std::string> _npcSpawningBlacklist;
 
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;

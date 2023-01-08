@@ -17,8 +17,9 @@ class DialogueManager : public Controllable {
   DialogueManager();
   virtual ~DialogueManager() override = default;
 
+  virtual void handleInput() override;  // Controllable
+
   void update(float delta);
-  virtual void handleInput() override;
 
   inline cocos2d::Layer* getLayer() const { return _layer; }
   inline Npc* getTargetNpc() const { return _targetNpc; }
@@ -29,12 +30,18 @@ class DialogueManager : public Controllable {
   Dialogue* getCurrentDialogue() const;
   void setCurrentDialogue(Dialogue* dialogue) const;
 
+  std::string getLatestNpcDialogueTree(const std::string& npcJsonFileName);
+  void setLatestNpcDialogueTree(const std::string& npcJsonFileName,
+                                const std::string& dialogueTreeJsonFileName);
+
  private:
   cocos2d::Layer* _layer;
 
   Npc* _targetNpc;
   std::unique_ptr<Subtitles> _subtitles;
   std::unique_ptr<DialogueMenu> _dialogueMenu;
+
+  std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
 };
 
 }  // namespace vigilante

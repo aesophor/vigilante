@@ -16,7 +16,7 @@ class Chest : public DynamicActor, public Interactable {
  public:
   Chest();
   explicit Chest(const std::string& itemsJson);
-  virtual ~Chest() = default;
+  virtual ~Chest() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
 

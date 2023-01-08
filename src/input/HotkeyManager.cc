@@ -18,11 +18,6 @@ const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyMan
   EventKeyboard::KeyCode::KEY_V
 }};
 
-HotkeyManager* HotkeyManager::getInstance() {
-  static HotkeyManager instance;
-  return &instance;
-}
-
 HotkeyManager::HotkeyManager() : _hotkeys() {}
 
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
@@ -71,7 +66,7 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
     setHotkeyAction(keyCode, keybindable);
     pauseMenuDialog->setVisible(false);
     pauseMenuDialog->getPauseMenu()->update();
-    
+
     // Everything done. Now it is safe to clear this functor.
     InputManager::the().clearSpecialOnKeyPressed();
   };

@@ -12,7 +12,7 @@ namespace vigilante {
 // Forward declaration
 class Character;
 
-class Party {
+class Party final {
  public:
   struct WaitingLocationInfo {
     std::string tmxMapFileName;
@@ -21,7 +21,6 @@ class Party {
   };
 
   explicit Party(Character* leader);
-  virtual ~Party() = default;
 
   Character* getMember(const std::string& characterJsonFileName) const;
   bool hasMember(const std::string& characterJsonFileName) const;

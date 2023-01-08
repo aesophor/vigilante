@@ -85,21 +85,6 @@ class GameMap final {
     // If the portal is already unlocked, then this is a no-op.
     void maybeUnlockPortalAs(Character* user);
 
-    // The following static methods and `StateMap`
-    // holds the state of *ALL* portals in current game.
-    static bool hasSavedLockUnlockState(const std::string& tmxMapFileName,
-                                        int targetPortalId);
-
-    static bool isLocked(const std::string& tmxMapFileName,
-                         int targetPortalId);
-
-    static void setLocked(const std::string& tmxMapFileName,
-                          int targetPortalId,
-                          bool locked);
-    using StateMap
-      = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
-    static inline StateMap _allPortalStates;
-
     // Save the current portal's lock/unlock state in `_allPortalStates`.
     void saveLockUnlockState() const;
     int getPortalId() const;

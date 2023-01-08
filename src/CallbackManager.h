@@ -11,8 +11,7 @@ namespace vigilante {
 
 class CallbackManager {
  public:
-  static CallbackManager* getInstance();
-  virtual ~CallbackManager() = default;
+  static CallbackManager& the();
 
   void runAfter(const std::function<void ()>& userCallback, float delay);
 

@@ -62,7 +62,6 @@ class Character : public DynamicActor, public Importable {
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
-    ~Profile() = default;
 
     std::string jsonFileName;
     std::string textureResDir;
@@ -113,7 +112,7 @@ class Character : public DynamicActor, public Importable {
     FIXTURE_SIZE
   };
 
-  virtual ~Character() = default;
+  virtual ~Character() override = default;
 
   virtual bool showOnMap(float x, float y) override = 0;  // DynamicActor
   virtual bool removeFromMap() override;  // DynamicActor
