@@ -10,6 +10,7 @@ extern "C" {
 #include <string>
 
 #include "Assets.h"
+#include "Audio.h"
 #include "Constants.h"
 #include "scene/SceneManager.h"
 #include "scene/MainMenuScene.h"
@@ -84,10 +85,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
   chdir("Resources");
 #endif
 
-  // Load resources
   vigilante::assets::loadSpritesheets(vigilante::assets::kSpritesheetsList);
-
-  // Create a scene (auto-release object).
+  vigilante::Audio::the().setBgmVolume(0.3f);
+  vigilante::Audio::the().setSfxVolume(0.3f);
   vigilante::SceneManager::the().runWithScene(vigilante::MainMenuScene::create());
 
   return true;
