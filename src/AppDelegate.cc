@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "AppDelegate.h"
 
 #ifdef __linux__
@@ -55,7 +55,7 @@ void AppDelegate::initGLContextAttrs() {
   GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// if you want to use the package manager to install more packages,  
+// if you want to use the package manager to install more packages,
 // don't modify or remove this function
 static int register_all_packages() {
   return 0; //flag for packages manager
