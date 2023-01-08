@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "input/InputManager.h"
-#include "scene/SceneManager.h"
 #include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 #define OPTIONS_COUNT 4
 
@@ -33,7 +33,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
     {"Save Game", []() {}},
     {"Load Game", []() {}},
     {"Options",   []() {}},
-    {"Quit",      []() { SceneManager::the().popScene(); }},
+    {"Quit",      []() { SceneManager::the().getCurrentScene<GameScene>()->setRunning(false); }},
   }};
 
   vector<Option*> options;

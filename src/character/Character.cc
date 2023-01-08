@@ -548,7 +548,7 @@ optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
 
 void Character::onKilled() {
   _isKilled = true;
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getWorld()->DestroyBody(_body);
 

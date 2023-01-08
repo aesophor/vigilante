@@ -54,7 +54,7 @@ bool Player::showOnMap(float x, float y) {
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
   for (auto equipment : _equipmentSlots) {
@@ -71,6 +71,12 @@ void Player::attack() {
   Character::attack();
 
   Audio::the().playSfx("Sfx/combat/sword_attack.mp3");
+}
+
+void Player::onKilled() {
+  Character::onKilled();
+
+  SceneManager::the().getCurrentScene<GameScene>()->setRunning(false);
 }
 
 void Player::inflictDamage(Character* target, int damage) {

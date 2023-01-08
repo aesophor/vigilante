@@ -21,6 +21,8 @@ class Player : public Character, public Controllable {
 
   virtual bool showOnMap(float x, float y) override;  // Character
 
+  virtual void onKilled() override;  // Character
+
   virtual void attack() override;  // Character
   virtual void inflictDamage(Character* target, int damage) override;  // Character
   virtual void receiveDamage(Character* source, int damage) override;  // Character

@@ -53,27 +53,15 @@ void GameMapManager::update(float delta) {
 void GameMapManager::loadGameMap(const string& tmxMapFileName,
                                  const function<void ()>& afterLoadingGameMap) {
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
-
-  auto workerThreadLambda = [this, shade, tmxMapFileName, afterLoadingGameMap]() {
-    // No pending callbacks. Now it's safe to load the new GameMap.
-    shade->getImageView()->runAction(Sequence::createWithTwoActions(
-        CallFunc::create([this, tmxMapFileName, afterLoadingGameMap]() {
-          doLoadGameMap(tmxMapFileName);
-          afterLoadingGameMap();
-          // Resume NPCs to act.
-          setNpcsAllowedToAct(true);
-        }),
-        FadeOut::create(Shade::kFadeOutTime)
-    ));
-  };
-
-  // 1. Fade in the shade
-  // 2. Create another thread which executes the above lambda independently.
-  shade->getImageView()->runAction(Sequence::createWithTwoActions(
+  shade->getImageView()->runAction(Sequence::create(
       FadeIn::create(Shade::kFadeInTime),
-      CallFunc::create([workerThreadLambda]() {
-        thread(workerThreadLambda).detach();
-      })
+      CallFunc::create([this, shade, tmxMapFileName, afterLoadingGameMap]() {
+        doLoadGameMap(tmxMapFileName);
+        afterLoadingGameMap();
+        setNpcsAllowedToAct(true);
+      }),
+      FadeOut::create(Shade::kFadeOutTime),
+      nullptr
   ));
 }
 
@@ -81,8 +69,8 @@ void GameMapManager::destroyGameMap() {
   // Pauses all NPCs from acting, preventing new callbacks from being generated.
   setNpcsAllowedToAct(false);
 
-  // Block this thread with a spinlock until all callbacks have finished.
-  while (CallbackManager::the().getPendingCount() > 0);
+  // Block until all the registered callbacks have finished.
+  while (CallbackManager::the().getPendingCount() > 0) {}
 
   if (_player) {
     for (auto ally : _player->getAllies()) {

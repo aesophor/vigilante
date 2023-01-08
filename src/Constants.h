@@ -61,10 +61,10 @@ inline constexpr int kHud = 86;
 inline constexpr int kWindowBottom = 88;
 inline constexpr int kWindowTop = 92;
 inline constexpr int kDialogue = 94;
-inline constexpr int kShade = 96;
-inline constexpr int kPauseMenu = 98;
-inline constexpr int kControlHints = 99;
-inline constexpr int kConsole = 100;
+inline constexpr int kPauseMenu = 96;
+inline constexpr int kControlHints = 98;
+inline constexpr int kConsole = 99;
+inline constexpr int kShade = 100;
 
 }  // namespace graphical_layers
 

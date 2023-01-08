@@ -42,6 +42,9 @@ class GameScene : public cocos2d::Scene, public Controllable {
   void loadGame(const std::string& gameSaveFilePath);
   void quit();
 
+  inline bool isRunning() const { return _isRunning; }
+  inline void setRunning(bool running) { _isRunning = running; }
+
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
   inline Console* getConsole() const { return _console.get(); }
@@ -57,12 +60,13 @@ class GameScene : public cocos2d::Scene, public Controllable {
   inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
 
  private:
+  bool _isRunning;
+  bool _isTerminating;
+
   cocos2d::Camera* _gameCamera;
   cocos2d::Camera* _hudCamera;
   b2DebugRenderer* _b2dr;  // autorelease object
 
-  // For singleton classes, use raw pointers here.
-  // Otherwise, use smart pointers (prefer unique_ptr<>).
   std::unique_ptr<HotkeyManager> _hotkeyManager;
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;

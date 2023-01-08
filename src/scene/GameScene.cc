@@ -9,6 +9,7 @@
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "gameplay/ItemPriceTable.h"
+#include "scene/SceneManager.h"
 #include "skill/Skill.h"
 #include "quest/Quest.h"
 #include "util/box2d/b2DebugRenderer.h"
@@ -28,6 +29,9 @@ bool GameScene::init() {
     return false;
   }
 
+  _isRunning = true;
+  _isTerminating = false;
+  
   // Initialize vigilante's exp point table.
   exp_point_table::import(kExpPointTable);
 
@@ -73,7 +77,6 @@ bool GameScene::init() {
   // Initialize shade.
   _shade = std::make_unique<Shade>();
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  printf("_shade->getImageView(): %p\n", _shade->getImageView());
   addChild(_shade->getImageView(), graphical_layers::kShade);
 
   // Initialize HUD.
@@ -135,10 +138,23 @@ bool GameScene::init() {
 
   // Tick the box2d world.
   schedule(schedule_selector(GameScene::update));
+
   return true;
 }
 
 void GameScene::update(float delta) {
+  if (!_isRunning) {
+    if (_isTerminating) {
+      return;
+    }
+    _shade->getImageView()->runAction(Sequence::createWithTwoActions(
+        FadeIn::create(Shade::kFadeInTime * 5),
+        CallFunc::create([]() { SceneManager::the().popScene(); })
+    ));
+    _isTerminating = true;
+    return;
+  }
+
   if (!_gameMapManager->getGameMap()) {
     return;
   }
