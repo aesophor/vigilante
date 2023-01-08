@@ -232,4 +232,8 @@ void GameScene::loadGame(const string& gameSaveFilePath) {
 
 }
 
+void GameScene::quit() {
+  _gameMapManager->destroyGameMap();
+}
+
 }  // namespace vigilante

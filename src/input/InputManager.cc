@@ -25,7 +25,6 @@ void InputManager::activate(Scene* scene) {
   _scene = scene;
   _keyboardEvLstnr = EventListenerKeyboard::create();
 
-  // Capture "this" by value.
   _keyboardEvLstnr->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
     if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
       _isCapsLocked = !_isCapsLocked;
@@ -52,9 +51,15 @@ void InputManager::activate(Scene* scene) {
 }
 
 void InputManager::deactivate() {
+  if (!_scene) {
+    return;
+  }
+
   _scene->getEventDispatcher()->removeEventListener(_keyboardEvLstnr);
   _keyboardEvLstnr = nullptr;
   _scene = nullptr;
+  _specialOnKeyPressed = nullptr;
+  _pressedKeys.clear();
 }
 
 }  // namespace vigilante

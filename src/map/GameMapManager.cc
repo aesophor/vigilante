@@ -53,27 +53,18 @@ void GameMapManager::update(float delta) {
 void GameMapManager::loadGameMap(const string& tmxMapFileName,
                                  const function<void ()>& afterLoadingGameMap) {
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
-  printf("inside: shade->getImageView(): %p\n", shade->getImageView());
 
   auto workerThreadLambda = [this, shade, tmxMapFileName, afterLoadingGameMap]() {
-    // Pauses all NPCs from acting, preventing new callbacks
-    // from being generated.
-    setNpcsAllowedToAct(false);
-
-    // Block this thread with a spinlock until all callbacks have finished.
-    while (CallbackManager::the().getPendingCount() > 0);
-
     // No pending callbacks. Now it's safe to load the new GameMap.
     shade->getImageView()->runAction(Sequence::createWithTwoActions(
         CallFunc::create([this, tmxMapFileName, afterLoadingGameMap]() {
           doLoadGameMap(tmxMapFileName);
           afterLoadingGameMap();
+          // Resume NPCs to act.
+          setNpcsAllowedToAct(true);
         }),
         FadeOut::create(Shade::kFadeOutTime)
     ));
-
-    // Resume NPCs to act.
-    setNpcsAllowedToAct(true);
   };
 
   // 1. Fade in the shade
@@ -86,31 +77,34 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
   ));
 }
 
-GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
-  string oldBgmFileName;
+void GameMapManager::destroyGameMap() {
+  // Pauses all NPCs from acting, preventing new callbacks from being generated.
+  setNpcsAllowedToAct(false);
 
-  // Remove deceased party member from player's party,
-  // and remove their b2body and texture.
+  // Block this thread with a spinlock until all callbacks have finished.
+  while (CallbackManager::the().getPendingCount() > 0);
+
   if (_player) {
     for (auto ally : _player->getAllies()) {
       ally->onMapChanged();
     }
   }
 
-  // Clean up previous GameMap.
   if (_gameMap) {
-    oldBgmFileName = _gameMap->getBgmFileName();
     _layer->removeChild(_gameMap->getTmxTiledMap());
     _gameMap->deleteObjects();
-    _gameMap.reset();  // deletes the underlying GameMap object and _gameMap = nullptr.
+    _gameMap.reset();
   }
+}
 
-  // Load the new GameMap.
+GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
+  const string oldBgmFileName = (_gameMap) ? _gameMap->getBgmFileName() : "";
+
+  destroyGameMap();
   _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFileName);
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
-  // If the player object hasn't been created yet, then spawn it.
   if (!_player) {
     _player = _gameMap->createPlayer();
   }

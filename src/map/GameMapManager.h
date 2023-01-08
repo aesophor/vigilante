@@ -23,6 +23,7 @@ namespace vigilante {
 class GameMapManager final {
  public:
   explicit GameMapManager(const b2Vec2& gravity);
+
   void update(float delta);
 
   // Safely loads the specified GameMap using a worker thread
@@ -55,6 +56,7 @@ class GameMapManager final {
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
+  void destroyGameMap();
 
   bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
   void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);

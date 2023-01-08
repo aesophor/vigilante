@@ -28,18 +28,12 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
   _optionListView->getLayout()->setPosition({5, -5});
   _layout->addChild(_optionListView->getLayout());
 
-  auto quit = []() {
-    InputManager::the().deactivate();
-    SceneManager::the().popScene();
-    InputManager::the().activate(SceneManager::the().getCurrentScene());
-  };
-
   // Define available Options.
   _options = {{
     {"Save Game", []() {}},
     {"Load Game", []() {}},
     {"Options",   []() {}},
-    {"Quit",      quit   },
+    {"Quit",      []() { SceneManager::the().popScene(); }},
   }};
 
   vector<Option*> options;

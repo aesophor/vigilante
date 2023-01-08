@@ -35,10 +35,12 @@ class GameScene : public cocos2d::Scene, public Controllable {
 
   virtual bool init() override;  // cocos2d::Scene
   virtual void update(float delta) override;  // cocos2d::Scene
+
   virtual void handleInput() override;  // Controllable
 
   void startNewGame();
   void loadGame(const std::string& gameSaveFilePath);
+  void quit();
 
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
