@@ -3,8 +3,6 @@
 
 #include <algorithm>
 
-#include <json/document.h>
-
 #include "quest/CollectItemObjective.h"
 #include "quest/KillTargetObjective.h"
 #include "scene/GameScene.h"
@@ -14,7 +12,6 @@
 #include "util/StringUtil.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante {
 
@@ -86,7 +83,7 @@ string Quest::Stage::getHint() const {
 }
 
 Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   title = json["title"].GetString();
   desc = json["desc"].GetString();

@@ -1,31 +1,46 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "JsonUtil.h"
 
 #include <fstream>
 #include <stdexcept>
-#include <sstream>
+
+#include <json/istreamwrapper.h>
+#include <json/ostreamwrapper.h>
+#include <json/writer.h>
+
+#include "util/Logger.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante::json_util {
 
-Document parseJson(const string& jsonFileName) {
-  ifstream fin(jsonFileName);
-  if (!fin.is_open()) {
-    throw std::runtime_error("Json not found: " + jsonFileName);
+rapidjson::Document parseJson(const fs::path& jsonFileName) {
+  ifstream ifs(jsonFileName);
+  if (!ifs.is_open()) {
+    VGLOG(LOG_ERR, "Failed to load json: [%s].", jsonFileName.c_str());
+    return {};
   }
 
-  string content;
-  string line;
-  while (std::getline(fin, line)) {
-    content += line;
-  }
-  fin.close();
+  rapidjson::IStreamWrapper isw(ifs);
+  rapidjson::Document doc;
+  doc.ParseStream(isw);
 
-  Document json;
-  json.Parse(content.c_str());
-  return json;
+  VGLOG(LOG_ERR, "Read json from file: [%s].", jsonFileName.c_str());
+  return doc;
+}
+
+void saveToFile(const fs::path& jsonFileName, const rapidjson::Document& json) {
+  ofstream ofs(jsonFileName);
+  if (!ofs.is_open()) {
+    VGLOG(LOG_ERR, "Failed to open json: [%s].", jsonFileName.c_str());
+    return;
+  }
+
+  rapidjson::OStreamWrapper osw(ofs);
+  rapidjson::Writer<rapidjson::OStreamWrapper> writer(osw);
+  json.Accept(writer);
+
+  VGLOG(LOG_ERR, "Written json to file: [%s].", jsonFileName.c_str());
 }
 
 }  // namespace vigilante::json_util

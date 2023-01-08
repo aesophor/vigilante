@@ -1,12 +1,9 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Equipment.h"
 
-#include <json/document.h>
-
 #include "util/JsonUtil.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante {
 
@@ -30,7 +27,7 @@ void Equipment::import(const string& jsonFileName) {
 }
 
 Equipment::Profile::Profile(const string& jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   equipmentType = static_cast<Equipment::Type>(json["equipmentType"].GetInt());
   bonusPhysicalDamage = json["bonusPhysicalDamage"].GetInt();

@@ -5,13 +5,13 @@
 #include <stack>
 
 #include <cocos2d.h>
+
 #include "character/Npc.h"
 #include "util/ds/Algorithm.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante {
 
@@ -30,7 +30,7 @@ DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
     : _nodeMapper(std::move(other._nodeMapper)),
       _rootNode(std::move(other._rootNode)),
-      _currentNode(other._currentNode), 
+      _currentNode(other._currentNode),
       _toggleJoinPartyNode(other._toggleJoinPartyNode),
       _toggleWaitNode(other._toggleWaitNode),
       _tradeNode(other._tradeNode),
@@ -55,7 +55,7 @@ void DialogueTree::import(const string& jsonFileName) {
   }
 
   VGLOG(LOG_INFO, "Loading dialogue tree...");
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   // Convert rapidjson tree into our DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD

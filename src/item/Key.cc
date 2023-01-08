@@ -4,7 +4,6 @@
 #include "util/JsonUtil.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante {
 
@@ -13,7 +12,7 @@ Key::Key(const string& jsonFileName)
       _keyProfile(jsonFileName) {}
 
 Key::Profile::Profile(const string& jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   targetTmxFileName = json["targetTmxMapFileName"].GetString();
   targetPortalId = json["targetPortalId"].GetInt();

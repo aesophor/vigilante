@@ -3,16 +3,15 @@
 
 #include <vector>
 
+#include "gameplay/GameState.h"
 #include "input/InputManager.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 
 #define OPTIONS_COUNT 4
 
-using std::vector;
-using std::unique_ptr;
-using cocos2d::ui::Layout;
-using cocos2d::EventKeyboard;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
@@ -21,7 +20,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
       _options(OPTIONS_COUNT),
       _optionListView(std::make_unique<OptionListView>(pauseMenu)) {
 
-  _layout->setLayoutType(Layout::Type::ABSOLUTE);
+  _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
 
   // Place item list view.
@@ -30,7 +29,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
 
   // Define available Options.
   _options = {{
-    {"Save Game", []() {}},
+    {"Save Game", []() { GameState("quicksave.vgs").save(); }},
     {"Load Game", []() {}},
     {"Options",   []() {}},
     {"Quit",      []() { SceneManager::the().getCurrentScene<GameScene>()->setRunning(false); }},
@@ -58,4 +57,4 @@ void OptionPane::handleInput() {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante

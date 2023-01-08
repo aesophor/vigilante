@@ -1,8 +1,6 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Item.h"
 
-#include <json/document.h>
-
 #include "Assets.h"
 #include "Constants.h"
 #include "item/Equipment.h"
@@ -23,7 +21,6 @@
 
 using namespace std;
 using namespace vigilante::category_bits;
-using rapidjson::Document;
 USING_NS_CC;
 
 namespace vigilante {
@@ -112,7 +109,7 @@ bool Item::isGold() const {
 }
 
 Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());
   textureResDir = json["textureResDir"].GetString();

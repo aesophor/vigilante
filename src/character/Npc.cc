@@ -5,8 +5,6 @@
 #include <limits>
 #include <memory>
 
-#include <json/document.h>
-
 #include "Assets.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -34,7 +32,6 @@
 
 using namespace std;
 using namespace vigilante::category_bits;
-using rapidjson::Document;
 USING_NS_CC;
 
 namespace vigilante {
@@ -494,7 +491,7 @@ void Npc::setDisposition(Npc::Disposition disposition) {
 }
 
 Npc::Profile::Profile(const string& jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   const auto& droppedItemsMap = json["droppedItems"].GetObject();
   if (!droppedItemsMap.ObjectEmpty()) {

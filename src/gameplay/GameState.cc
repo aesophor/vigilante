@@ -1,35 +1,27 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameState.h"
 
-#include <fstream>
+#include "util/JsonUtil.h"
 
-using std::endl;
-using std::string;
-using std::ifstream;
-using std::ofstream;
+using namespace std;
 
 namespace vigilante {
 
-GameState::GameState() {}
-
+GameState::GameState(const fs::path& saveFilePath)
+    : _saveFilePath(saveFilePath) {}
 
 void GameState::load() {
-  ifstream fin(_filePath);
-  fin >> *this;
+  //Document json = json_util::parseJson(_saveFilePath);
 }
 
 void GameState::save() {
-  ofstream fout(_filePath);
-  fout << *this;
-}
+  rapidjson::Document json;
+  json.SetObject();
+  rapidjson::Document::AllocatorType& allocator = json.GetAllocator();
 
+  json.AddMember("testkey", 1, allocator);
 
-ifstream& operator>>(ifstream& ifs, GameState& state) {
-  return ifs;
-}
-
-ofstream& operator<<(ofstream& ofs, const GameState& state) {
-  return ofs;
+  json_util::saveToFile(_saveFilePath, json);
 }
 
 }  // namespace vigilante

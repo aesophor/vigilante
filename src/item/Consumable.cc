@@ -3,16 +3,14 @@
 
 #include "util/JsonUtil.h"
 
-using std::string;
-using cocos2d::EventKeyboard; 
-using rapidjson::Document;
+using namespace std;
+USING_NS_CC;
 
 namespace vigilante {
 
 Consumable::Consumable(const string& jsonFileName)
     : Item(jsonFileName),
       _consumableProfile(jsonFileName) {}
-
 
 void Consumable::import(const string& jsonFileName) {
   Item::import(jsonFileName);
@@ -31,9 +29,8 @@ Consumable::Profile& Consumable::getConsumableProfile() {
   return _consumableProfile;
 }
 
-
 Consumable::Profile::Profile(const string& jsonFileName) : hotkey() {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   duration = json["duration"].GetFloat();
 

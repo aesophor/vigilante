@@ -2,7 +2,6 @@
 #include "Skill.h"
 
 #include <cocos2d.h>
-#include <json/document.h>
 
 #include "skill/BatForm.h"
 #include "skill/BackDash.h"
@@ -12,7 +11,6 @@
 #include "util/Logger.h"
 
 using namespace std;
-using rapidjson::Document;
 
 namespace vigilante {
 
@@ -32,7 +30,7 @@ unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
 }
 
 Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName), hotkey() {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   skillType = static_cast<Skill::Type>(json["skillType"].GetInt());
   characterFramesName = json["characterFramesName"].GetString();

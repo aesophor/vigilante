@@ -2,14 +2,16 @@
 #ifndef VIGILANTE_JSON_UTIL_H_
 #define VIGILANTE_JSON_UTIL_H_
 
-#include <string>
-#include <vector>
+#include <filesystem>
 
 #include <json/document.h>
 
+namespace fs = std::filesystem;
+
 namespace vigilante::json_util {
 
-rapidjson::Document parseJson(const std::string& jsonFileName);
+rapidjson::Document parseJson(const fs::path& jsonFileName);
+void saveToFile(const fs::path& jsonFileName, const rapidjson::Document& json);
 
 }  // namespace vigilante::json_util
 

@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <cassert>
 
-#include <json/document.h>
-
 #include "Assets.h"
 #include "Audio.h"
 #include "CallbackManager.h"
@@ -21,7 +19,6 @@
 
 using namespace std;
 using namespace vigilante::assets;
-using rapidjson::Document;
 USING_NS_CC;
 
 namespace vigilante {
@@ -1056,7 +1053,7 @@ void Character::regenStamina(int deltaStamina) {
 }
 
 Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
 
   textureResDir = json["textureResDir"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();

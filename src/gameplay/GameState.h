@@ -1,27 +1,24 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_GAME_STATE_H_
 #define VIGILANTE_GAME_STATE_H_
 
-#include <string>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 namespace vigilante {
 
-class GameState {
+class GameState final {
  public:
-  explicit GameState();
-  virtual ~GameState() = default;
+  explicit GameState(const fs::path& saveFilePath);
 
-  virtual void load();
-  virtual void save();
+  void load();
+  void save();
 
-  const std::string& getFilePath() const;
-  void setFilePath(const std::string& filePath);
-
-  friend std::ifstream& operator>>(std::ifstream& is, GameState& state);
-  friend std::ofstream& operator<<(std::ofstream& os, const GameState& state);
+  inline const fs::path& getSaveFilePath() const { return _saveFilePath; }
 
  private:
-  std::string _filePath;
+  const fs::path _saveFilePath;
 };
 
 }  // namespace vigilante
