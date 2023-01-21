@@ -1,5 +1,5 @@
-# Copyright (c) 2019 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #!/usr/bin/env sh
+# Copyright (c) 2013 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 FILENAME="cocos2d-x-3.17.1.zip"
 
