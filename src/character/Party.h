@@ -3,6 +3,7 @@
 #define VIGILANTE_PARTY_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -31,21 +32,22 @@ class Party final {
   void askMemberToWait(Character* targetCharacter);  // wait in a specific map
   void askMemberToFollow(Character* targetCharacter);  // resume following
 
-  bool hasWaitingMember(const std::string& characterJsonFileName) const;
   void addWaitingMember(const std::string& characterJsonFileName,
                         const std::string& currentTmxMapFileName,
                         float x,
                         float y);
   void removeWaitingMember(const std::string& characterJsonFileName);
-  Party::WaitingLocationInfo getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const;
+
+  std::optional<Party::WaitingLocationInfo>
+  getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const;
 
   inline const std::unordered_set<std::shared_ptr<Character>>& getMembers() const { return _members; }
   inline Character* getLeader() const { return _leader; }
   std::unordered_set<Character*> getLeaderAndMembers() const;
 
   inline const std::unordered_map<std::string, Party::WaitingLocationInfo>&
-  getWaitingMembersLocationInfo() const {
-    return _waitingMembersLocationInfo;
+  getWaitingMembersLocationInfos() const {
+    return _waitingMembersLocationInfos;
   }
 
   void dump();
@@ -57,7 +59,7 @@ class Party final {
   // `_leader` will NOT be in `_members`.
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
-  std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfo;
+  std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfos;
 
   friend class GameState;
 };

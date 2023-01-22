@@ -173,7 +173,7 @@ void Character::update(float delta) {
     regenHealth(_baseRegenDeltaHealth);
     regenMagicka(_baseRegenDeltaMagicka);
     regenStamina(_baseRegenDeltaStamina);
-    
+
     auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
     hud->updateStatusBars();
   }
@@ -261,13 +261,14 @@ void Character::defineBody(b2BodyType bodyType,
   // Create body fixture.
   // Fixture position in box2d is relative to b2body's position.
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
-  b2Vec2 vertices[4];
   float bw = _characterProfile.bodyWidth;
   float bh = _characterProfile.bodyHeight;
-  vertices[0] = {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor};
-  vertices[1] = { bw / 2 / scaleFactor,  bh / 2 / scaleFactor};
-  vertices[2] = {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
-  vertices[3] = { bw / 2 / scaleFactor, -bh / 2 / scaleFactor};
+  b2Vec2 vertices[] = {
+    {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
+    { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
+    {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
+    { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
+  };
 
   _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
@@ -277,11 +278,12 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 
   // Create feet fixture.
-  b2Vec2 feetVertices[4];
-  feetVertices[0] = {(-bw / 2 + 1) / scaleFactor, 0};
-  feetVertices[1] = {( bw / 2 - 1) / scaleFactor, 0};
-  feetVertices[2] = {(-bw / 2 + 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
-  feetVertices[3] = {( bw / 2 - 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor};
+  b2Vec2 feetVertices[] = {
+    {(-bw / 2 + 1) / scaleFactor, 0},
+    {( bw / 2 - 1) / scaleFactor, 0},
+    {(-bw / 2 + 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor},
+    {( bw / 2 - 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor}
+  };
 
   _fixtures[FixtureType::FEET] = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
     .categoryBits(category_bits::kFeet)
@@ -1001,7 +1003,7 @@ void Character::removeActiveSkill(Skill* skill) {
 }
 
 bool Character::isWaitingForPartyLeader() const {
-  return _party && _party->hasWaitingMember(_characterProfile.jsonFileName);
+  return _party && _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName);
 }
 
 unordered_set<Character*> Character::getAllies() const {

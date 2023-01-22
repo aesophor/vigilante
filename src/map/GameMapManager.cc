@@ -66,7 +66,6 @@ void GameMapManager::loadGameMap(const string& tmxMapFileName,
 }
 
 void GameMapManager::destroyGameMap() {
-  // Pauses all NPCs from acting, preventing new callbacks from being generated.
   setNpcsAllowedToAct(false);
 
   if (_player) {
@@ -130,43 +129,30 @@ bool GameMapManager::hasSavedPortalLockUnlockState(const string& tmxMapFileName,
 
 bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
                                     int targetPortalId) const {
-  // If we cannot find the associated vector for this tiled map
-  // in the unordered_map, then simply return false.
   auto it = _allPortalStates.find(tmxMapFileName);
   if (it == _allPortalStates.end()) {
     VGLOG(LOG_WARN, "Unable to find the corresponding portal vector");
     return false;
   }
 
-  // Otherwise, we've found the associated vector of this TiledMap.
-  // Now we should find the corresponding entry in that vector
-  // and return entry.second which holds the lock state of the Portal.
   for (const auto& entry : it->second) {
     if (entry.first == targetPortalId) {
       return entry.second;
     }
   }
 
-  // If we end up here, then the vector `it->second` doesn't contain
-  // the corresponding entry. We should simply return false.
   VGLOG(LOG_WARN, "Unable to find the corresponding entry in the portal vector");
   return false;
 }
 
 void GameMapManager::setPortalLocked(const string& tmxMapFileName,
                                      int targetPortalId, bool locked) {
-  // If we cannot find the associated vector for this tiled map
-  // in the unordered_map, then insert a new vector which is
-  // initialized with {targetPortalId, locked} and return early.
   auto it = _allPortalStates.find(tmxMapFileName);
   if (it == _allPortalStates.end()) {
     _allPortalStates.insert({tmxMapFileName, {{targetPortalId, locked}}});
     return;
   }
 
-  // Otherwise, we've found the associated vector of this TiledMap.
-  // Now we should find the corresponding entry in that vector,
-  // update that entry, and return early.
   for (auto& entry : it->second) {
     if (entry.first == targetPortalId) {
       entry.second = locked;
@@ -174,8 +160,6 @@ void GameMapManager::setPortalLocked(const string& tmxMapFileName,
     }
   }
 
-  // If we end up here, then the vector `it->second` doesn't contain
-  // the corresponding entry, and thus we have to insert it manually.
   it->second.push_back({targetPortalId, locked});
 }
 

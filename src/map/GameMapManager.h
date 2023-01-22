@@ -8,8 +8,8 @@
 #include <string>
 #include <unordered_set>
 
-#include <cocos2d.h>
 #include <Box2D/Box2D.h>
+#include <cocos2d.h>
 
 #include "Controllable.h"
 #include "character/Character.h"
@@ -26,31 +26,6 @@ class GameMapManager final {
 
   void update(float delta);
 
-  // Safely loads the specified GameMap using a worker thread
-  // which executes independently in background.
-  //
-  // IMPORTANT: When the function returns, the new GameMap will *NOT*
-  //            have been loaded.
-  //
-  //            Q1. "Can't we just block the main thread until the worker thread
-  //                 finishes loading the new GameMap?", you may ask.
-  //
-  //            A1. "No. The main thread have to work on Shade's FadeIn effect,
-  //                 so we have to keep the main thread running."
-  //            -----------------------------------------------------------------
-  //            Q2. "So how do I know when the new GameMap has finished loading?"
-  //
-  //            A2. "If you need to do anything after the new GameMap has been loaded,
-  //                 then pass a callable object (as the 2nd parameter).
-  //                 It is guaranteed to be called after the new GameMap is loaded."
-  //
-  // Before loading the new GameMap, we need to ensure that
-  // there are no pending callbacks anymore. This is important because
-  // suppose that we have a pending callback which manipulates a sprite,
-  // but this sprite has already been removed from the scene, now
-  // when this callback is invoked -- we will get a segfault on linux
-  // (or EXC_BAD_ACCESS on macOS).
-  //
   // @param tmxMapFileName: the target .tmx file to load
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
@@ -78,8 +53,6 @@ class GameMapManager final {
   inline Player* getPlayer() const { return _player.get(); }
 
  private:
-  // Internal function - NOT safe if used with CallbackManager!
-  // Used by GameMap::loadGameMap().
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
 
   cocos2d::Layer* _layer;

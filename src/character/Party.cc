@@ -17,7 +17,7 @@ namespace vigilante {
 Party::Party(Character* leader)
     : _leader(leader),
       _members(),
-      _waitingMembersLocationInfo() {}
+      _waitingMembersLocationInfos() {}
 
 Character* Party::getMember(const string& characterJsonFileName) const {
   auto it = std::find_if(_members.begin(),
@@ -67,9 +67,7 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   b2Body* body = targetCharacter->getBody();
   b2Vec2 targetPos = (body) ? body->GetPosition() : b2Vec2{0, 0};
 
-  if (hasWaitingMember(targetCharacter->getCharacterProfile().jsonFileName)) {
-    removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
-  }
+  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
 
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
   if (!target) {
@@ -127,36 +125,30 @@ void Party::askMemberToFollow(Character* targetCharacter) {
                                           targetCharacter->getCharacterProfile().name.c_str()));
 }
 
-bool Party::hasWaitingMember(const string& characterJsonFileName) const {
-  auto it = _waitingMembersLocationInfo.find(characterJsonFileName);
-  return it != _waitingMembersLocationInfo.end();
-}
-
 void Party::addWaitingMember(const string& characterJsonFileName,
                              const string& currentTmxMapFileName,
                              float x,
                              float y) {
-  if (hasWaitingMember(characterJsonFileName)) {
+  auto it = _waitingMembersLocationInfos.find(characterJsonFileName);
+  if (it != _waitingMembersLocationInfos.end()) {
     VGLOG(LOG_ERR, "This member is already a waiting member of the party.");
     return;
   }
-  _waitingMembersLocationInfo.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
+  _waitingMembersLocationInfos.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
 }
 
 void Party::removeWaitingMember(const string& characterJsonFileName) {
-  if (!hasWaitingMember(characterJsonFileName)) {
+  if (_waitingMembersLocationInfos.erase(characterJsonFileName) == 0) {
     VGLOG(LOG_ERR, "This member is not a waiting member of the party.");
-    return;
   }
-  _waitingMembersLocationInfo.erase(characterJsonFileName);
 }
 
-Party::WaitingLocationInfo
+optional<Party::WaitingLocationInfo>
 Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const {
-  auto it = _waitingMembersLocationInfo.find(characterJsonFileName);
-  if (it == _waitingMembersLocationInfo.end()) {
+  auto it = _waitingMembersLocationInfos.find(characterJsonFileName);
+  if (it == _waitingMembersLocationInfos.end()) {
     VGLOG(LOG_ERR, "This member is not a waiting member of the party");
-    return {"", 0, 0};
+    return std::nullopt;
   }
   return it->second;
 }
@@ -176,7 +168,7 @@ void Party::dump() {
   for (const auto& member : _members) {
     VGLOG(LOG_INFO, "[%s]", member->getCharacterProfile().jsonFileName.c_str());
   }
-  for (const auto& [npcJsonFileName, locInfo] : _waitingMembersLocationInfo) {
+  for (const auto& [npcJsonFileName, locInfo] : _waitingMembersLocationInfos) {
     VGLOG(LOG_INFO, "[%s] -> {%s, %f, %f}",
           npcJsonFileName.c_str(), locInfo.tmxMapFileName.c_str(), locInfo.x, locInfo.y);
   }

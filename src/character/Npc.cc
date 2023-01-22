@@ -119,12 +119,13 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
   b2BodyBuilder bodyBuilder(_body);
 
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
-  b2Vec2 vertices[4];
   float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.2;
-  vertices[0] = {-sideLength / scaleFactor,  sideLength / scaleFactor};
-  vertices[1] = { sideLength / scaleFactor,  sideLength / scaleFactor};
-  vertices[2] = {-sideLength / scaleFactor, -sideLength / scaleFactor};
-  vertices[3] = { sideLength / scaleFactor, -sideLength / scaleFactor};
+  b2Vec2 vertices[] = {
+    {-sideLength / scaleFactor,  sideLength / scaleFactor},
+    { sideLength / scaleFactor,  sideLength / scaleFactor},
+    {-sideLength / scaleFactor, -sideLength / scaleFactor},
+    { sideLength / scaleFactor, -sideLength / scaleFactor}
+  };
 
   bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(kInteractable)
@@ -457,7 +458,7 @@ bool Npc::isWaitingForPlayer() const {
   }
 
   return isPlayerLeaderOfParty() &&
-    _party->hasWaitingMember(_characterProfile.jsonFileName);
+    _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName) != std::nullopt;
 }
 
 bool Npc::isWaitingForPartyLeader() const {
@@ -465,7 +466,7 @@ bool Npc::isWaitingForPartyLeader() const {
     return false;
   }
 
-  return _party->hasWaitingMember(_characterProfile.jsonFileName);
+  return _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName) != std::nullopt;
 }
 
 void Npc::setDisposition(Npc::Disposition disposition) {

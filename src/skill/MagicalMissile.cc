@@ -46,7 +46,7 @@ bool MagicalMissile::showOnMap(float x, float y) {
              MAGICAL_MISSILE_MASK_BITS);
 
   defineTexture(_skillProfile.textureResDir, x, y);
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
   return true;
@@ -58,7 +58,7 @@ void MagicalMissile::update(float delta) {
   // If _body goes out of map, then we can delete this object.
   float x = _body->GetPosition().x * kPpm;
   float y = _body->GetPosition().y * kPpm;
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   GameMap* gameMap = gmMgr->getGameMap();
 
@@ -79,7 +79,7 @@ void MagicalMissile::onHit(Character* target) {
 
   _hasHit = true;
   _body->SetLinearVelocity({_body->GetLinearVelocity().x / 2, 0});
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   _bodySprite->runAction(Sequence::createWithTwoActions(
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
@@ -176,11 +176,12 @@ void MagicalMissile::defineBody(b2BodyType bodyType,
     .buildBody();
 
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
-  b2Vec2 vertices[4];
-  vertices[0] = {-10.0f / scaleFactor,  0.0f / scaleFactor};
-  vertices[1] = {  0.0f / scaleFactor, -2.0f / scaleFactor};
-  vertices[2] = { 10.0f / scaleFactor,  0.0f / scaleFactor};
-  vertices[3] = {  0.0f / scaleFactor,  2.0f / scaleFactor};
+  b2Vec2 vertices[] = {
+    {-10.0f / scaleFactor,  0.0f / scaleFactor},
+    {  0.0f / scaleFactor, -2.0f / scaleFactor},
+    { 10.0f / scaleFactor,  0.0f / scaleFactor},
+    {  0.0f / scaleFactor,  2.0f / scaleFactor}
+  };
 
   _fixtures[0] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(categoryBits)

@@ -214,7 +214,7 @@ void CommandHandler::playerPartyMemberWait(const vector<string>&) {
     return;
   }
 
-  if (player->getParty()->hasWaitingMember(targetNpc->getCharacterProfile().jsonFileName)) {
+  if (player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFileName)) {
     setError("This Npc is already waiting for player.");
     return;
   }
@@ -236,7 +236,7 @@ void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
     return;
   }
 
-  if (!player->getParty()->hasWaitingMember(targetNpc->getCharacterProfile().jsonFileName)) {
+  if (!player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFileName)) {
     setError("This Npc is not waiting for player yet.");
     return;
   }

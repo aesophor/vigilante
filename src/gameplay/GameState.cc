@@ -70,9 +70,10 @@ void GameState::deserializeGameMapState(const rapidjson::Value::Object& obj) con
     const auto& playerParty = player->getParty();
     for (const auto ally : player->getAllies()) {
       const string& jsonFileName = ally->getCharacterProfile().jsonFileName;
-      if (playerParty->hasWaitingMember(jsonFileName)) {
-        auto waitLoc = playerParty->getWaitingMemberLocationInfo(jsonFileName);
-        ally->showOnMap(waitLoc.x * kPpm, waitLoc.y * kPpm);
+      if (auto waitLoc = playerParty->getWaitingMemberLocationInfo(jsonFileName)) {
+        if (waitLoc->tmxMapFileName == tmxTiledMapFileName) {
+          ally->showOnMap(waitLoc->x * kPpm, waitLoc->y * kPpm);
+        }
       } else {
         ally->showOnMap(playerPos.first * kPpm, playerPos.second * kPpm);
       }
@@ -93,7 +94,7 @@ rapidjson::Value GameState::serializePlayerState() const {
     = json_util::makeJsonObject(_allocator, alliesProfilesFileNames);
 
   vector<rapidjson::Value> waitingMembersLocationInfos;
-  for (const auto& [npcJsonFileName, locInfo] : player->getParty()->getWaitingMembersLocationInfo()) {
+  for (const auto& [npcJsonFileName, locInfo] : player->getParty()->getWaitingMembersLocationInfos()) {
     auto obj = json_util::serialize(_allocator,
                                     make_pair("npcJsonFileName", npcJsonFileName),
                                     make_pair("tmxMapFileName", locInfo.tmxMapFileName),
@@ -172,7 +173,7 @@ void GameState::deserializePlayerState(const rapidjson::Value::Object& obj) cons
   json_util::deserialize(partyJsonObject,
       make_pair("waitingMembersLocationInfo", &waitingMembersLocationInfo));
 
-  auto &playerPartyWaitingMembersLocationInfo = player->getParty()->_waitingMembersLocationInfo;
+  auto &playerPartyWaitingMembersLocationInfo = player->getParty()->_waitingMembersLocationInfos;
   playerPartyWaitingMembersLocationInfo.clear();
   for (const auto& locInfo : waitingMembersLocationInfo) {
     string npcJsonFileName;

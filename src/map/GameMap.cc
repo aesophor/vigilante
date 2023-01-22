@@ -43,7 +43,7 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _pathFinder(std::make_unique<SimplePathFinder>()) {}
 
 void GameMap::createObjects() {
-  std::list<b2Body*> bodies;
+  list<b2Body*> bodies;
 
   // Create box2d objects from layers.
   bodies = createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
@@ -69,12 +69,10 @@ void GameMap::createObjects() {
 }
 
 void GameMap::deleteObjects() {
-  // Destroy ground, walls, platforms and portal bodies.
   for (auto body : _tmxTiledMapBodies) {
     _world->DestroyBody(body);
   }
 
-  // Destroy DynamicActor's b2body and textures.
   for (auto& actor : _dynamicActors) {
     actor->removeFromMap();
   }
@@ -126,9 +124,9 @@ cocos2d::ValueVector GameMap::getObjects(const string& layerName) {
   return objectGroup->getObjects();
 }
 
-std::list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
+list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
                                              bool collidable, float friction) {
-  std::list<b2Body*> bodies;
+  list<b2Body*> bodies;
 
   for (const auto& rectObj : getObjects(layerName)) {
     const auto& valMap = rectObj.asValueMap();
@@ -155,9 +153,9 @@ std::list<b2Body*> GameMap::createRectangles(const string& layerName, short cate
   return bodies;
 }
 
-std::list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBits,
+list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBits,
                                             bool collidable, float friction) {
-  std::list<b2Body*> bodies;
+  list<b2Body*> bodies;
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
   for (const auto& lineObj : getObjects(layerName)) {
@@ -280,12 +278,10 @@ void GameMap::createNpcs() {
     return;
   }
 
-  for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
+  for (const auto& p : player->getParty()->getWaitingMembersLocationInfos()) {
     const string& characterJsonFileName = p.first;
     const auto& waitLoc = p.second;
 
-    // If this Npc is waiting for its leader in the current map,
-    // then we should show it on this map.
     if (waitLoc.tmxMapFileName == _tmxTiledMapFileName) {
       auto member = player->getParty()->getMember(characterJsonFileName);
       if (!member) {
@@ -369,25 +365,17 @@ void GameMap::Portal::onInteract(Character* user) {
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto afterLoadingGameMap = [user, newMapFileName, targetPortalId, gmMgr]() {
-    const b2Vec2& portalPos
-      = gmMgr->getGameMap()->_portals.at(targetPortalId)->_body->GetPosition();
+    const auto& portals = gmMgr->getGameMap()->_portals;
+    assert(targetPortalId < portals.size());
 
-    // Place the user and its party members at the portal.
+    const auto& portalPos = portals[targetPortalId]->_body->GetPosition();
     user->setPosition(portalPos.x, portalPos.y);
 
-    // How should we handle user's allies?
-    // (1) If `ally` is not waiting for its party leader,
-    //     then teleport the ally's body to its party leader.
-    // (2) If `ally` is waiting for its party leader,
-    //     AND if this new map is not where `ally` is waiting at,
-    //     then we'll remove it from the map temporarily.
-    //     Whether it will be shown again is determined in
-    //     GameMap::createNpcs().
     for (auto ally : user->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
         ally->setPosition(portalPos.x, portalPos.y);
       } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
-                 ally->getCharacterProfile().jsonFileName).tmxMapFileName) {
+                 ally->getCharacterProfile().jsonFileName)->tmxMapFileName) {
         ally->removeFromMap();
       }
     }

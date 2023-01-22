@@ -130,14 +130,14 @@ void Player::removeItem(Item* item, int amount) {
 
 void Player::equip(Equipment* equipment) {
   Character::equip(equipment);
-  
+
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
 }
 
 void Player::unequip(Equipment::Type equipmentType) {
   Character::unequip(equipmentType);
-  
+
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
 }
