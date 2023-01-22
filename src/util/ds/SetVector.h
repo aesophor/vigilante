@@ -11,7 +11,7 @@ namespace vigilante {
 // A vector that contains a set of unique objects of type Key
 // where the order of iteration is the order of insertion.
 template <typename Key>
-class SetVector {
+class SetVector final {
  public:
   using size_type = typename std::vector<Key>::size_type;
   using iterator = typename std::vector<Key>::iterator;
@@ -24,7 +24,7 @@ class SetVector {
       insert(element);
     }
   }
-  
+
   SetVector(const SetVector& other)
       : _set(other._set), _vec(other._vec) {}
 
@@ -36,14 +36,12 @@ class SetVector {
     _vec = other._vec;
     return *this;
   }
-  
+
   SetVector& operator=(SetVector&& other) noexcept {
     _set = std::move(other._set);
     _vec = std::move(other._vec);
     return *this;
   }
-  
-  virtual ~SetVector() = default;
 
   void insert(Key key) {
     auto it = _set.find(key);
@@ -69,7 +67,7 @@ class SetVector {
     _set.clear();
     _vec.clear();
   }
-  
+
   bool empty() const {
     return _vec.empty();
   }
