@@ -37,13 +37,18 @@ void Party::recruit(Character* targetCharacter) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
-  shared_ptr<Character> target
-    = std::dynamic_pointer_cast<Character>(gmMgr->getGameMap()->removeDynamicActor(targetCharacter));
+  auto target = gmMgr->getGameMap()->removeDynamicActor<Character>(targetCharacter);
+  if (!target) {
+    VGLOG(LOG_ERR, "Failed to remove the dynamic actor from game map.");
+    return;
+  }
 
-  // Disable the spawning of this NPC if needed.
-  // For instance, if this NPC is a spawn-once only NPC and is already killed,
-  // then we wouldn't want to respawn it.
   shared_ptr<Npc> targetNpc = std::dynamic_pointer_cast<Npc>(target);
+  if (!targetNpc) {
+    VGLOG(LOG_ERR, "Failed to recruit the target, because target is not an NPC.");
+    return;
+  }
+
   if (!targetNpc->getNpcProfile().isRespawnable) {
     gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
   }
@@ -57,16 +62,31 @@ void Party::recruit(Character* targetCharacter) {
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+
+  b2Body* body = targetCharacter->getBody();
+  b2Vec2 targetPos = (body) ? body->GetPosition() : b2Vec2{0, 0};
+
   if (hasWaitingMember(targetCharacter->getCharacterProfile().jsonFileName)) {
     removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
   }
 
-  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
-
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
-  target->removeFromMap();
+  if (!target) {
+    VGLOG(LOG_ERR, "Failed to remove the member from party (member not found).");
+    return;
+  }
 
-  if (addToMap) {
+  shared_ptr<Npc> targetNpc = std::dynamic_pointer_cast<Npc>(target);
+  if (!targetNpc) {
+    VGLOG(LOG_ERR, "Failed to recruit the target, because target is not an NPC.");
+    return;
+  }
+
+  targetNpc->removeFromMap();
+  gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, true);
+
+  if (addToMap && body) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
     gmMgr->getGameMap()->showDynamicActor(
         std::move(target), targetPos.x * kPpm, targetPos.y * kPpm);
@@ -77,6 +97,13 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
                                           targetCharacter->getCharacterProfile().name.c_str()));
 }
 
+void Party::dismissAll(bool addToMap) {
+  for (auto it = _members.begin(); it != _members.end();) {
+    auto current_it = it;
+    ++it;
+    dismiss(current_it->get(), addToMap);
+  }
+}
 
 void Party::askMemberToWait(Character* targetCharacter) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
@@ -142,6 +169,17 @@ unordered_set<Character*> Party::getLeaderAndMembers() const {
     allMembers.insert(member.get());
   }
   return allMembers;
+}
+
+void Party::dump() {
+  VGLOG(LOG_INFO, "Dumping player party");
+  for (const auto& member : _members) {
+    VGLOG(LOG_INFO, "[%s]", member->getCharacterProfile().jsonFileName.c_str());
+  }
+  for (const auto& [npcJsonFileName, locInfo] : _waitingMembersLocationInfo) {
+    VGLOG(LOG_INFO, "[%s] -> {%s, %f, %f}",
+          npcJsonFileName.c_str(), locInfo.tmxMapFileName.c_str(), locInfo.x, locInfo.y);
+  }
 }
 
 void Party::addMember(shared_ptr<Character> character) {

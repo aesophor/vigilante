@@ -264,14 +264,15 @@ void GameMap::createNpcs() {
     float y = valMap.at("y").asFloat();
     string json = valMap.at("json").asString();
 
+    if (!gmMgr->isNpcAllowedToSpawn(json)) {
+      continue;
+    }
+
     auto npc = std::make_shared<Npc>(json);
     if (auto it = valMap.find("isFacingRight"); it != valMap.end()) {
       npc->setFacingRight(it->second.asBool());
     }
-
-    if (gmMgr->isNpcAllowedToSpawn(json)) {
-      showDynamicActor(std::move(npc), x, y);
-    }
+    showDynamicActor(std::move(npc), x, y);
   }
 
   auto player = gmMgr->getPlayer();
@@ -281,13 +282,17 @@ void GameMap::createNpcs() {
 
   for (const auto& p : player->getParty()->getWaitingMembersLocationInfo()) {
     const string& characterJsonFileName = p.first;
-    const Party::WaitingLocationInfo& location = p.second;
+    const auto& waitLoc = p.second;
 
     // If this Npc is waiting for its leader in the current map,
     // then we should show it on this map.
-    if (location.tmxMapFileName == _tmxTiledMapFileName) {
-      player->getParty()->getMember(characterJsonFileName)->showOnMap(location.x * kPpm,
-                                                                      location.y * kPpm);
+    if (waitLoc.tmxMapFileName == _tmxTiledMapFileName) {
+      auto member = player->getParty()->getMember(characterJsonFileName);
+      if (!member) {
+        VGLOG(LOG_ERR, "Character [%s] is not in the player's party.", characterJsonFileName.c_str());
+        continue;
+      }
+      member->showOnMap(waitLoc.x * kPpm, waitLoc.y * kPpm);
     }
   }
 }
@@ -377,7 +382,7 @@ void GameMap::Portal::onInteract(Character* user) {
     //     AND if this new map is not where `ally` is waiting at,
     //     then we'll remove it from the map temporarily.
     //     Whether it will be shown again is determined in
-    //     GameMap::spawnNpcs().
+    //     GameMap::createNpcs().
     for (auto ally : user->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
         ally->setPosition(portalPos.x, portalPos.y);

@@ -24,8 +24,6 @@ rapidjson::Document parseJson(const fs::path& jsonFileName) {
   rapidjson::IStreamWrapper isw(ifs);
   rapidjson::Document doc;
   doc.ParseStream(isw);
-
-  VGLOG(LOG_ERR, "Read json from file: [%s].", jsonFileName.c_str());
   return doc;
 }
 
@@ -39,8 +37,6 @@ void saveToFile(const fs::path& jsonFileName, const rapidjson::Document& json) {
   rapidjson::OStreamWrapper osw(ofs);
   rapidjson::Writer<rapidjson::OStreamWrapper> writer(osw);
   json.Accept(writer);
-
-  VGLOG(LOG_ERR, "Written json to file: [%s].", jsonFileName.c_str());
 }
 
 }  // namespace vigilante::json_util

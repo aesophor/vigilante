@@ -82,8 +82,13 @@ void MainMenuScene::handleInput() {
         SceneManager::the().getCurrentScene<GameScene>()->startNewGame();
         break;
       }
-      case Option::LOAD_GAME:
+      case Option::LOAD_GAME: {
+        Audio::the().stopBgm();
+        InputManager::the().deactivate();
+        SceneManager::the().pushScene(GameScene::create());
+        SceneManager::the().getCurrentScene<GameScene>()->loadGame("quicksave.vgs");
         break;
+      }
       case Option::OPTIONS:
         break;
       case Option::EXIT:

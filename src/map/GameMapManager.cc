@@ -69,9 +69,6 @@ void GameMapManager::destroyGameMap() {
   // Pauses all NPCs from acting, preventing new callbacks from being generated.
   setNpcsAllowedToAct(false);
 
-  // Block until all the registered callbacks have finished.
-  while (CallbackManager::the().getPendingCount() > 0) {}
-
   if (_player) {
     for (auto ally : _player->getAllies()) {
       ally->onMapChanged();

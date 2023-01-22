@@ -155,6 +155,7 @@ class GameMap final {
   std::unique_ptr<PathFinder> _pathFinder;
 
   friend class GameMapManager;
+  friend class GameState;
 };
 
 template <typename ReturnType>

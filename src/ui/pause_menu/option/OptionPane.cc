@@ -30,7 +30,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
   // Define available Options.
   _options = {{
     {"Save Game", []() { GameState("quicksave.vgs").save(); }},
-    {"Load Game", []() {}},
+    {"Load Game", []() { GameState("quicksave.vgs").load(); }},
     {"Options",   []() {}},
     {"Quit",      []() { SceneManager::the().getCurrentScene<GameScene>()->setRunning(false); }},
   }};

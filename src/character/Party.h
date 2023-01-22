@@ -26,6 +26,7 @@ class Party final {
   bool hasMember(const std::string& characterJsonFileName) const;
   void recruit(Character* targetCharacter);
   void dismiss(Character* targetCharacter, bool addToMap=true);
+  void dismissAll(bool addToMap=true);
 
   void askMemberToWait(Character* targetCharacter);  // wait in a specific map
   void askMemberToFollow(Character* targetCharacter);  // resume following
@@ -47,6 +48,8 @@ class Party final {
     return _waitingMembersLocationInfo;
   }
 
+  void dump();
+
  protected:
   void addMember(std::shared_ptr<Character> character);
   std::shared_ptr<Character> removeMember(Character* character);
@@ -55,6 +58,8 @@ class Party final {
   Character* _leader;
   std::unordered_set<std::shared_ptr<Character>> _members;
   std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfo;
+
+  friend class GameState;
 };
 
 }  // namespace vigilante

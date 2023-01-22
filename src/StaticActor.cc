@@ -26,10 +26,10 @@ bool StaticActor::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
   _bodySprite->setPosition(x, y);
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kDefault);
-  
+
   return true;
 }
 

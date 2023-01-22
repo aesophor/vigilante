@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
+#include "gameplay/GameState.h"
 #include "gameplay/ItemPriceTable.h"
 #include "scene/SceneManager.h"
 #include "skill/Skill.h"
@@ -31,7 +32,7 @@ bool GameScene::init() {
 
   _isRunning = true;
   _isTerminating = false;
-  
+
   // Initialize vigilante's exp point table.
   exp_point_table::import(kExpPointTable);
 
@@ -245,7 +246,7 @@ void GameScene::startNewGame() {
 }
 
 void GameScene::loadGame(const string& gameSaveFilePath) {
-
+  GameState(gameSaveFilePath).load();
 }
 
 void GameScene::quit() {

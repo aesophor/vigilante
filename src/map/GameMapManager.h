@@ -94,6 +94,8 @@ class GameMapManager final {
   using PortalStateMap
     = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
   PortalStateMap _allPortalStates;
+
+  friend class GameState;
 };
 
 }  // namespace vigilante

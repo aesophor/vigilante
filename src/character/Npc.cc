@@ -325,7 +325,7 @@ void Npc::act(float delta) {
     Character* killedTarget = _lockedOnTarget;
     setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
-  } else if (_party && isTooFarAwayFromTarget(_party->getLeader())) {
+  } else if (_party && !isWaitingForPartyLeader() && isTooFarAwayFromTarget(_party->getLeader())) {
     clearMoveDest();
     teleportToTarget(_party->getLeader());
   } else if (_moveDest.x || _moveDest.y) {
