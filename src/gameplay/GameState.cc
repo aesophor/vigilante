@@ -36,6 +36,10 @@ void GameState::load() {
 
   deserializePlayerState(_json["player"].GetObject());
   deserializeGameMapState(_json["gameMap"].GetObject());
+
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateEquippedWeapon();
+  hud->updateStatusBars();
 }
 
 rapidjson::Value GameState::serializeGameMapState() const {
