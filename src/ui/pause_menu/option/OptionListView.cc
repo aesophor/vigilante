@@ -32,7 +32,16 @@ OptionListView::OptionListView(PauseMenu* pauseMenu)
 
 void OptionListView::confirm() {
   const auto& optionHandler = getSelectedObject()->second;
-  optionHandler();
+  PauseMenuDialog* dialog = _pauseMenu->getDialog();
+  dialog->reset();
+  dialog->setMessage("Are you sure?");
+
+  dialog->setOption(1, true, "Confirm", [=]() {
+    optionHandler();
+    _pauseMenu->update();
+  });
+  dialog->setOption(2, true, "Cancel");
+  dialog->show();
 }
 
 } // namespace vigilante
