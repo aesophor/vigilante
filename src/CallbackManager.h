@@ -2,7 +2,6 @@
 #ifndef VIGILANTE_CALLBACK_MANAGER_H_
 #define VIGILANTE_CALLBACK_MANAGER_H_
 
-#include <atomic>
 #include <functional>
 
 #include <cocos2d.h>
@@ -15,14 +14,12 @@ class CallbackManager {
 
   void runAfter(const std::function<void ()>& userCallback, float delay);
 
-  inline int getPendingCount() const { return _pendingCount; }
   inline void setScene(cocos2d::Scene* scene) { _scene = scene; }
 
  private:
-  CallbackManager();
+  CallbackManager() : _scene() {}
 
   cocos2d::Scene* _scene;
-  std::atomic<int> _pendingCount;  // # of callbacks pending to run
 };
 
 }  // namespace vigilante
