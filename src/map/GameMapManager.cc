@@ -16,6 +16,7 @@
 #include "scene/SceneManager.h"
 #include "skill/MagicalMissile.h"
 #include "util/box2d/b2BodyBuilder.h"
+#include "util/StringUtil.h"
 
 using namespace std;
 USING_NS_CC;
@@ -114,50 +115,35 @@ void GameMapManager::setNpcAllowedToSpawn(const string& jsonFileName, bool canSp
 }
 
 bool GameMapManager::hasSavedPortalLockUnlockState(const string& tmxMapFileName,
-                                                   int targetPortalId) const {
-  auto mapIt = _allPortalStates.find(tmxMapFileName);
-  if (mapIt == _allPortalStates.end()) {
-    return false;
-  }
-
-  return std::find_if(mapIt->second.begin(),
-                      mapIt->second.end(),
-                      [targetPortalId](const pair<int, bool>& entry) {
-                          return entry.first == targetPortalId;
-                      }) != mapIt->second.end();
+                                                   const int targetPortalId) const {
+  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
+  auto it = _allPortalStates.find(key);
+  return it != _allPortalStates.end();
 }
 
 bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
-                                    int targetPortalId) const {
-  auto it = _allPortalStates.find(tmxMapFileName);
+                                    const int targetPortalId) const {
+  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
+  auto it = _allPortalStates.find(key);
   if (it == _allPortalStates.end()) {
-    VGLOG(LOG_WARN, "Unable to find map [%s] in allPortalStates.", tmxMapFileName.c_str());
+    VGLOG(LOG_WARN, "Unable to find portal lock/unlock state, map [%s], portalId [%d].",
+        tmxMapFileName.c_str(), targetPortalId);
     return false;
   }
 
-  for (const auto& entry : it->second) {
-    if (entry.first == targetPortalId) {
-      return entry.second;
-    }
-  }
-  return false;
+  return it->second;
 }
 
 void GameMapManager::setPortalLocked(const string& tmxMapFileName,
-                                     int targetPortalId, bool locked) {
-  auto it = _allPortalStates.find(tmxMapFileName);
-  if (it == _allPortalStates.end()) {
-    _allPortalStates.insert({tmxMapFileName, {{targetPortalId, locked}}});
-    return;
-  }
+                                     const int targetPortalId,
+                                     const bool locked) {
+  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
+  _allPortalStates[key] = locked;
+}
 
-  for (auto& entry : it->second) {
-    if (entry.first == targetPortalId) {
-      entry.second = locked;
-      return;
-    }
-  }
-  it->second.push_back({targetPortalId, locked});
+string GameMapManager::getPortalQueryKey(const string& tmxMapFileName,
+                                         const int targetPortalId) const {
+  return string_util::format("%s_%d", tmxMapFileName.c_str(), targetPortalId);
 }
 
 }  // namespace vigilante

@@ -4,7 +4,6 @@
 
 #include <atomic>
 #include <functional>
-#include <list>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -43,10 +42,12 @@ class GameMapManager final {
   }
 
   bool hasSavedPortalLockUnlockState(const std::string& tmxMapFileName,
-                                     int targetPortalId) const;
-  bool isPortalLocked(const std::string& tmxMapFileName, int targetPortalId) const;
-  void setPortalLocked(const std::string& tmxMapFileName, int targetPortalId,
-                       bool locked);
+                                     const int targetPortalId) const;
+  bool isPortalLocked(const std::string& tmxMapFileName,
+                      const int targetPortalId) const;
+  void setPortalLocked(const std::string& tmxMapFileName,
+                       const int targetPortalId,
+                       const bool locked);
 
   inline cocos2d::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
@@ -55,6 +56,8 @@ class GameMapManager final {
 
  private:
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
+  std::string getPortalQueryKey(const std::string& tmxMapFileName,
+                                const int targetPortalId) const;
 
   cocos2d::Layer* _layer;
   std::unique_ptr<WorldContactListener> _worldContactListener;
@@ -64,10 +67,7 @@ class GameMapManager final {
 
   std::unordered_set<std::string> _npcSpawningBlacklist;
   std::atomic<bool> _areNpcsAllowedToAct;
-
-  using PortalStateMap
-    = std::unordered_map<std::string, std::list<std::pair<int, bool>>>;
-  PortalStateMap _allPortalStates;
+  std::unordered_map<std::string, bool> _allPortalStates;
 
   friend class GameState;
 };
