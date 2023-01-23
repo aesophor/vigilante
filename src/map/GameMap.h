@@ -106,6 +106,12 @@ class GameMap final {
     SIZE
   };
 
+  enum class OpenableObjectType {
+    PORTAL,
+    CHEST,
+    SIZE
+  };
+
   GameMap(b2World* world, const std::string& tmxMapFileName);
 
   void createObjects();

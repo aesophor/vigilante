@@ -344,8 +344,9 @@ GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
       _body(body),
       _hintBubbleFxSprite() {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (gmMgr->hasSavedPortalLockUnlockState(targetTmxMapFileName, targetPortalId)) {
-    _isLocked = gmMgr->isPortalLocked(targetTmxMapFileName, targetPortalId);
+  constexpr auto kType = OpenableObjectType::PORTAL;
+  if (gmMgr->hasSavedOpenedClosedState(targetTmxMapFileName, kType, targetPortalId)) {
+    _isLocked = !gmMgr->isOpened(targetTmxMapFileName, kType, targetPortalId);
   }
 }
 
@@ -473,7 +474,8 @@ void GameMap::Portal::unlock() {
 
 void GameMap::Portal::saveLockUnlockState() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->setPortalLocked(_targetTmxMapFileName, _targetPortalId, _isLocked);
+  constexpr auto kType = OpenableObjectType::PORTAL;
+  gmMgr->setOpened(_targetTmxMapFileName, kType, _targetPortalId, !_isLocked);
 }
 
 int GameMap::Portal::getPortalId() const {

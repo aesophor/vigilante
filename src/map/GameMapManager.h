@@ -41,13 +41,16 @@ class GameMapManager final {
     _areNpcsAllowedToAct = npcsAllowedToAct;
   }
 
-  bool hasSavedPortalLockUnlockState(const std::string& tmxMapFileName,
-                                     const int targetPortalId) const;
-  bool isPortalLocked(const std::string& tmxMapFileName,
-                      const int targetPortalId) const;
-  void setPortalLocked(const std::string& tmxMapFileName,
-                       const int targetPortalId,
-                       const bool locked);
+  bool hasSavedOpenedClosedState(const std::string& tmxMapFileName,
+                                 const GameMap::OpenableObjectType type,
+                                 const int targetObjectId) const;
+  bool isOpened(const std::string& tmxMapFileName,
+                const GameMap::OpenableObjectType type,
+                const int targetPortalId) const;
+  void setOpened(const std::string& tmxMapFileName,
+                 const GameMap::OpenableObjectType type,
+                 const int targetPortalId,
+                 const bool locked);
 
   inline cocos2d::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
@@ -56,8 +59,9 @@ class GameMapManager final {
 
  private:
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
-  std::string getPortalQueryKey(const std::string& tmxMapFileName,
-                                const int targetPortalId) const;
+  std::string getOpenableObjectQueryKey(const std::string& tmxMapFileName,
+                                        const GameMap::OpenableObjectType type,
+                                        const int targetObjectId) const;
 
   cocos2d::Layer* _layer;
   std::unique_ptr<WorldContactListener> _worldContactListener;
@@ -67,7 +71,11 @@ class GameMapManager final {
 
   std::unordered_set<std::string> _npcSpawningBlacklist;
   std::atomic<bool> _areNpcsAllowedToAct;
-  std::unordered_map<std::string, bool> _allPortalStates;
+
+  // This includes:
+  // 1. The unlock/lock state of all portals in all maps.
+  // 2. The open/close state of all chests in all maps.
+  std::unordered_map<std::string, bool> _allOpenableObjectStates;
 
   friend class GameState;
 };

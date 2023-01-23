@@ -49,7 +49,7 @@ rapidjson::Value GameState::serializeGameMapState() const {
   return json_util::serialize(_allocator,
                               make_pair("tmxTiledMapFileName", gameMap->getTmxTiledMapFileName()),
                               make_pair("npcSpawningBlacklist", gmMgr->_npcSpawningBlacklist),
-                              make_pair("allPortalStates", gmMgr->_allPortalStates),
+                              make_pair("allPortalStates", gmMgr->_allOpenableObjectStates),
                               make_pair("playerPos", playerPosPair));
 }
 
@@ -63,7 +63,7 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
   json_util::deserialize(obj,
                          make_pair("tmxTiledMapFileName", &tmxTiledMapFileName),
                          make_pair("npcSpawningBlacklist", &gmMgr->_npcSpawningBlacklist),
-                         make_pair("allPortalStates", &gmMgr->_allPortalStates),
+                         make_pair("allPortalStates", &gmMgr->_allOpenableObjectStates),
                          make_pair("playerPos", &playerPos));
 
   gmMgr->loadGameMap(tmxTiledMapFileName, [=]() {

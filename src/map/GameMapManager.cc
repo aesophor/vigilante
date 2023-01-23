@@ -31,7 +31,7 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
       _player(),
       _npcSpawningBlacklist(),
       _areNpcsAllowedToAct(true),
-      _allPortalStates() {
+      _allOpenableObjectStates() {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
@@ -114,18 +114,20 @@ void GameMapManager::setNpcAllowedToSpawn(const string& jsonFileName, bool canSp
   }
 }
 
-bool GameMapManager::hasSavedPortalLockUnlockState(const string& tmxMapFileName,
-                                                   const int targetPortalId) const {
-  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
-  auto it = _allPortalStates.find(key);
-  return it != _allPortalStates.end();
+bool GameMapManager::hasSavedOpenedClosedState(const string& tmxMapFileName,
+                                               const GameMap::OpenableObjectType type,
+                                               const int targetPortalId) const {
+  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  auto it = _allOpenableObjectStates.find(key);
+  return it != _allOpenableObjectStates.end();
 }
 
-bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
-                                    const int targetPortalId) const {
-  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
-  auto it = _allPortalStates.find(key);
-  if (it == _allPortalStates.end()) {
+bool GameMapManager::isOpened(const string& tmxMapFileName,
+                              const GameMap::OpenableObjectType type,
+                              const int targetPortalId) const {
+  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  auto it = _allOpenableObjectStates.find(key);
+  if (it == _allOpenableObjectStates.end()) {
     VGLOG(LOG_WARN, "Unable to find portal lock/unlock state, map [%s], portalId [%d].",
         tmxMapFileName.c_str(), targetPortalId);
     return false;
@@ -134,16 +136,30 @@ bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
   return it->second;
 }
 
-void GameMapManager::setPortalLocked(const string& tmxMapFileName,
-                                     const int targetPortalId,
-                                     const bool locked) {
-  const std::string key = getPortalQueryKey(tmxMapFileName, targetPortalId);
-  _allPortalStates[key] = locked;
+void GameMapManager::setOpened(const string& tmxMapFileName,
+                               const GameMap::OpenableObjectType type,
+                               const int targetPortalId,
+                               const bool locked) {
+  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  _allOpenableObjectStates[key] = locked;
 }
 
-string GameMapManager::getPortalQueryKey(const string& tmxMapFileName,
-                                         const int targetPortalId) const {
-  return string_util::format("%s_%d", tmxMapFileName.c_str(), targetPortalId);
+string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFileName,
+                                                 const GameMap::OpenableObjectType type,
+                                                 const int targetObjectId) const {
+  string typeStr;
+  switch (type) {
+    case GameMap::OpenableObjectType::PORTAL:
+      typeStr = "p";
+      break;
+    case GameMap::OpenableObjectType::CHEST:
+      typeStr = "c";
+      break;
+    default:
+      break;
+  }
+
+  return string_util::format("%s_%s_%d", tmxMapFileName.c_str(), typeStr.c_str(), targetObjectId);
 }
 
 }  // namespace vigilante
