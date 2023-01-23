@@ -60,7 +60,7 @@ makeJsonObject(rapidjson::Document::AllocatorType& allocator, T&& value) {
     return rapidjson::Value(value.c_str(), value.size(), allocator);
   } else if constexpr (is_map<_T> || is_unordered_map<_T>) {
     rapidjson::Value ret(rapidjson::kObjectType);
-    for (const auto& [key, val] : value) {
+    for (auto& [key, val] : value) {
       auto k = makeJsonObject(allocator, key);
       auto v = makeJsonObject(allocator, val);
       ret.AddMember(k, v, allocator);

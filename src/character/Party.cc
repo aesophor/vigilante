@@ -147,7 +147,6 @@ optional<Party::WaitingLocationInfo>
 Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const {
   auto it = _waitingMembersLocationInfos.find(characterJsonFileName);
   if (it == _waitingMembersLocationInfos.end()) {
-    VGLOG(LOG_ERR, "This member is not a waiting member of the party");
     return std::nullopt;
   }
   return it->second;

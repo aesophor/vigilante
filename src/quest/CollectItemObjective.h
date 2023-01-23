@@ -11,17 +11,17 @@ namespace vigilante {
 class CollectItemObjective : public Quest::Objective {
  public:
   CollectItemObjective(const std::string& desc,
-                       const std::string& itemName,
+                       const std::string& itemJsonFileName,
                        int amount=1);
   virtual ~CollectItemObjective() = default;
 
   virtual bool isCompleted() const override;
 
-  inline const std::string& getItemName() const { return _itemName; }
+  inline const std::string& getItemJsonFileName() const { return _itemJsonFileName; }
   inline int getAmount() const { return _amount; }
 
  private:
-  std::string _itemName;
+  std::string _itemJsonFileName;
   int _amount;
 };
 

@@ -376,15 +376,17 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
     );
   }
 
-  // Select a frame as default look for this sprite.
+  // Select a frame as the default look for this sprite.
   const string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
-  _equipmentSprites[type]->setScale(_characterProfile.spriteScaleX,
-                                    _characterProfile.spriteScaleY);
+  _equipmentSprites[type]->setScale(_characterProfile.spriteScaleX, _characterProfile.spriteScaleY);
 
   _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 }
 
 void Character::createBodyAnimation(const Character::State state,
@@ -806,7 +808,7 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
   } else {
     existingItemObj = item.get();
     existingItemObj->setAmount(amount);
-    _itemMapper[item->getItemProfile().name] = std::move(item);
+    _itemMapper[item->getItemProfile().jsonFileName] = std::move(item);
   }
 
   _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
@@ -820,19 +822,20 @@ void Character::removeItem(Item* item, int amount) {
     return;
   }
 
-  existingItemObj->setAmount(existingItemObj->getAmount() - amount);
+  const int finalAmount = existingItemObj->getAmount() - amount;
+  assert(finalAmount >= 0 && "Item amount must be >= 0 after removing item from character.");
+  existingItemObj->setAmount(finalAmount);
 
-  if (existingItemObj->getAmount() <= 0) {
+  if (finalAmount == 0) {
     _inventory[item->getItemProfile().itemType].erase(existingItemObj);
 
     // We can safely delete this Item* if:
     // 1. It is not an equipment, or...
     // 2. It is an equipment, but no same item is currently equipped.
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
-
     if (!equipment ||
         _equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj) {
-      _itemMapper.erase(item->getItemProfile().name);
+      _itemMapper.erase(item->getItemProfile().jsonFileName);
     }
   }
 }
@@ -844,7 +847,7 @@ Item* Character::getExistingItemObj(Item* item) const {
   if (!item) {
     return nullptr;
   }
-  auto it = _itemMapper.find(item->getItemProfile().name);
+  auto it = _itemMapper.find(item->getItemProfile().jsonFileName);
   return (it != _itemMapper.end()) ? it->second.get() : nullptr;
 }
 
@@ -877,7 +880,7 @@ void Character::useItem(Consumable* consumable) {
   hud->updateStatusBars();
 }
 
-void Character::equip(Equipment* equipment) {
+void Character::equip(Equipment* equipment, bool audio) {
   // If there's already an equipment in that slot, unequip it first.
   Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
   if (_equipmentSlots[type]) {
@@ -886,16 +889,14 @@ void Character::equip(Equipment* equipment) {
   _equipmentSlots[type] = equipment;
   removeItem(equipment, 1);
 
-  // Load equipment animations.
   loadEquipmentAnimations(equipment);
-  
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 
-  Audio::the().playSfx(kSfxEquipUnequipItem);
+  if (audio) {
+    Audio::the().playSfx(kSfxEquipUnequipItem);
+  }
 }
 
-void Character::unequip(Equipment::Type equipmentType) {
+void Character::unequip(Equipment::Type equipmentType, bool audio) {
   // If there's an equipped item in the target slot,
   // move it into character's inventory.
   if (!_equipmentSlots[equipmentType]) {
@@ -908,12 +909,22 @@ void Character::unequip(Equipment::Type equipmentType) {
 
   Equipment* e = _equipmentSlots[equipmentType];
   _equipmentSlots[equipmentType] = nullptr;
-  addItem(_itemMapper.find(e->getItemProfile().name)->second, 1);
-  
+
+  const auto& jsonFileName = e->getItemProfile().jsonFileName;
+  auto it = _itemMapper.find(e->getItemProfile().jsonFileName);
+  if (it == _itemMapper.end()) {
+    VGLOG(LOG_ERR, "The unequipped item [%s] is not in player's itemMapper.", jsonFileName.c_str());
+    return;
+  }
+
+  addItem(it->second, 1);
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
 
-  Audio::the().playSfx(kSfxEquipUnequipItem);
+  if (audio) {
+    Audio::the().playSfx(kSfxEquipUnequipItem);
+  }
 }
 
 void Character::pickupItem(Item* item) {
@@ -926,7 +937,7 @@ void Character::discardItem(Item* item, int amount) {
   const string& jsonFileName = item->getItemProfile().jsonFileName;
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getGameMap()->createItem(jsonFileName, x * kPpm, y * kPpm, amount);
 
@@ -975,7 +986,7 @@ void Character::removeSkill(Skill* skill) {
 }
 
 int Character::getGoldBalance() const {
-  return getItemAmount(Item::create(assets::kGoldCoin)->getName());
+  return getItemAmount(Item::create(assets::kGoldCoin)->getItemProfile().jsonFileName);
 }
 
 void Character::addGold(const int amount) {
@@ -986,8 +997,8 @@ void Character::removeGold(const int amount) {
   removeItem(Item::create(assets::kGoldCoin).get(), amount);
 }
 
-int Character::getItemAmount(const string& itemName) const {
-  auto it = _itemMapper.find(itemName);
+int Character::getItemAmount(const string& itemJsonFileName) const {
+  auto it = _itemMapper.find(itemJsonFileName);
   return it == _itemMapper.end() ? 0 : it->second->getAmount();
 }
 

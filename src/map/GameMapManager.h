@@ -4,6 +4,7 @@
 
 #include <atomic>
 #include <functional>
+#include <list>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -65,7 +66,7 @@ class GameMapManager final {
   std::atomic<bool> _areNpcsAllowedToAct;
 
   using PortalStateMap
-    = std::unordered_map<std::string, std::vector<std::pair<int, bool>>>;
+    = std::unordered_map<std::string, std::list<std::pair<int, bool>>>;
   PortalStateMap _allPortalStates;
 
   friend class GameState;

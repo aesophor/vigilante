@@ -131,7 +131,7 @@ bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
                                     int targetPortalId) const {
   auto it = _allPortalStates.find(tmxMapFileName);
   if (it == _allPortalStates.end()) {
-    VGLOG(LOG_WARN, "Unable to find the corresponding portal vector");
+    VGLOG(LOG_WARN, "Unable to find map [%s] in allPortalStates.", tmxMapFileName.c_str());
     return false;
   }
 
@@ -140,8 +140,6 @@ bool GameMapManager::isPortalLocked(const string& tmxMapFileName,
       return entry.second;
     }
   }
-
-  VGLOG(LOG_WARN, "Unable to find the corresponding entry in the portal vector");
   return false;
 }
 
@@ -159,7 +157,6 @@ void GameMapManager::setPortalLocked(const string& tmxMapFileName,
       return;
     }
   }
-
   it->second.push_back({targetPortalId, locked});
 }
 

@@ -143,8 +143,8 @@ class Character : public DynamicActor, public Importable {
   virtual void addItem(std::shared_ptr<Item> item, int amount=1);
   virtual void removeItem(Item* item, int amount=1);
   virtual void useItem(Consumable* consumable);
-  virtual void equip(Equipment* equipment);
-  virtual void unequip(Equipment::Type equipmentType);
+  virtual void equip(Equipment* equipment, bool audio = true);
+  virtual void unequip(Equipment::Type equipmentType, bool audio = true);
   virtual void pickupItem(Item* item);
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
@@ -195,7 +195,7 @@ class Character : public DynamicActor, public Importable {
 
   inline const Inventory& getInventory() const { return _inventory; }
   inline const EquipmentSlots& getEquipmentSlots() const { return _equipmentSlots; }
-  int getItemAmount(const std::string& itemName) const;
+  int getItemAmount(const std::string& itemJsonFileName) const;
 
   inline GameMap::Portal* getPortal() const { return _portal; }
   inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
@@ -338,6 +338,8 @@ class Character : public DynamicActor, public Importable {
   // (1) be a leader who has a set of allies/followers, or
   // (2) be a follower of other character
   std::shared_ptr<Party> _party;
+
+  friend class GameState;
 };
 
 }  // namespace vigilante

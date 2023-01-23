@@ -21,10 +21,16 @@ class GameState final {
 
  private:
   rapidjson::Value serializeGameMapState() const;
-  void deserializeGameMapState(const rapidjson::Value::Object& obj) const;
+  void deserializeGameMapState(const rapidjson::Value& obj) const;
 
   rapidjson::Value serializePlayerState() const;
-  void deserializePlayerState(const rapidjson::Value::Object& obj) const;
+  void deserializePlayerState(const rapidjson::Value& obj) const;
+
+  rapidjson::Value serializePlayerInventory() const;
+  void deserializePlayerInventory(const rapidjson::Value& obj) const;
+
+  rapidjson::Value serializePlayerParty() const;
+  void deserializePlayerParty(const rapidjson::Value& obj) const;
 
   const fs::path _saveFilePath;
   rapidjson::Document _json;

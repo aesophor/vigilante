@@ -439,7 +439,6 @@ void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
   if (!canBeUnlockedBy(user)) {
     notifications->show("This door is locked.");
     Audio::the().playSfx(kSfxDoorLocked);
-    return;
   } else {
     notifications->show("Door unlocked.");
     Audio::the().playSfx(kSfxDoorUnlocked);

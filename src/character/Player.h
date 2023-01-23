@@ -29,8 +29,8 @@ class Player : public Character, public Controllable {
 
   virtual void addItem(std::shared_ptr<Item> item, int amount=1) override;  // Character
   virtual void removeItem(Item* item, int amount=1) override;  // Character
-  virtual void equip(Equipment* equipment) override;  // Character
-  virtual void unequip(Equipment::Type equipmentType) override;  // Character
+  virtual void equip(Equipment* equipment, bool audio = true) override;  // Character
+  virtual void unequip(Equipment::Type equipmentType, bool audio = true) override;  // Character
   virtual void pickupItem(Item* item) override;  // Character
   virtual void addExp(const int exp) override;  // Character
 

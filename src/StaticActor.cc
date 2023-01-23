@@ -91,7 +91,7 @@ Animation* StaticActor::createAnimation(const string& textureResDir,
                           dir + ", but fallback animation is not provided.");
     }
   }
-  
+
   Vector<SpriteFrame*> frames;
   for (size_t i = 0; i < frameCount; i++) {
     const string& name = framesNamePrefix + "_" + framesName + "/" +

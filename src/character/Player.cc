@@ -128,15 +128,15 @@ void Player::removeItem(Item* item, int amount) {
       string_util::format("Removed item: %s.", itemName.c_str()));
 }
 
-void Player::equip(Equipment* equipment) {
-  Character::equip(equipment);
+void Player::equip(Equipment* equipment, bool audio) {
+  Character::equip(equipment, audio);
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
 }
 
-void Player::unequip(Equipment::Type equipmentType) {
-  Character::unequip(equipmentType);
+void Player::unequip(Equipment::Type equipmentType, bool audio) {
+  Character::unequip(equipmentType, audio);
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();

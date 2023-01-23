@@ -65,7 +65,7 @@ string Quest::Stage::getHint() const {
       CollectItemObjective* o = dynamic_cast<CollectItemObjective*>(objective.get());
       // FIXME: show the actual amount of items collected
       return string_util::format("Collect: %s (%d/%d)",
-          o->getItemName().c_str(), 0, o->getAmount());
+          o->getItemJsonFileName().c_str(), 0, o->getAmount());
     }
     /*
     case Quest::Objective::Type::ESCORT:
@@ -102,9 +102,9 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
         break;
       }
       case Quest::Objective::Type::COLLECT: {
-        string itemName = stageJson["objective"]["itemName"].GetString();
+        string itemJsonFileName = stageJson["objective"]["itemJsonFileName"].GetString();
         int amount = stageJson["objective"]["amount"].GetInt();
-        stage.objective = std::make_unique<CollectItemObjective>(objectiveDesc, itemName, amount);
+        stage.objective = std::make_unique<CollectItemObjective>(objectiveDesc, itemJsonFileName, amount);
         break;
       }
       case Quest::Objective::Type::ESCORT: {
