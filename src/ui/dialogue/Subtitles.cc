@@ -83,7 +83,7 @@ void Subtitles::beginSubtitles() {
   if (_isTransitioning || _subtitleQueue.empty()) {
     return;
   }
-  
+
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->getLayer()->setVisible(false);
 
@@ -103,7 +103,7 @@ void Subtitles::endSubtitles() {
   if (_isTransitioning) {
     return;
   }
-  
+
   _isTransitioning = true;
   _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
@@ -111,10 +111,10 @@ void Subtitles::endSubtitles() {
     CallFunc::create([=]() {
       _isTransitioning = false;
       _layer->setVisible(false);
-      
+
       auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
       hud->getLayer()->setVisible(true);
-      
+
       auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
       dialogueMgr->getTargetNpc()->onDialogueEnd();
     })
@@ -122,6 +122,10 @@ void Subtitles::endSubtitles() {
 }
 
 void Subtitles::showNextSubtitle() {
+  if (_isTransitioning) {
+    return;
+  }
+
   _nextSubtitleIcon->setVisible(false);
 
   if (!_subtitleQueue.empty()) {
