@@ -227,8 +227,8 @@ void GameMap::createPortals() {
     float y = valMap.at("y").asFloat();
     float w = valMap.at("width").asFloat();
     float h = valMap.at("height").asFloat();
-    string targetTmxMapFilePath = valMap.at("targetMap").asString();
-    int targetPortalId = valMap.at("targetPortalID").asInt();
+    string destTmxMapFilePath = valMap.at("destMap").asString();
+    int destPortalId = valMap.at("destPortalID").asInt();
     bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
     bool isLocked = valMap.at("isLocked").asBool();
 
@@ -238,8 +238,8 @@ void GameMap::createPortals() {
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    _portals.push_back(std::make_unique<GameMap::Portal>(targetTmxMapFilePath,
-                                                         targetPortalId,
+    _portals.push_back(std::make_unique<GameMap::Portal>(destTmxMapFilePath,
+                                                         destPortalId,
                                                          willInteractOnContact,
                                                          isLocked,
                                                          body));
@@ -294,12 +294,15 @@ void GameMap::createNpcs() {
 }
 
 void GameMap::createChests() {
-  for (const auto& rectObj : getObjects("Chest")) {
-    const auto& valMap = rectObj.asValueMap();
+  cocos2d::ValueVector objects = getObjects("Chest");
+  for (int i = 0; i < objects.size(); i++) {
+    const auto& valMap = objects[i].asValueMap();
     float x = valMap.at("x").asFloat();
     float y = valMap.at("y").asFloat();
     string items = valMap.at("items").asString();
-    showDynamicActor(std::make_shared<Chest>(items), x, y);
+
+    auto chest = std::make_shared<Chest>(_tmxTiledMapFileName, i, items);
+    showDynamicActor(std::move(chest), x, y);
   }
 }
 
@@ -335,18 +338,18 @@ void GameMap::Trigger::onInteract(Character* user) {
   }
 }
 
-GameMap::Portal::Portal(const string& targetTmxMapFileName, int targetPortalId,
+GameMap::Portal::Portal(const string& destTmxMapFileName, int destPortalId,
                         bool willInteractOnContact, bool isLocked, b2Body* body)
-    : _targetTmxMapFileName(targetTmxMapFileName),
-      _targetPortalId(targetPortalId),
+    : _destTmxMapFileName(destTmxMapFileName),
+      _destPortalId(destPortalId),
       _willInteractOnContact(willInteractOnContact),
       _isLocked(isLocked),
       _body(body),
       _hintBubbleFxSprite() {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = OpenableObjectType::PORTAL;
-  if (gmMgr->hasSavedOpenedClosedState(targetTmxMapFileName, kType, targetPortalId)) {
-    _isLocked = !gmMgr->isOpened(targetTmxMapFileName, kType, targetPortalId);
+  if (gmMgr->hasSavedOpenedClosedState(destTmxMapFileName, kType, destPortalId)) {
+    _isLocked = !gmMgr->isOpened(destTmxMapFileName, kType, destPortalId);
   }
 }
 
@@ -361,28 +364,28 @@ void GameMap::Portal::onInteract(Character* user) {
     return;
   }
 
-  string newMapFileName = _targetTmxMapFileName;
-  int targetPortalId = _targetPortalId;
+  string destMapFileName = _destTmxMapFileName;
+  int destPortalId = _destPortalId;
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto afterLoadingGameMap = [user, newMapFileName, targetPortalId, gmMgr]() {
+  auto afterLoadingGameMap = [user, destMapFileName, destPortalId, gmMgr]() {
     const auto& portals = gmMgr->getGameMap()->_portals;
-    assert(targetPortalId < portals.size());
+    assert(destPortalId < portals.size());
 
-    const auto& portalPos = portals[targetPortalId]->_body->GetPosition();
+    const auto& portalPos = portals[destPortalId]->_body->GetPosition();
     user->setPosition(portalPos.x, portalPos.y);
 
     for (auto ally : user->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
         ally->setPosition(portalPos.x, portalPos.y);
-      } else if (newMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
+      } else if (destMapFileName != ally->getParty()->getWaitingMemberLocationInfo(
                  ally->getCharacterProfile().jsonFileName)->tmxMapFileName) {
         ally->removeFromMap();
       }
     }
   };
 
-  gmMgr->loadGameMap(newMapFileName, afterLoadingGameMap);
+  gmMgr->loadGameMap(destMapFileName, afterLoadingGameMap);
 }
 
 bool GameMap::Portal::willInteractOnContact() const {
@@ -475,7 +478,7 @@ void GameMap::Portal::unlock() {
 void GameMap::Portal::saveLockUnlockState() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = OpenableObjectType::PORTAL;
-  gmMgr->setOpened(_targetTmxMapFileName, kType, _targetPortalId, !_isLocked);
+  gmMgr->setOpened(_destTmxMapFileName, kType, _destPortalId, !_isLocked);
 }
 
 int GameMap::Portal::getPortalId() const {

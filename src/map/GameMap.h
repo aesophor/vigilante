@@ -74,8 +74,8 @@ class GameMap final {
     void lock();
     void unlock();
 
-    inline const std::string& getTargetTmxMapFileName() const { return _targetTmxMapFileName; }
-    inline int getTargetPortalId() const { return _targetPortalId; }
+    inline const std::string& getDestTmxMapFileName() const { return _destTmxMapFileName; }
+    inline int getDestPortalId() const { return _destPortalId; }
 
    protected:
     virtual void createHintBubbleFx() override;  // Interactable
@@ -89,8 +89,8 @@ class GameMap final {
     void saveLockUnlockState() const;
     int getPortalId() const;
 
-    std::string _targetTmxMapFileName;  // new (target) .tmx filename
-    int _targetPortalId;  // the portal id in the new (target) map
+    std::string _destTmxMapFileName;  // new (destination) .tmx filename
+    int _destPortalId;  // the portal id in the new (destination) map
     bool _willInteractOnContact;  // interact with the portal on contact?
     bool _isLocked;
     b2Body* _body;

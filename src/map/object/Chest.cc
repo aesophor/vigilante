@@ -23,14 +23,18 @@ USING_NS_CC;
 
 namespace vigilante {
 
-Chest::Chest()
+Chest::Chest(const string& tmxMapFileName,
+             const int chestId,
+             const string& itemJsons)
     : DynamicActor(CHEST_NUM_ANIMATIONS, CHEST_NUM_FIXTURES),
-      _hintBubbleFxSprite(),
-      _itemJsons(),
-      _isOpened() {}
-
-Chest::Chest(const string& itemJsons) : Chest() {
-  _itemJsons = string_util::split(itemJsons);
+      _tmxMapFileName(tmxMapFileName),
+      _chestId(chestId),
+      _itemJsons(string_util::split(itemJsons)),
+      _isOpened(),
+      _hintBubbleFxSprite() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  constexpr auto kType = GameMap::OpenableObjectType::CHEST;
+  _isOpened = gmMgr->isOpened(tmxMapFileName, kType, chestId);
 }
 
 bool Chest::showOnMap(float x, float y) {
@@ -46,7 +50,11 @@ bool Chest::showOnMap(float x, float y) {
              ITEM_CATEGORY_BITS,
              ITEM_MASK_BITS);
 
-  _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
+  if (!_isOpened) {
+    _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");
+  } else {
+    _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_open.png");
+  }
   _bodySprite->getTexture()->setAliasTexParameters();
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
@@ -96,9 +104,10 @@ void Chest::onInteract(Character*) {
     float y = _body->GetPosition().y;
     gmMgr->getGameMap()->createItem(item, x * kPpm, y * kPpm);
   }
-  
-  _itemJsons.clear();
-  
+
+  constexpr auto kType = GameMap::OpenableObjectType::CHEST;
+  gmMgr->setOpened(_tmxMapFileName, kType, _chestId, true);
+
   Audio::the().playSfx(kSfxChestOpened);
 }
 
@@ -108,14 +117,14 @@ void Chest::showHintUI() {
   }
 
   createHintBubbleFx();
-  
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Open");
 }
 
 void Chest::hideHintUI() {
   removeHintBubbleFx();
-  
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }

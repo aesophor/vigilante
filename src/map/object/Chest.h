@@ -14,8 +14,9 @@ namespace vigilante {
 
 class Chest : public DynamicActor, public Interactable {
  public:
-  Chest();
-  explicit Chest(const std::string& itemsJson);
+  Chest(const std::string& tmxMapFileName,
+        const int chestId,
+        const std::string& itemJsons);
   virtual ~Chest() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
@@ -35,10 +36,11 @@ class Chest : public DynamicActor, public Interactable {
                   short categoryBits,
                   short maskBits);
 
-  cocos2d::Sprite* _hintBubbleFxSprite;
-
-  std::vector<std::string> _itemJsons;
+  const std::string _tmxMapFileName;
+  const int _chestId;
+  const std::vector<std::string> _itemJsons;
   bool _isOpened;
+  cocos2d::Sprite* _hintBubbleFxSprite;
 };
 
 }  // namespace vigilante
