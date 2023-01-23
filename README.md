@@ -1,22 +1,38 @@
 <div align="center">
 <h3>VIGILANTE</h3>
-<img src="/Documentation/images/demo.gif">
+<img src="/Documentation/images/cover.png">
 </div>
 
 ## Overview
-Vigilante is a 2D side-scrolling single-player RPG which offers gaming experience similar to Maplestory and The Elder Scrolls Series. The game features an intriguing vampire storyline, allowing the player to grow from a nobody eventually to a vampiric lord. It also provides plenty of maps, enemies, magics, and equipments to discover.
+Vigilante is a 2D side-scrolling single-player RPG which offers gaming experience similar to Maplestory, Castlevania and The Elder Scrolls Series. Vigilante features an intriguing vampire storyline, allowing the player to grow from a nobody eventually to a vampiric lord. It also provides plenty of maps, enemies, magics, and equipments to discover.
 
-Similar to The Elder Scrolls series, the player can team up with certain NPCs and adventure together. The player can either take side with the huntsman guild and protect the world, or take side with the vampires and bring destruction to the world. The storyline will be tailored based on the player's playstyle.
+Similar to The Elder Scrolls series, the player can team up with certain NPCs and go adventure together. The player can either take side with the vampire hunters and save the world from the vampires' plot, or join the vampires and bring destruction to the world. The storyline will be tailored based on the player's playstyle.
 
-## Requirements
+## Build and Run
 
+#### Build requirements
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
-* [box2d](https://box2d.org/) - 2D Physics Engine
-* [rapidjson](http://rapidjson.org/) - serialization
-* g++ (Gentoo 8.3.0-r1 p1.1) 8.3.0
 
-## Resources?
-I'm sorry, but I really cannot upload the resources folder (directory) **since it contains spritesheets/sprites which was purchased from other pixel artists.** Thanks for your understanding.
+#### Building and running vigilante using build script
+```
+git clone https://github.com/aesophor/vigilante --recurse-submodules -j8
+cd vigilante
+# `setup.sh` downloads cocos2d-x-3.17.1.zip
+./setup.sh
+# `build.sh` contains several paths that must be edited before you run it.
+./build.sh
+```
 
-## Copyright
-Copyright (c) 2019-2022 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#### Building and running vigilante using Xcode
+* Launch Xcode
+* Open the project: `proj.ios_mac/Vigilante.xcodeproj`
+* Build
+
+## License
+Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+* You are allowed to:
+  - edit and modify the codebase for educational purposes;
+* You are NOT allowed to:
+  - edit and modify the codebase for commercial purposes;
+  - Resell it, original or modified;
