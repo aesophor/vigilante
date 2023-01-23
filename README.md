@@ -14,7 +14,7 @@ Similar to The Elder Scrolls series, the player can team up with certain NPCs an
 * [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
 
 #### Building and running vigilante using build script
-```
+```sh
 git clone https://github.com/aesophor/vigilante --recurse-submodules -j8
 cd vigilante
 # `setup.sh` downloads cocos2d-x-3.17.1.zip
@@ -29,7 +29,7 @@ cd vigilante
 * Build
 
 ## License
-Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+Copyright (c) 2018-2023 Marco Wang \<m.aesophor@gmail.com\>. All rights reserved.
 
 * You are allowed to:
   - edit and modify the codebase for educational purposes;
