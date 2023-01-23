@@ -11,7 +11,8 @@ Similar to The Elder Scrolls series, the player can team up with certain NPCs an
 ## Build and Run
 
 #### Build requirements
-* [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1)
+* C++17
+* [cocos2d-x-3.17.1](https://cocos2d-x.org/filedown/cocos2d-x-3.17.1) [[bak](https://drive.google.com/file/d/1o4RbJePm_2LGuLNNnIoiklDPvjqT3B3V/view?usp=share_link)]
 
 #### Building and running vigilante using build script
 ```sh
