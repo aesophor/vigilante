@@ -48,7 +48,7 @@ class ListView {
   void hideScrollBar();
 
   T getSelectedObject() const;
-  cocos2d::ui::Layout* getLayout() const;
+  cocos2d::ui::Layout* getLayout() const { return _layout; }
   cocos2d::Size getContentSize() const;
 
  protected:
@@ -60,16 +60,16 @@ class ListView {
     void setSelected(bool selected);
     void setVisible(bool visible);
 
-    T getObject() const;
+    T getObject() const { return _object; }
     void setObject(T object);
 
-    cocos2d::ui::Layout* getLayout() const;
-    cocos2d::ui::ImageView* getBackground() const;
-    cocos2d::ui::ImageView* getIcon() const;
-    cocos2d::Label* getLabel() const;
+    cocos2d::ui::Layout* getLayout() const { return _layout; }
+    cocos2d::ui::ImageView* getBackground() const { return _background; }
+    cocos2d::ui::ImageView* getIcon() const { return _icon; }
+    cocos2d::Label* getLabel() const { return _label; }
 
    private:
-    static const int _kListViewIconSize;
+    static inline constexpr int _kListViewIconSize = 16;
 
     ListView<T>* _parent;
     TableLayout* _layout;
@@ -251,11 +251,6 @@ T ListView<T>::getSelectedObject() const {
 }
 
 template <typename T>
-cocos2d::ui::Layout* ListView<T>::getLayout() const {
-  return _layout;
-}
-
-template <typename T>
 cocos2d::Size ListView<T>::getContentSize() const {
   cocos2d::Size retSize = {.0, .0};
 
@@ -277,9 +272,6 @@ cocos2d::Size ListView<T>::getContentSize() const {
   retSize.height += _itemGapHeight * (_listViewItems.size() - 1);
   return retSize;
 }
-
-template <typename T>
-const int ListView<T>::ListViewItem::_kListViewIconSize = 16;
 
 template <typename T>
 ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
@@ -320,37 +312,12 @@ void ListView<T>::ListViewItem::setVisible(bool visible) {
 }
 
 template <typename T>
-T ListView<T>::ListViewItem::getObject() const {
-  return _object;
-}
-
-template <typename T>
 void ListView<T>::ListViewItem::setObject(T object) {
   _object = object;
 
   if (_parent->_setObjectCallback) {
     _parent->_setObjectCallback(this, object);
   }
-}
-
-template <typename T>
-cocos2d::ui::Layout* ListView<T>::ListViewItem::getLayout() const {
-  return _layout;
-}
-
-template <typename T>
-cocos2d::ui::ImageView* ListView<T>::ListViewItem::getBackground() const {
-  return _background;
-}
-
-template <typename T>
-cocos2d::ui::ImageView* ListView<T>::ListViewItem::getIcon() const {
-  return _icon;
-}
-
-template <typename T>
-cocos2d::Label* ListView<T>::ListViewItem::getLabel() const {
-  return _label;
 }
 
 }  // namespace vigilante
