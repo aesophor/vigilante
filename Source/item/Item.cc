@@ -96,6 +96,7 @@ void Item::defineBody(b2BodyType bodyType,
   bodyBuilder.newRectangleFixture(kIconSize / 2, kIconSize / 2, kPpm)
     .categoryBits(categoryBits)
     .maskBits(maskBits)
+    .density(kDensity)
     .setUserData(this)
     .buildFixture();
 }

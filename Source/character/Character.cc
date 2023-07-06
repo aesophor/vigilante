@@ -225,7 +225,7 @@ void Character::defineBody(b2BodyType bodyType,
   _fixtures[FixtureType::FEET] = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
     .categoryBits(category_bits::kFeet)
     .maskBits(feetMaskBits)
-    .density(43.f)
+    .density(kDensity)
     .setUserData(this)
     .buildFixture();
 
