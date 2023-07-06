@@ -249,46 +249,68 @@ class Character : public DynamicActor, public Importable {
   Character::State getState() const;
   std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
 
-  static const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr;
-  static const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr;
+  Item* getExistingItemObj(Item* item) const;
+
+  static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
+    "idle_sheathed",
+    "idle_unsheathed",
+    "running_sheathed",
+    "running_unsheathed",
+    "jumping_sheathed",
+    "jumping_unsheathed",
+    "falling_sheathed",
+    "falling_unsheathed",
+    "crouching_sheathed",
+    "crouching_unsheathed",
+    "sheathing_weapon",
+    "unsheathing_weapon",
+    "attacking0",
+    "killed"
+  }};
+
+  static inline const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr{{
+    "jump",
+    "hurt",
+    "killed",
+  }};
 
   // Characater data.
   Character::Profile _characterProfile;
 
   // Stats regen timer
-  float _statsRegenTimer;
-  const int _baseRegenDeltaHealth;
-  const int _baseRegenDeltaMagicka;
-  const int _baseRegenDeltaStamina;
+  float _statsRegenTimer{};
+  const int _baseRegenDeltaHealth{5};
+  const int _baseRegenDeltaMagicka{5};
+  const int _baseRegenDeltaStamina{5};
 
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()
   // for the logic.
-  Character::State _currentState;
-  Character::State _previousState;
+  Character::State _currentState{State::IDLE_SHEATHED};
+  Character::State _previousState{State::IDLE_SHEATHED};
 
-  bool _isFacingRight;
-  bool _isWeaponSheathed;
-  bool _isSheathingWeapon;
-  bool _isUnsheathingWeapon;
-  bool _isJumpingDisallowed;
-  bool _isJumping;
-  bool _isDoubleJumping;
-  bool _isOnPlatform;
-  bool _isAttacking;
-  bool _isUsingSkill;
-  bool _isCrouching;
-  bool _isInvincible;
-  bool _isTakingDamage;
-  bool _isKilled;
-  bool _isSetToKill;
+  bool _isFacingRight{true};
+  bool _isWeaponSheathed{true};
+  bool _isSheathingWeapon{};
+  bool _isUnsheathingWeapon{};
+  bool _isJumpingDisallowed{};
+  bool _isJumping{};
+  bool _isDoubleJumping{};
+  bool _isOnPlatform{};
+  bool _isAttacking{};
+  bool _isUsingSkill{};
+  bool _isCrouching{};
+  bool _isInvincible{};
+  bool _isTakingDamage{};
+  bool _isKilled{};
+  bool _isSetToKill{};
 
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is
   // within (attack) range.
   std::unordered_set<Character*> _inRangeTargets;
-  Character* _lockedOnTarget;
-  bool _isAlerted;
+  Character* _lockedOnTarget{};
+  bool _isAlerted{};
 
   // Nearby items and interactable objects.
   std::unordered_set<Item*> _inRangeItems;
@@ -298,27 +320,26 @@ class Character : public DynamicActor, public Importable {
   // These two types are aliased. See the beginning of this class.
   // We use an extra std::map to keep track of each item's count.
   // For each instance of Item, only one copy of Item* is stored.
-  Character::Inventory _inventory;
-  Character::EquipmentSlots _equipmentSlots;
+  Character::Inventory _inventory{};
+  Character::EquipmentSlots _equipmentSlots{};
 
   // For each item, at most one copy of Item* is kept in memory.
-  Item* getExistingItemObj(Item* item) const;
   std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;
 
   // The portal to which this character is near.
-  GameMap::Portal* _portal;
+  GameMap::Portal* _portal{};
 
   // Currently used skill.
-  Character::SkillBook _skillBook;
+  Character::SkillBook _skillBook{};
   std::unordered_map<std::string, std::unique_ptr<Skill>> _skillMapper;
   std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
-  Skill* _currentlyUsedSkill;
+  Skill* _currentlyUsedSkill{};
 
   // Extra attack animations.
   // The first attack animations is in _bodyAnimations[State::ATTACK],
   // and here's some extra ones.
   const int _kAttackAnimationIdxMax;
-  int _attackAnimationIdx;
+  int _attackAnimationIdx{};
   std::vector<ax::Animation*> _bodyExtraAttackAnimations;
   std::array<std::vector<ax::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
 

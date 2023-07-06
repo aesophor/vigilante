@@ -12,7 +12,9 @@ namespace vigilante {
 
 class GameState final {
  public:
-  explicit GameState(const fs::path& saveFilePath);
+  explicit GameState(const fs::path& saveFilePath)
+    : _saveFilePath{saveFilePath},
+      _allocator{_json.GetAllocator()} {}
 
   void save();
   void load();

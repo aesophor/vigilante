@@ -21,7 +21,7 @@ class Party final {
     float y;
   };
 
-  explicit Party(Character* leader);
+  explicit Party(Character* leader) : _leader{leader} {}
 
   Character* getMember(const std::string& characterJsonFileName) const;
   bool hasMember(const std::string& characterJsonFileName) const;
@@ -57,7 +57,7 @@ class Party final {
   std::shared_ptr<Character> removeMember(Character* character);
 
   // `_leader` will NOT be in `_members`.
-  Character* _leader;
+  Character* _leader{};
   std::unordered_set<std::shared_ptr<Character>> _members;
   std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfos;
 

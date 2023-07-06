@@ -12,11 +12,6 @@ using namespace std;
 
 namespace vigilante {
 
-GameState::GameState(const fs::path& saveFilePath)
-    : _saveFilePath(saveFilePath),
-      _json(),
-      _allocator(_json.GetAllocator()) {}
-
 void GameState::save() {
   _json.SetObject();
 
@@ -48,7 +43,7 @@ rapidjson::Value GameState::serializeGameMapState() const {
   auto player = gmMgr->getPlayer();
 
   const b2Vec2& playerPos = player->getBody()->GetPosition();
-  pair<float, float> playerPosPair(playerPos.x, playerPos.y);
+  pair<float, float> playerPosPair{playerPos.x, playerPos.y};
 
   return json_util::serialize(_allocator,
                               make_pair("tmxTiledMapFileName", gameMap->getTmxTiledMapFileName()),
@@ -62,7 +57,7 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
   auto player = gmMgr->getPlayer();
 
   string tmxTiledMapFileName;
-  pair<float, float> playerPos(0, 0);
+  pair<float, float> playerPos{0, 0};
 
   json_util::deserialize(obj,
                          make_pair("tmxTiledMapFileName", &tmxTiledMapFileName),

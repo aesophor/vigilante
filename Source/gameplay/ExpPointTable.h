@@ -9,7 +9,7 @@ namespace vigilante::exp_point_table {
 inline constexpr int kLevelCap = 100;
 
 void import(const std::string& tableFileName);
-int getNextLevelExp(int currentLevel);
+int getNextLevelExp(const int currentLevel);
 
 }  // namespace vigilante::exp_point_table
 

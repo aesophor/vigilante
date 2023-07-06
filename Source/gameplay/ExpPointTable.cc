@@ -20,7 +20,7 @@ array<int, exp_point_table::kLevelCap> levelUpExp;
 namespace exp_point_table {
 
 void import(const string& tableFileName) {
-  ifstream fin(tableFileName);
+  ifstream fin{tableFileName};
   if (!fin.is_open()) {
     throw runtime_error("Failed to import exp point table from: " + tableFileName);
   }
@@ -34,7 +34,7 @@ void import(const string& tableFileName) {
   }
 }
 
-int getNextLevelExp(int currentLevel) {
+int getNextLevelExp(const int currentLevel) {
   return levelUpExp[currentLevel];
 }
 

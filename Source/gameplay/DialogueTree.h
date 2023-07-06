@@ -15,10 +15,12 @@ class Npc;
 
 class DialogueTree : public Importable {
  public:
-  DialogueTree(const std::string& jsonFileName, Npc* owner);
+  DialogueTree(const std::string& jsonFileName, Npc* owner) : _owner{owner} {
+    import(jsonFileName);
+  }
   DialogueTree(const DialogueTree&) = delete;
-  DialogueTree(DialogueTree&& other) noexcept;
   DialogueTree& operator=(const DialogueTree&) = delete;
+  DialogueTree(DialogueTree&& other) noexcept;
   DialogueTree& operator=(DialogueTree&& other) noexcept;
 
   virtual ~DialogueTree() override = default;
@@ -68,14 +70,14 @@ class DialogueTree : public Importable {
   // <nodeName, DialogueTree::Node*>
   std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;
   std::unique_ptr<DialogueTree::Node> _rootNode;
-  DialogueTree::Node* _currentNode;
+  DialogueTree::Node* _currentNode{};
 
-  DialogueTree::Node* _toggleJoinPartyNode;
-  DialogueTree::Node* _toggleWaitNode;
-  DialogueTree::Node* _tradeNode;
+  DialogueTree::Node* _toggleJoinPartyNode{};
+  DialogueTree::Node* _toggleWaitNode{};
+  DialogueTree::Node* _tradeNode{};
 
-  bool _isQuestDialogueTree;
-  Npc* _owner;
+  bool _isQuestDialogueTree{};
+  Npc* _owner{};
 };
 
 // This alias improves code readability in ui/pause_menu/DialogueListView.cc

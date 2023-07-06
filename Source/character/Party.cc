@@ -14,11 +14,6 @@ using namespace std;
 
 namespace vigilante {
 
-Party::Party(Character* leader)
-    : _leader(leader),
-      _members(),
-      _waitingMembersLocationInfos() {}
-
 Character* Party::getMember(const string& characterJsonFileName) const {
   auto it = std::find_if(_members.begin(),
                          _members.end(),

@@ -18,7 +18,7 @@ unordered_map<string, int> prices;
 namespace vigilante::item_price_table {
 
 void import(const string& tableFileName) {
-  ifstream fin(tableFileName);
+  ifstream fin{tableFileName};
   if (!fin.is_open()) {
     throw runtime_error("Failed to import item price table from: " + tableFileName);
   }
@@ -34,7 +34,7 @@ void import(const string& tableFileName) {
   }
 }
 
-int getPrice(Item* item) {
+int getPrice(const Item* item) {
   const string& itemJsonFileName = item->getItemProfile().jsonFileName;
   auto it = prices.find(itemJsonFileName);
   if (it == prices.end()) {

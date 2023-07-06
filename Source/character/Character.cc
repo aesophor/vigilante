@@ -23,75 +23,12 @@ USING_NS_AX;
 
 namespace vigilante {
 
-const array<string, Character::State::STATE_SIZE> Character::_kCharacterStateStr = {{
-  "idle_sheathed",
-  "idle_unsheathed",
-  "running_sheathed",
-  "running_unsheathed",
-  "jumping_sheathed",
-  "jumping_unsheathed",
-  "falling_sheathed",
-  "falling_unsheathed",
-  "crouching_sheathed",
-  "crouching_unsheathed",
-  "sheathing_weapon",
-  "unsheathing_weapon",
-  "attacking0",
-  "killed"
-}};
-
-const array<string, Character::Sfx::SFX_SIZE> Character::_kCharacterSfxStr = {{
-  "jump",
-  "hurt",
-  "killed",
-}};
-
 Character::Character(const string& jsonFileName)
-    : DynamicActor(State::STATE_SIZE, FixtureType::FIXTURE_SIZE),
-      _characterProfile(jsonFileName),
-      _statsRegenTimer(),
-      _baseRegenDeltaHealth(5),
-      _baseRegenDeltaMagicka(5),
-      _baseRegenDeltaStamina(5),
-      _currentState(State::IDLE_SHEATHED),
-      _previousState(State::IDLE_SHEATHED),
-      _isFacingRight(true),
-      _isWeaponSheathed(true),
-      _isSheathingWeapon(),
-      _isUnsheathingWeapon(),
-      _isJumpingDisallowed(),
-      _isJumping(),
-      _isDoubleJumping(),
-      _isOnPlatform(),
-      _isAttacking(),
-      _isUsingSkill(),
-      _isCrouching(),
-      _isInvincible(),
-      _isTakingDamage(),
-      _isKilled(),
-      _isSetToKill(),
-      _inRangeTargets(),
-      _lockedOnTarget(),
-      _isAlerted(),
-      _inRangeItems(),
-      _inRangeInteractables(),
-      _inventory(),
-      _equipmentSlots(),
-      _itemMapper(),
-      _portal(),
-      _skillBook(),
-      _skillMapper(),
-      _currentlyUsedSkill(),
+    : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
+      _characterProfile{jsonFileName},
       // There will be at least `1` attack animation.
-      _kAttackAnimationIdxMax(1 + getExtraAttackAnimationsCount()),
-      _attackAnimationIdx(),
-      _bodyExtraAttackAnimations(_kAttackAnimationIdxMax - 1),
-      _equipmentExtraAttackAnimations(),
-      _equipmentSprites(),
-      _equipmentSpritesheets(),
-      _equipmentAnimations(),
-      _skillBodyAnimations(),
-      _party() {
+      _kAttackAnimationIdxMax{1 + getExtraAttackAnimationsCount()},
+      _bodyExtraAttackAnimations(_kAttackAnimationIdxMax - 1) {
   // Resize each vector in _equipmentExtraAttackAnimations to match
   // the size of _bodyExtraAttackAnimations.
   for (auto& animationVector : _equipmentExtraAttackAnimations) {
@@ -133,7 +70,7 @@ void Character::update(float delta) {
   if (!_isShownOnMap || _isKilled) {
     return;
   }
-  
+
   // Flip the sprite if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
@@ -241,7 +178,7 @@ void Character::update(float delta) {
 }
 
 void Character::import(const string& jsonFileName) {
-  _characterProfile = Character::Profile(jsonFileName);
+  _characterProfile = Character::Profile{jsonFileName};
 }
 
 void Character::defineBody(b2BodyType bodyType,
@@ -252,7 +189,7 @@ void Character::defineBody(b2BodyType bodyType,
                            short feetMaskBits,
                            short weaponMaskBits) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  b2BodyBuilder bodyBuilder(gmMgr->getWorld());
+  b2BodyBuilder bodyBuilder{gmMgr->getWorld()};
 
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)

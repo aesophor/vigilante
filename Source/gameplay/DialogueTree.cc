@@ -15,27 +15,14 @@ using namespace std;
 
 namespace vigilante {
 
-DialogueTree::DialogueTree(const string& jsonFileName, Npc* owner)
-    : _nodeMapper(),
-      _rootNode(),
-      _currentNode(),
-      _toggleJoinPartyNode(),
-      _toggleWaitNode(),
-      _tradeNode(),
-      _isQuestDialogueTree(),
-      _owner(owner) {
-  import(jsonFileName);
-}
-
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
-    : _nodeMapper(std::move(other._nodeMapper)),
-      _rootNode(std::move(other._rootNode)),
-      _currentNode(other._currentNode),
-      _toggleJoinPartyNode(other._toggleJoinPartyNode),
-      _toggleWaitNode(other._toggleWaitNode),
-      _tradeNode(other._tradeNode),
-      _isQuestDialogueTree(),
-      _owner(other._owner) {}
+    : _nodeMapper{std::move(other._nodeMapper)},
+      _rootNode{std::move(other._rootNode)},
+      _currentNode{other._currentNode},
+      _toggleJoinPartyNode{other._toggleJoinPartyNode},
+      _toggleWaitNode{other._toggleWaitNode},
+      _tradeNode{other._tradeNode},
+      _owner{other._owner} {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   _nodeMapper = std::move(other._nodeMapper);

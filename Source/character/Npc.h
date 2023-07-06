@@ -131,18 +131,18 @@ class Npc : public Character, public Interactable {
   Npc::Disposition _disposition;
   bool _isSandboxing;
 
-  ax::Sprite* _hintBubbleFxSprite;
+  ax::Sprite* _hintBubbleFxSprite{};
 
-  b2Vec2 _moveDest;
+  b2Vec2 _moveDest{0.f, 0.f};
 
-  bool _isMovingRight;
-  float _moveDuration;
-  float _moveTimer;
-  float _waitDuration;
-  float _waitTimer;
+  bool _isMovingRight{};
+  float _moveDuration{};
+  float _moveTimer{};
+  float _waitDuration{};
+  float _waitTimer{};
 
-  float _calculateDistanceTimer;
-  b2Vec2 _lastStoppedPosition;
+  float _calculateDistanceTimer{};
+  b2Vec2 _lastStoppedPosition{0.f, 0.f};
 };
 
 }  // namespace vigilante

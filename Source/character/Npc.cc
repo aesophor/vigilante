@@ -37,20 +37,11 @@ USING_NS_AX;
 namespace vigilante {
 
 Npc::Npc(const string& jsonFileName)
-    : Character(jsonFileName),
-      _npcProfile(jsonFileName),
-      _dialogueTree(_npcProfile.dialogueTreeJsonFile, this),
-      _disposition(_npcProfile.disposition),
-      _isSandboxing(_npcProfile.shouldSandbox),
-      _hintBubbleFxSprite(),
-      _moveDest(0.0f, 0.0f),
-      _isMovingRight(),
-      _moveDuration(),
-      _moveTimer(),
-      _waitDuration(),
-      _waitTimer(),
-      _calculateDistanceTimer(),
-      _lastStoppedPosition() {
+    : Character{jsonFileName},
+      _npcProfile{jsonFileName},
+      _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
+      _disposition{_npcProfile.disposition},
+      _isSandboxing{_npcProfile.shouldSandbox} {
   if (_npcProfile.isUnsheathed) {
     unsheathWeapon();
   }

@@ -31,9 +31,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Player::Player(const std::string& jsonFileName)
-    : Character(jsonFileName),
-      _questBook(assets::kQuestsList) {
+Player::Player(const std::string& jsonFileName) : Character{jsonFileName} {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
 }

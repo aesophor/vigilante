@@ -7,6 +7,7 @@
 
 #include <box2d/box2d.h>
 
+#include "Assets.h"
 #include "Controllable.h"
 #include "character/Character.h"
 #include "item/Equipment.h"
@@ -41,7 +42,7 @@ class Player : public Character, public Controllable {
   inline QuestBook& getQuestBook() { return _questBook; }
 
  private:
-  QuestBook _questBook;
+  QuestBook _questBook{assets::kQuestsList};
 };
 
 }  // namespace vigilante
