@@ -3,7 +3,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- http://www.cocos2d-x.org
+ https://axmolengine.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,13 @@
 
 #import "RootViewController.h"
 #import "cocos2d.h"
-#import "platform/ios/CCEAGLView-ios.h"
-
+#import "platform/ios/EAGLView-ios.h"
 
 @implementation RootViewController
 
 /*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+ // The designated initializer.  Override if you create the controller programmatically and want to perform
+customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         // Custom initialization
@@ -42,88 +42,91 @@
 */
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
+- (void)loadView
+{
     // Initialize the CCEAGLView
-    CCEAGLView *eaglView = [CCEAGLView viewWithFrame: [UIScreen mainScreen].bounds
-                                         pixelFormat: (__bridge NSString *)cocos2d::GLViewImpl::_pixelFormat
-                                         depthFormat: cocos2d::GLViewImpl::_depthFormat
-                                  preserveBackbuffer: NO
-                                          sharegroup: nil
-                                       multiSampling: cocos2d::GLViewImpl::_multisamplingCount > 0 ? YES : NO
-                                     numberOfSamples: cocos2d::GLViewImpl::_multisamplingCount ];
-    
+    CCEAGLView* eaglView = [CCEAGLView viewWithFrame:[UIScreen mainScreen].bounds
+                                         pixelFormat:(__bridge NSString*)ax::GLViewImpl::_pixelFormat
+                                         depthFormat:ax::GLViewImpl::_depthFormat
+                                  preserveBackbuffer:NO
+                                          sharegroup:nil
+                                       multiSampling:ax::GLViewImpl::_multisamplingCount > 0 ? YES : NO
+                                     numberOfSamples:ax::GLViewImpl::_multisamplingCount];
+
     // Enable or disable multiple touches
+#if !defined(AX_TARGET_OS_TVOS)
     [eaglView setMultipleTouchEnabled:NO];
-    
+#endif
+
     // Set EAGLView as view of RootViewController
     self.view = eaglView;
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
 }
 
-
 // For ios6, use supportedInterfaceOrientations & shouldAutorotate instead
 #ifdef __IPHONE_6_0
-- (NSUInteger) supportedInterfaceOrientations{
+- (NSUInteger)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 #endif
 
-- (BOOL) shouldAutorotate {
+- (BOOL)shouldAutorotate
+{
     return YES;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glView = ax::Director::getInstance()->getOpenGLView();
 
-    if (glview)
+    if (glView)
     {
-        CCEAGLView *eaglview = (__bridge CCEAGLView *)glview->getEAGLView();
+        CCEAGLView* eaglView = (__bridge CCEAGLView*)glView->getEAGLView();
 
-        if (eaglview)
+        if (eaglView)
         {
-            CGSize s = CGSizeMake([eaglview getWidth], [eaglview getHeight]);
-            cocos2d::Application::getInstance()->applicationScreenSizeChanged((int) s.width, (int) s.height);
+            CGSize s = CGSizeMake([eaglView getWidth], [eaglView getHeight]);
+            ax::Application::getInstance()->applicationScreenSizeChanged((int)s.width, (int)s.height);
         }
     }
 }
 
-//fix not hide status on ios7
-- (BOOL)prefersStatusBarHidden {
+// fix not hide status on ios7
+- (BOOL)prefersStatusBarHidden
+{
     return YES;
 }
 
 // Controls the application's preferred home indicator auto-hiding when this view controller is shown.
-// (better use preferredScreenEdgesDeferringSystemGestures for controlling the home indicator)
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
-}
-
-// HOME Indicator need to be tapped twice 
--(UIRectEdge)preferredScreenEdgesDeferringSystemGestures
+- (BOOL)prefersHomeIndicatorAutoHidden
 {
-    return UIRectEdgeBottom; 
+    return YES;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 
     // Release any cached data, images, etc that aren't in use.
 }
-
 
 @end

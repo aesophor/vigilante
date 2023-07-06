@@ -1,4 +1,6 @@
-include ':libcocos2dx'
-project(':libcocos2dx').projectDir = new File(settingsDir, '../cocos2d/cocos/platform/android/libcocos2dx')
-include ':Vigilante'
-project(':Vigilante').projectDir = new File(settingsDir, 'app')
+import java.nio.file.Paths
+include ':libaxmol'
+project(':libaxmol').projectDir = new File(Paths.get("${System.env.AX_ROOT}/core/platform/android/libaxmol").toUri())
+include ':vigilante'
+project(':vigilante').projectDir = new File(settingsDir, 'app')
+rootProject.name = "vigilante"

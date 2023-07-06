@@ -1,0 +1,76 @@
+// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#ifndef VIGILANTE_STATIC_ACTOR_H_
+#define VIGILANTE_STATIC_ACTOR_H_
+
+#include <vector>
+
+#include <axmol.h>
+
+namespace vigilante {
+
+// A static actor is an abstract class which represents a game entity
+// consisting of the following members:
+// 1. a sprite placed at a specific position
+// 2. a spritesheet and several animations
+
+class StaticActor {
+ public:
+  virtual ~StaticActor() = default;
+
+  // Show and hide the sprite in the game map.
+  // showOnMap() and removeFromMap() both return a bool
+  // which indicates if the operation is successful.
+  virtual bool showOnMap(float x, float y);
+  virtual bool removeFromMap();
+  virtual void setPosition(float x, float y);
+
+  inline ax::Sprite* getBodySprite() const { return _bodySprite; }
+  inline ax::SpriteBatchNode* getBodySpritesheet() const { return _bodySpritesheet; }
+
+  // Create animation from Texture/{category}/{entityName}/{entityName}_{frameName}
+  // e.g., to create the animation of "slime" "killed", pass the following arguments
+  // to this function: ("Texture/character/slime", "killed", 3.0f / kPpm).
+  //
+  // If the target animation cannot be created, the fallback animation will be used
+  // instead. If the user did not provide a fallback animation, a std::runtime_error
+  // will be thrown.
+  //
+  // IMPORTANT: animations created with this utility method should be release()d!
+  //
+  // @param textureResDir: the path to texture resource directory
+  // @param framesName: the name of the frames
+  // @param interval: the interval between each frame
+  // @param fallback: the fallback animation (if the target animation cannot be created)
+  // @return: an pointer to the instance of ax::Animation
+  static ax::Animation* createAnimation(const std::string& textureResDir,
+                                        const std::string& framesName,
+                                        float interval,
+                                        ax::Animation* fallback=nullptr);
+
+  // The texture resources under Resources/Texture/ has the following rules:
+  //
+  // Texture/character/player/player_attacking0/0.png
+  // |______________________| |____| |________| |___|
+  //      textureResDir          |   framesName
+  //                      framesNamePrefix
+  //
+  // As you can see, each framesName (e.g., attacking0) is preceded by a prefix,
+  // this is to **prevent frames name collision** in ax::SpriteFrameCache!
+  //
+  // The following utility method takes in textureResPath as a parameter
+  // and returns the last dirname.
+  // e.g., "Texture/character/player" -> "player"
+  static std::string getLastDirName(const std::string& directory);
+
+ protected:
+  explicit StaticActor(const size_t numAnimations = 1) : _bodyAnimations(numAnimations) {}
+
+  bool _isShownOnMap{};
+  ax::Sprite* _bodySprite{};
+  ax::SpriteBatchNode* _bodySpritesheet{};
+  std::vector<ax::Animation*> _bodyAnimations;
+};
+
+}  // namespace vigilante
+
+#endif  // VIGILANTE_STATIC_ACTOR_H_
