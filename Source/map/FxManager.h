@@ -15,21 +15,19 @@ class Character;
 
 class FxManager final {
  public:
-  FxManager();
-
   void createDustFx(Character* c);
   ax::Sprite* createHintBubbleFx(const b2Body* body,
-                                      const std::string& framesName);
+                                 const std::string& framesName);
 
   void removeFx(ax::Sprite* sprite);
 
  private:
   ax::Sprite* createFx(const std::string& textureResDir,
-                            const std::string& framesName,
-                            float x,
-                            float y,
-                            unsigned int loopCount=1,
-                            float frameInterval=10.0f);
+                       const std::string& framesName,
+                       float x,
+                       float y,
+                       unsigned int loopCount=1,
+                       float frameInterval=10.0f);
 
   static std::string getSpritesheetFileName(const std::string& textureResDir);
 

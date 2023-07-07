@@ -10,19 +10,9 @@ USING_NS_AX;
 
 namespace vigilante {
 
-const array<EventKeyboard::KeyCode, HotkeyManager::BindableKeys::SIZE> HotkeyManager::_kBindableKeys = {{
-  EventKeyboard::KeyCode::KEY_LEFT_SHIFT,
-  EventKeyboard::KeyCode::KEY_LEFT_CTRL,
-  EventKeyboard::KeyCode::KEY_X,
-  EventKeyboard::KeyCode::KEY_C,
-  EventKeyboard::KeyCode::KEY_V
-}};
-
-HotkeyManager::HotkeyManager() : _hotkeys() {}
-
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
-  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
-    if (keyCode == _kBindableKeys[i]) {
+  for (size_t i = 0; i < kBindableKeys.size(); i++) {
+    if (keyCode == kBindableKeys[i]) {
       return _hotkeys[i];
     }
   }
@@ -30,8 +20,8 @@ Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) cons
 }
 
 void HotkeyManager::setHotkeyAction(EventKeyboard::KeyCode keyCode, Keybindable* keybindable) {
-  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
-    if (keyCode == _kBindableKeys[i]) {
+  for (size_t i = 0; i < kBindableKeys.size(); i++) {
+    if (keyCode == kBindableKeys[i]) {
       clearHotkeyAction(keybindable->getHotkey());
       if (_hotkeys[i]) {
         clearHotkeyAction(_hotkeys[i]->getHotkey());
@@ -50,8 +40,8 @@ void HotkeyManager::clearHotkeyAction(EventKeyboard::KeyCode keyCode) {
     return;
   }
 
-  for (size_t i = 0; i < _kBindableKeys.size(); i++) {
-    if (keyCode == _kBindableKeys[i]) {
+  for (size_t i = 0; i < kBindableKeys.size(); i++) {
+    if (keyCode == kBindableKeys[i]) {
       if (_hotkeys[i]) {
         _hotkeys[i]->setHotkey(EventKeyboard::KeyCode::KEY_NONE);
       }

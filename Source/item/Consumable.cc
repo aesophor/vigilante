@@ -9,12 +9,12 @@ USING_NS_AX;
 namespace vigilante {
 
 Consumable::Consumable(const string& jsonFileName)
-    : Item(jsonFileName),
-      _consumableProfile(jsonFileName) {}
+    : Item{jsonFileName},
+      _consumableProfile{jsonFileName} {}
 
 void Consumable::import(const string& jsonFileName) {
   Item::import(jsonFileName);
-  _consumableProfile = Consumable::Profile(jsonFileName);
+  _consumableProfile = Consumable::Profile{jsonFileName};
 }
 
 EventKeyboard::KeyCode Consumable::getHotkey() const {
@@ -23,10 +23,6 @@ EventKeyboard::KeyCode Consumable::getHotkey() const {
 
 void Consumable::setHotkey(EventKeyboard::KeyCode hotkey) {
   _consumableProfile.hotkey = hotkey;
-}
-
-Consumable::Profile& Consumable::getConsumableProfile() {
-  return _consumableProfile;
 }
 
 Consumable::Profile::Profile(const string& jsonFileName) : hotkey() {

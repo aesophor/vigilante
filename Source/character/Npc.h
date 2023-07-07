@@ -17,13 +17,23 @@ namespace vigilante {
 // i.e., enemies and allies are all npcs.
 class Npc : public Character, public Interactable {
  public:
+  // In addition to Character::FixtureType, the new version defined in Npc.h
+  // has the fourth fixture type.
+  enum FixtureType {
+    BODY,
+    FEET,
+    WEAPON,
+    INTERACTABLE,  // used in player's interaction with Npcs (with FEET fixture)
+    FIXTURE_SIZE
+  };
+
   // The "disposition" of an Npc means its "friendliness" toward the player.
   enum class Disposition {
     ALLY,
     ENEMY,
     SIZE
   };
-
+  
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
 
@@ -42,16 +52,6 @@ class Npc : public Character, public Interactable {
     bool isUnsheathed;
     bool isTradable;
     bool shouldSandbox;
-  };
-
-  // In addition to Character::FixtureType, the new version defined in Npc.h
-  // has the fourth fixture type.
-  enum FixtureType {
-    BODY,
-    FEET,
-    WEAPON,
-    INTERACTABLE,  // used in player's interaction with Npcs (with FEET fixture)
-    FIXTURE_SIZE
   };
 
   explicit Npc(const std::string& jsonFileName);

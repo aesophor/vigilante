@@ -24,6 +24,21 @@ class Player;
 
 class GameMap final {
  public:
+  enum class PhysicalLayer {
+    GROUND,
+    WALL,
+    PLATFORM,
+    PivotMarker,
+    CliffMarker,
+    SIZE
+  };
+
+  enum class OpenableObjectType {
+    PORTAL,
+    CHEST,
+    SIZE
+  };
+
   class Trigger : public Interactable {
    public:
     Trigger(const std::vector<std::string>& cmds,
@@ -49,10 +64,10 @@ class GameMap final {
     virtual void removeHintBubbleFx() override {}  // Interactable
 
     std::vector<std::string> _cmds;
-    bool _canBeTriggeredOnlyOnce;
-    bool _canBeTriggeredOnlyByPlayer;
-    bool _hasTriggered;
-    b2Body* _body;
+    bool _canBeTriggeredOnlyOnce{};
+    bool _canBeTriggeredOnlyByPlayer{};
+    bool _hasTriggered{};
+    b2Body* _body{};
   };
 
   class Portal : public Interactable {
@@ -90,26 +105,11 @@ class GameMap final {
     int getPortalId() const;
 
     std::string _destTmxMapFileName;  // new (destination) .tmx filename
-    int _destPortalId;  // the portal id in the new (destination) map
-    bool _willInteractOnContact;  // interact with the portal on contact?
-    bool _isLocked;
-    b2Body* _body;
-    ax::Sprite* _hintBubbleFxSprite;
-  };
-
-  enum class PhysicalLayer {
-    GROUND,
-    WALL,
-    PLATFORM,
-    PivotMarker,
-    CliffMarker,
-    SIZE
-  };
-
-  enum class OpenableObjectType {
-    PORTAL,
-    CHEST,
-    SIZE
+    int _destPortalId{};  // the portal id in the new (destination) map
+    bool _willInteractOnContact{};  // interact with the portal on contact?
+    bool _isLocked{};
+    b2Body* _body{};
+    ax::Sprite* _hintBubbleFxSprite{};
   };
 
   GameMap(b2World* world, const std::string& tmxMapFileName);
@@ -147,17 +147,15 @@ class GameMap final {
   void createNpcs();
   void createChests();
 
-  b2World* _world;
-  ax::TMXTiledMap* _tmxTiledMap;
+  b2World* _world{};
+  ax::TMXTiledMap* _tmxTiledMap{};
   std::string _tmxTiledMapFileName;
   std::string _bgmFileName;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
-
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
-
   std::unique_ptr<PathFinder> _pathFinder;
 
   friend class GameMapManager;

@@ -15,8 +15,6 @@ class PauseMenuDialog;
 
 class HotkeyManager final {
  public:
-  HotkeyManager();
-
   enum BindableKeys {
     LEFT_SHIFT,
     LEFT_CTRL,
@@ -26,7 +24,13 @@ class HotkeyManager final {
     SIZE
   };
 
-  static const std::array<ax::EventKeyboard::KeyCode, BindableKeys::SIZE> _kBindableKeys;
+  static inline const std::array<ax::EventKeyboard::KeyCode, BindableKeys::SIZE> kBindableKeys{{
+    ax::EventKeyboard::KeyCode::KEY_LEFT_SHIFT,
+    ax::EventKeyboard::KeyCode::KEY_LEFT_CTRL,
+    ax::EventKeyboard::KeyCode::KEY_X,
+    ax::EventKeyboard::KeyCode::KEY_C,
+    ax::EventKeyboard::KeyCode::KEY_V
+  }};
 
   Keybindable* getHotkeyAction(ax::EventKeyboard::KeyCode keyCode) const;
   void setHotkeyAction(ax::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);

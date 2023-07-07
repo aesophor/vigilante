@@ -37,10 +37,10 @@ class Chest : public DynamicActor, public Interactable {
                   short maskBits);
 
   const std::string _tmxMapFileName;
-  const int _chestId;
+  const int _chestId{};
   const std::vector<std::string> _itemJsons;
-  bool _isOpened;
-  ax::Sprite* _hintBubbleFxSprite;
+  bool _isOpened{};
+  ax::Sprite* _hintBubbleFxSprite{};
 };
 
 }  // namespace vigilante

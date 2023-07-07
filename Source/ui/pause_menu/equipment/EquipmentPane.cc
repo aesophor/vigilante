@@ -21,7 +21,7 @@ EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
 
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
     EquipmentPane* parent = this;
-    const string& title = Equipment::_kEquipmentTypeStr[i];
+    const string& title = Equipment::kEquipmentTypeStr[i];
     float x = 0;
     float y = -30.0f * i;
     _equipmentItems.push_back(std::make_unique<EquipmentItem>(parent, title, x, y));

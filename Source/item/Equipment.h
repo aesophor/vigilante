@@ -12,15 +12,25 @@ namespace vigilante {
 class Equipment : public Item {
  public:
   enum Type {
-    WEAPON,     // 0
-    HEADGEAR,   // 1
-    ARMOR,      // 2
-    GAUNTLETS,  // 3
-    BOOTS,      // 4
-    CAPE,       // 5
-    RING,       // 6
+    WEAPON,
+    HEADGEAR,
+    ARMOR,
+    GAUNTLETS,
+    BOOTS,
+    CAPE,
+    RING,
     SIZE
   };
+
+  static inline const std::array<std::string, Equipment::Type::SIZE> kEquipmentTypeStr{{
+    "WEAPON",
+    "HEADGEAR",
+    "ARMOR",
+    "GAUNTLETS",
+    "BOOTS",
+    "CAPE",
+    "RING"
+  }};
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
@@ -37,8 +47,6 @@ class Equipment : public Item {
     int bonusMoveSpeed;
     int bonusJumpHeight;
   };
-
-  static const std::array<std::string, Equipment::Type::SIZE> _kEquipmentTypeStr;
 
   explicit Equipment(const std::string& jsonFileName);
   virtual ~Equipment() override = default;

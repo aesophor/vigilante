@@ -8,12 +8,10 @@
 
 namespace vigilante {
 
-class b2BodyBuilder {
+class b2BodyBuilder final {
  public:
-  explicit b2BodyBuilder(b2World* world);
-  explicit b2BodyBuilder(b2Body* body);
-  explicit b2BodyBuilder(const b2BodyBuilder& bodyBuilder);
-  b2BodyBuilder& operator= (const b2BodyBuilder& bodyBuilder);
+  explicit b2BodyBuilder(b2World* world) : _world{world} {}
+  explicit b2BodyBuilder(b2Body* body) : _world{body->GetWorld()}, _body{body} {}
   virtual ~b2BodyBuilder() = default;
 
   b2BodyBuilder& type(b2BodyType bodyType);
@@ -37,14 +35,14 @@ class b2BodyBuilder {
   b2Fixture* buildFixture();
 
  private:
-  b2World* _world;
-  b2Body* _body;
-  b2Fixture* _fixture;
+  b2World* _world{};
+  b2Body* _body{};
+  b2Fixture* _fixture{};
 
-  b2BodyDef _bdef;
-  b2FixtureDef _fdef;
+  b2BodyDef _bdef{};
+  b2FixtureDef _fdef{};
   std::unique_ptr<b2Shape> _shape;
-  void* _userData;
+  void* _userData{};
 };
 
 }  // namespace vigilante

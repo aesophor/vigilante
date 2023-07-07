@@ -14,13 +14,6 @@ InputManager& InputManager::the() {
   return instance;
 }
 
-InputManager::InputManager()
-    : _scene(),
-      _keyboardEvLstnr(),
-      _isCapsLocked(),
-      _pressedKeys(),
-      _specialOnKeyPressed() {}
-
 void InputManager::activate(Scene* scene) {
   _scene = scene;
   _keyboardEvLstnr = EventListenerKeyboard::create();

@@ -44,7 +44,7 @@ class Consumable : public Item, public Keybindable {
   virtual ax::EventKeyboard::KeyCode getHotkey() const override;  // Keybindable
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override;  // Keybindable
 
-  Consumable::Profile& getConsumableProfile();
+  Consumable::Profile& getConsumableProfile() { return _consumableProfile; }
 
  protected:
   Consumable::Profile _consumableProfile;

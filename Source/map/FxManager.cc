@@ -13,8 +13,6 @@ USING_NS_AX;
 
 namespace vigilante {
 
-FxManager::FxManager() : _animationCache() {}
-
 void FxManager::createDustFx(Character* c) {
   const b2Vec2& feetPos = c->getBody()->GetPosition();
   float x = feetPos.x * kPpm;

@@ -8,8 +8,8 @@ using namespace std;
 namespace vigilante {
 
 Key::Key(const string& jsonFileName)
-    : MiscItem(jsonFileName),
-      _keyProfile(jsonFileName) {}
+    : MiscItem{jsonFileName},
+      _keyProfile{jsonFileName} {}
 
 Key::Profile::Profile(const string& jsonFileName) {
   rapidjson::Document json = json_util::parseJson(jsonFileName);

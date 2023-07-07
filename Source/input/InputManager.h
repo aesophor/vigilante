@@ -20,8 +20,7 @@ namespace vigilante {
 
 class InputManager final {
  public:
-  using OnKeyPressedEvLstnr =
-    std::function<void (ax::EventKeyboard::KeyCode, ax::Event*)>;
+  using OnKeyPressedEvLstnr = std::function<void (ax::EventKeyboard::KeyCode, ax::Event*)>;
 
   static InputManager& the();
 
@@ -61,18 +60,18 @@ class InputManager final {
   }
 
  private:
-  InputManager();
+  InputManager() = default;
 
-  ax::Scene* _scene;
-  ax::EventListenerKeyboard* _keyboardEvLstnr;
+  ax::Scene* _scene{};
+  ax::EventListenerKeyboard* _keyboardEvLstnr{};
 
-  bool _isCapsLocked;
+  bool _isCapsLocked{};
 
   // Pressed Keys are stored in this set.
   // Relevant method: isKeyPressed(), isKeyJustPressed()
   std::set<ax::EventKeyboard::KeyCode> _pressedKeys;
 
-  OnKeyPressedEvLstnr _specialOnKeyPressed;
+  OnKeyPressedEvLstnr _specialOnKeyPressed{};
 };
 
 }  // namespace vigilante

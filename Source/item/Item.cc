@@ -13,17 +13,21 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
-#define ITEM_NUM_ANIMATIONS 0
-#define ITEM_NUM_FIXTURES 2
-
-#define ITEM_CATEGORY_BITS kItem
-#define ITEM_MASK_BITS kGround | kPlatform | kWall
-
 using namespace std;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
 namespace vigilante {
+
+namespace {
+
+constexpr int kItemNumAnimations = 0;
+constexpr int kItemNumFixtures = 2;
+
+constexpr auto kItemCategoryBits = kItem;
+constexpr auto kItemMaskBits = kGround | kPlatform | kWall;
+
+}  // namespace
 
 unique_ptr<Item> Item::create(const string& jsonFileName) {
   if (jsonFileName.find("equipment") != jsonFileName.npos) {
@@ -41,9 +45,8 @@ unique_ptr<Item> Item::create(const string& jsonFileName) {
 }
 
 Item::Item(const string& jsonFileName)
-    : DynamicActor(ITEM_NUM_ANIMATIONS, ITEM_NUM_FIXTURES),
-      _itemProfile(jsonFileName),
-      _amount(1) {
+    : DynamicActor{kItemNumAnimations, kItemNumFixtures},
+      _itemProfile{jsonFileName} {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
@@ -55,11 +58,9 @@ bool Item::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
 
-  defineBody(b2BodyType::b2_dynamicBody,
-             x,
-             y,
-             ITEM_CATEGORY_BITS,
-             ITEM_MASK_BITS);
+  defineBody(b2BodyType::b2_dynamicBody, x, y,
+             kItemCategoryBits,
+             kItemMaskBits);
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
@@ -71,7 +72,7 @@ bool Item::showOnMap(float x, float y) {
 }
 
 void Item::import(const string& jsonFileName) {
-  _itemProfile = Item::Profile(jsonFileName);
+  _itemProfile = Item::Profile{jsonFileName};
 }
 
 void Item::defineBody(b2BodyType bodyType,

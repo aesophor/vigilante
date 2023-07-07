@@ -21,26 +21,26 @@
 namespace vigilante {
 
 class GameMapManager final {
- public:
+public:
   explicit GameMapManager(const b2Vec2& gravity);
-
+  
   void update(float delta);
-
+  
   // @param tmxMapFileName: the target .tmx file to load
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
   void destroyGameMap();
-
+  
   bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
   void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
-
+  
   inline bool areNpcsAllowedToAct() const { return _areNpcsAllowedToAct; }
   inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
     _areNpcsAllowedToAct = npcsAllowedToAct;
   }
-
+  
   bool hasSavedOpenedClosedState(const std::string& tmxMapFileName,
                                  const GameMap::OpenableObjectType type,
                                  const int targetObjectId) const;
@@ -51,26 +51,26 @@ class GameMapManager final {
                  const GameMap::OpenableObjectType type,
                  const int targetPortalId,
                  const bool locked);
-
+  
   inline ax::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
-
- private:
+  
+private:
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
   std::string getOpenableObjectQueryKey(const std::string& tmxMapFileName,
                                         const GameMap::OpenableObjectType type,
                                         const int targetObjectId) const;
-
-  ax::Layer* _layer;
+  
+  ax::Layer* _layer{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
   std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
 
   std::unordered_set<std::string> _npcSpawningBlacklist;
-  std::atomic<bool> _areNpcsAllowedToAct;
+  std::atomic<bool> _areNpcsAllowedToAct{true};
 
   // This includes:
   // 1. The unlock/lock state of all portals in all maps.

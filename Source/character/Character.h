@@ -213,6 +213,29 @@ class Character : public DynamicActor, public Importable {
   int getDamageOutput() const;
 
  protected:
+  static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
+    "idle_sheathed",
+    "idle_unsheathed",
+    "running_sheathed",
+    "running_unsheathed",
+    "jumping_sheathed",
+    "jumping_unsheathed",
+    "falling_sheathed",
+    "falling_unsheathed",
+    "crouching_sheathed",
+    "crouching_unsheathed",
+    "sheathing_weapon",
+    "unsheathing_weapon",
+    "attacking0",
+    "killed"
+  }};
+
+  static inline const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr{{
+    "jump",
+    "hurt",
+    "killed",
+  }};
+
   explicit Character(const std::string& jsonFileName);
 
   virtual void regenHealth(int deltaHealth);
@@ -250,29 +273,6 @@ class Character : public DynamicActor, public Importable {
   std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
 
   Item* getExistingItemObj(Item* item) const;
-
-  static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
-    "idle_sheathed",
-    "idle_unsheathed",
-    "running_sheathed",
-    "running_unsheathed",
-    "jumping_sheathed",
-    "jumping_unsheathed",
-    "falling_sheathed",
-    "falling_unsheathed",
-    "crouching_sheathed",
-    "crouching_unsheathed",
-    "sheathing_weapon",
-    "unsheathing_weapon",
-    "attacking0",
-    "killed"
-  }};
-
-  static inline const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr{{
-    "jump",
-    "hurt",
-    "killed",
-  }};
 
   // Characater data.
   Character::Profile _characterProfile;

@@ -7,23 +7,13 @@ using namespace std;
 
 namespace vigilante {
 
-const array<string, Equipment::Type::SIZE> Equipment::_kEquipmentTypeStr = {{
-  "WEAPON",
-  "HEADGEAR",
-  "ARMOR",
-  "GAUNTLETS",
-  "BOOTS",
-  "CAPE",
-  "RING"
-}};
-
 Equipment::Equipment(const string& jsonFileName)
-    : Item(jsonFileName),
-      _equipmentProfile(jsonFileName) {}
+    : Item{jsonFileName},
+      _equipmentProfile{jsonFileName} {}
 
 void Equipment::import(const string& jsonFileName) {
   Item::import(jsonFileName);
-  _equipmentProfile = Equipment::Profile(jsonFileName);
+  _equipmentProfile = Equipment::Profile{jsonFileName};
 }
 
 Equipment::Profile::Profile(const string& jsonFileName) {

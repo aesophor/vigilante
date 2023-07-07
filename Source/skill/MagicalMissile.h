@@ -17,6 +17,13 @@ class Character;
 
 class MagicalMissile : public DynamicActor, public Skill, public Projectile {
  public:
+  enum AnimationType {
+    LAUNCH_FX,
+    FLYING,
+    ON_HIT,
+    SIZE
+  };
+
   MagicalMissile(const std::string& jsonFileName, Character* user);
   virtual ~MagicalMissile() = default;
 
@@ -48,19 +55,11 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual void defineTexture(const std::string& textureResPath, float x, float y);
 
   Skill::Profile _skillProfile;
-  Character* _user;
-  float _flyingSpeed;
-  bool _hasActivated;
-  bool _hasHit;
-
-  ax::Sprite* _launchFxSprite;  // sprite of launching fx
-
-  enum AnimationType {
-    LAUNCH_FX,
-    FLYING,
-    ON_HIT,
-    SIZE
-  };
+  Character* _user{};
+  float _flyingSpeed{};
+  bool _hasActivated{};
+  bool _hasHit{};
+  ax::Sprite* _launchFxSprite{};
 };
 
 }  // namespace vigilante

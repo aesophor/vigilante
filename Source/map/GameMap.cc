@@ -31,16 +31,11 @@ USING_NS_AX;
 namespace vigilante {
 
 GameMap::GameMap(b2World* world, const string& tmxMapFileName)
-    : _world(world),
-      _tmxTiledMap(TMXTiledMap::create(tmxMapFileName)),
-      _tmxTiledMapFileName(tmxMapFileName),
-      _bgmFileName(_tmxTiledMap->getProperty("bgm").asString()),
-      _tmxTiledMapBodies(),
-      _tmxTiledMapPlatformBodies(),
-      _dynamicActors(),
-      _triggers(),
-      _portals(),
-      _pathFinder(std::make_unique<SimplePathFinder>()) {}
+    : _world{world},
+      _tmxTiledMap{TMXTiledMap::create(tmxMapFileName)},
+      _tmxTiledMapFileName{tmxMapFileName},
+      _bgmFileName{_tmxTiledMap->getProperty("bgm").asString()},
+      _pathFinder{std::make_unique<SimplePathFinder>()} {}
 
 void GameMap::createObjects() {
   list<b2Body*> bodies;
@@ -311,11 +306,10 @@ GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
                           b2Body* body)
-    : _cmds(cmds),
-      _canBeTriggeredOnlyOnce(canBeTriggeredOnlyOnce),
-      _canBeTriggeredOnlyByPlayer(canBeTriggeredOnlyByPlayer),
-      _hasTriggered(),
-      _body(body) {}
+    : _cmds{cmds},
+      _canBeTriggeredOnlyOnce{canBeTriggeredOnlyOnce},
+      _canBeTriggeredOnlyByPlayer{canBeTriggeredOnlyByPlayer},
+      _body{body} {}
 
 GameMap::Trigger::~Trigger() {
   _body->GetWorld()->DestroyBody(_body);
@@ -340,12 +334,11 @@ void GameMap::Trigger::onInteract(Character* user) {
 
 GameMap::Portal::Portal(const string& destTmxMapFileName, int destPortalId,
                         bool willInteractOnContact, bool isLocked, b2Body* body)
-    : _destTmxMapFileName(destTmxMapFileName),
-      _destPortalId(destPortalId),
-      _willInteractOnContact(willInteractOnContact),
-      _isLocked(isLocked),
-      _body(body),
-      _hintBubbleFxSprite() {
+    : _destTmxMapFileName{destTmxMapFileName},
+      _destPortalId{destPortalId},
+      _willInteractOnContact{willInteractOnContact},
+      _isLocked{isLocked},
+      _body{body} {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = OpenableObjectType::PORTAL;
   if (gmMgr->hasSavedOpenedClosedState(destTmxMapFileName, kType, destPortalId)) {

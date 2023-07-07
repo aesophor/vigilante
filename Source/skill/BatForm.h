@@ -28,9 +28,8 @@ class BatForm : public Skill {
 
  private:
   Skill::Profile _skillProfile;
-  Character* _user;
-
-  bool _hasActivated;
+  Character* _user{};
+  bool _hasActivated{};
 };
 
 }  // namespace vigilante

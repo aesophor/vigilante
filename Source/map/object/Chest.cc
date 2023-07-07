@@ -10,12 +10,6 @@
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
 
-#define CHEST_NUM_ANIMATIONS 0
-#define CHEST_NUM_FIXTURES 2
-
-#define ITEM_CATEGORY_BITS kInteractable
-#define ITEM_MASK_BITS kGround | kPlatform | kWall
-
 using namespace std;
 using namespace vigilante::assets;
 using namespace vigilante::category_bits;
@@ -23,15 +17,23 @@ USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr int kChestNumAnimations = 0;
+constexpr int kChestNumFixtures = 2;
+
+constexpr auto kItemCategoryBits = kInteractable;
+constexpr auto kItemMaskBits = kGround | kPlatform | kWall;
+
+}  // namespace
+
 Chest::Chest(const string& tmxMapFileName,
              const int chestId,
              const string& itemJsons)
-    : DynamicActor(CHEST_NUM_ANIMATIONS, CHEST_NUM_FIXTURES),
-      _tmxMapFileName(tmxMapFileName),
-      _chestId(chestId),
-      _itemJsons(string_util::split(itemJsons)),
-      _isOpened(),
-      _hintBubbleFxSprite() {
+    : DynamicActor{kChestNumAnimations, kChestNumFixtures},
+      _tmxMapFileName{tmxMapFileName},
+      _chestId{chestId},
+      _itemJsons{string_util::split(itemJsons)} {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = GameMap::OpenableObjectType::CHEST;
   _isOpened = gmMgr->isOpened(tmxMapFileName, kType, chestId);
@@ -44,11 +46,9 @@ bool Chest::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
 
-  defineBody(b2BodyType::b2_dynamicBody,
-             x,
-             y,
-             ITEM_CATEGORY_BITS,
-             ITEM_MASK_BITS);
+  defineBody(b2BodyType::b2_dynamicBody, x, y,
+             kItemCategoryBits,
+             kItemMaskBits);
 
   if (!_isOpened) {
     _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_close.png");

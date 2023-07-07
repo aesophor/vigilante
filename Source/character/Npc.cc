@@ -20,21 +20,25 @@
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
 
-#define ALLY_BODY_CATEGORY_BITS kNpc
-#define ALLY_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
-#define ALLY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kPortal | kInteractable
-#define ALLY_WEAPON_MASK_BITS kEnemy
-
-#define ENEMY_BODY_CATEGORY_BITS kEnemy
-#define ENEMY_BODY_MASK_BITS kFeet | kPlayer | kNpc | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile
-#define ENEMY_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kInteractable
-#define ENEMY_WEAPON_MASK_BITS kPlayer | kNpc
-
 using namespace std;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
 namespace vigilante {
+
+namespace {
+
+constexpr auto kAllyBodyCategoryBits = kNpc;
+constexpr auto kAllyBodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile;
+constexpr auto kAllyFeetMaskBits = kGround | kPlatform | kWall | kItem | kPortal | kInteractable;
+constexpr auto kAllyWeaponMaskBits = kEnemy;
+
+constexpr auto kEnemyBodyCategoryBits = kEnemy;
+constexpr auto kEnemyBodyMaskBits = kFeet | kPlayer | kNpc | kMeleeWeapon | kPivotMarker | kCliffMarker | kProjectile;
+constexpr auto kEnemyFeetMaskBits = kGround | kPlatform | kWall | kItem | kInteractable;
+constexpr auto kEnemyWeaponMaskBits = kPlayer | kNpc;
+
+}  // namespace
 
 Npc::Npc(const string& jsonFileName)
     : Character{jsonFileName},
@@ -449,7 +453,7 @@ bool Npc::isWaitingForPlayer() const {
   }
 
   return isPlayerLeaderOfParty() &&
-    _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName) != std::nullopt;
+    _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName).has_value();
 }
 
 bool Npc::isWaitingForPartyLeader() const {
@@ -457,7 +461,7 @@ bool Npc::isWaitingForPartyLeader() const {
     return false;
   }
 
-  return _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName) != std::nullopt;
+  return _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName).has_value();
 }
 
 void Npc::setDisposition(Npc::Disposition disposition) {
@@ -465,16 +469,16 @@ void Npc::setDisposition(Npc::Disposition disposition) {
 
   switch (disposition) {
     case Npc::Disposition::ALLY:
-      DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], ALLY_BODY_CATEGORY_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::BODY], ALLY_BODY_MASK_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::FEET], ALLY_FEET_MASK_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::WEAPON], ALLY_WEAPON_MASK_BITS);
+      DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], kAllyBodyCategoryBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::BODY], kAllyBodyMaskBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::FEET], kAllyFeetMaskBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::WEAPON], kAllyWeaponMaskBits);
       break;
     case Npc::Disposition::ENEMY:
-      DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], ENEMY_BODY_CATEGORY_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::BODY], ENEMY_BODY_MASK_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::FEET], ENEMY_FEET_MASK_BITS);
-      DynamicActor::setMaskBits(_fixtures[FixtureType::WEAPON], ENEMY_WEAPON_MASK_BITS);
+      DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], kEnemyBodyCategoryBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::BODY], kEnemyBodyMaskBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::FEET], kEnemyFeetMaskBits);
+      DynamicActor::setMaskBits(_fixtures[FixtureType::WEAPON], kEnemyWeaponMaskBits);
       break;
     default:
       VGLOG(LOG_ERR, "Invalid disposition for user: %s", _characterProfile.name.c_str());

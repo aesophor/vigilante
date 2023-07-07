@@ -13,10 +13,9 @@ USING_NS_AX;
 namespace vigilante {
 
 BatForm::BatForm(const string& jsonFileName, Character* user)
-    : Skill(),
-      _skillProfile(jsonFileName),
-      _user(user),
-      _hasActivated() {}
+    : Skill{},
+      _skillProfile{jsonFileName},
+      _user{user} {}
 
 void BatForm::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);

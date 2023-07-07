@@ -13,10 +13,9 @@ USING_NS_AX;
 namespace vigilante {
 
 BackDash::BackDash(const string& jsonFileName, Character* user)
-    : Skill(),
-      _skillProfile(jsonFileName),
-      _user(user),
-      _hasActivated() {}
+    : Skill{},
+      _skillProfile{jsonFileName},
+      _user{user} {}
 
 void BackDash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);

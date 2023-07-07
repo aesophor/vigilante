@@ -20,16 +20,20 @@
 #include "util/CameraUtil.h"
 #include "util/StringUtil.h"
 
-#define PLAYER_BODY_CATEGORY_BITS kPlayer
-#define PLAYER_BODY_MASK_BITS kFeet | kEnemy | kMeleeWeapon | kProjectile
-#define PLAYER_FEET_MASK_BITS kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractable
-#define PLAYER_WEAPON_MASK_BITS kEnemy
-
 using namespace std;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
 namespace vigilante {
+
+namespace {
+
+constexpr auto kPlayerBodyCategoryBits = kPlayer;
+constexpr auto kPlayerBodyMaskBits = kFeet | kEnemy | kMeleeWeapon | kProjectile;
+constexpr auto kPlayerFeetMaskBits = kGround | kPlatform | kWall | kItem | kNpc | kPortal | kInteractable;
+constexpr auto kPlayerWeaponMaskBits = kEnemy;
+
+}  // namespace
 
 Player::Player(const std::string& jsonFileName) : Character{jsonFileName} {
   // The player has a party (team) with no other members by default.
@@ -45,10 +49,10 @@ bool Player::showOnMap(float x, float y) {
 
   // Construct b2Body and b2Fixtures
   defineBody(b2BodyType::b2_dynamicBody, x, y,
-             PLAYER_BODY_CATEGORY_BITS,
-             PLAYER_BODY_MASK_BITS,
-             PLAYER_FEET_MASK_BITS,
-             PLAYER_WEAPON_MASK_BITS);
+             kPlayerBodyCategoryBits,
+             kPlayerBodyMaskBits,
+             kPlayerFeetMaskBits,
+             kPlayerWeaponMaskBits);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
@@ -201,7 +205,7 @@ void Player::handleInput() {
   }
 
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
-  for (auto keyCode : HotkeyManager::_kBindableKeys) {
+  for (auto keyCode : HotkeyManager::kBindableKeys) {
     Keybindable* action = hotkeyMgr->getHotkeyAction(keyCode);
     if (IS_KEY_JUST_PRESSED(keyCode) && action) {
       if (dynamic_cast<Skill*>(action)) {

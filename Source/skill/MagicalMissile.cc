@@ -12,25 +12,26 @@
 #include "util/box2d/b2BodyBuilder.h"
 #include "util/Logger.h"
 
-#define MAGICAL_MISSILE_NUM_ANIMATIONS MagicalMissile::AnimationType::SIZE
-#define MAGICAL_MISSILE_NUM_FIXTURES 1
-
-#define MAGICAL_MISSILE_CATEOGRY_BITS kProjectile
-#define MAGICAL_MISSILE_MASK_BITS kPlayer | kEnemy | kWall
-
 using namespace std;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr int kMagicalMissleNumAnimations = MagicalMissile::AnimationType::SIZE;
+constexpr int kMagicalMissleNumFixtures = 1;
+
+constexpr auto kMagicalMissleCategoryBits = kProjectile;
+constexpr auto kMagicalMissleMaskBits = kPlayer | kEnemy | kWall;
+
+}  // namespace
+
 MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
-    : DynamicActor(MAGICAL_MISSILE_NUM_ANIMATIONS, MAGICAL_MISSILE_NUM_FIXTURES),
-      _skillProfile(jsonFileName),
-      _user(user),
-      _hasActivated(),
-      _hasHit(),
-      _launchFxSprite() {}
+    : DynamicActor{kMagicalMissleNumAnimations, kMagicalMissleNumFixtures},
+      _skillProfile{jsonFileName},
+      _user{user} {}
 
 bool MagicalMissile::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -39,11 +40,9 @@ bool MagicalMissile::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
 
-  defineBody(b2BodyType::b2_kinematicBody,
-             x,
-             y,
-             MAGICAL_MISSILE_CATEOGRY_BITS,
-             MAGICAL_MISSILE_MASK_BITS);
+  defineBody(b2BodyType::b2_kinematicBody, x, y,
+             kMagicalMissleCategoryBits,
+             kMagicalMissleMaskBits);
 
   defineTexture(_skillProfile.textureResDir, x, y);
 

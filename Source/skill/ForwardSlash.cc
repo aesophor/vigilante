@@ -11,10 +11,9 @@ USING_NS_AX;
 namespace vigilante {
 
 ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
-    : Skill(),
+    : Skill{},
       _skillProfile(jsonFileName),
-      _user(user),
-      _hasActivated() {}
+      _user(user) {}
 
 void ForwardSlash::import(const string& jsonFileName) {
   _skillProfile = Skill::Profile(jsonFileName);

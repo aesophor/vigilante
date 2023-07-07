@@ -5,6 +5,6 @@ using namespace std;
 
 namespace vigilante {
 
-MiscItem::MiscItem(const string& jsonFileName) : Item(jsonFileName) {}
+MiscItem::MiscItem(const string& jsonFileName) : Item{jsonFileName} {}
 
 }  // namespace vigilante

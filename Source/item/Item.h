@@ -61,7 +61,7 @@ class Item : public DynamicActor, public Importable {
                   short maskBits);
 
   Item::Profile _itemProfile;
-  int _amount;
+  int _amount{1};
 };
 
 }  // namespace vigilante
