@@ -9,7 +9,7 @@
 class AppDelegate : private ax::Application {
  public:
   AppDelegate() = default;
-  virtual ~AppDelegate();
+  virtual ~AppDelegate() = default;
 
   virtual void initGLContextAttrs() override;
 

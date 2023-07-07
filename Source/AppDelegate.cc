@@ -9,26 +9,13 @@ extern "C" {
 
 #include <string>
 
+#include <audio/AudioEngine.h>
+
 #include "Assets.h"
 #include "Audio.h"
 #include "Constants.h"
 #include "scene/SceneManager.h"
 #include "scene/MainMenuScene.h"
-
-//#define USE_AUDIO_ENGINE 1
-#define USE_SIMPLE_AUDIO_ENGINE 1
-
-#if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
-#error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
-#endif
-
-#if USE_AUDIO_ENGINE
-#include <AudioEngine.h>
-using namespace ax::experimental;
-#elif USE_SIMPLE_AUDIO_ENGINE
-//#include <SimpleAudioEngine.h>
-//using namespace CocosDenshion;
-#endif
 
 using namespace std;
 using vigilante::kVirtualWidth;
@@ -39,14 +26,6 @@ static ax::Size designResolutionSize = ax::Size(1280, 800);
 static ax::Size smallResolutionSize = ax::Size(480, 320);
 static ax::Size mediumResolutionSize = ax::Size(1024, 768);
 static ax::Size largeResolutionSize = ax::Size(2048, 1536);
-
-AppDelegate::~AppDelegate() {
-#if USE_AUDIO_ENGINE
-  AudioEngine::end();
-#elif USE_SIMPLE_AUDIO_ENGINE
-  //SimpleAudioEngine::end();
-#endif
-}
 
 // if you want a different context, modify the value of glContextAttrs
 // it will affect all platforms
@@ -59,7 +38,7 @@ void AppDelegate::initGLContextAttrs() {
 // if you want to use the package manager to install more packages,
 // don't modify or remove this function
 static int register_all_packages() {
-  return 0; //flag for packages manager
+  return 0;  // flag for packages manager
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
@@ -86,8 +65,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
 
   vigilante::assets::loadSpritesheets(vigilante::assets::kSpritesheetsList);
-  vigilante::Audio::the().setBgmVolume(0.3f);
-  vigilante::Audio::the().setSfxVolume(0.3f);
   vigilante::SceneManager::the().runWithScene(vigilante::MainMenuScene::create());
 
   return true;
@@ -97,22 +74,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
   Director::getInstance()->stopAnimation();
 
-#if USE_AUDIO_ENGINE
   AudioEngine::pauseAll();
-#elif USE_SIMPLE_AUDIO_ENGINE
-  //SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-  //SimpleAudioEngine::getInstance()->pauseAllEffects();
-#endif
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
   Director::getInstance()->startAnimation();
 
-#if USE_AUDIO_ENGINE
   AudioEngine::resumeAll();
-#elif USE_SIMPLE_AUDIO_ENGINE
-  //SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-  //SimpleAudioEngine::getInstance()->resumeAllEffects();
-#endif
 }

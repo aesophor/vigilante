@@ -10,13 +10,9 @@ class Audio {
  public:
   static Audio& the();
 
+  void playSfx(const std::string& filename);
   void playBgm(const std::string& filename);
   void stopBgm();
-
-  void playSfx(const std::string& filename);
-
-  void setBgmVolume(const float volume);
-  void setSfxVolume(const float volume);
 
  private:
   Audio() = default;
