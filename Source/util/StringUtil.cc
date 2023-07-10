@@ -8,13 +8,37 @@ using namespace std;
 namespace vigilante::string_util {
 
 vector<string> split(const string& s, const char delimiter) {
-  std::stringstream ss(s);
+  stringstream ss{s};
   string t;
   vector<string> tokens;
 
   while (std::getline(ss, t, delimiter)) {
     if (t.length() > 0) {
-      tokens.push_back(t);
+      tokens.emplace_back(std::move(t));
+    }
+  }
+  return tokens;
+}
+
+vector<string> parseArgs(const string& s) {
+  stringstream ss{s};
+  vector<string> tokens;
+  string token;
+  unsigned counter = 0;
+
+  while (std::getline(ss, token, '\"')) {
+    ++counter;
+    if (counter % 2 == 0) {
+      if (!token.empty()) {
+        tokens.emplace_back(std::move(token));
+      }
+    } else {
+      stringstream token_ss{token};
+      while (std::getline(token_ss, token, ' ')) {
+        if (!token.empty()) {
+          tokens.emplace_back(std::move(token));
+        }
+      }
     }
   }
   return tokens;
