@@ -88,12 +88,10 @@ void DialogueTree::import(const string& jsonFileName) {
     }
   }
 
-
   // What's the effect of a "QuestDialogueTree"?
   // e.g., if `_isQuestDialogue` == ture, then the dialogue to
   //       toggle following/dismiss won't be present.
   _isQuestDialogueTree = json["isQuestDialogueTree"].GetBool();
-
   if (_isQuestDialogueTree) {
     return;
   }

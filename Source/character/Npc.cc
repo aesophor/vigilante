@@ -252,15 +252,14 @@ void Npc::dropItems() {
 
 void Npc::updateDialogueTreeIfNeeded() {
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-  string latestDialogueTreeJsonFileName
-    = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFileName);
+  string latestDialogueTreeJsonFileName = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFileName);
   if (latestDialogueTreeJsonFileName.empty()) {
     return;
   }
 
-  VGLOG(LOG_INFO, "Loading %s's dialogue tree: %s", _characterProfile.jsonFileName.c_str(),
-                                                    latestDialogueTreeJsonFileName.c_str());
-  _dialogueTree = DialogueTree(latestDialogueTreeJsonFileName, this);
+  VGLOG(LOG_INFO, "Loading dialogue tree from file: [%s], character: [%s]",
+                  latestDialogueTreeJsonFileName.c_str(), _characterProfile.jsonFileName.c_str());
+  _dialogueTree = DialogueTree{latestDialogueTreeJsonFileName, this};
 }
 
 void Npc::beginDialogue() {
