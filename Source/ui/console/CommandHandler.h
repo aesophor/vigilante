@@ -8,11 +8,8 @@
 
 namespace vigilante {
 
-class CommandHandler {
+class CommandHandler final {
  public:
-  CommandHandler();
-  virtual ~CommandHandler() = default;
-
   bool handle(const std::string& cmd, bool showNotification);
 
  private:
@@ -31,8 +28,9 @@ class CommandHandler {
   void tradeWithPlayer(const std::vector<std::string>& args);
   void killCurrentTarget(const std::vector<std::string>& args);
   void interact(const std::vector<std::string>& args);
+  void narrate(const std::vector<std::string>& args);
 
-  bool _success;
+  bool _success{};
   std::string _errMsg;
 };
 

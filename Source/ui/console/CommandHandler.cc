@@ -16,23 +16,23 @@
 
 using namespace std;
 
-using CmdTable = std::unordered_map<std::string,
-      void (vigilante::CommandHandler::*)(const std::vector<std::string>&)>;
-
 namespace vigilante {
 
-CommandHandler::CommandHandler() : _success(), _errMsg() {}
+using CmdTable = unordered_map<string, void (CommandHandler::*)(const vector<string>&)>;
 
 bool CommandHandler::handle(const string& cmd, bool showNotification) {
-  vector<string> args;
-  if (cmd.empty() || (args = string_util::split(cmd)).empty()) {
+  if (cmd.empty()) {
+    return false;
+  }
+
+  const vector<string> args = string_util::parseArgs(cmd);
+  if (args.empty()) {
     return false;
   }
 
   _success = false;
   _errMsg = DEFAULT_ERR_MSG;
 
-  // Command handler table.
   static const CmdTable cmdTable = {
     {"startQuest",              &CommandHandler::startQuest             },
     {"addItem",                 &CommandHandler::addItem                },
@@ -45,6 +45,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"tradeWithPlayer",         &CommandHandler::tradeWithPlayer        },
     {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
     {"interact",                &CommandHandler::interact               },
+    {"narrate",                 &CommandHandler::narrate               },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -276,7 +277,6 @@ void CommandHandler::killCurrentTarget(const vector<string>&) {
 
 void CommandHandler::interact(const vector<string>&) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-
   Player* player = gmMgr->getPlayer();
   if (!player) {
     setError("No player.");
@@ -290,6 +290,23 @@ void CommandHandler::interact(const vector<string>&) {
   }
 
   player->interact(*interactables.begin());
+  setSuccess();
+}
+
+void CommandHandler::narrate(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: narrate <narratives...>");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  dialogueMgr->setTargetNpc(nullptr);
+  for (size_t i = 1; i < args.size(); i++) {
+    dialogueMgr->getSubtitles()->addSubtitle(args[i]);
+  }
+
+  dialogueMgr->getSubtitles()->beginSubtitles();
   setSuccess();
 }
 

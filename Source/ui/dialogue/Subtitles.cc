@@ -141,9 +141,11 @@ void Subtitles::showNextSubtitle() {
 
   // If all subtitles has been displayed, show DialogueMenu if possible.
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-  DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
-  DialogueListView* dialogueListView = dialogueMenu->getDialogueListView();
   Dialogue* currentDialogue = dialogueMgr->getCurrentDialogue();
+  if (!currentDialogue) {
+    endSubtitles();
+    return;
+  }
 
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : currentDialogue->getCmds()) {
@@ -155,6 +157,8 @@ void Subtitles::showNextSubtitle() {
     endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
   } else {  // still has children dialogue
+    DialogueMenu* dialogueMenu = dialogueMgr->getDialogueMenu();
+    DialogueListView* dialogueListView = dialogueMenu->getDialogueListView();
     dialogueListView->setObjects<vector>(children);
     dialogueListView->updatePosition();
     dialogueMenu->getLayer()->setVisible(true);
