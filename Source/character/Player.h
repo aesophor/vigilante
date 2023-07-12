@@ -33,6 +33,7 @@ class Player : public Character, public Controllable {
   virtual void equip(Equipment* equipment, bool audio = true) override;  // Character
   virtual void unequip(Equipment::Type equipmentType, bool audio = true) override;  // Character
   virtual void pickupItem(Item* item) override;  // Character
+  virtual void interact(Interactable* target) override;  // Character
   virtual void addExp(const int exp) override;  // Character
 
   virtual void handleInput() override;  // Controllable

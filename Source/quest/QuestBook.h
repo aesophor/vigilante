@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_BOOK_H_
 
@@ -18,17 +18,19 @@ class QuestBook {
 
   void update(const Quest::Objective::Type objectiveType);
 
-  void unlockQuest(Quest* quest);
-  void startQuest(Quest* quest);
-  void markCompleted(Quest* quest);
+  bool unlockQuest(Quest* quest);
+  bool startQuest(Quest* quest);
+  bool setStage(Quest* quest, const int stageIdx);
+  bool markCompleted(Quest* quest);
 
-  void unlockQuest(const std::string& questJsonFileName);
-  void startQuest(const std::string& questJsonFileName);
-  void markCompleted(const std::string& questJsonFileName);
+  bool unlockQuest(const std::string& questJsonFileName);
+  bool startQuest(const std::string& questJsonFileName);
+  bool setStage(const std::string&, const int stageIdx);
+  bool markCompleted(const std::string& questJsonFileName);
 
   std::vector<Quest*> getAllQuests() const;
-  const std::vector<Quest*>& getInProgressQuests() const;
-  const std::vector<Quest*>& getCompletedQuests() const;
+  inline const std::vector<Quest*>& getInProgressQuests() const { return _inProgressQuests; }
+  inline const std::vector<Quest*>& getCompletedQuests() const { return _completedQuests; }
 
  private:
   std::unordered_map<std::string, std::unique_ptr<Quest>> _questMapper;

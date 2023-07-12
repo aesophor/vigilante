@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "CommandHandler.h"
 
 #include <memory>
@@ -35,6 +35,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
 
   static const CmdTable cmdTable = {
     {"startQuest",              &CommandHandler::startQuest             },
+    {"setStage",                &CommandHandler::setStage               },
     {"addItem",                 &CommandHandler::addItem                },
     {"removeItem",              &CommandHandler::removeItem             },
     {"updateDialogueTree",      &CommandHandler::updateDialogueTree     },
@@ -85,7 +86,40 @@ void CommandHandler::startQuest(const vector<string>& args) {
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getPlayer()->getQuestBook().startQuest(args[1]);
+  if (!gmMgr->getPlayer()->getQuestBook().startQuest(args[1])) {
+    setError("failed to start quest.");
+    return;
+  }
+
+  setSuccess();
+}
+
+void CommandHandler::setStage(const vector<string>& args) {
+  if (args.size() < 3) {
+    setError("usage: setStage <quest> <stage_idx>");
+    return;
+  }
+
+  int stageIdx = 0;
+  try {
+    stageIdx = std::stoi(args[2]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `stage_idx`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`stage_idx` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (!gmMgr->getPlayer()->getQuestBook().setStage(args[1], stageIdx)) {
+    setError("failed to set the stage of quest.");
+    return;
+  }
+
   setSuccess();
 }
 

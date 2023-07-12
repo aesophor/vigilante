@@ -12,22 +12,23 @@
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 namespace vigilante {
 
 QuestBook::QuestBook(const string& questsListFileName) {
-  ifstream fin(questsListFileName);
+  ifstream fin{questsListFileName};
   if (!fin.is_open()) {
     throw runtime_error("Failed to open quest list: " + questsListFileName);
   }
 
   string line;
   while (std::getline(fin, line)) {
-    _questMapper[line] = std::make_unique<Quest>(line);
+    const fs::path path = fs::path{line}.lexically_normal();
+    _questMapper[path] = std::make_unique<Quest>(path);
   }
 }
-
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
   auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
@@ -50,82 +51,125 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
   }
 }
 
-
-void QuestBook::unlockQuest(Quest* quest) {
+bool QuestBook::unlockQuest(Quest* quest) {
   quest->unlock();
+  return true;
 }
 
-void QuestBook::startQuest(Quest* quest) {
+bool QuestBook::startQuest(Quest* quest) {
   // If the quest is already completed or is already in progress, return at once.
-  if (quest->isCompleted() ||
-      std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest) != _inProgressQuests.end()) {
-    return;
+  if (quest->isCompleted()) {
+    VGLOG(LOG_ERR, "Failed to start quest [%s], quest already completed.",
+                   quest->getQuestProfile().jsonFileName.c_str());
+    return false;
+  }
+
+  const auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
+  if (it != _inProgressQuests.end()) {
+    VGLOG(LOG_ERR, "Failed to start quest [%s], quest has already started.",
+                   quest->getQuestProfile().jsonFileName.c_str());
+    return false;
   }
 
   // Add this quest to _inProgressQuests.
   _inProgressQuests.push_back(quest);
   quest->advanceStage();
-  
+
   auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
   questHints->show("Started: " + quest->getQuestProfile().title);
   questHints->show(quest->getCurrentStage().objective->getDesc());
+
+  return true;
 }
 
-void QuestBook::markCompleted(Quest* quest) {
-  // If `quest` is currently NOT in progress, return at once.
-  if (std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest) == _inProgressQuests.end()) {
-    return;
+bool QuestBook::setStage(Quest* quest, const int stageIdx) {
+  auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
+  if (it == _inProgressQuests.end()) {
+    VGLOG(LOG_ERR, "Failed to set stage of quest [%s], quest has not started.",
+                   quest->getQuestProfile().jsonFileName.c_str());
+    return false;
   }
 
-  // If we can get here, then `quest` must be in progress, and we have to
-  // mark it as completed. We'll erase this quest from _inProgressQuests,
-  // and add it to _completedQuests.
-  _inProgressQuests.erase(
-      std::remove(_inProgressQuests.begin(), _inProgressQuests.end(), quest), _inProgressQuests.end());
+  if (stageIdx <= quest->getCurrentStageIdx()) {
+    VGLOG(LOG_ERR, "Skipped setting stage of quest [%s], current stage [%d], new stage [%d].",
+                   quest->getQuestProfile().jsonFileName.c_str(), quest->getCurrentStageIdx(), stageIdx);
+    return true;
+  }
+
+  if (stageIdx >= static_cast<int>(quest->getQuestProfile().stages.size())) {
+    return markCompleted(quest);
+  }
+
+  auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
+  const Quest::Stage &prevStage = quest->getCurrentStage();
+  quest->setCurrentStageIdx(stageIdx);
+  questHints->show("Completed: " + prevStage.objective->getDesc());
+  questHints->show(quest->getCurrentStage().objective->getDesc());
+
+  return true;
+}
+
+bool QuestBook::markCompleted(Quest* quest) {
+  auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
+  if (it == _inProgressQuests.end()) {
+    VGLOG(LOG_ERR, "Failed to mark quest [%s] as completed, quest has not started.",
+                   quest->getQuestProfile().jsonFileName.c_str());
+    return false;
+  }
+
+  _inProgressQuests.erase(std::remove(_inProgressQuests.begin(), _inProgressQuests.end(), quest), _inProgressQuests.end());
   _completedQuests.push_back(quest);
-  
+
   auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
   questHints->show("Completed: " + quest->getQuestProfile().title);
+
+  return true;
 }
 
-
-void QuestBook::unlockQuest(const string& questJsonFileName) {
+bool QuestBook::unlockQuest(const string& questJsonFileName) {
   auto it = _questMapper.find(questJsonFileName);
   if (it == _questMapper.end()) {
-    return;
+    VGLOG(LOG_ERR, "Failed to unlock quest [%s]", questJsonFileName.c_str());
+    return false;
   }
-  unlockQuest(it->second.get());
+
+  return unlockQuest(it->second.get());
 }
 
-void QuestBook::startQuest(const string& questJsonFileName) {
+bool QuestBook::startQuest(const string& questJsonFileName) {
   auto it = _questMapper.find(questJsonFileName);
   if (it == _questMapper.end()) {
-    return;
+    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFileName.c_str());
+    return false;
   }
-  startQuest(it->second.get());
+
+  return startQuest(it->second.get());
 }
 
-void QuestBook::markCompleted(const string& questJsonFileName) {
+bool QuestBook::setStage(const string& questJsonFileName, const int stageIdx) {
   auto it = _questMapper.find(questJsonFileName);
   if (it == _questMapper.end()) {
-    return;
+    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFileName.c_str());
+    return false;
   }
-  markCompleted(it->second.get());
+
+  return setStage(it->second.get(), stageIdx);
 }
 
+bool QuestBook::markCompleted(const string& questJsonFileName) {
+  auto it = _questMapper.find(questJsonFileName);
+  if (it == _questMapper.end()) {
+    VGLOG(LOG_ERR, "Failed to mark quest [%s] as completed", questJsonFileName.c_str());
+    return false;
+  }
+
+  return markCompleted(it->second.get());
+}
 
 vector<Quest*> QuestBook::getAllQuests() const {
   vector<Quest*> allQuests(_inProgressQuests.begin(), _inProgressQuests.end());
   allQuests.insert(allQuests.end(), _completedQuests.begin(), _completedQuests.end());
   return allQuests;
-}
-
-const vector<Quest*>& QuestBook::getInProgressQuests() const {
-  return _inProgressQuests;
-}
-
-const vector<Quest*>& QuestBook::getCompletedQuests() const {
-  return _completedQuests;
 }
 
 }  // namespace vigilante

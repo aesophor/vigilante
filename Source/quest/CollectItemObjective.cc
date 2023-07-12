@@ -8,13 +8,6 @@ using namespace std;
 
 namespace vigilante {
 
-CollectItemObjective::CollectItemObjective(const string& desc,
-                                           const string& itemJsonFileName,
-                                           int amount)
-    : Quest::Objective(Quest::Objective::Type::COLLECT, desc),
-      _itemJsonFileName(itemJsonFileName),
-      _amount(amount) {}
-
 bool CollectItemObjective::isCompleted() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   return gmMgr->getPlayer()->getItemAmount(_itemJsonFileName) >= _amount;

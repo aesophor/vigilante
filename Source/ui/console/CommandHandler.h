@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_COMMAND_HANDLER_H_
 #define VIGILANTE_COMMAND_HANDLER_H_
 
@@ -18,6 +18,7 @@ class CommandHandler final {
 
   // Command handlers.
   void startQuest(const std::vector<std::string>& args);
+  void setStage(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);
   void removeItem(const std::vector<std::string>& args);
   void updateDialogueTree(const std::vector<std::string>& args);

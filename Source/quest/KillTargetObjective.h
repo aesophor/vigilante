@@ -12,10 +12,15 @@ class KillTargetObjective : public Quest::Objective {
  public:
   KillTargetObjective(const std::string& desc,
                       const std::string& characterName,
-                      int targetAmount=1);
+                      int targetAmount=1)
+      : Quest::Objective{Quest::Objective::Type::KILL, desc},
+        _characterName{characterName},
+        _targetAmount{targetAmount} {}
   virtual ~KillTargetObjective() = default;
 
-  virtual bool isCompleted() const override;
+  virtual bool isCompleted() const override {
+    return _currentAmount >= _targetAmount;
+  }
 
   inline const std::string& getCharacterName() const { return _characterName; }
   inline int getTargetAmount() const { return _targetAmount; }
@@ -23,9 +28,9 @@ class KillTargetObjective : public Quest::Objective {
   inline void incrementCurrentAmount() { _currentAmount++; }
 
  private:
-  std::string _characterName;
-  int _targetAmount;
-  int _currentAmount;
+  const std::string _characterName;
+  const int _targetAmount;
+  int _currentAmount{};
 };
 
 }  // namespace vigilante

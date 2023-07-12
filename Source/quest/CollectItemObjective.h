@@ -12,7 +12,10 @@ class CollectItemObjective : public Quest::Objective {
  public:
   CollectItemObjective(const std::string& desc,
                        const std::string& itemJsonFileName,
-                       int amount=1);
+                       int amount=1)
+      : Quest::Objective{Quest::Objective::Type::COLLECT, desc},
+        _itemJsonFileName{itemJsonFileName},
+        _amount{amount} {}
   virtual ~CollectItemObjective() = default;
 
   virtual bool isCompleted() const override;
@@ -21,8 +24,8 @@ class CollectItemObjective : public Quest::Objective {
   inline int getAmount() const { return _amount; }
 
  private:
-  std::string _itemJsonFileName;
-  int _amount;
+  const std::string _itemJsonFileName;
+  const int _amount;
 };
 
 }  // namespace vigilante

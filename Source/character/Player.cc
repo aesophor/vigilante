@@ -17,6 +17,7 @@
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "quest/KillTargetObjective.h"
+#include "quest/InteractWithTargetObjective.h"
 #include "util/CameraUtil.h"
 #include "util/StringUtil.h"
 
@@ -147,6 +148,20 @@ void Player::unequip(Equipment::Type equipmentType, bool audio) {
 void Player::pickupItem(Item* item) {
   Character::pickupItem(item);
   _questBook.update(Quest::Objective::Type::COLLECT);
+}
+
+void Player::interact(Interactable* target) {
+  Character::interact(target);
+
+  if (auto targetCharacter = dynamic_cast<Character*>(target)) {
+    for (auto quest : _questBook.getInProgressQuests()) {
+      auto to = dynamic_cast<InteractWithTargetObjective*>(quest->getCurrentStage().objective.get());
+      if (to && to->getTargetProfileJsonFileName() == targetCharacter->getCharacterProfile().jsonFileName) {
+        to->setCompleted(true);
+      }
+    }
+    _questBook.update(Quest::Objective::Type::INTERACT_WITH);
+  }
 }
 
 void Player::addExp(const int exp) {
