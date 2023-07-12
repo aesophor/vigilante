@@ -8,6 +8,7 @@
 #include "quest/KillTargetObjective.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "ui/console/Console.h"
 #include "util/ds/Algorithm.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
@@ -96,12 +97,17 @@ bool QuestBook::setStage(Quest* quest, const int stageIdx) {
     return true;
   }
 
+  const Quest::Stage &prevStage = quest->getCurrentStage();
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+  for (const auto& cmd : prevStage.cmds) {
+    console->executeCmd(cmd);
+  }
+
   if (stageIdx >= static_cast<int>(quest->getQuestProfile().stages.size())) {
     return markCompleted(quest);
   }
 
   auto questHints = SceneManager::the().getCurrentScene<GameScene>()->getQuestHints();
-  const Quest::Stage &prevStage = quest->getCurrentStage();
   quest->setCurrentStageIdx(stageIdx);
   questHints->show("Completed: " + prevStage.objective->getDesc());
   questHints->show(quest->getCurrentStage().objective->getDesc());
