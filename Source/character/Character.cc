@@ -35,13 +35,12 @@ Character::Character(const string& jsonFileName)
     animationVector.resize(_bodyExtraAttackAnimations.size());
   }
 
-  // Populate this character's _skillBook with the skills it knows by default.
-  for (const auto& s : _characterProfile.defaultSkills) {
-    addSkill(Skill::create(s, this));
+  for (const auto& skillJsonFileName : _characterProfile.defaultSkills) {
+    addSkill(Skill::create(skillJsonFileName, this));
   }
-  // Popuplate this character's _inventory with the items it owns by default.
-  for (const auto& p : _characterProfile.defaultInventory) {
-    addItem(Item::create(p.first), p.second);
+
+  for (const auto& [itemJsonFileName, amount] : _characterProfile.defaultInventory) {
+    addItem(Item::create(itemJsonFileName), amount);
   }
 }
 
@@ -58,8 +57,7 @@ bool Character::removeFromMap() {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
-      gmMgr->getLayer()->removeChild(
-          _equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]);
+      gmMgr->getLayer()->removeChild(_equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]);
     }
   }
 
@@ -84,11 +82,11 @@ void Character::update(float delta) {
 
   const b2Vec2& b2bodyPos = _body->GetPosition();
 
-  // Sync the body sprite with its b2body.
-  _bodySprite->setPosition(_body->GetPosition().x * kPpm + _characterProfile.spriteOffsetX,
-                           _body->GetPosition().y * kPpm + _characterProfile.spriteOffsetY);
+  // Sync the body sprite with this character's b2body.
+  _bodySprite->setPosition(b2bodyPos.x * kPpm + _characterProfile.spriteOffsetX,
+                           b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
 
-  // Sync the equipment sprites with its b2body.
+  // Sync the equipment sprites with this character's b2body.
   for (int type = 0; type < static_cast<int>(Equipment::Type::SIZE); type++) {
     if (!_equipmentSlots[type]) {
       continue;
@@ -230,8 +228,8 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 
   // Create weapon fixture.
-  float atkRange = _characterProfile.attackRange;
-  _fixtures[FixtureType::WEAPON] = bodyBuilder.newCircleFixture({atkRange, 0}, atkRange, kPpm)
+  float attackRange = _characterProfile.attackRange;
+  _fixtures[FixtureType::WEAPON] = bodyBuilder.newCircleFixture({attackRange, 0}, attackRange, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(weaponMaskBits)
     .setSensor(true)
@@ -273,7 +271,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     );
   }
 
-  // Select a frame as default look for this sprite.
+  // Select a frame as the default look for this spritesheet.
   string framePrefix = StaticActor::getLastDirName(bodyTextureResDir);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _bodySprite->setScale(_characterProfile.spriteScaleX,

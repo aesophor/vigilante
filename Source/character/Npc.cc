@@ -198,14 +198,14 @@ void Npc::showHintUI() {
   }
 
   createHintBubbleFx();
-  
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, "Talk");
 }
 
 void Npc::hideHintUI() {
   removeHintBubbleFx();
-  
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }

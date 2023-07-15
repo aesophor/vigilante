@@ -348,8 +348,7 @@ class Character : public DynamicActor, public Importable {
   // has their own animation!
   std::array<ax::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
   std::array<ax::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-  std::array<std::array<ax::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE>
-    _equipmentAnimations;
+  std::array<std::array<ax::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
 
   // Skill animations
   std::unordered_map<std::string, ax::Animation*> _skillBodyAnimations;
