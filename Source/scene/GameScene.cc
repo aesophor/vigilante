@@ -51,7 +51,7 @@ bool GameScene::init() {
   // Initialize the default camera from "perspective" to "orthographic",
   // and use it as the game world camera.
   const auto& winSize = Director::getInstance()->getWinSize();
-  VGLOG(LOG_INFO, "winSize: w=%f h=%f", winSize.width, winSize.height);
+  VGLOG(LOG_INFO, "winSize: width: [%f], height: [%f]", winSize.width, winSize.height);
   _gameCamera = getDefaultCamera();
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(winSize.width / 2, winSize.height / 2);
