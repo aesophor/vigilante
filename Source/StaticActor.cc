@@ -21,8 +21,10 @@ bool StaticActor::showOnMap(float x, float y) {
   _isShownOnMap = true;
   _bodySprite->setPosition(x, y);
 
+  _node->addChild(_bodySprite, graphical_layers::kDefault);
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kDefault);
+  gmMgr->getLayer()->addChild(_node);
 
   return true;
 }
@@ -34,9 +36,8 @@ bool StaticActor::removeFromMap() {
 
   _isShownOnMap = false;
 
-  // If _bodySpritesheet exists, we should remove it instead of _bodySprite.
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->removeChild((_bodySpritesheet) ? ((Node*) _bodySpritesheet) : ((Node*) _bodySprite));
+  gmMgr->getLayer()->removeChild(_node, true);
 
   _bodySpritesheet = nullptr;
   _bodySprite = nullptr;

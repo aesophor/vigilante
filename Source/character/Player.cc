@@ -48,24 +48,25 @@ bool Player::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
 
-  // Construct b2Body and b2Fixtures
   defineBody(b2BodyType::b2_dynamicBody, x, y,
              kPlayerBodyCategoryBits,
              kPlayerBodyMaskBits,
              kPlayerFeetMaskBits,
              kPlayerWeaponMaskBits);
 
-  // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
+  _node->removeAllChildren();
+  _node->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
       Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+      _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_node, graphical_layers::kPlayerBody);
 
   return true;
 }

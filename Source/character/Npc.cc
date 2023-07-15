@@ -87,14 +87,17 @@ bool Npc::showOnMap(float x, float y) {
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
+  _node->removeAllChildren();
+  _node->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
       Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+      _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
     }
   }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_node, graphical_layers::kNpcBody);
 
   return true;
 }

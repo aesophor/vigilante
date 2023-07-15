@@ -141,7 +141,6 @@ bool GameScene::init() {
   _debugDraw.mRatio = kPpm;
   _debugDraw.debugNodeOffset = {0, 0};
   _gameMapManager->getWorld()->SetDebugDraw(&_debugDraw);
-  
   _drawBox2D = _debugDraw.GetDrawNode();
   _drawBox2D->setOpacity(100);
   addChild(_drawBox2D);

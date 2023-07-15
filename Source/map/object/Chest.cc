@@ -34,8 +34,8 @@ Chest::Chest(const string& tmxMapFileName,
       _tmxMapFileName{tmxMapFileName},
       _chestId{chestId},
       _itemJsons{string_util::split(itemJsons)} {
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = GameMap::OpenableObjectType::CHEST;
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   _isOpened = gmMgr->isOpened(tmxMapFileName, kType, chestId);
 }
 
@@ -57,8 +57,10 @@ bool Chest::showOnMap(float x, float y) {
   }
   _bodySprite->getTexture()->setAliasTexParameters();
 
+  _node->addChild(_bodySprite, graphical_layers::kChest);
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kChest);
+  gmMgr->getLayer()->addChild(_node, graphical_layers::kChest);
 
   return true;
 }

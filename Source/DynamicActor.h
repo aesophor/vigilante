@@ -20,7 +20,6 @@ namespace vigilante {
 // (e.g., equipment displayed on top of a character),
 // then manually subclass "DynamicActor" and
 // declare them as the members of your subclass.
-
 class DynamicActor : public StaticActor {
  public:
   DynamicActor(const std::size_t numAnimations = 1, const std::size_t numFixtures = 1)

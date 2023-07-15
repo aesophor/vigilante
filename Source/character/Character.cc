@@ -54,10 +54,9 @@ bool Character::removeFromMap() {
   }
 
   // Remove _equipmentSpritesheets
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   for (auto equipment : _equipmentSlots) {
     if (equipment) {
-      gmMgr->getLayer()->removeChild(_equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]);
+      _node->removeChild(_equipmentSpritesheets[equipment->getEquipmentProfile().equipmentType]);
     }
   }
 
@@ -263,6 +262,10 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
+    if (_bodyExtraAttackAnimations[i]) {
+      continue;
+    }
+
     _bodyExtraAttackAnimations[i] = createAnimation(
         bodyTextureResDir,
         "attacking" + std::to_string(1 + i),
@@ -321,12 +324,15 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+  _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
 }
 
 void Character::createBodyAnimation(const Character::State state,
                                     ax::Animation* fallbackAnimation) {
+  if (_bodyAnimations[state]) {
+    return;
+  }
+
   _bodyAnimations[state]
     = createAnimation(_characterProfile.textureResDir,
                       _kCharacterStateStr[state],
@@ -423,7 +429,6 @@ void Character::runAnimation(State state, const function<void ()>& func) const {
 }
 
 void Character::runAnimation(const string& framesName, float interval) {
-  // Try to load the target framesName under this character's textureResDir.
   Animation* bodyAnimation = nullptr;
 
   if (_skillBodyAnimations.find(framesName) != _skillBodyAnimations.end()) {
@@ -855,8 +860,7 @@ void Character::unequip(Equipment::Type equipmentType, bool audio) {
 
   addItem(it->second, 1);
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->removeChild(_equipmentSpritesheets[equipmentType]);
+  _node->removeChild(_equipmentSpritesheets[equipmentType]);
 
   if (audio) {
     Audio::the().playSfx(kSfxEquipUnequipItem);

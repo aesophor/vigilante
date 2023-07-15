@@ -65,8 +65,10 @@ bool Item::showOnMap(float x, float y) {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 
+  _node->addChild(_bodySprite, graphical_layers::kItem);
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySprite, graphical_layers::kItem);
+  gmMgr->getLayer()->addChild(_node, graphical_layers::kItem);
 
   return true;
 }

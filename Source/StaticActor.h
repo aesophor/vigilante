@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <axmol.h>
+#include <2d/Node.h>
 
 namespace vigilante {
 
@@ -12,10 +13,11 @@ namespace vigilante {
 // consisting of the following members:
 // 1. a sprite placed at a specific position
 // 2. a spritesheet and several animations
-
 class StaticActor {
  public:
-  virtual ~StaticActor() = default;
+  virtual ~StaticActor() {
+    _node->release();
+  }
 
   // Show and hide the sprite in the game map.
   // showOnMap() and removeFromMap() both return a bool
@@ -63,9 +65,14 @@ class StaticActor {
   static std::string getLastDirName(const std::string& directory);
 
  protected:
-  explicit StaticActor(const size_t numAnimations = 1) : _bodyAnimations(numAnimations) {}
+  explicit StaticActor(const size_t numAnimations = 1)
+      : _node{ax::Node::create()},
+        _bodyAnimations(numAnimations) {
+    _node->retain();
+  }
 
   bool _isShownOnMap{};
+  ax::Node *_node{};
   ax::Sprite* _bodySprite{};
   ax::SpriteBatchNode* _bodySpritesheet{};
   std::vector<ax::Animation*> _bodyAnimations;

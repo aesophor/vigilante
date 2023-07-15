@@ -46,8 +46,11 @@ bool MagicalMissile::showOnMap(float x, float y) {
 
   defineTexture(_skillProfile.textureResDir, x, y);
 
+  _node->addChild(_bodySpritesheet, graphical_layers::kSpell);
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_bodySpritesheet, graphical_layers::kSpell);
+  gmMgr->getLayer()->addChild(_node, graphical_layers::kSpell);
+
   return true;
 }
 
