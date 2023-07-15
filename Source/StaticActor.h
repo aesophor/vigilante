@@ -44,8 +44,8 @@ class StaticActor {
   // @return: an pointer to the instance of ax::Animation
   static ax::Animation* createAnimation(const std::string& textureResDir,
                                         const std::string& framesName,
-                                        float interval,
-                                        ax::Animation* fallback=nullptr);
+                                        const float interval,
+                                        ax::Animation* fallback = nullptr);
 
   // The texture resources under Resources/Texture/ has the following rules:
   //

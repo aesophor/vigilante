@@ -49,7 +49,7 @@ void StaticActor::setPosition(float x, float y) {
 
 Animation* StaticActor::createAnimation(const string& textureResDir,
                                         const string& framesName,
-                                        float interval,
+                                        const float interval,
                                         Animation* fallback) {
   FileUtils* fileUtils = FileUtils::getInstance();
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
