@@ -4,6 +4,7 @@
 #include "Audio.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
+#include "util/CameraUtil.h"
 
 using namespace std;
 USING_NS_AX;
@@ -29,19 +30,31 @@ void ForwardSlash::activate() {
     return;
   }
 
+  camera_util::shake(3, .4f);
+
+  _user->setAfterImageFxEnabled(true);
+
   // Modify character's stats.
   _user->getCharacterProfile().stamina += _skillProfile.deltaStamina;
 
-  float rushPower = (_user->isFacingRight()) ? 5.0f : -5.0f;
+  float rushPower = (_user->isFacingRight()) ? 5.f : -5.f;
   _user->getBody()->SetLinearVelocity({rushPower, 0});
 
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
-  _user->getBody()->SetLinearDamping(4.0f);
+  _user->getBody()->SetLinearDamping(1.f);
+
+  float oldGravityScale = _user->getBody()->GetGravityScale();
+  _user->getBody()->SetGravityScale(0.f);
 
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
   CallbackManager::the().runAfter([=]() {
+    _user->getBody()->SetGravityScale(oldGravityScale);
+  }, _skillProfile.framesDuration / 4);
+
+  CallbackManager::the().runAfter([=]() {
+    _user->setAfterImageFxEnabled(false);
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
