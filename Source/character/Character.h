@@ -158,6 +158,9 @@ class Character : public DynamicActor, public Importable {
   void removeGold(const int amount);
 
   inline bool isFacingRight() const { return _isFacingRight; }
+  inline bool isWeaponSheathed() const { return _isWeaponSheathed; }
+  inline bool isSheathingWeapon() const { return _isSheathingWeapon; }
+  inline bool isUnsheathingWeapon() const { return _isUnsheathingWeapon; }
   inline bool isJumping() const { return _isJumping; }
   inline bool isDoubleJumping() const { return _isDoubleJumping; }
   inline bool isOnPlatform() const { return _isOnPlatform; }
@@ -167,9 +170,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isInvincible() const { return _isInvincible; }
   inline bool isKilled() const { return _isKilled; }
   inline bool isSetToKill() const { return _isSetToKill; }
-  inline bool isWeaponSheathed() const { return _isWeaponSheathed; }
-  inline bool isSheathingWeapon() const { return _isSheathingWeapon; }
-  inline bool isUnsheathingWeapon() const { return _isUnsheathingWeapon; }
+  inline bool isAfterImageFxEnabled() const { return _isAfterImageFxEnabled; }
 
   inline void setFacingRight(bool facingRight) { _isFacingRight = facingRight; }
   inline void setJumping(bool jumping) { _isJumping = jumping; }
@@ -179,6 +180,7 @@ class Character : public DynamicActor, public Importable {
   inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
   inline void setCrouching(bool crouching) { _isCrouching = crouching; }
   inline void setInvincible(bool invincible) { _isInvincible = invincible; }
+  inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
 
@@ -290,7 +292,7 @@ class Character : public DynamicActor, public Importable {
   Character::State _previousState{State::IDLE_SHEATHED};
 
   bool _isFacingRight{true};
-  bool _isWeaponSheathed{true};
+  bool _isWeaponSheathed{false};
   bool _isSheathingWeapon{};
   bool _isUnsheathingWeapon{};
   bool _isJumpingDisallowed{};
@@ -304,6 +306,8 @@ class Character : public DynamicActor, public Importable {
   bool _isTakingDamage{};
   bool _isKilled{};
   bool _isSetToKill{};
+  bool _isGodModeEnabled{};
+  bool _isAfterImageFxEnabled{};
 
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is

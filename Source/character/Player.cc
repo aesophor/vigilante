@@ -211,6 +211,7 @@ void Player::handleInput() {
     moveRight();
   }
 
+  /*
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_R)) {
     if (_equipmentSlots[Equipment::Type::WEAPON]
         && _isWeaponSheathed && !_isUnsheathingWeapon) {
@@ -219,6 +220,7 @@ void Player::handleInput() {
       sheathWeapon();
     }
   }
+  */
 
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
   for (auto keyCode : HotkeyManager::kBindableKeys) {

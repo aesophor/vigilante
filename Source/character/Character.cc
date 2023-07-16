@@ -23,6 +23,41 @@ USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+void createAfterImage(const Sprite* sprite) {
+  Sprite* afterImage = Sprite::createWithSpriteFrame(sprite->getSpriteFrame());
+  afterImage->setPosition(sprite->getPosition());
+  afterImage->setScale(sprite->getScale());
+  afterImage->setRotation(sprite->getRotation());
+  afterImage->setVisible(sprite->isVisible());
+  afterImage->setLocalZOrder(sprite->getLocalZOrder());
+  afterImage->setFlippedX(sprite->isFlippedX());
+  afterImage->setOpacity(80);
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(afterImage);
+
+  DelayTime* delay = DelayTime::create(0.3f);
+  CallFunc* remove = CallFunc::create([=]() {
+    afterImage->removeFromParentAndCleanup(true);
+  });
+
+  afterImage->runAction(Sequence::create(delay, remove, nullptr));
+}
+
+void createAfterImage(Node *node) {
+  for (auto child : node->getChildren()) {
+    if (auto spriteBatchNode = dynamic_cast<SpriteBatchNode*>(child)) {
+      for (Sprite* sprite : spriteBatchNode->getDescendants()) {
+        createAfterImage(sprite);
+      }
+    }
+  }
+}
+
+}  // namespace
+
 Character::Character(const string& jsonFileName)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
       _characterProfile{jsonFileName},
@@ -66,6 +101,15 @@ bool Character::removeFromMap() {
 void Character::update(float delta) {
   if (!_isShownOnMap || _isKilled) {
     return;
+  }
+
+  if (_isAfterImageFxEnabled) {
+    static float timer = 0.f;
+    timer += delta;
+    if (timer > 0.05f) {
+      createAfterImage(_node);
+      timer = 0.f;
+    }
   }
 
   // Flip the sprite if needed.
@@ -246,19 +290,22 @@ void Character::defineTexture(const string& bodyTextureResDir, float x, float y)
 void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _bodyAnimations[State::IDLE_SHEATHED];
-  createBodyAnimation(State::IDLE_UNSHEATHED, fallback);
+
   createBodyAnimation(State::RUNNING_SHEATHED, fallback);
-  createBodyAnimation(State::RUNNING_UNSHEATHED, fallback);
   createBodyAnimation(State::JUMPING_SHEATHED, fallback);
-  createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
   createBodyAnimation(State::FALLING_SHEATHED, fallback);
-  createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
   createBodyAnimation(State::CROUCHING_SHEATHED, fallback);
-  createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
   createBodyAnimation(State::SHEATHING_WEAPON, fallback);
   createBodyAnimation(State::UNSHEATHING_WEAPON, fallback);
+
+  createBodyAnimation(State::IDLE_UNSHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_UNSHEATHED, fallback);
+  createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
+  createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
+  createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
   createBodyAnimation(State::ATTACKING, fallback);
   createBodyAnimation(State::KILLED, fallback);
+  
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -291,19 +338,21 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
 
   createEquipmentAnimation(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
-  createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
+
   createEquipmentAnimation(equipment, State::RUNNING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::JUMPING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
-  createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
   createEquipmentAnimation(equipment, State::ATTACKING, fallback);
   createEquipmentAnimation(equipment, State::KILLED, fallback);
+
+  createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -319,12 +368,14 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   const string framePrefix = StaticActor::getLastDirName(textureResDir);
   _equipmentSprites[type] = Sprite::createWithSpriteFrameName(framePrefix + "_idle_sheathed/0.png");
   _equipmentSprites[type]->setScale(_characterProfile.spriteScaleX, _characterProfile.spriteScaleY);
+  _equipmentSprites[type]->setVisible(false);
 
   _equipmentSpritesheets[type] = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
   _equipmentSpritesheets[type]->getTexture()->setAliasTexParameters();
   _equipmentSpritesheets[type]->addChild(_equipmentSprites[type]);
+  _equipmentSpritesheets[type]->setVisible(false);
 
-  _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
+  _node->addChild(_equipmentSpritesheets[type]);
 }
 
 void Character::createBodyAnimation(const Character::State state,
@@ -584,7 +635,6 @@ void Character::crouch() {
 void Character::getUp() {
   _isCrouching = false;
 }
-
 
 void Character::sheathWeapon() {
   _isSheathingWeapon = true;
