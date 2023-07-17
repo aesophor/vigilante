@@ -9,11 +9,13 @@
 #include <vector>
 
 #include <axmol.h>
+
 #include <box2d/box2d.h>
 
 #include "DynamicActor.h"
 #include "Interactable.h"
 #include "item/Item.h"
+#include "map/ParallaxBackground.h"
 #include "map/PathFinder.h"
 #include "util/Logger.h"
 
@@ -113,9 +115,11 @@ class GameMap final {
   };
 
   GameMap(b2World* world, const std::string& tmxMapFileName);
+  ~GameMap();
 
+  void update(float delta);
+  
   void createObjects();
-  void deleteObjects();
   std::unique_ptr<Player> createPlayer() const;
   Item* createItem(const std::string& itemJson, float x, float y, int amount=1);
 
@@ -146,6 +150,7 @@ class GameMap final {
   void createPortals();
   void createNpcs();
   void createChests();
+  void createParallaxBackground();
 
   b2World* _world{};
   ax::TMXTiledMap* _tmxTiledMap{};
@@ -156,6 +161,7 @@ class GameMap final {
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
+  std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<PathFinder> _pathFinder;
 
   friend class GameMapManager;

@@ -68,7 +68,7 @@ bool GameScene::init() {
   _hudCamera->setDepth(2);
   _hudCamera->setCameraFlag(CameraFlag::USER1);
   const Vec3& eyePosOld = _gameCamera->getPosition3D();
-  Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
+  const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
   _hudCamera->setPosition3D(eyePos);
   _hudCamera->lookAt(eyePos);
   _hudCamera->setPosition(winSize.width / 2, winSize.height / 2);

@@ -21,7 +21,7 @@
 namespace vigilante {
 
 class GameMapManager final {
-public:
+ public:
   explicit GameMapManager(const b2Vec2& gravity);
   
   void update(float delta);
@@ -57,12 +57,12 @@ public:
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
   
-private:
+ private:
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
   std::string getOpenableObjectQueryKey(const std::string& tmxMapFileName,
                                         const GameMap::OpenableObjectType type,
                                         const int targetObjectId) const;
-  
+
   ax::Layer* _layer{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;

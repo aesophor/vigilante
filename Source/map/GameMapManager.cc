@@ -33,13 +33,13 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
 }
 
 void GameMapManager::update(float delta) {
-  for (auto& actor : _gameMap->_dynamicActors) {
-    actor->update(delta);
+  if (!_gameMap) {
+    return;
   }
+  _gameMap->update(delta);
 
   if (_player) {
     _player->update(delta);
-
     for (const auto& ally : _player->getAllies()) {
       ally->update(delta);
     }
@@ -72,7 +72,6 @@ void GameMapManager::destroyGameMap() {
 
   if (_gameMap) {
     _layer->removeChild(_gameMap->getTmxTiledMap());
-    _gameMap->deleteObjects();
     _gameMap.reset();
   }
 }

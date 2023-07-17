@@ -2,6 +2,7 @@
 #include "GameMap.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <thread>
 
 #include "Assets.h"
@@ -24,6 +25,7 @@
 #include "util/StringUtil.h"
 #include "util/RandUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
@@ -35,7 +37,26 @@ GameMap::GameMap(b2World* world, const string& tmxMapFileName)
       _tmxTiledMap{TMXTiledMap::create(tmxMapFileName)},
       _tmxTiledMapFileName{tmxMapFileName},
       _bgmFileName{_tmxTiledMap->getProperty("bgm").asString()},
+      _parallaxBackground{std::make_unique<ParallaxBackground>()},
       _pathFinder{std::make_unique<SimplePathFinder>()} {}
+
+GameMap::~GameMap() {
+  for (auto body : _tmxTiledMapBodies) {
+    _world->DestroyBody(body);
+  }
+
+  for (auto& actor : _dynamicActors) {
+    actor->removeFromMap();
+  }
+}
+
+void GameMap::update(float delta) {
+  _parallaxBackground->update(delta);
+
+  for (auto& actor : _dynamicActors) {
+    actor->update(delta);
+  }
+}
 
 void GameMap::createObjects() {
   list<b2Body*> bodies;
@@ -61,16 +82,7 @@ void GameMap::createObjects() {
   createPortals();
   createChests();
   createNpcs();
-}
-
-void GameMap::deleteObjects() {
-  for (auto body : _tmxTiledMapBodies) {
-    _world->DestroyBody(body);
-  }
-
-  for (auto& actor : _dynamicActors) {
-    actor->removeFromMap();
-  }
+  createParallaxBackground();
 }
 
 unique_ptr<Player> GameMap::createPlayer() const {
@@ -301,6 +313,22 @@ void GameMap::createChests() {
   }
 }
 
+void GameMap::createParallaxBackground() {
+  const Value property = _tmxTiledMap->getProperty("parallaxBackground");
+  if (property.isNull()) {
+    VGLOG(LOG_INFO, "Failed to find parallaxBackground property from tmx, skip creating parallax bg.");
+    return;
+  }
+  
+  const fs::path bgDirPath{property.asString()};
+  if (!_parallaxBackground->load(bgDirPath)) {
+    VGLOG(LOG_ERR, "Failed to load parallax background from dir: [%s].", bgDirPath.c_str());
+    return;
+  }
+  
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLayer()->addChild(_parallaxBackground->getParallaxNode(), graphical_layers::kParallaxBackground);
+}
 
 GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,

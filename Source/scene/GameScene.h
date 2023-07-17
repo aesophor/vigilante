@@ -6,17 +6,16 @@
 #include <string>
 
 #include <axmol.h>
-#include <box2d/box2d.h>
 #include <extensions/axmol-ext.h>
 #include <ui/UIImageView.h>
 
+#include <box2d/box2d.h>
+
 #include "Controllable.h"
-#include "input/InputManager.h"
 #include "input/HotkeyManager.h"
-#include "map/GameMapManager.h"
+#include "input/InputManager.h"
 #include "map/FxManager.h"
-#include "ui/WindowManager.h"
-#include "ui/Shade.h"
+#include "map/GameMapManager.h"
 #include "ui/console/Console.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/dialogue/DialogueManager.h"
@@ -25,6 +24,8 @@
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
+#include "ui/Shade.h"
+#include "ui/WindowManager.h"
 
 namespace vigilante {
 
@@ -44,6 +45,8 @@ class GameScene : public ax::Scene, public Controllable {
 
   inline bool isRunning() const { return _isRunning; }
   inline void setRunning(bool running) { _isRunning = running; }
+
+  inline ax::Camera* getGameCamera() const { return _gameCamera; }
 
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
