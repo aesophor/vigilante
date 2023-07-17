@@ -97,7 +97,7 @@ inline const fs::path kControlHintsDir = kUIDir / "control_hints";
 inline const fs::path kGoldCoin = kDataDir / "item/misc/gold_coin.json";
 
 // BGM
-inline const fs::path kMainThemeBgm = kMusicDir / "MainMenu.mp3";
+inline const fs::path kMainThemeBgm = kMusicDir / "Carousel.mp3";
 
 // Sound Effects
 inline const fs::path kSfxOpenClosePauseMenu = kSfxInvDir / "open_and_close.wav";
