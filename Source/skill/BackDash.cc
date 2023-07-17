@@ -30,6 +30,8 @@ void BackDash::activate() {
     return;
   }
 
+  _user->setAfterImageFxEnabled(true);
+
   float dashPower = (_user->isFacingRight()) ? -3.8f : 3.8f;
   _user->getBody()->SetLinearVelocity({dashPower, .6f});
 
@@ -37,6 +39,7 @@ void BackDash::activate() {
   _user->getBody()->SetLinearDamping(4.0f);
 
   CallbackManager::the().runAfter([=]() {
+    _user->setAfterImageFxEnabled(false);
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->removeActiveSkill(this);
   }, _skillProfile.framesDuration);

@@ -25,7 +25,7 @@ namespace vigilante {
 
 namespace {
 
-void createAfterImage(const Sprite* sprite) {
+void createAfterImage(const Sprite* sprite, const int zOrder) {
   Sprite* afterImage = Sprite::createWithSpriteFrame(sprite->getSpriteFrame());
   afterImage->setPosition(sprite->getPosition());
   afterImage->setScale(sprite->getScale());
@@ -34,11 +34,12 @@ void createAfterImage(const Sprite* sprite) {
   afterImage->setLocalZOrder(sprite->getLocalZOrder());
   afterImage->setFlippedX(sprite->isFlippedX());
   afterImage->setOpacity(80);
+  afterImage->setColor({55, 66, 189});
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(afterImage);
+  gmMgr->getLayer()->addChild(afterImage, zOrder);
 
-  DelayTime* delay = DelayTime::create(0.3f);
+  DelayTime* delay = DelayTime::create(0.15f);
   CallFunc* remove = CallFunc::create([=]() {
     afterImage->removeFromParentAndCleanup(true);
   });
@@ -50,7 +51,8 @@ void createAfterImage(Node *node) {
   for (auto child : node->getChildren()) {
     if (auto spriteBatchNode = dynamic_cast<SpriteBatchNode*>(child)) {
       for (Sprite* sprite : spriteBatchNode->getDescendants()) {
-        createAfterImage(sprite);
+        printf(">>> [%d]\n", child->getLocalZOrder());
+        createAfterImage(sprite, child->getLocalZOrder() - 1);
       }
     }
   }

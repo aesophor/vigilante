@@ -41,7 +41,7 @@ void ForwardSlash::activate() {
   _user->getBody()->SetLinearVelocity({rushPower, 0});
 
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
-  _user->getBody()->SetLinearDamping(1.f);
+  _user->getBody()->SetLinearDamping(2.f);
 
   float oldGravityScale = _user->getBody()->GetGravityScale();
   _user->getBody()->SetGravityScale(0.f);
