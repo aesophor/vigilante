@@ -9,7 +9,6 @@
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Party.h"
-#include "input/Keybindable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "skill/Skill.h"
@@ -36,7 +35,9 @@ constexpr auto kPlayerWeaponMaskBits = kEnemy;
 
 }  // namespace
 
-Player::Player(const std::string& jsonFileName) : Character{jsonFileName} {
+Player::Player(const std::string& jsonFileName)
+    : Character{jsonFileName},
+      _movementHandler{*this} {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
 }
@@ -176,77 +177,7 @@ void Player::addExp(const int exp) {
 }
 
 void Player::handleInput() {
-  if (_isSetToKill || _isAttacking || _isUsingSkill || _isSheathingWeapon || _isUnsheathingWeapon) {
-    return;
-  }
-
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_E)) {
-    if (_inRangeInteractables.size()) {
-      interact(*_inRangeInteractables.begin());
-    }
-    return;
-  } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-    if (_portal) {
-      interact(_portal);
-    }
-    return;
-  }
-
-  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-    crouch();
-    if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ALT)) {
-      jumpDown();
-    }
-  }
-
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_CTRL)) {
-    if (!_isWeaponSheathed) {
-      attack();
-    }
-  }
-
-  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-    moveLeft();
-  } else if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
-    moveRight();
-  }
-
-  /*
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_R)) {
-    if (_equipmentSlots[Equipment::Type::WEAPON]
-        && _isWeaponSheathed && !_isUnsheathingWeapon) {
-      unsheathWeapon();
-    } else if (!_isWeaponSheathed && !_isSheathingWeapon) {
-      sheathWeapon();
-    }
-  }
-  */
-
-  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
-  for (auto keyCode : HotkeyManager::kBindableKeys) {
-    Keybindable* action = hotkeyMgr->getHotkeyAction(keyCode);
-    if (IS_KEY_JUST_PRESSED(keyCode) && action) {
-      if (dynamic_cast<Skill*>(action)) {
-        activateSkill(dynamic_cast<Skill*>(action));
-      } else if (dynamic_cast<Consumable*>(action)) {
-        useItem(dynamic_cast<Consumable*>(action));
-      }
-    }
-  }
-
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_Z)) {
-    if (!_inRangeItems.empty()) {
-      pickupItem(*_inRangeItems.begin());
-    }
-  }
-
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ALT)) {
-    jump();
-  }
-
-  if (_isCrouching && !IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-    getUp();
-  }
+  _movementHandler.handleInput();
 }
 
 void Player::updateKillTargetObjectives(Character* killedCharacter) {
