@@ -28,7 +28,7 @@
 namespace vigilante {
 
 class Character : public DynamicActor, public Importable {
- protected:
+ public:
   enum State {
     IDLE_SHEATHED,
     IDLE_UNSHEATHED,
@@ -60,7 +60,6 @@ class Character : public DynamicActor, public Importable {
     SFX_SIZE,
   };
 
- public:
   using Inventory = std::array<SetVector<Item*>, Item::Type::SIZE>;
   using EquipmentSlots = std::array<Equipment*, Equipment::Type::SIZE>;
   using SkillBook = std::array<SetVector<Skill*>, Skill::Type::SIZE>;
@@ -138,11 +137,13 @@ class Character : public DynamicActor, public Importable {
 
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
-  virtual void attack();
+  virtual void attack(const Character::State attackState = Character::State::ATTACKING,
+                      const int numTimesInflictDamage = 1,
+                      const float damageInflictionInterval = .15f);
   virtual void activateSkill(Skill* skill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
-  virtual void inflictDamage(Character* target, int damage);
-  virtual void receiveDamage(Character* source, int damage);
+  virtual bool inflictDamage(Character* target, int damage);
+  virtual bool receiveDamage(Character* source, int damage);
   virtual void lockOn(Character* target);
 
   virtual void addItem(std::shared_ptr<Item> item, int amount=1);
@@ -316,7 +317,6 @@ class Character : public DynamicActor, public Importable {
   bool _isTakingDamage{};
   bool _isKilled{};
   bool _isSetToKill{};
-  bool _isGodModeEnabled{};
   bool _isAfterImageFxEnabled{};
 
   // The following variables are used to determine combat targets.
@@ -356,6 +356,9 @@ class Character : public DynamicActor, public Importable {
   int _attackAnimationIdx{};
   std::vector<ax::Animation*> _bodyExtraAttackAnimations;
   std::array<std::vector<ax::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
+  
+  // By default, normal attack.
+  Character::State _attackState{Character::State::ATTACKING};
 
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment

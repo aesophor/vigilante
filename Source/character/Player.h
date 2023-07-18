@@ -22,12 +22,13 @@ class Player : public Character, public Controllable {
   virtual ~Player() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
-
   virtual void onKilled() override;  // Character
 
-  virtual void attack() override;  // Character
-  virtual void inflictDamage(Character* target, int damage) override;  // Character
-  virtual void receiveDamage(Character* source, int damage) override;  // Character
+  virtual void attack(const Character::State attackState = Character::State::ATTACKING,
+                      const int numTimesInflictDamage = 1,
+                      const float damageInflictionInterval = .15f) override;  // Character
+  virtual bool inflictDamage(Character* target, int damage) override;  // Character
+  virtual bool receiveDamage(Character* source, int damage) override;  // Character
 
   virtual void addItem(std::shared_ptr<Item> item, int amount=1) override;  // Character
   virtual void removeItem(Item* item, int amount=1) override;  // Character

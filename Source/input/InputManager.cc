@@ -22,18 +22,18 @@ void InputManager::activate(Scene* scene) {
     if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
       _isCapsLocked = !_isCapsLocked;
     }
-
-    if (!_specialOnKeyPressed) {
-      // We keep track of which keys have been pressed
-      // only when there is no active _specialOnKeyPressed event listener,
-      // because _specialOnKeyPressed will do whatever it needs to do
-      // with these keys.
-      _pressedKeys.insert(keyCode);
-    } else {
+    
+    if (_specialOnKeyPressed) {
       // Execute the additional onKeyPressed handler for special events.
       // (e.g., prompting for a hotkey, receiving TextField input, etc)
       _specialOnKeyPressed(keyCode, e);
+      return;
     }
+
+    // We keep track of which keys have been pressed only when there is no active
+    // _specialOnKeyPressed event listener, because _specialOnKeyPressed will do
+    // whatever it needs to do with these keys.
+    _pressedKeys.insert(keyCode);
   };
 
   _keyboardEvLstnr->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event*) {

@@ -21,7 +21,7 @@ constexpr auto kSheatheUnsheatheWeaponKey = EventKeyboard::KeyCode::KEY_R;
 constexpr auto kAttackKey = EventKeyboard::KeyCode::KEY_LEFT_CTRL;
 constexpr auto kInteractKey = EventKeyboard::KeyCode::KEY_E;
 constexpr auto kPickupItemKey = EventKeyboard::KeyCode::KEY_Z;
-constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_UP_ARROW;
+constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_F;
 
 }  // namespace
 
@@ -30,17 +30,17 @@ void PlayerMovementHandler::handleInput() {
     return;
   }
 
-  if (IS_KEY_JUST_PRESSED(kInteractKey) && _player.getInRangeInteractables().size()) {
+  if (_player.getInRangeInteractables().size() && IS_KEY_JUST_PRESSED(kInteractKey)) {
     _player.interact(*(_player.getInRangeInteractables().begin()));
     return;
   }
   
-  if (IS_KEY_JUST_PRESSED(kUsePortalKey) && _player.getPortal()) {
+  if (_player.getPortal() && IS_KEY_JUST_PRESSED(kUsePortalKey)) {
     _player.interact(_player.getPortal());
     return;
   }
   
-  if (IS_KEY_JUST_PRESSED(kPickupItemKey) && _player.getInRangeItems().size()) {
+  if (_player.getInRangeItems().size() && IS_KEY_JUST_PRESSED(kPickupItemKey)) {
     _player.pickupItem(*(_player.getInRangeItems().begin()));
   }
 
@@ -60,15 +60,16 @@ void PlayerMovementHandler::handleInput() {
     _player.isCrouching() ? _player.jumpDown() : _player.jump();
   }
 
+  if (IS_KEY_JUST_PRESSED(kAttackKey)) {
+    handleAttackInput();
+    return;
+  }
+
   /*
   if (IS_KEY_JUST_PRESSED(kSheatheUnsheatheWeaponKey)) {
     handleSheatheUnsheatheWeaponInput();
   }
   */
-  
-  if (IS_KEY_JUST_PRESSED(kAttackKey)) {
-    handleAttackInput();
-  }
   
   handleHotkeyInput();
 }
@@ -93,6 +94,11 @@ void PlayerMovementHandler::handleSheatheUnsheatheWeaponInput() {
 
 void PlayerMovementHandler::handleAttackInput() {
   if (_player.isWeaponSheathed()) {
+    return;
+  }
+
+  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+    _player.attack(Character::State::ATTACKING_FORWARD, /*numTimesInflictDamage=*/3);
     return;
   }
 

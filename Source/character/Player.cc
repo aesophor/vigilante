@@ -72,8 +72,10 @@ bool Player::showOnMap(float x, float y) {
   return true;
 }
 
-void Player::attack() {
-  Character::attack();
+void Player::attack(const Character::State attackState,
+                    const int numTimesInflictDamage,
+                    const float damageInflictionInterval) {
+  Character::attack(attackState, numTimesInflictDamage, damageInflictionInterval);
 
   Audio::the().playSfx("Sfx/combat/sword_attack.mp3");
 }
@@ -84,9 +86,11 @@ void Player::onKilled() {
   SceneManager::the().getCurrentScene<GameScene>()->setRunning(false);
 }
 
-void Player::inflictDamage(Character* target, int damage) {
-  Character::inflictDamage(target, damage);
-  camera_util::shake(8, .1f);
+bool Player::inflictDamage(Character* target, int damage) {
+  if (!Character::inflictDamage(target, damage)) {
+    VGLOG(LOG_ERR, "Failed to inflict damage to target: [%p].", target);
+    return false;
+  }
 
   if (target->isSetToKill()) {
     auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
@@ -96,11 +100,15 @@ void Player::inflictDamage(Character* target, int damage) {
   }
 
   Audio::the().playSfx("Sfx/combat/sword_hit.mp3");
+  camera_util::shake(4, .1f);
+  return true;
 }
 
-void Player::receiveDamage(Character* source, int damage) {
-  Character::receiveDamage(source, damage);
-  camera_util::shake(8, .1f);
+bool Player::receiveDamage(Character* source, int damage) {
+  if (!Character::receiveDamage(source, damage)) {
+    VGLOG(LOG_ERR, "Failed to receive damage from source: [%p].", source);
+    return false;
+  }
 
   _fixtures[FixtureType::BODY]->SetSensor(true);
   _isInvincible = true;
@@ -112,6 +120,9 @@ void Player::receiveDamage(Character* source, int damage) {
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateStatusBars();
+
+  camera_util::shake(8, .1f);
+  return true;
 }
 
 void Player::addItem(shared_ptr<Item> item, int amount) {

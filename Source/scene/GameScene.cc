@@ -198,15 +198,12 @@ void GameScene::update(float delta) {
 }
 
 void GameScene::handleInput() {
-  // First thing first:
-  // If there is a specialOnKeyPressed Event Listener,
-  // then we should simply let it do its job,
-  // and return immediately so that we won't interfere with it.
+  // First thing first: If there is a specialOnKeyPressed Event Listener, then we should simply
+  // let it do its job, and return immediately so that we won't interfere with it.
   if (InputManager::the().hasSpecialOnKeyPressed()) {
     return;
   }
 
-  // Toggle b2dr (b2DebugRenderer)
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_0)) {
     bool isVisible = !_drawBox2D->isVisible();
     _drawBox2D->setVisible(isVisible);
@@ -214,7 +211,6 @@ void GameScene::handleInput() {
     return;
   }
 
-  // Exit window or toggle PauseMenu
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ESCAPE)) {
     if (!_windowManager->isEmpty()) {
       _windowManager->pop();
@@ -227,7 +223,6 @@ void GameScene::handleInput() {
     return;
   }
 
-  // Toggle Console
   if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_GRAVE)) {
     _console->setVisible(true);
     return;

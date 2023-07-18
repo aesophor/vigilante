@@ -426,14 +426,14 @@ void GameMap::Portal::showHintUI() {
   }
 
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
-  controlHints->insert({EventKeyboard::KeyCode::KEY_UP_ARROW}, text, textColor);
+  controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_F}, text, textColor);
 }
 
 void GameMap::Portal::hideHintUI() {
   //removeHintBubbleFx();
 
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
-  controlHints->remove({EventKeyboard::KeyCode::KEY_UP_ARROW});
+  controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_F});
 }
 
 void GameMap::Portal::createHintBubbleFx() {

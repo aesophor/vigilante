@@ -158,7 +158,7 @@ void MagicalMissile::activate() {
         _bodySpritesheet->removeChild(_launchFxSprite, true);
       })
     ));
-  }, 0.5f);
+  }, 0.8f);
 }
 
 string MagicalMissile::getIconPath() const {

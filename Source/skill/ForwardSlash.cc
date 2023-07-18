@@ -13,16 +13,16 @@ namespace vigilante {
 
 ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
     : Skill{},
-      _skillProfile(jsonFileName),
-      _user(user) {}
+      _skillProfile{jsonFileName},
+      _user{user} {}
 
 void ForwardSlash::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile(jsonFileName);
+  _skillProfile = Skill::Profile{jsonFileName};
 }
 
 bool ForwardSlash::canActivate() {
-  return !_user->isWeaponSheathed()
-    && _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
+  return !_user->isWeaponSheathed() &&
+        _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
 }
 
 void ForwardSlash::activate() {
@@ -37,13 +37,13 @@ void ForwardSlash::activate() {
   // Modify character's stats.
   _user->getCharacterProfile().stamina += _skillProfile.deltaStamina;
 
-  float rushPower = (_user->isFacingRight()) ? 5.f : -5.f;
+  const float rushPower = (_user->isFacingRight()) ? 5.f : -5.f;
   _user->getBody()->SetLinearVelocity({rushPower, 0});
 
-  float oldBodyDamping = _user->getBody()->GetLinearDamping();
+  const float oldBodyDamping = _user->getBody()->GetLinearDamping();
   _user->getBody()->SetLinearDamping(2.f);
 
-  float oldGravityScale = _user->getBody()->GetGravityScale();
+  const float oldGravityScale = _user->getBody()->GetGravityScale();
   _user->getBody()->SetGravityScale(0.f);
 
   _user->setInvincible(true);

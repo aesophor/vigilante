@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Character.h"
 
 #include <algorithm>
@@ -8,7 +8,7 @@
 #include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
-#include "Player.h"
+#include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
@@ -51,7 +51,7 @@ void createAfterImage(Node *node) {
   for (auto child : node->getChildren()) {
     if (auto spriteBatchNode = dynamic_cast<SpriteBatchNode*>(child)) {
       for (Sprite* sprite : spriteBatchNode->getDescendants()) {
-        printf(">>> [%d]\n", child->getLocalZOrder());
+        //printf(">>> [%d]\n", child->getLocalZOrder());
         createAfterImage(sprite, child->getLocalZOrder() - 1);
       }
     }
@@ -535,7 +535,7 @@ Character::State Character::getState() const {
   } else if (_isJumping && _isAttacking) {
     return State::ATTACKING_MIDAIR;
   } else if (_isAttacking) {
-    return State::ATTACKING;
+    return _attackState;
   } else if (_isSheathingWeapon) {
     return State::SHEATHING_WEAPON;
   } else if (_isUnsheathingWeapon) {
@@ -679,11 +679,17 @@ void Character::unsheathWeapon() {
   }, .8f);
 }
 
-void Character::attack() {
+void Character::attack(const Character::State attackState,
+                       const int numTimesInflictDamage,
+                       const float damageInflictionInterval) {
   // If character is still attacking, block this attack request.
   // The latter condition prevents the character from being stucked in an
   // attack animation when the user calls Character::attack() too frequently.
-  if (_isAttacking || _currentState == State::ATTACKING || _currentState == State::ATTACKING_CROUCH || _currentState == State::ATTACKING_MIDAIR) {
+  if (_isAttacking ||
+      _currentState == State::ATTACKING ||
+      _currentState == State::ATTACKING_CROUCH ||
+      _currentState == State::ATTACKING_FORWARD ||
+      _currentState == State::ATTACKING_MIDAIR) {
     return;
   }
   if (_isWeaponSheathed) {
@@ -692,10 +698,19 @@ void Character::attack() {
   }
 
   _isAttacking = true;
+  _attackState = attackState;
+  
+  float attackAnimationDuration = 0.f;
+  if (attackState == Character::State::ATTACKING) {
+    attackAnimationDuration = getBodyAttackAnimation()->getDuration();
+  } else {
+    attackAnimationDuration = _bodyAnimations[attackState]->getDuration();
+  }
 
   CallbackManager::the().runAfter([this]() {
     _isAttacking = false;
-  }, getBodyAttackAnimation()->getDuration());
+    _attackState = Character::State::ATTACKING;
+  }, attackAnimationDuration);
 
   if (!_inRangeTargets.empty()) {
     _lockedOnTarget = *_inRangeTargets.begin();
@@ -703,14 +718,16 @@ void Character::attack() {
     if (!_lockedOnTarget->isInvincible()) {
       // If this character is not the Player,
       // then add a little delay before inflicting damage / knockback.
-      float damageDelay = (dynamic_cast<Player*>(this)) ? 0 : .25f;
+      float damageDelay = (dynamic_cast<Player*>(this)) ? 0 : .4f;
 
-      CallbackManager::the().runAfter([this]() {
+      for (int i = 1; i <= numTimesInflictDamage; i++) {
+        CallbackManager::the().runAfter([this]() {
           inflictDamage(_lockedOnTarget, getDamageOutput());
-          float knockBackForceX = (_isFacingRight) ? .5f : -.5f; // temporary
-          float knockBackForceY = 1.0f; // temporary
+          float knockBackForceX = (_isFacingRight) ? .5f : -.5f;
+          float knockBackForceY = 1.0f;
           knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
-      }, damageDelay);
+        }, damageDelay + damageInflictionInterval * i);
+      }
     }
   }
 }
@@ -734,7 +751,7 @@ void Character::activateSkill(Skill* skill) {
   }, skill->getSkillProfile().framesDuration);
 
   if (skill->getSkillProfile().characterFramesName != "") {
-    Skill::Profile& skillProfile = skill->getSkillProfile();
+    const Skill::Profile& skillProfile = skill->getSkillProfile();
     runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
   }
 
@@ -748,11 +765,21 @@ void Character::activateSkill(Skill* skill) {
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {
+  if (!target) {
+    VGLOG(LOG_ERR, "Failed to knock back target: [nullptr].");
+    return;
+  }
+
   b2Body* b2body = target->getBody();
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
-void Character::inflictDamage(Character* target, int damage) {
+bool Character::inflictDamage(Character* target, int damage) {
+  if (!target) {
+    VGLOG(LOG_ERR, "Failed to inflict damage to target: [nullptr].");
+    return false;
+  }
+
   target->receiveDamage(this, damage);
   target->lockOn(this);
 
@@ -762,11 +789,18 @@ void Character::inflictDamage(Character* target, int damage) {
   for (const auto& targetAlly : target->getAllies()) {
     targetAlly->lockOn(this);
   }
+  
+  return true;
 }
 
-void Character::receiveDamage(Character* source, int damage) {
+bool Character::receiveDamage(Character* source, int damage) {
+  if (!source) {
+    VGLOG(LOG_ERR, "Failed to receive damage from source [nullptr].");
+    return false;
+  }
+
   if (_isInvincible) {
-    return;
+    return true;
   }
 
   _characterProfile.health -= damage;
@@ -800,13 +834,14 @@ void Character::receiveDamage(Character* source, int damage) {
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
     Audio::the().playSfx(*sfxFileName);
   }
+  
+  return true;
 }
 
 void Character::lockOn(Character* target) {
   _isAlerted = true;
   setLockedOnTarget(target);
 }
-
 
 void Character::addItem(shared_ptr<Item> item, int amount) {
   if (!item || amount == 0) {

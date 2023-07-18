@@ -156,8 +156,11 @@ void Npc::onMapChanged() {
   }
 }
 
-void Npc::inflictDamage(Character* target, int damage) {
-  Character::inflictDamage(target, damage);
+bool Npc::inflictDamage(Character* target, int damage) {
+  if (!Character::inflictDamage(target, damage)) {
+    VGLOG(LOG_ERR, "Failed to inflict damage to target: [%p].", target);
+    return false;
+  }
 
   // If this Npc is in the player's party, and this Npc kills an enemy,
   // then update player's quests with KillTargetObjective.
@@ -167,17 +170,24 @@ void Npc::inflictDamage(Character* target, int damage) {
       player->updateKillTargetObjectives(target);
     }
   }
+  
+  return true;
 }
 
-void Npc::receiveDamage(Character* source, int damage) {
-  Character::receiveDamage(source, damage);
+bool Npc::receiveDamage(Character* source, int damage) {
+  if (!Character::receiveDamage(source, damage)) {
+    VGLOG(LOG_ERR, "Failed to receive damage from source: [%p].", source);
+    return false;
+  }
+
   _isAlerted = true;
 
   if (!_isSetToKill) {
-    return;
+    return true;
   }
 
   source->addExp(_characterProfile.exp);
+  return true;
 }
 
 void Npc::interact(Interactable* target) {
