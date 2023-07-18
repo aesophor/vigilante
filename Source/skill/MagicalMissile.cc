@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Audio.h"
+#include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Character.h"
 #include "scene/GameScene.h"
@@ -124,38 +125,40 @@ void MagicalMissile::activate() {
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
-  shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
-  assert(activeCopy);
-  auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getGameMap()->showDynamicActor(std::move(actor), x, y);
+  CallbackManager::the().runAfter([this, x, y]() {
+    shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
+    assert(activeCopy);
+    auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+    gmMgr->getGameMap()->showDynamicActor(std::move(actor), x, y);
+    
+    // Set up kinematicBody's moving speed.
+    _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;
+    _body->SetLinearVelocity({_flyingSpeed, 0});
 
-  // Set up kinematicBody's moving speed.
-  _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;
-  _body->SetLinearVelocity({_flyingSpeed, 0});
+    if (!_user->isFacingRight()) {
+      _launchFxSprite->setFlippedX(true);
+      _bodySprite->setFlippedX(true);
+    }
 
-  if (!_user->isFacingRight()) {
-    _launchFxSprite->setFlippedX(true);
-    _bodySprite->setFlippedX(true);
-  }
+    // Play the magical missile body's animation.
+    _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
 
-  // Play the magical missile body's animation.
-  _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
+    // Play launch fx animation.
+    const b2Vec2& spellUserBodyPos = _user->getBody()->GetPosition();
+    float x = spellUserBodyPos.x * kPpm;
+    float y = spellUserBodyPos.y * kPpm;
+    float offset = _user->getCharacterProfile().attackRange;
+    x += (_user->isFacingRight()) ? offset : -offset;
+    _launchFxSprite->setPosition(x, y);
 
-  // Play launch fx animation.
-  const b2Vec2& spellUserBodyPos = _user->getBody()->GetPosition();
-  x = spellUserBodyPos.x * kPpm;
-  y = spellUserBodyPos.y * kPpm;
-  float offset = _user->getCharacterProfile().attackRange;
-  x += (_user->isFacingRight()) ? offset : -offset;
-  _launchFxSprite->setPosition(x, y);
-
-  _launchFxSprite->runAction(Sequence::createWithTwoActions(
-    Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
-    CallFunc::create([=]() {
-      _bodySpritesheet->removeChild(_launchFxSprite, true);
-    })
-  ));
+    _launchFxSprite->runAction(Sequence::createWithTwoActions(
+      Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
+      CallFunc::create([=]() {
+        _bodySpritesheet->removeChild(_launchFxSprite, true);
+      })
+    ));
+  }, 0.5f);
 }
 
 string MagicalMissile::getIconPath() const {

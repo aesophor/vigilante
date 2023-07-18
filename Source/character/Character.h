@@ -43,6 +43,11 @@ class Character : public DynamicActor, public Importable {
     SHEATHING_WEAPON,
     UNSHEATHING_WEAPON,
     ATTACKING,
+    ATTACKING_CROUCH,
+    ATTACKING_FORWARD,
+    ATTACKING_MIDAIR,
+    ATTACKING_MIDAIR_DOWNWARD,
+    SPELLCAST,
     KILLED,
     STATE_SIZE,
     FORCE_UPDATE
@@ -229,6 +234,11 @@ class Character : public DynamicActor, public Importable {
     "sheathing_weapon",
     "unsheathing_weapon",
     "attacking0",
+    "attacking_crouch",
+    "attacking_forward",
+    "attacking_midair",
+    "attacking_midair_downward",
+    "spellcast",
     "killed"
   }};
 

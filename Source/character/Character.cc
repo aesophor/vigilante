@@ -158,7 +158,6 @@ void Character::update(float delta) {
     hud->updateStatusBars();
   }
 
-  // Don't update character's state if he/she is using skill.
   if (_isUsingSkill) {
     return;
   }
@@ -166,7 +165,6 @@ void Character::update(float delta) {
   _previousState = _currentState;
   _currentState = getState();
 
-  // If there's a change in character's state, run the corresponding animation.
   if (_previousState != _currentState) {
     switch(_currentState) {
       case State::RUNNING_SHEATHED:
@@ -202,17 +200,25 @@ void Character::update(float delta) {
       case State::ATTACKING:
         runAnimation(State::ATTACKING, false);
         break;
+      case State::ATTACKING_CROUCH:
+        runAnimation(State::ATTACKING_CROUCH, false);
+        break;
+      case State::ATTACKING_FORWARD:
+        runAnimation(State::ATTACKING_FORWARD, false);
+        break;
+      case State::ATTACKING_MIDAIR:
+        runAnimation(State::ATTACKING_MIDAIR, false);
+        break;
+      case State::ATTACKING_MIDAIR_DOWNWARD:
+        runAnimation(State::ATTACKING_MIDAIR_DOWNWARD, false);
+        break;
       case State::KILLED:
-        // `onKilled()` will be executed after the KILLED animation
-        // has finished.
-        runAnimation(State::KILLED, [this]() {
-          onKilled();
-        });
+        runAnimation(State::KILLED, [this]() { onKilled(); });
         break;
       case State::IDLE_SHEATHED:
         runAnimation(State::IDLE_SHEATHED, true);
         break;
-      case State::IDLE_UNSHEATHED:  // fallthrough
+      case State::IDLE_UNSHEATHED:
       default:
         runAnimation(State::IDLE_UNSHEATHED, true);
         break;
@@ -306,8 +312,12 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
   createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
   createBodyAnimation(State::ATTACKING, fallback);
+  createBodyAnimation(State::ATTACKING_CROUCH, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_FORWARD, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_MIDAIR, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_MIDAIR_DOWNWARD, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::KILLED, fallback);
-  
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -341,20 +351,25 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
 
-  createEquipmentAnimation(equipment, State::RUNNING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::JUMPING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
-  createEquipmentAnimation(equipment, State::ATTACKING, fallback);
-  createEquipmentAnimation(equipment, State::KILLED, fallback);
-
   createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
+
+  createEquipmentAnimation(equipment, State::RUNNING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::JUMPING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
+  createEquipmentAnimation(equipment, State::ATTACKING, fallback);
+  createEquipmentAnimation(equipment, State::ATTACKING_CROUCH, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::ATTACKING_FORWARD, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::ATTACKING_MIDAIR, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::ATTACKING_MIDAIR_DOWNWARD, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::SPELLCAST, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::KILLED, fallback);
 
   // Load extra attack animations.
   for (size_t i = 0; i < _bodyExtraAttackAnimations.size(); i++) {
@@ -515,6 +530,10 @@ void Character::runAnimation(const string& framesName, float interval) {
 Character::State Character::getState() const {
   if (_isSetToKill) {
     return State::KILLED;
+  } else if (_isCrouching && _isAttacking) {
+    return State::ATTACKING_CROUCH;
+  } else if (_isJumping && _isAttacking) {
+    return State::ATTACKING_MIDAIR;
   } else if (_isAttacking) {
     return State::ATTACKING;
   } else if (_isSheathingWeapon) {
@@ -631,6 +650,10 @@ void Character::jumpDown() {
 }
 
 void Character::crouch() {
+  if (_isJumping) {
+    return;
+  }
+
   _isCrouching = true;
 }
 
@@ -660,7 +683,7 @@ void Character::attack() {
   // If character is still attacking, block this attack request.
   // The latter condition prevents the character from being stucked in an
   // attack animation when the user calls Character::attack() too frequently.
-  if (_isAttacking || _currentState == State::ATTACKING) {
+  if (_isAttacking || _currentState == State::ATTACKING || _currentState == State::ATTACKING_CROUCH || _currentState == State::ATTACKING_MIDAIR) {
     return;
   }
   if (_isWeaponSheathed) {
@@ -672,8 +695,7 @@ void Character::attack() {
 
   CallbackManager::the().runAfter([this]() {
     _isAttacking = false;
-  }, _characterProfile.attackTime);
-
+  }, getBodyAttackAnimation()->getDuration());
 
   if (!_inRangeTargets.empty()) {
     _lockedOnTarget = *_inRangeTargets.begin();
@@ -1067,6 +1089,11 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   spriteScaleY = json["spriteScaleY"].GetFloat();
 
   for (int i = 0; i < Character::State::STATE_SIZE; i++) {
+    if (!json["frameInterval"].HasMember(Character::_kCharacterStateStr[i].c_str())) {
+      VGLOG(LOG_ERR, "Failed to get the frame interval of [%s].", Character::_kCharacterStateStr[i].c_str());
+      frameIntervals[i] = 10.0f;
+      continue;
+    }
     frameIntervals[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
   }
 
