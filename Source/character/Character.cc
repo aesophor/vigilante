@@ -548,13 +548,13 @@ Character::State Character::determineState() const {
     return State::SHEATHING_WEAPON;
   } else if (_isUnsheathingWeapon) {
     return State::UNSHEATHING_WEAPON;
+  } else if (_body->GetLinearVelocity().y < -2.5f) {
+    return _isWeaponSheathed ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isJumping) {
     return _isWeaponSheathed ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
-  } else if (_body->GetLinearVelocity().y < -2.0f && !_isTakingDamage) {
-    return _isWeaponSheathed ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isCrouching) {
     return _isWeaponSheathed ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
-  } else if (std::abs(_body->GetLinearVelocity().x) > .01f && !_isTakingDamage) {
+  } else if (std::abs(_body->GetLinearVelocity().x) > .01f) {
     return _isWeaponSheathed ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
     return _isWeaponSheathed ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
