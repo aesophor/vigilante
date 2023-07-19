@@ -12,9 +12,9 @@
 #include <box2d/box2d.h>
 
 #include "Controllable.h"
+#include "FxManager.h"
 #include "input/HotkeyManager.h"
 #include "input/InputManager.h"
-#include "map/FxManager.h"
 #include "map/GameMapManager.h"
 #include "ui/console/Console.h"
 #include "ui/control_hints/ControlHints.h"
