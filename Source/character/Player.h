@@ -10,7 +10,7 @@
 #include "Assets.h"
 #include "Controllable.h"
 #include "character/Character.h"
-#include "character/PlayerMovementHandler.h"
+#include "character/PlayerController.h"
 #include "item/Equipment.h"
 #include "quest/QuestBook.h"
 
@@ -45,7 +45,7 @@ class Player : public Character, public Controllable {
   inline QuestBook& getQuestBook() { return _questBook; }
 
  private:
-  PlayerMovementHandler _movementHandler;
+  PlayerController _movementHandler;
   QuestBook _questBook{assets::kQuestsList};
 };
 

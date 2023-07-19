@@ -1,5 +1,5 @@
 // Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "PlayerMovementHandler.h"
+#include "PlayerController.h"
 
 #include "character/Player.h"
 #include "input/InputManager.h"
@@ -25,7 +25,7 @@ constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_F;
 
 }  // namespace
 
-void PlayerMovementHandler::handleInput() {
+void PlayerController::handleInput() {
   if (shouldBlockInput()) {
     return;
   }
@@ -74,7 +74,7 @@ void PlayerMovementHandler::handleInput() {
   handleHotkeyInput();
 }
 
-bool PlayerMovementHandler::shouldBlockInput() const {
+bool PlayerController::shouldBlockInput() const {
   return _player.isSetToKill() ||
          _player.isAttacking() ||
          _player.isUsingSkill() ||
@@ -82,7 +82,7 @@ bool PlayerMovementHandler::shouldBlockInput() const {
          _player.isUnsheathingWeapon();
 }
 
-void PlayerMovementHandler::handleSheatheUnsheatheWeaponInput() {
+void PlayerController::handleSheatheUnsheatheWeaponInput() {
   if (_player.getEquipmentSlots()[Equipment::Type::WEAPON] &&
       _player.isWeaponSheathed() &&
       !_player.isUnsheathingWeapon()) {
@@ -92,7 +92,7 @@ void PlayerMovementHandler::handleSheatheUnsheatheWeaponInput() {
   }
 }
 
-void PlayerMovementHandler::handleAttackInput() {
+void PlayerController::handleAttackInput() {
   if (_player.isWeaponSheathed()) {
     return;
   }
@@ -105,7 +105,7 @@ void PlayerMovementHandler::handleAttackInput() {
   _player.attack();
 }
 
-void PlayerMovementHandler::handleHotkeyInput() {
+void PlayerController::handleHotkeyInput() {
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
   for (auto keyCode : HotkeyManager::kBindableKeys) {
     Keybindable* action = hotkeyMgr->getHotkeyAction(keyCode);

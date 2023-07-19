@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PLAYER_MOVEMENT_HANDLER_H_
-#define VIGILANTE_PLAYER_MOVEMENT_HANDLER_H_
+#ifndef VIGILANTE_PLAYER_CONTROLLER_H_
+#define VIGILANTE_PLAYER_CONTROLLER_H_
 
 #include "Controllable.h"
 
@@ -8,9 +8,9 @@ namespace vigilante {
 
 class Player;
 
-class PlayerMovementHandler final : public Controllable {
+class PlayerController final : public Controllable {
  public:
-  explicit PlayerMovementHandler(Player& player) : _player{player} {}
+  explicit PlayerController(Player& player) : _player{player} {}
 
   // Controllable
   virtual void handleInput() override;
@@ -26,4 +26,4 @@ class PlayerMovementHandler final : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PLAYER_MOVEMENT_HANDLER_H_
+#endif  // VIGILANTE_PLAYER_CONTROLLER_H_
