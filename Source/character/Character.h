@@ -47,6 +47,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_FORWARD,
     ATTACKING_MIDAIR,
     ATTACKING_MIDAIR_DOWNWARD,
+    ATTACKING_UPWARD,
     SPELLCAST,
     KILLED,
     STATE_SIZE,
@@ -139,7 +140,7 @@ class Character : public DynamicActor, public Importable {
   virtual void unsheathWeapon();
   virtual void attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,
-                      const float damageInflictionInterval = .15f);
+                      const float damageInflictionInterval = .2f);
   virtual void activateSkill(Skill* skill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual bool inflictDamage(Character* target, int damage);
@@ -239,6 +240,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_forward",
     "attacking_midair",
     "attacking_midair_downward",
+    "attacking_upward",
     "spellcast",
     "killed"
   }};
@@ -248,6 +250,15 @@ class Character : public DynamicActor, public Importable {
     "hurt",
     "killed",
   }};
+
+  static constexpr bool isAttackState(const Character::State state) {
+    return state == State::ATTACKING ||
+           state == State::ATTACKING_CROUCH ||
+           state == State::ATTACKING_FORWARD ||
+           state == State::ATTACKING_MIDAIR ||
+           state == State::ATTACKING_MIDAIR_DOWNWARD ||
+           state == State::ATTACKING_UPWARD;
+  }
 
   explicit Character(const std::string& jsonFileName);
 
@@ -282,7 +293,10 @@ class Character : public DynamicActor, public Importable {
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
   void runAnimation(const std::string& framesName, float interval);
 
-  Character::State getState() const;
+  float getAttackAnimationDuration(const Character::State state) const;
+
+  Character::State determineState() const;
+  Character::State determineAttackState() const;
   std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
 
   Item* getExistingItemObj(Item* item) const;
@@ -301,6 +315,7 @@ class Character : public DynamicActor, public Importable {
   // for the logic.
   Character::State _currentState{State::IDLE_SHEATHED};
   Character::State _previousState{State::IDLE_SHEATHED};
+  std::optional<Character::State> _overridingAttackState{std::nullopt};
 
   bool _isFacingRight{true};
   bool _isWeaponSheathed{false};
@@ -356,9 +371,6 @@ class Character : public DynamicActor, public Importable {
   int _attackAnimationIdx{};
   std::vector<ax::Animation*> _bodyExtraAttackAnimations;
   std::array<std::vector<ax::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
-  
-  // By default, normal attack.
-  Character::State _attackState{Character::State::ATTACKING};
 
   // Besides body sprite and animations (declared in Actor abstract class),
   // there is also a sprite for each equipment slots! Each equipped equipment

@@ -163,7 +163,7 @@ void Character::update(float delta) {
   }
 
   _previousState = _currentState;
-  _currentState = getState();
+  _currentState = determineState();
 
   if (_previousState != _currentState) {
     switch(_currentState) {
@@ -211,6 +211,9 @@ void Character::update(float delta) {
         break;
       case State::ATTACKING_MIDAIR_DOWNWARD:
         runAnimation(State::ATTACKING_MIDAIR_DOWNWARD, false);
+        break;
+      case State::ATTACKING_UPWARD:
+        runAnimation(State::ATTACKING_UPWARD, false);
         break;
       case State::KILLED:
         runAnimation(State::KILLED, [this]() { onKilled(); });
@@ -316,6 +319,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_FORWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_MIDAIR, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_MIDAIR_DOWNWARD, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::KILLED, fallback);
 
@@ -368,6 +372,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::ATTACKING_FORWARD, _equipmentAnimations[type][State::ATTACKING]);
   createEquipmentAnimation(equipment, State::ATTACKING_MIDAIR, _equipmentAnimations[type][State::ATTACKING]);
   createEquipmentAnimation(equipment, State::ATTACKING_MIDAIR_DOWNWARD, _equipmentAnimations[type][State::ATTACKING]);
+  createEquipmentAnimation(equipment, State::ATTACKING_UPWARD, _equipmentAnimations[type][State::ATTACKING]);
   createEquipmentAnimation(equipment, State::SPELLCAST, _equipmentAnimations[type][State::ATTACKING]);
   createEquipmentAnimation(equipment, State::KILLED, fallback);
 
@@ -527,15 +532,18 @@ void Character::runAnimation(const string& framesName, float interval) {
   }
 }
 
-Character::State Character::getState() const {
+float Character::getAttackAnimationDuration(const Character::State state) const {
+  if (state == State::ATTACKING) {
+    return getBodyAttackAnimation()->getDuration();
+  }
+  return _bodyAnimations[state]->getDuration();
+}
+
+Character::State Character::determineState() const {
   if (_isSetToKill) {
     return State::KILLED;
-  } else if (_isCrouching && _isAttacking) {
-    return State::ATTACKING_CROUCH;
-  } else if (_isJumping && _isAttacking) {
-    return State::ATTACKING_MIDAIR;
   } else if (_isAttacking) {
-    return _attackState;
+    return determineAttackState();
   } else if (_isSheathingWeapon) {
     return State::SHEATHING_WEAPON;
   } else if (_isUnsheathingWeapon) {
@@ -551,6 +559,20 @@ Character::State Character::getState() const {
   } else {
     return _isWeaponSheathed ? State::IDLE_SHEATHED : State::IDLE_UNSHEATHED;
   }
+}
+
+Character::State Character::determineAttackState() const {
+  if (_overridingAttackState.has_value()) {
+    return *_overridingAttackState;
+  }
+
+  if (_isCrouching) {
+    return State::ATTACKING_CROUCH;
+  }
+  if (_isJumping) {
+    return State::ATTACKING_MIDAIR;
+  }
+  return State::ATTACKING;
 }
 
 optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
@@ -683,34 +705,24 @@ void Character::attack(const Character::State attackState,
                        const int numTimesInflictDamage,
                        const float damageInflictionInterval) {
   // If character is still attacking, block this attack request.
-  // The latter condition prevents the character from being stucked in an
-  // attack animation when the user calls Character::attack() too frequently.
-  if (_isAttacking ||
-      _currentState == State::ATTACKING ||
-      _currentState == State::ATTACKING_CROUCH ||
-      _currentState == State::ATTACKING_FORWARD ||
-      _currentState == State::ATTACKING_MIDAIR) {
+  if (_isAttacking || !isAttackState(attackState)) {
     return;
   }
+
   if (_isWeaponSheathed) {
     unsheathWeapon();
     return;
   }
 
   _isAttacking = true;
-  _attackState = attackState;
-  
-  float attackAnimationDuration = 0.f;
-  if (attackState == Character::State::ATTACKING) {
-    attackAnimationDuration = getBodyAttackAnimation()->getDuration();
-  } else {
-    attackAnimationDuration = _bodyAnimations[attackState]->getDuration();
+  if (attackState != State::ATTACKING) {
+    _overridingAttackState = attackState;
   }
 
   CallbackManager::the().runAfter([this]() {
     _isAttacking = false;
-    _attackState = Character::State::ATTACKING;
-  }, attackAnimationDuration);
+    _overridingAttackState = std::nullopt;
+  }, getAttackAnimationDuration(attackState));
 
   if (!_inRangeTargets.empty()) {
     _lockedOnTarget = *_inRangeTargets.begin();
@@ -789,7 +801,7 @@ bool Character::inflictDamage(Character* target, int damage) {
   for (const auto& targetAlly : target->getAllies()) {
     targetAlly->lockOn(this);
   }
-  
+
   return true;
 }
 
@@ -834,7 +846,7 @@ bool Character::receiveDamage(Character* source, int damage) {
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
     Audio::the().playSfx(*sfxFileName);
   }
-  
+
   return true;
 }
 
