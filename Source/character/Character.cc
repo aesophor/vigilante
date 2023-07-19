@@ -840,6 +840,9 @@ bool Character::receiveDamage(Character* source, int damage) {
     // TODO: play hurt sound.
   }
 
+  auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
+  fxMgr->createHitFx(this);
+
   auto floatingDamages = SceneManager::the().getCurrentScene<GameScene>()->getFloatingDamages();
   floatingDamages->show(this, damage);
 

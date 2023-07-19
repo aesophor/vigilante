@@ -15,7 +15,8 @@ class Character;
 
 class FxManager final {
  public:
-  void createDustFx(Character* c);
+  void createDustFx(const Character* c);
+  void createHitFx(const Character* c);
   ax::Sprite* createHintBubbleFx(const b2Body* body,
                                  const std::string& framesName);
 

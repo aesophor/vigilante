@@ -13,20 +13,25 @@ USING_NS_AX;
 
 namespace vigilante {
 
-void FxManager::createDustFx(Character* c) {
-  const b2Vec2& feetPos = c->getBody()->GetPosition();
-  float x = feetPos.x * kPpm;
-  float y = (feetPos.y - .1f) * kPpm;
-
+void FxManager::createDustFx(const Character* c) {
+  const b2Vec2& bodyPos = c->getBody()->GetPosition();
+  const float x = bodyPos.x * kPpm;
+  const float y = (bodyPos.y - .1f) * kPpm;
   createFx("Texture/fx/dust", "white", x, y, 1, 10);
+}
+
+void FxManager::createHitFx(const Character* c) {
+  const b2Vec2& bodyPos = c->getBody()->GetPosition();
+  const float x = bodyPos.x * kPpm;
+  const float y = bodyPos.y * kPpm;
+  createFx("Texture/fx/hit", "normal", x, y, 1, 4);
 }
 
 Sprite* FxManager::createHintBubbleFx(const b2Body* body,
                                       const string& framesName) {
   const b2Vec2& bodyPos = body->GetPosition();
-  float x = bodyPos.x * kPpm;
-  float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
-
+  const float x = bodyPos.x * kPpm;
+  const float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
   return createFx("Texture/fx/hint_bubble", framesName, x, y, -1, 45);
 }
 
