@@ -3,8 +3,8 @@
 #define VIGILANTE_INPUT_MANAGER_H_
 
 #include <functional>
-#include <set>
 #include <stack>
+#include <unordered_set>
 
 #include <axmol.h>
 
@@ -69,7 +69,7 @@ class InputManager final {
 
   // Pressed Keys are stored in this set.
   // Relevant method: isKeyPressed(), isKeyJustPressed()
-  std::set<ax::EventKeyboard::KeyCode> _pressedKeys;
+  std::unordered_set<ax::EventKeyboard::KeyCode> _pressedKeys;
 
   OnKeyPressedEvLstnr _specialOnKeyPressed{};
 };
