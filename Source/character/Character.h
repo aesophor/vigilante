@@ -27,6 +27,8 @@
 
 namespace vigilante {
 
+class ComboSystem;
+
 class Character : public DynamicActor, public Importable {
  public:
   enum State {
@@ -138,7 +140,7 @@ class Character : public DynamicActor, public Importable {
 
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
-  virtual void attack(const Character::State attackState = Character::State::ATTACKING,
+  virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,
                       const float damageInflictionInterval = .2f);
   virtual void activateSkill(Skill* skill);
@@ -190,6 +192,8 @@ class Character : public DynamicActor, public Importable {
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
+
+  inline ComboSystem &getCombatSystem() { return *_comboSystem; }
 
   inline std::unordered_set<Character*>& getInRangeTargets() { return _inRangeTargets; }
   inline Character* getLockedOnTarget() const { return _lockedOnTarget; }
@@ -325,7 +329,7 @@ class Character : public DynamicActor, public Importable {
   bool _isJumping{};
   bool _isDoubleJumping{};
   bool _isOnPlatform{};
-  bool _isAttacking{};
+  std::atomic<bool> _isAttacking{};
   bool _isUsingSkill{};
   bool _isCrouching{};
   bool _isInvincible{};
@@ -333,6 +337,9 @@ class Character : public DynamicActor, public Importable {
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
+
+  // Combat related systems
+  std::shared_ptr<ComboSystem> _comboSystem;
 
   // The following variables are used to determine combat targets.
   // A character can only inflict damage to another iff the target is

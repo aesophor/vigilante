@@ -2,6 +2,8 @@
 #include "PlayerController.h"
 
 #include "character/Player.h"
+#include "combat/CombatMotion.h"
+#include "combat/ComboSystem.h"
 #include "input/InputManager.h"
 #include "scene/SceneManager.h"
 #include "util/Logger.h"
@@ -34,12 +36,12 @@ void PlayerController::handleInput() {
     _player.interact(*(_player.getInRangeInteractables().begin()));
     return;
   }
-  
+
   if (_player.getPortal() && IS_KEY_JUST_PRESSED(kUsePortalKey)) {
     _player.interact(_player.getPortal());
     return;
   }
-  
+
   if (_player.getInRangeItems().size() && IS_KEY_JUST_PRESSED(kPickupItemKey)) {
     _player.pickupItem(*(_player.getInRangeItems().begin()));
   }
@@ -70,7 +72,7 @@ void PlayerController::handleInput() {
     handleSheatheUnsheatheWeaponInput();
   }
   */
-  
+
   handleHotkeyInput();
 }
 
@@ -97,12 +99,16 @@ void PlayerController::handleAttackInput() {
     return;
   }
 
-  if (IS_KEY_PRESSED(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-    _player.attack(Character::State::ATTACKING_FORWARD, /*numTimesInflictDamage=*/3);
+  const optional<Character::State> attackState = _player.getCombatSystem().determineNextAttackState();
+  if (!attackState.has_value()) {
+    _player.attack();
     return;
   }
-
-  _player.attack();
+  
+  if (!handleCombatMotion(_player, *attackState)) {
+    VGLOG(LOG_ERR, "Failed to handle combat motion, character: [%s], attackState: [%d]",
+          _player.getCharacterProfile().jsonFileName.c_str(), *attackState);
+  }
 }
 
 void PlayerController::handleHotkeyInput() {

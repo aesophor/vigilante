@@ -20,7 +20,7 @@ class PlayerController final : public Controllable {
   void handleSheatheUnsheatheWeaponInput();
   void handleAttackInput();
   void handleHotkeyInput();
-  
+
   Player& _player;
 };
 

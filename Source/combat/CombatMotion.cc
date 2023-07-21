@@ -1,0 +1,47 @@
+// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#include "CombatMotion.h"
+
+#include "character/Character.h"
+#include "util/Logger.h"
+
+using namespace std;
+USING_NS_AX;
+
+namespace vigilante {
+
+namespace {
+
+bool handleAttackingUpward(Character& c) {
+  c.attack(Character::State::ATTACKING_UPWARD, /*numTimesInflictDamage=*/2);
+
+  const float forceX = c.isFacingRight() ? .3f : -.3f;
+  const float forceY = 3.0f;
+  c.getBody()->ApplyLinearImpulse({forceX, forceY}, c.getBody()->GetWorldCenter(), true);
+
+  if (c.getInRangeTargets().size()) {
+    Character* target = *(c.getInRangeTargets().begin());
+    target->getBody()->ApplyLinearImpulse({forceX, forceY}, target->getBody()->GetWorldCenter(), true);
+  }
+
+  return true;
+}
+
+bool handleAttackingForward(Character& c) {
+  return c.attack(Character::State::ATTACKING_FORWARD, /*numTimesInflictDamage=*/3);
+}
+
+}  // namespace
+
+bool handleCombatMotion(Character& c, const Character::State attackState) {
+  switch (attackState) {
+    case Character::State::ATTACKING_UPWARD:
+      return handleAttackingUpward(c);
+    case Character::State::ATTACKING_FORWARD:
+      return handleAttackingForward(c);
+    default:
+      c.attack();
+      return false;
+  }
+}
+
+}  // namespace vigilante

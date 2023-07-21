@@ -9,6 +9,7 @@
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
+#include "combat/ComboSystem.h"
 #include "gameplay/ExpPointTable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
@@ -63,6 +64,7 @@ void createAfterImage(Node *node) {
 Character::Character(const string& jsonFileName)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
       _characterProfile{jsonFileName},
+      _comboSystem{std::make_shared<ComboSystem>(*this)},
       // There will be at least `1` attack animation.
       _kAttackAnimationIdxMax{1 + getExtraAttackAnimationsCount()},
       _bodyExtraAttackAnimations(_kAttackAnimationIdxMax - 1) {
@@ -157,6 +159,8 @@ void Character::update(float delta) {
     auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
     hud->updateStatusBars();
   }
+  
+  _comboSystem->update(delta);
 
   if (_isUsingSkill) {
     return;
@@ -701,17 +705,22 @@ void Character::unsheathWeapon() {
   }, .8f);
 }
 
-void Character::attack(const Character::State attackState,
+bool Character::attack(const Character::State attackState,
                        const int numTimesInflictDamage,
                        const float damageInflictionInterval) {
+  if (!isAttackState(attackState)) {
+    VGLOG(LOG_ERR, "Failed to perform attack, invalid attackState providied, attackState: [%d]", attackState);
+    return false;
+  }
+
   // If character is still attacking, block this attack request.
-  if (_isAttacking || !isAttackState(attackState)) {
-    return;
+  if (_isAttacking || isAttackState(_currentState)) {
+    return false;
   }
 
   if (_isWeaponSheathed) {
     unsheathWeapon();
-    return;
+    return false;
   }
 
   _isAttacking = true;
@@ -742,6 +751,8 @@ void Character::attack(const Character::State attackState,
       }
     }
   }
+
+  return true;
 }
 
 void Character::activateSkill(Skill* skill) {
