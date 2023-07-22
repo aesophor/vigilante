@@ -159,7 +159,7 @@ void Character::update(float delta) {
     auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
     hud->updateStatusBars();
   }
-  
+
   _comboSystem->update(delta);
 
   if (_isUsingSkill) {
@@ -200,6 +200,12 @@ void Character::update(float delta) {
         break;
       case State::UNSHEATHING_WEAPON:
         runAnimation(State::UNSHEATHING_WEAPON, false);
+        break;
+      case State::DODGING_BACKWARD:
+        runAnimation(State::DODGING_BACKWARD, false);
+        break;
+      case State::DODGING_FORWARD:
+        runAnimation(State::DODGING_FORWARD, false);
         break;
       case State::ATTACKING:
         runAnimation(State::ATTACKING, false);
@@ -311,6 +317,8 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
   createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
   createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
+  createBodyAnimation(State::DODGING_BACKWARD, fallback);
+  createBodyAnimation(State::DODGING_FORWARD, fallback);
   createBodyAnimation(State::ATTACKING, fallback);
   createBodyAnimation(State::ATTACKING_CROUCH, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_FORWARD, _bodyAnimations[State::ATTACKING]);
@@ -364,6 +372,8 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
+  createEquipmentAnimation(equipment, State::DODGING_BACKWARD, fallback);
+  createEquipmentAnimation(equipment, State::DODGING_FORWARD, fallback);
   createEquipmentAnimation(equipment, State::ATTACKING, fallback);
   createEquipmentAnimation(equipment, State::ATTACKING_CROUCH, _equipmentAnimations[type][State::ATTACKING]);
   createEquipmentAnimation(equipment, State::ATTACKING_FORWARD, _equipmentAnimations[type][State::ATTACKING]);
@@ -545,6 +555,10 @@ Character::State Character::determineState() const {
     return State::SHEATHING_WEAPON;
   } else if (_isUnsheathingWeapon) {
     return State::UNSHEATHING_WEAPON;
+  } else if (_isDodgingBackward) {
+    return State::DODGING_BACKWARD;
+  } else if (_isDodgingForward) {
+    return State::DODGING_FORWARD;
   } else if (_body->GetLinearVelocity().y < -2.5f) {
     return _isWeaponSheathed ? State::FALLING_SHEATHED : State::FALLING_UNSHEATHED;
   } else if (_isJumping) {
@@ -641,7 +655,7 @@ void Character::jump() {
 
   _isJumpingDisallowed = true;
   CallbackManager::the().runAfter([this]() {
-      _isJumpingDisallowed = false;
+    _isJumpingDisallowed = false;
   }, .2f);
 
   _isJumping = true;
@@ -696,6 +710,52 @@ void Character::unsheathWeapon() {
     _isUnsheathingWeapon = false;
     _isWeaponSheathed = false;
   }, .8f);
+}
+
+void Character::dodgeBackward() {
+  if (isDodging()) {
+    return;
+  }
+
+  _isDodgingBackward = true;
+  _isInvincible = true;
+  _isAfterImageFxEnabled = true;
+
+  const float dashPower = _isFacingRight ? -5.0f : 5.0f;
+  _body->SetLinearVelocity({dashPower, 0.f});
+
+  const float oldBodyDamping = _body->GetLinearDamping();
+  _body->SetLinearDamping(4.0f);
+
+  CallbackManager::the().runAfter([this, oldBodyDamping]() {
+    _body->SetLinearDamping(oldBodyDamping);
+    _isAfterImageFxEnabled = false;
+    _isInvincible = false;
+    _isDodgingBackward = false;
+  }, _bodyAnimations[State::DODGING_BACKWARD]->getDuration());
+}
+
+void Character::dodgeForward() {
+  if (isDodging()) {
+    return;
+  }
+
+  _isDodgingForward = true;
+  _isInvincible = true;
+  _isAfterImageFxEnabled = true;
+
+  const float dashPower = _isFacingRight ? 7.0f : -7.0f;
+  _body->SetLinearVelocity({dashPower, 0.f});
+
+  const float oldBodyDamping = _body->GetLinearDamping();
+  _body->SetLinearDamping(4.0f);
+
+  CallbackManager::the().runAfter([this, oldBodyDamping]() {
+    _body->SetLinearDamping(oldBodyDamping);
+    _isAfterImageFxEnabled = false;
+    _isInvincible = false;
+    _isDodgingForward = false;
+  }, _bodyAnimations[State::DODGING_FORWARD]->getDuration());
 }
 
 bool Character::attack(const Character::State attackState,

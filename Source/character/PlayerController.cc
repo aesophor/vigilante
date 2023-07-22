@@ -20,6 +20,7 @@ constexpr auto kMoveRightKey = EventKeyboard::KeyCode::KEY_RIGHT_ARROW;
 constexpr auto kCrouchKey = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
 constexpr auto kJumpKey = EventKeyboard::KeyCode::KEY_LEFT_ALT;
 constexpr auto kSheatheUnsheatheWeaponKey = EventKeyboard::KeyCode::KEY_R;
+constexpr auto kDodgeKey = EventKeyboard::KeyCode::KEY_X;
 constexpr auto kAttackKey = EventKeyboard::KeyCode::KEY_LEFT_CTRL;
 constexpr auto kInteractKey = EventKeyboard::KeyCode::KEY_E;
 constexpr auto kPickupItemKey = EventKeyboard::KeyCode::KEY_Z;
@@ -56,6 +57,14 @@ void PlayerController::handleInput() {
     _player.moveLeft();
   } else if (IS_KEY_PRESSED(kMoveRightKey)) {
     _player.moveRight();
+  }
+
+  if (IS_KEY_JUST_PRESSED(kDodgeKey)) {
+    if (IS_KEY_PRESSED(kMoveLeftKey) || IS_KEY_PRESSED(kMoveRightKey)) {
+      _player.dodgeForward();
+    } else {
+      _player.dodgeBackward();
+    }
   }
 
   if (IS_KEY_JUST_PRESSED(kJumpKey)) {

@@ -44,6 +44,8 @@ class Character : public DynamicActor, public Importable {
     CROUCHING_UNSHEATHED,
     SHEATHING_WEAPON,
     UNSHEATHING_WEAPON,
+    DODGING_BACKWARD,
+    DODGING_FORWARD,
     ATTACKING,
     ATTACKING_CROUCH,
     ATTACKING_FORWARD,
@@ -137,9 +139,11 @@ class Character : public DynamicActor, public Importable {
   virtual void jumpDown();
   virtual void crouch();
   virtual void getUp();
-
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
+  virtual void dodgeBackward();
+  virtual void dodgeForward();
+
   virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,
                       const float damageInflictionInterval = .2f);
@@ -173,6 +177,9 @@ class Character : public DynamicActor, public Importable {
   inline bool isJumping() const { return _isJumping; }
   inline bool isDoubleJumping() const { return _isDoubleJumping; }
   inline bool isOnPlatform() const { return _isOnPlatform; }
+  inline bool isDodging() const { return _isDodgingBackward || _isDodgingForward; }
+  inline bool isDodgingBackward() const { return _isDodgingBackward; }
+  inline bool isDodgingForward() const { return _isDodgingForward; }
   inline bool isAttacking() const { return _isAttacking; }
   inline bool isUsingSkill() const { return _isUsingSkill; }
   inline bool isCrouching() const { return _isCrouching; }
@@ -239,6 +246,8 @@ class Character : public DynamicActor, public Importable {
     "crouching_unsheathed",
     "sheathing_weapon",
     "unsheathing_weapon",
+    "dodging_backward",
+    "dodging_forward",
     "attacking0",
     "attacking_crouch",
     "attacking_forward",
@@ -329,7 +338,9 @@ class Character : public DynamicActor, public Importable {
   bool _isJumping{};
   bool _isDoubleJumping{};
   bool _isOnPlatform{};
-  std::atomic<bool> _isAttacking{};
+  bool _isDodgingBackward{};
+  bool _isDodgingForward{};
+  bool _isAttacking{};
   bool _isUsingSkill{};
   bool _isCrouching{};
   bool _isInvincible{};
