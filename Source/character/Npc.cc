@@ -15,9 +15,9 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/trade/TradeWindow.h"
-#include "util/box2d/b2BodyBuilder.h"
-#include "util/RandUtil.h"
+#include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/RandUtil.h"
 #include "util/StringUtil.h"
 
 using namespace std;
@@ -114,7 +114,7 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
   // Besides the original fixtures created in Character::defineBody(),
   // create one extra fixture which can collide with player's feetFixture,
   // but make it a sensor. This is the interactable area of this Npc.
-  b2BodyBuilder bodyBuilder(_body);
+  B2BodyBuilder bodyBuilder{_body};
 
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.2;

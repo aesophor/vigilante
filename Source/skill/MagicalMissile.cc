@@ -10,7 +10,7 @@
 #include "character/Character.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
-#include "util/box2d/b2BodyBuilder.h"
+#include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
 
 using namespace std;
@@ -174,7 +174,7 @@ void MagicalMissile::defineBody(b2BodyType bodyType,
   spellOffset = (_user->isFacingRight()) ? spellOffset : -spellOffset;
 
   b2World* world = _user->getBody()->GetWorld();
-  b2BodyBuilder bodyBuilder(world);
+  B2BodyBuilder bodyBuilder(world);
 
   _body = bodyBuilder.type(bodyType)
     .position(x + spellOffset, y, 1)

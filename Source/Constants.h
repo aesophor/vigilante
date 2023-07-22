@@ -12,7 +12,7 @@ inline constexpr float kPpm = 100;
 inline constexpr int kVirtualWidth = 600;
 inline constexpr int kVirtualHeight = 300;
 
-inline constexpr float kDensity = 45.0f;
+inline constexpr float kDensity = 80.0f;
 inline constexpr int kGravity = -10;
 inline constexpr int kGroundFriction = 3;
 inline constexpr int kWallFriction = 0;

@@ -1,27 +1,27 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "b2BodyBuilder.h"
+#include "B2BodyBuilder.h"
 
 using namespace std;
 
 namespace vigilante {
 
-b2BodyBuilder& b2BodyBuilder::type(b2BodyType bodyType) {
+B2BodyBuilder& B2BodyBuilder::type(b2BodyType bodyType) {
   _bdef.type = bodyType;
   _bdef.fixedRotation = true;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::position(float x, float y, float ppm) {
+B2BodyBuilder& B2BodyBuilder::position(float x, float y, float ppm) {
   _bdef.position.Set(x / ppm, y / ppm);
   return *this;
 }
 
-b2Body* b2BodyBuilder::buildBody() {
+b2Body* B2BodyBuilder::buildBody() {
   _body = _world->CreateBody(&_bdef);
   return _body;
 }
 
-b2BodyBuilder& b2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm) {
+B2BodyBuilder& B2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm) {
   _shape = std::make_unique<b2PolygonShape>();
   _fdef.shape = _shape.get();
 
@@ -30,7 +30,7 @@ b2BodyBuilder& b2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm)
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t count, float ppm) {
+B2BodyBuilder& B2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t count, float ppm) {
   _shape = std::make_unique<b2PolygonShape>();
   _fdef.shape = _shape.get();
 
@@ -43,7 +43,7 @@ b2BodyBuilder& b2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t c
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t count, float ppm) {
+B2BodyBuilder& B2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t count, float ppm) {
   /*
   _shape = std::make_unique<b2ChainShape>();
   _fdef.shape = _shape.get();
@@ -66,7 +66,7 @@ b2BodyBuilder& b2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t 
   return newEdgeShapeFixture(vertices[0], vertices[1], ppm);
 }
 
-b2BodyBuilder& b2BodyBuilder::newEdgeShapeFixture(const b2Vec2& vertex1, const b2Vec2& vertex2, float ppm) {
+B2BodyBuilder& B2BodyBuilder::newEdgeShapeFixture(const b2Vec2& vertex1, const b2Vec2& vertex2, float ppm) {
   _shape = std::make_unique<b2EdgeShape>();
   _fdef.shape = _shape.get();
 
@@ -77,7 +77,7 @@ b2BodyBuilder& b2BodyBuilder::newEdgeShapeFixture(const b2Vec2& vertex1, const b
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::newCircleFixture(const b2Vec2& centerPos, int radius, float ppm) {
+B2BodyBuilder& B2BodyBuilder::newCircleFixture(const b2Vec2& centerPos, int radius, float ppm) {
   _shape = std::make_unique<b2CircleShape>();
   _fdef.shape = _shape.get();
 
@@ -88,42 +88,42 @@ b2BodyBuilder& b2BodyBuilder::newCircleFixture(const b2Vec2& centerPos, int radi
 }
 
 
-b2BodyBuilder& b2BodyBuilder::categoryBits(short categoryBits) {
+B2BodyBuilder& B2BodyBuilder::categoryBits(short categoryBits) {
   _fdef.filter.categoryBits = categoryBits;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::maskBits(short maskBits) {
+B2BodyBuilder& B2BodyBuilder::maskBits(short maskBits) {
   _fdef.filter.maskBits = maskBits;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::setSensor(bool isSensor) {
+B2BodyBuilder& B2BodyBuilder::setSensor(bool isSensor) {
   _fdef.isSensor = isSensor;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::friction(float friction) {
+B2BodyBuilder& B2BodyBuilder::friction(float friction) {
   _fdef.friction = friction;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::density(float density) {
+B2BodyBuilder& B2BodyBuilder::density(float density) {
   _fdef.density = density;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::restitution(float restitution) {
+B2BodyBuilder& B2BodyBuilder::restitution(float restitution) {
   _fdef.restitution = restitution;
   return *this;
 }
 
-b2BodyBuilder& b2BodyBuilder::setUserData(void* userData) {
+B2BodyBuilder& B2BodyBuilder::setUserData(void* userData) {
   _userData = userData;
   return *this;
 }
 
-b2Fixture* b2BodyBuilder::buildFixture() {
+b2Fixture* B2BodyBuilder::buildFixture() {
   _fixture = _body->CreateFixture(&_fdef);
   _fixture->GetUserData().pointer = reinterpret_cast<uintptr_t>(_userData);
   _fdef = b2FixtureDef{}; // Clear _fdef data

@@ -13,9 +13,9 @@
 #include "gameplay/ExpPointTable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
-#include "util/box2d/b2BodyBuilder.h"
-#include "util/RandUtil.h"
+#include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/RandUtil.h"
 #include "util/Logger.h"
 
 using namespace std;
@@ -245,8 +245,7 @@ void Character::defineBody(b2BodyType bodyType,
                            short feetMaskBits,
                            short weaponMaskBits) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  b2BodyBuilder bodyBuilder{gmMgr->getWorld()};
-
+  B2BodyBuilder bodyBuilder{gmMgr->getWorld()};
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)
     .buildBody();
@@ -262,7 +261,6 @@ void Character::defineBody(b2BodyType bodyType,
     {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
     { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
   };
-
   _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
@@ -271,14 +269,9 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 
   // Create feet fixture.
-  b2Vec2 feetVertices[] = {
-    {(-bw / 2 + 1) / scaleFactor, 0},
-    {( bw / 2 - 1) / scaleFactor, 0},
-    {(-bw / 2 + 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor},
-    {( bw / 2 - 1) / scaleFactor, (-bh / 2 - 1) / scaleFactor}
-  };
-
-  _fixtures[FixtureType::FEET] = bodyBuilder.newPolygonFixture(feetVertices, 4, kPpm)
+  const b2Vec2 feetFixtureCenter{0, -bh / 2 + bw / 2};
+  const float feetFixtureRadius = bw / 2;
+  _fixtures[FixtureType::FEET] = bodyBuilder.newCircleFixture(feetFixtureCenter, feetFixtureRadius, kPpm)
     .categoryBits(category_bits::kFeet)
     .maskBits(feetMaskBits)
     .density(kDensity)
@@ -286,7 +279,7 @@ void Character::defineBody(b2BodyType bodyType,
     .buildFixture();
 
   // Create weapon fixture.
-  float attackRange = _characterProfile.attackRange;
+  const float attackRange = _characterProfile.attackRange;
   _fixtures[FixtureType::WEAPON] = bodyBuilder.newCircleFixture({attackRange, 0}, attackRange, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(weaponMaskBits)
@@ -611,7 +604,7 @@ void Character::moveLeft() {
   }
 
   if (_body->GetLinearVelocity().x >= -_characterProfile.moveSpeed * 2) {
-    _body->ApplyLinearImpulse({-_characterProfile.moveSpeed, 0}, _body->GetWorldCenter(), true);
+    _body->ApplyLinearImpulseToCenter({-_characterProfile.moveSpeed, 0}, true);
   }
 }
 
@@ -623,7 +616,7 @@ void Character::moveRight() {
   }
 
   if (_body->GetLinearVelocity().x <= _characterProfile.moveSpeed * 2) {
-    _body->ApplyLinearImpulse({_characterProfile.moveSpeed, 0}, _body->GetWorldCenter(), true);
+    _body->ApplyLinearImpulseToCenter({_characterProfile.moveSpeed, 0}, true);
   }
 }
 

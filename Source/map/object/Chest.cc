@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
-#include "util/box2d/b2BodyBuilder.h"
+#include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
 
@@ -71,7 +71,7 @@ void Chest::defineBody(b2BodyType bodyType,
                        short categoryBits,
                        short maskBits) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  b2BodyBuilder bodyBuilder(gmMgr->getWorld());
+  B2BodyBuilder bodyBuilder(gmMgr->getWorld());
 
   _body = bodyBuilder.type(bodyType)
     .position(x, y, kPpm)

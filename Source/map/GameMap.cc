@@ -20,7 +20,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
-#include "util/box2d/b2BodyBuilder.h"
+#include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
 #include "util/StringUtil.h"
 #include "util/RandUtil.h"
@@ -142,7 +142,7 @@ list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryB
     float w = valMap.at("width").asFloat();
     float h = valMap.at("height").asFloat();
 
-    b2BodyBuilder bodyBuilder(_world);
+    B2BodyBuilder bodyBuilder(_world);
 
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
@@ -178,7 +178,7 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBi
       vertices[i] = {xRef + x, yRef - y};
     }
 
-    b2BodyBuilder bodyBuilder(_world);
+    B2BodyBuilder bodyBuilder(_world);
 
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(0, 0, kPpm)
@@ -207,7 +207,7 @@ void GameMap::createTriggers() {
     bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
     bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
 
-    b2BodyBuilder bodyBuilder(_world);
+    B2BodyBuilder bodyBuilder(_world);
 
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
@@ -239,7 +239,7 @@ void GameMap::createPortals() {
     bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
     bool isLocked = valMap.at("isLocked").asBool();
 
-    b2BodyBuilder bodyBuilder(_world);
+    B2BodyBuilder bodyBuilder(_world);
 
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)

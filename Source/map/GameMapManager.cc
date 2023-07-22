@@ -15,7 +15,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "skill/MagicalMissile.h"
-#include "util/box2d/b2BodyBuilder.h"
+#include "util/B2BodyBuilder.h"
 #include "util/StringUtil.h"
 
 using namespace std;
