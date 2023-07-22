@@ -14,7 +14,7 @@ inline constexpr int kVirtualHeight = 300;
 
 inline constexpr float kDensity = 80.0f;
 inline constexpr int kGravity = -10;
-inline constexpr int kGroundFriction = 3;
+inline constexpr float kGroundFriction = 2.5f;
 inline constexpr int kWallFriction = 0;
 
 inline constexpr int kIconSize = 16;
