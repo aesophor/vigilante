@@ -14,11 +14,11 @@ class TimedFiniteStateMachine final {
  public:
   using StateId = std::size_t;
   using DigraphType = Digraph<S, std::pair<StateId, T>>;
-  
+
   TimedFiniteStateMachine() {
     _digraph.addVertex(_initialState);
   }
-  
+
   StateId defineState(const S state) {
     return _digraph.addVertex(state);
   }
