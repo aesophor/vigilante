@@ -314,6 +314,8 @@ class Character : public DynamicActor, public Importable {
 
   Item* getExistingItemObj(Item* item) const;
 
+  void dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag);
+
   // Characater data.
   Character::Profile _characterProfile;
 

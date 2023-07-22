@@ -713,49 +713,34 @@ void Character::unsheathWeapon() {
 }
 
 void Character::dodgeBackward() {
-  if (isDodging()) {
-    return;
-  }
-
-  _isDodgingBackward = true;
-  _isInvincible = true;
-  _isAfterImageFxEnabled = true;
-
-  const float dashPower = _isFacingRight ? -5.0f : 5.0f;
-  _body->SetLinearVelocity({dashPower, 0.f});
-
-  const float oldBodyDamping = _body->GetLinearDamping();
-  _body->SetLinearDamping(4.0f);
-
-  CallbackManager::the().runAfter([this, oldBodyDamping]() {
-    _body->SetLinearDamping(oldBodyDamping);
-    _isAfterImageFxEnabled = false;
-    _isInvincible = false;
-    _isDodgingBackward = false;
-  }, _bodyAnimations[State::DODGING_BACKWARD]->getDuration());
+  constexpr float rushPowerX = -5.0f;
+  dodge(State::DODGING_BACKWARD, rushPowerX, _isDodgingBackward);
 }
 
 void Character::dodgeForward() {
+  constexpr float rushPowerX = 7.0f;
+  dodge(State::DODGING_FORWARD, rushPowerX, _isDodgingForward);
+}
+
+void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag) {
   if (isDodging()) {
     return;
   }
 
-  _isDodgingForward = true;
+  isDodgingFlag = true;
   _isInvincible = true;
   _isAfterImageFxEnabled = true;
 
-  const float dashPower = _isFacingRight ? 7.0f : -7.0f;
-  _body->SetLinearVelocity({dashPower, 0.f});
-
-  const float oldBodyDamping = _body->GetLinearDamping();
+  const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
+  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, 0.f});
 
-  CallbackManager::the().runAfter([this, oldBodyDamping]() {
-    _body->SetLinearDamping(oldBodyDamping);
+  CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag]() {
+    _body->SetLinearDamping(originalBodyDamping);
     _isAfterImageFxEnabled = false;
     _isInvincible = false;
-    _isDodgingForward = false;
-  }, _bodyAnimations[State::DODGING_FORWARD]->getDuration());
+    isDodgingFlag = false;
+  }, _bodyAnimations[dodgeState]->getDuration());
 }
 
 bool Character::attack(const Character::State attackState,
