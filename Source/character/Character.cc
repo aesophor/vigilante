@@ -252,10 +252,10 @@ void Character::defineBody(b2BodyType bodyType,
 
   // Create body fixture.
   // Fixture position in box2d is relative to b2body's position.
-  float scaleFactor = Director::getInstance()->getContentScaleFactor();
-  float bw = _characterProfile.bodyWidth;
-  float bh = _characterProfile.bodyHeight;
-  b2Vec2 vertices[] = {
+  const float scaleFactor = Director::getInstance()->getContentScaleFactor();
+  const float bw = _characterProfile.bodyWidth;
+  const float bh = _characterProfile.bodyHeight;
+  const b2Vec2 vertices[] = {
     {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
     { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
     {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
