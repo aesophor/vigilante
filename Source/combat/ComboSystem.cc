@@ -29,9 +29,9 @@ ComboSystem::ComboSystem(Character& c) : _character{c} {
 
   _fsm.defineStateTransition(v0, v1, {});
   _fsm.defineStateTransition(v1, v2, {});
+  _fsm.defineStateTransition(v2, v4, {EventKeyboard::KeyCode::KEY_UP_ARROW});
   _fsm.defineStateTransition(v2, v3, {EventKeyboard::KeyCode::KEY_LEFT_ARROW});
   _fsm.defineStateTransition(v2, v3, {EventKeyboard::KeyCode::KEY_RIGHT_ARROW});
-  _fsm.defineStateTransition(v2, v4, {EventKeyboard::KeyCode::KEY_UP_ARROW});
   _fsm.defineStateTransition(v4, v5, {EventKeyboard::KeyCode::KEY_LEFT_ARROW});
   _fsm.defineStateTransition(v4, v5, {EventKeyboard::KeyCode::KEY_RIGHT_ARROW});
 }
