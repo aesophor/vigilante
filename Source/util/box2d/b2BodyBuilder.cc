@@ -21,7 +21,6 @@ b2Body* b2BodyBuilder::buildBody() {
   return _body;
 }
 
-
 b2BodyBuilder& b2BodyBuilder::newRectangleFixture(float hw, float hh, float ppm) {
   _shape = std::make_unique<b2PolygonShape>();
   _fdef.shape = _shape.get();
@@ -54,13 +53,13 @@ b2BodyBuilder& b2BodyBuilder::newPolylineFixture(const b2Vec2* vertices, size_t 
   for (size_t i = 0; i < count; i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
   }
-  
+
   b2Vec2 prevVertex, nextVertex;
   // provide your own logic to decide the prevVertex and nextVertex
   // e.g., if you just want to use the first and last vertices:
   prevVertex = scaledVertices[count - 1];
   nextVertex = scaledVertices[0];
-  
+
   shape->CreateChain(scaledVertices, count, prevVertex, nextVertex);
   return *this;
   */
