@@ -50,7 +50,7 @@ void PlayerController::handleInput() {
   if (IS_KEY_PRESSED(kCrouchKey)) {
     _player.crouch();
   } else if (_player.isCrouching()) {
-    _player.getUp();
+    _player.getUpFromCrouching();
   }
 
   if (IS_KEY_PRESSED(kMoveLeftKey)) {

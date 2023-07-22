@@ -198,6 +198,9 @@ void Character::update(float delta) {
       case State::FALLING_UNSHEATHED:
         runAnimation(State::FALLING_UNSHEATHED, false);
         break;
+      case State::FALLING_GETUP:
+        runAnimation(State::FALLING_GETUP, false);
+        break;
       case State::CROUCHING_SHEATHED:
         runAnimation(State::CROUCHING_SHEATHED, false);
         break;
@@ -327,6 +330,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::RUNNING_STOP, fallback);
   createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
   createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
+  createBodyAnimation(State::FALLING_GETUP, fallback);
   createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
   createBodyAnimation(State::DODGING_BACKWARD, fallback);
   createBodyAnimation(State::DODGING_FORWARD, fallback);
@@ -383,6 +387,7 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::RUNNING_STOP, fallback);
   createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_GETUP, fallback);
   createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
   createEquipmentAnimation(equipment, State::DODGING_BACKWARD, fallback);
@@ -562,6 +567,8 @@ float Character::getAttackAnimationDuration(const Character::State state) const 
 Character::State Character::determineState() const {
   if (_isSetToKill) {
     return State::KILLED;
+  } else if (_isGettingUpFromFalling) {
+    return State::FALLING_GETUP;
   } else if (_isAttacking) {
     return determineAttackState();
   } else if (_isSheathingWeapon) {
@@ -643,6 +650,10 @@ void Character::onKilled() {
 }
 
 void Character::onFallToGroundOrPlatform() {
+  if (_body->GetLinearVelocity().y < -5.f) {
+    getUpFromFalling();
+  }
+
   if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP)) {
     Audio::the().playSfx(*sfxFileName);
   }
@@ -665,7 +676,7 @@ void Character::stopRunning() {
 void Character::moveLeft() {
   _isFacingRight = false;
 
-  if (_isCrouching) {
+  if (_isCrouching || _isGettingUpFromFalling) {
     return;
   }
 
@@ -682,7 +693,7 @@ void Character::moveLeft() {
 void Character::moveRight() {
   _isFacingRight = true;
 
-  if (_isCrouching) {
+  if (_isCrouching || _isGettingUpFromFalling) {
     return;
   }
 
@@ -752,8 +763,16 @@ void Character::crouch() {
   _isCrouching = true;
 }
 
-void Character::getUp() {
+void Character::getUpFromCrouching() {
   _isCrouching = false;
+}
+
+void Character::getUpFromFalling() {
+  _isGettingUpFromFalling = true;
+
+  CallbackManager::the().runAfter([this]() {
+    _isGettingUpFromFalling = false;
+  }, _bodyAnimations[State::FALLING_GETUP]->getDuration());
 }
 
 void Character::sheathWeapon() {
@@ -813,8 +832,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  // If character is still attacking, block this attack request.
-  if (_isAttacking || isAttackState(_currentState)) {
+  if (_isAttacking || isAttackState(_currentState) || _isGettingUpFromFalling) {
     return false;
   }
 

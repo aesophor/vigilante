@@ -42,6 +42,7 @@ class Character : public DynamicActor, public Importable {
     JUMPING_UNSHEATHED,
     FALLING_SHEATHED,
     FALLING_UNSHEATHED,
+    FALLING_GETUP,
     CROUCHING_SHEATHED,
     CROUCHING_UNSHEATHED,
     SHEATHING_WEAPON,
@@ -142,7 +143,8 @@ class Character : public DynamicActor, public Importable {
   virtual void doubleJump();
   virtual void jumpDown();
   virtual void crouch();
-  virtual void getUp();
+  virtual void getUpFromCrouching();
+  virtual void getUpFromFalling();
   virtual void sheathWeapon();
   virtual void unsheathWeapon();
   virtual void dodgeBackward();
@@ -248,6 +250,7 @@ class Character : public DynamicActor, public Importable {
     "jumping_unsheathed",
     "falling_sheathed",
     "falling_unsheathed",
+    "falling_getup",
     "crouching_sheathed",
     "crouching_unsheathed",
     "sheathing_weapon",
@@ -350,6 +353,7 @@ class Character : public DynamicActor, public Importable {
   bool _isJumping{};
   bool _isDoubleJumping{};
   bool _isOnPlatform{};
+  bool _isGettingUpFromFalling{};
   bool _isDodgingBackward{};
   bool _isDodgingForward{};
   bool _isAttacking{};
