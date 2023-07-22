@@ -169,13 +169,22 @@ void Character::update(float delta) {
   _previousState = _currentState;
   _currentState = determineState();
 
+  maybeOverrideCurrentStateWithStopRunningState();
+  _previousBodyVelocity = _body->GetLinearVelocity();
+
   if (_previousState != _currentState) {
     switch(_currentState) {
+      case State::RUNNING_START:
+        runAnimation(State::RUNNING_START, false);
+        break;
       case State::RUNNING_SHEATHED:
         runAnimation(State::RUNNING_SHEATHED, true);
         break;
       case State::RUNNING_UNSHEATHED:
         runAnimation(State::RUNNING_UNSHEATHED, true);
+        break;
+      case State::RUNNING_STOP:
+        runAnimation(State::RUNNING_STOP, false);
         break;
       case State::JUMPING_SHEATHED:
         runAnimation(State::JUMPING_SHEATHED, false);
@@ -313,7 +322,9 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::UNSHEATHING_WEAPON, fallback);
 
   createBodyAnimation(State::IDLE_UNSHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_START, fallback);
   createBodyAnimation(State::RUNNING_UNSHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_STOP, fallback);
   createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
   createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
   createBodyAnimation(State::CROUCHING_UNSHEATHED, fallback);
@@ -360,18 +371,20 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::IDLE_SHEATHED, nullptr);
   Animation* fallback = _equipmentAnimations[type][State::IDLE_SHEATHED];
 
-  createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
-
   createEquipmentAnimation(equipment, State::RUNNING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::JUMPING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::FALLING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::CROUCHING_SHEATHED, fallback);
   createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
+
+  createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_START, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_STOP, fallback);
+  createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::CROUCHING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::UNSHEATHING_WEAPON, fallback);
   createEquipmentAnimation(equipment, State::DODGING_BACKWARD, fallback);
   createEquipmentAnimation(equipment, State::DODGING_FORWARD, fallback);
   createEquipmentAnimation(equipment, State::ATTACKING, fallback);
@@ -565,6 +578,10 @@ Character::State Character::determineState() const {
     return _isWeaponSheathed ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED;
   } else if (_isCrouching) {
     return _isWeaponSheathed ? State::CROUCHING_SHEATHED : State::CROUCHING_UNSHEATHED;
+  } else if (_isStartRunning) {
+    return State::RUNNING_START;
+  } else if (_isStopRunning) {
+    return State::RUNNING_STOP;
   } else if (std::abs(_body->GetLinearVelocity().x) > .01f) {
     return _isWeaponSheathed ? State::RUNNING_SHEATHED : State::RUNNING_UNSHEATHED;
   } else {
@@ -584,6 +601,27 @@ Character::State Character::determineAttackState() const {
     return State::ATTACKING_MIDAIR;
   }
   return State::ATTACKING;
+}
+
+void Character::maybeOverrideCurrentStateWithStopRunningState() {
+  bool needToStopRunning = true;
+  const b2Vec2 currentBodyVelocity = _body->GetLinearVelocity();
+  if (std::abs(currentBodyVelocity.x) >= _characterProfile.moveSpeed * 4) {
+    needToStopRunning = true;
+  }
+
+  if (!needToStopRunning) {
+    return;
+  }
+
+  constexpr float kThreshold = .01f;
+  const bool isMovingForward = (_isFacingRight && currentBodyVelocity.x > 0) ||
+                               (!_isFacingRight && currentBodyVelocity.x < 0);
+  if (std::abs(_previousBodyVelocity.x) >= kThreshold &&
+      std::abs(currentBodyVelocity.x) < kThreshold &&
+      isMovingForward) {
+    stopRunning();
+  }
 }
 
 optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
@@ -610,6 +648,20 @@ void Character::onFallToGroundOrPlatform() {
   }
 }
 
+void Character::startRunning() {
+  _isStartRunning = true;
+  CallbackManager::the().runAfter([this]() {
+    _isStartRunning = false;
+  }, _bodyAnimations[State::RUNNING_START]->getDuration());
+}
+
+void Character::stopRunning() {
+  _isStopRunning = true;
+  CallbackManager::the().runAfter([this]() {
+    _isStopRunning = false;
+  }, _bodyAnimations[State::RUNNING_STOP]->getDuration());
+}
+
 void Character::moveLeft() {
   _isFacingRight = false;
 
@@ -617,7 +669,12 @@ void Character::moveLeft() {
     return;
   }
 
-  if (_body->GetLinearVelocity().x >= -_characterProfile.moveSpeed * 2) {
+  const b2Vec2& velocity = _body->GetLinearVelocity();
+  if (velocity.x == 0) {
+    startRunning();
+  }
+
+  if (velocity.x >= -_characterProfile.moveSpeed * 2) {
     _body->ApplyLinearImpulseToCenter({-_characterProfile.moveSpeed, 0}, true);
   }
 }
@@ -629,7 +686,12 @@ void Character::moveRight() {
     return;
   }
 
-  if (_body->GetLinearVelocity().x <= _characterProfile.moveSpeed * 2) {
+  const b2Vec2& velocity = _body->GetLinearVelocity();
+  if (velocity.x == 0) {
+    startRunning();
+  }
+
+  if (velocity.x <= _characterProfile.moveSpeed * 2) {
     _body->ApplyLinearImpulseToCenter({_characterProfile.moveSpeed, 0}, true);
   }
 }
@@ -647,7 +709,7 @@ void Character::jump() {
 
   if (_isJumping) {
     _isDoubleJumping = true;
-    runAnimation((_isWeaponSheathed) ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED, false);
+    runAnimation(_isWeaponSheathed ? State::JUMPING_SHEATHED : State::JUMPING_UNSHEATHED, false);
     // Set velocity.y to 0.
     const b2Vec2& velocity = _body->GetLinearVelocity();
     _body->SetLinearVelocity({velocity.x, 0});
@@ -733,7 +795,7 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
-  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, 0.f});
+  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, .6f});
 
   CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag]() {
     _body->SetLinearDamping(originalBodyDamping);

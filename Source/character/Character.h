@@ -34,8 +34,10 @@ class Character : public DynamicActor, public Importable {
   enum State {
     IDLE_SHEATHED,
     IDLE_UNSHEATHED,
+    RUNNING_START,
     RUNNING_SHEATHED,
     RUNNING_UNSHEATHED,
+    RUNNING_STOP,
     JUMPING_SHEATHED,
     JUMPING_UNSHEATHED,
     FALLING_SHEATHED,
@@ -132,6 +134,8 @@ class Character : public DynamicActor, public Importable {
   virtual void onFallToGroundOrPlatform();
   virtual void onMapChanged() {}
 
+  virtual void startRunning();
+  virtual void stopRunning();
   virtual void moveLeft();
   virtual void moveRight();
   virtual void jump();
@@ -236,8 +240,10 @@ class Character : public DynamicActor, public Importable {
   static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
     "idle_sheathed",
     "idle_unsheathed",
+    "running_start",
     "running_sheathed",
     "running_unsheathed",
+    "running_stop",
     "jumping_sheathed",
     "jumping_unsheathed",
     "falling_sheathed",
@@ -310,6 +316,7 @@ class Character : public DynamicActor, public Importable {
 
   Character::State determineState() const;
   Character::State determineAttackState() const;
+  void maybeOverrideCurrentStateWithStopRunningState();
   std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
 
   Item* getExistingItemObj(Item* item) const;
@@ -331,11 +338,14 @@ class Character : public DynamicActor, public Importable {
   Character::State _currentState{State::IDLE_SHEATHED};
   Character::State _previousState{State::IDLE_SHEATHED};
   std::optional<Character::State> _overridingAttackState{std::nullopt};
+  b2Vec2 _previousBodyVelocity{0.0f, 0.0f};
 
   bool _isFacingRight{true};
   bool _isWeaponSheathed{false};
   bool _isSheathingWeapon{};
   bool _isUnsheathingWeapon{};
+  bool _isStartRunning{};
+  bool _isStopRunning{};
   bool _isJumpingDisallowed{};
   bool _isJumping{};
   bool _isDoubleJumping{};
