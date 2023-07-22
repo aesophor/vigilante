@@ -34,9 +34,9 @@ class Character : public DynamicActor, public Importable {
   enum State {
     IDLE_SHEATHED,
     IDLE_UNSHEATHED,
-    RUNNING_START,
     RUNNING_SHEATHED,
     RUNNING_UNSHEATHED,
+    RUNNING_START,
     RUNNING_STOP,
     JUMPING_SHEATHED,
     JUMPING_UNSHEATHED,
@@ -242,9 +242,9 @@ class Character : public DynamicActor, public Importable {
   static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
     "idle_sheathed",
     "idle_unsheathed",
-    "running_start",
     "running_sheathed",
     "running_unsheathed",
+    "running_start",
     "running_stop",
     "jumping_sheathed",
     "jumping_unsheathed",

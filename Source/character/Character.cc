@@ -325,8 +325,8 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::UNSHEATHING_WEAPON, fallback);
 
   createBodyAnimation(State::IDLE_UNSHEATHED, fallback);
-  createBodyAnimation(State::RUNNING_START, fallback);
   createBodyAnimation(State::RUNNING_UNSHEATHED, fallback);
+  createBodyAnimation(State::RUNNING_START, _bodyAnimations[State::RUNNING_UNSHEATHED]);
   createBodyAnimation(State::RUNNING_STOP, fallback);
   createBodyAnimation(State::JUMPING_UNSHEATHED, fallback);
   createBodyAnimation(State::FALLING_UNSHEATHED, fallback);
@@ -382,8 +382,8 @@ void Character::loadEquipmentAnimations(Equipment* equipment) {
   createEquipmentAnimation(equipment, State::SHEATHING_WEAPON, fallback);
 
   createEquipmentAnimation(equipment, State::IDLE_UNSHEATHED, fallback);
-  createEquipmentAnimation(equipment, State::RUNNING_START, fallback);
   createEquipmentAnimation(equipment, State::RUNNING_UNSHEATHED, fallback);
+  createEquipmentAnimation(equipment, State::RUNNING_START, fallback);
   createEquipmentAnimation(equipment, State::RUNNING_STOP, fallback);
   createEquipmentAnimation(equipment, State::JUMPING_UNSHEATHED, fallback);
   createEquipmentAnimation(equipment, State::FALLING_UNSHEATHED, fallback);
