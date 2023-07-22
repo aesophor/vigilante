@@ -650,7 +650,7 @@ void Character::onKilled() {
 }
 
 void Character::onFallToGroundOrPlatform() {
-  if (_body->GetLinearVelocity().y < -5.f) {
+  if (_body->GetLinearVelocity().y < -4.5f) {
     getUpFromFalling();
   }
 
