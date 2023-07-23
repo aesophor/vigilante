@@ -812,6 +812,8 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   _isInvincible = true;
   _isAfterImageFxEnabled = true;
 
+  _comboSystem->reset();
+
   const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
   _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, .6f});

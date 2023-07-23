@@ -66,11 +66,16 @@ class TimedFiniteStateMachine final {
 
 class ComboSystem final {
   using StateTransitionRequirement = std::list<ax::EventKeyboard::KeyCode>;
-  
+
  public:
   explicit ComboSystem(Character& c);
 
   void update(float delta) { _fsm.update(delta); }
+  void reset() {
+    _fsm.resetCurrentStateId();
+    _fsm.setTimer(0.0f);
+  }
+
   std::optional<Character::State> determineNextAttackState();
 
  private:
