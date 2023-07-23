@@ -942,6 +942,10 @@ bool Character::receiveDamage(Character* source, int damage) {
     return false;
   }
 
+  if (source->isSetToKill() || source->isKilled()) {
+    return false;
+  }
+
   if (_isInvincible) {
     return true;
   }
