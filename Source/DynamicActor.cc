@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DynamicActor.h"
 
+#include <algorithm>
+
 #include "Constants.h"
 #include "map/GameMapManager.h"
 
@@ -31,8 +33,11 @@ void DynamicActor::destroyBody() {
   if (!_body) {
     return;
   }
+
   _body->GetWorld()->DestroyBody(_body);
   _body = nullptr;
+
+  std::fill(_fixtures.begin(), _fixtures.end(), nullptr);
 }
 
 void DynamicActor::setCategoryBits(b2Fixture* fixture, const short categoryBits) {
