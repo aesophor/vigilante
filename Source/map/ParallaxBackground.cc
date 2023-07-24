@@ -106,7 +106,7 @@ bool ParallaxBackground::load(const fs::path& bgDirPath) {
 
     const auto& winSize = Director::getInstance()->getWinSize();
     const int z = i;
-    const Vec2 parallaxRatio{(3.f * (i + .01f)) / kPpm, 0};
+    const Vec2 parallaxRatio{(1.5f * (i + .01f)) / kPpm, 0};
     const Vec2 position{winSize.width / 2, winSize.height / 2};
     const Vec2 scale{1.4f, 1.4f};
     _parallaxNode->addLayer(bgPath, i, parallaxRatio, position, scale);
