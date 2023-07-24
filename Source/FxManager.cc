@@ -14,6 +14,10 @@ USING_NS_AX;
 namespace vigilante {
 
 void FxManager::createDustFx(const Character* c) {
+  if (!c) {
+    return;
+  }
+
   const b2Vec2& bodyPos = c->getBody()->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = (bodyPos.y - .1f) * kPpm;
@@ -21,6 +25,10 @@ void FxManager::createDustFx(const Character* c) {
 }
 
 void FxManager::createHitFx(const Character* c) {
+  if (!c) {
+    return;
+  }
+
   const b2Vec2& bodyPos = c->getBody()->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = bodyPos.y * kPpm;
@@ -29,6 +37,10 @@ void FxManager::createHitFx(const Character* c) {
 
 Sprite* FxManager::createHintBubbleFx(const b2Body* body,
                                       const string& framesName) {
+  if (!body) {
+    return;
+  }
+
   const b2Vec2& bodyPos = body->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
