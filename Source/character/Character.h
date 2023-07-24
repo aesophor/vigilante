@@ -295,6 +295,9 @@ class Character : public DynamicActor, public Importable {
                           short bodyMaskBits=0,
                           short feetMaskBits=0,
                           short weaponMaskBits=0);
+  virtual void redefineBodyFixture(short bodyCategoryBits = 0, short bodyMaskBits = 0);
+  virtual void redefineFeetFixture(short feetMaskBits = 0);
+  virtual void redefineWeaponFixture(short weaponMaskBits = 0);
 
   virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
 

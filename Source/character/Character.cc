@@ -116,15 +116,13 @@ void Character::update(float delta) {
     }
   }
 
-  // Flip the sprite if needed.
+  // Flip the sprite and weapon fixture if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
-    auto shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
-    shape->m_p = {-_characterProfile.attackRange / kPpm, 0};
+    redefineWeaponFixture();
   } else if (_isFacingRight && _bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(false);
-    auto shape = static_cast<b2CircleShape*>(_fixtures[FixtureType::WEAPON]->GetShape());
-    shape->m_p = {_characterProfile.attackRange / kPpm, 0};
+    redefineWeaponFixture();
   }
 
   const b2Vec2& b2bodyPos = _body->GetPosition();
@@ -268,37 +266,103 @@ void Character::defineBody(b2BodyType bodyType,
     .position(x, y, kPpm)
     .buildBody();
 
-  // Create body fixture.
-  // Fixture position in box2d is relative to b2body's position.
+  redefineBodyFixture(bodyCategoryBits, bodyMaskBits);
+  redefineFeetFixture(feetMaskBits);
+  redefineWeaponFixture(weaponMaskBits);
+}
+
+void Character::redefineBodyFixture(short bodyCategoryBits, short bodyMaskBits) {
+  if (_fixtures[FixtureType::BODY]) {
+    bodyCategoryBits = _fixtures[FixtureType::BODY]->GetFilterData().categoryBits;
+    bodyMaskBits = _fixtures[FixtureType::BODY]->GetFilterData().maskBits;
+
+    _body->DestroyFixture(_fixtures[FixtureType::BODY]);
+    _fixtures[FixtureType::BODY] = nullptr;
+  }
+
   const float scaleFactor = Director::getInstance()->getContentScaleFactor();
   const float bw = _characterProfile.bodyWidth;
   const float bh = _characterProfile.bodyHeight;
-  const b2Vec2 vertices[] = {
+
+  const b2Vec2 standingBodyVertices[] = {
     {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
     { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
     {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
     { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
   };
+
+  const b2Vec2 crouchingBodyVertices[] = {
+    {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
+    { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
+    {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
+    { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
+  };
+
+  const b2Vec2 *vertices = _isCrouching ? crouchingBodyVertices : standingBodyVertices;
+
+  B2BodyBuilder bodyBuilder{_body};
   _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
     .setSensor(true)
     .setUserData(this)
     .buildFixture();
+}
 
-  // Create feet fixture.
-  const b2Vec2 feetFixtureCenter{0, -bh / 2 + bw / 2};
+void Character::redefineFeetFixture(short feetMaskBits) {
+  if (_fixtures[FixtureType::FEET]) {
+    feetMaskBits = _fixtures[FixtureType::FEET]->GetFilterData().maskBits;
+
+    _body->DestroyFixture(_fixtures[FixtureType::BODY]);
+    _fixtures[FixtureType::BODY] = nullptr;
+  }
+
+  const float bw = _characterProfile.bodyWidth;
+  const float bh = _characterProfile.bodyHeight;
   const float feetFixtureRadius = bw / 2;
+  const b2Vec2 feetFixtureCenter{0, -bh / 2 + bw / 2};
+
+  B2BodyBuilder bodyBuilder{_body};
   _fixtures[FixtureType::FEET] = bodyBuilder.newCircleFixture(feetFixtureCenter, feetFixtureRadius, kPpm)
     .categoryBits(category_bits::kFeet)
     .maskBits(feetMaskBits)
     .density(kDensity)
     .setUserData(this)
     .buildFixture();
+}
 
-  // Create weapon fixture.
+void Character::redefineWeaponFixture(short weaponMaskBits) {
+  if (_fixtures[FixtureType::WEAPON]) {
+    weaponMaskBits = _fixtures[FixtureType::WEAPON]->GetFilterData().maskBits;
+
+    _body->DestroyFixture(_fixtures[FixtureType::WEAPON]);
+    _fixtures[FixtureType::WEAPON] = nullptr;
+  }
+
+  const float scaleFactor = Director::getInstance()->getContentScaleFactor();
+  const float bw = _characterProfile.bodyWidth;
+  const float bh = _characterProfile.bodyHeight;
   const float attackRange = _characterProfile.attackRange;
-  _fixtures[FixtureType::WEAPON] = bodyBuilder.newCircleFixture({attackRange, 0}, attackRange, kPpm)
+
+  const float x0 = _isFacingRight ? (bw / 2 / scaleFactor) : (-bw / 2 / scaleFactor);
+  const float x1 = _isFacingRight ? (bw / 2 + attackRange) : (-bw / 2 - attackRange);
+  const float x2 = _isFacingRight ? (bw / 2 / scaleFactor) : (-bw / 2 / scaleFactor);
+  const float x3 = _isFacingRight ? (bw / 2 + attackRange) : (-bw / 2 - attackRange);
+
+  const float y0 = _isCrouching ? (bh / 4 / scaleFactor) : (bh / 2 / scaleFactor);
+  const float y1 = _isCrouching ? (bh / 4 / scaleFactor) : (bh / 2 / scaleFactor);
+  const float y2 = _isCrouching ? (-bh / 2 / scaleFactor) : 0;
+  const float y3 = _isCrouching ? (-bh / 2 / scaleFactor) : 0;
+
+  const b2Vec2 weaponVertices[] = {
+    {x0, y0},
+    {x1, y1},
+    {x2, y2},
+    {x3, y3}
+  };
+
+  B2BodyBuilder bodyBuilder{_body};
+  _fixtures[FixtureType::WEAPON] = bodyBuilder.newPolygonFixture(weaponVertices, 4, kPpm)
     .categoryBits(category_bits::kMeleeWeapon)
     .maskBits(weaponMaskBits)
     .setSensor(true)
@@ -756,15 +820,25 @@ void Character::jumpDown() {
 }
 
 void Character::crouch() {
-  if (_isJumping) {
+  if (_isCrouching || _isJumping) {
     return;
   }
 
   _isCrouching = true;
+
+  redefineBodyFixture();
+  redefineWeaponFixture();
 }
 
 void Character::getUpFromCrouching() {
+  if (!_isCrouching) {
+    return;
+  }
+
   _isCrouching = false;
+
+  redefineBodyFixture();
+  redefineWeaponFixture();
 }
 
 void Character::getUpFromFalling() {
