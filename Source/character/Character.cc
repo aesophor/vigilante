@@ -878,7 +878,7 @@ void Character::dodgeForward() {
 }
 
 void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag) {
-  if (isDodging()) {
+  if (isDodging() || isDoubleJumping()) {
     return;
   }
 
