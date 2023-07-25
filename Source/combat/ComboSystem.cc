@@ -37,10 +37,15 @@ ComboSystem::ComboSystem(Character& c) : _character{c} {
 }
 
 optional<Character::State> ComboSystem::determineNextAttackState() {
-  const auto& reqs = _fsm.getAllNextStatesAndTransitionRequirements(_fsm.getCurrentStateId());
+  auto reqs = _fsm.getAllNextStatesAndTransitionRequirements(_fsm.getCurrentStateId());
   if (reqs.empty()) {
-    _fsm.resetCurrentStateId();
-    return nullopt;
+    reset();
+    reqs = _fsm.getAllNextStatesAndTransitionRequirements(_fsm.getCurrentStateId());
+  }
+
+  if (reqs.empty()) {
+    VGLOG(LOG_ERR, "Failed to perform combo state transition.");
+    return std::nullopt;
   }
 
   auto isKeyPressed = [](const EventKeyboard::KeyCode keyCode) -> bool {
@@ -54,7 +59,6 @@ optional<Character::State> ComboSystem::determineNextAttackState() {
     }
   }
 
-  _fsm.resetCurrentStateId();
   return nullopt;
 }
 
