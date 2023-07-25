@@ -284,24 +284,25 @@ void Character::redefineBodyFixture(short bodyCategoryBits, short bodyMaskBits) 
   const float bw = _characterProfile.bodyWidth;
   const float bh = _characterProfile.bodyHeight;
 
-  const b2Vec2 standingBodyVertices[] = {
-    {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
-    { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
-    {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
-    { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
-  };
+  const float x0 = -bw / 2 / scaleFactor;
+  const float x1 = bw / 2 / scaleFactor;
+  const float x2 = -bw / 2 / scaleFactor;
+  const float x3 = bw / 2 / scaleFactor;
 
-  const b2Vec2 crouchingBodyVertices[] = {
-    {-bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
-    { bw / 2 / scaleFactor,  bh / 2 / scaleFactor},
-    {-bw / 2 / scaleFactor, -bh / 2 / scaleFactor},
-    { bw / 2 / scaleFactor, -bh / 2 / scaleFactor}
-  };
+  const float y0 = _isCrouching ? 0 : (bh / 2 / scaleFactor);
+  const float y1 = _isCrouching ? 0 : (bh / 2 / scaleFactor);
+  const float y2 = -bh / 2 / scaleFactor;
+  const float y3 = -bh / 2 / scaleFactor;
 
-  const b2Vec2 *vertices = _isCrouching ? crouchingBodyVertices : standingBodyVertices;
+  const b2Vec2 bodyVertices[] = {
+    {x0, y0},
+    {x1, y1},
+    {x2, y2},
+    {x3, y3}
+  };
 
   B2BodyBuilder bodyBuilder{_body};
-  _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
+  _fixtures[FixtureType::BODY] = bodyBuilder.newPolygonFixture(bodyVertices, 4, kPpm)
     .categoryBits(bodyCategoryBits)
     .maskBits(bodyMaskBits)
     .setSensor(true)
