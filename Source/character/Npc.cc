@@ -45,9 +45,12 @@ Npc::Npc(const string& jsonFileName)
       _npcProfile{jsonFileName},
       _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
       _disposition{_npcProfile.disposition},
-      _isSandboxing{_npcProfile.shouldSandbox} {
+      _npcController(*this) {
   if (_npcProfile.isUnsheathed) {
     unsheathWeapon();
+  }
+  if (_npcProfile.shouldSandbox) {
+    _npcController.setSandboxing(_npcProfile.shouldSandbox);
   }
 }
 
@@ -149,7 +152,7 @@ void Npc::onKilled() {
 }
 
 void Npc::onMapChanged() {
-  clearMoveDest();
+  _npcController.clearMoveDest();
 
   if (_isKilled && _party) {
     _party->dismiss(this, /*addToMap=*/false);
@@ -242,12 +245,26 @@ void Npc::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
-void Npc::dropItems() {
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+void Npc::teleportToTarget(Character* target) {
+  if (!target->getBody()) {
+    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
+                    target->getCharacterProfile().name.c_str());
+    return;
+  }
 
+  teleportToTarget(target->getBody()->GetPosition());
+}
+
+void Npc::teleportToTarget(const b2Vec2& targetPos) {
+  setPosition(targetPos.x, targetPos.y);
+}
+
+void Npc::dropItems() {
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
-  CallbackManager::the().runAfter([=]() {
+  CallbackManager::the().runAfter([this]() {
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+
     for (const auto& i : _npcProfile.droppedItems) {
       const string& itemJson = i.first;
       float dropChance = i.second.chance;
@@ -275,6 +292,16 @@ void Npc::updateDialogueTreeIfNeeded() {
   _dialogueTree = DialogueTree{latestDialogueTreeJsonFileName, this};
 }
 
+void Npc::onDialogueBegin() {
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(false);
+}
+
+void Npc::onDialogueEnd() {
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->setVisible(true);
+}
+
 void Npc::beginDialogue() {
   if (_npcProfile.dialogueTreeJsonFile.empty()) {
     return;
@@ -295,164 +322,6 @@ void Npc::beginTrade() {
   auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
 
   wm->push(std::make_unique<TradeWindow>(/*buyer=*/gmMgr->getPlayer(), /*seller=*/this));
-}
-
-void Npc::onDialogueBegin() {
-  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
-  controlHints->setVisible(false);
-}
-
-void Npc::onDialogueEnd() {
-  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
-  controlHints->setVisible(true);
-}
-
-// This Npc may perform one of the following actions:
-// (1) Has `_lockedOnTarget` and `_lockedOnTarget` is not dead yet:
-//     a. target is within attack range -> attack()
-//     b. target not within attack range -> moveToTarget()
-// (2) Has `_lockedOnTarget` but `_lockedOnTarget` is dead:
-//     a. target belongs to a party -> try to select other member as new _lockedOnTarget
-//     b. target doesnt belong to any party -> clear _lockedOnTarget
-// (3) If too far away from the party leader, teleport to the leader.
-// (4) Has a target destination (_moveDest) to travel to
-// (5) Is following another Character -> moveToTarget()
-// (6) Sandboxing (just moving around wasting its time) -> moveRandomly()
-void Npc::act(float delta) {
-  if (_isKilled || _isSetToKill || _isAttacking) {
-    return;
-  }
-
-  if (_lockedOnTarget && !_lockedOnTarget->isSetToKill()) {
-    if (!_inRangeTargets.empty()) {
-      attack();
-    } else {
-      moveToTarget(delta, _lockedOnTarget, _characterProfile.attackRange / kPpm);
-    }
-  } else if (_lockedOnTarget && _lockedOnTarget->isSetToKill()) {
-    Character* killedTarget = _lockedOnTarget;
-    setLockedOnTarget(nullptr);
-    findNewLockedOnTargetFromParty(killedTarget);
-  } else if (_party && !isWaitingForPartyLeader() && isTooFarAwayFromTarget(_party->getLeader())) {
-    clearMoveDest();
-    teleportToTarget(_party->getLeader());
-  } else if (_moveDest.x || _moveDest.y) {
-    moveToTarget(delta, _moveDest, Npc::_kMoveDestFollowDist);
-  } else if (_party && !isWaitingForPartyLeader()) {
-    moveToTarget(delta, _party->getLeader(), Npc::_kAllyFollowDist);
-  } else if (_isSandboxing) {
-    moveRandomly(delta, 0, 5, 0, 5);
-  }
-}
-
-void Npc::findNewLockedOnTargetFromParty(Character* killedTarget) {
-  if (!killedTarget->getParty()) {
-    return;
-  }
-
-  for (auto member : killedTarget->getParty()->getLeaderAndMembers()) {
-    if (!member->isSetToKill()) {
-      setLockedOnTarget(member);
-      return;
-    }
-  }
-}
-
-bool Npc::isTooFarAwayFromTarget(Character* target) const {
-  const b2Vec2& thisPos = _body->GetPosition();
-  const b2Vec2& targetPos = target->getBody()->GetPosition();
-
-  return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > Npc::_kAllyTeleportDist;
-}
-
-void Npc::teleportToTarget(Character* target) {
-  if (!target->getBody()) {
-    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
-                    target->getCharacterProfile().name.c_str());
-    return;
-  }
-
-  teleportToTarget(target->getBody()->GetPosition());
-}
-
-void Npc::teleportToTarget(const b2Vec2& targetPos) {
-  setPosition(targetPos.x, targetPos.y);
-}
-
-void Npc::moveToTarget(float delta, Character* target, float followDist) {
-  if (!target->getBody()) {
-    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
-                    target->getCharacterProfile().name.c_str());
-    return;
-  }
-
-  moveToTarget(delta, target->getBody()->GetPosition(), followDist);
-}
-
-void Npc::moveToTarget(float delta, const b2Vec2& targetPos, float followDist) {
-  const b2Vec2& thisPos = _body->GetPosition();
-  if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
-    _moveDest.SetZero();
-    return;
-  }
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  PathFinder* pathFinder = gmMgr->getGameMap()->getPathFinder();
-  if (auto nextHop = pathFinder->findOptimalNextHop(thisPos, targetPos, followDist)) {
-    _moveDest = *nextHop;
-  } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
-    (thisPos.x > targetPos.x) ? moveLeft() : moveRight();
-  }
-
-  // Sometimes when two Npcs are too close to each other,
-  // they will stuck in the same place, unable to attack each other.
-  // This is most likely because they are facing at the wrong direction.
-  _isFacingRight = targetPos.x > thisPos.x;
-
-  jumpIfStucked(delta, Npc::_kJumpCheckInterval);
-}
-
-void Npc::moveRandomly(float delta,
-                       int minMoveDuration, int maxMoveDuration,
-                       int minWaitDuration, int maxWaitDuration) {
-  // If the character has finished moving and waiting, regenerate random values for
-  // _moveDuration and _waitDuration within the specified range.
-  if (_moveTimer >= _moveDuration && _waitTimer >= _waitDuration) {
-    _isMovingRight = static_cast<bool>(rand_util::randInt(0, 1));
-    _moveDuration = rand_util::randInt(minMoveDuration, maxMoveDuration);
-    _waitDuration = rand_util::randInt(minWaitDuration, maxWaitDuration);
-    _moveTimer = 0;
-    _waitTimer = 0;
-  }
-
-  if (_moveTimer >= _moveDuration) {
-    _waitTimer += delta;
-  } else {
-    _moveTimer += delta;
-    (_isMovingRight) ? moveRight() : moveLeft();
-    jumpIfStucked(delta, /*checkInterval=*/.5f);
-  }
-}
-
-void Npc::jumpIfStucked(float delta, float checkInterval) {
-  // If we haven't reached checkInterval yet, add delta to the timer
-  // and return at once.
-  if (_calculateDistanceTimer <= checkInterval) {
-    _calculateDistanceTimer += delta;
-    return;
-  }
-
-  // We've reached checkInterval, so we can make this character jump
-  // if it hasn't moved at all, and then reset the timer.
-  if (std::abs(_body->GetPosition().x - _lastStoppedPosition.x) == 0) {
-    jump();
-  }
-  _lastStoppedPosition = {_body->GetPosition().x, _body->GetPosition().y};
-  _calculateDistanceTimer = 0;
-}
-
-void Npc::reverseDirection() {
-  _isMovingRight = !_isMovingRight;
 }
 
 bool Npc::isPlayerLeaderOfParty() const {

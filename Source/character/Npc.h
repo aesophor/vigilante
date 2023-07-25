@@ -9,6 +9,7 @@
 
 #include "Interactable.h"
 #include "character/Character.h"
+#include "character/NpcController.h"
 #include "gameplay/DialogueTree.h"
 
 namespace vigilante {
@@ -73,27 +74,17 @@ class Npc : public Character, public Interactable {
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable
 
+  void act(float delta) { _npcController.update(delta); }
+  void reverseDirection() { _npcController.reverseDirection(); }
+  void teleportToTarget(Character* target);
+  void teleportToTarget(const b2Vec2& targetPos);
   void dropItems();
 
   void updateDialogueTreeIfNeeded();
-  void beginDialogue();
-  void beginTrade();
-
   void onDialogueBegin();
   void onDialogueEnd();
-
-  void act(float delta);
-  void findNewLockedOnTargetFromParty(Character* killedTarget);
-  bool isTooFarAwayFromTarget(Character* target) const;
-  void teleportToTarget(Character* target);
-  void teleportToTarget(const b2Vec2& targetPos);
-  void moveToTarget(float delta, Character* target, float followDist);
-  void moveToTarget(float delta, const b2Vec2& targetPos, float followDist);
-  void moveRandomly(float delta,
-                    int minMoveDuration, int maxMoveDuration,
-                    int minWaitDuration, int maxWaitDuration);
-  void jumpIfStucked(float delta, float checkInterval);
-  void reverseDirection();
+  void beginDialogue();
+  void beginTrade();
 
   bool isPlayerLeaderOfParty() const;
   bool isWaitingForPartyLeader() const;
@@ -104,10 +95,8 @@ class Npc : public Character, public Interactable {
   inline Npc::Disposition getDisposition() const { return _disposition; }
   void setDisposition(Npc::Disposition disposition);
 
-  inline bool isSandboxing() const { return _isSandboxing; }
-  inline void setSandboxing(bool sandboxing) { _isSandboxing = sandboxing; }
-
-  inline void clearMoveDest() { _moveDest.SetZero(); }
+  inline bool isSandboxing() const { return _npcController.isSandboxing(); }
+  inline void setSandboxing(const bool sandboxing) { _npcController.setSandboxing(sandboxing); }
 
  private:
   virtual void defineBody(b2BodyType bodyType,
@@ -121,28 +110,12 @@ class Npc : public Character, public Interactable {
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
-  static inline constexpr float _kAllyTeleportDist = 2.5f;
-  static inline constexpr float _kAllyFollowDist = .75f;
-  static inline constexpr float _kMoveDestFollowDist = .2f;
-  static inline constexpr float _kJumpCheckInterval = .5f;
-
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
   Npc::Disposition _disposition;
-  bool _isSandboxing;
+  NpcController _npcController;
 
   ax::Sprite* _hintBubbleFxSprite{};
-
-  b2Vec2 _moveDest{0.f, 0.f};
-
-  bool _isMovingRight{};
-  float _moveDuration{};
-  float _moveTimer{};
-  float _waitDuration{};
-  float _waitTimer{};
-
-  float _calculateDistanceTimer{};
-  b2Vec2 _lastStoppedPosition{0.f, 0.f};
 };
 
 }  // namespace vigilante

@@ -37,7 +37,7 @@ constexpr auto kPlayerWeaponMaskBits = kEnemy;
 
 Player::Player(const std::string& jsonFileName)
     : Character{jsonFileName},
-      _movementHandler{*this} {
+      _playerController{*this} {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
 }
@@ -191,7 +191,7 @@ void Player::addExp(const int exp) {
 }
 
 void Player::handleInput() {
-  _movementHandler.handleInput();
+  _playerController.handleInput();
 }
 
 void Player::updateKillTargetObjectives(Character* killedCharacter) {

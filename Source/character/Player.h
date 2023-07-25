@@ -45,7 +45,7 @@ class Player : public Character, public Controllable {
   inline QuestBook& getQuestBook() { return _questBook; }
 
  private:
-  PlayerController _movementHandler;
+  PlayerController _playerController;
   QuestBook _questBook{assets::kQuestsList};
 };
 
