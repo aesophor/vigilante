@@ -11,6 +11,7 @@
 
 #include <box2d/box2d.h>
 
+#include "AfterImageFxManager.h"
 #include "Controllable.h"
 #include "FxManager.h"
 #include "input/HotkeyManager.h"
@@ -60,6 +61,7 @@ class GameScene : public ax::Scene, public Controllable {
   inline Notifications* getNotifications() const { return _notifications.get(); }
   inline GameMapManager* getGameMapManager() const { return _gameMapManager.get(); }
   inline FxManager* getFxManager() const { return _fxManager.get(); }
+  inline AfterImageFxManager* getAfterImageFxManager() const { return _afterImageFxManager.get(); }
   inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
 
  private:
@@ -83,6 +85,7 @@ class GameScene : public ax::Scene, public Controllable {
   std::unique_ptr<WindowManager> _windowManager;
   std::unique_ptr<GameMapManager> _gameMapManager;
   std::unique_ptr<FxManager> _fxManager;
+  std::unique_ptr<AfterImageFxManager> _afterImageFxManager;
   std::unique_ptr<PauseMenu> _pauseMenu;
 };
 

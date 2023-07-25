@@ -1,9 +1,11 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ForwardSlash.h"
 
 #include "Audio.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 #include "util/CameraUtil.h"
 
 using namespace std;
@@ -32,8 +34,6 @@ void ForwardSlash::activate() {
 
   camera_util::shake(3, .4f);
 
-  _user->setAfterImageFxEnabled(true);
-
   // Modify character's stats.
   _user->getCharacterProfile().stamina += _skillProfile.deltaStamina;
 
@@ -49,12 +49,17 @@ void ForwardSlash::activate() {
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
+  auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+  afterImageFxMgr->registerNode(_user->getNode(), AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
+
   CallbackManager::the().runAfter([=]() {
     _user->getBody()->SetGravityScale(oldGravityScale);
   }, _skillProfile.framesDuration / 4);
 
   CallbackManager::the().runAfter([=]() {
-    _user->setAfterImageFxEnabled(false);
+    auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+    afterImageFxMgr->unregisterNode(_user->getNode());
+
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);

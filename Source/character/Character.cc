@@ -24,43 +24,6 @@ USING_NS_AX;
 
 namespace vigilante {
 
-namespace {
-
-void createAfterImage(const Sprite* sprite, const int zOrder) {
-  Sprite* afterImage = Sprite::createWithSpriteFrame(sprite->getSpriteFrame());
-  afterImage->setPosition(sprite->getPosition());
-  afterImage->setScale(sprite->getScale());
-  afterImage->setRotation(sprite->getRotation());
-  afterImage->setVisible(sprite->isVisible());
-  afterImage->setLocalZOrder(sprite->getLocalZOrder());
-  afterImage->setFlippedX(sprite->isFlippedX());
-  afterImage->setOpacity(80);
-  afterImage->setColor({55, 66, 189});
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(afterImage, zOrder);
-
-  DelayTime* delay = DelayTime::create(0.15f);
-  CallFunc* remove = CallFunc::create([=]() {
-    afterImage->removeFromParentAndCleanup(true);
-  });
-
-  afterImage->runAction(Sequence::create(delay, remove, nullptr));
-}
-
-void createAfterImage(Node *node) {
-  for (auto child : node->getChildren()) {
-    if (auto spriteBatchNode = dynamic_cast<SpriteBatchNode*>(child)) {
-      for (Sprite* sprite : spriteBatchNode->getDescendants()) {
-        //printf(">>> [%d]\n", child->getLocalZOrder());
-        createAfterImage(sprite, child->getLocalZOrder() - 1);
-      }
-    }
-  }
-}
-
-}  // namespace
-
 Character::Character(const string& jsonFileName)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
       _characterProfile{jsonFileName},
@@ -107,15 +70,6 @@ void Character::update(float delta) {
     return;
   }
 
-  if (_isAfterImageFxEnabled) {
-    static float timer = 0.f;
-    timer += delta;
-    if (timer > 0.05f) {
-      createAfterImage(_node);
-      timer = 0.f;
-    }
-  }
-
   // Flip the sprite and weapon fixture if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
@@ -125,9 +79,8 @@ void Character::update(float delta) {
     redefineWeaponFixture();
   }
 
-  const b2Vec2& b2bodyPos = _body->GetPosition();
-
   // Sync the body sprite with this character's b2body.
+  const b2Vec2& b2bodyPos = _body->GetPosition();
   _bodySprite->setPosition(b2bodyPos.x * kPpm + _characterProfile.spriteOffsetX,
                            b2bodyPos.y * kPpm + _characterProfile.spriteOffsetY);
 
@@ -885,17 +838,20 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   isDodgingFlag = true;
   _isInvincible = true;
-  _isAfterImageFxEnabled = true;
-
   _comboSystem->reset();
 
   const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
   _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, .6f});
 
+  auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+  afterImageFxMgr->registerNode(_node, AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
+
   CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag]() {
+    auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+    afterImageFxMgr->unregisterNode(_node);
+
     _body->SetLinearDamping(originalBodyDamping);
-    _isAfterImageFxEnabled = false;
     _isInvincible = false;
     isDodgingFlag = false;
   }, _bodyAnimations[dodgeState]->getDuration());

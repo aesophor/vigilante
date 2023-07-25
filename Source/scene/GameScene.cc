@@ -124,6 +124,9 @@ bool GameScene::init() {
   // Initialize FxManager.
   _fxManager = std::make_unique<FxManager>();
 
+  // Initialize AfterImageFxManager.
+  _afterImageFxManager = std::make_unique<AfterImageFxManager>();
+
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>();
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -178,13 +181,14 @@ void GameScene::update(float delta) {
   }
 
   _gameMapManager->update(delta);
+  _afterImageFxManager->update(delta);
   _floatingDamages->update(delta);
   _notifications->update(delta);
   _questHints->update(delta);
   _dialogueManager->update(delta);
   _console->update(delta);
   _windowManager->update(delta);
-  
+
   if (_drawBox2D->isVisible()) {
     _drawBox2D->clear();
     _gameMapManager->getWorld()->DebugDraw();

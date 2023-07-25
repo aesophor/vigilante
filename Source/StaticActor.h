@@ -26,6 +26,7 @@ class StaticActor {
   virtual bool removeFromMap();
   virtual void setPosition(float x, float y);
 
+  inline ax::Node* getNode() const { return _node; }
   inline ax::Sprite* getBodySprite() const { return _bodySprite; }
   inline ax::SpriteBatchNode* getBodySpritesheet() const { return _bodySpritesheet; }
 
@@ -72,7 +73,7 @@ class StaticActor {
   }
 
   bool _isShownOnMap{};
-  ax::Node *_node{};
+  ax::Node* _node{};
   ax::Sprite* _bodySprite{};
   ax::SpriteBatchNode* _bodySpritesheet{};
   std::vector<ax::Animation*> _bodyAnimations;
