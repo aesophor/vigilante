@@ -22,7 +22,7 @@ class MainMenuScene : public ax::Scene, public Controllable {
   virtual ~MainMenuScene() = default;
 
   virtual bool init() override; // ax::Scene
-  virtual void update(float delta) override; // ax::Scene
+  virtual void update(const float delta) override; // ax::Scene
   virtual void handleInput() override; // Controllable
 
  private:

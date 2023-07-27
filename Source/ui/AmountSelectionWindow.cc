@@ -52,7 +52,7 @@ AmountSelectionWindow::~AmountSelectionWindow() {
   }
 }
 
-void AmountSelectionWindow::update(float delta) {
+void AmountSelectionWindow::update(const float delta) {
   _textField.update(delta);
 }
 

@@ -16,7 +16,7 @@ class FloatingDamages final {
  public:  
   FloatingDamages();
 
-  void update(float delta);
+  void update(const float delta);
   void show(Character* character, int damage);
   inline ax::Layer* getLayer() const { return _layer; }
 

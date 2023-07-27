@@ -32,7 +32,7 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
   _world->SetContactListener(_worldContactListener.get());
 }
 
-void GameMapManager::update(float delta) {
+void GameMapManager::update(const float delta) {
   if (!_gameMap) {
     return;
   }

@@ -19,7 +19,7 @@ class DialogueManager : public Controllable {
 
   virtual void handleInput() override;  // Controllable
 
-  void update(float delta);
+  void update(const float delta);
 
   inline ax::Layer* getLayer() const { return _layer; }
   inline Npc* getTargetNpc() const { return _targetNpc; }

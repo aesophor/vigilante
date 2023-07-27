@@ -18,7 +18,7 @@ class TextField {
   TextField(const std::string& defaultText="");
   virtual ~TextField() = default;
 
-  virtual void update(float delta);
+  virtual void update(const float delta);
 
   virtual const std::string& getString() const { return _buffer; }
   virtual void setString(const std::string& s);

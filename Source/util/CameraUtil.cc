@@ -70,7 +70,7 @@ void shake(float rumblePower, float rumbleDuration) {
   currentTime = 0;
 }
 
-void updateShake(Camera* camera, float delta) {
+void updateShake(Camera* camera, const float delta) {
   if (duration == 0) {
     return;
   }

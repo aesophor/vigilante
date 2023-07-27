@@ -18,7 +18,7 @@ class Window : public Controllable {
   Window(float width=300, float height=150);
   virtual ~Window() = default;
 
-  virtual void update(float delta) = 0;
+  virtual void update(const float delta) = 0;
   virtual void handleInput() = 0;  // Controllable
 
   virtual void move(const ax::Vec2& position);

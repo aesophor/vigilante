@@ -22,7 +22,7 @@ class AmountSelectionWindow : public Window {
   AmountSelectionWindow();
   virtual ~AmountSelectionWindow();
 
-  virtual void update(float delta) override;  // Window
+  virtual void update(const float delta) override;  // Window
   virtual void handleInput() override;  // Window
 
   inline TextField* getTextField() { return &_textField; }

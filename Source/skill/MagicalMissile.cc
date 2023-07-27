@@ -55,7 +55,7 @@ bool MagicalMissile::showOnMap(float x, float y) {
   return true;
 }
 
-void MagicalMissile::update(float delta) {
+void MagicalMissile::update(const float delta) {
   DynamicActor::update(delta);
 
   // If _body goes out of map, then we can delete this object.

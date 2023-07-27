@@ -13,7 +13,7 @@ class NpcController final {
  public:
   explicit NpcController(Npc& npc) : _npc{npc} {}
 
-  void update(float delta);
+  void update(const float delta);
 
   inline void reverseDirection() { _isMovingRight = !_isMovingRight; }
   inline bool isSandboxing() const { return _isSandboxing; }
@@ -21,8 +21,8 @@ class NpcController final {
   inline void clearMoveDest() { _moveDest.SetZero(); }
 
  private:
-  void findNewLockedOnTargetFromParty(Character* killedTarget);
-  bool isTooFarAwayFromTarget(Character* target) const;
+  void findNewLockedOnTargetFromParty(const Character* killedTarget);
+  bool isTooFarAwayFromTarget(const Character* target) const;
   void moveToTarget(const float delta, Character* target, const float followDist);
   void moveToTarget(const float delta, const b2Vec2& targetPos, const float followDist);
   void moveRandomly(const float delta,

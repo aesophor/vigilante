@@ -31,7 +31,7 @@ class TimedLabelService {
 
   virtual ~TimedLabelService() = default;
 
-  void update(float delta);
+  void update(const float delta);
   void show(const std::string& message);
   inline ax::Layer* getLayer() const { return _layer; }
 

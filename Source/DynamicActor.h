@@ -30,7 +30,7 @@ class DynamicActor : public StaticActor {
   virtual bool showOnMap(float x, float y) override = 0;  // StaticActor
   virtual bool removeFromMap() override;  // StaticActor:
   virtual void setPosition(float x, float y) override;  // StaticActor
-  virtual void update(float delta);
+  virtual void update(const float delta);
   virtual void destroyBody();
 
   inline b2Body* getBody() const { return _body; }

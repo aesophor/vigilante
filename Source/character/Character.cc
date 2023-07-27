@@ -65,7 +65,7 @@ bool Character::removeFromMap() {
   return true;
 }
 
-void Character::update(float delta) {
+void Character::update(const float delta) {
   if (!_isShownOnMap || _isKilled) {
     return;
   }

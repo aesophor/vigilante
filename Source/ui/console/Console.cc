@@ -50,7 +50,7 @@ Console::Console()
   _layer->addChild(_textField.getLayout());
 }
 
-void Console::update(float delta) {
+void Console::update(const float delta) {
   if (!_layer->isVisible()) {
     return;
   }

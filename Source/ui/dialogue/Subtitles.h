@@ -17,7 +17,7 @@ class Subtitles : public Controllable {
   Subtitles();
   virtual ~Subtitles() override = default;
 
-  void update(float delta);
+  void update(const float delta);
   virtual void handleInput() override;  // Controllable
 
   void addSubtitle(const std::string& subtitle);

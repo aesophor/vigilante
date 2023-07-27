@@ -15,7 +15,7 @@ class WindowManager final {
  public:
   WindowManager();
 
-  void update(float delta);
+  void update(const float delta);
 
   // Push `window` to the internal window stack and render it.
   void push(std::unique_ptr<Window> window);

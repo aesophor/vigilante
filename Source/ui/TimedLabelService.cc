@@ -19,7 +19,7 @@ TimedLabelService::TimedLabelService(int startingX, int startingY,
       _kLabelLifetime(labelLifetime),
       _kAlignment(alignment) {}
 
-void TimedLabelService::update(float delta) {
+void TimedLabelService::update(const float delta) {
   for (auto& notification : _labelQueue) {
     notification.timer += delta;
 

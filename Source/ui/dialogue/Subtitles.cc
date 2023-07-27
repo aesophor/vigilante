@@ -51,7 +51,7 @@ Subtitles::Subtitles()
   _layer->setVisible(false);
 }
 
-void Subtitles::update(float delta) {
+void Subtitles::update(const float delta) {
   if (!_layer->isVisible() || _label->getString().size()  == _currentSubtitle.text.size()) {
     return;
   }

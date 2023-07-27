@@ -36,7 +36,7 @@ class GameScene : public ax::Scene, public Controllable {
   virtual ~GameScene() override = default;
 
   virtual bool init() override;  // ax::Scene
-  virtual void update(float delta) override;  // ax::Scene
+  virtual void update(const float delta) override;  // ax::Scene
 
   virtual void handleInput() override;  // Controllable
 

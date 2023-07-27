@@ -40,7 +40,7 @@ class TimedFiniteStateMachine final {
     return *ret;
   }
 
-  void update(float delta) {
+  void update(const float delta) {
     if (_timer <= 0.0f) {
       return;
     }
@@ -70,7 +70,7 @@ class ComboSystem final {
  public:
   explicit ComboSystem(Character& c);
 
-  void update(float delta) { _fsm.update(delta); }
+  void update(const float delta) { _fsm.update(delta); }
   void reset() {
     _fsm.resetCurrentStateId();
     _fsm.setTimer(0.0f);

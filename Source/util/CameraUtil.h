@@ -17,7 +17,7 @@ void lerpToTarget(ax::Camera* camera, const b2Vec2& target);
 
 // Camera shake
 void shake(float rumblePower, float rumbleDuration);
-void updateShake(ax::Camera* camera, float delta);
+void updateShake(ax::Camera* camera, const float delta);
 
 } // namespace camera_util
 

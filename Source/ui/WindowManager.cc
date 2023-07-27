@@ -16,7 +16,7 @@ WindowManager::WindowManager()
       _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)),
       _windows() {}
 
-void WindowManager::update(float delta) {
+void WindowManager::update(const float delta) {
   for (auto& w : _windows) {
     w->update(delta);
   }

@@ -48,7 +48,7 @@ void createAfterImage(const Node* node, const Color3B& color, const float durati
 
 }  // namespace
 
-void AfterImageFxManager::update(float delta) {
+void AfterImageFxManager::update(const float delta) {
   for (auto& [node, afterImageFxData] : _entries) {
     if (afterImageFxData.timerInSec < afterImageFxData.intervalInSec) {
       afterImageFxData.timerInSec += delta;

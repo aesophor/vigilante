@@ -34,7 +34,7 @@ class InfiniteParallaxNode : public ax::Node {
                 const ax::Vec2& parallaxRatio,
                 const ax::Vec2& position,
                 const ax::Vec2& scale);
-  void update(float delta);
+  void update(const float delta);
 
  private:
   ax::Size _visibleSize;
@@ -45,7 +45,7 @@ class InfiniteParallaxNode : public ax::Node {
 
 class ParallaxBackground final {
  public:
-  void update(float delta);
+  void update(const float delta);
   bool load(const std::filesystem::path& bgDirPath);
 
   inline InfiniteParallaxNode* getParallaxNode() const { return _parallaxNode; }

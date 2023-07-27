@@ -32,7 +32,7 @@ constexpr float kJumpCheckInterval = .5f;
 // (4) Has a target destination (_moveDest) to travel to
 // (5) Is following another Character -> moveToTarget()
 // (6) Sandboxing (just moving around wasting its time) -> moveRandomly()
-void NpcController::update(float delta) {
+void NpcController::update(const float delta) {
   if (_npc.isKilled() || _npc.isSetToKill() || _npc.isAttacking()) {
     return;
   }
@@ -62,7 +62,7 @@ void NpcController::update(float delta) {
   }
 }
 
-void NpcController::findNewLockedOnTargetFromParty(Character* killedTarget) {
+void NpcController::findNewLockedOnTargetFromParty(const Character* killedTarget) {
   if (!killedTarget->getParty()) {
     return;
   }
@@ -75,14 +75,14 @@ void NpcController::findNewLockedOnTargetFromParty(Character* killedTarget) {
   }
 }
 
-bool NpcController::isTooFarAwayFromTarget(Character* target) const {
+bool NpcController::isTooFarAwayFromTarget(const Character* target) const {
   const b2Vec2& thisPos = _npc.getBody()->GetPosition();
   const b2Vec2& targetPos = target->getBody()->GetPosition();
 
   return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > kAllyTeleportDist;
 }
 
-void NpcController::moveToTarget(const float delta, Character* target, const float followDist) {
+void NpcController::moveToTarget(const const float delta, Character* target, const float followDist) {
   if (!target->getBody()) {
     VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
                     target->getCharacterProfile().name.c_str());
@@ -92,7 +92,7 @@ void NpcController::moveToTarget(const float delta, Character* target, const flo
   moveToTarget(delta, target->getBody()->GetPosition(), followDist);
 }
 
-void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, const float followDist) {
+void NpcController::moveToTarget(const const float delta, const b2Vec2& targetPos, const float followDist) {
   const b2Vec2& thisPos = _npc.getBody()->GetPosition();
   if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
     _moveDest.SetZero();
@@ -137,7 +137,7 @@ void NpcController::moveRandomly(const float delta,
   }
 }
 
-void NpcController::jumpIfStucked(const float delta, const float checkInterval) {
+void NpcController::jumpIfStucked(const const float delta, const float checkInterval) {
   // If we haven't reached checkInterval yet, add delta to the timer
   // and return at once.
   if (_calculateDistanceTimer <= checkInterval) {

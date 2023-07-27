@@ -128,7 +128,7 @@ class Character : public DynamicActor, public Importable {
 
   virtual bool showOnMap(float x, float y) override = 0;  // DynamicActor
   virtual bool removeFromMap() override;  // DynamicActor
-  virtual void update(float delta) override;  // DynamicActor
+  virtual void update(const float delta) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
 
   virtual void onKilled();

@@ -54,7 +54,7 @@ Npc::Npc(const string& jsonFileName)
   }
 }
 
-void Npc::update(float delta) {
+void Npc::update(const float delta) {
   Character::update(delta);
 
   if (!_isShownOnMap || _isKilled) {

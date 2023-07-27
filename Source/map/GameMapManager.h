@@ -24,7 +24,7 @@ class GameMapManager final {
  public:
   explicit GameMapManager(const b2Vec2& gravity);
   
-  void update(float delta);
+  void update(const float delta);
   
   // @param tmxMapFileName: the target .tmx file to load
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap

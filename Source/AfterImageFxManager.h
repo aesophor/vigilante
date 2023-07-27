@@ -10,7 +10,7 @@ namespace vigilante {
 
 class AfterImageFxManager final {
  public:
-  void update(float delta);
+  void update(const float delta);
 
   bool registerNode(const ax::Node* node,
                     const ax::Color3B& color,

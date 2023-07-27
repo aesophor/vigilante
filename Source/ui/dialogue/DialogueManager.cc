@@ -15,7 +15,7 @@ DialogueManager::DialogueManager()
   _layer->addChild(_dialogueMenu->getLayer());
 }
 
-void DialogueManager::update(float delta) {
+void DialogueManager::update(const float delta) {
   _subtitles->update(delta);
 }
 

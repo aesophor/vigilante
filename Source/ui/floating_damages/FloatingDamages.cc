@@ -16,7 +16,7 @@ namespace vigilante {
 
 FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
 
-void FloatingDamages::update(float delta) {
+void FloatingDamages::update(const float delta) {
   deque<map<Character*, deque<DamageLabel>>::iterator> trash;
 
   auto it = _damageMap.begin();

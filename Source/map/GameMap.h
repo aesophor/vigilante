@@ -117,7 +117,7 @@ class GameMap final {
   GameMap(b2World* world, const std::string& tmxMapFileName);
   ~GameMap();
 
-  void update(float delta);
+  void update(const float delta);
   
   void createObjects();
   std::unique_ptr<Player> createPlayer() const;

@@ -50,7 +50,7 @@ GameMap::~GameMap() {
   }
 }
 
-void GameMap::update(float delta) {
+void GameMap::update(const float delta) {
   _parallaxBackground->update(delta);
 
   for (auto& actor : _dynamicActors) {

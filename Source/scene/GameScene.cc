@@ -152,7 +152,7 @@ bool GameScene::init() {
   return true;
 }
 
-void GameScene::update(float delta) {
+void GameScene::update(const float delta) {
   if (!_isRunning) {
     if (_isTerminating) {
       return;

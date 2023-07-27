@@ -42,7 +42,7 @@ void InfiniteParallaxNode::addLayer(const string &fileName,
   };
 }
 
-void InfiniteParallaxNode::update(float delta) {
+void InfiniteParallaxNode::update(const float delta) {
   const auto gameCamera = SceneManager::the().getCurrentScene<GameScene>()->getGameCamera();
   if (!gameCamera) {
     VGLOG(LOG_ERR, "GameScene's game camera not present.");
@@ -76,7 +76,7 @@ void InfiniteParallaxNode::update(float delta) {
   _prevGameCameraPos = gameCamera->getPosition();
 }
 
-void ParallaxBackground::update(float delta) {
+void ParallaxBackground::update(const float delta) {
   if (!_parallaxNode) {
     return;
   }

@@ -59,7 +59,7 @@ class Npc : public Character, public Interactable {
   virtual ~Npc() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
-  virtual void update(float delta) override;  // Character
+  virtual void update(const float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
 
   virtual void onKilled() override;  // Character
@@ -74,7 +74,7 @@ class Npc : public Character, public Interactable {
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable
 
-  void act(float delta) { _npcController.update(delta); }
+  void act(const float delta) { _npcController.update(delta); }
   void reverseDirection() { _npcController.reverseDirection(); }
   void teleportToTarget(Character* target);
   void teleportToTarget(const b2Vec2& targetPos);

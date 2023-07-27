@@ -70,7 +70,7 @@ TextField::TextField(const string& defaultText)
   }
 }
 
-void TextField::update(float delta) {
+void TextField::update(const float delta) {
   _timer += delta;
 
   if (_timer >= CURSOR_BLINK_INTERVAL) {
