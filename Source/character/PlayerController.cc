@@ -88,23 +88,12 @@ void PlayerController::handleInput() {
 bool PlayerController::shouldBlockInput() const {
   return _player.isSetToKill() ||
          _player.isAttacking() ||
-         _player.isUsingSkill() ||
-         _player.isSheathingWeapon() ||
-         _player.isUnsheathingWeapon();
-}
-
-void PlayerController::handleSheatheUnsheatheWeaponInput() {
-  if (_player.getEquipmentSlots()[Equipment::Type::WEAPON] &&
-      _player.isWeaponSheathed() &&
-      !_player.isUnsheathingWeapon()) {
-    _player.unsheathWeapon();
-  } else if (!_player.isWeaponSheathed() && !_player.isSheathingWeapon()) {
-    _player.sheathWeapon();
-  }
+         _player.isUsingSkill();
 }
 
 void PlayerController::handleAttackInput() {
-  if (_player.isWeaponSheathed()) {
+  if (!_player.getEquipmentSlots()[Equipment::Type::WEAPON]) {
+    _player.attack();
     return;
   }
 

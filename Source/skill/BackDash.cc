@@ -22,7 +22,7 @@ void BackDash::import(const string& jsonFileName) {
 }
 
 bool BackDash::canActivate() {
-  return !_user->isWeaponSheathed() && !_user->isJumping();
+  return !_user->isJumping();
 }
 
 void BackDash::activate() {

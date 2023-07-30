@@ -30,6 +30,10 @@ bool handleAttackingForward(Character& c) {
   return c.attack(Character::State::ATTACKING_FORWARD, /*numTimesInflictDamage=*/3);
 }
 
+bool handleAttackingMidairDownward(Character& c) {
+  return true;
+}
+
 }  // namespace
 
 bool handleCombatMotion(Character& c, const Character::State attackState) {
@@ -38,6 +42,12 @@ bool handleCombatMotion(Character& c, const Character::State attackState) {
       return handleAttackingUpward(c);
     case Character::State::ATTACKING_FORWARD:
       return handleAttackingForward(c);
+    case Character::State::ATTACKING_MIDAIR_DOWNWARD:
+      return handleAttackingMidairDownward(c);
+    case Character::State::ATTACKING:
+    case Character::State::ATTACKING_UNARMED:
+    case Character::State::ATTACKING_CROUCH:
+    case Character::State::ATTACKING_MIDAIR:
     default:
       c.attack();
       return false;

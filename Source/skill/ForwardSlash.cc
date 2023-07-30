@@ -23,8 +23,7 @@ void ForwardSlash::import(const string& jsonFileName) {
 }
 
 bool ForwardSlash::canActivate() {
-  return !_user->isWeaponSheathed() &&
-        _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
+  return _user->getCharacterProfile().stamina + _skillProfile.deltaStamina >= 0;
 }
 
 void ForwardSlash::activate() {

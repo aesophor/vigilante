@@ -59,12 +59,6 @@ bool Player::showOnMap(float x, float y) {
 
   _node->removeAllChildren();
   _node->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
-  for (auto equipment : _equipmentSlots) {
-    if (equipment) {
-      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
-    }
-  }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_node, graphical_layers::kPlayerBody);

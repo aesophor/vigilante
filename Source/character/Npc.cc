@@ -46,9 +46,6 @@ Npc::Npc(const string& jsonFileName)
       _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
       _disposition{_npcProfile.disposition},
       _npcController(*this) {
-  if (_npcProfile.isUnsheathed) {
-    unsheathWeapon();
-  }
   if (_npcProfile.shouldSandbox) {
     _npcController.setSandboxing(_npcProfile.shouldSandbox);
   }
@@ -92,12 +89,6 @@ bool Npc::showOnMap(float x, float y) {
 
   _node->removeAllChildren();
   _node->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
-  for (auto equipment : _equipmentSlots) {
-    if (equipment) {
-      Equipment::Type type = equipment->getEquipmentProfile().equipmentType;
-      _node->addChild(_equipmentSpritesheets[type], graphical_layers::kEquipment - type);
-    }
-  }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_node, graphical_layers::kNpcBody);

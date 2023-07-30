@@ -234,7 +234,6 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
       continue;
     }
     player->_equipmentSlots[type] = equipment;
-    player->loadEquipmentAnimations(equipment);
   }
 }
 

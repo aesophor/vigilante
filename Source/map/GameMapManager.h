@@ -9,6 +9,7 @@
 #include <unordered_set>
 
 #include <axmol.h>
+
 #include <box2d/box2d.h>
 
 #include "Controllable.h"
@@ -23,24 +24,24 @@ namespace vigilante {
 class GameMapManager final {
  public:
   explicit GameMapManager(const b2Vec2& gravity);
-  
+
   void update(const float delta);
-  
+
   // @param tmxMapFileName: the target .tmx file to load
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
   void destroyGameMap();
-  
+
   bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
   void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
-  
+
   inline bool areNpcsAllowedToAct() const { return _areNpcsAllowedToAct; }
   inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
     _areNpcsAllowedToAct = npcsAllowedToAct;
   }
-  
+
   bool hasSavedOpenedClosedState(const std::string& tmxMapFileName,
                                  const GameMap::OpenableObjectType type,
                                  const int targetObjectId) const;
@@ -51,12 +52,12 @@ class GameMapManager final {
                  const GameMap::OpenableObjectType type,
                  const int targetPortalId,
                  const bool locked);
-  
+
   inline ax::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
-  
+
  private:
   GameMap* doLoadGameMap(const std::string& tmxMapFileName);
   std::string getOpenableObjectQueryKey(const std::string& tmxMapFileName,

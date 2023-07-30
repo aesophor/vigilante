@@ -32,24 +32,18 @@ class ComboSystem;
 class Character : public DynamicActor, public Importable {
  public:
   enum State {
-    IDLE_SHEATHED,
-    IDLE_UNSHEATHED,
-    RUNNING_SHEATHED,
-    RUNNING_UNSHEATHED,
+    IDLE,
+    RUNNING,
     RUNNING_START,
     RUNNING_STOP,
-    JUMPING_SHEATHED,
-    JUMPING_UNSHEATHED,
-    FALLING_SHEATHED,
-    FALLING_UNSHEATHED,
+    JUMPING,
+    FALLING,
     FALLING_GETUP,
-    CROUCHING_SHEATHED,
-    CROUCHING_UNSHEATHED,
-    SHEATHING_WEAPON,
-    UNSHEATHING_WEAPON,
+    CROUCHING,
     DODGING_BACKWARD,
     DODGING_FORWARD,
     ATTACKING,
+    ATTACKING_UNARMED,
     ATTACKING_CROUCH,
     ATTACKING_FORWARD,
     ATTACKING_MIDAIR,
@@ -145,8 +139,6 @@ class Character : public DynamicActor, public Importable {
   virtual void crouch();
   virtual void getUpFromCrouching();
   virtual void getUpFromFalling();
-  virtual void sheathWeapon();
-  virtual void unsheathWeapon();
   virtual void dodgeBackward();
   virtual void dodgeForward();
 
@@ -177,9 +169,6 @@ class Character : public DynamicActor, public Importable {
   void removeGold(const int amount);
 
   inline bool isFacingRight() const { return _isFacingRight; }
-  inline bool isWeaponSheathed() const { return _isWeaponSheathed; }
-  inline bool isSheathingWeapon() const { return _isSheathingWeapon; }
-  inline bool isUnsheathingWeapon() const { return _isUnsheathingWeapon; }
   inline bool isJumping() const { return _isJumping; }
   inline bool isDoubleJumping() const { return _isDoubleJumping; }
   inline bool isOnPlatform() const { return _isOnPlatform; }
@@ -240,24 +229,18 @@ class Character : public DynamicActor, public Importable {
 
  protected:
   static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{
-    "idle_sheathed",
-    "idle_unsheathed",
-    "running_sheathed",
-    "running_unsheathed",
+    "idle",
+    "running",
     "running_start",
     "running_stop",
-    "jumping_sheathed",
-    "jumping_unsheathed",
-    "falling_sheathed",
-    "falling_unsheathed",
+    "jumping",
+    "falling",
     "falling_getup",
-    "crouching_sheathed",
-    "crouching_unsheathed",
-    "sheathing_weapon",
-    "unsheathing_weapon",
+    "crouching",
     "dodging_backward",
     "dodging_forward",
     "attacking0",
+    "attacking_unarmed",
     "attacking_crouch",
     "attacking_forward",
     "attacking_midair",
@@ -275,6 +258,7 @@ class Character : public DynamicActor, public Importable {
 
   static constexpr bool isAttackState(const Character::State state) {
     return state == State::ATTACKING ||
+           state == State::ATTACKING_UNARMED ||
            state == State::ATTACKING_CROUCH ||
            state == State::ATTACKING_FORWARD ||
            state == State::ATTACKING_MIDAIR ||
@@ -302,17 +286,12 @@ class Character : public DynamicActor, public Importable {
   virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
 
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
-  virtual void loadEquipmentAnimations(Equipment* equipment);
 
   void createBodyAnimation(const Character::State state,
                            ax::Animation* fallbackAnimation);
-  void createEquipmentAnimation(const Equipment* equipment,
-                                const Character::State state,
-                                ax::Animation* fallbackAnimation);
 
   int getExtraAttackAnimationsCount() const;
   ax::Animation* getBodyAttackAnimation() const;
-  ax::Animation* getEquipmentAttackAnimation(const Equipment::Type type) const;
 
   void runAnimation(Character::State state, bool loop=true);
   void runAnimation(Character::State state, const std::function<void ()>& func) const;
@@ -341,15 +320,12 @@ class Character : public DynamicActor, public Importable {
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()
   // for the logic.
-  Character::State _currentState{State::IDLE_SHEATHED};
-  Character::State _previousState{State::IDLE_SHEATHED};
+  Character::State _currentState{State::IDLE};
+  Character::State _previousState{State::IDLE};
   std::optional<Character::State> _overridingAttackState{std::nullopt};
   b2Vec2 _previousBodyVelocity{0.0f, 0.0f};
 
   bool _isFacingRight{true};
-  bool _isWeaponSheathed{false};
-  bool _isSheathingWeapon{};
-  bool _isUnsheathingWeapon{};
   bool _isStartRunning{};
   bool _isStopRunning{};
   bool _isJumpingDisallowed{};
@@ -407,14 +383,6 @@ class Character : public DynamicActor, public Importable {
   const int _kAttackAnimationIdxMax;
   int _attackAnimationIdx{};
   std::vector<ax::Animation*> _bodyExtraAttackAnimations;
-  std::array<std::vector<ax::Animation*>, Equipment::Type::SIZE> _equipmentExtraAttackAnimations;
-
-  // Besides body sprite and animations (declared in Actor abstract class),
-  // there is also a sprite for each equipment slots! Each equipped equipment
-  // has their own animation!
-  std::array<ax::Sprite*, Equipment::Type::SIZE> _equipmentSprites;
-  std::array<ax::SpriteBatchNode*, Equipment::Type::SIZE> _equipmentSpritesheets;
-  std::array<std::array<ax::Animation*, Character::State::STATE_SIZE>, Equipment::Type::SIZE> _equipmentAnimations;
 
   // Skill animations
   std::unordered_map<std::string, ax::Animation*> _skillBodyAnimations;
