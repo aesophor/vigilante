@@ -20,7 +20,6 @@ class TabView {
 
   class Tab {
    public:
-    friend class TabView;
     Tab(TabView* parent, const std::string& text);
     virtual ~Tab() = default;
 
@@ -34,6 +33,8 @@ class TabView {
     ax::Label* _label;
     int _index;
     bool _isSelected;
+
+    friend class TabView;
   };
 
   virtual void addTab(const std::string& text);

@@ -36,7 +36,6 @@ class EquipmentPane : public AbstractPane {
  private:
   class EquipmentItem {
    public:
-    friend class EquipmentPane;
     EquipmentItem(EquipmentPane* parent, const std::string& title, float x, float y);
     virtual ~EquipmentItem() = default;
 
@@ -56,6 +55,8 @@ class EquipmentPane : public AbstractPane {
     ax::Label* _equipmentTypeLabel;
     ax::Label* _equipmentNameLabel;
     Equipment* _equipment;
+
+    friend class EquipmentPane;
   };
 
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
