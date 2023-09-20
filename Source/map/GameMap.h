@@ -41,7 +41,7 @@ class GameMap final {
     SIZE
   };
 
-  class Trigger : public Interactable {
+  class Trigger final : public Interactable {
    public:
     Trigger(const std::vector<std::string>& cmds,
             const bool canBeTriggeredOnlyOnce,
@@ -72,7 +72,7 @@ class GameMap final {
     b2Body* _body{};
   };
 
-  class Portal : public Interactable {
+  class Portal final : public Interactable {
    public:
     Portal(const std::string& targetTmxMapFileName,
            int targetPortalId,
@@ -118,7 +118,7 @@ class GameMap final {
   ~GameMap();
 
   void update(const float delta);
-  
+
   void createObjects();
   std::unique_ptr<Player> createPlayer() const;
   Item* createItem(const std::string& itemJson, float x, float y, int amount=1);
