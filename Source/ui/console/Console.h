@@ -28,7 +28,7 @@ class Console final {
   inline ax::Layer* getLayer() const { return _layer; }
 
  private:
-  class CommandHistory : public CircularBuffer<std::string> {
+  class CommandHistory final : public CircularBuffer<std::string> {
    public:
     CommandHistory();
     virtual ~CommandHistory() = default;
