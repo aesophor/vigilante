@@ -206,6 +206,7 @@ void GameMap::createTriggers() {
     vector<string> cmds = string_util::split(valMap.at("cmds").asString(), ';');
     bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
     bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
+    int damage = valMap.at("damage").asInt();
 
     B2BodyBuilder bodyBuilder(_world);
 
@@ -216,6 +217,7 @@ void GameMap::createTriggers() {
     _triggers.push_back(std::make_unique<GameMap::Trigger>(cmds,
                                                            canBeTriggeredOnlyOnce,
                                                            canBeTriggeredOnlyByPlayer,
+                                                           damage,
                                                            body));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
@@ -319,13 +321,13 @@ void GameMap::createParallaxBackground() {
     VGLOG(LOG_INFO, "Failed to find parallaxBackground property from tmx, skip creating parallax bg.");
     return;
   }
-  
+
   const fs::path bgDirPath{property.asString()};
   if (!_parallaxBackground->load(bgDirPath)) {
     VGLOG(LOG_ERR, "Failed to load parallax background from dir: [%s].", bgDirPath.c_str());
     return;
   }
-  
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_parallaxBackground->getParallaxNode(), graphical_layers::kParallaxBackground);
 }
@@ -333,10 +335,12 @@ void GameMap::createParallaxBackground() {
 GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
+                          const int damage,
                           b2Body* body)
     : _cmds{cmds},
       _canBeTriggeredOnlyOnce{canBeTriggeredOnlyOnce},
       _canBeTriggeredOnlyByPlayer{canBeTriggeredOnlyByPlayer},
+      _damage{damage},
       _body{body} {}
 
 GameMap::Trigger::~Trigger() {

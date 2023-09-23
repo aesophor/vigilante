@@ -46,6 +46,7 @@ class GameMap final {
     Trigger(const std::vector<std::string>& cmds,
             const bool canBeTriggeredOnlyOnce,
             const bool canBeTriggeredOnlyByPlayer,
+            const int damage,
             b2Body* body);
     virtual ~Trigger();
 
@@ -58,6 +59,7 @@ class GameMap final {
 
     inline bool canBeTriggeredOnlyOnce() const { return _canBeTriggeredOnlyOnce; }
     inline bool canBeTriggeredOnlyByPlayer() const { return _canBeTriggeredOnlyByPlayer; }
+    inline int getDamage() const { return _damage; }
     inline bool hasTriggered() const { return _hasTriggered; }
     inline void setTriggered(bool triggered) { _hasTriggered = triggered; }
 
@@ -68,6 +70,8 @@ class GameMap final {
     std::vector<std::string> _cmds;
     bool _canBeTriggeredOnlyOnce{};
     bool _canBeTriggeredOnlyByPlayer{};
+    int _damage{};
+
     bool _hasTriggered{};
     b2Body* _body{};
   };
