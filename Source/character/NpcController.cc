@@ -39,7 +39,7 @@ void NpcController::update(const float delta) {
 
   Character* lockedOnTarget = _npc.getLockedOnTarget();
   if (lockedOnTarget && !lockedOnTarget->isSetToKill()) {
-    if (!lockedOnTarget->getInRangeTargets().empty()) {
+    if (_npc.getInRangeTargets().contains(lockedOnTarget)) {
       _npc.attack();
     } else {
       moveToTarget(delta, lockedOnTarget, _npc.getCharacterProfile().attackRange / kPpm);
@@ -82,7 +82,7 @@ bool NpcController::isTooFarAwayFromTarget(const Character* target) const {
   return std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) > kAllyTeleportDist;
 }
 
-void NpcController::moveToTarget(const const float delta, Character* target, const float followDist) {
+void NpcController::moveToTarget(const float delta, Character* target, const float followDist) {
   if (!target->getBody()) {
     VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
                     target->getCharacterProfile().name.c_str());
@@ -92,7 +92,7 @@ void NpcController::moveToTarget(const const float delta, Character* target, con
   moveToTarget(delta, target->getBody()->GetPosition(), followDist);
 }
 
-void NpcController::moveToTarget(const const float delta, const b2Vec2& targetPos, const float followDist) {
+void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, const float followDist) {
   const b2Vec2& thisPos = _npc.getBody()->GetPosition();
   if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
     _moveDest.SetZero();
@@ -137,7 +137,7 @@ void NpcController::moveRandomly(const float delta,
   }
 }
 
-void NpcController::jumpIfStucked(const const float delta, const float checkInterval) {
+void NpcController::jumpIfStucked(const float delta, const float checkInterval) {
   // If we haven't reached checkInterval yet, add delta to the timer
   // and return at once.
   if (_calculateDistanceTimer <= checkInterval) {
