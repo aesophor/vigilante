@@ -34,7 +34,7 @@ class Npc : public Character, public Interactable {
     ENEMY,
     SIZE
   };
-  
+
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
 

@@ -317,13 +317,15 @@ void CommandHandler::interact(const vector<string>&) {
     return;
   }
 
-  const auto& interactables = player->getInRangeInteractables();
+  const unordered_set<Interactable*>& interactables = player->getInRangeInteractables();
   if (interactables.empty()) {
     setError("No nearby interactable objects.");
     return;
   }
 
-  player->interact(*interactables.begin());
+  for (auto interactable : interactables) {
+    player->interact(interactable);
+  }
   setSuccess();
 }
 

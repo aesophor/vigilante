@@ -164,7 +164,7 @@ bool Npc::inflictDamage(Character* target, int damage) {
       player->updateKillTargetObjectives(target);
     }
   }
-  
+
   return true;
 }
 
@@ -176,11 +176,17 @@ bool Npc::receiveDamage(Character* source, int damage) {
 
   _isAlerted = true;
 
-  if (!_isSetToKill) {
-    return true;
+  if (!dynamic_cast<Player*>(source)) {
+    _isInvincible = true;
+    CallbackManager::the().runAfter([&](){
+      _isInvincible = false;
+    }, 1.0f);
   }
 
-  source->addExp(_characterProfile.exp);
+  if (_isSetToKill && source) {
+    source->addExp(_characterProfile.exp);
+  }
+
   return true;
 }
 

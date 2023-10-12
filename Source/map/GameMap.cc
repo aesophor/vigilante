@@ -143,7 +143,6 @@ list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryB
     float h = valMap.at("height").asFloat();
 
     B2BodyBuilder bodyBuilder(_world);
-
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
@@ -179,7 +178,6 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBi
     }
 
     B2BodyBuilder bodyBuilder(_world);
-
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(0, 0, kPpm)
       .buildBody();
@@ -209,22 +207,20 @@ void GameMap::createTriggers() {
     int damage = valMap.at("damage").asInt();
 
     B2BodyBuilder bodyBuilder(_world);
-
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    _triggers.push_back(std::make_unique<GameMap::Trigger>(cmds,
-                                                           canBeTriggeredOnlyOnce,
-                                                           canBeTriggeredOnlyByPlayer,
-                                                           damage,
-                                                           body));
+    auto trigger = std::make_unique<GameMap::Trigger>(
+        cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer, damage, body);
+    auto trigger_raw_ptr = trigger.get();
+    _triggers.emplace_back(std::move(trigger));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kInteractable)
       .setSensor(true)
       .friction(0)
-      .setUserData(_triggers.back().get())
+      .setUserData(trigger_raw_ptr)
       .buildFixture();
   }
 }
@@ -242,22 +238,20 @@ void GameMap::createPortals() {
     bool isLocked = valMap.at("isLocked").asBool();
 
     B2BodyBuilder bodyBuilder(_world);
-
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
 
-    _portals.push_back(std::make_unique<GameMap::Portal>(destTmxMapFilePath,
-                                                         destPortalId,
-                                                         willInteractOnContact,
-                                                         isLocked,
-                                                         body));
+    auto portal = std::make_unique<GameMap::Portal>(
+        destTmxMapFilePath, destPortalId, willInteractOnContact, isLocked, body);
+    auto portal_raw_ptr = portal.get();
+    _portals.emplace_back(std::move(portal));
 
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(category_bits::kPortal)
       .setSensor(true)
       .friction(0)
-      .setUserData(_portals.back().get())
+      .setUserData(portal_raw_ptr)
       .buildFixture();
   }
 }

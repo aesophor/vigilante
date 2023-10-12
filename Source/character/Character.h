@@ -149,6 +149,7 @@ class Character : public DynamicActor, public Importable {
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual bool inflictDamage(Character* target, int damage);
   virtual bool receiveDamage(Character* source, int damage);
+  virtual bool receiveDamage(int damage);
   virtual void lockOn(Character* target);
 
   virtual void addItem(std::shared_ptr<Item> item, int amount=1);

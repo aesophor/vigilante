@@ -83,6 +83,14 @@ void Character::update(const float delta) {
     hud->updateStatusBars();
   }
 
+  for (const auto interactable : _inRangeInteractables) {
+    if (const auto trigger = dynamic_cast<GameMap::Trigger*>(interactable)) {
+      if (const auto damage = trigger->getDamage()) {
+        receiveDamage(damage);
+      }
+    }
+  }
+
   _comboSystem->update(delta);
 
   if (_isUsingSkill) {
@@ -776,17 +784,12 @@ bool Character::inflictDamage(Character* target, int damage) {
 }
 
 bool Character::receiveDamage(Character* source, int damage) {
-  if (!source) {
-    VGLOG(LOG_ERR, "Failed to receive damage from source [nullptr].");
+  if (_isSetToKill || _isInvincible) {
     return false;
   }
 
-  if (source->isSetToKill() || source->isKilled()) {
+  if (source && (source->isSetToKill() || source->isKilled())) {
     return false;
-  }
-
-  if (_isInvincible) {
-    return true;
   }
 
   _characterProfile.health -= damage;
@@ -799,11 +802,13 @@ bool Character::receiveDamage(Character* source, int damage) {
   if (_characterProfile.health <= 0) {
     _characterProfile.health = 0;
 
-    source->getInRangeTargets().erase(this);
-    for (const auto& sourceAlly : source->getAllies()) {
-      sourceAlly->getInRangeTargets().erase(this);
-      if (sourceAlly->getLockedOnTarget() == this) {
-        sourceAlly->setLockedOnTarget(nullptr);
+    if (source) {
+      source->getInRangeTargets().erase(this);
+      for (const auto& sourceAlly : source->getAllies()) {
+        sourceAlly->getInRangeTargets().erase(this);
+        if (sourceAlly->getLockedOnTarget() == this) {
+          sourceAlly->setLockedOnTarget(nullptr);
+        }
       }
     }
 
@@ -825,6 +830,10 @@ bool Character::receiveDamage(Character* source, int damage) {
   }
 
   return true;
+}
+
+bool Character::receiveDamage(int damage) {
+  return receiveDamage(nullptr, damage);
 }
 
 void Character::lockOn(Character* target) {

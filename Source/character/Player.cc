@@ -107,11 +107,8 @@ bool Player::receiveDamage(Character* source, int damage) {
     return false;
   }
 
-  _fixtures[FixtureType::BODY]->SetSensor(true);
   _isInvincible = true;
-
   CallbackManager::the().runAfter([&](){
-    _fixtures[FixtureType::BODY]->SetSensor(false);
     _isInvincible = false;
   }, 1.0f);
 

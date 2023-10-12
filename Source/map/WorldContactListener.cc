@@ -207,7 +207,6 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
           CallbackManager::the().runAfter([=]() {
             c->interact(i);
           }, .1f);
-          return;
         }
 
         auto& interactables = c->getInRangeInteractables();
