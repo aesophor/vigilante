@@ -209,7 +209,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
           }, .1f);
         }
 
-        auto& interactables = c->getInRangeInteractables();
+        unordered_set<Interactable*>& interactables = c->getInRangeInteractables();
         if (interactables.size()) {
           (*interactables.begin())->hideHintUI();
         }
