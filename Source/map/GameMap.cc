@@ -322,8 +322,9 @@ void GameMap::createParallaxBackground() {
     return;
   }
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_parallaxBackground->getParallaxNode(), graphical_layers::kParallaxBackground);
+  auto parallaxLayer = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager()->getParallaxLayer();
+  parallaxLayer->addChild(_parallaxBackground->getParallaxNode());
+  parallaxLayer->setCameraMask(parallaxLayer->getCameraMask());
 }
 
 GameMap::Trigger::Trigger(const vector<string>& cmds,

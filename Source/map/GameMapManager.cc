@@ -25,6 +25,7 @@ namespace vigilante {
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _layer{Layer::create()},
+      _parallaxLayer{Layer::create()},
       _worldContactListener{std::make_unique<WorldContactListener>()},
       _world{std::make_unique<b2World>(gravity)} {
   _world->SetAllowSleeping(true);
@@ -71,6 +72,7 @@ void GameMapManager::destroyGameMap() {
   }
 
   if (_gameMap) {
+    _parallaxLayer->removeAllChildren();
     _layer->removeChild(_gameMap->getTmxTiledMap());
     _gameMap.reset();
   }

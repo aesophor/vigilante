@@ -42,7 +42,6 @@ inline constexpr short kDestroyed = 16384;
 
 namespace graphical_layers {
 
-inline constexpr int kParallaxBackground = 1;
 inline constexpr int kTmxTiledMap = 10;
 inline constexpr int kChest = 15;
 inline constexpr int kSpell = 20;

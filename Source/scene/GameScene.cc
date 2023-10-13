@@ -43,17 +43,6 @@ bool GameScene::init() {
   // Initialize HotkeyManager.
   _hotkeyManager = std::make_unique<HotkeyManager>();
 
-  // Camera note:
-  // DEFAULT (orthographic): used to render tilemaps/game objects
-  // USER1 (orthographic): used to render HUD
-  // Initialize the default camera from "perspective" to "orthographic",
-  // and use it as the game world camera.
-  const auto& winSize = Director::getInstance()->getWinSize();
-  VGLOG(LOG_INFO, "winSize: width: [%f], height: [%f]", winSize.width, winSize.height);
-  _gameCamera = getDefaultCamera();
-  _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
-  _gameCamera->setPosition(winSize.width / 2, winSize.height / 2);
-
   // Initialize CallbackManager.
   CallbackManager::the().setScene(this);
 
@@ -61,12 +50,33 @@ bool GameScene::init() {
   vigilante::keycode_util::init();
   vigilante::rand_util::init();
 
+  // Camera note:
+  // USER2 (orthographic): used to render parallax background images
+  // DEFAULT (orthographic): used to render tilemaps/game objects
+  // USER1 (orthographic): used to render HUD
+  // Initialize the default camera from "perspective" to "orthographic",
+  // and use it as the game world camera.
+  const auto& winSize = Director::getInstance()->getWinSize();
+  _gameCamera = getDefaultCamera();
+  _gameCamera->setDepth(1);
+  _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
+  _gameCamera->setPosition(winSize.width / 2, winSize.height / 2);
+  const Vec3& eyePosOld = _gameCamera->getPosition3D();
+  const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
+
+  // Initialize Parallax camera.
+  _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
+  _parallaxCamera->setDepth(0);
+  _parallaxCamera->setCameraFlag(CameraFlag::USER2);
+  _parallaxCamera->setPosition3D(eyePos);
+  _parallaxCamera->lookAt(eyePos);
+  _parallaxCamera->setPosition(winSize.width / 2, winSize.height / 2);
+  addChild(_parallaxCamera);
+
   // Initialize HUD camera.
   _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
   _hudCamera->setDepth(2);
   _hudCamera->setCameraFlag(CameraFlag::USER1);
-  const Vec3& eyePosOld = _gameCamera->getPosition3D();
-  const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
   _hudCamera->setPosition3D(eyePos);
   _hudCamera->lookAt(eyePos);
   _hudCamera->setPosition(winSize.width / 2, winSize.height / 2);
@@ -119,7 +129,9 @@ bool GameScene::init() {
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = std::make_unique<GameMapManager>(b2Vec2{0, kGravity});
+  _gameMapManager->getParallaxLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
   addChild(_gameMapManager->getLayer());
+  addChild(_gameMapManager->getParallaxLayer());
 
   // Initialize FxManager.
   _fxManager = std::make_unique<FxManager>();

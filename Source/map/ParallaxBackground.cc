@@ -52,22 +52,23 @@ void InfiniteParallaxNode::update(const float delta) {
   const Vec2 gameCameraPosDelta = gameCamera->getPosition() - _prevGameCameraPos;
   for (auto &[_, layerData] : _layerData) {
     const Vec2 layerDelta = gameCameraPosDelta * layerData.ratio;
-    layerData.spriteA->setPosition(layerData.spriteA->getPosition() + layerDelta);
-    layerData.spriteB->setPosition(layerData.spriteB->getPosition() + layerDelta);
+    layerData.spriteA->setPosition(layerData.spriteA->getPosition() - layerDelta);
+    layerData.spriteB->setPosition(layerData.spriteB->getPosition() - layerDelta);
 
+    const float spriteWidth = layerData.spriteA->getContentSize().width * layerData.scale.x;
     const auto posA = layerData.spriteA->getPosition();
     if (posA.x <= 0.5 * _visibleSize.width) {
-      const auto x = posA.x + layerData.spriteA->getContentSize().width * layerData.scale.x - 1;
-      const auto y = posA.y;
+      const float x = posA.x + spriteWidth - 1;
+      const float y = posA.y;
       layerData.spriteB->setPosition(x, y);
     } else {
-      const auto x = posA.x - layerData.spriteA->getContentSize().width * layerData.scale.x + 1;
-      const auto y = posA.y;
+      const float x = posA.x - spriteWidth + 1;
+      const float y = posA.y;
       layerData.spriteB->setPosition(x, y);
     }
 
-    const auto limitL = 0.5 * (_visibleSize.width - layerData.spriteA->getContentSize().width * layerData.scale.x);
-    const auto limitR = 0.5 * (_visibleSize.width + layerData.spriteA->getContentSize().width * layerData.scale.x);
+    const float limitL = 0.5 * (_visibleSize.width - spriteWidth);
+    const float limitR = 0.5 * (_visibleSize.width + spriteWidth);
     if (posA.x < limitL || posA.x > limitR) {
       std::swap(layerData.spriteA, layerData.spriteB);
     }
@@ -84,7 +85,7 @@ void ParallaxBackground::update(const float delta) {
 }
 
 bool ParallaxBackground::load(const fs::path& bgDirPath) {
-  std::error_code ec{};
+  error_code ec;
   if (!fs::exists(bgDirPath, ec)) {
     VGLOG(LOG_ERR, "Failed to load parallax background from dir: [%s]", bgDirPath.c_str());
     return false;
@@ -106,7 +107,7 @@ bool ParallaxBackground::load(const fs::path& bgDirPath) {
 
     const auto& winSize = Director::getInstance()->getWinSize();
     const int z = i;
-    const Vec2 parallaxRatio{(1.5f * (i + .01f)) / kPpm, 0};
+    const Vec2 parallaxRatio{(1.5f * i) / kPpm, 0};
     const Vec2 position{winSize.width / 2, winSize.height / 2};
     const Vec2 scale{1.4f, 1.4f};
     _parallaxNode->addLayer(bgPath, i, parallaxRatio, position, scale);

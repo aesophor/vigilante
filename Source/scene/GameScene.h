@@ -68,6 +68,7 @@ class GameScene : public ax::Scene, public Controllable {
   bool _isRunning;
   bool _isTerminating;
 
+  ax::Camera* _parallaxCamera;
   ax::Camera* _gameCamera;
   ax::Camera* _hudCamera;
   ax::DrawNode* _drawBox2D;

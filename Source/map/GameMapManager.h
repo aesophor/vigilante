@@ -54,6 +54,7 @@ class GameMapManager final {
                  const bool locked);
 
   inline ax::Layer* getLayer() const { return _layer; }
+  inline ax::Layer* getParallaxLayer() const { return _parallaxLayer; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
@@ -65,6 +66,7 @@ class GameMapManager final {
                                         const int targetObjectId) const;
 
   ax::Layer* _layer{};
+  ax::Layer* _parallaxLayer{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
   std::unique_ptr<GameMap> _gameMap;
