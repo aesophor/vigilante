@@ -84,7 +84,7 @@ void ParallaxBackground::update(const float delta) {
   _parallaxNode->update(delta);
 }
 
-bool ParallaxBackground::load(const fs::path& bgDirPath) {
+bool ParallaxBackground::load(const fs::path& bgDirPath, const float bgScale) {
   error_code ec;
   if (!fs::exists(bgDirPath, ec)) {
     VGLOG(LOG_ERR, "Failed to load parallax background from dir: [%s]", bgDirPath.c_str());
@@ -107,9 +107,9 @@ bool ParallaxBackground::load(const fs::path& bgDirPath) {
 
     const auto& winSize = Director::getInstance()->getWinSize();
     const int z = i;
-    const Vec2 parallaxRatio{(1.5f * i) / kPpm, 0};
+    const Vec2 parallaxRatio{(5.0f * i) / kPpm, 0};
     const Vec2 position{winSize.width / 2, winSize.height / 2};
-    const Vec2 scale{1.4f, 1.4f};
+    const Vec2 scale{bgScale, bgScale};
     _parallaxNode->addLayer(bgPath, i, parallaxRatio, position, scale);
   }
 

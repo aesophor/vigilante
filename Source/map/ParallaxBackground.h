@@ -46,7 +46,7 @@ class InfiniteParallaxNode : public ax::Node {
 class ParallaxBackground final {
  public:
   void update(const float delta);
-  bool load(const std::filesystem::path& bgDirPath);
+  bool load(const std::filesystem::path& bgDirPath, const float bgScale);
 
   inline InfiniteParallaxNode* getParallaxNode() const { return _parallaxNode; }
 

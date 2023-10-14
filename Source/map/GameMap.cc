@@ -310,14 +310,16 @@ void GameMap::createChests() {
 }
 
 void GameMap::createParallaxBackground() {
-  const Value property = _tmxTiledMap->getProperty("parallaxBackground");
-  if (property.isNull()) {
-    VGLOG(LOG_INFO, "Failed to find parallaxBackground property from tmx, skip creating parallax bg.");
+  const Value bgDirPathProperty = _tmxTiledMap->getProperty("parallaxBackground");
+  if (bgDirPathProperty.isNull()) {
+    VGLOG(LOG_INFO, "Failed to extract parallaxBackground property from tmx, skip creating parallax bg.");
     return;
   }
 
-  const fs::path bgDirPath{property.asString()};
-  if (!_parallaxBackground->load(bgDirPath)) {
+  const fs::path bgDirPath{bgDirPathProperty.asString()};
+  const Value bgScaleProperty = _tmxTiledMap->getProperty("parallaxBackgroundScale");
+  const float bgScale = bgScaleProperty.isNull() ? 1.0f : bgScaleProperty.asFloat();
+  if (!_parallaxBackground->load(bgDirPath, bgScale)) {
     VGLOG(LOG_ERR, "Failed to load parallax background from dir: [%s].", bgDirPath.c_str());
     return;
   }
