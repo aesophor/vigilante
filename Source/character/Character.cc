@@ -267,8 +267,8 @@ void Character::redefineWeaponFixture(short weaponMaskBits) {
 
   const float y0 = _isCrouching ? (bh / 4 / scaleFactor) : (bh / 2 / scaleFactor);
   const float y1 = _isCrouching ? (bh / 4 / scaleFactor) : (bh / 2 / scaleFactor);
-  const float y2 = _isCrouching ? (-bh / 2 / scaleFactor) : 0;
-  const float y3 = _isCrouching ? (-bh / 2 / scaleFactor) : 0;
+  const float y2 = _isCrouching ? (-bh / 2 / scaleFactor) : (-bh / 2 / scaleFactor);
+  const float y3 = _isCrouching ? (-bh / 2 / scaleFactor) : (-bh / 2 / scaleFactor);
 
   const b2Vec2 weaponVertices[] = {
     {x0, y0},
