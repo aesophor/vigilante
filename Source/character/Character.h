@@ -50,6 +50,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_MIDAIR_DOWNWARD,
     ATTACKING_UPWARD,
     SPELLCAST,
+    TAKE_DAMAGE,
     KILLED,
     STATE_SIZE,
     FORCE_UPDATE
@@ -103,6 +104,7 @@ class Character : public DynamicActor, public Importable {
     float attackForce;
     float attackTime;
     float attackRange;
+    float attackDelay;
     int baseMeleeDamage;
 
     std::vector<std::string> defaultSkills;
@@ -248,6 +250,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_midair_downward",
     "attacking_upward",
     "spellcast",
+    "take_damage",
     "killed"
   }};
 

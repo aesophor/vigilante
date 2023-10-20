@@ -58,12 +58,14 @@ void Character::update(const float delta) {
   }
 
   // Flip the sprite and weapon fixture if needed.
-  if (!_isFacingRight && !_bodySprite->isFlippedX()) {
-    _bodySprite->setFlippedX(true);
-    redefineWeaponFixture();
-  } else if (_isFacingRight && _bodySprite->isFlippedX()) {
-    _bodySprite->setFlippedX(false);
-    redefineWeaponFixture();
+  if (!_isAttacking && !_isTakingDamage) {
+    if (!_isFacingRight && !_bodySprite->isFlippedX()) {
+      _bodySprite->setFlippedX(true);
+      redefineWeaponFixture();
+    } else if (_isFacingRight && _bodySprite->isFlippedX()) {
+      _bodySprite->setFlippedX(false);
+      redefineWeaponFixture();
+    }
   }
 
   // Sync the body sprite with this character's b2body.
@@ -152,6 +154,9 @@ void Character::update(const float delta) {
         break;
       case State::ATTACKING_UPWARD:
         runAnimation(State::ATTACKING_UPWARD, false);
+        break;
+      case State::TAKE_DAMAGE:
+        runAnimation(State::TAKE_DAMAGE, false);
         break;
       case State::KILLED:
         runAnimation(State::KILLED, [this]() { onKilled(); });
@@ -314,6 +319,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_MIDAIR_DOWNWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::TAKE_DAMAGE, fallback);
   createBodyAnimation(State::KILLED, fallback);
 
   // Load extra attack animations.
@@ -426,6 +432,8 @@ float Character::getAttackAnimationDuration(const Character::State state) const 
 Character::State Character::determineState() const {
   if (_isSetToKill) {
     return State::KILLED;
+  } else if (_isTakingDamage) {
+    return State::TAKE_DAMAGE;
   } else if (_isGettingUpFromFalling) {
     return State::FALLING_GETUP;
   } else if (_isAttacking) {
@@ -686,7 +694,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  if (_isAttacking || isAttackState(_currentState) || _isGettingUpFromFalling) {
+  if (_isAttacking || isAttackState(_currentState) || _isGettingUpFromFalling || _isTakingDamage) {
     return false;
   }
 
@@ -704,17 +712,16 @@ bool Character::attack(const Character::State attackState,
     _lockedOnTarget = *_inRangeTargets.begin();
 
     if (!_lockedOnTarget->isInvincible()) {
-      // If this character is not the Player,
-      // then add a little delay before inflicting damage / knockback.
-      float damageDelay = (dynamic_cast<Player*>(this)) ? 0 : .4f;
-
       for (int i = 1; i <= numTimesInflictDamage; i++) {
         CallbackManager::the().runAfter([this]() {
+          if (!_inRangeTargets.contains(_lockedOnTarget)) {
+            return;
+          }
           inflictDamage(_lockedOnTarget, getDamageOutput());
           float knockBackForceX = (_isFacingRight) ? .5f : -.5f;
           float knockBackForceY = 1.0f;
           knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
-        }, damageDelay + damageInflictionInterval * i);
+        }, _characterProfile.attackDelay + damageInflictionInterval * i);
       }
     }
   }
@@ -764,6 +771,7 @@ void Character::knockBack(Character* target, float forceX, float forceY) const {
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
+// TODO: add attack type (melee, ranged)
 bool Character::inflictDamage(Character* target, int damage) {
   if (!target) {
     VGLOG(LOG_ERR, "Failed to inflict damage to target: [nullptr].");
@@ -797,7 +805,7 @@ bool Character::receiveDamage(Character* source, int damage) {
   _isTakingDamage = true;
   CallbackManager::the().runAfter([this]() {
     _isTakingDamage = false;
-  }, .25f);
+  }, _bodyAnimations[State::TAKE_DAMAGE]->getDuration());
 
   if (_characterProfile.health <= 0) {
     _characterProfile.health = 0;
@@ -1152,6 +1160,7 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   attackForce = json["attackForce"].GetFloat();
   attackTime = json["attackTime"].GetFloat();
   attackRange = json["attackRange"].GetFloat();
+  attackDelay = json["attackDelay"].GetFloat();
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 
   for (const auto& skillJson : json["defaultSkills"].GetArray()) {
