@@ -2,6 +2,7 @@
 #include "Character.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <cassert>
 
 #include "Assets.h"
@@ -18,6 +19,7 @@
 #include "util/RandUtil.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
@@ -494,21 +496,14 @@ void Character::maybeOverrideCurrentStateWithStopRunningState() {
   }
 }
 
-optional<string> Character::getSfxFileName(const Character::Sfx sfx) const {
-  if (auto fileName = _characterProfile.sfxFileNames[sfx]; fileName.size()) {
-    return fileName;
-  }
-  return nullopt;
-}
-
 void Character::onKilled() {
   _isKilled = true;
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getWorld()->DestroyBody(_body);
 
-  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED)) {
-    Audio::the().playSfx(*sfxFileName);
+  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
+    Audio::the().playSfx(sfxFileName);
   }
 }
 
@@ -517,8 +512,8 @@ void Character::onFallToGroundOrPlatform() {
     getUpFromFalling();
   }
 
-  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP)) {
-    Audio::the().playSfx(*sfxFileName);
+  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP); sfxFileName.size()) {
+    Audio::the().playSfx(sfxFileName);
   }
 }
 
@@ -709,6 +704,17 @@ bool Character::attack(const Character::State attackState,
   }, getAttackAnimationDuration(attackState));
   _cancelAttackCallbacksQueue.emplace(cancelAttackCallbackId);
 
+  const auto weapon = _equipmentSlots[Equipment::Type::WEAPON];
+  if (!weapon) {
+    if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_ATTACK_UNARMED); sfxFileName.size()) {
+      Audio::the().playSfx(sfxFileName);
+    }
+  } else {
+    if (const auto& sfxFileName = weapon->getSfxFileName(Equipment::Sfx::SFX_SWING); sfxFileName.size()) {
+      Audio::the().playSfx(sfxFileName);
+    }
+  }
+
   if (_inRangeTargets.empty()) {
     return false;
   }
@@ -849,8 +855,8 @@ bool Character::receiveDamage(Character* source, int damage) {
   auto floatingDamages = SceneManager::the().getCurrentScene<GameScene>()->getFloatingDamages();
   floatingDamages->show(this, damage);
 
-  if (auto sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT)) {
-    Audio::the().playSfx(*sfxFileName);
+  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT); sfxFileName.size()) {
+    Audio::the().playSfx(sfxFileName);
   }
 
   return true;
@@ -1147,7 +1153,17 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   }
 
   for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
-    sfxFileNames[i] = json["sfx"][Character::_kCharacterSfxStr[i].c_str()].GetString();
+    const string &sfxKey = Character::_kCharacterSfxStr[i];
+    if (!json["sfx"].HasMember(sfxKey.c_str())) {
+      continue;
+    }
+
+    const fs::path sfxPath = json["sfx"][sfxKey.c_str()].GetString();
+    std::error_code ec;
+    if (!fs::exists(sfxPath, ec)) {
+      continue;
+    }
+    sfxFileNames[i] = sfxPath;
   }
 
   name = json["name"].GetString();

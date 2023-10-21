@@ -59,6 +59,7 @@ class Character : public DynamicActor, public Importable {
   };
 
   enum Sfx {
+    SFX_ATTACK_UNARMED,
     SFX_JUMP,
     SFX_HURT,
     SFX_KILLED,
@@ -257,6 +258,7 @@ class Character : public DynamicActor, public Importable {
   }};
 
   static inline const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr{{
+    "attack_unarmed",
     "jump",
     "hurt",
     "killed",
@@ -308,7 +310,9 @@ class Character : public DynamicActor, public Importable {
   Character::State determineState() const;
   Character::State determineAttackState() const;
   void maybeOverrideCurrentStateWithStopRunningState();
-  std::optional<std::string> getSfxFileName(const Character::Sfx sfx) const;
+  const std::string& getSfxFileName(const Character::Sfx sfx) const {
+    return _characterProfile.sfxFileNames[sfx];
+  }
 
   Item* getExistingItemObj(Item* item) const;
 

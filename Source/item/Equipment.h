@@ -22,6 +22,12 @@ class Equipment : public Item {
     SIZE
   };
 
+  enum Sfx {
+    SFX_SWING,
+    SFX_HIT,
+    SFX_SIZE
+  };
+
   static inline const std::array<std::string, Equipment::Type::SIZE> kEquipmentTypeStr{{
     "WEAPON",
     "HEADGEAR",
@@ -34,6 +40,8 @@ class Equipment : public Item {
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
+
+    std::array<std::string, Equipment::Sfx::SFX_SIZE> sfxFileNames;
 
     Equipment::Type equipmentType;
     int bonusPhysicalDamage;
@@ -58,7 +66,16 @@ class Equipment : public Item {
     return _equipmentProfile;
   }
 
+  const std::string& getSfxFileName(const Equipment::Sfx sfx) const {
+    return _equipmentProfile.sfxFileNames[sfx];
+  }
+
  private:
+  static inline const std::array<std::string, Equipment::Sfx::SFX_SIZE> _kEquipmentSfxStr{{
+    "swing",
+    "hit",
+  }};
+
   Equipment::Profile _equipmentProfile;
 };
 
