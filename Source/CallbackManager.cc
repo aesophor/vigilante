@@ -11,18 +11,32 @@ CallbackManager& CallbackManager::the() {
   return instance;
 }
 
-void CallbackManager::runAfter(const function<void ()>& userCallback, float delay) {
-  // If the specified delay is 0 second, then we can
-  // simply invoke `userCallback` and return early.
+uint64_t CallbackManager::runAfter(function<void ()>&& userCallback, float delay) {
   if (delay == 0) {
     userCallback();
-    return;
+    return 0;
   }
+
+  const CallbackId id = _nextCallbackId++;
+  auto cancellableUserCallback = [this, id, callback = std::move(userCallback)]() {
+    const auto it = _cancelledCallbackIds.find(id);
+    if (it != _cancelledCallbackIds.end()) {
+      _cancelledCallbackIds.erase(it);
+      return;
+    }
+    std::invoke(callback);
+  };
 
   _scene->runAction(Sequence::createWithTwoActions(
     DelayTime::create(delay),
-    CallFunc::create(userCallback)
+    CallFunc::create(cancellableUserCallback)
   ));
+
+  return id;
+}
+
+void CallbackManager::cancel(const CallbackManager::CallbackId callbackId) {
+  _cancelledCallbackIds.emplace(callbackId);
 }
 
 }  // namespace vigilante
