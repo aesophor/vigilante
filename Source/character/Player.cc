@@ -66,17 +66,6 @@ bool Player::showOnMap(float x, float y) {
   return true;
 }
 
-bool Player::attack(const Character::State attackState,
-                    const int numTimesInflictDamage,
-                    const float damageInflictionInterval) {
-  if (!Character::attack(attackState, numTimesInflictDamage, damageInflictionInterval)) {
-    return false;
-  }
-
-  Audio::the().playSfx("Sfx/combat/sword_attack.mp3");
-  return true;
-}
-
 void Player::onKilled() {
   Character::onKilled();
 

@@ -6,6 +6,7 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -14,6 +15,7 @@
 #include <axmol.h>
 #include <box2d/box2d.h>
 
+#include "CallbackManager.h"
 #include "DynamicActor.h"
 #include "Importable.h"
 #include "Interactable.h"
@@ -311,6 +313,7 @@ class Character : public DynamicActor, public Importable {
   Item* getExistingItemObj(Item* item) const;
 
   void dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag);
+  void cancelAttack();
 
   // Characater data.
   Character::Profile _characterProfile;
@@ -347,6 +350,8 @@ class Character : public DynamicActor, public Importable {
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
+
+  std::queue<CallbackManager::CallbackId> _cancelAttackCallbacksQueue;
 
   // Combat related systems
   std::shared_ptr<ComboSystem> _comboSystem;

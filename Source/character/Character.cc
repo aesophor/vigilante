@@ -385,15 +385,12 @@ Animation* Character::getBodyAttackAnimation() const {
 }
 
 void Character::runAnimation(State state, bool loop) {
-  // Update body animation.
   Animate* animate = Animate::create((state != State::ATTACKING) ? _bodyAnimations[state] :
                                                                    getBodyAttackAnimation());
   _bodySprite->stopAllActions();
-  _bodySprite->runAction((loop) ? dynamic_cast<Action*>(RepeatForever::create(animate)) :
-                                  dynamic_cast<Action*>(Repeat::create(animate, 1)));
+  _bodySprite->runAction(loop ? dynamic_cast<Action*>(RepeatForever::create(animate)) :
+                                dynamic_cast<Action*>(Repeat::create(animate, 1)));
 
-  // If `state` is ATTACKING, then increment `_attackAnimationIdx`
-  // and wrap around when needed.
   if (state == State::ATTACKING) {
     _attackAnimationIdx = (_attackAnimationIdx + 1) % _kAttackAnimationIdxMax;
   }
@@ -542,7 +539,7 @@ void Character::stopRunning() {
 void Character::moveLeft() {
   _isFacingRight = false;
 
-  if (_isCrouching || _isGettingUpFromFalling) {
+  if (_isCrouching || _isGettingUpFromFalling || _isAttacking) {
     return;
   }
 
@@ -559,7 +556,7 @@ void Character::moveLeft() {
 void Character::moveRight() {
   _isFacingRight = true;
 
-  if (_isCrouching || _isGettingUpFromFalling) {
+  if (_isCrouching || _isGettingUpFromFalling || _isAttacking) {
     return;
   }
 
@@ -575,10 +572,12 @@ void Character::moveRight() {
 
 void Character::jump() {
   // Block current jump request if:
-  // 1. This character's timer-based jump lock has not expired yet.
-  // 2. This character cannot double jump, and it has already jumped.
-  // 3. This character can double jump, and it has already double jumped.
-  if (_isJumpingDisallowed ||
+  // 1. This character's cannot jump (_characterProfile.jumpHeight == 0)
+  // 2. This character's timer-based jump lock has not expired yet.
+  // 3. This character cannot double jump, and it has already jumped.
+  // 4. This character can double jump, and it has already double jumped.
+  if (_characterProfile.jumpHeight == 0.0f ||
+      _isJumpingDisallowed ||
       (!_characterProfile.canDoubleJump && _isJumping) ||
       (_characterProfile.canDoubleJump && _isDoubleJumping)) {
     return;
@@ -694,7 +693,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  if (_isAttacking || isAttackState(_currentState) || _isGettingUpFromFalling || _isTakingDamage) {
+  if (_isAttacking || _isGettingUpFromFalling || _isTakingDamage) {
     return false;
   }
 
@@ -703,30 +702,45 @@ bool Character::attack(const Character::State attackState,
     _overridingAttackState = attackState;
   }
 
-  CallbackManager::the().runAfter([this]() {
+  const CallbackManager::CallbackId cancelAttackCallbackId = CallbackManager::the().runAfter([this]() {
     _isAttacking = false;
     _overridingAttackState = std::nullopt;
+    _cancelAttackCallbacksQueue.pop();
   }, getAttackAnimationDuration(attackState));
+  _cancelAttackCallbacksQueue.emplace(cancelAttackCallbackId);
 
-  if (!_inRangeTargets.empty()) {
-    _lockedOnTarget = *_inRangeTargets.begin();
-
-    if (!_lockedOnTarget->isInvincible()) {
-      for (int i = 1; i <= numTimesInflictDamage; i++) {
-        CallbackManager::the().runAfter([this]() {
-          if (!_inRangeTargets.contains(_lockedOnTarget)) {
-            return;
-          }
-          inflictDamage(_lockedOnTarget, getDamageOutput());
-          float knockBackForceX = (_isFacingRight) ? .5f : -.5f;
-          float knockBackForceY = 1.0f;
-          knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
-        }, _characterProfile.attackDelay + damageInflictionInterval * i);
-      }
-    }
+  if (_inRangeTargets.empty()) {
+    return false;
   }
 
+  _lockedOnTarget = *_inRangeTargets.begin();
+  if (_lockedOnTarget->isInvincible()) {
+    return false;
+  }
+
+  for (int i = 1; i <= numTimesInflictDamage; i++) {
+    CallbackManager::the().runAfter([this]() {
+      if (!_inRangeTargets.contains(_lockedOnTarget)) {
+        return;
+      }
+      inflictDamage(_lockedOnTarget, getDamageOutput());
+      float knockBackForceX = (_isFacingRight) ? .5f : -.5f;
+      float knockBackForceY = 1.0f;
+      knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
+    }, _characterProfile.attackDelay + damageInflictionInterval * i);
+  }
   return true;
+}
+
+void Character::cancelAttack() {
+  _isAttacking = false;
+  _overridingAttackState = std::nullopt;
+
+  while (_cancelAttackCallbacksQueue.size()) {
+    const auto callbackId = _cancelAttackCallbacksQueue.front();
+    _cancelAttackCallbacksQueue.pop();
+    CallbackManager::the().cancel(callbackId);
+  }
 }
 
 void Character::activateSkill(Skill* skill) {
@@ -806,6 +820,8 @@ bool Character::receiveDamage(Character* source, int damage) {
   CallbackManager::the().runAfter([this]() {
     _isTakingDamage = false;
   }, _bodyAnimations[State::TAKE_DAMAGE]->getDuration());
+
+  cancelAttack();
 
   if (_characterProfile.health <= 0) {
     _characterProfile.health = 0;

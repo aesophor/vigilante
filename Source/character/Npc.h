@@ -50,7 +50,6 @@ class Npc : public Character, public Interactable {
     Npc::Disposition disposition;
     bool isRespawnable;
     bool isRecruitable;
-    bool isUnsheathed;
     bool isTradable;
     bool shouldSandbox;
   };

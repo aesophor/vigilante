@@ -24,9 +24,6 @@ class Player : public Character, public Controllable {
   virtual bool showOnMap(float x, float y) override;  // Character
   virtual void onKilled() override;  // Character
 
-  virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
-                      const int numTimesInflictDamage = 1,
-                      const float damageInflictionInterval = .15f) override;  // Character
   virtual bool inflictDamage(Character* target, int damage) override;  // Character
   virtual bool receiveDamage(Character* source, int damage) override;  // Character
 
