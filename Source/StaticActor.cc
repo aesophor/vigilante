@@ -70,6 +70,10 @@ Animation* StaticActor::createAnimation(const string& textureResDir,
   // Method: we will use FileUtils to test whether a file exists starting from
   //         0.png, 1.png, ..., n.png
   string dir = textureResDir + "/" + framesNamePrefix + "_" + framesName;
+  if (!fileUtils->isDirectoryExist(dir)) {
+    return fallback;
+  }
+
   size_t frameCount = 0;
   fileUtils->setPopupNotify(false); // disable CCLOG
   while (fileUtils->isFileExist(dir + "/" + std::to_string(frameCount) + ".png")) {
