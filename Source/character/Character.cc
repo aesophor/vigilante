@@ -60,7 +60,7 @@ void Character::update(const float delta) {
   }
 
   // Flip the sprite and weapon fixture if needed.
-  if (!_isAttacking && !_isTakingDamage) {
+  if (!_isTakingDamage && !isAttacking()) {
     if (!_isFacingRight && !_bodySprite->isFlippedX()) {
       _bodySprite->setFlippedX(true);
       redefineWeaponFixture();
@@ -534,7 +534,7 @@ void Character::stopRunning() {
 void Character::moveLeft() {
   _isFacingRight = false;
 
-  if (_isCrouching || _isGettingUpFromFalling || _isAttacking) {
+  if (isAttacking() || _isCrouching || _isGettingUpFromFalling) {
     return;
   }
 
@@ -551,7 +551,7 @@ void Character::moveLeft() {
 void Character::moveRight() {
   _isFacingRight = true;
 
-  if (_isCrouching || _isGettingUpFromFalling || _isAttacking) {
+  if (isAttacking() || _isCrouching || _isGettingUpFromFalling) {
     return;
   }
 
@@ -688,7 +688,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  if (_isAttacking || _isGettingUpFromFalling || _isTakingDamage) {
+  if (isAttacking() || _isGettingUpFromFalling || _isTakingDamage) {
     return false;
   }
 

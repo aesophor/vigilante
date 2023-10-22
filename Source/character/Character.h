@@ -181,7 +181,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isDodging() const { return _isDodgingBackward || _isDodgingForward; }
   inline bool isDodgingBackward() const { return _isDodgingBackward; }
   inline bool isDodgingForward() const { return _isDodgingForward; }
-  inline bool isAttacking() const { return _isAttacking; }
+  inline bool isAttacking() const { return _isAttacking || isAttackState(_currentState); }
   inline bool isUsingSkill() const { return _isUsingSkill; }
   inline bool isCrouching() const { return _isCrouching; }
   inline bool isInvincible() const { return _isInvincible; }
