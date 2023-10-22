@@ -46,6 +46,8 @@ class Character : public DynamicActor, public Importable {
     DODGING_FORWARD,
     ATTACKING,
     ATTACKING_UNARMED,
+    ATTACKING_UNARMED_CROUCH,
+    ATTACKING_UNARMED_MIDAIR,
     ATTACKING_CROUCH,
     ATTACKING_FORWARD,
     ATTACKING_MIDAIR,
@@ -247,6 +249,8 @@ class Character : public DynamicActor, public Importable {
     "dodging_forward",
     "attacking0",
     "attacking_unarmed",
+    "attacking_unarmed_crouch",
+    "attacking_unarmed_midair",
     "attacking_crouch",
     "attacking_forward",
     "attacking_midair",
@@ -267,6 +271,8 @@ class Character : public DynamicActor, public Importable {
   static constexpr bool isAttackState(const Character::State state) {
     return state == State::ATTACKING ||
            state == State::ATTACKING_UNARMED ||
+           state == State::ATTACKING_UNARMED_CROUCH ||
+           state == State::ATTACKING_UNARMED_MIDAIR ||
            state == State::ATTACKING_CROUCH ||
            state == State::ATTACKING_FORWARD ||
            state == State::ATTACKING_MIDAIR ||
@@ -300,6 +306,9 @@ class Character : public DynamicActor, public Importable {
 
   int getExtraAttackAnimationsCount() const;
   ax::Animation* getBodyAttackAnimation() const;
+  inline bool hasUnarmedAttackAnimation() const {
+    return _bodyAnimations[State::ATTACKING_UNARMED] != _bodyAnimations[State::ATTACKING];
+  }
 
   void runAnimation(Character::State state, bool loop=true);
   void runAnimation(Character::State state, const std::function<void ()>& func) const;

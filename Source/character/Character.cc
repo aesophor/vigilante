@@ -108,64 +108,34 @@ void Character::update(const float delta) {
   _previousBodyVelocity = _body->GetLinearVelocity();
 
   if (_previousState != _currentState) {
-    switch(_currentState) {
-      case State::RUNNING_START:
-        runAnimation(State::RUNNING_START, false);
-        break;
-      case State::RUNNING:
-        runAnimation(State::RUNNING, true);
-        break;
-      case State::RUNNING_STOP:
-        runAnimation(State::RUNNING_STOP, false);
-        break;
-      case State::JUMPING:
-        runAnimation(State::JUMPING, false);
-        break;
-      case State::FALLING:
-        runAnimation(State::FALLING, false);
-        break;
-      case State::FALLING_GETUP:
-        runAnimation(State::FALLING_GETUP, false);
-        break;
-      case State::CROUCHING:
-        runAnimation(State::CROUCHING, false);
-        break;
-      case State::DODGING_BACKWARD:
-        runAnimation(State::DODGING_BACKWARD, false);
-        break;
-      case State::DODGING_FORWARD:
-        runAnimation(State::DODGING_FORWARD, false);
-        break;
-      case State::ATTACKING:
-        runAnimation(State::ATTACKING, false);
-        break;
-      case State::ATTACKING_UNARMED:
-        runAnimation(State::ATTACKING_UNARMED, false);
-        break;
-      case State::ATTACKING_CROUCH:
-        runAnimation(State::ATTACKING_CROUCH, false);
-        break;
-      case State::ATTACKING_FORWARD:
-        runAnimation(State::ATTACKING_FORWARD, false);
-        break;
-      case State::ATTACKING_MIDAIR:
-        runAnimation(State::ATTACKING_MIDAIR, false);
-        break;
-      case State::ATTACKING_MIDAIR_DOWNWARD:
-        runAnimation(State::ATTACKING_MIDAIR_DOWNWARD, false);
-        break;
-      case State::ATTACKING_UPWARD:
-        runAnimation(State::ATTACKING_UPWARD, false);
-        break;
-      case State::TAKE_DAMAGE:
-        runAnimation(State::TAKE_DAMAGE, false);
-        break;
+    switch (_currentState) {
       case State::KILLED:
         runAnimation(State::KILLED, [this]() { onKilled(); });
         break;
       case State::IDLE:
+      case State::RUNNING:
+        runAnimation(_currentState, /*loop=*/true);
+        break;
+      case State::RUNNING_START:
+      case State::RUNNING_STOP:
+      case State::JUMPING:
+      case State::FALLING:
+      case State::FALLING_GETUP:
+      case State::CROUCHING:
+      case State::DODGING_BACKWARD:
+      case State::DODGING_FORWARD:
+      case State::ATTACKING:
+      case State::ATTACKING_UNARMED:
+      case State::ATTACKING_UNARMED_CROUCH:
+      case State::ATTACKING_UNARMED_MIDAIR:
+      case State::ATTACKING_CROUCH:
+      case State::ATTACKING_FORWARD:
+      case State::ATTACKING_MIDAIR:
+      case State::ATTACKING_MIDAIR_DOWNWARD:
+      case State::ATTACKING_UPWARD:
+      case State::TAKE_DAMAGE:
       default:
-        runAnimation(State::IDLE, true);
+        runAnimation(_currentState, /*loop=*/false);
         break;
     }
   }
@@ -315,6 +285,8 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::DODGING_FORWARD, fallback);
   createBodyAnimation(State::ATTACKING, fallback);
   createBodyAnimation(State::ATTACKING_UNARMED, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_UNARMED_CROUCH, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::ATTACKING_UNARMED_MIDAIR, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_CROUCH, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_FORWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_MIDAIR, _bodyAnimations[State::ATTACKING]);
@@ -463,16 +435,14 @@ Character::State Character::determineAttackState() const {
     return *_overridingAttackState;
   }
 
-  if (!_equipmentSlots[Equipment::Type::WEAPON]) {
-    return State::ATTACKING_UNARMED;
-  }
+  const bool isUnarmed = !_equipmentSlots[Equipment::Type::WEAPON] && hasUnarmedAttackAnimation();
   if (_isCrouching) {
-    return State::ATTACKING_CROUCH;
+    return isUnarmed ? State::ATTACKING_UNARMED_CROUCH : State::ATTACKING_CROUCH;
   }
   if (_isJumping) {
-    return State::ATTACKING_MIDAIR;
+    return isUnarmed ? State::ATTACKING_UNARMED_MIDAIR : State::ATTACKING_MIDAIR;
   }
-  return State::ATTACKING;
+  return isUnarmed ? State::ATTACKING_UNARMED : State::ATTACKING;
 }
 
 void Character::maybeOverrideCurrentStateWithStopRunningState() {
