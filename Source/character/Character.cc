@@ -1197,13 +1197,13 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
 
   for (const auto& skillJson : json["defaultSkills"].GetArray()) {
     string skillJsonFileName = skillJson.GetString();
-    defaultSkills.push_back(skillJsonFileName);
+    defaultSkills.push_back(std::move(skillJsonFileName));
   }
 
   for (const auto& itemJson : json["defaultInventory"].GetObject()) {
     string itemJsonFileName = itemJson.name.GetString();
     int amount = itemJson.value.GetInt();
-    defaultInventory.push_back({itemJsonFileName, amount});
+    defaultInventory.push_back({std::move(itemJsonFileName), amount});
   }
 }
 
