@@ -293,6 +293,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_MIDAIR_DOWNWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::SPELLCAST2, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::TAKE_DAMAGE, fallback);
   createBodyAnimation(State::KILLED, fallback);
 

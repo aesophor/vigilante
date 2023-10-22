@@ -54,6 +54,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_MIDAIR_DOWNWARD,
     ATTACKING_UPWARD,
     SPELLCAST,
+    SPELLCAST2,
     TAKE_DAMAGE,
     KILLED,
     STATE_SIZE,
@@ -257,6 +258,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_midair_downward",
     "attacking_upward",
     "spellcast",
+    "spellcast2",
     "take_damage",
     "killed"
   }};
