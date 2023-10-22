@@ -726,7 +726,7 @@ bool Character::attack(const Character::State attackState,
 
   for (int i = 1; i <= numTimesInflictDamage; i++) {
     CallbackManager::the().runAfter([this]() {
-      if (!_inRangeTargets.contains(_lockedOnTarget)) {
+      if (_isTakingDamage || !_inRangeTargets.contains(_lockedOnTarget)) {
         return;
       }
       inflictDamage(_lockedOnTarget, getDamageOutput());
