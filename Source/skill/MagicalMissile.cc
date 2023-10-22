@@ -29,10 +29,11 @@ constexpr auto kMagicalMissleMaskBits = kPlayer | kEnemy | kWall;
 
 }  // namespace
 
-MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user)
+MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user, const bool onGround)
     : DynamicActor{kMagicalMissleNumAnimations, kMagicalMissleNumFixtures},
       _skillProfile{jsonFileName},
-      _user{user} {}
+      _user{user},
+      _isOnGround{onGround} {}
 
 bool MagicalMissile::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -56,17 +57,20 @@ bool MagicalMissile::showOnMap(float x, float y) {
 }
 
 void MagicalMissile::update(const float delta) {
-  DynamicActor::update(delta);
+  if (_hasHit) {
+    return;
+  }
 
-  // If _body goes out of map, then we can delete this object.
-  float x = _body->GetPosition().x * kPpm;
-  float y = _body->GetPosition().y * kPpm;
+  const b2Vec2& b2bodyPos = _body->GetPosition();
+  _bodySprite->setPosition(b2bodyPos.x * kPpm + _skillProfile.spriteOffsetX,
+                           b2bodyPos.y * kPpm + _skillProfile.spriteOffsetY);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   GameMap* gameMap = gmMgr->getGameMap();
 
-  if (!_hasHit &&
-      (x < 0 || x > gameMap->getWidth() || y < 0 || y > gameMap->getHeight())) {
+  const float x = _body->GetPosition().x * kPpm;
+  const float y = _body->GetPosition().y * kPpm;
+  if (x < 0 || y < 0 || x > gameMap->getWidth() || y > gameMap->getHeight()) {
     onHit(nullptr);
   }
 }
@@ -119,19 +123,27 @@ void MagicalMissile::activate() {
   }
 
   _hasActivated = true;
-  float x = _user->getBody()->GetPosition().x;
-  float y = _user->getBody()->GetPosition().y;
 
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
-  CallbackManager::the().runAfter([this, x, y]() {
+  CallbackManager::the().runAfter([this]() {
     shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
-    assert(activeCopy);
     auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
+    if (!actor) {
+      VGLOG(LOG_ERR, "Failed to copy skill: [%s].", _skillProfile.name.c_str());
+      return;
+    }
+
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-    gmMgr->getGameMap()->showDynamicActor(std::move(actor), x, y);
-    
+    const float x = _user->getBody()->GetPosition().x;
+    const float y = _user->getBody()->GetPosition().y;
+    const float atkRange = _user->getCharacterProfile().attackRange;
+    const float userBodyHeight = _user->getCharacterProfile().bodyHeight;
+    const float offsetX = _user->isFacingRight() ? atkRange : -atkRange;
+    const float offsetY = _isOnGround ? -userBodyHeight / 2: 0;
+    gmMgr->getGameMap()->showDynamicActor(std::move(actor), x, y + offsetY / kPpm);
+
     // Set up kinematicBody's moving speed.
     _flyingSpeed = (_user->isFacingRight()) ? 4 : -4;
     _body->SetLinearVelocity({_flyingSpeed, 0});
@@ -145,13 +157,7 @@ void MagicalMissile::activate() {
     _bodySprite->runAction(Animate::create(_bodyAnimations[AnimationType::FLYING]));
 
     // Play launch fx animation.
-    const b2Vec2& spellUserBodyPos = _user->getBody()->GetPosition();
-    float x = spellUserBodyPos.x * kPpm;
-    float y = spellUserBodyPos.y * kPpm;
-    float offset = _user->getCharacterProfile().attackRange;
-    x += (_user->isFacingRight()) ? offset : -offset;
-    _launchFxSprite->setPosition(x, y);
-
+    _launchFxSprite->setPosition((x + offsetX) * kPpm, (y + offsetY) * kPpm);
     _launchFxSprite->runAction(Sequence::createWithTwoActions(
       Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
       CallFunc::create([=]() {
@@ -175,7 +181,6 @@ void MagicalMissile::defineBody(b2BodyType bodyType,
 
   b2World* world = _user->getBody()->GetWorld();
   B2BodyBuilder bodyBuilder(world);
-
   _body = bodyBuilder.type(bodyType)
     .position(x + spellOffset, y, 1)
     .buildBody();
@@ -208,6 +213,8 @@ void MagicalMissile::defineTexture(const string& textureResDir, float x, float y
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");
   _bodySprite->setPosition(x, y);
+  _bodySprite->setScaleX(_skillProfile.spriteScaleX);
+  _bodySprite->setScaleY(_skillProfile.spriteScaleY);
 
   _bodySpritesheet->addChild(_launchFxSprite);
   _bodySpritesheet->addChild(_bodySprite);

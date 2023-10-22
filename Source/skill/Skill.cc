@@ -22,7 +22,9 @@ unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
     return std::make_unique<ForwardSlash>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
-    return std::make_unique<MagicalMissile>(jsonFileName, user);
+    return std::make_unique<MagicalMissile>(jsonFileName, user, /*onGround=*/false);
+  } else if (jsonFileName.find("ice_wave") != jsonFileName.npos) {
+    return std::make_unique<MagicalMissile>(jsonFileName, user, /*onGround=*/true);
   }
 
   VGLOG(LOG_ERR, "Unable to determine skill: %s", jsonFileName.c_str());
@@ -34,13 +36,17 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
 
   skillType = static_cast<Skill::Type>(json["skillType"].GetInt());
   characterFramesName = json["characterFramesName"].GetString();
+
+  textureResDir = json["textureResDir"].GetString();
+  spriteOffsetX = json["spriteOffsetX"].GetFloat();
+  spriteOffsetY = json["spriteOffsetY"].GetFloat();
+  spriteScaleX = json["spriteScaleX"].GetFloat();
+  spriteScaleY = json["spriteScaleY"].GetFloat();
   framesDuration = json["framesDuration"].GetFloat();
   frameInterval = json["frameInterval"].GetFloat();
 
-  textureResDir = json["textureResDir"].GetString();
   name = json["name"].GetString();
   desc = json["desc"].GetString();
-
   requiredLevel = json["requiredLevel"].GetInt();
   cooldown = json["cooldown"].GetFloat();
 

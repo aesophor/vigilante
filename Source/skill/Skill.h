@@ -31,14 +31,18 @@ class Skill : public Importable, public Keybindable {
 
     std::string jsonFileName;
     Skill::Type skillType;
+
     std::string characterFramesName;
+    std::string textureResDir;  // the animation of skill itself
+    float spriteOffsetX;
+    float spriteOffsetY;
+    float spriteScaleX;
+    float spriteScaleY;
     float framesDuration;
     float frameInterval;
 
-    std::string textureResDir;  // the animation of skill itself
     std::string name;
     std::string desc;
-
     int requiredLevel;
     float cooldown;
 

@@ -24,7 +24,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
     SIZE
   };
 
-  MagicalMissile(const std::string& jsonFileName, Character* user);
+  MagicalMissile(const std::string& jsonFileName, Character* user, const bool onGround);
   virtual ~MagicalMissile() = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
@@ -56,6 +56,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
 
   Skill::Profile _skillProfile;
   Character* _user{};
+  bool _isOnGround{};
   float _flyingSpeed{};
   bool _hasActivated{};
   bool _hasHit{};
