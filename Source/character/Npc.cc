@@ -105,11 +105,6 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
                         feetMaskBits,
                         weaponMaskBits);
 
-  // Besides the original fixtures created in Character::defineBody(),
-  // create one extra fixture which can collide with player's feetFixture,
-  // but make it a sensor. This is the interactable area of this Npc.
-  B2BodyBuilder bodyBuilder{_body};
-
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
   float sideLength = std::max(_characterProfile.bodyWidth, _characterProfile.bodyHeight) * 1.2;
   b2Vec2 vertices[] = {
@@ -119,6 +114,10 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
     { sideLength / scaleFactor, -sideLength / scaleFactor}
   };
 
+  // Besides the original fixtures created in Character::defineBody(),
+  // create one extra fixture which can collide with player's feetFixture,
+  // but make it a sensor. This is the interactable area of this Npc.
+  B2BodyBuilder bodyBuilder{_body};
   bodyBuilder.newPolygonFixture(vertices, 4, kPpm)
     .categoryBits(kInteractable)
     .maskBits(kFeet)
