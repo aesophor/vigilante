@@ -102,6 +102,7 @@ void MagicalMissile::onHit(Character* target) {
     float knockBackForceY = 1.0f;
     _user->knockBack(target, knockBackForceX, knockBackForceY);
     _user->inflictDamage(target, getDamage());
+    target->setStunned(true);
   }
 
   // Play sound effect.

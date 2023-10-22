@@ -55,6 +55,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_UPWARD,
     SPELLCAST,
     SPELLCAST2,
+    STUNNED,
     TAKE_DAMAGE,
     KILLED,
     STATE_SIZE,
@@ -188,6 +189,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isUsingSkill() const { return _isUsingSkill; }
   inline bool isCrouching() const { return _isCrouching; }
   inline bool isInvincible() const { return _isInvincible; }
+  inline bool isStunned() const { return _isStunned; }
   inline bool isKilled() const { return _isKilled; }
   inline bool isSetToKill() const { return _isSetToKill; }
   inline bool isAfterImageFxEnabled() const { return _isAfterImageFxEnabled; }
@@ -200,6 +202,7 @@ class Character : public DynamicActor, public Importable {
   inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
   inline void setCrouching(bool crouching) { _isCrouching = crouching; }
   inline void setInvincible(bool invincible) { _isInvincible = invincible; }
+  inline void setStunned(bool stunned) { _isStunned = stunned; }
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
@@ -259,6 +262,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_upward",
     "spellcast",
     "spellcast2",
+    "stunned",
     "take_damage",
     "killed"
   }};
@@ -339,6 +343,9 @@ class Character : public DynamicActor, public Importable {
   const int _baseRegenDeltaMagicka{5};
   const int _baseRegenDeltaStamina{5};
 
+  // Stunned timer.
+  float _stunnedTimer{};
+
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()
   // for the logic.
@@ -361,6 +368,7 @@ class Character : public DynamicActor, public Importable {
   bool _isUsingSkill{};
   bool _isCrouching{};
   bool _isInvincible{};
+  bool _isStunned{};
   bool _isTakingDamage{};
   bool _isKilled{};
   bool _isSetToKill{};
