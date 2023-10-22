@@ -221,6 +221,24 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       }
       break;
     }
+    // When a project tile hits the player, play onHitAnimation and inflict damage.
+    case category_bits::kProjectile | category_bits::kPlayer: {
+      b2Fixture* projectileFixture = GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
+      b2Fixture* playerFixture = GetTargetFixture(category_bits::kPlayer, fixtureA, fixtureB);
+
+      if (projectileFixture && playerFixture) {
+        DynamicActor* p = reinterpret_cast<DynamicActor*>(projectileFixture->GetUserData().pointer);
+        Character* c = reinterpret_cast<Character*>(playerFixture->GetUserData().pointer);
+
+        Projectile* missile = dynamic_cast<Projectile*>(p);
+        if (missile->getUser() == c) {
+          contact->SetEnabled(false);
+          return;
+        }
+        missile->onHit(c);
+      }
+      break;
+    }
     // When a project tile hits an enemy, play onHitAnimation and inflict damage.
     case category_bits::kProjectile | category_bits::kEnemy: {
       b2Fixture* projectileFixture = GetTargetFixture(category_bits::kProjectile, fixtureA, fixtureB);
@@ -231,6 +249,10 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
 
         Projectile* missile = dynamic_cast<Projectile*>(p);
+        if (missile->getUser() == c) {
+          contact->SetEnabled(false);
+          return;
+        }
         missile->onHit(c);
       }
       break;
