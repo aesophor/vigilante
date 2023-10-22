@@ -221,7 +221,7 @@ class Character : public DynamicActor, public Importable {
   inline GameMap::Portal* getPortal() const { return _portal; }
   inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
 
-  inline const SkillBook& getSkillBook() const { return _skillBook; }
+  inline SkillBook& getSkillBook() { return _skillBook; }
   std::shared_ptr<Skill> getActiveSkill(Skill* skill) const;
   inline Skill* getCurrentlyUsedSkill() const { return _currentlyUsedSkill; }
   void removeActiveSkill(Skill* skill);

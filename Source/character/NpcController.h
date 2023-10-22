@@ -39,6 +39,7 @@ class NpcController final {
   float _waitDuration{};
   float _waitTimer{};
   float _calculateDistanceTimer{};
+  float _activateSkillTimer{};
   b2Vec2 _moveDest{0.f, 0.f};
   b2Vec2 _lastStoppedPosition{0.f, 0.f};
 };

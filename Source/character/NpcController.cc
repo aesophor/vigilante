@@ -18,6 +18,7 @@ constexpr float kAllyTeleportDist = 2.5f;
 constexpr float kAllyFollowDist = .75f;
 constexpr float kMoveDestFollowDist = .2f;
 constexpr float kJumpCheckInterval = .5f;
+constexpr float kActivateRandomSkillInterval = 3.0f;
 
 }  // namespace
 
@@ -39,11 +40,17 @@ void NpcController::update(const float delta) {
 
   Character* lockedOnTarget = _npc.getLockedOnTarget();
   if (lockedOnTarget && !lockedOnTarget->isSetToKill()) {
-    if (_npc.getInRangeTargets().contains(lockedOnTarget)) {
+    auto &skillbook = _npc.getSkillBook()[Skill::Type::MAGIC];
+    if (skillbook.size() && _activateSkillTimer >= kActivateRandomSkillInterval) {
+      Skill* skill = skillbook.front();
+      _npc.activateSkill(skill);
+      _activateSkillTimer = 0;
+    } else if (_npc.getInRangeTargets().contains(lockedOnTarget)) {
       _npc.attack();
-    } else {
+    } else if (!_npc.isUsingSkill()) {
       moveToTarget(delta, lockedOnTarget, _npc.getCharacterProfile().attackRange / kPpm);
     }
+    _activateSkillTimer += delta;
   } else if (lockedOnTarget && lockedOnTarget->isSetToKill()) {
     Character* killedTarget = lockedOnTarget;
     _npc.setLockedOnTarget(nullptr);
