@@ -12,7 +12,7 @@
 #include <ui/UIImageView.h>
 
 #include "Controllable.h"
-#include "ui/control_hints/ControlHints.h"
+#include "ui/hud/ControlHints.h"
 #include "ui/pause_menu/HeaderPane.h"
 #include "ui/pause_menu/StatsPane.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
