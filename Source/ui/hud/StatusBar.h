@@ -10,18 +10,15 @@
 
 namespace vigilante {
 
-class StatusBar {
+class StatusBar final {
  public:
   StatusBar(const std::string& leftPaddingImgPath,
             const std::string& rightPaddingImgPath,
             const std::string& statusBarImgPath,
             float maxLength);
-  virtual ~StatusBar() = default;
   void update(int currentVal, int fullVal);
 
-  ax::ui::Layout* getLayout() const {
-    return _layout;
-  }
+  inline ax::ui::Layout* getLayout() const { return _layout; }
 
  private:
   ax::ui::Layout* _layout;

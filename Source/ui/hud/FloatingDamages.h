@@ -13,7 +13,7 @@ namespace vigilante {
 class Character;
 
 class FloatingDamages final {
- public:  
+ public:
   FloatingDamages();
 
   void update(const float delta);

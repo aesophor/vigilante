@@ -20,7 +20,7 @@
 #include "ui/console/Console.h"
 #include "ui/control_hints/ControlHints.h"
 #include "ui/dialogue/DialogueManager.h"
-#include "ui/floating_damages/FloatingDamages.h"
+#include "ui/hud/FloatingDamages.h"
 #include "ui/hud/Hud.h"
 #include "ui/notifications/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
