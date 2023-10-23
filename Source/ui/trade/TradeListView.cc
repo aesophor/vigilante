@@ -9,7 +9,7 @@
 #include "scene/SceneManager.h"
 #include "ui/AmountSelectionWindow.h"
 #include "ui/WindowManager.h"
-#include "ui/notifications/Notifications.h"
+#include "ui/hud/Notifications.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/StringUtil.h"
 

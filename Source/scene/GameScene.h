@@ -22,7 +22,7 @@
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/hud/FloatingDamages.h"
 #include "ui/hud/Hud.h"
-#include "ui/notifications/Notifications.h"
+#include "ui/hud/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
 #include "ui/Shade.h"
