@@ -97,12 +97,16 @@ void MagicalMissile::onHit(Character* target) {
   ));
 
   if (target) {
-    bool isFacingRight = _body->GetLinearVelocity().x > 0;
-    float knockBackForceX = (isFacingRight) ? 2.0f : -2.0f;
-    float knockBackForceY = 1.0f;
+    const bool isFacingRight = _body->GetLinearVelocity().x > 0;
+    const float knockBackForceX = isFacingRight ? 3.5f : -3.5f;
+    const float knockBackForceY = 1.0f;
     _user->knockBack(target, knockBackForceX, knockBackForceY);
     _user->inflictDamage(target, getDamage());
+
     target->setStunned(true);
+    CallbackManager::the().runAfter([target]() {
+      target->setStunned(false);
+    }, 2.0f);
   }
 
   // Play sound effect.

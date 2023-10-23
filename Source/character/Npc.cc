@@ -168,7 +168,11 @@ bool Npc::inflictDamage(Character* target, int damage) {
 }
 
 bool Npc::receiveDamage(Character* source, int damage) {
-  if (!Character::receiveDamage(source, damage)) {
+  constexpr float kAllyNumSecCantMove = 5.0f;
+  if (_disposition == Npc::Disposition::ALLY && !Character::receiveDamage(source, damage, kAllyNumSecCantMove)) {
+    VGLOG(LOG_ERR, "Failed to receive damage from source: [%p].", source);
+    return false;
+  } else if (!Character::receiveDamage(source, damage)) {
     VGLOG(LOG_ERR, "Failed to receive damage from source: [%p].", source);
     return false;
   }

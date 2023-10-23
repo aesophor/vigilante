@@ -136,6 +136,7 @@ class Character : public DynamicActor, public Importable {
 
   virtual void onKilled();
   virtual void onFallToGroundOrPlatform();
+  virtual void onPhysicalContactWithEnemy(Character* enemy);
   virtual void onMapChanged() {}
 
   virtual void startRunning();
@@ -302,10 +303,10 @@ class Character : public DynamicActor, public Importable {
   virtual void redefineBodyFixture(short bodyCategoryBits = 0, short bodyMaskBits = 0);
   virtual void redefineFeetFixture(short feetMaskBits = 0);
   virtual void redefineWeaponFixture(short weaponMaskBits = 0);
-
   virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
-
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
+
+  bool receiveDamage(Character* source, int damage, float numSecCantMove);
 
   void createBodyAnimation(const Character::State state,
                            ax::Animation* fallbackAnimation);
@@ -342,9 +343,6 @@ class Character : public DynamicActor, public Importable {
   const int _baseRegenDeltaHealth{5};
   const int _baseRegenDeltaMagicka{5};
   const int _baseRegenDeltaStamina{5};
-
-  // Stunned timer.
-  float _stunnedTimer{};
 
   // The following variables are used to determine the character's state
   // and run the corresponding animations. Please see Character::update()

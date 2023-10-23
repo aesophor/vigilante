@@ -68,13 +68,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (playerFixture && enemyFixture) {
         Character* player = reinterpret_cast<Character*>(playerFixture->GetUserData().pointer);
         Character* enemy = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
-
-        if (!player->isInvincible()) {
-          float knockBackForceX = (player->isFacingRight()) ? -.25f : .25f; // temporary
-          float knockBackForceY = 1.0f; // temporary
-          enemy->inflictDamage(player, 25);
-          enemy->knockBack(player, knockBackForceX, knockBackForceY);
-        }
+        player->onPhysicalContactWithEnemy(enemy);
       }
       break;
     }
@@ -86,13 +80,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (npcFixture && enemyFixture) {
         Character* npc = reinterpret_cast<Character*>(npcFixture->GetUserData().pointer);
         Character* enemy = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
-
-        if (!npc->isInvincible()) {
-          float knockBackForceX = (npc->isFacingRight()) ? -.25f : .25f; // temporary
-          float knockBackForceY = 1.0f; // temporary
-          enemy->inflictDamage(npc, 25);
-          enemy->knockBack(npc, knockBackForceX, knockBackForceY);
-        }
+        npc->onPhysicalContactWithEnemy(enemy);
       }
       break;
     }

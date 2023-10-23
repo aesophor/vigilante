@@ -91,7 +91,8 @@ bool Player::inflictDamage(Character* target, int damage) {
 }
 
 bool Player::receiveDamage(Character* source, int damage) {
-  if (!Character::receiveDamage(source, damage)) {
+  constexpr float kNumSecCantMove = 5.0f;
+  if (!Character::receiveDamage(source, damage, kNumSecCantMove)) {
     VGLOG(LOG_ERR, "Failed to receive damage from source: [%p].", source);
     return false;
   }

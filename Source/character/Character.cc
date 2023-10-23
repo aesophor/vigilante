@@ -87,13 +87,6 @@ void Character::update(const float delta) {
     hud->updateStatusBars();
   }
 
-  // Handle recovery from stunned
-  _stunnedTimer += delta;
-  if (_stunnedTimer > 5.0f) {
-    _stunnedTimer = 0.0f;
-    _isStunned = false;
-  }
-
   for (const auto interactable : _inRangeInteractables) {
     if (const auto trigger = dynamic_cast<GameMap::Trigger*>(interactable)) {
       if (const auto damage = trigger->getDamage()) {
@@ -302,7 +295,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST2, _bodyAnimations[State::ATTACKING]);
-  createBodyAnimation(State::STUNNED, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::STUNNED, fallback);
   createBodyAnimation(State::TAKE_DAMAGE, fallback);
   createBodyAnimation(State::KILLED, fallback);
 
@@ -494,9 +487,30 @@ void Character::onFallToGroundOrPlatform() {
     getUpFromFalling();
   }
 
+  if (_isTakingDamage) {
+    _isTakingDamage = false;
+    getUpFromFalling();
+  }
+
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP); sfxFileName.size()) {
     Audio::the().playSfx(sfxFileName);
   }
+}
+
+void Character::onPhysicalContactWithEnemy(Character* enemy) {
+  if (!enemy) {
+    VGLOG(LOG_ERR, "Failed to handle physical contact with enemy event, enemy: [nullptr].");
+    return;
+  }
+
+  if (_isInvincible) {
+    return;
+  }
+
+  const float knockBackForceX = _isFacingRight ? -2.5f : 2.5f;
+  const float knockBackForceY = 3.0f;
+  enemy->knockBack(this, knockBackForceX, knockBackForceY);
+  enemy->inflictDamage(this, 25);
 }
 
 void Character::startRunning() {
@@ -516,7 +530,7 @@ void Character::stopRunning() {
 void Character::moveLeft() {
   _isFacingRight = false;
 
-  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned) {
+  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage) {
     return;
   }
 
@@ -533,7 +547,7 @@ void Character::moveLeft() {
 void Character::moveRight() {
   _isFacingRight = true;
 
-  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned) {
+  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage) {
     return;
   }
 
@@ -550,12 +564,13 @@ void Character::moveRight() {
 void Character::jump() {
   // Block current jump request if:
   // 1. This character's cannot jump (_characterProfile.jumpHeight == 0)
-  // 2. This character's is currently stunned.
+  // 2. This character's is currently stunned or taking damage.
   // 3. This character's timer-based jump lock has not expired yet.
   // 4. This character cannot double jump, and it has already jumped.
   // 5. This character can double jump, and it has already double jumped.
   if (_characterProfile.jumpHeight == 0.0f ||
       _isStunned ||
+      _isTakingDamage ||
       _isJumpingDisallowed ||
       (!_characterProfile.canDoubleJump && _isJumping) ||
       (_characterProfile.canDoubleJump && _isDoubleJumping)) {
@@ -709,16 +724,23 @@ bool Character::attack(const Character::State attackState,
   }
 
   for (int i = 1; i <= numTimesInflictDamage; i++) {
-    CallbackManager::the().runAfter([this]() {
+    const CallbackManager::CallbackId id = CallbackManager::the().runAfter([this]() {
       if (_isTakingDamage || !_inRangeTargets.contains(_lockedOnTarget)) {
         return;
       }
+
       inflictDamage(_lockedOnTarget, getDamageOutput());
-      float knockBackForceX = (_isFacingRight) ? .5f : -.5f;
-      float knockBackForceY = 1.0f;
+
+      const float attackForce = _characterProfile.attackForce;
+      const float knockBackForceX = _isFacingRight ? attackForce : -attackForce;
+      const float knockBackForceY = attackForce;
       knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
+
+      _cancelAttackCallbacksQueue.pop();
     }, _characterProfile.attackDelay + damageInflictionInterval * i);
+    _cancelAttackCallbacksQueue.emplace(id);
   }
+
   return true;
 }
 
@@ -741,7 +763,7 @@ void Character::activateSkill(Skill* skill) {
     return;
   }
 
-  if (isAttacking() || _isStunned || _isTakingDamage) {
+  if (isAttacking() || _isStunned) {
     return;
   }
 
@@ -750,8 +772,6 @@ void Character::activateSkill(Skill* skill) {
 
   CallbackManager::the().runAfter([this]() {
     _isUsingSkill = false;
-    // Set _currentState to FORCE_UPDATE so that next time in
-    // Character::update the animation is guaranteed to be updated.
     _currentState = State::FORCE_UPDATE;
   }, skill->getSkillProfile().framesDuration);
 
@@ -799,7 +819,7 @@ bool Character::inflictDamage(Character* target, int damage) {
   return true;
 }
 
-bool Character::receiveDamage(Character* source, int damage) {
+bool Character::receiveDamage(Character *source, int damage, float takeDamageDuration) {
   if (_isSetToKill || _isInvincible) {
     return false;
   }
@@ -813,7 +833,7 @@ bool Character::receiveDamage(Character* source, int damage) {
   _isTakingDamage = true;
   CallbackManager::the().runAfter([this]() {
     _isTakingDamage = false;
-  }, _bodyAnimations[State::TAKE_DAMAGE]->getDuration());
+  }, takeDamageDuration);
 
   cancelAttack();
 
@@ -848,6 +868,12 @@ bool Character::receiveDamage(Character* source, int damage) {
   }
 
   return true;
+
+}
+
+bool Character::receiveDamage(Character* source, int damage) {
+  constexpr float kNumSecCantMove = 0.2f;
+  return receiveDamage(source, damage, kNumSecCantMove);
 }
 
 bool Character::receiveDamage(int damage) {
