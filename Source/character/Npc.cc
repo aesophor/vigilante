@@ -181,7 +181,7 @@ bool Npc::receiveDamage(Character* source, int damage) {
 
   if (!dynamic_cast<Player*>(source)) {
     _isInvincible = true;
-    CallbackManager::the().runAfter([&](){
+    CallbackManager::the().runAfter([this](const CallbackManager::CallbackId){
       _isInvincible = false;
     }, 1.0f);
   }
@@ -262,7 +262,7 @@ void Npc::teleportToTarget(const b2Vec2& targetPos) {
 void Npc::dropItems() {
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
 
     for (const auto& i : _npcProfile.droppedItems) {

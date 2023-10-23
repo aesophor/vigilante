@@ -515,14 +515,14 @@ void Character::onPhysicalContactWithEnemy(Character* enemy) {
 
 void Character::startRunning() {
   _isStartRunning = true;
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isStartRunning = false;
   }, _bodyAnimations[State::RUNNING_START]->getDuration());
 }
 
 void Character::stopRunning() {
   _isStopRunning = true;
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isStopRunning = false;
   }, _bodyAnimations[State::RUNNING_STOP]->getDuration());
 }
@@ -585,7 +585,7 @@ void Character::jump() {
   }
 
   _isJumpingDisallowed = true;
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isJumpingDisallowed = false;
   }, .2f);
 
@@ -596,7 +596,7 @@ void Character::jump() {
 void Character::doubleJump() {
   jump();
 
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     jump();
   }, .25f);
 }
@@ -608,7 +608,7 @@ void Character::jumpDown() {
 
   _fixtures[FixtureType::FEET]->SetSensor(true);
 
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _fixtures[FixtureType::FEET]->SetSensor(false);
   }, .25f);
 }
@@ -638,7 +638,7 @@ void Character::getUpFromCrouching() {
 void Character::getUpFromFalling() {
   _isGettingUpFromFalling = true;
 
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isGettingUpFromFalling = false;
   }, _bodyAnimations[State::FALLING_GETUP]->getDuration());
 }
@@ -669,7 +669,7 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
   afterImageFxMgr->registerNode(_node, AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
 
-  CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag]() {
+  CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag](const CallbackManager::CallbackId) {
     auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
     afterImageFxMgr->unregisterNode(_node);
 
@@ -696,12 +696,15 @@ bool Character::attack(const Character::State attackState,
     _overridingAttackState = attackState;
   }
 
-  const CallbackManager::CallbackId cancelAttackCallbackId = CallbackManager::the().runAfter([this]() {
-    _isAttacking = false;
-    _overridingAttackState = std::nullopt;
-    _cancelAttackCallbacksQueue.pop();
-  }, getAttackAnimationDuration(attackState));
-  _cancelAttackCallbacksQueue.emplace(cancelAttackCallbackId);
+  {
+    lock_guard<mutex> lock{_cancelAttackCallbacksMutex};
+    const CallbackManager::CallbackId cancelAttackCallbackId = CallbackManager::the().runAfter([this](const CallbackManager::CallbackId id) {
+      _isAttacking = false;
+      _overridingAttackState = std::nullopt;
+      _cancelAttackCallbacks.erase(id);
+    }, getAttackAnimationDuration(attackState));
+    _cancelAttackCallbacks.emplace(cancelAttackCallbackId);
+  }
 
   const auto weapon = _equipmentSlots[Equipment::Type::WEAPON];
   if (!weapon) {
@@ -724,7 +727,7 @@ bool Character::attack(const Character::State attackState,
   }
 
   for (int i = 1; i <= numTimesInflictDamage; i++) {
-    const CallbackManager::CallbackId id = CallbackManager::the().runAfter([this]() {
+    const CallbackManager::CallbackId id = CallbackManager::the().runAfter([this](const CallbackManager::CallbackId id) {
       if (_isTakingDamage || !_inRangeTargets.contains(_lockedOnTarget)) {
         return;
       }
@@ -736,9 +739,12 @@ bool Character::attack(const Character::State attackState,
       const float knockBackForceY = attackForce;
       knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
 
-      _cancelAttackCallbacksQueue.pop();
+      lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
+      _inflictDamageCallbacks.erase(id);
     }, _characterProfile.attackDelay + damageInflictionInterval * i);
-    _cancelAttackCallbacksQueue.emplace(id);
+
+    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
+    _inflictDamageCallbacks.emplace(id);
   }
 
   return true;
@@ -748,10 +754,20 @@ void Character::cancelAttack() {
   _isAttacking = false;
   _overridingAttackState = std::nullopt;
 
-  while (_cancelAttackCallbacksQueue.size()) {
-    const auto callbackId = _cancelAttackCallbacksQueue.front();
-    _cancelAttackCallbacksQueue.pop();
-    CallbackManager::the().cancel(callbackId);
+  {
+    lock_guard<mutex> lock{_cancelAttackCallbacksMutex};
+    for (const auto &callbackId : _cancelAttackCallbacks) {
+      CallbackManager::the().cancel(callbackId);
+    }
+    _cancelAttackCallbacks.clear();
+  }
+
+  {
+    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
+    for (const auto &callbackId : _inflictDamageCallbacks) {
+      CallbackManager::the().cancel(callbackId);
+    }
+    _inflictDamageCallbacks.clear();
   }
 }
 
@@ -770,7 +786,7 @@ void Character::activateSkill(Skill* skill) {
   _isUsingSkill = true;
   _currentlyUsedSkill = skill;
 
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isUsingSkill = false;
     _currentState = State::FORCE_UPDATE;
   }, skill->getSkillProfile().framesDuration);
@@ -831,7 +847,7 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
   _characterProfile.health -= damage;
 
   _isTakingDamage = true;
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isTakingDamage = false;
   }, takeDamageDuration);
 

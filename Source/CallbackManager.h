@@ -15,7 +15,7 @@ class CallbackManager {
   using CallbackId = uint64_t;
   static CallbackManager& the();
 
-  CallbackId runAfter(std::function<void ()>&& userCallback, float delay);
+  CallbackId runAfter(std::function<void (const CallbackId id)>&& userCallback, float delay);
   void cancel(const CallbackId id);
 
   inline void setScene(ax::Scene* scene) { _scene = scene; }

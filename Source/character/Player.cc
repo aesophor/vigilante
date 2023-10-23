@@ -98,7 +98,7 @@ bool Player::receiveDamage(Character* source, int damage) {
   }
 
   _isInvincible = true;
-  CallbackManager::the().runAfter([&](){
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId){
     _isInvincible = false;
   }, 1.0f);
 

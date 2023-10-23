@@ -104,7 +104,7 @@ void MagicalMissile::onHit(Character* target) {
     _user->inflictDamage(target, getDamage());
 
     target->setStunned(true);
-    CallbackManager::the().runAfter([target]() {
+    CallbackManager::the().runAfter([target](const CallbackManager::CallbackId) {
       target->setStunned(false);
     }, 2.0f);
   }
@@ -132,7 +132,7 @@ void MagicalMissile::activate() {
   // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
-  CallbackManager::the().runAfter([this]() {
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
     auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
     if (!actor) {

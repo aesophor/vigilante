@@ -5,8 +5,8 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <optional>
-#include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -372,7 +372,10 @@ class Character : public DynamicActor, public Importable {
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
 
-  std::queue<CallbackManager::CallbackId> _cancelAttackCallbacksQueue;
+  mutable std::mutex _cancelAttackCallbacksMutex;
+  mutable std::mutex _inflictDamageCallbacksMutex;
+  std::unordered_set<CallbackManager::CallbackId> _cancelAttackCallbacks;
+  std::unordered_set<CallbackManager::CallbackId> _inflictDamageCallbacks;
 
   // Combat related systems
   std::shared_ptr<ComboSystem> _comboSystem;

@@ -11,9 +11,9 @@ CallbackManager& CallbackManager::the() {
   return instance;
 }
 
-uint64_t CallbackManager::runAfter(function<void ()>&& userCallback, float delay) {
+uint64_t CallbackManager::runAfter(function<void (const CallbackManager::CallbackId)>&& userCallback, float delay) {
   if (delay == 0) {
-    userCallback();
+    userCallback(0);
     return 0;
   }
 
@@ -24,7 +24,7 @@ uint64_t CallbackManager::runAfter(function<void ()>&& userCallback, float delay
       _cancelledCallbackIds.erase(it);
       return;
     }
-    std::invoke(callback);
+    callback(id);
   };
 
   _scene->runAction(Sequence::createWithTwoActions(

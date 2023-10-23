@@ -38,7 +38,7 @@ void BackDash::activate() {
   float oldBodyDamping = _user->getBody()->GetLinearDamping();
   _user->getBody()->SetLinearDamping(4.0f);
 
-  CallbackManager::the().runAfter([=]() {
+  CallbackManager::the().runAfter([=](const CallbackManager::CallbackId) {
     _user->setAfterImageFxEnabled(false);
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->removeActiveSkill(this);
