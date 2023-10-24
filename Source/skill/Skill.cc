@@ -4,7 +4,6 @@
 #include <axmol.h>
 
 #include "skill/BatForm.h"
-#include "skill/BackDash.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "util/JsonUtil.h"
@@ -17,8 +16,6 @@ namespace vigilante {
 unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   if (jsonFileName.find("bat_form") != jsonFileName.npos) {
     return std::make_unique<BatForm>(jsonFileName, user);
-  } else if (jsonFileName.find("back_dash") != jsonFileName.npos) {
-    return std::make_unique<BackDash>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
     return std::make_unique<ForwardSlash>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
