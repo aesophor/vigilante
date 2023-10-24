@@ -93,6 +93,12 @@ inline const fs::path kTradeBg = kTradeDir / "trade_bg.png";
 // Control Hints
 inline const fs::path kControlHintsDir = kUIDir / "control_hints";
 
+// Fx
+inline const fs::path kFxDir = kTextureDir / "fx";
+inline const fs::path kDustDir = kFxDir / "dust";
+inline const fs::path kHitDir = kFxDir / "hit";
+inline const fs::path kHintBubbleDir = kFxDir / "hint_bubble";
+
 // Important items
 inline const fs::path kGoldCoin = kDataDir / "item/misc/gold_coin.json";
 

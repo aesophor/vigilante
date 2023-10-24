@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "FxManager.h"
 
+#include "Assets.h"
 #include "Constants.h"
 #include "StaticActor.h"
 #include "DynamicActor.h"
@@ -9,6 +10,7 @@
 #include "scene/SceneManager.h"
 
 using namespace std;
+using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
@@ -21,7 +23,7 @@ void FxManager::createDustFx(const Character* c) {
   const b2Vec2& bodyPos = c->getBody()->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = (bodyPos.y - .1f) * kPpm;
-  createAnimation("Texture/fx/dust", "white", x, y, 1, 10);
+  createAnimation(kDustDir, "white", x, y, 1, 10);
 }
 
 void FxManager::createHitFx(const Character* c) {
@@ -32,7 +34,7 @@ void FxManager::createHitFx(const Character* c) {
   const b2Vec2& bodyPos = c->getBody()->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = bodyPos.y * kPpm;
-  createAnimation("Texture/fx/hit", "normal", x, y, 1, 4);
+  createAnimation(kHitDir, "normal", x, y, 1, 4);
 }
 
 Sprite* FxManager::createHintBubbleFx(const b2Body* body,
@@ -44,7 +46,7 @@ Sprite* FxManager::createHintBubbleFx(const b2Body* body,
   const b2Vec2& bodyPos = body->GetPosition();
   const float x = bodyPos.x * kPpm;
   const float y = bodyPos.y * kPpm + kHintBubbleFxSpriteOffsetY;
-  return createAnimation("Texture/fx/hint_bubble", framesName, x, y, -1, 45);
+  return createAnimation(kHintBubbleDir, framesName, x, y, -1, 45);
 }
 
 Sprite* FxManager::createAnimation(const string& textureResDir,
