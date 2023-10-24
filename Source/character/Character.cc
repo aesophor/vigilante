@@ -665,8 +665,6 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
     return;
   }
 
-  isDodgingFlag = true;
-  _isInvincible = true;
   _comboSystem->reset();
 
   const float originalBodyDamping = _body->GetLinearDamping();
@@ -676,12 +674,17 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
   afterImageFxMgr->registerNode(_node, AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
 
+  _isInvincible = true;
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
+    _isInvincible = false;
+  }, 0.2f);
+
+  isDodgingFlag = true;
   CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag](const CallbackManager::CallbackId) {
     auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
     afterImageFxMgr->unregisterNode(_node);
 
     _body->SetLinearDamping(originalBodyDamping);
-    _isInvincible = false;
     isDodgingFlag = false;
   }, _bodyAnimations[dodgeState]->getDuration());
 }
