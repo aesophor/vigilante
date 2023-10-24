@@ -21,6 +21,7 @@
 #include "util/StringUtil.h"
 
 using namespace std;
+using namespace vigilante::assets;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
@@ -58,11 +59,21 @@ void Npc::update(const float delta) {
     return;
   }
 
+  const b2Vec2& b2bodyPos = _body->GetPosition();
+
+  // Sync the floating health bar with Npc's b2body if it exists.
+  if (_floatingHealthBar->isVisible()) {
+    const float floatingHealthBarX = b2bodyPos.x * kPpm - _floatingHealthBar->getMaxLength() / 2;
+    const float floatingHealthBarY = b2bodyPos.y * kPpm + _characterProfile.bodyHeight / 2 + 10.0f;
+    _floatingHealthBar->setPosition({floatingHealthBarX, floatingHealthBarY});
+    _floatingHealthBar->update(delta);
+  }
+
   // Sync the hint bubble fx sprite with Npc's b2body if it exists.
   if (_hintBubbleFxSprite) {
-    const b2Vec2& b2bodyPos = _body->GetPosition();
-    _hintBubbleFxSprite->setPosition(b2bodyPos.x * kPpm,
-                                     b2bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y);
+    const float hintBubbleX = b2bodyPos.x * kPpm;
+    const float hintBubbleY = b2bodyPos.y * kPpm + kHintBubbleFxSpriteOffsetY;
+    _hintBubbleFxSprite->setPosition(hintBubbleX, hintBubbleY);
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
@@ -72,11 +83,9 @@ void Npc::update(const float delta) {
 }
 
 bool Npc::showOnMap(float x, float y) {
-  if (_isShownOnMap || _isKilled) {
+  if (!Character::showOnMap(x, y)) {
     return false;
   }
-
-  _isShownOnMap = true;
 
   // Construct b2Body and b2Fixtures.
   // The category/mask bits of each fixture are set in Npc::setDisposition()
@@ -87,13 +96,25 @@ bool Npc::showOnMap(float x, float y) {
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
   defineTexture(_characterProfile.textureResDir, x, y);
 
+  _floatingHealthBar = make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, 45.0f, 5.0f);
+  _floatingHealthBar->setVisible(false);
+
   _node->removeAllChildren();
   _node->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
+  _node->addChild(_floatingHealthBar->getLayout(), graphical_layers::kHud);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_node, graphical_layers::kNpcBody);
 
   return true;
+}
+
+bool Npc::removeFromMap() {
+  if (!Character::removeFromMap()) {
+    return false;
+  }
+
+  _floatingHealthBar->getLayout()->removeFromParentAndCleanup(true);
 }
 
 void Npc::defineBody(b2BodyType bodyType, float x, float y,
@@ -128,7 +149,7 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
 
 void Npc::import(const string& jsonFileName) {
   Character::import(jsonFileName);
-  _npcProfile = Npc::Profile(jsonFileName);
+  _npcProfile = Npc::Profile{jsonFileName};
 }
 
 void Npc::onKilled() {
@@ -139,6 +160,8 @@ void Npc::onKilled() {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
     gmMgr->setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
   }
+
+  _floatingHealthBar->setVisible(false);
 }
 
 void Npc::onMapChanged() {
@@ -189,6 +212,9 @@ bool Npc::receiveDamage(Character* source, int damage) {
   if (_isSetToKill && source) {
     source->addExp(_characterProfile.exp);
   }
+
+  _floatingHealthBar->setVisible(true);
+  _floatingHealthBar->update(_characterProfile.health, _characterProfile.fullHealth);
 
   return true;
 }

@@ -19,6 +19,8 @@ inline constexpr int kWallFriction = 0;
 
 inline constexpr int kIconSize = 16;
 
+inline constexpr float kHintBubbleFxSpriteOffsetY = 45.0f;
+
 namespace category_bits {
 
 inline constexpr short kGround = 1;

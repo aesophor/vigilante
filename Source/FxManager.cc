@@ -43,7 +43,7 @@ Sprite* FxManager::createHintBubbleFx(const b2Body* body,
 
   const b2Vec2& bodyPos = body->GetPosition();
   const float x = bodyPos.x * kPpm;
-  const float y = bodyPos.y * kPpm + HINT_BUBBLE_FX_SPRITE_OFFSET_Y;
+  const float y = bodyPos.y * kPpm + kHintBubbleFxSpriteOffsetY;
   return createAnimation("Texture/fx/hint_bubble", framesName, x, y, -1, 45);
 }
 

@@ -42,6 +42,15 @@ Character::Character(const string& jsonFileName)
   }
 }
 
+bool Character::showOnMap(float x, float y) {
+  if (_isShownOnMap || _isKilled) {
+    return false;
+  }
+
+  _isShownOnMap = true;
+  return true;
+}
+
 bool Character::removeFromMap() {
   if (!StaticActor::removeFromMap()) {
     return false;
@@ -473,9 +482,7 @@ void Character::maybeOverrideCurrentStateWithStopRunningState() {
 
 void Character::onKilled() {
   _isKilled = true;
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getWorld()->DestroyBody(_body);
+  destroyBody();
 
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
     Audio::the().playSfx(sfxFileName);

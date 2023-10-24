@@ -2,8 +2,6 @@
 #ifndef VIGILANTE_INTERACTABLE_H_
 #define VIGILANTE_INTERACTABLE_H_
 
-#define HINT_BUBBLE_FX_SPRITE_OFFSET_Y 30
-
 namespace vigilante {
 
 class Character;

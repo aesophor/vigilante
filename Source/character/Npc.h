@@ -11,6 +11,7 @@
 #include "character/Character.h"
 #include "character/NpcController.h"
 #include "gameplay/DialogueTree.h"
+#include "ui/hud/StatusBar.h"
 
 namespace vigilante {
 
@@ -58,6 +59,7 @@ class Npc : public Character, public Interactable {
   virtual ~Npc() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
+  virtual bool removeFromMap() override;  // Character
   virtual void update(const float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
 
@@ -115,6 +117,7 @@ class Npc : public Character, public Interactable {
   NpcController _npcController;
 
   ax::Sprite* _hintBubbleFxSprite{};
+  std::unique_ptr<StatusBar> _floatingHealthBar;
 };
 
 }  // namespace vigilante

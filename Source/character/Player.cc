@@ -43,11 +43,9 @@ Player::Player(const std::string& jsonFileName)
 }
 
 bool Player::showOnMap(float x, float y) {
-  if (_isShownOnMap || _isKilled) {
+  if (!Character::showOnMap(x, y)) {
     return false;
   }
-
-  _isShownOnMap = true;
 
   defineBody(b2BodyType::b2_dynamicBody, x, y,
              kPlayerBodyCategoryBits,
