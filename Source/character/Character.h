@@ -418,7 +418,7 @@ class Character : public DynamicActor, public Importable {
 
   // Currently used skill.
   Character::SkillBook _skillBook{};
-  std::unordered_map<std::string, std::unique_ptr<Skill>> _skillMapper;
+  std::unordered_map<std::string, std::unique_ptr<Skill>> _skills;
   std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
   Skill* _currentlyUsedSkill{};
 

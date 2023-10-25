@@ -1120,14 +1120,14 @@ bool Character::addSkill(unique_ptr<Skill> skill) {
     return false;
   }
 
-  if (_skillMapper.contains(skill->getName())) {
+  if (_skills.contains(skill->getName())) {
     VGLOG(LOG_WARN, "Failed to add skill [%s] to [%s], already added",
           skill->getName().c_str(), _characterProfile.name.c_str());
     return false;
   }
 
   _skillBook[skill->getSkillProfile().skillType].insert(skill.get());
-  _skillMapper.emplace(skill->getName(), std::move(skill));
+  _skills.emplace(skill->getName(), std::move(skill));
   return true;
 }
 
@@ -1137,15 +1137,15 @@ bool Character::removeSkill(Skill* skill) {
     return false;
   }
 
-  auto it = _skillMapper.find(skill->getName());
-  if (it == _skillMapper.end()) {
+  auto it = _skills.find(skill->getName());
+  if (it == _skills.end()) {
     VGLOG(LOG_WARN, "Failed to remove skill [%s] from [%s], already removed.",
           skill->getName().c_str(), _characterProfile.name.c_str());
     return false;
   }
 
   _skillBook[skill->getSkillProfile().skillType].erase(skill);
-  _skillMapper.erase(it);
+  _skills.erase(it);
   return true;
 }
 
