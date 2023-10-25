@@ -106,23 +106,32 @@ bool Player::receiveDamage(Character* source, int damage) {
   return true;
 }
 
-void Player::addItem(shared_ptr<Item> item, int amount) {
-  Character::addItem(item, amount);
+bool Player::addItem(shared_ptr<Item> item, int amount) {
+  if (!Character::addItem(item, amount)) {
+    VGLOG(LOG_ERR, "Failed to add item to player.");
+    return false;
+  }
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show((amount > 1) ?
       string_util::format("Acquired item: %s (%d).", item->getName().c_str(), amount) :
       string_util::format("Acquired item: %s.", item->getName().c_str()));
+
+  return true;
 }
 
-void Player::removeItem(Item* item, int amount) {
-  const string itemName = item->getName();
-  Character::removeItem(item, amount);
+bool Player::removeItem(Item* item, int amount) {
+  if (!Character::removeItem(item, amount)) {
+    VGLOG(LOG_ERR, "Failed to remove item from player.");
+    return false;
+  }
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show((amount > 1) ?
-      string_util::format("Removed item: %s (%d).", itemName.c_str(), amount) :
-      string_util::format("Removed item: %s.", itemName.c_str()));
+      string_util::format("Removed item: %s (%d).", item->getName().c_str(), amount) :
+      string_util::format("Removed item: %s.", item->getName().c_str()));
+
+  return true;
 }
 
 void Player::equip(Equipment* equipment, bool audio) {

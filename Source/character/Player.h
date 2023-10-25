@@ -27,8 +27,8 @@ class Player : public Character, public Controllable {
   virtual bool inflictDamage(Character* target, int damage) override;  // Character
   virtual bool receiveDamage(Character* source, int damage) override;  // Character
 
-  virtual void addItem(std::shared_ptr<Item> item, int amount=1) override;  // Character
-  virtual void removeItem(Item* item, int amount=1) override;  // Character
+  virtual bool addItem(std::shared_ptr<Item> item, int amount=1) override;  // Character
+  virtual bool removeItem(Item* item, int amount=1) override;  // Character
   virtual void equip(Equipment* equipment, bool audio = true) override;  // Character
   virtual void unequip(Equipment::Type equipmentType, bool audio = true) override;  // Character
   virtual void pickupItem(Item* item) override;  // Character

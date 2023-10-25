@@ -943,16 +943,19 @@ void Character::lockOn(Character* target) {
   setLockedOnTarget(target);
 }
 
-void Character::addItem(shared_ptr<Item> item, int amount) {
-  if (!item || amount == 0) {
-    VGLOG(LOG_WARN, "Either item == nullptr or amount == 0");
-    return;
+bool Character::addItem(shared_ptr<Item> item, int amount) {
+  if (!item) {
+    VGLOG(LOG_ERR, "Failed to add item, item: [nullptr].");
+    return false;
+  }
+  if (amount == 0) {
+    VGLOG(LOG_ERR, "Failed to add item, amount: [0].");
+    return false;
   }
 
   // If this Item* does not exist in Inventory or EquipmentSlots yet, store it in _itemMapper.
   // Otherwise, simply delete it and use the existing copy instead (saves memory).
   Item* existingItemObj = getExistingItemObj(item.get());
-
   if (existingItemObj) {
     existingItemObj->setAmount(existingItemObj->getAmount() + amount);
   } else {
@@ -962,14 +965,23 @@ void Character::addItem(shared_ptr<Item> item, int amount) {
   }
 
   _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
+  return true;
 }
 
-void Character::removeItem(Item* item, int amount) {
-  Item* existingItemObj = getExistingItemObj(item);
+bool Character::removeItem(Item* item, int amount) {
+  if (!item) {
+    VGLOG(LOG_WARN, "Failed to remove item, item: [nullptr].");
+    return false;
+  }
+  if (amount == 0) {
+    VGLOG(LOG_WARN, "Failed to remove item, amount: [0].");
+    return false;
+  }
 
-  if (!existingItemObj || amount == 0) {
-    VGLOG(LOG_WARN, "Unable to remove such item!");
-    return;
+  Item* existingItemObj = getExistingItemObj(item);
+  if (!existingItemObj) {
+    VGLOG(LOG_ERR, "Failed to remove item, existingItemObj: [nullptr].");
+    return false;
   }
 
   const int finalAmount = existingItemObj->getAmount() - amount;
@@ -988,6 +1000,8 @@ void Character::removeItem(Item* item, int amount) {
       _itemMapper.erase(item->getItemProfile().jsonFileName);
     }
   }
+
+  return true;
 }
 
 // For each instance of an item, at most one copy is kept in the memory.
@@ -1100,30 +1114,39 @@ void Character::addExp(const int exp) {
   }
 }
 
-void Character::addSkill(unique_ptr<Skill> skill) {
-  assert(skill);
+bool Character::addSkill(unique_ptr<Skill> skill) {
+  if (!skill) {
+    VGLOG(LOG_ERR, "Failed to add skill to [%s], skill: [nullptr].", _characterProfile.name.c_str());
+    return false;
+  }
 
-  auto it = _skillMapper.find(skill->getName());
-  if (it != _skillMapper.end()) {
-    VGLOG(LOG_WARN, "This character has already learned the skill: %s", skill->getName().c_str());
-    return;
+  if (_skillMapper.contains(skill->getName())) {
+    VGLOG(LOG_WARN, "Failed to add skill [%s] to [%s], already added",
+          skill->getName().c_str(), _characterProfile.name.c_str());
+    return false;
   }
 
   _skillBook[skill->getSkillProfile().skillType].insert(skill.get());
-  _skillMapper.insert({skill->getName(), std::move(skill)});
+  _skillMapper.emplace(skill->getName(), std::move(skill));
+  return true;
 }
 
-void Character::removeSkill(Skill* skill) {
-  assert(skill);
+bool Character::removeSkill(Skill* skill) {
+  if (!skill) {
+    VGLOG(LOG_ERR, "Failed to remove skill to [%s], skill: [nullptr].", _characterProfile.name.c_str());
+    return false;
+  }
 
   auto it = _skillMapper.find(skill->getName());
   if (it == _skillMapper.end()) {
-    VGLOG(LOG_WARN, "This character has not yet learned the skill: %s", skill->getName().c_str());
-    return;
+    VGLOG(LOG_WARN, "Failed to remove skill [%s] from [%s], already removed.",
+          skill->getName().c_str(), _characterProfile.name.c_str());
+    return false;
   }
 
   _skillBook[skill->getSkillProfile().skillType].erase(skill);
-  _skillMapper.erase(skill->getName());
+  _skillMapper.erase(it);
+  return true;
 }
 
 int Character::getGoldBalance() const {

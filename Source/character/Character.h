@@ -168,8 +168,8 @@ class Character : public DynamicActor, public Importable {
   virtual bool receiveDamage(int damage);
   virtual void lockOn(Character* target);
 
-  virtual void addItem(std::shared_ptr<Item> item, int amount=1);
-  virtual void removeItem(Item* item, int amount=1);
+  virtual bool addItem(std::shared_ptr<Item> item, int amount=1);
+  virtual bool removeItem(Item* item, int amount=1);
   virtual void useItem(Consumable* consumable);
   virtual void equip(Equipment* equipment, bool audio = true);
   virtual void unequip(Equipment::Type equipmentType, bool audio = true);
@@ -178,8 +178,8 @@ class Character : public DynamicActor, public Importable {
   virtual void interact(Interactable* target);
   virtual void addExp(const int exp);
 
-  virtual void addSkill(std::unique_ptr<Skill> skill);
-  virtual void removeSkill(Skill* skill);
+  virtual bool addSkill(std::unique_ptr<Skill> skill);
+  virtual bool removeSkill(Skill* skill);
 
   int getGoldBalance() const;
   void addGold(const int amount);
