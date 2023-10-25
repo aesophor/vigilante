@@ -4,6 +4,7 @@
 #include <axmol.h>
 
 #include "skill/BatForm.h"
+#include "skill/BeastForm.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
 #include "util/JsonUtil.h"
@@ -16,6 +17,8 @@ namespace vigilante {
 unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   if (jsonFileName.find("bat_form") != jsonFileName.npos) {
     return std::make_unique<BatForm>(jsonFileName, user);
+  } else if (jsonFileName.find("beast_form") != jsonFileName.npos) {
+    return std::make_unique<BeastForm>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
     return std::make_unique<ForwardSlash>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
@@ -24,7 +27,7 @@ unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
     return std::make_unique<MagicalMissile>(jsonFileName, user, /*onGround=*/true);
   }
 
-  VGLOG(LOG_ERR, "Unable to determine skill: %s", jsonFileName.c_str());
+  VGLOG(LOG_ERR, "Unable to create skill: [%s].", jsonFileName.c_str());
   return nullptr;
 }
 
