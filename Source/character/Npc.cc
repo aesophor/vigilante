@@ -293,14 +293,12 @@ void Npc::dropItems() {
 
     for (const auto& i : _npcProfile.droppedItems) {
       const string& itemJson = i.first;
-      float dropChance = i.second.chance;
+      const float dropChance = i.second.chance;
 
-      float randChance = rand_util::randInt(0, 100);
+      const float randChance = rand_util::randInt(0, 100);
       if (randChance <= dropChance) {
-        float x = _body->GetPosition().x;
-        float y = _body->GetPosition().y;
         int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-        gmMgr->getGameMap()->createItem(itemJson, x * kPpm, y * kPpm, amount);
+        gmMgr->getGameMap()->createItem(itemJson, _killedPos.x * kPpm, _killedPos.y * kPpm, amount);
       }
     }
   }, .2f);

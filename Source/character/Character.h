@@ -361,6 +361,7 @@ class Character : public DynamicActor, public Importable {
   Character::State _previousState{State::IDLE};
   std::optional<Character::State> _overridingAttackState{std::nullopt};
   b2Vec2 _previousBodyVelocity{0.0f, 0.0f};
+  b2Vec2 _killedPos{0.0f, 0.0f};
 
   bool _isFacingRight{true};
   bool _isStartRunning{};

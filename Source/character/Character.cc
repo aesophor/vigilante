@@ -501,6 +501,7 @@ void Character::maybeOverrideCurrentStateWithStopRunningState() {
 
 void Character::onKilled() {
   _isKilled = true;
+  _killedPos = _body->GetPosition();
   destroyBody();
 
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
@@ -540,7 +541,7 @@ void Character::onPhysicalContactWithEnemy(Character* enemy) {
 }
 
 bool Character::isMovementDisallowed() const {
-  return isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage;
+  return isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
 }
 
 void Character::startRunning() {
