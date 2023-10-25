@@ -140,7 +140,8 @@ class Character : public DynamicActor, public Importable {
 
   virtual void onKilled();
   virtual void onFallToGroundOrPlatform();
-  virtual void onPhysicalContactWithEnemy(Character* enemy);
+  virtual void onBodyContactWithEnemyBody(Character* enemy);
+  virtual void onMeleeWeaponContactWithEnemyBody(Character* enemy);
   virtual void onMapChanged() {}
 
   virtual bool isMovementDisallowed() const;
@@ -166,6 +167,7 @@ class Character : public DynamicActor, public Importable {
   virtual bool activateSkill(Skill* rawSkill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual bool inflictDamage(Character* target, int damage);
+  virtual bool inflictDamage(Character* target, int damage, const int numTimesINflictDamage, const float damageInflictionInterval);
   virtual bool receiveDamage(Character* source, int damage);
   virtual bool receiveDamage(int damage);
   virtual void lockOn(Character* target);

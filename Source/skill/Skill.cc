@@ -57,6 +57,8 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   deltaHealth = json["deltaHealth"].GetInt();
   deltaMagicka = json["deltaMagicka"].GetInt();
   deltaStamina = json["deltaStamina"].GetInt();
+  numTimesInflictDamage = json["numTimesInflictDamage"].GetInt();
+  damageInflictionInterval = json["damageInflictionInterval"].GetFloat();
 
   sfxActivate = json["sfxActivate"].GetString();
   sfxHit = json["sfxHit"].GetString();

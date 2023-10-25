@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "WorldContactListener.h"
 
 #include <limits>
@@ -14,9 +14,6 @@
 #include "item/Item.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
-#include "skill/Skill.h"
-#include "skill/MagicalMissile.h"
-#include "skill/ForwardSlash.h"
 #include "util/Logger.h"
 
 using namespace std;
@@ -68,7 +65,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (playerFixture && enemyFixture) {
         Character* player = reinterpret_cast<Character*>(playerFixture->GetUserData().pointer);
         Character* enemy = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
-        player->onPhysicalContactWithEnemy(enemy);
+        player->onBodyContactWithEnemyBody(enemy);
       }
       break;
     }
@@ -80,7 +77,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       if (npcFixture && enemyFixture) {
         Character* npc = reinterpret_cast<Character*>(npcFixture->GetUserData().pointer);
         Character* enemy = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
-        npc->onPhysicalContactWithEnemy(enemy);
+        npc->onBodyContactWithEnemyBody(enemy);
       }
       break;
     }
@@ -116,13 +113,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* attacker = reinterpret_cast<Character*>(weaponFixture->GetUserData().pointer);
         Character* enemy = reinterpret_cast<Character*>(enemyFixture->GetUserData().pointer);
         attacker->getInRangeTargets().insert(enemy);
-
-        // If player is using skill (e.g., forward slash), than inflict damage
-        // when an enemy contacts player's weapon fixture.
-        if (attacker->isUsingSkill() && dynamic_cast<ForwardSlash*>(attacker->getCurrentlyUsedSkill())) {
-          int skillDmg = attacker->getCurrentlyUsedSkill()->getSkillProfile().physicalDamage;
-          attacker->inflictDamage(enemy, attacker->getDamageOutput() + skillDmg);
-        }
+        attacker->onMeleeWeaponContactWithEnemyBody(enemy);
       }
       break;
     }
@@ -135,6 +126,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* attacker = reinterpret_cast<Character*>(weaponFixture->GetUserData().pointer);
         Character* player = reinterpret_cast<Character*>(playerFixture->GetUserData().pointer);
         attacker->getInRangeTargets().insert(player);
+        attacker->onMeleeWeaponContactWithEnemyBody(player);
       }
       break;
     }
@@ -147,6 +139,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* attacker = reinterpret_cast<Character*>(weaponFixture->GetUserData().pointer);
         Character* npc = reinterpret_cast<Character*>(npcFixture->GetUserData().pointer);
         attacker->getInRangeTargets().insert(npc);
+        attacker->onMeleeWeaponContactWithEnemyBody(npc);
       }
       break;
     }

@@ -524,7 +524,7 @@ void Character::onFallToGroundOrPlatform() {
   }
 }
 
-void Character::onPhysicalContactWithEnemy(Character* enemy) {
+void Character::onBodyContactWithEnemyBody(Character* enemy) {
   if (!enemy) {
     VGLOG(LOG_ERR, "Failed to handle physical contact with enemy event, enemy: [nullptr].");
     return;
@@ -538,6 +538,15 @@ void Character::onPhysicalContactWithEnemy(Character* enemy) {
   const float knockBackForceY = 3.0f;
   enemy->knockBack(this, knockBackForceX, knockBackForceY);
   enemy->inflictDamage(this, 25);
+}
+
+void Character::onMeleeWeaponContactWithEnemyBody(Character *enemy) {
+  if (_isUsingSkill && _currentlyUsedSkill->getSkillProfile().skillType == Skill::Type::MELEE) {
+    inflictDamage(enemy,
+                  getDamageOutput() + _currentlyUsedSkill->getSkillProfile().physicalDamage,
+                  _currentlyUsedSkill->getSkillProfile().numTimesInflictDamage,
+                  _currentlyUsedSkill->getSkillProfile().damageInflictionInterval);
+  }
 }
 
 bool Character::isMovementDisallowed() const {
@@ -776,28 +785,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  for (int i = 1; i <= numTimesInflictDamage; i++) {
-    const CallbackManager::CallbackId id = CallbackManager::the().runAfter([this](const CallbackManager::CallbackId id) {
-      if (_isTakingDamage || !_inRangeTargets.contains(_lockedOnTarget)) {
-        return;
-      }
-
-      inflictDamage(_lockedOnTarget, getDamageOutput());
-
-      const float attackForce = _characterProfile.attackForce;
-      const float knockBackForceX = _isFacingRight ? attackForce : -attackForce;
-      const float knockBackForceY = attackForce;
-      knockBack(_lockedOnTarget, knockBackForceX, knockBackForceY);
-
-      lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
-      _inflictDamageCallbacks.erase(id);
-    }, _characterProfile.attackDelay + damageInflictionInterval * i);
-
-    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
-    _inflictDamageCallbacks.emplace(id);
-  }
-
-  return true;
+  return inflictDamage(_lockedOnTarget, getDamageOutput(), numTimesInflictDamage, damageInflictionInterval);
 }
 
 void Character::cancelAttack() {
@@ -884,7 +872,6 @@ void Character::knockBack(Character* target, float forceX, float forceY) const {
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
-// TODO: add attack type (melee, ranged)
 bool Character::inflictDamage(Character* target, int damage) {
   if (!target) {
     VGLOG(LOG_ERR, "Failed to inflict damage to target: [nullptr].");
@@ -899,6 +886,42 @@ bool Character::inflictDamage(Character* target, int damage) {
   }
   for (const auto& targetAlly : target->getAllies()) {
     targetAlly->lockOn(this);
+  }
+
+  return true;
+}
+
+bool Character::inflictDamage(Character *target, int damage,
+                              const int numTimesInflictDamage, const float damageInflictionInterval) {
+  if (!target) {
+    VGLOG(LOG_ERR, "Failed to inflict damage to target: [nullptr].");
+    return false;
+  }
+
+  if (numTimesInflictDamage == 0) {
+    VGLOG(LOG_ERR, "Failed to inflict damage to target: [%s], numTimesInflictDamage: [0].", target->getCharacterProfile().name.c_str());
+    return false;
+  }
+
+  for (int i = 0; i < numTimesInflictDamage; i++) {
+    const CallbackManager::CallbackId id = CallbackManager::the().runAfter([this, target, damage](const CallbackManager::CallbackId id) {
+      if (_isTakingDamage || !_inRangeTargets.contains(target)) {
+        return;
+      }
+
+      inflictDamage(target, damage);
+
+      const float attackForce = _characterProfile.attackForce;
+      const float knockBackForceX = _isFacingRight ? attackForce : -attackForce;
+      const float knockBackForceY = attackForce;
+      knockBack(target, knockBackForceX, knockBackForceY);
+
+      lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
+      _inflictDamageCallbacks.erase(id);
+    }, _characterProfile.attackDelay + damageInflictionInterval * i);
+
+    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
+    _inflictDamageCallbacks.emplace(id);
   }
 
   return true;

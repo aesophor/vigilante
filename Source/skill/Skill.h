@@ -53,6 +53,8 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
     int deltaHealth;
     int deltaMagicka;
     int deltaStamina;
+    int numTimesInflictDamage;
+    float damageInflictionInterval;
 
     std::string sfxActivate;
     std::string sfxHit;
