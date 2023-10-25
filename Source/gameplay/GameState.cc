@@ -151,7 +151,7 @@ rapidjson::Value GameState::serializePlayerInventory() const {
   auto player = gmMgr->getPlayer();
 
   map<string, int> itemMapper;
-  for (const auto& [itemJsonFileName, item] : player->_itemMapper) {
+  for (const auto& [itemJsonFileName, item] : player->_items) {
     itemMapper.insert(std::make_pair(itemJsonFileName, item->getAmount()));
   }
 
@@ -197,18 +197,18 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
     player->unequip(static_cast<Equipment::Type>(type), /*audio=*/false);
   }
 
-  player->_itemMapper.clear();
+  player->_items.clear();
   for (const auto& [itemJsonFileName, amount] : itemMapper) {
     shared_ptr<Item> item = Item::create(itemJsonFileName);
     item->setAmount(amount);
-    player->_itemMapper.insert(make_pair(itemJsonFileName, std::move(item)));
+    player->_items.insert(make_pair(itemJsonFileName, std::move(item)));
   }
 
   for (int type = 0; type < Item::Type::SIZE; type++) {
     player->_inventory[type].clear();
     for (const auto& itemJsonFileName : inventory[type]) {
-      auto it = player->_itemMapper.find(itemJsonFileName);
-      if (it == player->_itemMapper.end()) {
+      auto it = player->_items.find(itemJsonFileName);
+      if (it == player->_items.end()) {
         VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", itemJsonFileName.c_str());
         continue;
       }
@@ -223,8 +223,8 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
       continue;
     }
 
-    auto it = player->_itemMapper.find(equipmentJsonFileName);
-    if (it == player->_itemMapper.end()) {
+    auto it = player->_items.find(equipmentJsonFileName);
+    if (it == player->_items.end()) {
       VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", equipmentJsonFileName.c_str());
       continue;
     }

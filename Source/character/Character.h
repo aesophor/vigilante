@@ -411,7 +411,7 @@ class Character : public DynamicActor, public Importable {
   Character::EquipmentSlots _equipmentSlots{};
 
   // For each item, at most one copy of Item* is kept in memory.
-  std::unordered_map<std::string, std::shared_ptr<Item>> _itemMapper;
+  std::unordered_map<std::string, std::shared_ptr<Item>> _items;
 
   // The portal to which this character is near.
   GameMap::Portal* _portal{};

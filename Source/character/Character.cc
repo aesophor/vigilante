@@ -961,7 +961,7 @@ bool Character::addItem(shared_ptr<Item> item, int amount) {
   } else {
     existingItemObj = item.get();
     existingItemObj->setAmount(amount);
-    _itemMapper[item->getItemProfile().jsonFileName] = std::move(item);
+    _items[item->getItemProfile().jsonFileName] = std::move(item);
   }
 
   _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
@@ -997,7 +997,7 @@ bool Character::removeItem(Item* item, int amount) {
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
     if (!equipment ||
         _equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj) {
-      _itemMapper.erase(item->getItemProfile().jsonFileName);
+      _items.erase(item->getItemProfile().jsonFileName);
     }
   }
 
@@ -1011,8 +1011,8 @@ Item* Character::getExistingItemObj(Item* item) const {
   if (!item) {
     return nullptr;
   }
-  auto it = _itemMapper.find(item->getItemProfile().jsonFileName);
-  return (it != _itemMapper.end()) ? it->second.get() : nullptr;
+  auto it = _items.find(item->getItemProfile().jsonFileName);
+  return (it != _items.end()) ? it->second.get() : nullptr;
 }
 
 void Character::useItem(Consumable* consumable) {
@@ -1069,8 +1069,8 @@ void Character::unequip(Equipment::Type equipmentType, bool audio) {
   _equipmentSlots[equipmentType] = nullptr;
 
   const auto& jsonFileName = e->getItemProfile().jsonFileName;
-  auto it = _itemMapper.find(e->getItemProfile().jsonFileName);
-  if (it == _itemMapper.end()) {
+  auto it = _items.find(e->getItemProfile().jsonFileName);
+  if (it == _items.end()) {
     VGLOG(LOG_ERR, "The unequipped item [%s] is not in player's itemMapper.", jsonFileName.c_str());
     return;
   }
@@ -1162,8 +1162,8 @@ void Character::removeGold(const int amount) {
 }
 
 int Character::getItemAmount(const string& itemJsonFileName) const {
-  auto it = _itemMapper.find(itemJsonFileName);
-  return it == _itemMapper.end() ? 0 : it->second->getAmount();
+  auto it = _items.find(itemJsonFileName);
+  return it == _items.end() ? 0 : it->second->getAmount();
 }
 
 shared_ptr<Skill> Character::getActiveSkill(Skill* skill) const {
