@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StaticActor.h"
 
+#include <filesystem>
 #include <stdexcept>
 
 #include "Constants.h"
@@ -8,6 +9,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 

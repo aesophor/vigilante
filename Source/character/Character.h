@@ -76,8 +76,10 @@ class Character : public DynamicActor, public Importable {
 
   struct Profile final {
     explicit Profile(const std::string& jsonFileName);
+    void loadSpritesheetInfo(const std::string& jsonFileName);
 
     std::string jsonFileName;
+    
     std::string textureResDir;
     float spriteOffsetX;
     float spriteOffsetY;
@@ -133,6 +135,7 @@ class Character : public DynamicActor, public Importable {
   virtual bool removeFromMap() override;  // DynamicActor
   virtual void update(const float delta) override;  // DynamicActor
   virtual void import(const std::string& jsonFileName) override;  // Importable
+  virtual void replaceSpritesheet(const std::string& jsonFileName);
 
   virtual void onKilled();
   virtual void onFallToGroundOrPlatform();

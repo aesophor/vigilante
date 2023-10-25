@@ -155,6 +155,22 @@ void Character::import(const string& jsonFileName) {
   _characterProfile = Character::Profile{jsonFileName};
 }
 
+void Character::replaceSpritesheet(const string& jsonFileName) {
+  const float spriteZOrder = _bodySprite->getLocalZOrder();
+  const float spritesheetZOrder = _bodySpritesheet->getLocalZOrder();
+
+  _bodySprite->removeFromParent();
+  _bodySpritesheet->removeFromParent();
+  std::fill(_bodyAnimations.begin(), _bodyAnimations.end(), nullptr);
+  std::fill(_bodyExtraAttackAnimations.begin(), _bodyExtraAttackAnimations.end(), nullptr);
+
+  _characterProfile.loadSpritesheetInfo(jsonFileName);
+  loadBodyAnimations(_characterProfile.textureResDir);
+  runAnimation(State::IDLE);
+
+  _node->addChild(_bodySpritesheet, spritesheetZOrder);
+}
+
 void Character::defineBody(b2BodyType bodyType,
                            float x,
                            float y,
@@ -1175,36 +1191,9 @@ void Character::regenStamina(int deltaStamina) {
 }
 
 Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
+  loadSpritesheetInfo(jsonFileName);
+
   rapidjson::Document json = json_util::parseJson(jsonFileName);
-
-  textureResDir = json["textureResDir"].GetString();
-  spriteOffsetX = json["spriteOffsetX"].GetFloat();
-  spriteOffsetY = json["spriteOffsetY"].GetFloat();
-  spriteScaleX = json["spriteScaleX"].GetFloat();
-  spriteScaleY = json["spriteScaleY"].GetFloat();
-
-  for (int i = 0; i < Character::State::STATE_SIZE; i++) {
-    if (!json["frameInterval"].HasMember(Character::_kCharacterStateStr[i].c_str())) {
-      VGLOG(LOG_ERR, "Failed to get the frame interval of [%s].", Character::_kCharacterStateStr[i].c_str());
-      frameIntervals[i] = 10.0f;
-      continue;
-    }
-    frameIntervals[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
-  }
-
-  for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
-    const string &sfxKey = Character::_kCharacterSfxStr[i];
-    if (!json["sfx"].HasMember(sfxKey.c_str())) {
-      continue;
-    }
-
-    const fs::path sfxPath = json["sfx"][sfxKey.c_str()].GetString();
-    std::error_code ec;
-    if (!fs::exists(sfxPath, ec)) {
-      continue;
-    }
-    sfxFileNames[i] = sfxPath;
-  }
 
   name = json["name"].GetString();
   level = json["level"].GetInt();
@@ -1244,6 +1233,39 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
     string itemJsonFileName = itemJson.name.GetString();
     int amount = itemJson.value.GetInt();
     defaultInventory.push_back({std::move(itemJsonFileName), amount});
+  }
+}
+
+void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
+  rapidjson::Document json = json_util::parseJson(jsonFileName);
+
+  textureResDir = json["textureResDir"].GetString();
+  spriteOffsetX = json["spriteOffsetX"].GetFloat();
+  spriteOffsetY = json["spriteOffsetY"].GetFloat();
+  spriteScaleX = json["spriteScaleX"].GetFloat();
+  spriteScaleY = json["spriteScaleY"].GetFloat();
+
+  for (int i = 0; i < Character::State::STATE_SIZE; i++) {
+    if (!json["frameInterval"].HasMember(Character::_kCharacterStateStr[i].c_str())) {
+      VGLOG(LOG_ERR, "Failed to get the frame interval of [%s].", Character::_kCharacterStateStr[i].c_str());
+      frameIntervals[i] = 10.0f;
+      continue;
+    }
+    frameIntervals[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
+  }
+
+  for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
+    const string &sfxKey = Character::_kCharacterSfxStr[i];
+    if (!json["sfx"].HasMember(sfxKey.c_str())) {
+      continue;
+    }
+
+    const fs::path sfxPath = json["sfx"][sfxKey.c_str()].GetString();
+    std::error_code ec;
+    if (!fs::exists(sfxPath, ec)) {
+      continue;
+    }
+    sfxFileNames[i] = sfxPath;
   }
 }
 
