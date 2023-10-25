@@ -20,6 +20,7 @@ class BeastForm : public Skill {
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; }  // Skill
   virtual bool canActivate() override;  // Skill
   virtual void activate() override;  // Skill
+  virtual void deactivate() override;  // Skill
 
   virtual Skill::Profile& getSkillProfile() override { return _skillProfile; }  // Skill
   virtual const std::string& getName() const override { return _skillProfile.name; }  // Skill

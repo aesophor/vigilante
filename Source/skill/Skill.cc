@@ -14,17 +14,17 @@ using namespace std;
 
 namespace vigilante {
 
-unique_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
+shared_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
   if (jsonFileName.find("bat_form") != jsonFileName.npos) {
-    return std::make_unique<BatForm>(jsonFileName, user);
+    return make_shared<BatForm>(jsonFileName, user);
   } else if (jsonFileName.find("beast_form") != jsonFileName.npos) {
-    return std::make_unique<BeastForm>(jsonFileName, user);
+    return make_shared<BeastForm>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
-    return std::make_unique<ForwardSlash>(jsonFileName, user);
+    return make_shared<ForwardSlash>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
-    return std::make_unique<MagicalMissile>(jsonFileName, user, /*onGround=*/false);
+    return make_shared<MagicalMissile>(jsonFileName, user, /*onGround=*/false);
   } else if (jsonFileName.find("ice_wave") != jsonFileName.npos) {
-    return std::make_unique<MagicalMissile>(jsonFileName, user, /*onGround=*/true);
+    return make_shared<MagicalMissile>(jsonFileName, user, /*onGround=*/true);
   }
 
   VGLOG(LOG_ERR, "Unable to create skill: [%s].", jsonFileName.c_str());
@@ -47,12 +47,13 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
 
   name = json["name"].GetString();
   desc = json["desc"].GetString();
+  isToggleable = json["isToggleable"].GetBool();
+  shouldForkInstance = json["shouldForkInstance"].GetBool();
   requiredLevel = json["requiredLevel"].GetInt();
   cooldown = json["cooldown"].GetFloat();
 
   physicalDamage = json["physicalDamage"].GetInt();
   magicalDamage = json["magicalDamage"].GetInt();
-
   deltaHealth = json["deltaHealth"].GetInt();
   deltaMagicka = json["deltaMagicka"].GetInt();
   deltaStamina = json["deltaStamina"].GetInt();

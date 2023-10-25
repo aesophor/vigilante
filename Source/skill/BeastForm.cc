@@ -31,6 +31,10 @@ void BeastForm::activate() {
   _user->runIntroAnimation();
 }
 
+void BeastForm::deactivate() {
+  _user->replaceSpritesheet(_user->getCharacterProfile().jsonFileName);
+}
+
 string BeastForm::getIconPath() const {
   return _skillProfile.textureResDir + "/icon.png";
 }

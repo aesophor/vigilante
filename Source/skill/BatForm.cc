@@ -18,7 +18,7 @@ BatForm::BatForm(const string& jsonFileName, Character* user)
       _user{user} {}
 
 void BatForm::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile(jsonFileName);
+  _skillProfile = Skill::Profile{jsonFileName};
 }
 
 bool BatForm::canActivate() {
@@ -46,7 +46,7 @@ void BatForm::activate() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
-    _user->removeActiveSkill(this);
+    _user->removeActiveSkillInstance(this);
   }, _skillProfile.framesDuration);
 }
 

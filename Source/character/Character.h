@@ -144,6 +144,8 @@ class Character : public DynamicActor, public Importable {
   virtual void onMapChanged() {}
 
   virtual bool isMovementDisallowed() const;
+  virtual bool isAttackingDisallowed() const;
+  virtual bool isSkillActivationDisallowed() const;
   virtual void startRunning();
   virtual void stopRunning();
   virtual void moveLeft();
@@ -161,7 +163,7 @@ class Character : public DynamicActor, public Importable {
   virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,
                       const float damageInflictionInterval = .2f);
-  virtual void activateSkill(Skill* skill);
+  virtual bool activateSkill(Skill* rawSkill);
   virtual void knockBack(Character* target, float forceX, float forceY) const;
   virtual bool inflictDamage(Character* target, int damage);
   virtual bool receiveDamage(Character* source, int damage);
@@ -178,7 +180,7 @@ class Character : public DynamicActor, public Importable {
   virtual void interact(Interactable* target);
   virtual void addExp(const int exp);
 
-  virtual bool addSkill(std::unique_ptr<Skill> skill);
+  virtual bool addSkill(std::shared_ptr<Skill> skill);
   virtual bool removeSkill(Skill* skill);
 
   int getGoldBalance() const;
@@ -237,9 +239,9 @@ class Character : public DynamicActor, public Importable {
   inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
 
   inline SkillBook& getSkillBook() { return _skillBook; }
-  std::shared_ptr<Skill> getActiveSkill(Skill* skill) const;
+  std::shared_ptr<Skill> getActiveSkillInstance(Skill* skill) const;
   inline Skill* getCurrentlyUsedSkill() const { return _currentlyUsedSkill; }
-  void removeActiveSkill(Skill* skill);
+  void removeActiveSkillInstance(Skill* skill);
 
   bool isWaitingForPartyLeader() const;
   std::unordered_set<Character*> getAllies() const;
@@ -418,8 +420,8 @@ class Character : public DynamicActor, public Importable {
 
   // Currently used skill.
   Character::SkillBook _skillBook{};
-  std::unordered_map<std::string, std::unique_ptr<Skill>> _skills;
-  std::unordered_set<std::shared_ptr<Skill>> _activeSkills;
+  std::unordered_map<std::string, std::shared_ptr<Skill>> _skills;
+  std::unordered_set<std::shared_ptr<Skill>> _activeSkillInstances;
   Skill* _currentlyUsedSkill{};
 
   // Extra attack animations.

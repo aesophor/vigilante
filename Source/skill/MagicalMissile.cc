@@ -92,7 +92,7 @@ void MagicalMissile::onHit(Character* target) {
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
     CallFunc::create([=]() {
       gmMgr->getGameMap()->removeDynamicActor(this);
-      _user->removeActiveSkill(this);
+      _user->removeActiveSkillInstance(this);
     })
   ));
 
@@ -114,7 +114,7 @@ void MagicalMissile::onHit(Character* target) {
 }
 
 void MagicalMissile::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile(jsonFileName);
+  _skillProfile = Skill::Profile{jsonFileName};
 }
 
 bool MagicalMissile::canActivate() {
@@ -122,18 +122,16 @@ bool MagicalMissile::canActivate() {
 }
 
 void MagicalMissile::activate() {
-  // Make sure this instance is only activated once.
   if (_hasActivated) {
     return;
   }
 
   _hasActivated = true;
 
-  // Modify character's stats.
   _user->getCharacterProfile().magicka += _skillProfile.deltaMagicka;
 
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
-    shared_ptr<Skill> activeCopy = _user->getActiveSkill(this);
+    shared_ptr<Skill> activeCopy = _user->getActiveSkillInstance(this);
     auto actor = std::dynamic_pointer_cast<DynamicActor>(activeCopy);
     if (!actor) {
       VGLOG(LOG_ERR, "Failed to copy skill: [%s].", _skillProfile.name.c_str());

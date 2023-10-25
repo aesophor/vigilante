@@ -544,6 +544,14 @@ bool Character::isMovementDisallowed() const {
   return isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
 }
 
+bool Character::isAttackingDisallowed() const {
+  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
+}
+
+bool Character::isSkillActivationDisallowed() const {
+  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isRunningIntroAnimation;
+}
+
 void Character::startRunning() {
   _isStartRunning = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
@@ -729,7 +737,7 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  if (isAttacking() || _isGettingUpFromFalling || _isStunned || _isTakingDamage) {
+  if (isAttackingDisallowed()) {
     return false;
   }
 
@@ -813,38 +821,57 @@ void Character::cancelAttack() {
   }
 }
 
-void Character::activateSkill(Skill* skill) {
-  // If this character is still using another skill, or
-  // if it doesn't meet the criteria of activating this skill,
-  // then return at once.
-  if (_isUsingSkill || !skill->canActivate()) {
-    return;
+bool Character::activateSkill(Skill* rawSkill) {
+  if (!rawSkill) {
+    VGLOG(LOG_ERR, "Failed to activate skill, rawSkill: [nullptr].");
+    return false;
   }
 
-  if (isAttacking() || _isStunned) {
-    return;
+  shared_ptr<Skill> skill = rawSkill->shared_from_this();
+  if (!skill) {
+    VGLOG(LOG_ERR, "Failed to obtain a valid shared_ptr from rawSkill.");
+    return false;
+  }
+
+  if (isSkillActivationDisallowed()) {
+    return false;
+  }
+
+  if (skill->getSkillProfile().isToggleable && getActiveSkillInstance(rawSkill)) {
+    skill->deactivate();
+    removeActiveSkillInstance(rawSkill);
+    _isUsingSkill = false;
+    _currentlyUsedSkill = nullptr;
+    return true;
+  }
+
+  if (!skill->canActivate()) {
+    return false;
   }
 
   _isUsingSkill = true;
-  _currentlyUsedSkill = skill;
+  _currentlyUsedSkill = rawSkill;
 
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isUsingSkill = false;
     _currentState = State::FORCE_UPDATE;
   }, skill->getSkillProfile().framesDuration);
 
-  if (skill->getSkillProfile().characterFramesName != "") {
+  if (!skill->getSkillProfile().characterFramesName.empty()) {
     const Skill::Profile& skillProfile = skill->getSkillProfile();
     runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
   }
 
-  // Create an extra copy of this skill object and activate it.
-  shared_ptr<Skill> copiedSkill(Skill::create(skill->getSkillProfile().jsonFileName, this));
-  _activeSkills.insert(copiedSkill);
-  copiedSkill->activate();
+  if (skill->getSkillProfile().shouldForkInstance) {
+    skill = Skill::create(rawSkill->getSkillProfile().jsonFileName, this);
+  }
+  _activeSkillInstances.emplace(skill);
+  skill->activate();
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateStatusBars();
+
+  return true;
 }
 
 void Character::knockBack(Character* target, float forceX, float forceY) const {
@@ -1114,7 +1141,7 @@ void Character::addExp(const int exp) {
   }
 }
 
-bool Character::addSkill(unique_ptr<Skill> skill) {
+bool Character::addSkill(shared_ptr<Skill> skill) {
   if (!skill) {
     VGLOG(LOG_ERR, "Failed to add skill to [%s], skill: [nullptr].", _characterProfile.name.c_str());
     return false;
@@ -1166,15 +1193,15 @@ int Character::getItemAmount(const string& itemJsonFileName) const {
   return it == _items.end() ? 0 : it->second->getAmount();
 }
 
-shared_ptr<Skill> Character::getActiveSkill(Skill* skill) const {
-  shared_ptr<Skill> key(shared_ptr<Skill>(), skill);
-  auto it = _activeSkills.find(key);
-  return (it != _activeSkills.end()) ? *it : nullptr;
+shared_ptr<Skill> Character::getActiveSkillInstance(Skill* skill) const {
+  shared_ptr<Skill> key{shared_ptr<Skill>{}, skill};
+  const auto it = _activeSkillInstances.find(key);
+  return it != _activeSkillInstances.end() ? *it : nullptr;
 }
 
-void Character::removeActiveSkill(Skill* skill) {
-  shared_ptr<Skill> key(shared_ptr<Skill>(), skill);
-  _activeSkills.erase(key);
+void Character::removeActiveSkillInstance(Skill* skill) {
+  shared_ptr<Skill> key{shared_ptr<Skill>{}, skill};
+  _activeSkillInstances.erase(key);
 }
 
 bool Character::isWaitingForPartyLeader() const {

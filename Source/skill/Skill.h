@@ -15,7 +15,7 @@ namespace vigilante {
 class Character;
 
 // Skill interface
-class Skill : public Importable, public Keybindable {
+class Skill : public Importable, public Keybindable, public std::enable_shared_from_this<Skill> {
  public:
   enum Type {
     MELEE,
@@ -43,12 +43,13 @@ class Skill : public Importable, public Keybindable {
 
     std::string name;
     std::string desc;
+    bool isToggleable;
+    bool shouldForkInstance;
     int requiredLevel;
     float cooldown;
 
     int physicalDamage;
     int magicalDamage;
-
     int deltaHealth;
     int deltaMagicka;
     int deltaStamina;
@@ -61,7 +62,7 @@ class Skill : public Importable, public Keybindable {
 
   // Create a skill by automatically deducing its concrete type
   // based on the json passed in.
-  static std::unique_ptr<Skill> create(const std::string& jsonFileName, Character* user);
+  static std::shared_ptr<Skill> create(const std::string& jsonFileName, Character* user);
 
   virtual ~Skill() = default;
   virtual void import(const std::string& jsonFileName) = 0;  // Importable
@@ -71,6 +72,7 @@ class Skill : public Importable, public Keybindable {
 
   virtual bool canActivate() = 0;
   virtual void activate() = 0;
+  virtual void deactivate() = 0;
 
   virtual Skill::Profile& getSkillProfile() = 0;
   virtual const std::string& getName() const = 0;

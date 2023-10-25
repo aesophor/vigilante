@@ -62,7 +62,7 @@ void ForwardSlash::activate() {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);
-    _user->removeActiveSkill(this);
+    _user->removeActiveSkillInstance(this);
   }, _skillProfile.framesDuration);
 
   // Play sound effect.
