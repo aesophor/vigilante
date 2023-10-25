@@ -142,6 +142,7 @@ void Character::update(const float delta) {
       case State::ATTACKING_MIDAIR:
       case State::ATTACKING_MIDAIR_DOWNWARD:
       case State::ATTACKING_UPWARD:
+      case State::INTRO:
       case State::STUNNED:
       case State::TAKE_DAMAGE:
       default:
@@ -166,7 +167,6 @@ void Character::replaceSpritesheet(const string& jsonFileName) {
 
   _characterProfile.loadSpritesheetInfo(jsonFileName);
   loadBodyAnimations(_characterProfile.textureResDir);
-  runAnimation(State::IDLE);
 
   _node->addChild(_bodySpritesheet, spritesheetZOrder);
 }
@@ -320,6 +320,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST2, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::INTRO, fallback);
   createBodyAnimation(State::STUNNED, fallback);
   createBodyAnimation(State::TAKE_DAMAGE, fallback);
   createBodyAnimation(State::KILLED, fallback);
@@ -431,6 +432,8 @@ float Character::getAttackAnimationDuration(const Character::State state) const 
 Character::State Character::determineState() const {
   if (_isSetToKill) {
     return State::KILLED;
+  } else if (_isRunningIntroAnimation) {
+    return State::INTRO;
   } else if (_isStunned) {
     return State::STUNNED;
   } else if (_isTakingDamage) {
@@ -536,6 +539,10 @@ void Character::onPhysicalContactWithEnemy(Character* enemy) {
   enemy->inflictDamage(this, 25);
 }
 
+bool Character::isMovementDisallowed() const {
+  return isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage;
+}
+
 void Character::startRunning() {
   _isStartRunning = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
@@ -551,11 +558,11 @@ void Character::stopRunning() {
 }
 
 void Character::moveLeft() {
-  _isFacingRight = false;
-
-  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage) {
+  if (isMovementDisallowed()) {
     return;
   }
+
+  _isFacingRight = false;
 
   const b2Vec2& velocity = _body->GetLinearVelocity();
   if (velocity.x == 0) {
@@ -568,11 +575,11 @@ void Character::moveLeft() {
 }
 
 void Character::moveRight() {
-  _isFacingRight = true;
-
-  if (isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage) {
+  if (isMovementDisallowed()) {
     return;
   }
+
+  _isFacingRight = true;
 
   const b2Vec2& velocity = _body->GetLinearVelocity();
   if (velocity.x == 0) {
@@ -586,15 +593,12 @@ void Character::moveRight() {
 
 void Character::jump() {
   // Block current jump request if:
-  // 1. This character's cannot jump (_characterProfile.jumpHeight == 0)
-  // 2. This character's is currently stunned or taking damage.
-  // 3. This character's timer-based jump lock has not expired yet.
-  // 4. This character cannot double jump, and it has already jumped.
-  // 5. This character can double jump, and it has already double jumped.
-  if (_characterProfile.jumpHeight == 0.0f ||
-      _isStunned ||
-      _isTakingDamage ||
-      _isJumpingDisallowed ||
+  // 1. This character's is not allowed to move (and jump).
+  // 2. This character's cannot jump (_characterProfile.jumpHeight == 0)
+  // 3. This character cannot double jump, and it has already jumped.
+  // 4. This character can double jump, and it has already double jumped.
+  if (isMovementDisallowed() ||
+      _characterProfile.jumpHeight == 0.0f ||
       (!_characterProfile.canDoubleJump && _isJumping) ||
       (_characterProfile.canDoubleJump && _isDoubleJumping)) {
     return;
@@ -625,7 +629,7 @@ void Character::doubleJump() {
 }
 
 void Character::jumpDown() {
-  if (!_isOnPlatform) {
+  if (!_isOnPlatform || isMovementDisallowed()) {
     return;
   }
 
@@ -703,6 +707,17 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
     _body->SetLinearDamping(originalBodyDamping);
     isDodgingFlag = false;
   }, _bodyAnimations[dodgeState]->getDuration());
+}
+
+void Character::runIntroAnimation() {
+  _isRunningIntroAnimation = true;
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
+    _isRunningIntroAnimation = false;
+  }, _bodyAnimations[State::INTRO]->getDuration() * 5);
+
+  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_INTRO); sfxFileName.size()) {
+    Audio::the().playSfx(sfxFileName);
+  }
 }
 
 bool Character::attack(const Character::State attackState,

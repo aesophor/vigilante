@@ -55,6 +55,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_UPWARD,
     SPELLCAST,
     SPELLCAST2,
+    INTRO,
     STUNNED,
     TAKE_DAMAGE,
     KILLED,
@@ -65,6 +66,7 @@ class Character : public DynamicActor, public Importable {
   enum Sfx {
     SFX_ATTACK_UNARMED,
     SFX_JUMP,
+    SFX_INTRO,
     SFX_HURT,
     SFX_KILLED,
     SFX_SIZE,
@@ -79,7 +81,6 @@ class Character : public DynamicActor, public Importable {
     void loadSpritesheetInfo(const std::string& jsonFileName);
 
     std::string jsonFileName;
-    
     std::string textureResDir;
     float spriteOffsetX;
     float spriteOffsetY;
@@ -142,6 +143,7 @@ class Character : public DynamicActor, public Importable {
   virtual void onPhysicalContactWithEnemy(Character* enemy);
   virtual void onMapChanged() {}
 
+  virtual bool isMovementDisallowed() const;
   virtual void startRunning();
   virtual void stopRunning();
   virtual void moveLeft();
@@ -154,6 +156,7 @@ class Character : public DynamicActor, public Importable {
   virtual void getUpFromFalling();
   virtual void dodgeBackward();
   virtual void dodgeForward();
+  virtual void runIntroAnimation();
 
   virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,
@@ -193,6 +196,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isUsingSkill() const { return _isUsingSkill; }
   inline bool isCrouching() const { return _isCrouching; }
   inline bool isInvincible() const { return _isInvincible; }
+  inline bool isRunningIntroAnimation() const { return _isRunningIntroAnimation; }
   inline bool isStunned() const { return _isStunned; }
   inline bool isKilled() const { return _isKilled; }
   inline bool isSetToKill() const { return _isSetToKill; }
@@ -206,6 +210,7 @@ class Character : public DynamicActor, public Importable {
   inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
   inline void setCrouching(bool crouching) { _isCrouching = crouching; }
   inline void setInvincible(bool invincible) { _isInvincible = invincible; }
+  inline void setRunningIntroAnimation(bool runningIntroAnimation) { _isRunningIntroAnimation = runningIntroAnimation; }
   inline void setStunned(bool stunned) { _isStunned = stunned; }
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
@@ -266,6 +271,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_upward",
     "spellcast",
     "spellcast2",
+    "intro",
     "stunned",
     "take_damage",
     "killed"
@@ -274,6 +280,7 @@ class Character : public DynamicActor, public Importable {
   static inline const std::array<std::string, Character::Sfx::SFX_SIZE> _kCharacterSfxStr{{
     "attack_unarmed",
     "jump",
+    "intro",
     "hurt",
     "killed",
   }};
@@ -369,6 +376,7 @@ class Character : public DynamicActor, public Importable {
   bool _isUsingSkill{};
   bool _isCrouching{};
   bool _isInvincible{};
+  bool _isRunningIntroAnimation{};
   bool _isStunned{};
   bool _isTakingDamage{};
   bool _isKilled{};
