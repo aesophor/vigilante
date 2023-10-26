@@ -780,12 +780,16 @@ bool Character::attack(const Character::State attackState,
     return false;
   }
 
-  _lockedOnTarget = *_inRangeTargets.begin();
-  if (_lockedOnTarget->isInvincible()) {
-    return false;
+  auto it = _inRangeTargets.begin();
+  while (it != _inRangeTargets.end()) {
+    auto original_it = it++;
+    auto target = *original_it;
+    if (target->isInvincible()) {
+      continue;
+    }
+    inflictDamage(target, getDamageOutput(), numTimesInflictDamage, damageInflictionInterval);
   }
-
-  return inflictDamage(_lockedOnTarget, getDamageOutput(), numTimesInflictDamage, damageInflictionInterval);
+  return true;
 }
 
 void Character::cancelAttack() {
@@ -976,7 +980,6 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
   }
 
   return true;
-
 }
 
 bool Character::receiveDamage(Character* source, int damage) {
