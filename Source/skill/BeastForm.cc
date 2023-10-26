@@ -27,12 +27,17 @@ bool BeastForm::canActivate() {
 
 void BeastForm::activate() {
   _hasActivated = true;
-  _user->replaceSpritesheet("Data/character/werewolf.json");
-  _user->runIntroAnimation();
+
+  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
+    _originalCharacterProfile = _user->getCharacterProfile();
+    _user->replaceSpritesheet("Data/character/werewolf.json");
+    _user->runIntroAnimation();
+  }, _skillProfile.framesDuration);
 }
 
 void BeastForm::deactivate() {
   _user->replaceSpritesheet(_user->getCharacterProfile().jsonFileName);
+  _user->getCharacterProfile() = _originalCharacterProfile;
 }
 
 string BeastForm::getIconPath() const {

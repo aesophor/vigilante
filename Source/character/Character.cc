@@ -851,7 +851,7 @@ bool Character::activateSkill(Skill* rawSkill) {
   }
 
   if (skill->getSkillProfile().shouldForkInstance) {
-    skill = Skill::create(rawSkill->getSkillProfile().jsonFileName, this);
+    skill = Skill::create(skill->getSkillProfile().jsonFileName, this);
   }
   _activeSkillInstances.emplace(skill);
   skill->activate();
@@ -1301,16 +1301,6 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   intelligence = json["intelligence"].GetInt();
   luck = json["luck"].GetInt();
 
-  bodyWidth = json["bodyWidth"].GetInt();
-  bodyHeight = json["bodyHeight"].GetInt();
-  moveSpeed = json["moveSpeed"].GetFloat();
-  jumpHeight = json["jumpHeight"].GetFloat();
-  canDoubleJump = json["canDoubleJump"].GetBool();
-
-  attackForce = json["attackForce"].GetFloat();
-  attackTime = json["attackTime"].GetFloat();
-  attackRange = json["attackRange"].GetFloat();
-  attackDelay = json["attackDelay"].GetFloat();
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 
   for (const auto& skillJson : json["defaultSkills"].GetArray()) {
@@ -1333,6 +1323,20 @@ void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
   spriteOffsetY = json["spriteOffsetY"].GetFloat();
   spriteScaleX = json["spriteScaleX"].GetFloat();
   spriteScaleY = json["spriteScaleY"].GetFloat();
+
+  bodyWidth = json["bodyWidth"].GetInt();
+  bodyHeight = json["bodyHeight"].GetInt();
+  moveSpeed = json["moveSpeed"].GetFloat();
+  jumpHeight = json["jumpHeight"].GetFloat();
+  canDoubleJump = json["canDoubleJump"].GetBool();
+
+  attackForce = json["attackForce"].GetFloat();
+  attackTime = json["attackTime"].GetFloat();
+  attackRange = json["attackRange"].GetFloat();
+  attackDelay = json["attackDelay"].GetFloat();
+  if (json.HasMember("forwardAttackNumTimesInflictDamage")) {
+    forwardAttackNumTimesInflictDamage = json["forwardAttackNumTimesInflictDamage"].GetInt();
+  }
 
   for (int i = 0; i < Character::State::STATE_SIZE; i++) {
     if (!json["frameInterval"].HasMember(Character::_kCharacterStateStr[i].c_str())) {

@@ -27,7 +27,7 @@ bool handleAttackingUpward(Character& c) {
 }
 
 bool handleAttackingForward(Character& c) {
-  return c.attack(Character::State::ATTACKING_FORWARD, /*numTimesInflictDamage=*/3);
+  return c.attack(Character::State::ATTACKING_FORWARD, c.getCharacterProfile().forwardAttackNumTimesInflictDamage);
 }
 
 bool handleAttackingMidairDownward(Character& c) {

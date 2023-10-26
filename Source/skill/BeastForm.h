@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Skill.h"
+#include "character/Character.h"
 
 namespace vigilante {
 
@@ -31,6 +32,7 @@ class BeastForm : public Skill {
   Skill::Profile _skillProfile;
   Character* _user{};
   bool _hasActivated{};
+  Character::Profile _originalCharacterProfile;
 };
 
 }  // namespace vigilante

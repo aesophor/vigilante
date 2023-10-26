@@ -77,6 +77,7 @@ class Character : public DynamicActor, public Importable {
   using SkillBook = std::array<SetVector<Skill*>, Skill::Type::SIZE>;
 
   struct Profile final {
+    Profile() = default;
     explicit Profile(const std::string& jsonFileName);
     void loadSpritesheetInfo(const std::string& jsonFileName);
 
@@ -116,6 +117,7 @@ class Character : public DynamicActor, public Importable {
     float attackRange;
     float attackDelay;
     int baseMeleeDamage;
+    int forwardAttackNumTimesInflictDamage{1};
 
     std::vector<std::string> defaultSkills;
     std::vector<std::pair<std::string, int>> defaultInventory;
