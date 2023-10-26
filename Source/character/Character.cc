@@ -731,7 +731,7 @@ void Character::runIntroAnimation() {
   _isRunningIntroAnimation = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isRunningIntroAnimation = false;
-  }, _bodyAnimations[State::INTRO]->getDuration() * 5);
+  }, _bodyAnimations[State::INTRO]->getDuration());
 
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_INTRO); sfxFileName.size()) {
     Audio::the().playSfx(sfxFileName);
