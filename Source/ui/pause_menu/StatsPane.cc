@@ -16,7 +16,7 @@ namespace vigilante {
 StatsPane::StatsPane(PauseMenu* pauseMenu)
     : AbstractPane(pauseMenu, TableLayout::create()), // install TableLayout to base class
       _background(ui::ImageView::create(string{kStatsBg})),
-      _name(Label::createWithTTF("Aesophor", string{kRegularFont}, kRegularFontSize)),
+      _name(Label::createWithTTF("Alucard", string{kRegularFont}, kRegularFontSize)),
       _level(Label::createWithTTF("Level 1", string{kRegularFont}, kRegularFontSize)),
       _health(Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)),
       _magicka(Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)),
