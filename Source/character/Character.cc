@@ -681,8 +681,12 @@ void Character::getUpFromCrouching() {
 }
 
 void Character::getUpFromFalling() {
-  _isGettingUpFromFalling = true;
+  const bool hasGetUpFromFallingAnimation = _bodyAnimations[State::FALLING_GETUP] != _bodyAnimations[State::IDLE];
+  if (!hasGetUpFromFallingAnimation) {
+    return;
+  }
 
+  _isGettingUpFromFalling = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isGettingUpFromFalling = false;
   }, _bodyAnimations[State::FALLING_GETUP]->getDuration());
