@@ -713,8 +713,7 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   _body->SetLinearDamping(4.0f);
   _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, .6f});
 
-  auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
-  afterImageFxMgr->registerNode(_node, AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
+  enableAfterImageFx(AfterImageFxManager::kPlayerAfterImageColor);
 
   _isInvincible = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
@@ -723,12 +722,34 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   isDodgingFlag = true;
   CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag](const CallbackManager::CallbackId) {
-    auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
-    afterImageFxMgr->unregisterNode(_node);
-
-    _body->SetLinearDamping(originalBodyDamping);
     isDodgingFlag = false;
+    _body->SetLinearDamping(originalBodyDamping);
+    disableAfterImageFx();
   }, _bodyAnimations[dodgeState]->getDuration());
+}
+
+void Character::teleportToTarget(Character* target) {
+  if (!target->getBody()) {
+    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
+                    target->getCharacterProfile().name.c_str());
+    return;
+  }
+
+  teleportToTarget(target->getBody()->GetPosition());
+}
+
+void Character::teleportToTarget(const b2Vec2& targetPos) {
+  setPosition(targetPos.x, targetPos.y);
+}
+
+void Character::enableAfterImageFx(const ax::Color3B &color) {
+  auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+  afterImageFxMgr->registerNode(_node, color, 0.15f, 0.05f);
+}
+
+void Character::disableAfterImageFx() {
+  auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
+  afterImageFxMgr->unregisterNode(_node);
 }
 
 void Character::runIntroAnimation() {

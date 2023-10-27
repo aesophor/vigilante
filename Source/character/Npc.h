@@ -77,8 +77,6 @@ class Npc : public Character, public Interactable {
 
   void act(const float delta) { _npcController.update(delta); }
   void reverseDirection() { _npcController.reverseDirection(); }
-  void teleportToTarget(Character* target);
-  void teleportToTarget(const b2Vec2& targetPos);
   void dropItems();
 
   void updateDialogueTreeIfNeeded();

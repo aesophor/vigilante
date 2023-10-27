@@ -161,6 +161,10 @@ class Character : public DynamicActor, public Importable {
   virtual void getUpFromFalling();
   virtual void dodgeBackward();
   virtual void dodgeForward();
+  virtual void teleportToTarget(Character* target);
+  virtual void teleportToTarget(const b2Vec2& targetPos);
+  virtual void enableAfterImageFx(const ax::Color3B &color);
+  virtual void disableAfterImageFx();
   virtual void runIntroAnimation();
 
   virtual bool attack(const Character::State attackState = Character::State::ATTACKING,

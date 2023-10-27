@@ -271,20 +271,6 @@ void Npc::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
-void Npc::teleportToTarget(Character* target) {
-  if (!target->getBody()) {
-    VGLOG(LOG_WARN, "Unable to move to target: %s (b2body missing)",
-                    target->getCharacterProfile().name.c_str());
-    return;
-  }
-
-  teleportToTarget(target->getBody()->GetPosition());
-}
-
-void Npc::teleportToTarget(const b2Vec2& targetPos) {
-  setPosition(targetPos.x, targetPos.y);
-}
-
 void Npc::dropItems() {
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
