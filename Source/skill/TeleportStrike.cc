@@ -144,14 +144,20 @@ Character* TeleportStrike::getClosestEnemyWithinDist(const float maxEuclideanDis
 }
 
 std::optional<b2Vec2> TeleportStrike::determineTeleportDest(Character* target) const {
-  const float attackRange = _user->getCharacterProfile().attackRange / kPpm;
+  const float userAttackRange = _user->getCharacterProfile().attackRange / kPpm;
+  const float userBodyHeight = _user->getCharacterProfile().bodyHeight / kPpm;
+  const float targetBodyHeight = target->getCharacterProfile().bodyHeight / kPpm;
   const b2Vec2& targetPos = target->getBody()->GetPosition();
 
-  if (isTargetFacingAwayFarEnoughFromWall(target, attackRange)) {
-    return b2Vec2{targetPos.x + (target->isFacingRight() ? -attackRange : attackRange), targetPos.y};
+  if (isTargetFacingAwayFarEnoughFromWall(target, userAttackRange)) {
+    const float x = targetPos.x + (target->isFacingRight() ? -userAttackRange : userAttackRange);
+    const float y = std::max(targetPos.y, targetPos.y - targetBodyHeight / 2 + userBodyHeight / 2);
+    return b2Vec2{x, y};
   }
-  if (isTargetFacingAgainstFarEnoughFromWall(target, attackRange)) {
-    return b2Vec2{targetPos.x + (target->isFacingRight() ? attackRange : -attackRange), targetPos.y};
+  if (isTargetFacingAgainstFarEnoughFromWall(target, userAttackRange)) {
+    const float x = targetPos.x + (target->isFacingRight() ? userAttackRange : -userAttackRange);
+    const float y = std::max(targetPos.y, targetPos.y - targetBodyHeight / 2 + userBodyHeight / 2);
+    return b2Vec2{x, y};
   }
   return std::nullopt;
 }
