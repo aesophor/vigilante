@@ -137,8 +137,8 @@ class GameMap final {
   inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
   inline const std::string& getBgmFileName() const { return _bgmFileName; }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
-  inline const std::list<b2Body*>
-  getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
+  inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
+  inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
 
   float getWidth() const;
   float getHeight() const;

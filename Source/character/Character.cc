@@ -69,14 +69,12 @@ void Character::update(const float delta) {
   }
 
   // Flip the sprite and weapon fixture if needed.
-  if (!_isTakingDamage && !isAttacking()) {
-    if (!_isFacingRight && !_bodySprite->isFlippedX()) {
-      _bodySprite->setFlippedX(true);
-      redefineWeaponFixture();
-    } else if (_isFacingRight && _bodySprite->isFlippedX()) {
-      _bodySprite->setFlippedX(false);
-      redefineWeaponFixture();
-    }
+  if (!_isFacingRight && !_bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(true);
+    redefineWeaponFixture();
+  } else if (_isFacingRight && _bodySprite->isFlippedX()) {
+    _bodySprite->setFlippedX(false);
+    redefineWeaponFixture();
   }
 
   // Sync the body sprite with this character's b2body.
@@ -541,7 +539,9 @@ void Character::onBodyContactWithEnemyBody(Character* enemy) {
 }
 
 void Character::onMeleeWeaponContactWithEnemyBody(Character *enemy) {
-  if (_isUsingSkill && _currentlyUsedSkill->getSkillProfile().skillType == Skill::Type::MELEE) {
+  if (_isUsingSkill &&
+      _currentlyUsedSkill->getSkillProfile().skillType == Skill::Type::MELEE &&
+      _currentlyUsedSkill->getSkillProfile().physicalDamage) {
     inflictDamage(enemy,
                   getDamageOutput() + _currentlyUsedSkill->getSkillProfile().physicalDamage,
                   _currentlyUsedSkill->getSkillProfile().numTimesInflictDamage,
@@ -978,6 +978,7 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
     _characterProfile.health = 0;
 
     if (source) {
+      source->setLockedOnTarget(nullptr);
       source->getInRangeTargets().erase(this);
       for (const auto& sourceAlly : source->getAllies()) {
         sourceAlly->getInRangeTargets().erase(this);

@@ -257,6 +257,9 @@ class Character : public DynamicActor, public Importable {
   inline void setParty(std::shared_ptr<Party> party) { _party = party; }
 
   int getDamageOutput() const;
+  inline float getAnimationDuration(const Character::State state) const {
+    return _bodyAnimations[state]->getDuration();
+  }
 
  protected:
   static inline const std::array<std::string, Character::State::STATE_SIZE> _kCharacterStateStr{{

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Skill.h"
 
 #include <axmol.h>
@@ -7,6 +7,7 @@
 #include "skill/BeastForm.h"
 #include "skill/ForwardSlash.h"
 #include "skill/MagicalMissile.h"
+#include "skill/TeleportStrike.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
@@ -21,6 +22,8 @@ shared_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
     return make_shared<BeastForm>(jsonFileName, user);
   } else if (jsonFileName.find("forward_slash") != jsonFileName.npos) {
     return make_shared<ForwardSlash>(jsonFileName, user);
+  } else if (jsonFileName.find("teleport_strike") != jsonFileName.npos) {
+    return make_shared<TeleportStrike>(jsonFileName, user);
   } else if (jsonFileName.find("ice_spike") != jsonFileName.npos) {
     return make_shared<MagicalMissile>(jsonFileName, user, /*onGround=*/false);
   } else if (jsonFileName.find("ice_wave") != jsonFileName.npos) {
