@@ -16,6 +16,7 @@
 #include "scene/SceneManager.h"
 #include "skill/MagicalMissile.h"
 #include "util/B2BodyBuilder.h"
+#include "util/B2RayCastUtil.h"
 #include "util/StringUtil.h"
 
 using namespace std;
@@ -96,6 +97,18 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   return _gameMap.get();
+}
+
+bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const bool shouldDrawLine) const {
+  if (shouldDrawLine) {
+    auto draw = ax::DrawNode::create();
+    draw->drawLine(Point{src.x * kPpm, src.y * kPpm}, Point{dst.x * kPpm, dst.y * kPpm}, ax::Color4F::WHITE);
+    _layer->addChild(draw, graphical_layers::kHud);
+  }
+
+  RayCastCallback cb{};
+  _world->RayCast(&cb, src, dst);
+  return cb.hasHit();
 }
 
 bool GameMapManager::isNpcAllowedToSpawn(const string& jsonFileName) const {
