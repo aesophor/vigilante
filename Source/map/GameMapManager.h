@@ -33,7 +33,8 @@ class GameMapManager final {
   void loadGameMap(const std::string& tmxMapFileName,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
   void destroyGameMap();
-  bool rayCast(const b2Vec2& src, const b2Vec2& dst, const bool shouldDrawLine = false) const;
+  bool rayCast(const b2Vec2& src, const b2Vec2& dst, const short categoryBitsToStop,
+               const bool shouldDrawLine = false) const;
 
   bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
   void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);

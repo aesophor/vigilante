@@ -99,14 +99,20 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   return _gameMap.get();
 }
 
-bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const bool shouldDrawLine) const {
+bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short categoryBitsToStop,
+                             const bool shouldDrawLine) const {
   if (shouldDrawLine) {
     auto draw = ax::DrawNode::create();
     draw->drawLine(Point{src.x * kPpm, src.y * kPpm}, Point{dst.x * kPpm, dst.y * kPpm}, ax::Color4F::WHITE);
     _layer->addChild(draw, graphical_layers::kHud);
   }
 
-  RayCastCallback cb{};
+  B2RayCastCallback cb{[categoryBitsToStop](b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) -> float {
+    if (fixture->GetFilterData().categoryBits & categoryBitsToStop) {
+      return 0;
+    }
+    return -1;
+  }};
   _world->RayCast(&cb, src, dst);
   return cb.hasHit();
 }
