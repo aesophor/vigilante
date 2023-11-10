@@ -88,6 +88,7 @@ class Character : public DynamicActor, public Importable {
     float spriteScaleX;
     float spriteScaleY;
     std::array<float, Character::State::STATE_SIZE> frameIntervals;
+    std::vector<float> extraAttackFrameIntervals;
     std::array<std::string, Character::Sfx::SFX_SIZE> sfxFileNames;
 
     std::string name;

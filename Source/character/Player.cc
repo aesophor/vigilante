@@ -82,7 +82,6 @@ bool Player::inflictDamage(Character* target, int damage) {
     updateKillTargetObjectives(target);
   }
 
-  Audio::the().playSfx("Sfx/combat/sword_hit.mp3");
   camera_util::shake(4, .1f);
   return true;
 }

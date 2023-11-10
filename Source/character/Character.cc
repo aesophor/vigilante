@@ -332,7 +332,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     _bodyExtraAttackAnimations[i] = createAnimation(
         bodyTextureResDir,
         "attacking" + std::to_string(1 + i),
-        _characterProfile.frameIntervals[State::ATTACKING] / kPpm,
+        _characterProfile.extraAttackFrameIntervals[i] / kPpm,
         fallback
     );
   }
@@ -652,7 +652,6 @@ void Character::jumpDown() {
   }
 
   _fixtures[FixtureType::FEET]->SetSensor(true);
-
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _fixtures[FixtureType::FEET]->SetSensor(false);
   }, .25f);
@@ -944,6 +943,10 @@ bool Character::inflictDamage(Character *target, int damage,
       const float knockBackForceX = _isFacingRight ? attackForce : -attackForce;
       const float knockBackForceY = attackForce;
       knockBack(target, knockBackForceX, knockBackForceY);
+
+      if (const auto weapon = _equipmentSlots[Equipment::Type::WEAPON]) {
+        Audio::the().playSfx(weapon->getSfxFileName(Equipment::Sfx::SFX_HIT));
+      }
 
       lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
       _inflictDamageCallbacks.erase(id);
@@ -1374,6 +1377,14 @@ void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
       continue;
     }
     frameIntervals[i] = json["frameInterval"][Character::_kCharacterStateStr[i].c_str()].GetFloat();
+  }
+
+  for (int i = 0; ; i++) {
+    const string key = "attacking" + to_string(1 + i);
+    if (!json["frameInterval"].HasMember(key.c_str())) {
+      break;
+    }
+    extraAttackFrameIntervals.emplace_back(json["frameInterval"][key.c_str()].GetFloat());
   }
 
   for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
