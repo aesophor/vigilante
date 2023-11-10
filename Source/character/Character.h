@@ -226,6 +226,8 @@ class Character : public DynamicActor, public Importable {
   inline void setStunned(bool stunned) { _isStunned = stunned; }
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
+  inline void resetAttackAnimationIdx() { _attackAnimationIdx = 0; }
+
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
 
   inline ComboSystem &getCombatSystem() { return *_comboSystem; }

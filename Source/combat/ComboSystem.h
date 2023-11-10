@@ -60,7 +60,7 @@ class TimedFiniteStateMachine final {
  private:
   DigraphType _digraph;
   const S _initialState{};
-  StateId _currentStateId{0};
+  StateId _currentStateId{};
   float _timer{};
 };
 
@@ -70,7 +70,13 @@ class ComboSystem final {
  public:
   explicit ComboSystem(Character& c);
 
-  void update(const float delta) { _fsm.update(delta); }
+  void update(const float delta) {
+    _fsm.update(delta);
+    if (_fsm.getCurrentStateId() == 0) {
+      _character.resetAttackAnimationIdx();
+    }
+  }
+  
   void reset() {
     _fsm.resetCurrentStateId();
     _fsm.setTimer(0.0f);

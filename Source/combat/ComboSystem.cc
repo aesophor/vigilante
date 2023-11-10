@@ -15,7 +15,7 @@ namespace vigilante {
 
 namespace {
 
-constexpr float kComboResetTimer = 1.5f;
+constexpr float kComboResetTimer = 1.0f;
 
 }  // namespace
 
