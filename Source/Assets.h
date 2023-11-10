@@ -25,7 +25,7 @@ inline const fs::path kExpPointTable = kGameplayDir / "exp_point_table.txt";
 inline const fs::path kItemPriceTable = kGameplayDir / "item_price_table.txt";
 inline const fs::path kQuestsList = kGameplayDir / "quests_list.txt";
 inline const fs::path kSpritesheetsList = kTextureDir / "spritesheets.txt";
-inline const fs::path kPlayerJson = kDataDir / "character/alucard.json";
+inline const fs::path kPlayerJson = kDataDir / "character/joanna.json";
 
 // Fonts
 inline constexpr float kRegularFontSize = 16.0f;
