@@ -123,6 +123,7 @@ void Character::update(const float delta) {
         break;
       case State::IDLE:
       case State::RUNNING:
+      case State::STUNNED:
         runAnimation(_currentState, /*loop=*/true);
         break;
       case State::RUNNING_START:
@@ -143,7 +144,6 @@ void Character::update(const float delta) {
       case State::ATTACKING_MIDAIR_DOWNWARD:
       case State::ATTACKING_UPWARD:
       case State::INTRO:
-      case State::STUNNED:
       case State::TAKE_DAMAGE:
       default:
         runAnimation(_currentState, /*loop=*/false);
