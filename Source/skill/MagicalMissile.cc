@@ -167,7 +167,7 @@ void MagicalMissile::activate() {
         _bodySpritesheet->removeChild(_launchFxSprite, true);
       })
     ));
-  }, 1.5f);
+  }, _user->getAnimationDuration(Character::State::SPELLCAST) * 0.7f);
 }
 
 string MagicalMissile::getIconPath() const {
