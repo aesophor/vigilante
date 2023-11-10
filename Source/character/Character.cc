@@ -558,7 +558,11 @@ void Character::onMeleeWeaponContactWithEnemyBody(Character *enemy) {
 }
 
 bool Character::isMovementDisallowed() const {
-  return isAttacking() || _isCrouching || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
+  return _isCrouching || isJumpingDownDisallowed();
+}
+
+bool Character::isJumpingDownDisallowed() const {
+  return isAttacking() || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
 }
 
 bool Character::isAttackingDisallowed() const {
@@ -655,7 +659,7 @@ void Character::doubleJump() {
 }
 
 void Character::jumpDown() {
-  if (!_isOnPlatform || isMovementDisallowed()) {
+  if (!_isOnPlatform || isJumpingDownDisallowed()) {
     return;
   }
 

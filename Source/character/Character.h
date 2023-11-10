@@ -149,6 +149,7 @@ class Character : public DynamicActor, public Importable {
   virtual void onMapChanged() {}
 
   virtual bool isMovementDisallowed() const;
+  virtual bool isJumpingDownDisallowed() const;
   virtual bool isAttackingDisallowed() const;
   virtual bool isSkillActivationDisallowed() const;
   virtual void startRunning();
