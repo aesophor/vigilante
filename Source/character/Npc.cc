@@ -202,7 +202,7 @@ bool Npc::receiveDamage(Character* source, int damage) {
 
   _isAlerted = true;
 
-  if (!dynamic_cast<Player*>(source)) {
+  if (!source) {
     _isInvincible = true;
     CallbackManager::the().runAfter([this](const CallbackManager::CallbackId){
       _isInvincible = false;
