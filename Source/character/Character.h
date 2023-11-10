@@ -55,6 +55,7 @@ class Character : public DynamicActor, public Importable {
     ATTACKING_UPWARD,
     SPELLCAST,
     SPELLCAST2,
+    SPELLCAST3,
     INTRO,
     STUNNED,
     TAKE_DAMAGE,
@@ -285,6 +286,7 @@ class Character : public DynamicActor, public Importable {
     "attacking_upward",
     "spellcast",
     "spellcast2",
+    "spellcast3",
     "intro",
     "stunned",
     "take_damage",
@@ -298,6 +300,8 @@ class Character : public DynamicActor, public Importable {
     "hurt",
     "killed",
   }};
+
+  static std::optional<Character::State> getCharacterState(const std::string& frameName);
 
   static constexpr bool isAttackState(const Character::State state) {
     return state == State::ATTACKING ||

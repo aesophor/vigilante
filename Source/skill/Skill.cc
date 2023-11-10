@@ -46,7 +46,6 @@ Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
   spriteScaleX = json["spriteScaleX"].GetFloat();
   spriteScaleY = json["spriteScaleY"].GetFloat();
   framesDuration = json["framesDuration"].GetFloat();
-  frameInterval = json["frameInterval"].GetFloat();
 
   name = json["name"].GetString();
   desc = json["desc"].GetString();

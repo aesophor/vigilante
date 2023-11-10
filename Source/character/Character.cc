@@ -875,7 +875,9 @@ bool Character::activateSkill(Skill* rawSkill) {
 
   if (!skill->getSkillProfile().characterFramesName.empty()) {
     const Skill::Profile& skillProfile = skill->getSkillProfile();
-    runAnimation(skillProfile.characterFramesName, skillProfile.frameInterval / kPpm);
+    const optional<Character::State> spellcastState = getCharacterState(skillProfile.characterFramesName);
+    const float spellcastFrameInterval = spellcastState.has_value() ? _characterProfile.frameIntervals[static_cast<int>(*spellcastState)]: 5.0f;
+    runAnimation(skillProfile.characterFramesName, spellcastFrameInterval / kPpm);
   }
 
   if (skill->getSkillProfile().shouldForkInstance) {
@@ -1400,6 +1402,20 @@ void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
     }
     sfxFileNames[i] = sfxPath;
   }
+}
+
+optional<Character::State> Character::getCharacterState(const string& frameName) {
+  static auto buildCache = []() -> unordered_map<string, Character::State> {
+    unordered_map<string, Character::State> cache;
+    for (int i = 0; i < State::STATE_SIZE; i++) {
+      cache.emplace(Character::_kCharacterStateStr[i], static_cast<Character::State>(i));
+    }
+    return cache;
+  };
+
+  static unordered_map<string, Character::State> cache = buildCache();
+  const auto it = cache.find(frameName);
+  return it != cache.end() ? make_optional(it->second) : nullopt;
 }
 
 }  // namespace vigilante
