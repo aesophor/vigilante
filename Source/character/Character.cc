@@ -111,7 +111,9 @@ void Character::update(const float delta) {
   _previousState = _currentState;
   _currentState = determineState();
 
+  maybeOverrideCurrentStateWithAttackingMidairState();
   maybeOverrideCurrentStateWithStopRunningState();
+
   _previousBodyVelocity = _body->GetLinearVelocity();
 
   if (_previousState != _currentState) {
@@ -474,6 +476,12 @@ Character::State Character::determineAttackState() const {
     return isUnarmed ? State::ATTACKING_UNARMED_MIDAIR : State::ATTACKING_MIDAIR;
   }
   return isUnarmed ? State::ATTACKING_UNARMED : State::ATTACKING;
+}
+
+void Character::maybeOverrideCurrentStateWithAttackingMidairState() {
+  if (_previousState == State::ATTACKING_MIDAIR && _currentState == State::ATTACKING) {
+    _currentState = State::ATTACKING_MIDAIR;
+  }
 }
 
 void Character::maybeOverrideCurrentStateWithStopRunningState() {

@@ -353,6 +353,7 @@ class Character : public DynamicActor, public Importable {
 
   Character::State determineState() const;
   Character::State determineAttackState() const;
+  void maybeOverrideCurrentStateWithAttackingMidairState();
   void maybeOverrideCurrentStateWithStopRunningState();
   const std::string& getSfxFileName(const Character::Sfx sfx) const {
     return _characterProfile.sfxFileNames[sfx];
