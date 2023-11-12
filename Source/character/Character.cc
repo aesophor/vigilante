@@ -531,10 +531,6 @@ void Character::onFallToGroundOrPlatform() {
     _isTakingDamage = false;
     getUpFromFalling();
   }
-
-  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP); sfxFileName.size()) {
-    Audio::the().playSfx(sfxFileName);
-  }
 }
 
 void Character::onBodyContactWithEnemyBody(Character* enemy) {
@@ -699,6 +695,10 @@ void Character::getUpFromCrouching() {
 }
 
 void Character::getUpFromFalling() {
+  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP); sfxFileName.size()) {
+    Audio::the().playSfx(sfxFileName);
+  }
+
   const bool hasGetUpFromFallingAnimation = _bodyAnimations[State::FALLING_GETUP] != _bodyAnimations[State::IDLE];
   if (!hasGetUpFromFallingAnimation) {
     return;
