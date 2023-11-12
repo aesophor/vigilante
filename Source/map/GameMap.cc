@@ -2,7 +2,9 @@
 #include "GameMap.h"
 
 #include <algorithm>
+#include <cmath>
 #include <filesystem>
+#include <numbers>
 #include <thread>
 
 #include "Assets.h"
@@ -131,8 +133,8 @@ ax::ValueVector GameMap::getObjects(const string& layerName) {
   return objectGroup->getObjects();
 }
 
-list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryBits,
-                                             bool collidable, float friction) {
+list<b2Body*> GameMap::createRectangles(const string& layerName, const short categoryBits,
+                                        const bool collidable, const float defaultFriction) {
   list<b2Body*> bodies;
 
   for (const auto& rectObj : getObjects(layerName)) {
@@ -142,7 +144,7 @@ list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryB
     float w = valMap.at("width").asFloat();
     float h = valMap.at("height").asFloat();
 
-    B2BodyBuilder bodyBuilder(_world);
+    B2BodyBuilder bodyBuilder{_world};
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(x + w / 2, y + h / 2, kPpm)
       .buildBody();
@@ -150,7 +152,7 @@ list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryB
     bodyBuilder.newRectangleFixture(w / 2, h / 2, kPpm)
       .categoryBits(categoryBits)
       .setSensor(!collidable)
-      .friction(friction)
+      .friction(defaultFriction)
       .buildFixture();
 
     bodies.emplace_back(body);
@@ -159,8 +161,8 @@ list<b2Body*> GameMap::createRectangles(const string& layerName, short categoryB
   return bodies;
 }
 
-list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBits,
-                                            bool collidable, float friction) {
+list<b2Body*> GameMap::createPolylines(const string& layerName, const short categoryBits,
+                                       const bool collidable, const float defaultFriction) {
   list<b2Body*> bodies;
   float scaleFactor = Director::getInstance()->getContentScaleFactor();
 
@@ -177,7 +179,21 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, short categoryBi
       vertices[i] = {xRef + x, yRef - y};
     }
 
-    B2BodyBuilder bodyBuilder(_world);
+    // Dynamically calculate ground friction
+    float friction = defaultFriction;
+    const float y0 = std::min(vertices[0].y, vertices[1].y) - yRef;
+    const float y1 = std::max(vertices[0].y, vertices[1].y) - yRef;
+    const float x0 = std::min(vertices[0].x, vertices[1].x) - xRef;
+    const float x1 = std::max(vertices[0].x, vertices[1].x) - xRef;
+    if (x0 != x1) {
+      const float slope = (y1 - y0) / (x1 - x0);
+      const float degree = std::atan(slope) * 180.0f / std::numbers::pi;
+      if (degree >= 30.0f && degree <= 150.0f) {
+        friction = 0.0f;
+      }
+    }
+
+    B2BodyBuilder bodyBuilder{_world};
     b2Body* body = bodyBuilder.type(b2BodyType::b2_staticBody)
       .position(0, 0, kPpm)
       .buildBody();

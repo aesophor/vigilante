@@ -199,6 +199,7 @@ class Character : public DynamicActor, public Importable {
   void removeGold(const int amount);
 
   inline bool isFacingRight() const { return _isFacingRight; }
+  inline bool isOnGround() const { return _isOnGround; }
   inline bool isJumping() const { return _isJumping; }
   inline bool isDoubleJumping() const { return _isDoubleJumping; }
   inline bool isOnPlatform() const { return _isOnPlatform; }
@@ -216,6 +217,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isAfterImageFxEnabled() const { return _isAfterImageFxEnabled; }
 
   inline void setFacingRight(bool facingRight) { _isFacingRight = facingRight; }
+  inline void setOnGround(bool onGround) { _isOnGround = onGround; }
   inline void setJumping(bool jumping) { _isJumping = jumping; }
   inline void setDoubleJumping(bool doubleJumping) { _isDoubleJumping = doubleJumping; }
   inline void setOnPlatform(bool onPlatform) { _isOnPlatform = onPlatform; }
@@ -388,6 +390,7 @@ class Character : public DynamicActor, public Importable {
   bool _isFacingRight{true};
   bool _isStartRunning{};
   bool _isStopRunning{};
+  bool _isOnGround{true};
   bool _isJumpingDisallowed{};
   bool _isJumping{};
   bool _isDoubleJumping{};

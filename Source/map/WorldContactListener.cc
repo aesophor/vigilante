@@ -32,13 +32,14 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
+        c->setOnGround(true);
         c->setJumping(false);
         c->setDoubleJumping(false);
         c->setOnPlatform(false);
         c->onFallToGroundOrPlatform();
 
-        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
-        fxMgr->createDustFx(c);
+        // Prevent the character from sliding down the slope.
+        c->getBody()->SetAwake(false);
       }
       break;
     }
@@ -51,9 +52,6 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setDoubleJumping(false);
         c->setOnPlatform(true);
         c->onFallToGroundOrPlatform();
-
-        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
-        fxMgr->createDustFx(c);
       }
       break;
     }
@@ -254,9 +252,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
-
-        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
-        fxMgr->createDustFx(c);
+        c->setOnGround(false);
       }
       break;
     }
@@ -266,9 +262,6 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y < -.5f) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         c->setOnPlatform(false);
-
-        auto fxMgr = SceneManager::the().getCurrentScene<GameScene>()->getFxManager();
-        fxMgr->createDustFx(c);
       }
       break;
     }

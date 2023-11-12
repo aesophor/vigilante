@@ -68,6 +68,13 @@ void Character::update(const float delta) {
     return;
   }
 
+  constexpr float kSlopeStopMinVelocity = 0.05f;
+  if (_isOnGround &&
+      std::abs(_body->GetLinearVelocity().x) < kSlopeStopMinVelocity &&
+      std::abs(_body->GetLinearVelocity().y) < kSlopeStopMinVelocity) {
+    _body->SetAwake(false);
+  }
+
   // Flip the sprite and weapon fixture if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
@@ -722,7 +729,7 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
-  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, .6f});
+  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, 1.0f});
 
   enableAfterImageFx(AfterImageFxManager::kPlayerAfterImageColor);
 

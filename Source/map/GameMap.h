@@ -145,10 +145,10 @@ class GameMap final {
 
  private:
   ax::ValueVector getObjects(const std::string& layerName);
-  std::list<b2Body*> createRectangles(const std::string& layerName, short categoryBits,
-                                      bool collidable, float friction);
-  std::list<b2Body*> createPolylines(const std::string& layerName, short categoryBits,
-                                     bool collidable, float friction);
+  std::list<b2Body*> createRectangles(const std::string& layerName, const short categoryBits,
+                                      const bool collidable, const float defaultFriction);
+  std::list<b2Body*> createPolylines(const std::string& layerName, const short categoryBits,
+                                     const bool collidable, const float defaultFriction);
 
   void createTriggers();
   void createPortals();

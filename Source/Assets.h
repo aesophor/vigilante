@@ -38,7 +38,7 @@ inline const fs::path kTitleFont = kFontDir / "MatchupPro.ttf";
 inline const fs::path kMainMenuBg = kUIDir / "mainmenu_bg.png";
 
 // NewGame initial GameMap
-inline const fs::path kNewGameInitialMap = kMapDir / "VampireCastle/PrisonCell.tmx";
+inline const fs::path kNewGameInitialMap = kMapDir / "AbandonedCastlePrison/Main.tmx";
 
 // Common UI Textures
 inline const fs::path kShade = kUIDir / "shade.png";
