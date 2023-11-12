@@ -150,6 +150,8 @@ void Character::update(const float delta) {
       case State::ATTACKING_MIDAIR:
       case State::ATTACKING_MIDAIR_DOWNWARD:
       case State::ATTACKING_UPWARD:
+      case State::BLOCKING:
+      case State::BLOCKING_HIT:
       case State::INTRO:
       case State::TAKE_DAMAGE:
       default:
@@ -327,6 +329,9 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   createBodyAnimation(State::ATTACKING_UPWARD, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST, _bodyAnimations[State::ATTACKING]);
   createBodyAnimation(State::SPELLCAST2, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::SPELLCAST3, _bodyAnimations[State::ATTACKING]);
+  createBodyAnimation(State::BLOCKING, fallback);
+  createBodyAnimation(State::BLOCKING_HIT, fallback);
   createBodyAnimation(State::INTRO, fallback);
   createBodyAnimation(State::STUNNED, fallback);
   createBodyAnimation(State::TAKE_DAMAGE, fallback);
@@ -447,6 +452,10 @@ Character::State Character::determineState() const {
     return State::TAKE_DAMAGE;
   } else if (_isGettingUpFromFalling) {
     return State::FALLING_GETUP;
+  } else if (_isHitWhileBlocking) {
+    return State::BLOCKING_HIT;
+  } else if (_isBlocking) {
+    return State::BLOCKING;
   } else if (_isAttacking) {
     return determineAttackState();
   } else if (_isDodgingBackward) {
@@ -565,15 +574,15 @@ bool Character::isMovementDisallowed() const {
 }
 
 bool Character::isJumpingDownDisallowed() const {
-  return isAttacking() || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
+  return isAttacking() || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isBlocking || _isRunningIntroAnimation;
 }
 
 bool Character::isAttackingDisallowed() const {
-  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isRunningIntroAnimation;
+  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isBlocking || _isRunningIntroAnimation;
 }
 
 bool Character::isSkillActivationDisallowed() const {
-  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isRunningIntroAnimation;
+  return isAttacking() || _isUsingSkill || _isGettingUpFromFalling || _isStunned || _isBlocking || _isRunningIntroAnimation;
 }
 
 void Character::startRunning() {
@@ -987,6 +996,14 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
 
   if (source && (source->isSetToKill() || source->isKilled())) {
     return false;
+  }
+
+  if (_isBlocking) {
+    _isHitWhileBlocking = true;
+    CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
+      _isHitWhileBlocking = false;
+    }, _bodyAnimations[State::BLOCKING_HIT]->getDuration());
+    return true;
   }
 
   _characterProfile.health -= damage;

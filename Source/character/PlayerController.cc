@@ -22,6 +22,7 @@ constexpr auto kJumpKey = EventKeyboard::KeyCode::KEY_LEFT_ALT;
 constexpr auto kSheatheUnsheatheWeaponKey = EventKeyboard::KeyCode::KEY_R;
 constexpr auto kDodgeKey = EventKeyboard::KeyCode::KEY_X;
 constexpr auto kAttackKey = EventKeyboard::KeyCode::KEY_LEFT_CTRL;
+constexpr auto kBlockKey = EventKeyboard::KeyCode::KEY_Q;
 constexpr auto kInteractKey = EventKeyboard::KeyCode::KEY_E;
 constexpr auto kPickupItemKey = EventKeyboard::KeyCode::KEY_Z;
 constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_F;
@@ -29,7 +30,7 @@ constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_F;
 }  // namespace
 
 void PlayerController::handleInput() {
-  if (shouldBlockInput()) {
+  if (shouldIgnoreInput()) {
     return;
   }
 
@@ -71,6 +72,12 @@ void PlayerController::handleInput() {
     _player.isCrouching() ? _player.jumpDown() : _player.jump();
   }
 
+  if (IS_KEY_PRESSED(kBlockKey)) {
+    _player.setBlocking(true);
+  } else if (_player.isBlocking()) {
+    _player.setBlocking(false);
+  }
+
   if (IS_KEY_JUST_PRESSED(kAttackKey)) {
     handleAttackInput();
     return;
@@ -85,7 +92,7 @@ void PlayerController::handleInput() {
   handleHotkeyInput();
 }
 
-bool PlayerController::shouldBlockInput() const {
+bool PlayerController::shouldIgnoreInput() const {
   return _player.isSetToKill() ||
          _player.isAttacking() ||
          _player.isUsingSkill();

@@ -56,6 +56,8 @@ class Character : public DynamicActor, public Importable {
     SPELLCAST,
     SPELLCAST2,
     SPELLCAST3,
+    BLOCKING,
+    BLOCKING_HIT,
     INTRO,
     STUNNED,
     TAKE_DAMAGE,
@@ -208,6 +210,8 @@ class Character : public DynamicActor, public Importable {
   inline bool isDodgingForward() const { return _isDodgingForward; }
   inline bool isAttacking() const { return _isAttacking || isAttackState(_currentState); }
   inline bool isUsingSkill() const { return _isUsingSkill; }
+  inline bool isBlocking() const { return _isBlocking; }
+  inline bool isHitWhileBlocking() const { return _isHitWhileBlocking; }
   inline bool isCrouching() const { return _isCrouching; }
   inline bool isInvincible() const { return _isInvincible; }
   inline bool isRunningIntroAnimation() const { return _isRunningIntroAnimation; }
@@ -223,6 +227,8 @@ class Character : public DynamicActor, public Importable {
   inline void setOnPlatform(bool onPlatform) { _isOnPlatform = onPlatform; }
   inline void setAttacking(bool attacking) { _isAttacking = attacking; }
   inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
+  inline void setBlocking(bool blocking) { _isBlocking = blocking; }
+  inline void setHitWhileBlocking(bool hitWhileBlocking) { _isHitWhileBlocking = hitWhileBlocking; }
   inline void setCrouching(bool crouching) { _isCrouching = crouching; }
   inline void setInvincible(bool invincible) { _isInvincible = invincible; }
   inline void setRunningIntroAnimation(bool runningIntroAnimation) { _isRunningIntroAnimation = runningIntroAnimation; }
@@ -292,6 +298,8 @@ class Character : public DynamicActor, public Importable {
     "spellcast",
     "spellcast2",
     "spellcast3",
+    "blocking",
+    "blocking_hit",
     "intro",
     "stunned",
     "take_damage",
@@ -400,6 +408,8 @@ class Character : public DynamicActor, public Importable {
   bool _isDodgingForward{};
   bool _isAttacking{};
   bool _isUsingSkill{};
+  bool _isBlocking{};
+  bool _isHitWhileBlocking{};
   bool _isCrouching{};
   bool _isInvincible{};
   bool _isRunningIntroAnimation{};

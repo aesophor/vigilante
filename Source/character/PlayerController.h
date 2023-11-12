@@ -16,7 +16,7 @@ class PlayerController final : public Controllable {
   virtual void handleInput() override;
 
  private:
-  bool shouldBlockInput() const;
+  bool shouldIgnoreInput() const;
   void handleSheatheUnsheatheWeaponInput();
   void handleAttackInput();
   void handleHotkeyInput();
