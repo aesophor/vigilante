@@ -472,7 +472,7 @@ Character::State Character::determineState() const {
     return State::RUNNING_START;
   } else if (_isStopRunning) {
     return State::RUNNING_STOP;
-  } else if (std::abs(_body->GetLinearVelocity().x) > .01f) {
+  } else if (std::abs(_body->GetLinearVelocity().x) > .01f || std::abs(_previousBodyVelocity.x) > .01f) {
     return State::RUNNING;
   } else {
     return State::IDLE;
