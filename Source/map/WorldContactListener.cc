@@ -39,7 +39,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->onFallToGroundOrPlatform();
 
         // Prevent the character from sliding down the slope.
-        c->getBody()->SetAwake(false);
+        c->stopMotion();
       }
       break;
     }

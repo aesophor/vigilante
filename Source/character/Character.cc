@@ -72,7 +72,7 @@ void Character::update(const float delta) {
   if (_isOnGround &&
       std::abs(_body->GetLinearVelocity().x) < kSlopeStopMinVelocity &&
       std::abs(_body->GetLinearVelocity().y) < kSlopeStopMinVelocity) {
-    _body->SetAwake(false);
+    stopMotion();
   }
 
   // Flip the sprite and weapon fixture if needed.
@@ -788,6 +788,10 @@ void Character::runIntroAnimation() {
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_INTRO); sfxFileName.size()) {
     Audio::the().playSfx(sfxFileName);
   }
+}
+
+void Character::stopMotion() {
+  _body->SetAwake(false);
 }
 
 bool Character::attack(const Character::State attackState,
