@@ -416,6 +416,7 @@ class Character : public DynamicActor, public Importable {
   bool _isRunningIntroAnimation{};
   bool _isStunned{};
   bool _isTakingDamage{};
+  bool _isTakingDamageFromTraps{};
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};

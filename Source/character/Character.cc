@@ -574,7 +574,8 @@ bool Character::isMovementDisallowed() const {
 }
 
 bool Character::isJumpingDownDisallowed() const {
-  return isAttacking() || _isGettingUpFromFalling || _isStunned || _isTakingDamage || _isBlocking || _isRunningIntroAnimation;
+  return isAttacking() || _isGettingUpFromFalling || _isStunned || _isBlocking || _isRunningIntroAnimation ||
+         (_isTakingDamage && !_isTakingDamageFromTraps);
 }
 
 bool Character::isAttackingDisallowed() const {
@@ -730,7 +731,7 @@ void Character::dodgeForward() {
 }
 
 void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag) {
-  if (isDodging() || isDoubleJumping() || isAttacking() || _isStunned || _isTakingDamage) {
+  if (isDodging() || isDoubleJumping() || isMovementDisallowed()) {
     return;
   }
 
@@ -1012,10 +1013,14 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
 
   _characterProfile.health -= damage;
 
-  _isTakingDamage = true;
-  CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
-    _isTakingDamage = false;
-  }, takeDamageDuration);
+  _isTakingDamageFromTraps = !source;
+  if (source) {
+    _isTakingDamage = true;
+    CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
+      _isTakingDamage = false;
+      _isTakingDamageFromTraps = false;
+    }, takeDamageDuration);
+  }
 
   cancelAttack();
 
