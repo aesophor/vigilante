@@ -15,6 +15,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "util/Logger.h"
+#include "util/MathUtil.h"
 
 using namespace std;
 USING_NS_AX;
@@ -30,7 +31,9 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
     // When a character lands on the ground, make following changes.
     case category_bits::kFeet | category_bits::kGround: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      if (feetFixture) {
+      b2Fixture* groundFixture = GetTargetFixture(category_bits::kGround, fixtureA, fixtureB);
+
+      if (feetFixture && groundFixture) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         c->setOnGround(true);
         c->setJumping(false);
@@ -40,6 +43,15 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
 
         // Prevent the character from sliding down the slope.
         c->stopMotion();
+
+        b2EdgeShape* shape = dynamic_cast<b2EdgeShape*>(groundFixture->GetShape());
+        if (shape) {
+          const optional<float> slope = math_util::getSlope(shape->m_vertex1, shape->m_vertex2);
+          if (slope.has_value()) {
+            const float degree = math_util::rad2Deg(std::atan(*slope));
+            c->setGroundAngle(degree);
+          }
+        }
       }
       break;
     }
@@ -253,6 +265,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         c->setOnGround(false);
+        c->setGroundAngle(0.0f);
       }
       break;
     }

@@ -2,8 +2,8 @@
 #include "Character.h"
 
 #include <algorithm>
-#include <filesystem>
 #include <cassert>
+#include <filesystem>
 
 #include "Assets.h"
 #include "Audio.h"
@@ -16,6 +16,7 @@
 #include "scene/SceneManager.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/MathUtil.h"
 #include "util/RandUtil.h"
 #include "util/Logger.h"
 
@@ -587,10 +588,12 @@ bool Character::isSkillActivationDisallowed() const {
 }
 
 void Character::startRunning() {
+  /*
   _isStartRunning = true;
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isStartRunning = false;
   }, _bodyAnimations[State::RUNNING_START]->getDuration());
+  */
 }
 
 void Character::stopRunning() {
@@ -601,36 +604,39 @@ void Character::stopRunning() {
 }
 
 void Character::moveLeft() {
-  if (isMovementDisallowed()) {
-    return;
-  }
-
-  _isFacingRight = false;
-
-  const b2Vec2& velocity = _body->GetLinearVelocity();
-  if (velocity.x == 0) {
-    startRunning();
-  }
-
-  if (velocity.x >= -_characterProfile.moveSpeed * 2) {
-    _body->ApplyLinearImpulseToCenter({-_characterProfile.moveSpeed, 0}, true);
-  }
+  constexpr bool moveTowardsRight = false;
+  moveImpl(moveTowardsRight);
 }
 
 void Character::moveRight() {
+  constexpr bool moveTowardsRight = true;
+  moveImpl(moveTowardsRight);
+}
+
+void Character::moveImpl(const bool moveTowardsRight) {
   if (isMovementDisallowed()) {
     return;
   }
 
-  _isFacingRight = true;
+  _isFacingRight = moveTowardsRight;
 
   const b2Vec2& velocity = _body->GetLinearVelocity();
-  if (velocity.x == 0) {
+  if (velocity.x == 0 && _previousBodyVelocity.x == 0) {
     startRunning();
   }
 
-  if (velocity.x <= _characterProfile.moveSpeed * 2) {
-    _body->ApplyLinearImpulseToCenter({_characterProfile.moveSpeed, 0}, true);
+  if (std::hypotf(velocity.x, velocity.y) <= _characterProfile.moveSpeed) {
+    float force = _characterProfile.bodyWidth * _characterProfile.bodyHeight * kBodyVolumeToMoveForceFactor;
+    if (!moveTowardsRight) {
+      force = -force;
+    }
+
+    b2Vec2 impulse = math_util::rotateCounterClockwise({force, 0}, _groundAngle);
+    if (impulse.y < 0) {
+      impulse.y = std::max(impulse.y, -0.1f);
+    }
+
+    _body->ApplyLinearImpulseToCenter(impulse, true);
   }
 }
 
@@ -726,7 +732,7 @@ void Character::dodgeBackward() {
 }
 
 void Character::dodgeForward() {
-  constexpr float rushPowerX = 7.0f;
+  constexpr float rushPowerX = 5.0f;
   dodge(State::DODGING_FORWARD, rushPowerX, _isDodgingForward);
 }
 
@@ -739,7 +745,7 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
-  _body->SetLinearVelocity({_isFacingRight ? rushPowerX : -rushPowerX, 1.0f});
+  _body->ApplyLinearImpulseToCenter({_isFacingRight ? rushPowerX : -rushPowerX, 1.0f}, true);
 
   enableAfterImageFx(AfterImageFxManager::kPlayerAfterImageColor);
 

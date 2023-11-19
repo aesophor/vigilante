@@ -236,6 +236,9 @@ class Character : public DynamicActor, public Importable {
   inline void setStunned(bool stunned) { _isStunned = stunned; }
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
 
+  inline float getGroundAngle() const { return _groundAngle; }
+  inline void setGroundAngle(float groundAngle) { _groundAngle = groundAngle; }
+
   inline void resetAttackAnimationIdx() { _attackAnimationIdx = 0; }
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
@@ -348,6 +351,7 @@ class Character : public DynamicActor, public Importable {
   virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
   virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
 
+  void moveImpl(const bool moveTowardsRight);
   bool receiveDamage(Character* source, int damage, float numSecCantMove);
 
   void createBodyAnimation(const Character::State state,
@@ -420,6 +424,8 @@ class Character : public DynamicActor, public Importable {
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
+
+  float _groundAngle{};
 
   mutable std::mutex _cancelAttackCallbacksMutex;
   mutable std::mutex _inflictDamageCallbacksMutex;

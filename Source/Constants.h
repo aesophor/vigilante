@@ -13,7 +13,8 @@ inline constexpr int kVirtualWidth = 600;
 inline constexpr int kVirtualHeight = 300;
 
 inline constexpr float kDensity = 80.0f;
-inline constexpr int kGravity = -10;
+inline constexpr float kGravity = -9.8f;
+inline constexpr float kBodyVolumeToMoveForceFactor = 0.0010416666666666667;
 inline constexpr float kGroundFriction = 2.5f;
 inline constexpr int kWallFriction = 0.01f;
 

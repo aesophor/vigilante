@@ -25,6 +25,7 @@
 #include "ui/Colorscheme.h"
 #include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
+#include "util/MathUtil.h"
 #include "util/StringUtil.h"
 #include "util/RandUtil.h"
 
@@ -187,15 +188,11 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, const short cate
 
     // Dynamically calculate ground friction
     float friction = defaultFriction;
-    const float y0 = std::min(vertices[0].y, vertices[1].y) - yRef;
-    const float y1 = std::max(vertices[0].y, vertices[1].y) - yRef;
-    const float x0 = std::min(vertices[0].x, vertices[1].x) - xRef;
-    const float x1 = std::max(vertices[0].x, vertices[1].x) - xRef;
-    if (x0 != x1) {
-      const float slope = (y1 - y0) / (x1 - x0);
-      const float degree = std::atan(slope) * 180.0f / std::numbers::pi;
-      if (degree >= 30.0f && degree <= 150.0f) {
-        friction = 0.0f;
+    const optional<float> slope = math_util::getSlope(vertices[0], vertices[1]);
+    if (slope.has_value()) {
+      const float degree = math_util::rad2Deg(std::atan(*slope));
+      if (degree >= 30.0f || degree <= -30.0f) {
+        friction = 0.2f;
       }
     }
 
