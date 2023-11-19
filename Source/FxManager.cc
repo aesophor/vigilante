@@ -75,7 +75,7 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
                                                      framesName + "/0.png");
   sprite->setPosition(x, y);
 
-  string spritesheetFileName = FxManager::getSpritesheetFileName(textureResDir);
+  string spritesheetFileName = StaticActor::getSpritesheetFileName(textureResDir);
   SpriteBatchNode* spritesheet = SpriteBatchNode::create(spritesheetFileName);
   spritesheet->addChild(sprite);
   spritesheet->getTexture()->setAliasTexParameters();
@@ -104,13 +104,6 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
 void FxManager::removeFx(Sprite* sprite) {
   sprite->stopAllActions();
   sprite->removeFromParent();
-}
-
-string FxManager::getSpritesheetFileName(const string& textureResDir) {
-  // Example: Texture/fx/dust/spritesheet.png
-  //          |_____________| |_____________|
-  //           textureResDir
-  return textureResDir + "/spritesheet.png";
 }
 
 }  // namespace vigilante

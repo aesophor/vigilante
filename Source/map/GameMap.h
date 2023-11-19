@@ -127,6 +127,12 @@ class GameMap final {
   std::unique_ptr<Player> createPlayer() const;
   Item* createItem(const std::string& itemJson, float x, float y, int amount=1);
 
+  template <typename ReturnType = StaticActor>
+  ReturnType* showStaticActor(std::shared_ptr<StaticActor> actor, float x, float y);
+
+  template <typename ReturnType = StaticActor>
+  std::shared_ptr<ReturnType> removeStaticActor(StaticActor* actor);
+
   template <typename ReturnType = DynamicActor>
   ReturnType* showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y);
 
@@ -154,6 +160,7 @@ class GameMap final {
   void createPortals();
   void createNpcs();
   void createChests();
+  void createAnimatedObjects();
   void createParallaxBackground();
 
   b2World* _world{};
@@ -162,6 +169,7 @@ class GameMap final {
   std::string _bgmFileName;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
+  std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;
   std::unordered_set<std::shared_ptr<DynamicActor>> _dynamicActors;
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
@@ -171,6 +179,38 @@ class GameMap final {
   friend class GameMapManager;
   friend class GameState;
 };
+
+template <typename ReturnType>
+ReturnType* GameMap::showStaticActor(std::shared_ptr<StaticActor> actor, float x, float y) {
+  ReturnType* shownActor = dynamic_cast<ReturnType*>(actor.get());
+
+  std::shared_ptr<StaticActor> key{std::shared_ptr<StaticActor>(), actor.get()};
+  if (_staticActors.contains(key)) {
+    VGLOG(LOG_ERR, "This StaticActor is already being shown: %p", actor.get());
+    return nullptr;
+  }
+
+  actor->showOnMap(x, y);
+  _staticActors.insert(std::move(actor));
+  return shownActor;
+}
+
+template <typename ReturnType>
+std::shared_ptr<ReturnType> GameMap::removeStaticActor(StaticActor* actor) {
+  std::shared_ptr<ReturnType> removedActor{nullptr};
+
+  std::shared_ptr<StaticActor> key{std::shared_ptr<StaticActor>{}, actor};
+  auto it = _staticActors.find(key);
+  if (it == _staticActors.end()) {
+    VGLOG(LOG_ERR, "This StaticActor has not yet been shown: %p", actor);
+    return nullptr;
+  }
+
+  removedActor = std::move(std::dynamic_pointer_cast<ReturnType>(*it));
+  removedActor->removeFromMap();
+  _staticActors.erase(it);
+  return removedActor;
+}
 
 template <typename ReturnType>
 ReturnType* GameMap::showDynamicActor(std::shared_ptr<DynamicActor> actor, float x, float y) {

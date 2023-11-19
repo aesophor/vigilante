@@ -19,6 +19,7 @@
 #include "item/Consumable.h"
 #include "item/Key.h"
 #include "map/object/Chest.h"
+#include "map/object/StaticObject.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
@@ -48,6 +49,10 @@ GameMap::~GameMap() {
   }
 
   for (auto& actor : _dynamicActors) {
+    actor->removeFromMap();
+  }
+
+  for (auto& actor : _staticActors) {
     actor->removeFromMap();
   }
 }
@@ -84,6 +89,7 @@ void GameMap::createObjects() {
   createPortals();
   createChests();
   createNpcs();
+  createAnimatedObjects();
   createParallaxBackground();
 }
 
@@ -322,6 +328,22 @@ void GameMap::createChests() {
 
     auto chest = std::make_shared<Chest>(_tmxTiledMapFileName, i, items);
     showDynamicActor(std::move(chest), x, y);
+  }
+}
+
+void GameMap::createAnimatedObjects() {
+  ax::ValueVector objects = getObjects("AnimatedObjects");
+  for (int i = 0; i < objects.size(); i++) {
+    const auto& valMap = objects[i].asValueMap();
+    const float x = valMap.at("x").asFloat();
+    const float y = valMap.at("y").asFloat();
+    const string textureResDir = valMap.at("textureResDir").asString();
+    const string framesName = valMap.at("framesName").asString();
+    const float frameInterval = valMap.at("frameInterval").asFloat();
+    const float zOrder = valMap.contains("zOrder") ? valMap.at("zOrder").asInt() : graphical_layers::kStaticObjects;
+
+    auto staticObject = std::make_shared<StaticObject>(textureResDir, framesName, frameInterval, zOrder);
+    showStaticActor(std::move(staticObject), x, y);
   }
 }
 

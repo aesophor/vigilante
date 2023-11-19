@@ -65,6 +65,11 @@ class StaticActor {
   // e.g., "Texture/character/player" -> "player"
   static std::string getLastDirName(const std::string& directory);
 
+  // Example: Texture/fx/dust/spritesheet.png
+  //          |_____________| |_____________|
+  //           textureResDir
+  static std::string getSpritesheetFileName(const std::string& textureResDir);
+
  protected:
   explicit StaticActor(const size_t numAnimations = 1)
       : _node{ax::Node::create()},

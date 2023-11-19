@@ -23,7 +23,6 @@ class FxManager final {
 
   void removeFx(ax::Sprite* sprite);
 
- private:
   ax::Sprite* createAnimation(const std::string& textureResDir,
                               const std::string& framesName,
                               const float x,
@@ -31,8 +30,7 @@ class FxManager final {
                               const unsigned int loopCount = 1,
                               const float frameInterval = 10.0f);
 
-  static std::string getSpritesheetFileName(const std::string& textureResDir);
-
+ private:
   std::unordered_map<std::string, ax::Animation*> _animationCache;
 };
 

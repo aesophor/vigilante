@@ -108,4 +108,8 @@ string StaticActor::getLastDirName(const string& directory) {
   return directory.substr(directory.find_last_of('/') + 1);
 }
 
+string StaticActor::getSpritesheetFileName(const string& textureResDir) {
+  return textureResDir + "/spritesheet.png";
+}
+
 }  // namespace vigilante
