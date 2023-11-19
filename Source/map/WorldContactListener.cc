@@ -250,7 +250,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
     // When a character leaves the ground, make following changes.
     case category_bits::kFeet | category_bits::kGround: {
       b2Fixture* feetFixture = GetTargetFixture(category_bits::kFeet, fixtureA, fixtureB);
-      if (feetFixture && feetFixture->GetBody()->GetLinearVelocity().y > .5f) {
+      if (feetFixture) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         c->setOnGround(false);
       }
