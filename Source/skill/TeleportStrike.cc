@@ -88,11 +88,14 @@ void TeleportStrike::activate() {
 
   CallbackManager::the().runAfter([this, target, targetPos, teleportDestPos](const CallbackManager::CallbackId) {
     _user->teleportToTarget(*teleportDestPos);
+    _user->getBody()->SetAwake(true);
 
     const b2Vec2 thisPos = _user->getBody()->GetPosition();
     _user->setFacingRight(thisPos.x < targetPos.x);
 
     CallbackManager::the().runAfter([this, target](const CallbackManager::CallbackId) {
+      _user->stopMotion();
+
       const bool isTargetInRange = _user->getInRangeTargets().contains(target);
       if (!isTargetInRange) {
         _user->getInRangeTargets().insert(target);
