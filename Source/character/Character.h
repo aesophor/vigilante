@@ -403,7 +403,7 @@ class Character : public DynamicActor, public Importable {
   bool _isFacingRight{true};
   bool _isStartRunning{};
   bool _isStopRunning{};
-  bool _isOnGround{true};
+  bool _isOnGround{};
   bool _isJumpingDisallowed{};
   bool _isJumping{};
   bool _isDoubleJumping{};
