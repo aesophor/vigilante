@@ -852,6 +852,7 @@ bool Character::attack(const Character::State attackState,
     }
     inflictDamage(target, getDamageOutput(), numTimesInflictDamage, damageInflictionInterval);
   }
+
   return true;
 }
 
@@ -1346,6 +1347,9 @@ void Character::regenHealth(int deltaHealth) {
 
   health += deltaHealth;
   health = (health > fullHealth) ? fullHealth : health;
+
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 void Character::regenMagicka(int deltaMagicka) {
@@ -1354,6 +1358,9 @@ void Character::regenMagicka(int deltaMagicka) {
 
   magicka += deltaMagicka;
   magicka = (magicka > fullMagicka) ? fullMagicka : magicka;
+
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 void Character::regenStamina(int deltaStamina) {
@@ -1362,6 +1369,9 @@ void Character::regenStamina(int deltaStamina) {
 
   stamina += deltaStamina;
   stamina = (stamina > fullStamina) ? fullStamina : stamina;
+
+  auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
+  hud->updateStatusBars();
 }
 
 Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
