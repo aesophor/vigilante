@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MagicalMissile.h"
 
-#include <functional>
 #include <memory>
 
+#include "Assets.h"
 #include "Audio.h"
 #include "CallbackManager.h"
 #include "Constants.h"
@@ -14,6 +14,7 @@
 #include "util/Logger.h"
 
 using namespace std;
+using namespace vigilante::assets;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
@@ -171,7 +172,7 @@ void MagicalMissile::activate() {
 }
 
 string MagicalMissile::getIconPath() const {
-  return _skillProfile.textureResDir + "/icon.png";
+  return fs::path{_skillProfile.textureResDir} / kIconPng;
 }
 
 void MagicalMissile::defineBody(b2BodyType bodyType,

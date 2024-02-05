@@ -1,13 +1,15 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "BatForm.h"
 
 #include <memory>
 
+#include "Assets.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
 using namespace std;
+using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
@@ -51,7 +53,7 @@ void BatForm::activate() {
 }
 
 string BatForm::getIconPath() const {
-  return _skillProfile.textureResDir + "/icon.png";
+  return fs::path{_skillProfile.textureResDir} / kIconPng;
 }
 
 } // namespace vigilante

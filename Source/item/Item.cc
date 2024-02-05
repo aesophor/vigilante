@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Item.h"
 
 #include "Assets.h"
@@ -14,6 +14,7 @@
 #include "util/Logger.h"
 
 using namespace std;
+using namespace vigilante::assets;
 using namespace vigilante::category_bits;
 USING_NS_AX;
 
@@ -105,7 +106,7 @@ void Item::defineBody(b2BodyType bodyType,
 }
 
 string Item::getIconPath() const {
-  return _itemProfile.textureResDir + "/icon.png";
+  return fs::path{_itemProfile.textureResDir} / kIconPng;
 }
 
 bool Item::isGold() const {

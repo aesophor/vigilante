@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ForwardSlash.h"
 
+#include "Assets.h"
 #include "Audio.h"
 #include "CallbackManager.h"
 #include "character/Character.h"
@@ -9,6 +10,7 @@
 #include "util/CameraUtil.h"
 
 using namespace std;
+using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
@@ -70,7 +72,7 @@ void ForwardSlash::activate() {
 }
 
 string ForwardSlash::getIconPath() const {
-  return _skillProfile.textureResDir + "/icon.png";
+  return fs::path{_skillProfile.textureResDir} / kIconPng;
 }
 
 } // namespace vigilante
