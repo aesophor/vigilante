@@ -51,6 +51,10 @@ void StaticObject::defineTexture() {
   Animation* animation = StaticActor::createAnimation(_textureResDir, _framesName, _frameInterval / kPpm);
   auto animate = Animate::create(animation);
   _bodySprite->runAction(RepeatForever::create(animate));
+
+  if (_flipped) {
+    _bodySprite->setFlippedX(true);
+  }
 }
 
 }  // namespace vigilante

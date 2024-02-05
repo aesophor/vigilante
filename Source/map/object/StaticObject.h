@@ -15,11 +15,13 @@ class StaticObject : public StaticActor {
   StaticObject(const std::string& textureResDir,
                const std::string& framesName,
                const float frameInterval,
+               const bool flipped,
                const int zOrder)
       : StaticActor{},
         _textureResDir{textureResDir},
         _framesName{framesName},
         _frameInterval{frameInterval},
+        _flipped{flipped},
         _zOrder{zOrder} {}
   virtual ~StaticObject() override = default;
 
@@ -31,6 +33,7 @@ class StaticObject : public StaticActor {
   const std::string _textureResDir;
   const std::string _framesName;
   const float _frameInterval;
+  const bool _flipped;
   const int _zOrder;
 };
 
