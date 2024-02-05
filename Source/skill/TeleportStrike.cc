@@ -87,28 +87,22 @@ void TeleportStrike::activate() {
   }
 
   CallbackManager::the().runAfter([this, target, targetPos, teleportDestPos](const CallbackManager::CallbackId) {
-    _user->teleportToTarget(*teleportDestPos);
-    _user->getBody()->SetAwake(true);
-
     const b2Vec2 thisPos = _user->getBody()->GetPosition();
-    _user->setFacingRight(thisPos.x < targetPos.x);
+    _user->setFacingRight(teleportDestPos->x < targetPos.x);
 
     CallbackManager::the().runAfter([this, target](const CallbackManager::CallbackId) {
       _user->stopMotion();
-
-      const bool isTargetInRange = _user->getInRangeTargets().contains(target);
-      if (!isTargetInRange) {
-        _user->getInRangeTargets().insert(target);
-      }
       _user->attack(Character::State::ATTACKING_FORWARD, _user->getCharacterProfile().forwardAttackNumTimesInflictDamage);
-      if (!isTargetInRange) {
-        _user->getInRangeTargets().erase(target);
-      }
     }, 0.1f);
 
+    _user->teleportToTarget(*teleportDestPos);
+    _user->getBody()->SetAwake(true);
+    _user->setInvincible(true);
     _user->enableAfterImageFx(ax::Color3B{0xa6, 0x53, 0x72});
+
     CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
       _user->disableAfterImageFx();
+      _user->setInvincible(false);
       _user->getBody()->SetAwake(true);
     }, _user->getAnimationDuration(Character::State::ATTACKING_FORWARD));
   }, _skillProfile.framesDuration);
@@ -151,17 +145,20 @@ std::optional<b2Vec2> TeleportStrike::determineTeleportDest(Character* target) c
   const float userBodyHeight = _user->getCharacterProfile().bodyHeight / kPpm;
   const float targetBodyHeight = target->getCharacterProfile().bodyHeight / kPpm;
   const b2Vec2& targetPos = target->getBody()->GetPosition();
+  const float offsetX = userAttackRange * 0.75f;
 
   if (isTargetFacingAwayFarEnoughFromWall(target, userAttackRange)) {
-    const float x = targetPos.x + (target->isFacingRight() ? -userAttackRange : userAttackRange);
+    const float x = targetPos.x + (target->isFacingRight() ? -offsetX : offsetX);
     const float y = std::max(targetPos.y, targetPos.y - targetBodyHeight / 2 + userBodyHeight / 2);
     return b2Vec2{x, y};
   }
+
   if (isTargetFacingAgainstFarEnoughFromWall(target, userAttackRange)) {
-    const float x = targetPos.x + (target->isFacingRight() ? userAttackRange : -userAttackRange);
+    const float x = targetPos.x + (target->isFacingRight() ? offsetX : -offsetX);
     const float y = std::max(targetPos.y, targetPos.y - targetBodyHeight / 2 + userBodyHeight / 2);
     return b2Vec2{x, y};
   }
+
   return std::nullopt;
 }
 
