@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Npc.h"
 
 #include <cmath>
@@ -287,7 +287,7 @@ void Npc::dropItems() {
         gmMgr->getGameMap()->createItem(itemJson, _killedPos.x * kPpm, _killedPos.y * kPpm, amount);
       }
     }
-  }, .2f);
+  }, 0.0f);
 }
 
 void Npc::updateDialogueTreeIfNeeded() {
