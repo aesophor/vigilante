@@ -40,8 +40,8 @@ class MainMenuScene : public ax::Scene, public Controllable {
     "Options",
     "Exit",
   }};
-  static inline constexpr const char* _kCopyrightStr = "© 2018-2023 Aesophor Softworks";
-  static inline constexpr const char* _kVersionStr = "0.1.0";
+  static inline constexpr const char* _kCopyrightStr = "© 2018-2024 Aesophor Softworks";
+  static inline constexpr const char* _kVersionStr = "0.2.0";
   static inline constexpr int _kMenuOptionGap = 20;
   static inline constexpr int _kFooterLabelPadding = 10;
 
