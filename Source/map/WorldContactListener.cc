@@ -200,11 +200,11 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
           }, .1f);
         }
 
-        unordered_set<Interactable*>& interactables = c->getInRangeInteractables();
+        list<Interactable*>& interactables = c->getInRangeInteractables();
         if (interactables.size()) {
           (*interactables.begin())->hideHintUI();
         }
-        interactables.insert(i);
+        interactables.emplace_back(i);
 
         if (dynamic_cast<Player*>(c)) {
           (*interactables.begin())->showHintUI();
@@ -347,7 +347,7 @@ void WorldContactListener::EndContact(b2Contact* contact) {
       if (feetFixture && interactableFixture) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         Interactable* i = reinterpret_cast<Interactable*>(interactableFixture->GetUserData().pointer);
-        c->getInRangeInteractables().erase(i);
+        c->getInRangeInteractables().remove(i);
         i->hideHintUI();
       }
       break;

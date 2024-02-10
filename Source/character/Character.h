@@ -4,6 +4,7 @@
 
 #include <array>
 #include <functional>
+#include <list>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -252,7 +253,7 @@ class Character : public DynamicActor, public Importable {
   inline void setAlerted(bool alerted) { _isAlerted = alerted; }
 
   inline std::unordered_set<Item*>& getInRangeItems() { return _inRangeItems; }
-  inline std::unordered_set<Interactable*>& getInRangeInteractables() {
+  inline std::list<Interactable*>& getInRangeInteractables() {
     return _inRangeInteractables;
   }
 
@@ -444,7 +445,7 @@ class Character : public DynamicActor, public Importable {
 
   // Nearby items and interactable objects.
   std::unordered_set<Item*> _inRangeItems;
-  std::unordered_set<Interactable*> _inRangeInteractables;
+  std::list<Interactable*> _inRangeInteractables;
 
   // Character's inventory and equipment slots.
   // These two types are aliased. See the beginning of this class.

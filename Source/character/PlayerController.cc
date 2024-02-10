@@ -26,11 +26,22 @@ constexpr auto kBlockKey = EventKeyboard::KeyCode::KEY_Q;
 constexpr auto kInteractKey = EventKeyboard::KeyCode::KEY_E;
 constexpr auto kPickupItemKey = EventKeyboard::KeyCode::KEY_Z;
 constexpr auto kUsePortalKey = EventKeyboard::KeyCode::KEY_F;
+constexpr auto kSwitchInteractableTargetKey = EventKeyboard::KeyCode::KEY_TAB;
 
 }  // namespace
 
 void PlayerController::handleInput() {
   if (shouldIgnoreInput()) {
+    return;
+  }
+
+  if (_player.getInRangeInteractables().size() > 1 && IS_KEY_JUST_PRESSED(kSwitchInteractableTargetKey)) {
+    Interactable* i = _player.getInRangeInteractables().front();
+    _player.getInRangeInteractables().pop_front();
+    _player.getInRangeInteractables().emplace_back(i);
+    
+    i->hideHintUI();
+    _player.getInRangeInteractables().front()->showHintUI();
     return;
   }
 

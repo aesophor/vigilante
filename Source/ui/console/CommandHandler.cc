@@ -317,7 +317,7 @@ void CommandHandler::interact(const vector<string>&) {
     return;
   }
 
-  const unordered_set<Interactable*>& interactables = player->getInRangeInteractables();
+  const list<Interactable*>& interactables = player->getInRangeInteractables();
   if (interactables.empty()) {
     setError("No nearby interactable objects.");
     return;
