@@ -26,7 +26,6 @@ inline const fs::path kUIDir = kTextureDir / "ui";
 inline const fs::path kExpPointTable = kGameplayDir / "exp_point_table.txt";
 inline const fs::path kItemPriceTable = kGameplayDir / "item_price_table.txt";
 inline const fs::path kQuestsList = kGameplayDir / "quests_list.txt";
-inline const fs::path kSpritesheetsList = kTextureDir / "spritesheets.txt";
 inline const fs::path kPlayerJson = kDataDir / "character/joanna.json";
 
 // Fonts
@@ -114,7 +113,7 @@ inline const fs::path kSfxChestOpened = kSfxEnvDir / "chest_opened.mp3";
 inline const fs::path kSfxDoorLocked = kSfxEnvDir / "locked.mp3";
 inline const fs::path kSfxDoorUnlocked = kSfxEnvDir / "unlocked.mp3";
 
-void loadSpritesheets(const fs::path& spritesheetsListFileName);
+void loadSpritesheets();
 
 }  // namespace vigilante::assets
 

@@ -1,14 +1,8 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Assets.h"
 
-extern "C" {
-#include <unistd.h>
-}
-
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <string>
-#include <stdexcept>
 
 #include <axmol.h>
 
@@ -19,22 +13,14 @@ USING_NS_AX;
 
 namespace vigilante::assets {
 
-void loadSpritesheets(const fs::path& spritesheetsListFileName) {
-  char buf[256] = {0};
-  getcwd(buf, 256);
-  std::cout << buf << std::endl;
-
-  ifstream fin(spritesheetsListFileName);
-  if (!fin.is_open()) {
-    throw runtime_error("Failed to load spritesheets from " + spritesheetsListFileName.native());
-  }
-
+void loadSpritesheets() {
   VGLOG(LOG_INFO, "Loading textures...");
+
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  string line;
-  while (std::getline(fin, line)) {
-    if (!line.empty()) {
-      frameCache->addSpriteFramesWithFile(line);
+  for (const auto dentry : fs::recursive_directory_iterator{kTextureDir}) {
+    if (const string dirPath{fs::path{dentry}}; dirPath.ends_with(".plist")) {
+      frameCache->addSpriteFramesWithFile(dirPath);
+      VGLOG(LOG_INFO, "Successfully loaded spritesheet [%s]...", dirPath.c_str());
     }
   }
 }

@@ -64,7 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
   chdir("Resources");
 #endif
 
-  vigilante::assets::loadSpritesheets(vigilante::assets::kSpritesheetsList);
+  vigilante::assets::loadSpritesheets();
   vigilante::SceneManager::the().runWithScene(vigilante::MainMenuScene::create());
 
   return true;
