@@ -63,6 +63,7 @@ class Npc : public Character, public Interactable {
   virtual void update(const float delta) override;  // Character
   virtual void import(const std::string& jsonFileName) override;  // Character
 
+  virtual void onSetToKill() override;  // Character
   virtual void onKilled() override;  // Character
   virtual void onMapChanged() override;  // Character
 

@@ -145,6 +145,7 @@ class Character : public DynamicActor, public Importable {
   virtual void import(const std::string& jsonFileName) override;  // Importable
   virtual void replaceSpritesheet(const std::string& jsonFileName);
 
+  virtual void onSetToKill();
   virtual void onKilled();
   virtual void onFallToGroundOrPlatform();
   virtual void onBodyContactWithEnemyBody(Character* enemy);

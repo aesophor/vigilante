@@ -522,9 +522,13 @@ void Character::maybeOverrideCurrentStateWithStopRunningState() {
   }
 }
 
+void Character::onSetToKill() {
+  _isSetToKill = true;
+  _killedPos = _body->GetPosition();
+}
+
 void Character::onKilled() {
   _isKilled = true;
-  _killedPos = _body->GetPosition();
   destroyBody();
 
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
@@ -1046,7 +1050,9 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
     }
 
     DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
-    _isSetToKill = true;
+
+    onSetToKill();
+
     // TODO: play killed sound.
   } else {
     // TODO: play hurt sound.

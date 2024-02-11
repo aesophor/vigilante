@@ -152,14 +152,19 @@ void Npc::import(const string& jsonFileName) {
   _npcProfile = Npc::Profile{jsonFileName};
 }
 
-void Npc::onKilled() {
-  Character::onKilled();
-  dropItems();
+void Npc::onSetToKill() {
+  Character::onSetToKill();
 
   if (!_npcProfile.isRespawnable) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
     gmMgr->setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
   }
+
+  dropItems();
+}
+
+void Npc::onKilled() {
+  Character::onKilled();
 
   _floatingHealthBar->setVisible(false);
 }
@@ -287,7 +292,7 @@ void Npc::dropItems() {
         gmMgr->getGameMap()->createItem(itemJson, _killedPos.x * kPpm, _killedPos.y * kPpm, amount);
       }
     }
-  }, 0.0f);
+  }, 0.1f);
 }
 
 void Npc::updateDialogueTreeIfNeeded() {
