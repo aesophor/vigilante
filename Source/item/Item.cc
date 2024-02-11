@@ -114,7 +114,7 @@ bool Item::isGold() const {
 }
 
 Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());
   textureResDir = json["textureResDir"].GetString();

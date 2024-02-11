@@ -14,7 +14,7 @@ using namespace std;
 
 namespace vigilante::json_util {
 
-rapidjson::Document parseJson(const fs::path& jsonFileName) {
+rapidjson::Document loadFromFile(const fs::path& jsonFileName) {
   ifstream ifs(jsonFileName);
   if (!ifs.is_open()) {
     VGLOG(LOG_ERR, "Failed to load json: [%s].", jsonFileName.c_str());

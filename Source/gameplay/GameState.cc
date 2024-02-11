@@ -24,7 +24,7 @@ void GameState::save() {
 
 void GameState::load() {
   VGLOG(LOG_INFO, "Loading from save file [%s].", _saveFilePath.c_str());
-  _json = json_util::parseJson(_saveFilePath);
+  _json = json_util::loadFromFile(_saveFilePath);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->setNpcsAllowedToAct(false);

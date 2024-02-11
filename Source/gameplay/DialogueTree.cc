@@ -42,7 +42,7 @@ void DialogueTree::import(const string& jsonFileName) {
   }
 
   VGLOG(LOG_INFO, "Loading dialogue tree...");
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   // Convert rapidjson tree into our DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD

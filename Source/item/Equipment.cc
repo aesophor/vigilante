@@ -18,7 +18,7 @@ void Equipment::import(const string& jsonFileName) {
 }
 
 Equipment::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   for (int i = 0; i < Equipment::Sfx::SFX_SIZE; i++) {
     const string &sfxKey = Equipment::_kEquipmentSfxStr[i];

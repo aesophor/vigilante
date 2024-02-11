@@ -77,7 +77,7 @@ string Quest::Stage::getHint() const {
 }
 
 Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
   title = json["title"].GetString();
   desc = json["desc"].GetString();
 

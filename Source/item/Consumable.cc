@@ -26,7 +26,7 @@ void Consumable::setHotkey(EventKeyboard::KeyCode hotkey) {
 }
 
 Consumable::Profile::Profile(const string& jsonFileName) : hotkey() {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   duration = json["duration"].GetFloat();
 

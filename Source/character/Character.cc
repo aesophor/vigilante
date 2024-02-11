@@ -1383,7 +1383,7 @@ void Character::regenStamina(int deltaStamina) {
 Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
   loadSpritesheetInfo(jsonFileName);
 
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   name = json["name"].GetString();
   level = json["level"].GetInt();
@@ -1417,7 +1417,7 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
 }
 
 void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   textureResDir = json["textureResDir"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();

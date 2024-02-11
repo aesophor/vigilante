@@ -154,7 +154,7 @@ void deserialize(const rapidjson::Value& obj, KVs... kvs) {
   (deserializeImpl(obj, kvs), ...);
 }
 
-rapidjson::Document parseJson(const fs::path& jsonFileName);
+rapidjson::Document loadFromFile(const fs::path& jsonFileName);
 void saveToFile(const fs::path& jsonFileName, const rapidjson::Document& json);
 
 }  // namespace vigilante::json_util

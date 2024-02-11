@@ -383,7 +383,7 @@ void Npc::setDisposition(Npc::Disposition disposition) {
 }
 
 Npc::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   const auto& droppedItemsMap = json["droppedItems"].GetObject();
   if (!droppedItemsMap.ObjectEmpty()) {

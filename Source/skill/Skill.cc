@@ -35,7 +35,7 @@ shared_ptr<Skill> Skill::create(const string& jsonFileName, Character* user) {
 }
 
 Skill::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName), hotkey() {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   skillType = static_cast<Skill::Type>(json["skillType"].GetInt());
   characterFramesName = json["characterFramesName"].GetString();

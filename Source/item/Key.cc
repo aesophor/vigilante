@@ -12,7 +12,7 @@ Key::Key(const string& jsonFileName)
       _keyProfile{jsonFileName} {}
 
 Key::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::parseJson(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
 
   targetTmxFileName = json["targetTmxMapFileName"].GetString();
   targetPortalId = json["targetPortalId"].GetInt();
