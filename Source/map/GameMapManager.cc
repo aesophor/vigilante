@@ -1,7 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMapManager.h"
-
-#include <thread>
 
 #include <box2d/box2d.h>
 
@@ -92,7 +90,6 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
   }
 
   if (oldBgmFileName != _gameMap->getBgmFileName()) {
-    Audio::the().stopBgm();
     Audio::the().playBgm(_gameMap->getBgmFileName());
   }
 
