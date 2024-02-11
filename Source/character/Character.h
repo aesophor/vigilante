@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_CHARACTER_H_
 #define VIGILANTE_CHARACTER_H_
 
@@ -429,10 +429,10 @@ class Character : public DynamicActor, public Importable {
 
   float _groundAngle{};
 
-  mutable std::mutex _cancelAttackCallbacksMutex;
-  mutable std::mutex _inflictDamageCallbacksMutex;
-  std::unordered_set<CallbackManager::CallbackId> _cancelAttackCallbacks;
-  std::unordered_set<CallbackManager::CallbackId> _inflictDamageCallbacks;
+  mutable std::mutex _cancelAttackCallbackIDsMutex;
+  mutable std::mutex _inflictDamageCallbackIDsMutex;
+  std::unordered_set<CallbackManager::CallbackId> _cancelAttackCallbackIDs;
+  std::unordered_set<CallbackManager::CallbackId> _inflictDamageCallbackIDs;
 
   // Combat related systems
   std::shared_ptr<ComboSystem> _comboSystem;

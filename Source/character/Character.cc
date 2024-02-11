@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Character.h"
 
 #include <algorithm>
@@ -823,13 +823,13 @@ bool Character::attack(const Character::State attackState,
   }
 
   {
-    lock_guard<mutex> lock{_cancelAttackCallbacksMutex};
+    lock_guard<mutex> lock{_cancelAttackCallbackIDsMutex};
     const CallbackManager::CallbackId cancelAttackCallbackId = CallbackManager::the().runAfter([this](const CallbackManager::CallbackId id) {
       _isAttacking = false;
       _overridingAttackState = std::nullopt;
-      _cancelAttackCallbacks.erase(id);
+      _cancelAttackCallbackIDs.erase(id);
     }, getAttackAnimationDuration(attackState));
-    _cancelAttackCallbacks.emplace(cancelAttackCallbackId);
+    _cancelAttackCallbackIDs.emplace(cancelAttackCallbackId);
   }
 
   const auto weapon = _equipmentSlots[Equipment::Type::WEAPON];
@@ -865,19 +865,19 @@ void Character::cancelAttack() {
   _overridingAttackState = std::nullopt;
 
   {
-    lock_guard<mutex> lock{_cancelAttackCallbacksMutex};
-    for (const auto &callbackId : _cancelAttackCallbacks) {
+    lock_guard<mutex> lock{_cancelAttackCallbackIDsMutex};
+    for (const auto &callbackId : _cancelAttackCallbackIDs) {
       CallbackManager::the().cancel(callbackId);
     }
-    _cancelAttackCallbacks.clear();
+    _cancelAttackCallbackIDs.clear();
   }
 
   {
-    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
-    for (const auto &callbackId : _inflictDamageCallbacks) {
+    lock_guard<mutex> lock{_inflictDamageCallbackIDsMutex};
+    for (const auto &callbackId : _inflictDamageCallbackIDs) {
       CallbackManager::the().cancel(callbackId);
     }
-    _inflictDamageCallbacks.clear();
+    _inflictDamageCallbackIDs.clear();
   }
 }
 
@@ -994,12 +994,12 @@ bool Character::inflictDamage(Character *target, int damage,
         Audio::the().playSfx(weapon->getSfxFileName(Equipment::Sfx::SFX_HIT));
       }
 
-      lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
-      _inflictDamageCallbacks.erase(id);
+      lock_guard<mutex> lock{_inflictDamageCallbackIDsMutex};
+      _inflictDamageCallbackIDs.erase(id);
     }, _characterProfile.attackDelay + damageInflictionInterval * i);
 
-    lock_guard<mutex> lock{_inflictDamageCallbacksMutex};
-    _inflictDamageCallbacks.emplace(id);
+    lock_guard<mutex> lock{_inflictDamageCallbackIDsMutex};
+    _inflictDamageCallbackIDs.emplace(id);
   }
 
   return true;
