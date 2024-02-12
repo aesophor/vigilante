@@ -7,7 +7,6 @@
 #include "character/Player.h"
 #include "gameplay/ExpPointTable.h"
 #include "gameplay/GameState.h"
-#include "gameplay/ItemPriceTable.h"
 #include "scene/SceneManager.h"
 #include "skill/Skill.h"
 #include "quest/Quest.h"
@@ -32,9 +31,6 @@ bool GameScene::init() {
 
   // Initialize vigilante's exp point table.
   exp_point_table::import(kExpPointTable);
-
-  // Initialize vigilante's item price table.
-  item_price_table::import(kItemPriceTable);
 
   // Initialize InputManager.
   // InputManager keep tracks of which keys are pressed.

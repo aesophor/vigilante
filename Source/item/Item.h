@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_ITEM_H_
 #define VIGILANTE_ITEM_H_
 
@@ -30,6 +30,7 @@ class Item : public DynamicActor, public Importable {
     std::string textureResDir;
     std::string name;
     std::string desc;
+    int price;
   };
 
   // Create an item by automatically deducing its concrete type

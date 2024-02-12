@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "Assets.h"
-#include "gameplay/ItemPriceTable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/AmountSelectionWindow.h"
@@ -46,14 +45,12 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
     // Display item price if not trading with ally.
     if (!_tradeWindow->isTradingWithAlly()) {
-      label->setString(string{label->getString()} +
-          string_util::format(" [$%d]", item_price_table::getPrice(item)));
+      label->setString(string{label->getString()} + string_util::format(" [$%d]", item->getItemProfile().price));
     }
 
     // Display item amount if amount > 1
     if (item->getAmount() > 1) {
-      label->setString(string{label->getString()} +
-          string_util::format(" (%d)", item->getAmount()));
+      label->setString(string{label->getString()} + string_util::format(" (%d)", item->getAmount()));
     }
   };
 
@@ -156,7 +153,7 @@ void TradeListView::doTrade(Character* buyer,
   }
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
-  const int price = item_price_table::getPrice(item);
+  const int price = item->getItemProfile().price;
 
   // Check if `amount` is valid.
   if (amount > item->getAmount()) {

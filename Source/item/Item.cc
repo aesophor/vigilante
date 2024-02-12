@@ -120,6 +120,7 @@ Item::Profile::Profile(const string& jsonFilePath) : jsonFilePath(jsonFilePath) 
   textureResDir = json["textureResDir"].GetString();
   name = json["name"].GetString();
   desc = json["desc"].GetString();
+  price = json["price"].GetInt();
 }
 
 }  // namespace vigilante
