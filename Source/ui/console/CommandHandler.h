@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_COMMAND_HANDLER_H_
 #define VIGILANTE_COMMAND_HANDLER_H_
 
@@ -30,6 +30,8 @@ class CommandHandler final {
   void killCurrentTarget(const std::vector<std::string>& args);
   void interact(const std::vector<std::string>& args);
   void narrate(const std::vector<std::string>& args);
+  void beginBossFight(const std::vector<std::string>& args);
+  void endBossFight(const std::vector<std::string>& args);
 
   bool _success{};
   std::string _errMsg;

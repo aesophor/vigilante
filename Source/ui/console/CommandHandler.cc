@@ -1,14 +1,16 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "CommandHandler.h"
 
 #include <memory>
 
+#include "Audio.h"
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
 #include "item/Item.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/JsonUtil.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
@@ -46,7 +48,8 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"tradeWithPlayer",         &CommandHandler::tradeWithPlayer        },
     {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
     {"interact",                &CommandHandler::interact               },
-    {"narrate",                 &CommandHandler::narrate               },
+    {"narrate",                 &CommandHandler::narrate                },
+    {"beginBossFight",          &CommandHandler::beginBossFight         },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -343,6 +346,49 @@ void CommandHandler::narrate(const vector<string>& args) {
   }
 
   dialogueMgr->getSubtitles()->beginSubtitles();
+  setSuccess();
+}
+
+void CommandHandler::beginBossFight(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: beginBossFight <bossStageProfileJsonPath>");
+    return;
+  }
+
+  rapidjson::Document json = json_util::loadFromFile(args[1]);
+  const string targetJsonFileName = json["target"].GetString();
+  const string bgm = json["bgm"].GetString();
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  shared_ptr<Character> targetCharacter;
+  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+    auto c = std::dynamic_pointer_cast<Character>(actor);
+    if (!c || c->getCharacterProfile().jsonFileName != targetJsonFileName) {
+      continue;
+    }
+    targetCharacter = std::move(c);
+  }
+
+  if (!targetCharacter) {
+    setError(string_util::format("Failed to find [%s] in the current game map.", targetJsonFileName.c_str()));
+    return;
+  }
+  Audio::the().playBgm(bgm);
+
+  targetCharacter->addOnKilledCallback([this, args]() { endBossFight(args); });
+
+  setSuccess();
+}
+
+void CommandHandler::endBossFight(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: endBossFight <bossStageProfileJsonPath>");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Audio::the().playBgm(gmMgr->getGameMap()->getBgmFileName());
+
   setSuccess();
 }
 

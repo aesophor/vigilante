@@ -531,6 +531,10 @@ void Character::onKilled() {
   _isKilled = true;
   destroyBody();
 
+  for (const auto &callback : _onKilledCallbacks) {
+    std::invoke(callback);
+  }
+
   if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
     Audio::the().playSfx(sfxFileName);
   }

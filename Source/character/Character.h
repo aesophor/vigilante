@@ -241,6 +241,8 @@ class Character : public DynamicActor, public Importable {
   inline float getGroundAngle() const { return _groundAngle; }
   inline void setGroundAngle(float groundAngle) { _groundAngle = groundAngle; }
 
+  inline void addOnKilledCallback(std::function<void ()>&& callback) { _onKilledCallbacks.emplace_back(std::move(callback)); }
+
   inline void resetAttackAnimationIdx() { _attackAnimationIdx = 0; }
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
@@ -429,10 +431,13 @@ class Character : public DynamicActor, public Importable {
 
   float _groundAngle{};
 
+  // Callbacks
   mutable std::mutex _cancelAttackCallbackIDsMutex;
   mutable std::mutex _inflictDamageCallbackIDsMutex;
   std::unordered_set<CallbackManager::CallbackId> _cancelAttackCallbackIDs;
   std::unordered_set<CallbackManager::CallbackId> _inflictDamageCallbackIDs;
+
+  std::list<std::function<void ()>> _onKilledCallbacks;
 
   // Combat related systems
   std::shared_ptr<ComboSystem> _comboSystem;
