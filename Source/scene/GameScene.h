@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_GAME_SCENE_H_
 #define VIGILANTE_GAME_SCENE_H_
 
@@ -22,6 +22,7 @@
 #include "ui/hud/ControlHints.h"
 #include "ui/hud/FloatingDamages.h"
 #include "ui/hud/Hud.h"
+#include "ui/hud/LocationInfo.h"
 #include "ui/hud/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
@@ -51,6 +52,7 @@ class GameScene : public ax::Scene, public Controllable {
 
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
+  inline LocationInfo* getLocationInfo() const { return _locationInfo.get(); }
   inline Console* getConsole() const { return _console.get(); }
   inline PauseMenu* getPauseMenu() const { return _pauseMenu.get(); }
   inline WindowManager* getWindowManager() const { return _windowManager.get(); }
@@ -77,6 +79,7 @@ class GameScene : public ax::Scene, public Controllable {
   std::unique_ptr<HotkeyManager> _hotkeyManager;
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
+  std::unique_ptr<LocationInfo> _locationInfo;
   std::unique_ptr<Console> _console;
   std::unique_ptr<Notifications> _notifications;
   std::unique_ptr<QuestHints> _questHints;

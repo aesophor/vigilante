@@ -63,6 +63,7 @@ inline constexpr int kFloatingDamage = 80;
 inline constexpr int kNotification = 82;
 inline constexpr int kQuestHint = 84;
 inline constexpr int kHud = 86;
+inline constexpr int kLocationInfo = 87;
 inline constexpr int kWindowBottom = 88;
 inline constexpr int kWindowTop = 92;
 inline constexpr int kDialogue = 94;

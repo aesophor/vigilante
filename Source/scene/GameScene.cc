@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameScene.h"
 
 #include "Assets.h"
@@ -91,6 +91,11 @@ bool GameScene::init() {
   _hud = std::make_unique<Hud>();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_hud->getLayer(), graphical_layers::kHud);
+
+  // Initialize LocationInfo.
+  _locationInfo = std::make_unique<LocationInfo>();
+  _locationInfo->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_locationInfo->getLayer(), graphical_layers::kLocationInfo);
 
   // Initialize console.
   _console = std::make_unique<Console>();

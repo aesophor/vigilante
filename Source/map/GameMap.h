@@ -151,6 +151,7 @@ class GameMap final {
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
   inline const std::string& getBgmFilePath() const { return _bgmFilePath; }
+  inline const std::string& getLocationName() const { return _locationName; }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
@@ -176,6 +177,7 @@ class GameMap final {
   ax::TMXTiledMap* _tmxTiledMap{};
   std::string _tmxTiledMapFilePath;
   std::string _bgmFilePath;
+  std::string _locationName;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;

@@ -67,10 +67,8 @@ void GameMap::update(const float delta) {
 }
 
 void GameMap::createObjects() {
-  list<b2Body*> bodies;
-
   // Create box2d objects from layers.
-  bodies = createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
+  list<b2Body*> bodies = createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
   _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
 
   bodies = createPolylines("Wall", category_bits::kWall, true, kWallFriction);
@@ -85,6 +83,11 @@ void GameMap::createObjects() {
 
   bodies = createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  const Value locationNameProperty = _tmxTiledMap->getProperty("locationName");
+  if (!locationNameProperty.isNull()) {
+    _locationName = locationNameProperty.asString();
+  }
 
   createTriggers();
   createPortals();
