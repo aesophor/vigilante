@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "GameMap.h"
 
 #include <algorithm>
@@ -122,6 +122,40 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
   return item;
 }
 
+bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string& bgmFilePath) {
+  auto it = std::find_if(_dynamicActors.begin(), _dynamicActors.end(), [](const shared_ptr<DynamicActor>& actor) {
+    return std::dynamic_pointer_cast<Character>(actor);
+  });
+  if (it == _dynamicActors.end()) {
+    VGLOG(LOG_ERR, "Failed to find [%s] in the current game map.", targetNpcJsonFilePath.c_str());
+    return false;
+  }
+
+  shared_ptr<Character> target = std::static_pointer_cast<Character>(*it);
+  if (target->isSetToKill() || target->isKilled()) {
+    VGLOG(LOG_ERR, "Failed to begin boss fight [%s], target is already killed.", targetNpcJsonFilePath.c_str());
+    return false;
+  }
+
+  target->addOnKilledCallback([this]() { onBossFightEnd(); });
+
+  Audio::the().playBgm(bgmFilePath);
+
+  for (const auto& trigger : _triggers) {
+    trigger->onBossFightBegin();
+  }
+
+  return true;
+}
+
+void GameMap::onBossFightEnd() {
+  Audio::the().playBgm(_bgmFilePath);
+
+  for (const auto& trigger : _triggers) {
+    trigger->onBossFightEnd();
+  }
+}
+
 float GameMap::getWidth() const {
   return _tmxTiledMap->getMapSize().width * _tmxTiledMap->getTileSize().width;
 }
@@ -223,6 +257,7 @@ void GameMap::createTriggers() {
     vector<string> cmds = string_util::split(valMap.at("cmds").asString(), ';');
     bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
     bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
+    bool shouldBlockWhileInBossFight = valMap.at("shouldBlockWhileInBossFight").asBool();
     int damage = valMap.at("damage").asInt();
 
     B2BodyBuilder bodyBuilder(_world);
@@ -231,7 +266,7 @@ void GameMap::createTriggers() {
       .buildBody();
 
     auto trigger = std::make_unique<GameMap::Trigger>(
-        cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer, damage, body);
+        cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer, shouldBlockWhileInBossFight, damage, body);
     auto trigger_raw_ptr = trigger.get();
     _triggers.emplace_back(std::move(trigger));
 
@@ -368,11 +403,13 @@ void GameMap::createParallaxBackground() {
 GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
+                          const bool shouldBlockWhileInBossFight,
                           const int damage,
                           b2Body* body)
     : _cmds{cmds},
       _canBeTriggeredOnlyOnce{canBeTriggeredOnlyOnce},
       _canBeTriggeredOnlyByPlayer{canBeTriggeredOnlyByPlayer},
+      _shouldBlockWhileInBossFight{shouldBlockWhileInBossFight},
       _damage{damage},
       _body{body} {}
 
@@ -394,6 +431,22 @@ void GameMap::Trigger::onInteract(Character* user) {
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : _cmds) {
     console->executeCmd(cmd);
+  }
+}
+
+void GameMap::Trigger::onBossFightBegin() {
+  if (_shouldBlockWhileInBossFight) {
+    for (b2Fixture* fixture = _body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+      fixture->SetSensor(false);
+    }
+  }
+}
+
+void GameMap::Trigger::onBossFightEnd() {
+  if (_shouldBlockWhileInBossFight) {
+    for (b2Fixture* fixture = _body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+      fixture->SetSensor(true);
+    }
   }
 }
 

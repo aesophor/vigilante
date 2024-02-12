@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_GAME_MAP_H_
 #define VIGILANTE_GAME_MAP_H_
 
@@ -46,6 +46,7 @@ class GameMap final {
     Trigger(const std::vector<std::string>& cmds,
             const bool canBeTriggeredOnlyOnce,
             const bool canBeTriggeredOnlyByPlayer,
+            const bool shouldBlockWhileInBossFight,
             const int damage,
             b2Body* body);
     virtual ~Trigger();
@@ -57,11 +58,15 @@ class GameMap final {
     virtual void showHintUI() override {}  // Interactable
     virtual void hideHintUI() override {}  // Interactable
 
+    void onBossFightBegin();
+    void onBossFightEnd();
+
     inline bool canBeTriggeredOnlyOnce() const { return _canBeTriggeredOnlyOnce; }
     inline bool canBeTriggeredOnlyByPlayer() const { return _canBeTriggeredOnlyByPlayer; }
     inline int getDamage() const { return _damage; }
     inline bool hasTriggered() const { return _hasTriggered; }
     inline void setTriggered(bool triggered) { _hasTriggered = triggered; }
+    inline b2Body* getBody() const { return _body; }
 
    protected:
     virtual void createHintBubbleFx() override {}  // Interactable
@@ -70,6 +75,7 @@ class GameMap final {
     std::vector<std::string> _cmds;
     bool _canBeTriggeredOnlyOnce{};
     bool _canBeTriggeredOnlyByPlayer{};
+    bool _shouldBlockWhileInBossFight{};
     int _damage{};
 
     bool _hasTriggered{};
@@ -138,6 +144,9 @@ class GameMap final {
 
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
+
+  bool onBossFightBegin(const std::string& targetNpcJsonFilePath, const std::string& bgmFilePath);
+  void onBossFightEnd();
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }

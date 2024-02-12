@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "Audio.h"
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
@@ -355,27 +354,15 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
     return;
   }
 
-  rapidjson::Document json = json_util::loadFromFile(args[1]);
-  const string targetJsonFilePath = json["targetJsonFilePath"].GetString();
-  const string bgm = json["bgmFilePath"].GetString();
+  const rapidjson::Document json = json_util::loadFromFile(args[1]);
+  const string targetNpcJsonFilePath = json["targetNpcJsonFilePath"].GetString();
+  const string bgmFilePath = json["bgmFilePath"].GetString();
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  shared_ptr<Character> targetCharacter;
-  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
-    auto c = std::dynamic_pointer_cast<Character>(actor);
-    if (!c || c->getCharacterProfile().jsonFilePath != targetJsonFilePath) {
-      continue;
-    }
-    targetCharacter = std::move(c);
-  }
-
-  if (!targetCharacter) {
-    setError(string_util::format("Failed to find [%s] in the current game map.", targetJsonFilePath.c_str()));
+  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath, bgmFilePath)) {
+    setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;
   }
-  Audio::the().playBgm(bgm);
-
-  targetCharacter->addOnKilledCallback([this, args]() { endBossFight(args); });
 
   setSuccess();
 }
@@ -387,7 +374,7 @@ void CommandHandler::endBossFight(const vector<string>& args) {
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  Audio::the().playBgm(gmMgr->getGameMap()->getBgmFilePath());
+  gmMgr->getGameMap()->onBossFightEnd();
 
   setSuccess();
 }
