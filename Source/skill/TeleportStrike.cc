@@ -54,13 +54,13 @@ bool isTargetFacingAgainstFarEnoughFromWall(Character* target, const float minDi
 
 }  // namespace
 
-TeleportStrike::TeleportStrike(const string& jsonFileName, Character* user)
+TeleportStrike::TeleportStrike(const string& jsonFilePath, Character* user)
     : Skill{},
-      _skillProfile{jsonFileName},
+      _skillProfile{jsonFilePath},
       _user{user} {}
 
-void TeleportStrike::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile{jsonFileName};
+void TeleportStrike::import(const string& jsonFilePath) {
+  _skillProfile = Skill::Profile{jsonFilePath};
 }
 
 bool TeleportStrike::canActivate() {

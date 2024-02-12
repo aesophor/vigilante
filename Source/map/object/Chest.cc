@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Chest.h"
 
 #include "Assets.h"
@@ -27,16 +27,16 @@ constexpr auto kItemMaskBits = kGround | kPlatform | kWall;
 
 }  // namespace
 
-Chest::Chest(const string& tmxMapFileName,
+Chest::Chest(const string& tmxMapFilePath,
              const int chestId,
              const string& itemJsons)
     : DynamicActor{kChestNumAnimations, kChestNumFixtures},
-      _tmxMapFileName{tmxMapFileName},
+      _tmxMapFilePath{tmxMapFilePath},
       _chestId{chestId},
       _itemJsons{string_util::split(itemJsons)} {
   constexpr auto kType = GameMap::OpenableObjectType::CHEST;
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  _isOpened = gmMgr->isOpened(tmxMapFileName, kType, chestId);
+  _isOpened = gmMgr->isOpened(tmxMapFilePath, kType, chestId);
 }
 
 bool Chest::showOnMap(float x, float y) {
@@ -108,7 +108,7 @@ void Chest::onInteract(Character*) {
   }
 
   constexpr auto kType = GameMap::OpenableObjectType::CHEST;
-  gmMgr->setOpened(_tmxMapFileName, kType, _chestId, true);
+  gmMgr->setOpened(_tmxMapFilePath, kType, _chestId, true);
 
   Audio::the().playSfx(kSfxChestOpened);
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
 #define VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
 
@@ -11,20 +11,20 @@ namespace vigilante {
 class CollectItemObjective : public Quest::Objective {
  public:
   CollectItemObjective(const std::string& desc,
-                       const std::string& itemJsonFileName,
+                       const std::string& itemJsonFilePath,
                        int amount=1)
       : Quest::Objective{Quest::Objective::Type::COLLECT, desc},
-        _itemJsonFileName{itemJsonFileName},
+        _itemJsonFilePath{itemJsonFilePath},
         _amount{amount} {}
   virtual ~CollectItemObjective() = default;
 
   virtual bool isCompleted() const override;
 
-  inline const std::string& getItemJsonFileName() const { return _itemJsonFileName; }
+  inline const std::string& getItemJsonFilePath() const { return _itemJsonFilePath; }
   inline int getAmount() const { return _amount; }
 
  private:
-  const std::string _itemJsonFileName;
+  const std::string _itemJsonFilePath;
   const int _amount;
 };
 

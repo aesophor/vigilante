@@ -252,7 +252,7 @@ void CommandHandler::playerPartyMemberWait(const vector<string>&) {
     return;
   }
 
-  if (player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFileName)) {
+  if (player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFilePath)) {
     setError("This Npc is already waiting for player.");
     return;
   }
@@ -274,7 +274,7 @@ void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
     return;
   }
 
-  if (!player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFileName)) {
+  if (!player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFilePath)) {
     setError("This Npc is not waiting for player yet.");
     return;
   }
@@ -356,21 +356,21 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
   }
 
   rapidjson::Document json = json_util::loadFromFile(args[1]);
-  const string targetJsonFileName = json["target"].GetString();
-  const string bgm = json["bgm"].GetString();
+  const string targetJsonFilePath = json["targetJsonFilePath"].GetString();
+  const string bgm = json["bgmFilePath"].GetString();
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   shared_ptr<Character> targetCharacter;
   for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
     auto c = std::dynamic_pointer_cast<Character>(actor);
-    if (!c || c->getCharacterProfile().jsonFileName != targetJsonFileName) {
+    if (!c || c->getCharacterProfile().jsonFilePath != targetJsonFilePath) {
       continue;
     }
     targetCharacter = std::move(c);
   }
 
   if (!targetCharacter) {
-    setError(string_util::format("Failed to find [%s] in the current game map.", targetJsonFileName.c_str()));
+    setError(string_util::format("Failed to find [%s] in the current game map.", targetJsonFilePath.c_str()));
     return;
   }
   Audio::the().playBgm(bgm);
@@ -387,7 +387,7 @@ void CommandHandler::endBossFight(const vector<string>& args) {
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  Audio::the().playBgm(gmMgr->getGameMap()->getBgmFileName());
+  Audio::the().playBgm(gmMgr->getGameMap()->getBgmFilePath());
 
   setSuccess();
 }

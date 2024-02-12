@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueManager.h"
 
 using namespace std;
@@ -38,14 +38,14 @@ void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {
   _targetNpc->getDialogueTree().setCurrentNode(dialogue);
 }
 
-string DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFileName) {
-  auto it = _latestNpcDialogueTree.find(npcJsonFileName);
+string DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFilePath) {
+  auto it = _latestNpcDialogueTree.find(npcJsonFilePath);
   return (it != _latestNpcDialogueTree.end()) ? it->second : "";
 }
 
-void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFileName,
-                                               const string& dialogueTreeJsonFileName) {
-  _latestNpcDialogueTree[npcJsonFileName] = dialogueTreeJsonFileName;
+void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFilePath,
+                                               const string& dialogueTreeJsonFilePath) {
+  _latestNpcDialogueTree[npcJsonFilePath] = dialogueTreeJsonFilePath;
 }
 
 }  // namespace vigilante

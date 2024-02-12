@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_IMPORTABLE_H_
 #define VIGILANTE_IMPORTABLE_H_
 
@@ -10,7 +10,7 @@ class Importable {
  public:
   virtual ~Importable() = default;
 
-  virtual void import(const std::string& jsonFileName) = 0;
+  virtual void import(const std::string& jsonFilePath) = 0;
 };
 
 }  // namespace vigilante

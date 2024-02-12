@@ -46,7 +46,7 @@ rapidjson::Value GameState::serializeGameMapState() const {
   pair<float, float> playerPosPair{playerPos.x, playerPos.y};
 
   return json_util::serialize(_allocator,
-                              make_pair("tmxTiledMapFileName", gameMap->getTmxTiledMapFileName()),
+                              make_pair("tmxTiledMapFilePath", gameMap->getTmxTiledMapFilePath()),
                               make_pair("npcSpawningBlacklist", gmMgr->_npcSpawningBlacklist),
                               make_pair("allPortalStates", gmMgr->_allOpenableObjectStates),
                               make_pair("playerPos", playerPosPair));
@@ -56,23 +56,23 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
 
-  string tmxTiledMapFileName;
+  string tmxTiledMapFilePath;
   pair<float, float> playerPos{0, 0};
 
   json_util::deserialize(obj,
-                         make_pair("tmxTiledMapFileName", &tmxTiledMapFileName),
+                         make_pair("tmxTiledMapFilePath", &tmxTiledMapFilePath),
                          make_pair("npcSpawningBlacklist", &gmMgr->_npcSpawningBlacklist),
                          make_pair("allPortalStates", &gmMgr->_allOpenableObjectStates),
                          make_pair("playerPos", &playerPos));
 
-  gmMgr->loadGameMap(tmxTiledMapFileName, [=]() {
+  gmMgr->loadGameMap(tmxTiledMapFilePath, [=]() {
     player->setPosition(playerPos.first, playerPos.second);
 
     const auto& playerParty = player->getParty();
     for (const auto ally : player->getAllies()) {
-      const string& jsonFileName = ally->getCharacterProfile().jsonFileName;
-      if (auto waitLoc = playerParty->getWaitingMemberLocationInfo(jsonFileName)) {
-        if (waitLoc->tmxMapFileName == tmxTiledMapFileName) {
+      const string& jsonFilePath = ally->getCharacterProfile().jsonFilePath;
+      if (auto waitLoc = playerParty->getWaitingMemberLocationInfo(jsonFilePath)) {
+        if (waitLoc->tmxMapFilePath == tmxTiledMapFilePath) {
           ally->showOnMap(waitLoc->x * kPpm, waitLoc->y * kPpm);
         }
       } else {
@@ -151,15 +151,15 @@ rapidjson::Value GameState::serializePlayerInventory() const {
   auto player = gmMgr->getPlayer();
 
   map<string, int> itemMapper;
-  for (const auto& [itemJsonFileName, item] : player->_items) {
-    itemMapper.insert(std::make_pair(itemJsonFileName, item->getAmount()));
+  for (const auto& [itemJsonFilePath, item] : player->_items) {
+    itemMapper.insert(std::make_pair(itemJsonFilePath, item->getAmount()));
   }
 
   vector<vector<string>> inventory(Item::Type::SIZE);
   for (int type = 0; type < Item::Type::SIZE; type++) {
     inventory[type].reserve(player->_inventory[type].size());
     for (const auto item : player->_inventory[type]) {
-      inventory[type].push_back(item->getItemProfile().jsonFileName);
+      inventory[type].push_back(item->getItemProfile().jsonFilePath);
     }
   }
 
@@ -168,7 +168,7 @@ rapidjson::Value GameState::serializePlayerInventory() const {
   for (int type = 0; type < Equipment::Type::SIZE; type++) {
     Equipment* equipment = player->_equipmentSlots[type];
     if (equipment) {
-      equipmentSlots.push_back(equipment->getItemProfile().jsonFileName);
+      equipmentSlots.push_back(equipment->getItemProfile().jsonFilePath);
     } else {
       equipmentSlots.push_back("");
     }
@@ -198,18 +198,18 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
   }
 
   player->_items.clear();
-  for (const auto& [itemJsonFileName, amount] : itemMapper) {
-    shared_ptr<Item> item = Item::create(itemJsonFileName);
+  for (const auto& [itemJsonFilePath, amount] : itemMapper) {
+    shared_ptr<Item> item = Item::create(itemJsonFilePath);
     item->setAmount(amount);
-    player->_items.insert(make_pair(itemJsonFileName, std::move(item)));
+    player->_items.insert(make_pair(itemJsonFilePath, std::move(item)));
   }
 
   for (int type = 0; type < Item::Type::SIZE; type++) {
     player->_inventory[type].clear();
-    for (const auto& itemJsonFileName : inventory[type]) {
-      auto it = player->_items.find(itemJsonFileName);
+    for (const auto& itemJsonFilePath : inventory[type]) {
+      auto it = player->_items.find(itemJsonFilePath);
       if (it == player->_items.end()) {
-        VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", itemJsonFileName.c_str());
+        VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", itemJsonFilePath.c_str());
         continue;
       }
       player->_inventory[type].insert(it->second.get());
@@ -217,20 +217,20 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
   }
 
   for (int type = 0; type < Equipment::Type::SIZE; type++) {
-    const auto& equipmentJsonFileName = equipmentSlots[type];
-    if (equipmentJsonFileName == "") {
+    const auto& equipmentJsonFilePath = equipmentSlots[type];
+    if (equipmentJsonFilePath == "") {
       player->_equipmentSlots[type] = nullptr;
       continue;
     }
 
-    auto it = player->_items.find(equipmentJsonFileName);
+    auto it = player->_items.find(equipmentJsonFilePath);
     if (it == player->_items.end()) {
-      VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", equipmentJsonFileName.c_str());
+      VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", equipmentJsonFilePath.c_str());
       continue;
     }
     auto equipment = dynamic_cast<Equipment*>(it->second.get());
     if (!equipment) {
-      VGLOG(LOG_ERR, "[%s] is not an equipment.", equipmentJsonFileName.c_str());
+      VGLOG(LOG_ERR, "[%s] is not an equipment.", equipmentJsonFilePath.c_str());
       continue;
     }
     player->_equipmentSlots[type] = equipment;
@@ -241,18 +241,18 @@ rapidjson::Value GameState::serializePlayerParty() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
 
-  list<string> alliesProfilesFileNames;
+  list<string> alliesProfilesFilePaths;
   for (const auto &member : player->getParty()->getMembers()) {
-    alliesProfilesFileNames.push_back(member->getCharacterProfile().jsonFileName);
+    alliesProfilesFilePaths.push_back(member->getCharacterProfile().jsonFilePath);
   }
   auto alliesJsonObject
-    = json_util::makeJsonObject(_allocator, alliesProfilesFileNames);
+    = json_util::makeJsonObject(_allocator, alliesProfilesFilePaths);
 
   vector<rapidjson::Value> waitingMembersLocationInfos;
-  for (const auto& [npcJsonFileName, locInfo] : player->getParty()->getWaitingMembersLocationInfos()) {
+  for (const auto& [npcJsonFilePath, locInfo] : player->getParty()->getWaitingMembersLocationInfos()) {
     auto obj = json_util::serialize(_allocator,
-                                    make_pair("npcJsonFileName", npcJsonFileName),
-                                    make_pair("tmxMapFileName", locInfo.tmxMapFileName),
+                                    make_pair("npcJsonFilePath", npcJsonFilePath),
+                                    make_pair("tmxMapFilePath", locInfo.tmxMapFilePath),
                                     make_pair("x", locInfo.x),
                                     make_pair("y", locInfo.y));
     waitingMembersLocationInfos.push_back(std::move(obj));
@@ -267,12 +267,12 @@ void GameState::deserializePlayerParty(const rapidjson::Value& obj) const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto playerParty = gmMgr->getPlayer()->getParty();
 
-  list<string> alliesProfilesFileNames;
-  json_util::deserialize(obj, make_pair("members", &alliesProfilesFileNames));
+  list<string> alliesProfilesFilePaths;
+  json_util::deserialize(obj, make_pair("members", &alliesProfilesFilePaths));
 
   playerParty->dismissAll(/*addToMap=*/false);
-  for (const auto& jsonFileName : alliesProfilesFileNames) {
-    playerParty->addMember(std::make_shared<Npc>(jsonFileName));
+  for (const auto& jsonFilePath : alliesProfilesFilePaths) {
+    playerParty->addMember(std::make_shared<Npc>(jsonFilePath));
   }
 
   list<rapidjson::Value> waitingMembersLocationInfo;
@@ -281,14 +281,14 @@ void GameState::deserializePlayerParty(const rapidjson::Value& obj) const {
 
   playerParty->_waitingMembersLocationInfos.clear();
   for (const auto& locInfo : waitingMembersLocationInfo) {
-    string npcJsonFileName;
+    string npcJsonFilePath;
     Party::WaitingLocationInfo info;
     json_util::deserialize(locInfo,
-        make_pair("npcJsonFileName", &npcJsonFileName),
-        make_pair("tmxMapFileName", &info.tmxMapFileName),
+        make_pair("npcJsonFilePath", &npcJsonFilePath),
+        make_pair("tmxMapFilePath", &info.tmxMapFilePath),
         make_pair("x", &info.x),
         make_pair("y", &info.y));
-    playerParty->_waitingMembersLocationInfos.insert(make_pair(npcJsonFileName, info));
+    playerParty->_waitingMembersLocationInfos.insert(make_pair(npcJsonFilePath, info));
   }
 }
 

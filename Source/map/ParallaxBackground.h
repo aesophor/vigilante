@@ -29,7 +29,7 @@ class InfiniteParallaxNode : public ax::Node {
   }
   virtual const ax::Vec2& getPosition() const { return _position; }
 
-  void addLayer(const std::string &fileName,
+  void addLayer(const std::string &filePath,
                 const int z,
                 const ax::Vec2& parallaxRatio,
                 const ax::Vec2& position,

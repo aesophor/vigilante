@@ -17,28 +17,28 @@ unordered_map<string, int> prices;
 
 namespace vigilante::item_price_table {
 
-void import(const string& tableFileName) {
-  ifstream fin{tableFileName};
+void import(const string& tableFilePath) {
+  ifstream fin{tableFilePath};
   if (!fin.is_open()) {
-    throw runtime_error("Failed to import item price table from: " + tableFileName);
+    throw runtime_error("Failed to import item price table from: " + tableFilePath);
   }
 
   VGLOG(LOG_INFO, "Loading item price table...");
   while (fin) {
-    string itemJsonFileName;
+    string itemJsonFilePath;
     int price;
-    fin >> itemJsonFileName >> price;
-    if (!itemJsonFileName.empty()) {
-      prices[itemJsonFileName] = price;
+    fin >> itemJsonFilePath >> price;
+    if (!itemJsonFilePath.empty()) {
+      prices[itemJsonFilePath] = price;
     }
   }
 }
 
 int getPrice(const Item* item) {
-  const string& itemJsonFileName = item->getItemProfile().jsonFileName;
-  auto it = prices.find(itemJsonFileName);
+  const string& itemJsonFilePath = item->getItemProfile().jsonFilePath;
+  auto it = prices.find(itemJsonFilePath);
   if (it == prices.end()) {
-    VGLOG(LOG_ERR, "Failed to find the price of [%s].", itemJsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to find the price of [%s].", itemJsonFilePath.c_str());
     return 0;
   }
 

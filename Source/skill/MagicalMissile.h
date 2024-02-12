@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_MAGICAL_MISSILE_H_
 #define VIGILANTE_MAGICAL_MISSILE_H_
 
@@ -24,7 +24,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
     SIZE
   };
 
-  MagicalMissile(const std::string& jsonFileName, Character* user, const bool onGround);
+  MagicalMissile(const std::string& jsonFilePath, Character* user, const bool onGround);
   virtual ~MagicalMissile() = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
@@ -34,7 +34,7 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
   virtual int getDamage() const override;  // Projectile
   virtual void onHit(Character* target) override;  // Projectile
 
-  virtual void import(const std::string& jsonFileName) override;  // Skill
+  virtual void import(const std::string& jsonFilePath) override;  // Skill
   virtual ax::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; }  // Skill
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; }  // Skill
   virtual bool canActivate() override;  // Skill

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Quest.h"
 
 #include <algorithm>
@@ -17,8 +17,8 @@ using namespace std;
 
 namespace vigilante {
 
-void Quest::import(const string& jsonFileName) {
-  _questProfile = Quest::Profile(jsonFileName);
+void Quest::import(const string& jsonFilePath) {
+  _questProfile = Quest::Profile(jsonFilePath);
 }
 
 void Quest::advanceStage() {
@@ -59,7 +59,7 @@ string Quest::Stage::getHint() const {
       auto o = dynamic_cast<CollectItemObjective*>(objective.get());
       // FIXME: show the actual amount of items collected
       return string_util::format("Collect: %s (%d/%d)",
-          o->getItemJsonFileName().c_str(), 0, o->getAmount());
+          o->getItemJsonFilePath().c_str(), 0, o->getAmount());
     }
     /*
     case Quest::Objective::Type::ESCORT:
@@ -69,15 +69,15 @@ string Quest::Stage::getHint() const {
     */
     case Quest::Objective::Type::INTERACT_WITH: {
       auto o = dynamic_cast<InteractWithTargetObjective*>(objective.get());
-      return string_util::format("Talk to %s", o->getTargetProfileJsonFileName().c_str());
+      return string_util::format("Talk to %s", o->getTargetProfileJsonFilePath().c_str());
     }
     default:
       return "";
   }
 }
 
-Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Quest::Profile::Profile(const string& jsonFilePath) : jsonFilePath{jsonFilePath} {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
   title = json["title"].GetString();
   desc = json["desc"].GetString();
 
@@ -91,15 +91,15 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
         break;
       }
       case Quest::Objective::Type::KILL: {
-        const string characterName = stageJson["objective"]["characterName"].GetString();
+        const string characterName = stageJson["objective"]["targetJsonFilePath"].GetString();
         const int targetAmount = stageJson["objective"]["targetAmount"].GetInt();
         stage.objective = std::make_unique<KillTargetObjective>(objectiveDesc, characterName, targetAmount);
         break;
       }
       case Quest::Objective::Type::COLLECT: {
-        const string itemJsonFileName = stageJson["objective"]["itemJsonFileName"].GetString();
+        const string itemJsonFilePath = stageJson["objective"]["itemJsonFilePath"].GetString();
         const int amount = stageJson["objective"]["amount"].GetInt();
-        stage.objective = std::make_unique<CollectItemObjective>(objectiveDesc, itemJsonFileName, amount);
+        stage.objective = std::make_unique<CollectItemObjective>(objectiveDesc, itemJsonFilePath, amount);
         break;
       }
       case Quest::Objective::Type::ESCORT: {
@@ -109,8 +109,8 @@ Quest::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName)
         break;
       }
       case Quest::Objective::Type::INTERACT_WITH: {
-        const string targetJsonFileName = stageJson["objective"]["targetJsonFileName"].GetString();
-        stage.objective = std::make_unique<InteractWithTargetObjective>(objectiveDesc, targetJsonFileName);
+        const string targetJsonFilePath = stageJson["objective"]["targetJsonFilePath"].GetString();
+        stage.objective = std::make_unique<InteractWithTargetObjective>(objectiveDesc, targetJsonFilePath);
         break;
       }
       default: {

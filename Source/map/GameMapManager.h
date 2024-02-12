@@ -27,30 +27,30 @@ class GameMapManager final {
 
   void update(const float delta);
 
-  // @param tmxMapFileName: the target .tmx file to load
+  // @param tmxMapFilePath: the target .tmx file to load
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
-  void loadGameMap(const std::string& tmxMapFileName,
+  void loadGameMap(const std::string& tmxMapFilePath,
                    const std::function<void ()>& afterLoadingGameMap=[]() {});
   void destroyGameMap();
   bool rayCast(const b2Vec2& src, const b2Vec2& dst, const short categoryBitsToStop,
                const bool shouldDrawLine = false) const;
 
-  bool isNpcAllowedToSpawn(const std::string& jsonFileName) const;
-  void setNpcAllowedToSpawn(const std::string& jsonFileName, bool canSpawn);
+  bool isNpcAllowedToSpawn(const std::string& jsonFilePath) const;
+  void setNpcAllowedToSpawn(const std::string& jsonFilePath, bool canSpawn);
 
   inline bool areNpcsAllowedToAct() const { return _areNpcsAllowedToAct; }
   inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
     _areNpcsAllowedToAct = npcsAllowedToAct;
   }
 
-  bool hasSavedOpenedClosedState(const std::string& tmxMapFileName,
+  bool hasSavedOpenedClosedState(const std::string& tmxMapFilePath,
                                  const GameMap::OpenableObjectType type,
                                  const int targetObjectId) const;
-  bool isOpened(const std::string& tmxMapFileName,
+  bool isOpened(const std::string& tmxMapFilePath,
                 const GameMap::OpenableObjectType type,
                 const int targetPortalId) const;
-  void setOpened(const std::string& tmxMapFileName,
+  void setOpened(const std::string& tmxMapFilePath,
                  const GameMap::OpenableObjectType type,
                  const int targetPortalId,
                  const bool locked);
@@ -62,8 +62,8 @@ class GameMapManager final {
   inline Player* getPlayer() const { return _player.get(); }
 
  private:
-  GameMap* doLoadGameMap(const std::string& tmxMapFileName);
-  std::string getOpenableObjectQueryKey(const std::string& tmxMapFileName,
+  GameMap* doLoadGameMap(const std::string& tmxMapFilePath);
+  std::string getOpenableObjectQueryKey(const std::string& tmxMapFilePath,
                                         const GameMap::OpenableObjectType type,
                                         const int targetObjectId) const;
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "TradeListView.h"
 
 #include <memory>
@@ -177,7 +177,7 @@ void TradeListView::doTrade(Character* buyer,
   }
 
   // Transfer items
-  buyer->addItem(Item::create(item->getItemProfile().jsonFileName), amount);
+  buyer->addItem(Item::create(item->getItemProfile().jsonFilePath), amount);
   seller->removeItem(item, amount);
 }
 

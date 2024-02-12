@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Key.h"
 
 #include "util/JsonUtil.h"
@@ -7,14 +7,14 @@ using namespace std;
 
 namespace vigilante {
 
-Key::Key(const string& jsonFileName)
-    : MiscItem{jsonFileName},
-      _keyProfile{jsonFileName} {}
+Key::Key(const string& jsonFilePath)
+    : MiscItem{jsonFilePath},
+      _keyProfile{jsonFilePath} {}
 
-Key::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Key::Profile::Profile(const string& jsonFilePath) {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
-  targetTmxFileName = json["targetTmxMapFileName"].GetString();
+  targetTmxFilePath = json["targetTmxMapFilePath"].GetString();
   targetPortalId = json["targetPortalId"].GetInt();
 }
 

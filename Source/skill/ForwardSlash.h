@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_FORWARD_SLASH_H_
 #define VIGILANTE_FORWARD_SLASH_H_
 
@@ -12,10 +12,10 @@ class Character;
 
 class ForwardSlash : public Skill {
  public:
-  ForwardSlash(const std::string& jsonFileName, Character* user);
+  ForwardSlash(const std::string& jsonFilePath, Character* user);
   virtual ~ForwardSlash() = default;
 
-  virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual void import(const std::string& jsonFilePath) override; // Skill
   virtual ax::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; } // Skill
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; } // Skill
   virtual bool canActivate() override; // Skill

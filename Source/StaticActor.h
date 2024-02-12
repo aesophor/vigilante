@@ -68,7 +68,7 @@ class StaticActor {
   // Example: Texture/fx/dust/spritesheet.png
   //          |_____________| |_____________|
   //           textureResDir
-  static std::string getSpritesheetFileName(const std::string& textureResDir);
+  static std::string getSpritesheetFilePath(const std::string& textureResDir);
 
  protected:
   explicit StaticActor(const size_t numAnimations = 1)

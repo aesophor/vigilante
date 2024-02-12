@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_AUDIO_H_
 #define VIGILANTE_AUDIO_H_
 
@@ -10,8 +10,8 @@ class Audio {
  public:
   static Audio& the();
 
-  void playSfx(const std::string& filename);
-  void playBgm(const std::string& filename);
+  void playSfx(const std::string& filePath);
+  void playBgm(const std::string& filePath);
   void stopBgm();
 
  private:

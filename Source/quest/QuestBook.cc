@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "QuestBook.h"
 
 #include <algorithm>
@@ -18,10 +18,10 @@ using namespace std;
 
 namespace vigilante {
 
-QuestBook::QuestBook(const string& questsListFileName) {
-  ifstream fin{questsListFileName};
+QuestBook::QuestBook(const string& questsListFilePath) {
+  ifstream fin{questsListFilePath};
   if (!fin.is_open()) {
-    throw runtime_error("Failed to open quest list: " + questsListFileName);
+    throw runtime_error("Failed to open quest list: " + questsListFilePath);
   }
 
   string line;
@@ -61,14 +61,14 @@ bool QuestBook::startQuest(Quest* quest) {
   // If the quest is already completed or is already in progress, return at once.
   if (quest->isCompleted()) {
     VGLOG(LOG_ERR, "Failed to start quest [%s], quest already completed.",
-                   quest->getQuestProfile().jsonFileName.c_str());
+                   quest->getQuestProfile().jsonFilePath.c_str());
     return false;
   }
 
   const auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
   if (it != _inProgressQuests.end()) {
     VGLOG(LOG_ERR, "Failed to start quest [%s], quest has already started.",
-                   quest->getQuestProfile().jsonFileName.c_str());
+                   quest->getQuestProfile().jsonFilePath.c_str());
     return false;
   }
 
@@ -87,13 +87,13 @@ bool QuestBook::setStage(Quest* quest, const int stageIdx) {
   auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
   if (it == _inProgressQuests.end()) {
     VGLOG(LOG_ERR, "Failed to set stage of quest [%s], quest has not started.",
-                   quest->getQuestProfile().jsonFileName.c_str());
+                   quest->getQuestProfile().jsonFilePath.c_str());
     return false;
   }
 
   if (stageIdx <= quest->getCurrentStageIdx()) {
     VGLOG(LOG_ERR, "Skipped setting stage of quest [%s], current stage [%d], new stage [%d].",
-                   quest->getQuestProfile().jsonFileName.c_str(), quest->getCurrentStageIdx(), stageIdx);
+                   quest->getQuestProfile().jsonFilePath.c_str(), quest->getCurrentStageIdx(), stageIdx);
     return true;
   }
 
@@ -119,7 +119,7 @@ bool QuestBook::markCompleted(Quest* quest) {
   auto it = std::find(_inProgressQuests.begin(), _inProgressQuests.end(), quest);
   if (it == _inProgressQuests.end()) {
     VGLOG(LOG_ERR, "Failed to mark quest [%s] as completed, quest has not started.",
-                   quest->getQuestProfile().jsonFileName.c_str());
+                   quest->getQuestProfile().jsonFilePath.c_str());
     return false;
   }
 
@@ -132,40 +132,40 @@ bool QuestBook::markCompleted(Quest* quest) {
   return true;
 }
 
-bool QuestBook::unlockQuest(const string& questJsonFileName) {
-  auto it = _questMapper.find(questJsonFileName);
+bool QuestBook::unlockQuest(const string& questJsonFilePath) {
+  auto it = _questMapper.find(questJsonFilePath);
   if (it == _questMapper.end()) {
-    VGLOG(LOG_ERR, "Failed to unlock quest [%s]", questJsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to unlock quest [%s]", questJsonFilePath.c_str());
     return false;
   }
 
   return unlockQuest(it->second.get());
 }
 
-bool QuestBook::startQuest(const string& questJsonFileName) {
-  auto it = _questMapper.find(questJsonFileName);
+bool QuestBook::startQuest(const string& questJsonFilePath) {
+  auto it = _questMapper.find(questJsonFilePath);
   if (it == _questMapper.end()) {
-    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFilePath.c_str());
     return false;
   }
 
   return startQuest(it->second.get());
 }
 
-bool QuestBook::setStage(const string& questJsonFileName, const int stageIdx) {
-  auto it = _questMapper.find(questJsonFileName);
+bool QuestBook::setStage(const string& questJsonFilePath, const int stageIdx) {
+  auto it = _questMapper.find(questJsonFilePath);
   if (it == _questMapper.end()) {
-    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to start quest [%s]", questJsonFilePath.c_str());
     return false;
   }
 
   return setStage(it->second.get(), stageIdx);
 }
 
-bool QuestBook::markCompleted(const string& questJsonFileName) {
-  auto it = _questMapper.find(questJsonFileName);
+bool QuestBook::markCompleted(const string& questJsonFilePath) {
+  auto it = _questMapper.find(questJsonFilePath);
   if (it == _questMapper.end()) {
-    VGLOG(LOG_ERR, "Failed to mark quest [%s] as completed", questJsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to mark quest [%s] as completed", questJsonFilePath.c_str());
     return false;
   }
 

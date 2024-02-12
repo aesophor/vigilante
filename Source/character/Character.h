@@ -82,10 +82,10 @@ class Character : public DynamicActor, public Importable {
 
   struct Profile final {
     Profile() = default;
-    explicit Profile(const std::string& jsonFileName);
-    void loadSpritesheetInfo(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
+    void loadSpritesheetInfo(const std::string& jsonFilePath);
 
-    std::string jsonFileName;
+    std::string jsonFilePath;
     std::string textureResDir;
     float spriteOffsetX;
     float spriteOffsetY;
@@ -93,7 +93,7 @@ class Character : public DynamicActor, public Importable {
     float spriteScaleY;
     std::array<float, Character::State::STATE_SIZE> frameIntervals;
     std::vector<float> extraAttackFrameIntervals;
-    std::array<std::string, Character::Sfx::SFX_SIZE> sfxFileNames;
+    std::array<std::string, Character::Sfx::SFX_SIZE> sfxFilePaths;
 
     std::string name;
     int level;
@@ -142,8 +142,8 @@ class Character : public DynamicActor, public Importable {
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual bool removeFromMap() override;  // DynamicActor
   virtual void update(const float delta) override;  // DynamicActor
-  virtual void import(const std::string& jsonFileName) override;  // Importable
-  virtual void replaceSpritesheet(const std::string& jsonFileName);
+  virtual void import(const std::string& jsonFilePath) override;  // Importable
+  virtual void replaceSpritesheet(const std::string& jsonFilePath);
 
   virtual void onSetToKill();
   virtual void onKilled();
@@ -262,7 +262,7 @@ class Character : public DynamicActor, public Importable {
 
   inline const Inventory& getInventory() const { return _inventory; }
   inline const EquipmentSlots& getEquipmentSlots() const { return _equipmentSlots; }
-  int getItemAmount(const std::string& itemJsonFileName) const;
+  int getItemAmount(const std::string& itemJsonFilePath) const;
 
   inline GameMap::Portal* getPortal() const { return _portal; }
   inline void setPortal(GameMap::Portal* portal) { _portal = portal; }
@@ -336,7 +336,7 @@ class Character : public DynamicActor, public Importable {
            state == State::ATTACKING_UPWARD;
   }
 
-  explicit Character(const std::string& jsonFileName);
+  explicit Character(const std::string& jsonFilePath);
 
   virtual void regenHealth(int deltaHealth);
   virtual void regenMagicka(int deltaMagicka);
@@ -377,8 +377,8 @@ class Character : public DynamicActor, public Importable {
   Character::State determineAttackState() const;
   void maybeOverrideCurrentStateWithAttackingMidairState();
   void maybeOverrideCurrentStateWithStopRunningState();
-  const std::string& getSfxFileName(const Character::Sfx sfx) const {
-    return _characterProfile.sfxFileNames[sfx];
+  const std::string& getSfxFilePath(const Character::Sfx sfx) const {
+    return _characterProfile.sfxFilePaths[sfx];
   }
 
   Item* getExistingItemObj(Item* item) const;

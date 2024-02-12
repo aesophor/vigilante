@@ -14,10 +14,10 @@ using namespace std;
 
 namespace vigilante::json_util {
 
-rapidjson::Document loadFromFile(const fs::path& jsonFileName) {
-  ifstream ifs(jsonFileName);
+rapidjson::Document loadFromFile(const fs::path& jsonFilePath) {
+  ifstream ifs(jsonFilePath);
   if (!ifs.is_open()) {
-    VGLOG(LOG_ERR, "Failed to load json: [%s].", jsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to load json: [%s].", jsonFilePath.c_str());
     return {};
   }
 
@@ -27,10 +27,10 @@ rapidjson::Document loadFromFile(const fs::path& jsonFileName) {
   return doc;
 }
 
-void saveToFile(const fs::path& jsonFileName, const rapidjson::Document& json) {
-  ofstream ofs(jsonFileName);
+void saveToFile(const fs::path& jsonFilePath, const rapidjson::Document& json) {
+  ofstream ofs(jsonFilePath);
   if (!ofs.is_open()) {
-    VGLOG(LOG_ERR, "Failed to open json: [%s].", jsonFileName.c_str());
+    VGLOG(LOG_ERR, "Failed to open json: [%s].", jsonFilePath.c_str());
     return;
   }
 

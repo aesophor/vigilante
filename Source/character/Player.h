@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_PLAYER_H_
 #define VIGILANTE_PLAYER_H_
 
@@ -18,7 +18,7 @@ namespace vigilante {
 
 class Player : public Character, public Controllable {
  public:
-  explicit Player(const std::string& jsonFileName);
+  explicit Player(const std::string& jsonFilePath);
   virtual ~Player() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character

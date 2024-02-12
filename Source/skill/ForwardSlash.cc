@@ -15,13 +15,13 @@ USING_NS_AX;
 
 namespace vigilante {
 
-ForwardSlash::ForwardSlash(const string& jsonFileName, Character* user)
+ForwardSlash::ForwardSlash(const string& jsonFilePath, Character* user)
     : Skill{},
-      _skillProfile{jsonFileName},
+      _skillProfile{jsonFilePath},
       _user{user} {}
 
-void ForwardSlash::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile{jsonFileName};
+void ForwardSlash::import(const string& jsonFilePath) {
+  _skillProfile = Skill::Profile{jsonFilePath};
 }
 
 bool ForwardSlash::canActivate() {

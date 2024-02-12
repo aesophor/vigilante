@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "StaticActor.h"
 
 #include <filesystem>
@@ -108,7 +108,7 @@ string StaticActor::getLastDirName(const string& directory) {
   return directory.substr(directory.find_last_of('/') + 1);
 }
 
-string StaticActor::getSpritesheetFileName(const string& textureResDir) {
+string StaticActor::getSpritesheetFilePath(const string& textureResDir) {
   return textureResDir + "/spritesheet.png";
 }
 

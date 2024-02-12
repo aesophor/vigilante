@@ -15,8 +15,8 @@ class Npc;
 
 class DialogueTree : public Importable {
  public:
-  DialogueTree(const std::string& jsonFileName, Npc* owner) : _owner{owner} {
-    import(jsonFileName);
+  DialogueTree(const std::string& jsonFilePath, Npc* owner) : _owner{owner} {
+    import(jsonFilePath);
   }
   DialogueTree(const DialogueTree&) = delete;
   DialogueTree& operator=(const DialogueTree&) = delete;
@@ -57,7 +57,7 @@ class DialogueTree : public Importable {
   };
 
 
-  virtual void import(const std::string& jsonFileName) override;  // Importable
+  virtual void import(const std::string& jsonFilePath) override;  // Importable
 
   DialogueTree::Node* getNode(const std::string& nodeName) const;
 

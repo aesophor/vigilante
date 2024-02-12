@@ -14,13 +14,13 @@ USING_NS_AX;
 
 namespace vigilante {
 
-BatForm::BatForm(const string& jsonFileName, Character* user)
+BatForm::BatForm(const string& jsonFilePath, Character* user)
     : Skill{},
-      _skillProfile{jsonFileName},
+      _skillProfile{jsonFilePath},
       _user{user} {}
 
-void BatForm::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile{jsonFileName};
+void BatForm::import(const string& jsonFilePath) {
+  _skillProfile = Skill::Profile{jsonFilePath};
 }
 
 bool BatForm::canActivate() {

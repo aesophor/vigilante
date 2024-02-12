@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "ParallaxBackground.h"
 
 #include "scene/SceneManager.h"
@@ -14,26 +14,26 @@ bool InfiniteParallaxNode::init() {
   return true;
 }
 
-void InfiniteParallaxNode::addLayer(const string &fileName,
+void InfiniteParallaxNode::addLayer(const string &filePath,
                                     const int z,
                                     const Vec2& parallaxRatio,
                                     const Vec2& position,
                                     const Vec2& scale) {
-  auto spriteA = Sprite::create(fileName);
+  auto spriteA = Sprite::create(filePath);
   spriteA->setLocalZOrder(z);
   spriteA->setPosition(position);
   spriteA->setScale(scale.width, scale.height);
   spriteA->getTexture()->setAliasTexParameters();
   addChild(spriteA);
 
-  auto spriteB = Sprite::create(fileName);
+  auto spriteB = Sprite::create(filePath);
   spriteB->setLocalZOrder(z);
   spriteB->setPosition(position);
   spriteB->setScale(scale.width, scale.height);
   spriteB->getTexture()->setAliasTexParameters();
   addChild(spriteB);
 
-  _layerData[fileName] = ParallaxLayerData{
+  _layerData[filePath] = ParallaxLayerData{
     .ratio = parallaxRatio,
     .position = position,
     .scale = scale,

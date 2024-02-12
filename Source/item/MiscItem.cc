@@ -1,10 +1,10 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "MiscItem.h"
 
 using namespace std;
 
 namespace vigilante {
 
-MiscItem::MiscItem(const string& jsonFileName) : Item{jsonFileName} {}
+MiscItem::MiscItem(const string& jsonFilePath) : Item{jsonFilePath} {}
 
 }  // namespace vigilante

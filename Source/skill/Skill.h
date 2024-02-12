@@ -26,10 +26,10 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
   };
 
   struct Profile {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
     virtual ~Profile() = default;
 
-    std::string jsonFileName;
+    std::string jsonFilePath;
     Skill::Type skillType;
 
     std::string characterFramesName;
@@ -64,10 +64,10 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
 
   // Create a skill by automatically deducing its concrete type
   // based on the json passed in.
-  static std::shared_ptr<Skill> create(const std::string& jsonFileName, Character* user);
+  static std::shared_ptr<Skill> create(const std::string& jsonFilePath, Character* user);
 
   virtual ~Skill() = default;
-  virtual void import(const std::string& jsonFileName) = 0;  // Importable
+  virtual void import(const std::string& jsonFilePath) = 0;  // Importable
 
   virtual ax::EventKeyboard::KeyCode getHotkey() const = 0;  // Keybindable
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) = 0;  // Keybindable

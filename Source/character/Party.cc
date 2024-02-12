@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Party.h"
 
 #include <box2d/box2d.h>
@@ -14,18 +14,15 @@ using namespace std;
 
 namespace vigilante {
 
-Character* Party::getMember(const string& characterJsonFileName) const {
-  auto it = std::find_if(_members.begin(),
-                         _members.end(),
-                         [&characterJsonFileName](const shared_ptr<Character>& c) {
-                             return c->getCharacterProfile().jsonFileName
-                                 == characterJsonFileName;
-                         });
+Character* Party::getMember(const string& characterJsonFilePath) const {
+  auto it = std::find_if(_members.begin(), _members.end(), [&characterJsonFilePath](const shared_ptr<Character>& c) {
+    return c->getCharacterProfile().jsonFilePath == characterJsonFilePath;
+  });
   return (it != _members.end()) ? it->get() : nullptr;
 }
 
-bool Party::hasMember(const string& characterJsonFileName) const {
-  return getMember(characterJsonFileName) != nullptr;
+bool Party::hasMember(const string& characterJsonFilePath) const {
+  return getMember(characterJsonFilePath) != nullptr;
 }
 
 void Party::recruit(Character* targetCharacter) {
@@ -45,7 +42,7 @@ void Party::recruit(Character* targetCharacter) {
   }
 
   if (!targetNpc->getNpcProfile().isRespawnable) {
-    gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, false);
+    gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFilePath, false);
   }
 
   target->showOnMap(targetPos.x * kPpm, targetPos.y * kPpm);
@@ -62,7 +59,7 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   b2Body* body = targetCharacter->getBody();
   b2Vec2 targetPos = (body) ? body->GetPosition() : b2Vec2{0, 0};
 
-  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
+  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFilePath);
 
   shared_ptr<DynamicActor> target = removeMember(targetCharacter);
   if (!target) {
@@ -77,7 +74,7 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   }
 
   targetNpc->removeFromMap();
-  gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFileName, true);
+  gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFilePath, true);
 
   if (addToMap && body) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
@@ -102,8 +99,8 @@ void Party::askMemberToWait(Character* targetCharacter) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
-  addWaitingMember(targetCharacter->getCharacterProfile().jsonFileName,
-                   gmMgr->getGameMap()->getTmxTiledMapFileName(),
+  addWaitingMember(targetCharacter->getCharacterProfile().jsonFilePath,
+                   gmMgr->getGameMap()->getTmxTiledMapFilePath(),
                    targetPos.x,
                    targetPos.y);
 
@@ -113,34 +110,34 @@ void Party::askMemberToWait(Character* targetCharacter) {
 }
 
 void Party::askMemberToFollow(Character* targetCharacter) {
-  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFileName);
+  removeWaitingMember(targetCharacter->getCharacterProfile().jsonFilePath);
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show(string_util::format("%s is now following you.",
                                           targetCharacter->getCharacterProfile().name.c_str()));
 }
 
-void Party::addWaitingMember(const string& characterJsonFileName,
-                             const string& currentTmxMapFileName,
+void Party::addWaitingMember(const string& characterJsonFilePath,
+                             const string& currentTmxMapFilePath,
                              float x,
                              float y) {
-  auto it = _waitingMembersLocationInfos.find(characterJsonFileName);
+  auto it = _waitingMembersLocationInfos.find(characterJsonFilePath);
   if (it != _waitingMembersLocationInfos.end()) {
     VGLOG(LOG_ERR, "This member is already a waiting member of the party.");
     return;
   }
-  _waitingMembersLocationInfos.insert({characterJsonFileName, {currentTmxMapFileName, x, y}});
+  _waitingMembersLocationInfos.insert({characterJsonFilePath, {currentTmxMapFilePath, x, y}});
 }
 
-void Party::removeWaitingMember(const string& characterJsonFileName) {
-  if (_waitingMembersLocationInfos.erase(characterJsonFileName) == 0) {
+void Party::removeWaitingMember(const string& characterJsonFilePath) {
+  if (_waitingMembersLocationInfos.erase(characterJsonFilePath) == 0) {
     VGLOG(LOG_ERR, "This member is not a waiting member of the party.");
   }
 }
 
 optional<Party::WaitingLocationInfo>
-Party::getWaitingMemberLocationInfo(const std::string& characterJsonFileName) const {
-  auto it = _waitingMembersLocationInfos.find(characterJsonFileName);
+Party::getWaitingMemberLocationInfo(const std::string& characterJsonFilePath) const {
+  auto it = _waitingMembersLocationInfos.find(characterJsonFilePath);
   if (it == _waitingMembersLocationInfos.end()) {
     return std::nullopt;
   }
@@ -160,11 +157,11 @@ unordered_set<Character*> Party::getLeaderAndMembers() const {
 void Party::dump() {
   VGLOG(LOG_INFO, "Dumping player party");
   for (const auto& member : _members) {
-    VGLOG(LOG_INFO, "[%s]", member->getCharacterProfile().jsonFileName.c_str());
+    VGLOG(LOG_INFO, "[%s]", member->getCharacterProfile().jsonFilePath.c_str());
   }
-  for (const auto& [npcJsonFileName, locInfo] : _waitingMembersLocationInfos) {
+  for (const auto& [npcJsonFilePath, locInfo] : _waitingMembersLocationInfos) {
     VGLOG(LOG_INFO, "[%s] -> {%s, %f, %f}",
-          npcJsonFileName.c_str(), locInfo.tmxMapFileName.c_str(), locInfo.x, locInfo.y);
+          npcJsonFilePath.c_str(), locInfo.tmxMapFilePath.c_str(), locInfo.x, locInfo.y);
   }
 }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_DIALOGUE_MANAGER_H_
 #define VIGILANTE_DIALOGUE_MANAGER_H_
 
@@ -30,9 +30,9 @@ class DialogueManager : public Controllable {
   Dialogue* getCurrentDialogue() const;
   void setCurrentDialogue(Dialogue* dialogue) const;
 
-  std::string getLatestNpcDialogueTree(const std::string& npcJsonFileName);
-  void setLatestNpcDialogueTree(const std::string& npcJsonFileName,
-                                const std::string& dialogueTreeJsonFileName);
+  std::string getLatestNpcDialogueTree(const std::string& npcJsonFilePath);
+  void setLatestNpcDialogueTree(const std::string& npcJsonFilePath,
+                                const std::string& dialogueTreeJsonFilePath);
 
  private:
   ax::Layer* _layer;

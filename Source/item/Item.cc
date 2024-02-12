@@ -30,24 +30,24 @@ constexpr auto kItemMaskBits = kGround | kPlatform | kWall;
 
 }  // namespace
 
-unique_ptr<Item> Item::create(const string& jsonFileName) {
-  if (jsonFileName.find("equipment") != jsonFileName.npos) {
-    return std::make_unique<Equipment>(jsonFileName);
-  } else if (jsonFileName.find("consumable") != jsonFileName.npos) {
-    return std::make_unique<Consumable>(jsonFileName);
-  } else if (jsonFileName.find("key") != jsonFileName.npos) {
-    return std::make_unique<Key>(jsonFileName);
-  } else if (jsonFileName.find("misc") != jsonFileName.npos) {
-    return std::make_unique<MiscItem>(jsonFileName);
+unique_ptr<Item> Item::create(const string& jsonFilePath) {
+  if (jsonFilePath.find("equipment") != jsonFilePath.npos) {
+    return std::make_unique<Equipment>(jsonFilePath);
+  } else if (jsonFilePath.find("consumable") != jsonFilePath.npos) {
+    return std::make_unique<Consumable>(jsonFilePath);
+  } else if (jsonFilePath.find("key") != jsonFilePath.npos) {
+    return std::make_unique<Key>(jsonFilePath);
+  } else if (jsonFilePath.find("misc") != jsonFilePath.npos) {
+    return std::make_unique<MiscItem>(jsonFilePath);
   }
 
   VGLOG(LOG_ERR, "Unable to determine item type.");
   return nullptr;
 }
 
-Item::Item(const string& jsonFileName)
+Item::Item(const string& jsonFilePath)
     : DynamicActor{kItemNumAnimations, kItemNumFixtures},
-      _itemProfile{jsonFileName} {
+      _itemProfile{jsonFilePath} {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
@@ -74,8 +74,8 @@ bool Item::showOnMap(float x, float y) {
   return true;
 }
 
-void Item::import(const string& jsonFileName) {
-  _itemProfile = Item::Profile{jsonFileName};
+void Item::import(const string& jsonFilePath) {
+  _itemProfile = Item::Profile{jsonFilePath};
 }
 
 void Item::defineBody(b2BodyType bodyType,
@@ -110,11 +110,11 @@ string Item::getIconPath() const {
 }
 
 bool Item::isGold() const {
-  return _itemProfile.jsonFileName == assets::kGoldCoin;
+  return _itemProfile.jsonFilePath == assets::kGoldCoin;
 }
 
-Item::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Item::Profile::Profile(const string& jsonFilePath) : jsonFilePath(jsonFilePath) {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());
   textureResDir = json["textureResDir"].GetString();

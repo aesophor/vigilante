@@ -41,9 +41,9 @@ constexpr auto kEnemyWeaponMaskBits = kPlayer | kNpc;
 
 }  // namespace
 
-Npc::Npc(const string& jsonFileName)
-    : Character{jsonFileName},
-      _npcProfile{jsonFileName},
+Npc::Npc(const string& jsonFilePath)
+    : Character{jsonFilePath},
+      _npcProfile{jsonFilePath},
       _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
       _disposition{_npcProfile.disposition},
       _npcController(*this) {
@@ -147,9 +147,9 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
     .buildFixture();
 }
 
-void Npc::import(const string& jsonFileName) {
-  Character::import(jsonFileName);
-  _npcProfile = Npc::Profile{jsonFileName};
+void Npc::import(const string& jsonFilePath) {
+  Character::import(jsonFilePath);
+  _npcProfile = Npc::Profile{jsonFilePath};
 }
 
 void Npc::onSetToKill() {
@@ -157,7 +157,7 @@ void Npc::onSetToKill() {
 
   if (!_npcProfile.isRespawnable) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-    gmMgr->setNpcAllowedToSpawn(_characterProfile.jsonFileName, false);
+    gmMgr->setNpcAllowedToSpawn(_characterProfile.jsonFilePath, false);
   }
 
   dropItems();
@@ -297,14 +297,14 @@ void Npc::dropItems() {
 
 void Npc::updateDialogueTreeIfNeeded() {
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-  string latestDialogueTreeJsonFileName = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFileName);
-  if (latestDialogueTreeJsonFileName.empty()) {
+  string latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
+  if (latestDialogueTreeJsonFilePath.empty()) {
     return;
   }
 
   VGLOG(LOG_INFO, "Loading dialogue tree from file: [%s], character: [%s]",
-                  latestDialogueTreeJsonFileName.c_str(), _characterProfile.jsonFileName.c_str());
-  _dialogueTree = DialogueTree{latestDialogueTreeJsonFileName, this};
+                  latestDialogueTreeJsonFilePath.c_str(), _characterProfile.jsonFilePath.c_str());
+  _dialogueTree = DialogueTree{latestDialogueTreeJsonFilePath, this};
 }
 
 void Npc::onDialogueBegin() {
@@ -349,7 +349,7 @@ bool Npc::isWaitingForPlayer() const {
   }
 
   return isPlayerLeaderOfParty() &&
-    _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName).has_value();
+    _party->getWaitingMemberLocationInfo(_characterProfile.jsonFilePath).has_value();
 }
 
 bool Npc::isWaitingForPartyLeader() const {
@@ -357,7 +357,7 @@ bool Npc::isWaitingForPartyLeader() const {
     return false;
   }
 
-  return _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName).has_value();
+  return _party->getWaitingMemberLocationInfo(_characterProfile.jsonFilePath).has_value();
 }
 
 void Npc::setDisposition(Npc::Disposition disposition) {
@@ -382,8 +382,8 @@ void Npc::setDisposition(Npc::Disposition disposition) {
   }
 }
 
-Npc::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Npc::Profile::Profile(const string& jsonFilePath) {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   const auto& droppedItemsMap = json["droppedItems"].GetObject();
   if (!droppedItemsMap.ObjectEmpty()) {

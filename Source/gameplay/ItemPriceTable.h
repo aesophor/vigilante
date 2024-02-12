@@ -8,7 +8,7 @@
 
 namespace vigilante::item_price_table {
 
-void import(const std::string& tableFileName);
+void import(const std::string& tableFilePath);
 int getPrice(const Item* item);
 
 }  // namespace vigilante::item_price_table

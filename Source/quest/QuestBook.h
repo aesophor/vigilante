@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_BOOK_H_
 
@@ -13,7 +13,7 @@ namespace vigilante {
 
 class QuestBook {
  public:
-  explicit QuestBook(const std::string& questsListFileName);
+  explicit QuestBook(const std::string& questsListFilePath);
   virtual ~QuestBook() = default;
 
   void update(const Quest::Objective::Type objectiveType);
@@ -23,10 +23,10 @@ class QuestBook {
   bool setStage(Quest* quest, const int stageIdx);
   bool markCompleted(Quest* quest);
 
-  bool unlockQuest(const std::string& questJsonFileName);
-  bool startQuest(const std::string& questJsonFileName);
+  bool unlockQuest(const std::string& questJsonFilePath);
+  bool startQuest(const std::string& questJsonFilePath);
   bool setStage(const std::string&, const int stageIdx);
-  bool markCompleted(const std::string& questJsonFileName);
+  bool markCompleted(const std::string& questJsonFilePath);
 
   std::vector<Quest*> getAllQuests() const;
   inline const std::vector<Quest*>& getInProgressQuests() const { return _inProgressQuests; }

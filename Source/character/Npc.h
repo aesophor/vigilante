@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_NPC_H_
 #define VIGILANTE_NPC_H_
 
@@ -37,7 +37,7 @@ class Npc : public Character, public Interactable {
   };
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
 
     struct DroppedItemData {
       int chance;
@@ -55,13 +55,13 @@ class Npc : public Character, public Interactable {
     bool shouldSandbox;
   };
 
-  explicit Npc(const std::string& jsonFileName);
+  explicit Npc(const std::string& jsonFilePath);
   virtual ~Npc() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
   virtual bool removeFromMap() override;  // Character
   virtual void update(const float delta) override;  // Character
-  virtual void import(const std::string& jsonFileName) override;  // Character
+  virtual void import(const std::string& jsonFilePath) override;  // Character
 
   virtual void onSetToKill() override;  // Character
   virtual void onKilled() override;  // Character

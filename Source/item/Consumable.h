@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_CONSUMABLE_H_
 #define VIGILANTE_CONSUMABLE_H_
 
@@ -14,7 +14,7 @@ namespace vigilante {
 class Consumable : public Item, public Keybindable {
  public:
   struct Profile final {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
 
     float duration; // sec
 
@@ -36,10 +36,10 @@ class Consumable : public Item, public Keybindable {
     ax::EventKeyboard::KeyCode hotkey;
   };
 
-  explicit Consumable(const std::string& jsonFileName);
+  explicit Consumable(const std::string& jsonFilePath);
   virtual ~Consumable() override = default;
 
-  virtual void import (const std::string& jsonFileName) override;  // Importable
+  virtual void import (const std::string& jsonFilePath) override;  // Importable
 
   virtual ax::EventKeyboard::KeyCode getHotkey() const override;  // Keybindable
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override;  // Keybindable

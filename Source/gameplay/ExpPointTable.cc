@@ -19,10 +19,10 @@ array<int, exp_point_table::kLevelCap> levelUpExp;
 
 namespace exp_point_table {
 
-void import(const string& tableFileName) {
-  ifstream fin{tableFileName};
+void import(const string& tableFilePath) {
+  ifstream fin{tableFilePath};
   if (!fin.is_open()) {
-    throw runtime_error("Failed to import exp point table from: " + tableFileName);
+    throw runtime_error("Failed to import exp point table from: " + tableFilePath);
   }
 
   VGLOG(LOG_INFO, "Loading exp point table...");

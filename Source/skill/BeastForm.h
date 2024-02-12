@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_BEAST_FORM_H_
 #define VIGILANTE_BEAST_FORM_H_
 
@@ -13,10 +13,10 @@ class Character;
 
 class BeastForm : public Skill {
  public:
-  BeastForm(const std::string& jsonFileName, Character* user);
+  BeastForm(const std::string& jsonFilePath, Character* user);
   virtual ~BeastForm() = default;
 
-  virtual void import(const std::string& jsonFileName) override;  // Skill
+  virtual void import(const std::string& jsonFilePath) override;  // Skill
   virtual ax::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; }  // Skill
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; }  // Skill
   virtual bool canActivate() override;  // Skill

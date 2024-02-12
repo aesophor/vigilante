@@ -10,7 +10,7 @@ namespace vigilante {
 
 bool CollectItemObjective::isCompleted() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  return gmMgr->getPlayer()->getItemAmount(_itemJsonFileName) >= _amount;
+  return gmMgr->getPlayer()->getItemAmount(_itemJsonFilePath) >= _amount;
 }
 
 }  // namespace vigilante

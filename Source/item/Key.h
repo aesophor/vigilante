@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_KEY_H_
 #define VIGILANTE_KEY_H_
 
@@ -11,13 +11,13 @@ namespace vigilante {
 class Key : public MiscItem {
  public:
   struct Profile final {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
 
-    std::string targetTmxFileName;
+    std::string targetTmxFilePath;
     int targetPortalId;
   };
 
-  explicit Key(const std::string& jsonFileName);
+  explicit Key(const std::string& jsonFilePath);
   virtual ~Key() override = default;
 
   inline const Key::Profile& getKeyProfile() const { return _keyProfile; }

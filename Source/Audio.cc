@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Audio.h"
 
 #include <audio/AudioEngine.h>
@@ -19,17 +19,17 @@ Audio& Audio::the() {
   return instance;
 }
 
-void Audio::playSfx(const string& filename) {
-  AudioEngine::play2d(filename.c_str(), /*loop=*/false);
+void Audio::playSfx(const string& filePath) {
+  AudioEngine::play2d(filePath.c_str(), /*loop=*/false);
 }
 
-void Audio::playBgm(const string& filename) {
+void Audio::playBgm(const string& filePath) {
   if (bgmAudioId) {
     stopBgm();
     bgmAudioId = {};
   }
 
-  bgmAudioId = AudioEngine::play2d(filename.c_str(), /*loop=*/true);
+  bgmAudioId = AudioEngine::play2d(filePath.c_str(), /*loop=*/true);
 }
 
 void Audio::stopBgm() {

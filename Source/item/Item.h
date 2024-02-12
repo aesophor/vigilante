@@ -23,9 +23,9 @@ class Item : public DynamicActor, public Importable {
   };
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
 
-    std::string jsonFileName;
+    std::string jsonFilePath;
     Item::Type itemType;
     std::string textureResDir;
     std::string name;
@@ -34,12 +34,12 @@ class Item : public DynamicActor, public Importable {
 
   // Create an item by automatically deducing its concrete type
   // based on the json passed in.
-  static std::unique_ptr<Item> create(const std::string& jsonFileName);
+  static std::unique_ptr<Item> create(const std::string& jsonFilePath);
 
   virtual ~Item() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
-  virtual void import(const std::string& jsonFileName) override;  // Importable
+  virtual void import(const std::string& jsonFilePath) override;  // Importable
 
   inline Item::Profile& getItemProfile() { return _itemProfile; }
   inline const Item::Profile& getItemProfile() const { return _itemProfile; }
@@ -52,7 +52,7 @@ class Item : public DynamicActor, public Importable {
   inline void setAmount(int amount) { _amount = amount; }
 
  protected:
-  explicit Item(const std::string& jsonFileName);
+  explicit Item(const std::string& jsonFilePath);
 
   void defineBody(b2BodyType bodyType,
                   float x,

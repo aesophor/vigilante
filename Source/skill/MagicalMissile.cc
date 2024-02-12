@@ -30,9 +30,9 @@ constexpr auto kMagicalMissleMaskBits = kPlayer | kEnemy | kWall;
 
 }  // namespace
 
-MagicalMissile::MagicalMissile(const string& jsonFileName, Character* user, const bool onGround)
+MagicalMissile::MagicalMissile(const string& jsonFilePath, Character* user, const bool onGround)
     : DynamicActor{kMagicalMissleNumAnimations, kMagicalMissleNumFixtures},
-      _skillProfile{jsonFileName},
+      _skillProfile{jsonFilePath},
       _user{user},
       _isOnGround{onGround} {}
 
@@ -114,8 +114,8 @@ void MagicalMissile::onHit(Character* target) {
   Audio::the().playSfx(_skillProfile.sfxHit);
 }
 
-void MagicalMissile::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile{jsonFileName};
+void MagicalMissile::import(const string& jsonFilePath) {
+  _skillProfile = Skill::Profile{jsonFilePath};
 }
 
 bool MagicalMissile::canActivate() {

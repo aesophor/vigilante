@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_CHEST_H_
 #define VIGILANTE_CHEST_H_
 
@@ -14,7 +14,7 @@ namespace vigilante {
 
 class Chest : public DynamicActor, public Interactable {
  public:
-  Chest(const std::string& tmxMapFileName,
+  Chest(const std::string& tmxMapFilePath,
         const int chestId,
         const std::string& itemJsons);
   virtual ~Chest() override = default;
@@ -36,7 +36,7 @@ class Chest : public DynamicActor, public Interactable {
                   short categoryBits,
                   short maskBits);
 
-  const std::string _tmxMapFileName;
+  const std::string _tmxMapFilePath;
   const int _chestId{};
   const std::vector<std::string> _itemJsons;
   bool _isOpened{};

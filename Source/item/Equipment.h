@@ -39,9 +39,9 @@ class Equipment : public Item {
   }};
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFileName);
+    explicit Profile(const std::string& jsonFilePath);
 
-    std::array<std::string, Equipment::Sfx::SFX_SIZE> sfxFileNames;
+    std::array<std::string, Equipment::Sfx::SFX_SIZE> sfxFilePaths;
 
     Equipment::Type equipmentType;
     int bonusPhysicalDamage;
@@ -56,18 +56,18 @@ class Equipment : public Item {
     int bonusJumpHeight;
   };
 
-  explicit Equipment(const std::string& jsonFileName);
+  explicit Equipment(const std::string& jsonFilePath);
   virtual ~Equipment() override = default;
 
-  virtual void import(const std::string& jsonFileName) override;  // Importable
+  virtual void import(const std::string& jsonFilePath) override;  // Importable
 
   inline Equipment::Profile& getEquipmentProfile() { return _equipmentProfile; }
   inline const Equipment::Profile& getEquipmentProfile() const {
     return _equipmentProfile;
   }
 
-  const std::string& getSfxFileName(const Equipment::Sfx sfx) const {
-    return _equipmentProfile.sfxFileNames[sfx];
+  const std::string& getSfxFilePath(const Equipment::Sfx sfx) const {
+    return _equipmentProfile.sfxFilePaths[sfx];
   }
 
  private:

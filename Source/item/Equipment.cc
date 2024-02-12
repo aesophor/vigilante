@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Equipment.h"
 
 #include "util/JsonUtil.h"
@@ -8,17 +8,17 @@ using namespace std;
 
 namespace vigilante {
 
-Equipment::Equipment(const string& jsonFileName)
-    : Item{jsonFileName},
-      _equipmentProfile{jsonFileName} {}
+Equipment::Equipment(const string& jsonFilePath)
+    : Item{jsonFilePath},
+      _equipmentProfile{jsonFilePath} {}
 
-void Equipment::import(const string& jsonFileName) {
-  Item::import(jsonFileName);
-  _equipmentProfile = Equipment::Profile{jsonFileName};
+void Equipment::import(const string& jsonFilePath) {
+  Item::import(jsonFilePath);
+  _equipmentProfile = Equipment::Profile{jsonFilePath};
 }
 
-Equipment::Profile::Profile(const string& jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Equipment::Profile::Profile(const string& jsonFilePath) {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   for (int i = 0; i < Equipment::Sfx::SFX_SIZE; i++) {
     const string &sfxKey = Equipment::_kEquipmentSfxStr[i];
@@ -32,7 +32,7 @@ Equipment::Profile::Profile(const string& jsonFileName) {
       VGLOG(LOG_ERR, "sfx [%s] file doesnt exist.", sfxPath.c_str());
       continue;
     }
-    sfxFileNames[i] = sfxPath;
+    sfxFilePaths[i] = sfxPath;
   }
 
   equipmentType = static_cast<Equipment::Type>(json["equipmentType"].GetInt());

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Player.h"
 
 #include <string>
@@ -34,8 +34,8 @@ constexpr auto kPlayerWeaponMaskBits = kEnemy;
 
 }  // namespace
 
-Player::Player(const std::string& jsonFileName)
-    : Character{jsonFileName},
+Player::Player(const std::string& jsonFilePath)
+    : Character{jsonFilePath},
       _playerController{*this} {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
@@ -158,7 +158,7 @@ void Player::interact(Interactable* target) {
   if (auto targetCharacter = dynamic_cast<Character*>(target)) {
     for (auto quest : _questBook.getInProgressQuests()) {
       auto to = dynamic_cast<InteractWithTargetObjective*>(quest->getCurrentStage().objective.get());
-      if (to && to->getTargetProfileJsonFileName() == targetCharacter->getCharacterProfile().jsonFileName) {
+      if (to && to->getTargetProfileJsonFilePath() == targetCharacter->getCharacterProfile().jsonFilePath) {
         to->setCompleted(true);
       }
     }

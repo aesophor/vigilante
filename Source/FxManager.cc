@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "FxManager.h"
 
 #include "Assets.h"
@@ -75,8 +75,8 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
                                                      framesName + "/0.png");
   sprite->setPosition(x, y);
 
-  string spritesheetFileName = StaticActor::getSpritesheetFileName(textureResDir);
-  SpriteBatchNode* spritesheet = SpriteBatchNode::create(spritesheetFileName);
+  string spritesheetFilePath = StaticActor::getSpritesheetFilePath(textureResDir);
+  SpriteBatchNode* spritesheet = SpriteBatchNode::create(spritesheetFilePath);
   spritesheet->addChild(sprite);
   spritesheet->getTexture()->setAliasTexParameters();
 

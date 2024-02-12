@@ -78,7 +78,7 @@ class GameMap final {
 
   class Portal final : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFileName,
+    Portal(const std::string& targetTmxMapFilePath,
            int targetPortalId,
            bool willInteractOnContact,
            bool isLocked,
@@ -95,7 +95,7 @@ class GameMap final {
     void lock();
     void unlock();
 
-    inline const std::string& getDestTmxMapFileName() const { return _destTmxMapFileName; }
+    inline const std::string& getDestTmxMapFilePath() const { return _destTmxMapFilePath; }
     inline int getDestPortalId() const { return _destPortalId; }
 
    protected:
@@ -110,7 +110,7 @@ class GameMap final {
     void saveLockUnlockState() const;
     int getPortalId() const;
 
-    std::string _destTmxMapFileName;  // new (destination) .tmx filename
+    std::string _destTmxMapFilePath;  // new (destination) .tmx filepath
     int _destPortalId{};  // the portal id in the new (destination) map
     bool _willInteractOnContact{};  // interact with the portal on contact?
     bool _isLocked{};
@@ -118,7 +118,7 @@ class GameMap final {
     ax::Sprite* _hintBubbleFxSprite{};
   };
 
-  GameMap(b2World* world, const std::string& tmxMapFileName);
+  GameMap(b2World* world, const std::string& tmxMapFilePath);
   ~GameMap();
 
   void update(const float delta);
@@ -140,8 +140,8 @@ class GameMap final {
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
-  inline const std::string& getTmxTiledMapFileName() const { return _tmxTiledMapFileName; }
-  inline const std::string& getBgmFileName() const { return _bgmFileName; }
+  inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
+  inline const std::string& getBgmFilePath() const { return _bgmFilePath; }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
@@ -165,8 +165,8 @@ class GameMap final {
 
   b2World* _world{};
   ax::TMXTiledMap* _tmxTiledMap{};
-  std::string _tmxTiledMapFileName;
-  std::string _bgmFileName;
+  std::string _tmxTiledMapFilePath;
+  std::string _bgmFilePath;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;

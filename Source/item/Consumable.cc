@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Consumable.h"
 
 #include "util/JsonUtil.h"
@@ -8,13 +8,13 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Consumable::Consumable(const string& jsonFileName)
-    : Item{jsonFileName},
-      _consumableProfile{jsonFileName} {}
+Consumable::Consumable(const string& jsonFilePath)
+    : Item{jsonFilePath},
+      _consumableProfile{jsonFilePath} {}
 
-void Consumable::import(const string& jsonFileName) {
-  Item::import(jsonFileName);
-  _consumableProfile = Consumable::Profile{jsonFileName};
+void Consumable::import(const string& jsonFilePath) {
+  Item::import(jsonFilePath);
+  _consumableProfile = Consumable::Profile{jsonFilePath};
 }
 
 EventKeyboard::KeyCode Consumable::getHotkey() const {
@@ -25,8 +25,8 @@ void Consumable::setHotkey(EventKeyboard::KeyCode hotkey) {
   _consumableProfile.hotkey = hotkey;
 }
 
-Consumable::Profile::Profile(const string& jsonFileName) : hotkey() {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+Consumable::Profile::Profile(const string& jsonFilePath) : hotkey{} {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   duration = json["duration"].GetFloat();
 

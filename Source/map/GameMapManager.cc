@@ -46,13 +46,13 @@ void GameMapManager::update(const float delta) {
   }
 }
 
-void GameMapManager::loadGameMap(const string& tmxMapFileName,
+void GameMapManager::loadGameMap(const string& tmxMapFilePath,
                                  const function<void ()>& afterLoadingGameMap) {
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
       FadeIn::create(Shade::kFadeInTime),
-      CallFunc::create([this, shade, tmxMapFileName, afterLoadingGameMap]() {
-        doLoadGameMap(tmxMapFileName);
+      CallFunc::create([this, shade, tmxMapFilePath, afterLoadingGameMap]() {
+        doLoadGameMap(tmxMapFilePath);
         afterLoadingGameMap();
         setNpcsAllowedToAct(true);
       }),
@@ -77,11 +77,11 @@ void GameMapManager::destroyGameMap() {
   }
 }
 
-GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
-  const string oldBgmFileName = (_gameMap) ? _gameMap->getBgmFileName() : "";
+GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
+  const string oldBgmFilePath = (_gameMap) ? _gameMap->getBgmFilePath() : "";
 
   destroyGameMap();
-  _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFileName);
+  _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFilePath);
   _gameMap->createObjects();
   _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
 
@@ -89,8 +89,8 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFileName) {
     _player = _gameMap->createPlayer();
   }
 
-  if (oldBgmFileName != _gameMap->getBgmFileName()) {
-    Audio::the().playBgm(_gameMap->getBgmFileName());
+  if (oldBgmFilePath != _gameMap->getBgmFilePath()) {
+    Audio::the().playBgm(_gameMap->getBgmFilePath());
   }
 
   return _gameMap.get();
@@ -114,49 +114,49 @@ bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short c
   return cb.hasHit();
 }
 
-bool GameMapManager::isNpcAllowedToSpawn(const string& jsonFileName) const {
-  return _npcSpawningBlacklist.find(jsonFileName) == _npcSpawningBlacklist.end();
+bool GameMapManager::isNpcAllowedToSpawn(const string& jsonFilePath) const {
+  return _npcSpawningBlacklist.find(jsonFilePath) == _npcSpawningBlacklist.end();
 }
 
-void GameMapManager::setNpcAllowedToSpawn(const string& jsonFileName, bool canSpawn) {
-  if (!canSpawn && isNpcAllowedToSpawn(jsonFileName)) {
-    _npcSpawningBlacklist.insert(jsonFileName);
-  } else if (canSpawn && !isNpcAllowedToSpawn(jsonFileName)) {
-    _npcSpawningBlacklist.erase(jsonFileName);
+void GameMapManager::setNpcAllowedToSpawn(const string& jsonFilePath, bool canSpawn) {
+  if (!canSpawn && isNpcAllowedToSpawn(jsonFilePath)) {
+    _npcSpawningBlacklist.insert(jsonFilePath);
+  } else if (canSpawn && !isNpcAllowedToSpawn(jsonFilePath)) {
+    _npcSpawningBlacklist.erase(jsonFilePath);
   }
 }
 
-bool GameMapManager::hasSavedOpenedClosedState(const string& tmxMapFileName,
+bool GameMapManager::hasSavedOpenedClosedState(const string& tmxMapFilePath,
                                                const GameMap::OpenableObjectType type,
                                                const int targetPortalId) const {
-  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  const string key = getOpenableObjectQueryKey(tmxMapFilePath, type, targetPortalId);
   auto it = _allOpenableObjectStates.find(key);
   return it != _allOpenableObjectStates.end();
 }
 
-bool GameMapManager::isOpened(const string& tmxMapFileName,
+bool GameMapManager::isOpened(const string& tmxMapFilePath,
                               const GameMap::OpenableObjectType type,
                               const int targetPortalId) const {
-  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  const string key = getOpenableObjectQueryKey(tmxMapFilePath, type, targetPortalId);
   auto it = _allOpenableObjectStates.find(key);
   if (it == _allOpenableObjectStates.end()) {
     VGLOG(LOG_WARN, "Unable to find portal lock/unlock state, map [%s], portalId [%d].",
-        tmxMapFileName.c_str(), targetPortalId);
+          tmxMapFilePath.c_str(), targetPortalId);
     return false;
   }
 
   return it->second;
 }
 
-void GameMapManager::setOpened(const string& tmxMapFileName,
+void GameMapManager::setOpened(const string& tmxMapFilePath,
                                const GameMap::OpenableObjectType type,
                                const int targetPortalId,
                                const bool locked) {
-  const string key = getOpenableObjectQueryKey(tmxMapFileName, type, targetPortalId);
+  const string key = getOpenableObjectQueryKey(tmxMapFilePath, type, targetPortalId);
   _allOpenableObjectStates[key] = locked;
 }
 
-string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFileName,
+string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFilePath,
                                                  const GameMap::OpenableObjectType type,
                                                  const int targetObjectId) const {
   string typeStr;
@@ -171,7 +171,7 @@ string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFileName,
       break;
   }
 
-  return string_util::format("%s_%s_%d", tmxMapFileName.c_str(), typeStr.c_str(), targetObjectId);
+  return string_util::format("%s_%s_%d", tmxMapFilePath.c_str(), typeStr.c_str(), targetObjectId);
 }
 
 }  // namespace vigilante

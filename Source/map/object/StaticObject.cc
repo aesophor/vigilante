@@ -43,8 +43,8 @@ void StaticObject::defineTexture() {
   // Select the first frame (e.g., dust_white/0.png) as the default look of the sprite.
   _bodySprite = Sprite::createWithSpriteFrameName(framesNamePrefix + "_" + _framesName + "/0.png");
 
-  const string spritesheetFileName = StaticActor::getSpritesheetFileName(_textureResDir);
-  _bodySpritesheet = SpriteBatchNode::create(spritesheetFileName);
+  const string spritesheetFilePath = StaticActor::getSpritesheetFilePath(_textureResDir);
+  _bodySpritesheet = SpriteBatchNode::create(spritesheetFilePath);
   _bodySpritesheet->addChild(_bodySprite);
   _bodySpritesheet->getTexture()->setAliasTexParameters();
 

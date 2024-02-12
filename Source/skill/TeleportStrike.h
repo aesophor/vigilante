@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #ifndef VIGILANTE_TELEPORT_STRIKE_H_
 #define VIGILANTE_TELEPORT_STRIKE_H_
 
@@ -15,9 +15,9 @@ class Character;
 
 class TeleportStrike : public Skill {
  public:
-  TeleportStrike(const std::string& jsonFileName, Character* user);
+  TeleportStrike(const std::string& jsonFilePath, Character* user);
 
-  virtual void import(const std::string& jsonFileName) override; // Skill
+  virtual void import(const std::string& jsonFilePath) override; // Skill
   virtual ax::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; } // Skill
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; } // Skill
   virtual bool canActivate() override; // Skill

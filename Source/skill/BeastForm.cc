@@ -14,13 +14,13 @@ USING_NS_AX;
 
 namespace vigilante {
 
-BeastForm::BeastForm(const string& jsonFileName, Character* user)
+BeastForm::BeastForm(const string& jsonFilePath, Character* user)
     : Skill{},
-      _skillProfile{jsonFileName},
+      _skillProfile{jsonFilePath},
       _user{user} {}
 
-void BeastForm::import(const string& jsonFileName) {
-  _skillProfile = Skill::Profile{jsonFileName};
+void BeastForm::import(const string& jsonFilePath) {
+  _skillProfile = Skill::Profile{jsonFilePath};
 }
 
 bool BeastForm::canActivate() {
@@ -38,7 +38,7 @@ void BeastForm::activate() {
 }
 
 void BeastForm::deactivate() {
-  _user->replaceSpritesheet(_user->getCharacterProfile().jsonFileName);
+  _user->replaceSpritesheet(_user->getCharacterProfile().jsonFilePath);
   _user->getCharacterProfile() = _originalCharacterProfile;
 }
 

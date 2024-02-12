@@ -123,7 +123,7 @@ void PlayerController::handleAttackInput() {
   
   if (!handleCombatMotion(_player, *attackState)) {
     VGLOG(LOG_ERR, "Failed to handle combat motion, character: [%s], attackState: [%d]",
-          _player.getCharacterProfile().jsonFileName.c_str(), *attackState);
+          _player.getCharacterProfile().jsonFilePath.c_str(), *attackState);
   }
 }
 

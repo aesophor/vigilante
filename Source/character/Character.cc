@@ -27,19 +27,19 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Character::Character(const string& jsonFileName)
+Character::Character(const string& jsonFilePath)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
-      _characterProfile{jsonFileName},
+      _characterProfile{jsonFilePath},
       _comboSystem{std::make_shared<ComboSystem>(*this)},
       // There will be at least `1` attack animation.
       _kAttackAnimationIdxMax{1 + getExtraAttackAnimationsCount()},
       _bodyExtraAttackAnimations(_kAttackAnimationIdxMax - 1) {
-  for (const auto& skillJsonFileName : _characterProfile.defaultSkills) {
-    addSkill(Skill::create(skillJsonFileName, this));
+  for (const auto& skillJsonFilePath : _characterProfile.defaultSkills) {
+    addSkill(Skill::create(skillJsonFilePath, this));
   }
 
-  for (const auto& [itemJsonFileName, amount] : _characterProfile.defaultInventory) {
-    addItem(Item::create(itemJsonFileName), amount);
+  for (const auto& [itemJsonFilePath, amount] : _characterProfile.defaultInventory) {
+    addItem(Item::create(itemJsonFilePath), amount);
   }
 }
 
@@ -162,11 +162,11 @@ void Character::update(const float delta) {
   }
 }
 
-void Character::import(const string& jsonFileName) {
-  _characterProfile = Character::Profile{jsonFileName};
+void Character::import(const string& jsonFilePath) {
+  _characterProfile = Character::Profile{jsonFilePath};
 }
 
-void Character::replaceSpritesheet(const string& jsonFileName) {
+void Character::replaceSpritesheet(const string& jsonFilePath) {
   const float spriteZOrder = _bodySprite->getLocalZOrder();
   const float spritesheetZOrder = _bodySpritesheet->getLocalZOrder();
 
@@ -175,7 +175,7 @@ void Character::replaceSpritesheet(const string& jsonFileName) {
   std::fill(_bodyAnimations.begin(), _bodyAnimations.end(), nullptr);
   std::fill(_bodyExtraAttackAnimations.begin(), _bodyExtraAttackAnimations.end(), nullptr);
 
-  _characterProfile.loadSpritesheetInfo(jsonFileName);
+  _characterProfile.loadSpritesheetInfo(jsonFilePath);
   loadBodyAnimations(_characterProfile.textureResDir);
 
   _node->addChild(_bodySpritesheet, spritesheetZOrder);
@@ -535,8 +535,8 @@ void Character::onKilled() {
     std::invoke(callback);
   }
 
-  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_KILLED); sfxFileName.size()) {
-    Audio::the().playSfx(sfxFileName);
+  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_KILLED); sfxFilePath.size()) {
+    Audio::the().playSfx(sfxFilePath);
   }
 }
 
@@ -719,8 +719,8 @@ void Character::getUpFromCrouching() {
 }
 
 void Character::getUpFromFalling() {
-  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_JUMP); sfxFileName.size()) {
-    Audio::the().playSfx(sfxFileName);
+  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_JUMP); sfxFilePath.size()) {
+    Audio::the().playSfx(sfxFilePath);
   }
 
   const bool hasGetUpFromFallingAnimation = _bodyAnimations[State::FALLING_GETUP] != _bodyAnimations[State::IDLE];
@@ -800,8 +800,8 @@ void Character::runIntroAnimation() {
     _isRunningIntroAnimation = false;
   }, _bodyAnimations[State::INTRO]->getDuration());
 
-  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_INTRO); sfxFileName.size()) {
-    Audio::the().playSfx(sfxFileName);
+  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_INTRO); sfxFilePath.size()) {
+    Audio::the().playSfx(sfxFilePath);
   }
 }
 
@@ -838,12 +838,12 @@ bool Character::attack(const Character::State attackState,
 
   const auto weapon = _equipmentSlots[Equipment::Type::WEAPON];
   if (!weapon) {
-    if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_ATTACK_UNARMED); sfxFileName.size()) {
-      Audio::the().playSfx(sfxFileName);
+    if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_ATTACK_UNARMED); sfxFilePath.size()) {
+      Audio::the().playSfx(sfxFilePath);
     }
   } else {
-    if (const auto& sfxFileName = weapon->getSfxFileName(Equipment::Sfx::SFX_SWING); sfxFileName.size()) {
-      Audio::the().playSfx(sfxFileName);
+    if (const auto& sfxFilePath = weapon->getSfxFilePath(Equipment::Sfx::SFX_SWING); sfxFilePath.size()) {
+      Audio::the().playSfx(sfxFilePath);
     }
   }
 
@@ -929,7 +929,7 @@ bool Character::activateSkill(Skill* rawSkill) {
   }
 
   if (skill->getSkillProfile().shouldForkInstance) {
-    skill = Skill::create(skill->getSkillProfile().jsonFileName, this);
+    skill = Skill::create(skill->getSkillProfile().jsonFilePath, this);
   }
   _activeSkillInstances.emplace(skill);
   skill->activate();
@@ -995,7 +995,7 @@ bool Character::inflictDamage(Character *target, int damage,
       knockBack(target, knockBackForceX, knockBackForceY);
 
       if (const auto weapon = _equipmentSlots[Equipment::Type::WEAPON]) {
-        Audio::the().playSfx(weapon->getSfxFileName(Equipment::Sfx::SFX_HIT));
+        Audio::the().playSfx(weapon->getSfxFilePath(Equipment::Sfx::SFX_HIT));
       }
 
       lock_guard<mutex> lock{_inflictDamageCallbackIDsMutex};
@@ -1068,8 +1068,8 @@ bool Character::receiveDamage(Character *source, int damage, float takeDamageDur
   auto floatingDamages = SceneManager::the().getCurrentScene<GameScene>()->getFloatingDamages();
   floatingDamages->show(this, damage);
 
-  if (const auto& sfxFileName = getSfxFileName(Character::Sfx::SFX_HURT); sfxFileName.size()) {
-    Audio::the().playSfx(sfxFileName);
+  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_HURT); sfxFilePath.size()) {
+    Audio::the().playSfx(sfxFilePath);
   }
 
   return true;
@@ -1107,7 +1107,7 @@ bool Character::addItem(shared_ptr<Item> item, int amount) {
   } else {
     existingItemObj = item.get();
     existingItemObj->setAmount(amount);
-    _items[item->getItemProfile().jsonFileName] = std::move(item);
+    _items[item->getItemProfile().jsonFilePath] = std::move(item);
   }
 
   _inventory[existingItemObj->getItemProfile().itemType].insert(existingItemObj);
@@ -1143,7 +1143,7 @@ bool Character::removeItem(Item* item, int amount) {
     Equipment* equipment = dynamic_cast<Equipment*>(existingItemObj);
     if (!equipment ||
         _equipmentSlots[equipment->getEquipmentProfile().equipmentType] != existingItemObj) {
-      _items.erase(item->getItemProfile().jsonFileName);
+      _items.erase(item->getItemProfile().jsonFilePath);
     }
   }
 
@@ -1157,7 +1157,7 @@ Item* Character::getExistingItemObj(Item* item) const {
   if (!item) {
     return nullptr;
   }
-  auto it = _items.find(item->getItemProfile().jsonFileName);
+  auto it = _items.find(item->getItemProfile().jsonFilePath);
   return (it != _items.end()) ? it->second.get() : nullptr;
 }
 
@@ -1214,10 +1214,10 @@ void Character::unequip(Equipment::Type equipmentType, bool audio) {
   Equipment* e = _equipmentSlots[equipmentType];
   _equipmentSlots[equipmentType] = nullptr;
 
-  const auto& jsonFileName = e->getItemProfile().jsonFileName;
-  auto it = _items.find(e->getItemProfile().jsonFileName);
+  const auto& jsonFilePath = e->getItemProfile().jsonFilePath;
+  auto it = _items.find(e->getItemProfile().jsonFilePath);
   if (it == _items.end()) {
-    VGLOG(LOG_ERR, "The unequipped item [%s] is not in player's itemMapper.", jsonFileName.c_str());
+    VGLOG(LOG_ERR, "The unequipped item [%s] is not in player's itemMapper.", jsonFilePath.c_str());
     return;
   }
 
@@ -1235,12 +1235,12 @@ void Character::pickupItem(Item* item) {
 }
 
 void Character::discardItem(Item* item, int amount) {
-  const string& jsonFileName = item->getItemProfile().jsonFileName;
+  const string& jsonFilePath = item->getItemProfile().jsonFilePath;
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getGameMap()->createItem(jsonFileName, x * kPpm, y * kPpm, amount);
+  gmMgr->getGameMap()->createItem(jsonFilePath, x * kPpm, y * kPpm, amount);
 
   removeItem(item, amount);
 }
@@ -1296,7 +1296,7 @@ bool Character::removeSkill(Skill* skill) {
 }
 
 int Character::getGoldBalance() const {
-  return getItemAmount(Item::create(assets::kGoldCoin)->getItemProfile().jsonFileName);
+  return getItemAmount(Item::create(assets::kGoldCoin)->getItemProfile().jsonFilePath);
 }
 
 void Character::addGold(const int amount) {
@@ -1307,8 +1307,8 @@ void Character::removeGold(const int amount) {
   removeItem(Item::create(assets::kGoldCoin).get(), amount);
 }
 
-int Character::getItemAmount(const string& itemJsonFileName) const {
-  auto it = _items.find(itemJsonFileName);
+int Character::getItemAmount(const string& itemJsonFilePath) const {
+  auto it = _items.find(itemJsonFilePath);
   return it == _items.end() ? 0 : it->second->getAmount();
 }
 
@@ -1324,7 +1324,7 @@ void Character::removeActiveSkillInstance(Skill* skill) {
 }
 
 bool Character::isWaitingForPartyLeader() const {
-  return _party && _party->getWaitingMemberLocationInfo(_characterProfile.jsonFileName);
+  return _party && _party->getWaitingMemberLocationInfo(_characterProfile.jsonFilePath);
 }
 
 unordered_set<Character*> Character::getAllies() const {
@@ -1384,10 +1384,10 @@ void Character::regenStamina(int deltaStamina) {
   hud->updateStatusBars();
 }
 
-Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileName) {
-  loadSpritesheetInfo(jsonFileName);
+Character::Profile::Profile(const string& jsonFilePath) : jsonFilePath{jsonFilePath} {
+  loadSpritesheetInfo(jsonFilePath);
 
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   name = json["name"].GetString();
   level = json["level"].GetInt();
@@ -1409,19 +1409,19 @@ Character::Profile::Profile(const string& jsonFileName) : jsonFileName(jsonFileN
   baseMeleeDamage = json["baseMeleeDamage"].GetInt();
 
   for (const auto& skillJson : json["defaultSkills"].GetArray()) {
-    string skillJsonFileName = skillJson.GetString();
-    defaultSkills.push_back(std::move(skillJsonFileName));
+    string skillJsonFilePath = skillJson.GetString();
+    defaultSkills.push_back(std::move(skillJsonFilePath));
   }
 
   for (const auto& itemJson : json["defaultInventory"].GetObject()) {
-    string itemJsonFileName = itemJson.name.GetString();
+    string itemJsonFilePath = itemJson.name.GetString();
     int amount = itemJson.value.GetInt();
-    defaultInventory.push_back({std::move(itemJsonFileName), amount});
+    defaultInventory.push_back({std::move(itemJsonFilePath), amount});
   }
 }
 
-void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
-  rapidjson::Document json = json_util::loadFromFile(jsonFileName);
+void Character::Profile::loadSpritesheetInfo(const string& jsonFilePath) {
+  rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   textureResDir = json["textureResDir"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();
@@ -1471,7 +1471,7 @@ void Character::Profile::loadSpritesheetInfo(const string& jsonFileName) {
     if (!fs::exists(sfxPath, ec)) {
       continue;
     }
-    sfxFileNames[i] = sfxPath;
+    sfxFilePaths[i] = sfxPath;
   }
 }
 
