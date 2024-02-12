@@ -349,6 +349,10 @@ void WorldContactListener::EndContact(b2Contact* contact) {
         Interactable* i = reinterpret_cast<Interactable*>(interactableFixture->GetUserData().pointer);
         c->getInRangeInteractables().remove(i);
         i->hideHintUI();
+
+        if (c->getInRangeInteractables().size()) {
+          c->getInRangeInteractables().front()->showHintUI();
+        }
       }
       break;
     }
