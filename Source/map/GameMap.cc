@@ -123,6 +123,10 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
 }
 
 bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string& bgmFilePath) {
+  if (_isInBossFight) {
+    return false;
+  }
+  
   auto it = std::find_if(_dynamicActors.begin(), _dynamicActors.end(), [](const shared_ptr<DynamicActor>& actor) {
     return std::dynamic_pointer_cast<Character>(actor);
   });
@@ -145,6 +149,7 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string
     trigger->onBossFightBegin();
   }
 
+  _isInBossFight = true;
   return true;
 }
 
@@ -154,6 +159,8 @@ void GameMap::onBossFightEnd() {
   for (const auto& trigger : _triggers) {
     trigger->onBossFightEnd();
   }
+
+  _isInBossFight = false;
 }
 
 float GameMap::getWidth() const {

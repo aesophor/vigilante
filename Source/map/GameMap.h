@@ -184,6 +184,7 @@ class GameMap final {
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<PathFinder> _pathFinder;
+  bool _isInBossFight{};
 
   friend class GameMapManager;
   friend class GameState;
