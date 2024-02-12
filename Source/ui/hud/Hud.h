@@ -25,14 +25,14 @@ class Hud final {
  private:
   static inline constexpr float _kBarLength = 75.0f;
 
-  ax::Layer* _layer;
+  ax::Layer* _layer{};
   std::unique_ptr<StatusBar> _healthBar;
   std::unique_ptr<StatusBar> _magickaBar;
   std::unique_ptr<StatusBar> _staminaBar;
-  ax::ui::ImageView* _equippedWeaponBg;
-  ax::ui::ImageView* _equippedWeapon;
-  ax::ui::ImageView* _equippedWeaponDescBg;
-  ax::Label* _equippedWeaponDesc;
+  ax::ui::ImageView* _equippedWeaponBg{};
+  ax::ui::ImageView* _equippedWeapon{};
+  ax::ui::ImageView* _equippedWeaponDescBg{};
+  ax::Label* _equippedWeaponDesc{};
 };
 
 }  // namespace vigilante
