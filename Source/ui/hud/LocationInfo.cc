@@ -7,8 +7,8 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 
-#define HUD_X ax::Director::getInstance()->getWinSize().width - 50
-#define HUD_Y ax::Director::getInstance()->getWinSize().height - 40
+#define HUD_X ax::Director::getInstance()->getWinSize().width - 43
+#define HUD_Y ax::Director::getInstance()->getWinSize().height - 43
 
 using namespace std;
 using namespace vigilante::assets;
