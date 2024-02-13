@@ -67,6 +67,9 @@ class DialogueTree : public Importable {
   inline void resetCurrentNode() { _currentNode = _rootNode.get(); }
 
  private:
+  void addAllyDialogueToRootNode();
+  void addTradingDialogue();
+
   // <nodeName, DialogueTree::Node*>
   std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;
   std::unique_ptr<DialogueTree::Node> _rootNode;

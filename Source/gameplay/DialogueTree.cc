@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueTree.h"
 
 #include <cassert>
@@ -88,45 +88,47 @@ void DialogueTree::import(const string& jsonFilePath) {
     }
   }
 
-  // What's the effect of a "QuestDialogueTree"?
-  // e.g., if `_isQuestDialogue` == ture, then the dialogue to
-  //       toggle following/dismiss won't be present.
   _isQuestDialogueTree = json["isQuestDialogueTree"].GetBool();
-  if (_isQuestDialogueTree) {
-    return;
-  }
 
-  // If the dialogue tree's owner is a recruitable Npc,
-  // then add the following DialogueTree::Nodes as root node's children.
-  // (1) toggle join/leave (recruit/dismiss) party
-  // (2) toggle wait/follow (if this Npc already belongs to a party)
-  if (_owner->getNpcProfile().isRecruitable) {
-    auto toggleJoinPartyNode = std::make_unique<DialogueTree::Node>(this);
-    toggleJoinPartyNode->_lines.resize(1);
-    toggleJoinPartyNode->_cmds.resize(1);
-    _toggleJoinPartyNode = toggleJoinPartyNode.get();
-    _rootNode->_children.push_back(std::move(toggleJoinPartyNode));
-
-    if (_owner->getParty()) {
-      auto toggleWaitNode = std::make_unique<DialogueTree::Node>(this);
-      toggleWaitNode->_lines.resize(1);
-      toggleWaitNode->_cmds.resize(1);
-      _toggleWaitNode = toggleWaitNode.get();
-      _rootNode->_children.push_back(std::move(toggleWaitNode));
+  if (!_isQuestDialogueTree) {
+    if (_owner->getNpcProfile().isRecruitable) {
+      addAllyDialogueToRootNode();
+    }
+    if (_owner->getNpcProfile().isTradable) {
+      addTradingDialogue();
     }
   }
 
-  // If the dialogue tree's owner is a tradable Npc,
-  // then add trade dialogue as a root node's child.
-  if (_owner->getNpcProfile().isTradable) {
-    auto tradeNode = std::make_unique<DialogueTree::Node>(this);
-    tradeNode->_lines.push_back("Trade.");
-    tradeNode->_cmds.push_back("tradeWithPlayer");
-    _tradeNode = tradeNode.get();
-    _rootNode->_children.push_back(std::move(tradeNode));
-  }
-
   update();
+}
+
+void DialogueTree::addAllyDialogueToRootNode() {
+  // (1) toggle join/leave (recruit/dismiss) party
+  // (2) toggle wait/follow (if this Npc already belongs to a party)
+  auto toggleJoinPartyNode = std::make_unique<DialogueTree::Node>(this);
+  toggleJoinPartyNode->_lines.resize(1);
+  toggleJoinPartyNode->_cmds.resize(1);
+
+  _toggleJoinPartyNode = toggleJoinPartyNode.get();
+  _rootNode->_children.push_back(std::move(toggleJoinPartyNode));
+
+  if (_owner->getParty()) {
+    auto toggleWaitNode = std::make_unique<DialogueTree::Node>(this);
+    toggleWaitNode->_lines.resize(1);
+    toggleWaitNode->_cmds.resize(1);
+
+    _toggleWaitNode = toggleWaitNode.get();
+    _rootNode->_children.push_back(std::move(toggleWaitNode));
+  }
+}
+
+void DialogueTree::addTradingDialogue() {
+  auto tradeNode = std::make_unique<DialogueTree::Node>(this);
+  tradeNode->_lines.push_back("Trade.");
+  tradeNode->_cmds.push_back("tradeWithPlayer");
+
+  _tradeNode = tradeNode.get();
+  _rootNode->_children.push_back(std::move(tradeNode));
 }
 
 void DialogueTree::update() {
