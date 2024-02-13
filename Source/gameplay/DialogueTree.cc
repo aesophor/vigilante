@@ -158,9 +158,6 @@ DialogueTree::Node* DialogueTree::getNode(const string& nodeName) const {
   return it == _nodeMapper.end() ? nullptr : it->second;
 }
 
-DialogueTree::Node::Node(DialogueTree* tree)
-    : _tree(tree), _nodeName(), _lines(), _cmds(), _children() {}
-
 vector<DialogueTree::Node*> DialogueTree::Node::getChildren() const {
   if (_childrenRef.empty()) {
     return uniqueVec2RawVec<Dialogue>(_children);

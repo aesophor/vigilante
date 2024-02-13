@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "DialogueListView.h"
 
 #include "Assets.h"
@@ -9,20 +9,24 @@
 #include "ui/dialogue/DialogueManager.h"
 #include "ui/dialogue/DialogueListView.h"
 
-#define VISIBLE_ITEM_COUNT 3
-#define WIDTH 0  /* The position of _scrollBar will be updated dynamically */
-#define HEIGHT 53
-#define ITEM_GAP_HEIGHT 15
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr auto kVisibleItemCount = 3;
+constexpr auto kWidth = 0;  // The position of _scrollBar will be updated dynamically
+constexpr auto kHeight = 53;
+constexpr auto kItemGapHeight = 15;
+
+}  // namespace
+
 DialogueListView::DialogueListView(DialogueMenu* dialogMenu)
-    : ListView<Dialogue*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kEmptyImage, kEmptyImage),
-      _dialogueMenu(dialogMenu) {
+    : ListView<Dialogue*>{kVisibleItemCount, kWidth, kHeight, kItemGapHeight, kEmptyImage, kEmptyImage},
+      _dialogueMenu{dialogMenu} {
 
   _setSelectedCallback = [](ListView::ListViewItem* listViewItem, bool selected) {
     listViewItem->getIcon()->loadTexture((selected) ? string{kDialogueTriangle} : string{kEmptyImage});

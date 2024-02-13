@@ -21,13 +21,13 @@ class DialogueMenu : public Controllable {
 
   virtual void handleInput() override; // Controllable
 
-  ax::Layer* getLayer() const;
-  DialogueListView* getDialogueListView() const;
+  ax::Layer* getLayer() const { return _layer; }
+  DialogueListView* getDialogueListView() const { return _dialogueListView.get(); }
 
  private:
-  ax::Layer* _layer;
+  ax::Layer* _layer{};
 
-  ax::ui::ImageView* _background;
+  ax::ui::ImageView* _background{};
   std::unique_ptr<DialogueListView> _dialogueListView;
 };
 

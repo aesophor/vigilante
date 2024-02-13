@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Console.h"
 
 #include "input/InputManager.h"
@@ -13,12 +13,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Console::Console()
-    : _layer(Layer::create()),
-      _textField(),
-      _cmdHandler(),
-      _cmdHistory() {
-
+Console::Console() : _layer{Layer::create()} {
   auto onSubmit = [this]() {
     executeCmd(_textField.getString(),
                /*showNotification=*/true,

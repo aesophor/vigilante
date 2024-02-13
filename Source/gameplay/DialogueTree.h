@@ -29,7 +29,7 @@ class DialogueTree : public Importable {
 
   class Node final {
    public:
-    explicit Node(DialogueTree* tree);
+    explicit Node(DialogueTree* tree) : _tree{tree} {}
 
     inline const std::string& getNodeName() const { return _nodeName; }
     inline const std::vector<std::string>& getLines() const { return _lines; }
