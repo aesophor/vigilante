@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Subtitles.h"
 
 #include <vector>
@@ -8,16 +8,20 @@
 #include "scene/SceneManager.h"
 #include "util/ds/Algorithm.h"
 
-#define SHOW_CHAR_INTERVAL .03f
-#define LETTERBOX_HEIGHT 50
-#define LETTERBOX_TRANSITION_DURATION 1.0f
-#define SUBTITLES_Y 38
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
+
+namespace {
+
+constexpr auto kShowCharInterval = .03f;
+constexpr auto kLetterboxHeight = 50;
+constexpr auto kLetterboxTransitionDuration = 1.0f;
+constexpr auto kSubtitlesY = 38;
+
+}  // namespace
 
 Subtitles::Subtitles()
     : _layer(Layer::create()),
@@ -29,18 +33,18 @@ Subtitles::Subtitles()
       _isTransitioning(),
       _timer() {
   auto winSize = Director::getInstance()->getWinSize();
-  _label->setPosition(winSize.width / 2, SUBTITLES_Y);
+  _label->setPosition(winSize.width / 2, kSubtitlesY);
   _label->getFontAtlas()->setAliasTexParameters();
 
   _upperLetterbox->setAnchorPoint({0, 0});
   _upperLetterbox->setPositionY(winSize.height);
   _upperLetterbox->setScaleX(winSize.width);
-  _upperLetterbox->setScaleY(LETTERBOX_HEIGHT);
+  _upperLetterbox->setScaleY(kLetterboxHeight);
 
   _lowerLetterbox->setAnchorPoint({0, 0});
-  _lowerLetterbox->setPositionY(-LETTERBOX_HEIGHT);
+  _lowerLetterbox->setPositionY(-kLetterboxHeight);
   _lowerLetterbox->setScaleX(winSize.width);
-  _lowerLetterbox->setScaleY(LETTERBOX_HEIGHT);
+  _lowerLetterbox->setScaleY(kLetterboxHeight);
 
   _nextSubtitleIcon->setVisible(false);
 
@@ -56,7 +60,7 @@ void Subtitles::update(const float delta) {
     return;
   }
 
-  if (_timer >= SHOW_CHAR_INTERVAL) {
+  if (_timer >= kShowCharInterval) {
     int nextCharIdx = _label->getString().size();
     _label->setString(string{_label->getString()} + _currentSubtitle.text.at(nextCharIdx));
     _timer = 0;
@@ -89,9 +93,9 @@ void Subtitles::beginSubtitles() {
 
   _isTransitioning = true;
   _layer->setVisible(true);
-  _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}));
+  _upperLetterbox->runAction(MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}),
+    MoveBy::create(kLetterboxTransitionDuration, {0, kLetterboxHeight}),
     CallFunc::create([=]() {
       _isTransitioning = false;
       showNextSubtitle();
@@ -105,9 +109,9 @@ void Subtitles::endSubtitles() {
   }
 
   _isTransitioning = true;
-  _upperLetterbox->runAction(MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, LETTERBOX_HEIGHT}));
+  _upperLetterbox->runAction(MoveBy::create(kLetterboxTransitionDuration, {0, kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
-    MoveBy::create(LETTERBOX_TRANSITION_DURATION, {0, -LETTERBOX_HEIGHT}),
+    MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}),
     CallFunc::create([=]() {
       _isTransitioning = false;
       _layer->setVisible(false);
