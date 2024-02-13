@@ -23,6 +23,7 @@ class Subtitles : public Controllable {
   void addSubtitle(const std::string& subtitle);
   void beginSubtitles();
   void endSubtitles();
+  void finishCurrentSubtitle();
   void showNextSubtitle();
 
   inline ax::Layer* getLayer() const { return _layer; }

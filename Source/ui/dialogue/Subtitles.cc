@@ -74,7 +74,14 @@ void Subtitles::update(const float delta) {
 }
 
 void Subtitles::handleInput() {
-  if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
+  if (!IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER) &&
+      !IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_SPACE)) {
+    return;
+  }
+
+  if (_label->getString().size()  != _currentSubtitle.text.size()) {
+    finishCurrentSubtitle();
+  } else {
     showNextSubtitle();
   }
 }
@@ -123,6 +130,14 @@ void Subtitles::endSubtitles() {
       dialogueMgr->getTargetNpc()->onDialogueEnd();
     })
   ));
+}
+
+void Subtitles::finishCurrentSubtitle() {
+  if (_isTransitioning) {
+    return;
+  }
+
+  _label->setString(_currentSubtitle.text);
 }
 
 void Subtitles::showNextSubtitle() {
