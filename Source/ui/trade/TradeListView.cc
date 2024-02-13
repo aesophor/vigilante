@@ -57,6 +57,7 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
   _descLabel->getFontAtlas()->setAliasTexParameters();
   _descLabel->setAnchorPoint({0, 1});
   _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
+  _descLabel->setWidth(WIDTH - DESC_LABEL_X * 2);
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
