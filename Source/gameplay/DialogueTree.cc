@@ -120,7 +120,7 @@ void DialogueTree::import(const string& jsonFilePath) {
   // then add trade dialogue as a root node's child.
   if (_owner->getNpcProfile().isTradable) {
     auto tradeNode = std::make_unique<DialogueTree::Node>(this);
-    tradeNode->_lines.push_back("Let's trade.");
+    tradeNode->_lines.push_back("Trade.");
     tradeNode->_cmds.push_back("tradeWithPlayer");
     _tradeNode = tradeNode.get();
     _rootNode->_children.push_back(std::move(tradeNode));
