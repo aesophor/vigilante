@@ -30,6 +30,7 @@ class CommandHandler final {
   void killCurrentTarget(const std::vector<std::string>& args);
   void interact(const std::vector<std::string>& args);
   void narrate(const std::vector<std::string>& args);
+  void playerRest(const std::vector<std::string>& args);
   void beginBossFight(const std::vector<std::string>& args);
   void endBossFight(const std::vector<std::string>& args);
 

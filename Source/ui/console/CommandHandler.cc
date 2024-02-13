@@ -16,6 +16,7 @@
 #define DEFAULT_ERR_MSG "unable to parse this line"
 
 using namespace std;
+USING_NS_AX;
 
 namespace vigilante {
 
@@ -48,7 +49,9 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
     {"interact",                &CommandHandler::interact               },
     {"narrate",                 &CommandHandler::narrate                },
+    {"playerRest",              &CommandHandler::playerRest             },
     {"beginBossFight",          &CommandHandler::beginBossFight         },
+    {"endBossFight",            &CommandHandler::endBossFight           },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -345,6 +348,26 @@ void CommandHandler::narrate(const vector<string>& args) {
   }
 
   dialogueMgr->getSubtitles()->beginSubtitles();
+  setSuccess();
+}
+
+void CommandHandler::playerRest(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError("usage: playerRest");
+    return;
+  }
+
+  auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
+  shade->getImageView()->runAction(Sequence::create(
+      FadeIn::create(Shade::kFadeInTime * 3),
+      FadeOut::create(Shade::kFadeOutTime * 3),
+      CallFunc::create([]() {
+        auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+        notifications->show("You awaken feeling well rested.");
+      }),
+      nullptr
+  ));
+
   setSuccess();
 }
 
