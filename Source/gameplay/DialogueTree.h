@@ -29,6 +29,11 @@ class DialogueTree : public Importable {
 
   class Node final {
    public:
+    enum class Type {
+      CHILDREN,
+      CHILDREN_ON_EXEC_FAIL,
+    };
+
     explicit Node(DialogueTree* tree) : _tree{tree} {}
 
     inline const std::string& getNodeName() const { return _nodeName; }
@@ -36,6 +41,7 @@ class DialogueTree : public Importable {
     inline const std::vector<std::string>& getCmds() const { return _cmds; }
     inline const std::string& getChildrenRef() const { return _childrenRef; }
     std::vector<Node*> getChildren() const;
+    std::vector<Node*> getChildrenOnExecFail() const;
 
    private:
     DialogueTree* _tree;
@@ -52,6 +58,7 @@ class DialogueTree : public Importable {
     // (b) children: we actually keep unique_ptr<Node> to the nodes.
     std::string _childrenRef;
     std::vector<std::unique_ptr<Node>> _children;
+    std::vector<std::unique_ptr<Node>> _childrenOnExecFail;
 
     friend class DialogueTree;
   };

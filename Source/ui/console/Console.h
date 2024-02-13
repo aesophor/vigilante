@@ -18,7 +18,7 @@ class Console final {
   Console();
 
   virtual void update(const float delta);
-  virtual void executeCmd(const std::string& cmd,
+  virtual bool executeCmd(const std::string& cmd,
                           bool showNotification=false,
                           bool saveInHistory=false);
 

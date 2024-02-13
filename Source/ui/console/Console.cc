@@ -52,10 +52,11 @@ void Console::update(const float delta) {
   _textField.update(delta);
 }
 
-void Console::executeCmd(const string& cmd,
+bool Console::executeCmd(const string& cmd,
                          bool showNotification,
                          bool saveInHistory) {
-  if (!_cmdHandler.handle(cmd, showNotification)) {
+  bool hasSucceeded = _cmdHandler.handle(cmd, showNotification);
+  if (!hasSucceeded) {
     VGLOG(LOG_INFO, "Failed to handle cmd: [%s].", cmd.c_str());
   }
 
@@ -63,6 +64,8 @@ void Console::executeCmd(const string& cmd,
     _cmdHistory.push(cmd);
     _cmdHistory._current = _cmdHistory._tail;
   }
+  
+  return hasSucceeded;
 }
 
 bool Console::isVisible() const {

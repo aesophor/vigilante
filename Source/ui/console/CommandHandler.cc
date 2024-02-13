@@ -50,6 +50,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"interact",                &CommandHandler::interact               },
     {"narrate",                 &CommandHandler::narrate                },
     {"playerRest",              &CommandHandler::playerRest             },
+    {"playerRentRoom",          &CommandHandler::playerRentRoom         },
     {"beginBossFight",          &CommandHandler::beginBossFight         },
     {"endBossFight",            &CommandHandler::endBossFight           },
   };
@@ -368,6 +369,37 @@ void CommandHandler::playerRest(const vector<string>& args) {
       nullptr
   ));
 
+  setSuccess();
+}
+
+void CommandHandler::playerRentRoom(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: playerRentRoom <gold>");
+    return;
+  }
+
+  int fee = 0;
+  try {
+    fee = std::stoi(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `amount`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`amount` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (player->getGoldBalance() < fee) {
+    setError("Failed to rend room, insufficient gold.");
+    return;
+  }
+
+  player->removeGold(fee);
   setSuccess();
 }
 

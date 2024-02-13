@@ -46,15 +46,16 @@ void DialogueTree::import(const string& jsonFilePath) {
 
   // Convert rapidjson tree into our DialogueTree using tree DFS.
   // DFS 大師 !!!!!!! XDDDDDDDDD
-  stack<pair<rapidjson::Value::Object, Node*>> st;  // <jsonObject, parent>
-  st.push({json.GetObject(), nullptr});
+  stack<tuple<rapidjson::Value::Object, Node*, Node::Type>> st;  // <jsonObject, parent>
+  st.push({json.GetObject(), nullptr, Node::Type::CHILDREN});
 
   while (!st.empty()) {
-    rapidjson::Value::Object jsonNode = st.top().first;
-    DialogueTree::Node* parent = st.top().second;
+    rapidjson::Value::Object jsonNode = std::get<0>(st.top());
+    DialogueTree::Node* parent = std::get<1>(st.top());
+    const Node::Type nodeType = std::get<2>(st.top());
+
     st.pop();
 
-    // Construct this node.
     auto node = std::make_unique<DialogueTree::Node>(this);
 
     if (jsonNode.HasMember("nodeName")) {
@@ -75,7 +76,14 @@ void DialogueTree::import(const string& jsonFilePath) {
       // Push this node's children onto the stack in reverse order.
       const auto& children = jsonNode["children"].GetArray();
       for (int i = children.Size() - 1; i >= 0; i--) {
-        st.push({children[i].GetObject(), node.get()});
+        st.push({children[i].GetObject(), node.get(), Node::Type::CHILDREN});
+      }
+
+      if (jsonNode.HasMember("childrenOnExecFail")) {
+        const auto& childrenOnExecFail = jsonNode["childrenOnExecFail"].GetArray();
+        for (int i = childrenOnExecFail.Size() - 1; i >= 0; i--) {
+          st.push({childrenOnExecFail[i].GetObject(), node.get(), Node::Type::CHILDREN_ON_EXEC_FAIL});
+        }
       }
     }
 
@@ -84,12 +92,19 @@ void DialogueTree::import(const string& jsonFilePath) {
       _currentNode = _rootNode.get();
     } else {
       assert(parent != nullptr);
-      parent->_children.push_back(std::move(node));
+      switch (nodeType) {
+        case Node::Type::CHILDREN_ON_EXEC_FAIL:
+          parent->_childrenOnExecFail.emplace_back(std::move(node));
+          break;
+        case Node::Type::CHILDREN:
+        default:
+          parent->_children.emplace_back(std::move(node));
+          break;
+      }
     }
   }
 
   _isQuestDialogueTree = json["isQuestDialogueTree"].GetBool();
-
   if (!_isQuestDialogueTree) {
     if (_owner->getNpcProfile().isRecruitable) {
       addAllyDialogueToRootNode();
@@ -166,5 +181,15 @@ vector<DialogueTree::Node*> DialogueTree::Node::getChildren() const {
   DialogueTree::Node* refNode = _tree->getNode(_childrenRef);
   return uniqueVec2RawVec<Dialogue>(refNode->_children);
 }
+
+vector<DialogueTree::Node*> DialogueTree::Node::getChildrenOnExecFail() const {
+  if (_childrenRef.empty()) {
+    return uniqueVec2RawVec<Dialogue>(_childrenOnExecFail);
+  }
+
+  DialogueTree::Node* refNode = _tree->getNode(_childrenRef);
+  return uniqueVec2RawVec<Dialogue>(refNode->_childrenOnExecFail);
+}
+
 
 }  // namespace vigilante

@@ -43,15 +43,20 @@ void DialogueListView::confirm() {
   auto subtitles = dialogueMgr->getSubtitles();
 
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+  bool hasAllCmdsSucceeded = true;
   for (const auto& cmd : getSelectedObject()->getCmds()) {
-    console->executeCmd(cmd);
+    if (!console->executeCmd(cmd)) {
+      hasAllCmdsSucceeded = false;
+    }
   }
 
-  if (getSelectedObject()->getChildren().empty()) {
+  const vector<DialogueTree::Node*> children = hasAllCmdsSucceeded ? getSelectedObject()->getChildren()
+                                                                   : getSelectedObject()->getChildrenOnExecFail();
+  if (children.empty()) {
     subtitles->endSubtitles();
     dialogueMgr->getTargetNpc()->getDialogueTree().resetCurrentNode();
   } else {
-    Dialogue* nextDialogue = getSelectedObject()->getChildren().front();
+    Dialogue* nextDialogue = children.front();
     for (const auto& line : nextDialogue->getLines()) {
       subtitles->addSubtitle(line);
     }
