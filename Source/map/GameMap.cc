@@ -268,6 +268,7 @@ void GameMap::createTriggers() {
     bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
     bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
     bool shouldBlockWhileInBossFight = valMap.at("shouldBlockWhileInBossFight").asBool();
+    string controlHintText = valMap.at("controlHintText").asString();
     int damage = valMap.at("damage").asInt();
 
     B2BodyBuilder bodyBuilder(_world);
@@ -276,7 +277,8 @@ void GameMap::createTriggers() {
       .buildBody();
 
     auto trigger = std::make_unique<GameMap::Trigger>(
-        cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer, shouldBlockWhileInBossFight, damage, body);
+        cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer,
+        shouldBlockWhileInBossFight, controlHintText, damage, body);
     auto trigger_raw_ptr = trigger.get();
     _triggers.emplace_back(std::move(trigger));
 
@@ -414,12 +416,14 @@ GameMap::Trigger::Trigger(const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
                           const bool shouldBlockWhileInBossFight,
+                          const string& controlHintText,
                           const int damage,
                           b2Body* body)
     : _cmds{cmds},
       _canBeTriggeredOnlyOnce{canBeTriggeredOnlyOnce},
       _canBeTriggeredOnlyByPlayer{canBeTriggeredOnlyByPlayer},
       _shouldBlockWhileInBossFight{shouldBlockWhileInBossFight},
+      _controlHintText{controlHintText},
       _damage{damage},
       _body{body} {}
 
@@ -444,6 +448,12 @@ void GameMap::Trigger::onInteract(Character* user) {
   }
 }
 
+bool GameMap::Trigger::willInteractOnContact() const {
+  // If a control hint text is defined, then this trigger will not
+  // automatically activate on contact.
+  return _controlHintText.empty();
+}
+
 void GameMap::Trigger::onBossFightBegin() {
   if (_shouldBlockWhileInBossFight) {
     for (b2Fixture* fixture = _body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -458,6 +468,25 @@ void GameMap::Trigger::onBossFightEnd() {
       fixture->SetSensor(true);
     }
   }
+}
+
+void GameMap::Trigger::showHintUI() {
+  if (_controlHintText.empty()) {
+    return;
+  }
+
+  const Color4B textColor{colorscheme::kWhite};
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->insert({EventKeyboard::KeyCode::KEY_CAPITAL_E}, _controlHintText, textColor);
+}
+
+void GameMap::Trigger::hideHintUI() {
+  if (_controlHintText.empty()) {
+    return;
+  }
+
+  auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+  controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }
 
 GameMap::Portal::Portal(const string& destTmxMapFilePath, int destPortalId,
@@ -514,8 +543,6 @@ bool GameMap::Portal::willInteractOnContact() const {
 }
 
 void GameMap::Portal::showHintUI() {
-  //createHintBubbleFx();
-
   string text = "Open";
   Color4B textColor = colorscheme::kWhite;
 
@@ -530,8 +557,6 @@ void GameMap::Portal::showHintUI() {
 }
 
 void GameMap::Portal::hideHintUI() {
-  //removeHintBubbleFx();
-
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_F});
 }

@@ -47,6 +47,7 @@ class GameMap final {
             const bool canBeTriggeredOnlyOnce,
             const bool canBeTriggeredOnlyByPlayer,
             const bool shouldBlockWhileInBossFight,
+            const std::string& controlHintText,
             const int damage,
             b2Body* body);
     virtual ~Trigger();
@@ -54,15 +55,16 @@ class GameMap final {
     // Executes certain commands via ui/console/Console.cc
     // when the player's body collides with `this->_body`
     virtual void onInteract(Character* user) override;  // Interactable
-    virtual bool willInteractOnContact() const override { return true; }  // Interactable
-    virtual void showHintUI() override {}  // Interactable
-    virtual void hideHintUI() override {}  // Interactable
+    virtual bool willInteractOnContact() const override;  // Interactable
+    virtual void showHintUI() override;  // Interactable
+    virtual void hideHintUI() override;  // Interactable
 
     void onBossFightBegin();
     void onBossFightEnd();
 
     inline bool canBeTriggeredOnlyOnce() const { return _canBeTriggeredOnlyOnce; }
     inline bool canBeTriggeredOnlyByPlayer() const { return _canBeTriggeredOnlyByPlayer; }
+    inline const std::string& getControlHint() const { return _controlHintText; }
     inline int getDamage() const { return _damage; }
     inline bool hasTriggered() const { return _hasTriggered; }
     inline void setTriggered(bool triggered) { _hasTriggered = triggered; }
@@ -76,6 +78,7 @@ class GameMap final {
     bool _canBeTriggeredOnlyOnce{};
     bool _canBeTriggeredOnlyByPlayer{};
     bool _shouldBlockWhileInBossFight{};
+    std::string _controlHintText{};
     int _damage{};
 
     bool _hasTriggered{};
