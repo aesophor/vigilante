@@ -80,7 +80,7 @@ bool Item::showOnMap(float x, float y) {
   return true;
 }
 
-void Item::update(float delta) {
+void Item::update(const float delta) {
   DynamicActor::update(delta);
 
   handleVerticalFloatingMovement(delta);
@@ -125,7 +125,7 @@ bool Item::isGold() const {
   return _itemProfile.jsonFilePath == assets::kGoldCoin;
 }
 
-void Item::handleVerticalFloatingMovement(float delta) {
+void Item::handleVerticalFloatingMovement(const float delta) {
   _accumulatedDelta += delta;
 
   const float offsetY = std::sin(_accumulatedDelta * kFloatingSpeedFactor) * kFloatingDisplacementFactor;

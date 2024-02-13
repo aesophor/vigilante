@@ -17,7 +17,7 @@ namespace vigilante {
 
 // Npc: Non-player character
 // i.e., enemies and allies are all npcs.
-class Npc : public Character, public Interactable {
+class Npc final : public Character, public Interactable {
  public:
   // In addition to Character::FixtureType, the new version defined in Npc.h
   // has the fourth fixture type.

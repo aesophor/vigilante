@@ -16,7 +16,7 @@
 
 namespace vigilante {
 
-class Player : public Character, public Controllable {
+class Player final : public Character, public Controllable {
  public:
   explicit Player(const std::string& jsonFilePath);
   virtual ~Player() override = default;
