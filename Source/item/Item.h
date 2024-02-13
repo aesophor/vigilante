@@ -40,6 +40,7 @@ class Item : public DynamicActor, public Importable {
   virtual ~Item() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
+  virtual void update(float delta) override;  // DynamicActor
   virtual void import(const std::string& jsonFilePath) override;  // Importable
 
   inline Item::Profile& getItemProfile() { return _itemProfile; }
@@ -61,8 +62,11 @@ class Item : public DynamicActor, public Importable {
                   short categoryBits,
                   short maskBits);
 
+  void handleVerticalFloatingMovement(float delta);
+
   Item::Profile _itemProfile;
   int _amount{1};
+  float _accumulatedDelta{};  // used for in-game-map up & down floating.
 };
 
 }  // namespace vigilante

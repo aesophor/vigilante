@@ -1,6 +1,8 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 #include "Item.h"
 
+#include <cmath>
+
 #include "Assets.h"
 #include "Constants.h"
 #include "item/Equipment.h"
@@ -27,6 +29,9 @@ constexpr int kItemNumFixtures = 2;
 
 constexpr auto kItemCategoryBits = kItem;
 constexpr auto kItemMaskBits = kGround | kPlatform | kWall;
+
+constexpr float kFloatingSpeedFactor = 3.0f;
+constexpr float kFloatingDisplacementFactor = 3.0f;
 
 }  // namespace
 
@@ -65,6 +70,7 @@ bool Item::showOnMap(float x, float y) {
 
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
+  _bodySprite->setScale(0.8f);
 
   _node->addChild(_bodySprite, graphical_layers::kItem);
 
@@ -72,6 +78,12 @@ bool Item::showOnMap(float x, float y) {
   gmMgr->getLayer()->addChild(_node, graphical_layers::kItem);
 
   return true;
+}
+
+void Item::update(float delta) {
+  DynamicActor::update(delta);
+
+  handleVerticalFloatingMovement(delta);
 }
 
 void Item::import(const string& jsonFilePath) {
@@ -111,6 +123,13 @@ string Item::getIconPath() const {
 
 bool Item::isGold() const {
   return _itemProfile.jsonFilePath == assets::kGoldCoin;
+}
+
+void Item::handleVerticalFloatingMovement(float delta) {
+  _accumulatedDelta += delta;
+
+  const float offsetY = std::sin(_accumulatedDelta * kFloatingSpeedFactor) * kFloatingDisplacementFactor;
+  _bodySprite->setPositionY(_bodySprite->getPositionY() + offsetY);
 }
 
 Item::Profile::Profile(const string& jsonFilePath) : jsonFilePath(jsonFilePath) {
