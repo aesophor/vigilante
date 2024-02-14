@@ -1,15 +1,19 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#include "Notifications.h"
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#define STARTING_X 10.0f
-#define STARTING_Y 25.0f
-#define MAX_LABEL_COUNT 10
-#define LABEL_LIFETIME 5.0f
-#define LABEL_ALIGNMENT TimedLabelService::TimedLabel::kLeft
+#include "Notifications.h"
 
 namespace vigilante {
 
+namespace {
+
+constexpr float kStartingX = 10.0f;
+constexpr float kStartingY = 25.0f;
+constexpr int kMaxLabelCount = 10;
+constexpr uint8_t kMaxLabelLifetime = 5;
+
+}  // namespace
+
 Notifications::Notifications()
-    : TimedLabelService(STARTING_X, STARTING_Y, MAX_LABEL_COUNT, LABEL_LIFETIME, LABEL_ALIGNMENT) {}
+    : TimedLabelService{kStartingX, kStartingY, kMaxLabelCount, kMaxLabelLifetime, TimedLabelService::TimedLabel::kLeft} {}
 
 }  // namespace vigilante

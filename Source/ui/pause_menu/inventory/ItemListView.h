@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_ITEM_LIST_VIEW_H_
-#define VIGILANTE_ITEM_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_INVENTORY_ITEM_LIST_VIEW_H_
+#define VIGILANTE_UI_PAUSE_MENU_INVENTORY_ITEM_LIST_VIEW_H_
 
 #include "item/Item.h"
 #include "item/Equipment.h"
@@ -10,7 +11,7 @@ namespace vigilante {
 
 class PauseMenu;
 
-class ItemListView : public ListView<Item*> {
+class ItemListView final : public ListView<Item*> {
  public:
   explicit ItemListView(PauseMenu* pauseMenu);
   virtual ~ItemListView() = default;
@@ -29,4 +30,4 @@ class ItemListView : public ListView<Item*> {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_ITEM_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_INVENTORY_ITEM_LIST_VIEW_H_

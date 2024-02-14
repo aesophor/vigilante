@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_ITEM_H_
-#define VIGILANTE_ITEM_H_
+
+#ifndef VIGILANTE_ITEM_ITEM_H_
+#define VIGILANTE_ITEM_ITEM_H_
 
 #include <memory>
 #include <string>
@@ -71,4 +72,4 @@ class Item : public DynamicActor, public Importable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_ITEM_H_
+#endif  // VIGILANTE_ITEM_ITEM_H_

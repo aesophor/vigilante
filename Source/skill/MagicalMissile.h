@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_MAGICAL_MISSILE_H_
-#define VIGILANTE_MAGICAL_MISSILE_H_
+
+#ifndef VIGILANTE_SKILL_MAGICAL_MISSILE_H_
+#define VIGILANTE_SKILL_MAGICAL_MISSILE_H_
 
 #include <string>
 
@@ -15,7 +16,7 @@ namespace vigilante {
 
 class Character;
 
-class MagicalMissile : public DynamicActor, public Skill, public Projectile {
+class MagicalMissile final : public DynamicActor, public Skill, public Projectile {
  public:
   enum AnimationType {
     LAUNCH_FX,
@@ -66,4 +67,4 @@ class MagicalMissile : public DynamicActor, public Skill, public Projectile {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_MAGICAL_MISSILE_H_
+#endif  // VIGILANTE_SKILL_MAGICAL_MISSILE_H_

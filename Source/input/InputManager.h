@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_INPUT_MANAGER_H_
-#define VIGILANTE_INPUT_MANAGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_INPUT_INPUT_MANAGER_H_
+#define VIGILANTE_INPUT_INPUT_MANAGER_H_
 
 #include <functional>
 #include <stack>
@@ -76,4 +77,4 @@ class InputManager final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_INPUT_MANAGER_H_
+#endif  // VIGILANTE_INPUT_INPUT_MANAGER_H_

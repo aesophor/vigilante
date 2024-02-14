@@ -1,17 +1,22 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "Console.h"
 
 #include "input/InputManager.h"
 #include "util/Logger.h"
 
-#define CONSOLE_X 10
-#define CONSOLE_Y 10
-#define DEFAULT_HISTORY_SIZE 32
-
 using namespace std;
 USING_NS_AX;
 
 namespace vigilante {
+
+namespace {
+
+constexpr float kConsoleX = 10.0f;
+constexpr float kConsoleY = 10.0f;
+constexpr size_t kMaxHistorySize = 32;
+
+}  // namespace
 
 Console::Console() : _layer{Layer::create()} {
   auto onSubmit = [this]() {
@@ -41,7 +46,7 @@ Console::Console() : _layer{Layer::create()} {
   _textField.setDismissKey(EventKeyboard::KeyCode::KEY_GRAVE);
 
   _layer->setVisible(false);
-  _layer->setPosition(CONSOLE_X, CONSOLE_Y);
+  _layer->setPosition(kConsoleX, kConsoleY);
   _layer->addChild(_textField.getLayout());
 }
 
@@ -78,7 +83,7 @@ void Console::setVisible(bool visible) {
 }
 
 Console::CommandHistory::CommandHistory()
-    : CircularBuffer<string>(DEFAULT_HISTORY_SIZE), _current(_tail) {}
+    : CircularBuffer<string>{kMaxHistorySize}, _current{_tail} {}
 
 bool Console::CommandHistory::canGoBack() const {
   return _current != _head;
@@ -106,4 +111,4 @@ const string& Console::CommandHistory::getCurrentLine() const {
   return _data[_current];
 }
 
-} // namespace vigilante
+}  // namespace vigilante

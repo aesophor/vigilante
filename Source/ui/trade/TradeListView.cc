@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "TradeListView.h"
 
 #include <memory>
@@ -12,36 +13,37 @@
 #include "ui/trade/TradeWindow.h"
 #include "util/StringUtil.h"
 
-#define VISIBLE_ITEM_COUNT 5
-#define WIDTH 289.5
-#define HEIGHT 120
-#define ITEM_GAP_HEIGHT 25
-
-#define DESC_LABEL_X 5
-#define DESC_LABEL_Y -132
-
-#define EMPTY_ITEM_NAME "---"
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr int kVisibleItemCount = 5;
+constexpr float kWidth = 289.5f;
+constexpr float kHeight = 120.0f;
+constexpr float kItemGapHeight = 25.0f;
+
+constexpr float kDescLabelX = 5.0f;
+constexpr float kDescLabelY = -132.0f;
+
+}  // namespace
+
 TradeListView::TradeListView(TradeWindow* tradeWindow)
-    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
-      _tradeWindow(tradeWindow),
-      _descLabel(Label::createWithTTF("", string{assets::kRegularFont}, assets::kRegularFontSize)) {
+    : ListView<Item*>{kVisibleItemCount, kWidth, kHeight, kItemGapHeight, kItemRegular, kItemHighlighted},
+      _tradeWindow{tradeWindow},
+      _descLabel{Label::createWithTTF("", string{assets::kRegularFont}, assets::kRegularFontSize)} {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [this](ListViewItem* listViewItem, Item* item) {
-    assert(item != nullptr);
-
     ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
-    icon->loadTexture((item) ? item->getIconPath() : kEmptyImage.native());
-    label->setString((item) ? item->getName() : EMPTY_ITEM_NAME);
+    assert(item != nullptr);
+    icon->loadTexture(item->getIconPath());
+    label->setString(item->getName());
 
     // Display item price if not trading with ally.
     if (!_tradeWindow->isTradingWithAlly()) {
@@ -56,8 +58,8 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
 
   _descLabel->getFontAtlas()->setAliasTexParameters();
   _descLabel->setAnchorPoint({0, 1});
-  _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
-  _descLabel->setWidth(WIDTH - DESC_LABEL_X * 2);
+  _descLabel->setPosition({kDescLabelX, kDescLabelY});
+  _descLabel->setWidth(kWidth - kDescLabelX * 2);
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }
@@ -76,11 +78,11 @@ void TradeListView::confirm() {
     doTrade(buyer, seller, item, 1);
 
   } else {
-    auto w = std::make_unique<AmountSelectionWindow>();
-    AmountSelectionWindow* wRaw = w.get();
+    auto window = std::make_unique<AmountSelectionWindow>();
+    AmountSelectionWindow* windowRawPtr = window.get();
 
-    auto onSubmit = [wRaw, this, buyer, seller, item]() {
-      const string& buf = wRaw->getTextField()->getString();
+    auto onSubmit = [windowRawPtr, this, buyer, seller, item]() {
+      const string& buf = windowRawPtr->getTextField()->getString();
       int amount = 0;
 
       auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
@@ -104,12 +106,12 @@ void TradeListView::confirm() {
       wm->pop();
     };
 
-    w->getTextField()->setOnSubmit(onSubmit);
-    w->getTextField()->setOnDismiss(onDismiss);
-    w->getTextField()->setReceivingInput(true);
+    window->getTextField()->setOnSubmit(onSubmit);
+    window->getTextField()->setOnDismiss(onDismiss);
+    window->getTextField()->setReceivingInput(true);
     
     auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
-    wm->push(std::move(w));
+    wm->push(std::move(window));
   }
 }
 

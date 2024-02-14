@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #ifndef VIGILANTE_AUDIO_H_
 #define VIGILANTE_AUDIO_H_
 

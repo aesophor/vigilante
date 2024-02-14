@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SET_VECTOR_H_
-#define VIGILANTE_SET_VECTOR_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_DS_SET_VECTOR_H_
+#define VIGILANTE_UTIL_DS_SET_VECTOR_H_
 
 #include <initializer_list>
 #include <unordered_set>
@@ -107,4 +108,4 @@ class SetVector final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SET_VECTOR_H_
+#endif  // VIGILANTE_UTIL_DS_SET_VECTOR_H_

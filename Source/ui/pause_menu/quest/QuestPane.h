@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_QUEST_PANE_H_
-#define VIGILANTE_QUEST_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_PANE_H_
 
 #include <memory>
 
@@ -12,7 +13,7 @@
 
 namespace vigilante {
 
-class QuestPane : public AbstractPane {
+class QuestPane final : public AbstractPane {
  public:
   explicit QuestPane(PauseMenu* pauseMenu);
   virtual ~QuestPane() = default;
@@ -26,6 +27,6 @@ class QuestPane : public AbstractPane {
   std::unique_ptr<QuestListView> _questListView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_QUEST_PANE_H_
+#endif // VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_PANE_H_

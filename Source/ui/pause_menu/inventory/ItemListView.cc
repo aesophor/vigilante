@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "ItemListView.h"
 
 #include "Assets.h"
@@ -12,27 +13,30 @@
 #include "util/ds/SetVector.h"
 #include "util/KeyCodeUtil.h"
 
-#define VISIBLE_ITEM_COUNT 5
-#define WIDTH 289.5
-#define HEIGHT 120
-#define ITEM_GAP_HEIGHT 25
-
-#define DESC_LABEL_X 5
-#define DESC_LABEL_Y -132
-
-#define EMPTY_ITEM_NAME "---"
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
-ItemListView::ItemListView(PauseMenu* pauseMenu)
-    : ListView<Item*>(VISIBLE_ITEM_COUNT, WIDTH, HEIGHT, ITEM_GAP_HEIGHT, kItemRegular, kItemHighlighted),
-      _pauseMenu(pauseMenu),
-      _descLabel(Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)) {
+namespace {
 
+constexpr int kVisibleItemCount = 5;
+constexpr float kWidth = 289.5f;
+constexpr float kHeight = 120.0f;
+constexpr float kItemGapHeight = 25.0f;
+
+constexpr float kDescLabelX = 5.0f;
+constexpr float kDescLabelY = -132.0f;
+
+constexpr char kEmptyItemName[] = "---";
+
+}  // namespace
+
+ItemListView::ItemListView(PauseMenu* pauseMenu)
+    : ListView<Item*>{kVisibleItemCount, kWidth, kHeight, kItemGapHeight, kItemRegular, kItemHighlighted},
+      _pauseMenu{pauseMenu},
+      _descLabel{Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)} {
   // _setObjectCallback is called at the end of ListView<T>::ListViewItem::setObject()
   // see ui/ListView.h
   _setObjectCallback = [](ListViewItem* listViewItem, Item* item) {
@@ -40,7 +44,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
     Label* label = listViewItem->getLabel();
 
     icon->loadTexture(item ? item->getIconPath() : kEmptyImage.native());
-    label->setString(item ? item->getName() : EMPTY_ITEM_NAME);
+    label->setString(item ? item->getName() : kEmptyItemName);
 
     if (!item) {
       return;
@@ -65,7 +69,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
 
   _descLabel->getFontAtlas()->setAliasTexParameters();
   _descLabel->setAnchorPoint({0, 1});
-  _descLabel->setPosition({DESC_LABEL_X, DESC_LABEL_Y});
+  _descLabel->setPosition({kDescLabelX, kDescLabelY});
   _descLabel->enableWrap(true);
   _layout->addChild(_descLabel);
 }

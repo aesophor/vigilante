@@ -1,4 +1,5 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "LocationInfo.h"
 
 #include "Assets.h"

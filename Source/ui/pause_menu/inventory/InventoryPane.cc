@@ -16,12 +16,10 @@ USING_NS_AX;
 namespace vigilante {
 
 InventoryPane::InventoryPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu),
-      _background(ui::ImageView::create(string{kInventoryBg})),
-      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _itemListView(make_unique<ItemListView>(pauseMenu)),
-      _isSelectingEquipment(),
-      _selectingEquipmentType() {
+    : AbstractPane{pauseMenu},
+      _background{ui::ImageView::create(string{kInventoryBg})},
+      _tabView{make_unique<TabView>(kTabRegular, kTabHighlighted)},
+      _itemListView{make_unique<ItemListView>(pauseMenu)} {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);

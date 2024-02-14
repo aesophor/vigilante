@@ -1,4 +1,5 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "CombatMotion.h"
 
 #include "character/Character.h"

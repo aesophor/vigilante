@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SKILL_PANE_H_
-#define VIGILANTE_SKILL_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_PANE_H_
 
 #include <memory>
 
@@ -13,7 +14,7 @@
 
 namespace vigilante {
 
-class SkillPane : public AbstractPane {
+class SkillPane final : public AbstractPane {
  public:
   explicit SkillPane(PauseMenu* pauseMenu);
   virtual ~SkillPane() = default;
@@ -29,4 +30,4 @@ class SkillPane : public AbstractPane {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SKILL_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_PANE_H_

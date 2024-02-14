@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CHEST_H_
-#define VIGILANTE_CHEST_H_
+
+#ifndef VIGILANTE_MAP_OBJECT_CHEST_H_
+#define VIGILANTE_MAP_OBJECT_CHEST_H_
 
 #include <string>
 #include <vector>
@@ -45,4 +46,4 @@ class Chest : public DynamicActor, public Interactable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CHEST_H_
+#endif  // VIGILANTE_MAP_OBJECT_CHEST_H_

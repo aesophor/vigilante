@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_BEAST_FORM_H_
-#define VIGILANTE_BEAST_FORM_H_
+
+#ifndef VIGILANTE_SKILL_BEAST_FORM_H_
+#define VIGILANTE_SKILL_BEAST_FORM_H_
 
 #include <string>
 
@@ -11,7 +12,7 @@ namespace vigilante {
 
 class Character;
 
-class BeastForm : public Skill {
+class BeastForm final : public Skill {
  public:
   BeastForm(const std::string& jsonFilePath, Character* user);
   virtual ~BeastForm() = default;
@@ -37,4 +38,4 @@ class BeastForm : public Skill {
 
 }  // namespace vigilante
 
-#endif // VIGILANTE_BEAST_FORM_H_
+#endif // VIGILANTE_SKILL_BEAST_FORM_H_

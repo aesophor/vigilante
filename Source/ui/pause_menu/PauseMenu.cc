@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "PauseMenu.h"
 
 #include "Assets.h"
@@ -13,31 +14,27 @@
 #include "ui/pause_menu/skill/SkillPane.h"
 #include "util/Logger.h"
 
-#define HEADER_PANE_POS {140, 280}
-#define STATS_PANE_POS {50, 240}
-#define DIALOG_POS {50, 30}
-#define MAIN_PANE_POS {230, 240} // InventoryPane, EquipmentPane... etc
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
-const array<string, PauseMenu::Pane::SIZE> PauseMenu::_kPaneNames = {
-  "INVENTORY",
-  "EQUIPMENT",
-  "SKILLS",
-  "QUESTS",
-  "OPTIONS"
-};
+namespace {
+
+const Vec2 kHeaderPanePos{140, 280};
+const Vec2 kStatsPanePos{50, 240};
+const Vec2 kDialogPos{50, 30};
+const Vec2 kMainPanePos{230, 240};  // InventoryPane, EquipmentPane... etc
+
+}  // namespace
 
 PauseMenu::PauseMenu()
-    : _layer(Layer::create()),
-      _background(ui::ImageView::create(string{kPauseMenuBg})),
-      _headerPane(make_unique<HeaderPane>(this)),
-      _statsPane(make_unique<StatsPane>(this)),
-      _dialog(make_unique<PauseMenuDialog>(this)) {
+    : _layer{Layer::create()},
+      _background{ui::ImageView::create(string{kPauseMenuBg})},
+      _headerPane{std::make_unique<HeaderPane>(this)},
+      _statsPane{std::make_unique<StatsPane>(this)},
+      _dialog{std::make_unique<PauseMenuDialog>(this)} {
   // Scale the bg image to fill the entire visible area.
   const auto visibleSize = Director::getInstance()->getVisibleSize();
   _background->setScaleX(visibleSize.width / _background->getContentSize().width);
@@ -47,15 +44,15 @@ PauseMenu::PauseMenu()
   _layer->addChild(_background, 0);
 
   // Initialize header (Inventory/Equipment/Skills/Quest/Options).
-  _headerPane->getLayout()->setPosition(HEADER_PANE_POS);
+  _headerPane->getLayout()->setPosition(kHeaderPanePos);
   _layer->addChild(_headerPane->getLayout());
 
   // Initialize StatsPane.
-  _statsPane->getLayout()->setPosition(STATS_PANE_POS);
+  _statsPane->getLayout()->setPosition(kStatsPanePos);
   _layer->addChild(_statsPane->getLayout());
 
   // Initialize PauseMenuDialog.
-  _dialog->getLayout()->setPosition(DIALOG_POS);
+  _dialog->getLayout()->setPosition(kDialogPos);
   _dialog->setVisible(false);
   _layer->addChild(_dialog->getLayout());
 
@@ -74,7 +71,7 @@ PauseMenu::PauseMenu()
 }
 
 void PauseMenu::initMainPane(int index, unique_ptr<AbstractPane> pane) {
-  pane->setPosition(MAIN_PANE_POS);
+  pane->setPosition(kMainPanePos);
   pane->setVisible(false);
   _layer->addChild(pane->getLayout());
 

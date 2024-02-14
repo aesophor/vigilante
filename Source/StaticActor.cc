@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "StaticActor.h"
 
 #include <filesystem>
@@ -109,7 +110,7 @@ string StaticActor::getLastDirName(const string& directory) {
 }
 
 string StaticActor::getSpritesheetFilePath(const string& textureResDir) {
-  return textureResDir + "/spritesheet.png";
+  return fs::path{textureResDir} / "spritesheet.png";
 }
 
 }  // namespace vigilante

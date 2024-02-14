@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_FORWARD_SLASH_H_
-#define VIGILANTE_FORWARD_SLASH_H_
+
+#ifndef VIGILANTE_SKILL_FORWARD_SLASH_H_
+#define VIGILANTE_SKILL_FORWARD_SLASH_H_
 
 #include <string>
 
@@ -10,7 +11,7 @@ namespace vigilante {
 
 class Character;
 
-class ForwardSlash : public Skill {
+class ForwardSlash final : public Skill {
  public:
   ForwardSlash(const std::string& jsonFilePath, Character* user);
   virtual ~ForwardSlash() = default;
@@ -35,4 +36,4 @@ class ForwardSlash : public Skill {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_FORWARD_SLASH_H_
+#endif // VIGILANTE_SKILL_FORWARD_SLASH_H_

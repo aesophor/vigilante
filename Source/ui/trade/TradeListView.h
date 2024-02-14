@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TRADE_LIST_VIEW_H_
-#define VIGILANTE_TRADE_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_TRADE_TRADE_LIST_VIEW_H_
+#define VIGILANTE_UI_TRADE_TRADE_LIST_VIEW_H_
 
 #include "character/Character.h"
 #include "item/Item.h"
@@ -11,7 +12,7 @@ namespace vigilante {
 // Forward declaration
 class TradeWindow;
 
-class TradeListView : public ListView<Item*> {
+class TradeListView final : public ListView<Item*> {
  public:
   explicit TradeListView(TradeWindow* tradeWindow);
   virtual ~TradeListView() = default;
@@ -34,4 +35,4 @@ class TradeListView : public ListView<Item*> {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_TRADE_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_TRADE_TRADE_LIST_VIEW_H_

@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_QUEST_HINTS_H_
-#define VIGILANTE_QUEST_HINTS_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_QUEST_HINTS_QUEST_HINTS_H_
+#define VIGILANTE_UI_QUEST_HINTS_QUEST_HINTS_H_
 
 #include "ui/TimedLabelService.h"
 
@@ -13,4 +14,4 @@ class QuestHints final : public TimedLabelService {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_HINTS_H_
+#endif  // VIGILANTE_UI_QUEST_HINTS_QUEST_HINTS_H_

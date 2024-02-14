@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_KEYBINDABLE_H_
-#define VIGILANTE_KEYBINDABLE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_INPUT_KEYBINDABLE_H_
+#define VIGILANTE_INPUT_KEYBINDABLE_H_
 
 #include <string>
 
@@ -18,4 +19,4 @@ class Keybindable {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_KEYBINDABLE_H_
+#endif // VIGILANTE_INPUT_KEYBINDABLE_H_

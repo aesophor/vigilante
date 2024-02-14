@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_NPC_H_
-#define VIGILANTE_NPC_H_
+
+#ifndef VIGILANTE_CHARACTER_NPC_H_
+#define VIGILANTE_CHARACTER_NPC_H_
 
 #include <string>
 #include <unordered_map>
@@ -121,4 +122,4 @@ class Npc final : public Character, public Interactable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_NPC_H_
+#endif  // VIGILANTE_CHARACTER_NPC_H_

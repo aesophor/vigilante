@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_KEYCODE_UTIL_H_
-#define VIGILANTE_KEYCODE_UTIL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_KEYCODE_UTIL_H_
+#define VIGILANTE_UTIL_KEYCODE_UTIL_H_
 
 #include <string>
 
@@ -14,4 +15,4 @@ char keyCodeToAscii(ax::EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool 
 
 }  // namespace vigilante::keycode_util
 
-#endif  // VIGILANTE_KEYCODE_UTIL_H_
+#endif  // VIGILANTE_UTIL_KEYCODE_UTIL_H_

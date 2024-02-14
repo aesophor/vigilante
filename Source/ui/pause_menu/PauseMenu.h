@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PAUSE_MENU_H_
-#define VIGILANTE_PAUSE_MENU_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_
+#define VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_
 
 #include <array>
 #include <memory>
@@ -26,7 +27,7 @@ class HeaderPane;
 class StatsPane;
 class PauseMenuDialog;
 
-class PauseMenu : public Controllable {
+class PauseMenu final : public Controllable {
  public:
   // To add a new pane to the pause menu, add it to the enum below,
   // as well as the string literal to the following static const std::array.
@@ -38,7 +39,13 @@ class PauseMenu : public Controllable {
     OPTIONS,
     SIZE
   };
-  static const std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames;
+  static const inline std::array<std::string, PauseMenu::Pane::SIZE> _kPaneNames = {{
+    "INVENTORY",
+    "EQUIPMENT",
+    "SKILLS",
+    "QUESTS",
+    "OPTIONS"
+  }};
 
   PauseMenu();
   virtual ~PauseMenu() override = default;
@@ -69,4 +76,4 @@ class PauseMenu : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PAUSE_MENU_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_

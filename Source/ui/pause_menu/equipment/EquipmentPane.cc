@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "EquipmentPane.h"
 
 #include "Assets.h"
@@ -14,9 +15,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-EquipmentPane::EquipmentPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu, TableLayout::create(300)),
-      _current() {
+EquipmentPane::EquipmentPane(PauseMenu* pauseMenu) : AbstractPane{pauseMenu, TableLayout::create(300)} {
   ui::Layout* innerLayout = ui::Layout::create();
 
   for (int i = 0; i < Equipment::Type::SIZE; i++) {
@@ -84,17 +83,13 @@ Equipment::Type EquipmentPane::getSelectedEquipmentType() const {
   return static_cast<Equipment::Type>(_current);
 }
 
-
-const int EquipmentPane::EquipmentItem::_kEquipmentIconSize = 16;
-
 EquipmentPane::EquipmentItem::EquipmentItem(EquipmentPane* parent, const string& title, float x, float y)
-    : _parent(parent),
-      _layout(TableLayout::create(300)), // FIXME: remove this literal
-      _background(ui::ImageView::create(string{kEquipmentRegular})),
-      _icon(ui::ImageView::create(string{kEmptyImage})),
-      _equipmentTypeLabel(Label::createWithTTF(title, string{kTitleFont}, kRegularFontSize)),
-      _equipmentNameLabel(Label::createWithTTF("---", string{kBoldFont}, kRegularFontSize)),
-      _equipment() {
+    : _parent{parent},
+      _layout{TableLayout::create(300)}, // FIXME: remove this literal
+      _background{ui::ImageView::create(string{kEquipmentRegular})},
+      _icon{ui::ImageView::create(string{kEmptyImage})},
+      _equipmentTypeLabel{Label::createWithTTF(title, string{kTitleFont}, kRegularFontSize)},
+      _equipmentNameLabel{Label::createWithTTF("---", string{kBoldFont}, kRegularFontSize)} {
   _icon->setScale((float) _kEquipmentIconSize / kIconSize);
 
   _background->setAnchorPoint({0, 1});
@@ -132,4 +127,4 @@ void EquipmentPane::EquipmentItem::setSelected(bool selected) const {
   _background->loadTexture(selected ? string{kEquipmentHighlighted} : string{kEquipmentRegular});
 }
 
-} // namespace vigilante
+}  // namespace vigilante

@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TELEPORT_STRIKE_H_
-#define VIGILANTE_TELEPORT_STRIKE_H_
+
+#ifndef VIGILANTE_SKILL_TELEPORT_STRIKE_H_
+#define VIGILANTE_SKILL_TELEPORT_STRIKE_H_
 
 #include <optional>
 #include <string>
@@ -13,7 +14,7 @@ namespace vigilante {
 
 class Character;
 
-class TeleportStrike : public Skill {
+class TeleportStrike final : public Skill {
  public:
   TeleportStrike(const std::string& jsonFilePath, Character* user);
 
@@ -38,6 +39,6 @@ class TeleportStrike : public Skill {
   bool _hasActivated{};
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TELEPORT_STRIKE_H_
+#endif // VIGILANTE_SKILL_TELEPORT_STRIKE_H_

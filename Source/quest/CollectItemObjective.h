@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
-#define VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
+
+#ifndef VIGILANTE_QUEST_COLLECT_ITEM_OBJECTIVE_H_
+#define VIGILANTE_QUEST_COLLECT_ITEM_OBJECTIVE_H_
 
 #include <string>
 
@@ -30,4 +31,4 @@ class CollectItemObjective : public Quest::Objective {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_COLLECT_ITEM_OBJECTIVE_H_
+#endif  // VIGILANTE_QUEST_COLLECT_ITEM_OBJECTIVE_H_

@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_INVENTORY_PANE_H_
-#define VIGILANTE_INVENTORY_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_INVENTORY_INVENTORY_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_INVENTORY_INVENTORY_PANE_H_
 
 #include <memory>
 #include <string>
@@ -17,7 +18,7 @@
 
 namespace vigilante {
 
-class InventoryPane : public AbstractPane {
+class InventoryPane final : public AbstractPane {
  public:
   InventoryPane(PauseMenu* pauseMenu);
   virtual ~InventoryPane() = default;
@@ -34,10 +35,10 @@ class InventoryPane : public AbstractPane {
 
   // These two variables are necessary when
   // the inventory pane is to select a equipment.
-  bool _isSelectingEquipment;
-  Equipment::Type _selectingEquipmentType;
+  bool _isSelectingEquipment{};
+  Equipment::Type _selectingEquipmentType{};
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_INVENTORY_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_INVENTORY_INVENTORY_PANE_H_

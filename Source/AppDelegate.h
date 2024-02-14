@@ -1,12 +1,13 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef APP_DELEGATE_H_
-#define APP_DELEGATE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_APP_DELEGATE_H_
+#define VIGILANTE_APP_DELEGATE_H_
 
 #include <axmol.h>
 
 // The axmol Application.
 // Private inheritance here hides part of interface from Director.
-class AppDelegate : private ax::Application {
+class AppDelegate final : private ax::Application {
  public:
   AppDelegate() = default;
   virtual ~AppDelegate() = default;
@@ -23,4 +24,4 @@ class AppDelegate : private ax::Application {
   virtual void applicationWillEnterForeground() override;
 };
 
-#endif // APP_DELEGATE_H_
+#endif  // VIGILANTE_APP_DELEGATE_H_

@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "AppDelegate.h"
 
 #ifdef __linux__
@@ -22,10 +23,14 @@ using vigilante::kVirtualWidth;
 using vigilante::kVirtualHeight;
 USING_NS_AX;
 
-static ax::Size designResolutionSize = ax::Size(1280, 800);
-static ax::Size smallResolutionSize = ax::Size(480, 320);
-static ax::Size mediumResolutionSize = ax::Size(1024, 768);
-static ax::Size largeResolutionSize = ax::Size(2048, 1536);
+namespace {
+
+auto designResolutionSize = ax::Size{1280, 800};
+auto smallResolutionSize = ax::Size{480, 320};
+auto mediumResolutionSize = ax::Size{1024, 768};
+auto largeResolutionSize = ax::Size{2048, 1536};
+
+}  // namespace
 
 // if you want a different context, modify the value of glContextAttrs
 // it will affect all platforms

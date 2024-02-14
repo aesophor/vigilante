@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_STRING_UTIL_H_
-#define VIGILANTE_STRING_UTIL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_STRING_UTIL_H_
+#define VIGILANTE_UTIL_STRING_UTIL_H_
 
 #include <cstring>
 #include <memory>
@@ -42,4 +43,4 @@ std::string string_util::format(const std::string& fmt, Args&&... args) {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_STRING_UTIL_H_
+#endif  // VIGILANTE_UTIL_STRING_UTIL_H_

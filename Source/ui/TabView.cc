@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "TabView.h"
 
 #include "Assets.h"
@@ -10,11 +11,9 @@ USING_NS_AX;
 namespace vigilante {
 
 TabView::TabView(const string& regularBg, const string& highlightedBg)
-    : _layout(ui::Layout::create()),
-      _current(),
-      _nextTabPos(),
-      _regularBg(regularBg),
-      _highlightedBg(highlightedBg) {
+    : _layout{ui::Layout::create()},
+      _regularBg{regularBg},
+      _highlightedBg{highlightedBg} {
   _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 0});
 }
@@ -70,4 +69,4 @@ void TabView::Tab::setIsSelected(bool isSelected) {
   _isSelected = isSelected;
 }
 
-} // namespace vigilante
+}  // namespace vigilante

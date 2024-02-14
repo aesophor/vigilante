@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "FloatingDamages.h"
 
 #include "Assets.h"
@@ -78,10 +79,9 @@ void FloatingDamages::show(Character* character, int damage) {
   _layer->addChild(dmg.label);
 }
 
-FloatingDamages::DamageLabel::DamageLabel(const string& text, float lifetime)
-  : label(Label::createWithTTF(text, string{kRegularFont}, kRegularFontSize)),
-      lifetime(lifetime),
-      timer() {
+FloatingDamages::DamageLabel::DamageLabel(const string& text, const float lifetime)
+    : label{Label::createWithTTF(text, string{kRegularFont}, kRegularFontSize)},
+      lifetime{lifetime} {
   label->getFontAtlas()->setAliasTexParameters();
 }
 

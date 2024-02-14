@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_GAME_MAP_H_
-#define VIGILANTE_GAME_MAP_H_
+
+#ifndef VIGILANTE_MAP_GAME_MAP_H_
+#define VIGILANTE_MAP_GAME_MAP_H_
 
 #include <list>
 #include <memory>
@@ -262,4 +263,4 @@ std::shared_ptr<ReturnType> GameMap::removeDynamicActor(DynamicActor* actor) {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_GAME_MAP_H_
+#endif  // VIGILANTE_MAP_GAME_MAP_H_

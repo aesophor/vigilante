@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_STATUS_BAR_H_
-#define VIGILANTE_STATUS_BAR_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_HUD_STATUS_BAR_H_
+#define VIGILANTE_UI_HUD_STATUS_BAR_H_
 
 #include <string>
 
@@ -41,4 +42,4 @@ class StatusBar final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_STATUS_BAR_H_
+#endif  // VIGILANTE_UI_HUD_STATUS_BAR_H_

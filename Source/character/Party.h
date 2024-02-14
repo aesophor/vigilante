@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PARTY_H_
-#define VIGILANTE_PARTY_H_
+
+#ifndef VIGILANTE_CHARACTER_PARTY_H_
+#define VIGILANTE_CHARACTER_PARTY_H_
 
 #include <memory>
 #include <optional>
@@ -66,4 +67,4 @@ class Party final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PARTY_H_
+#endif  // VIGILANTE_CHARACTER_PARTY_H_

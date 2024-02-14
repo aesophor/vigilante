@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CIRCULAR_BUFFER_H_
-#define VIGILANTE_CIRCULAR_BUFFER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_
+#define VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_
 
 #include <memory>
 #include <string>
@@ -71,4 +72,4 @@ void CircularBuffer<T>::clear() {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CIRCULAR_BUFFER_H_
+#endif  // VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_

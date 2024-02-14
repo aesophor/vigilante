@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CONSOLE_H_
-#define VIGILANTE_CONSOLE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_CONSOLE_CONSOLE_H_
+#define VIGILANTE_UI_CONSOLE_CONSOLE_H_
 
 #include <deque>
 #include <string>
@@ -54,4 +55,4 @@ class Console final {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_CONSOLE_H_
+#endif // VIGILANTE_UI_CONSOLE_CONSOLE_H_

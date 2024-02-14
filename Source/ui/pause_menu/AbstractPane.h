@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_ABSTRACT_PANE_H_
-#define VIGILANTE_ABSTRACT_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_
 
 #include <axmol.h>
 #include <ui/UILayout.h>
@@ -27,13 +28,13 @@ class AbstractPane {
   inline ax::ui::Layout* getLayout() const { return _layout; }
 
  protected:
-  explicit AbstractPane(PauseMenu* pauseMenu); // install ax's UILayout
-  AbstractPane(PauseMenu* pauseMenu, ax::ui::Layout* layout); // install custom layout
+  explicit AbstractPane(PauseMenu* pauseMenu);  // install ax's UILayout
+  AbstractPane(PauseMenu* pauseMenu, ax::ui::Layout* layout);  // install custom layout
 
   PauseMenu* _pauseMenu;
-  ax::ui::Layout* _layout; // auto-release object
+  ax::ui::Layout* _layout;  // auto-release object
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_ABSTRACT_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_

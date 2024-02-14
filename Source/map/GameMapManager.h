@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_GAMEMAP_MANAGER_H_
-#define VIGILANTE_GAMEMAP_MANAGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_MAP_GAME_MAP_MANAGER_H_
+#define VIGILANTE_MAP_GAME_MAP_MANAGER_H_
 
 #include <atomic>
 #include <functional>
@@ -87,4 +88,4 @@ class GameMapManager final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_GAMEMAP_MANAGER_H_
+#endif  // VIGILANTE_MAP_GAME_MAP_MANAGER_H_

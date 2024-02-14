@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_MAIN_MENU_SCENE_H_
-#define VIGILANTE_MAIN_MENU_SCENE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
+#define VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
 
 #include <array>
 #include <string>
@@ -16,7 +17,7 @@
 
 namespace vigilante {
 
-class MainMenuScene : public ax::Scene, public Controllable {
+class MainMenuScene final : public ax::Scene, public Controllable {
  public:
   CREATE_FUNC(MainMenuScene);
   virtual ~MainMenuScene() = default;
@@ -52,4 +53,4 @@ class MainMenuScene : public ax::Scene, public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_MAIN_MENU_SCENE_H_
+#endif  // VIGILANTE_SCENE_MAIN_MENU_SCENE_H_

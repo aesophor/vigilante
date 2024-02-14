@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "PauseMenuDialog.h"
 
 #include "Assets.h"
@@ -13,9 +14,8 @@ USING_NS_AX;
 namespace vigilante {
 
 PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu, TableLayout::create()),
-      _message(Label::createWithTTF("", string{kBoldFont}, kRegularFontSize)),
-      _current() {
+    : AbstractPane{pauseMenu, TableLayout::create()},
+    _message{Label::createWithTTF("", string{kBoldFont}, kRegularFontSize)} {
   _message->setAnchorPoint({0, 1});
   _message->getFontAtlas()->setAliasTexParameters();
   _layout->addChild(_message);
@@ -35,7 +35,7 @@ void PauseMenuDialog::update() {
     optionWidth = std::max(optionWidth, option->getWidth());
   }
 
-  for (int i = _options.size() - 1; i >= 0; i--) {
+  for (int i = static_cast<int>(_options.size()) - 1; i >= 0; i--) {
     if (!_options[i]->isVisible()) {
       continue;
     }
@@ -136,10 +136,10 @@ void PauseMenuDialog::clearOptions() {
 }
 
 PauseMenuDialog::Option::Option(const string& text, const function<void ()>& handler)
-    : _layout(ui::Layout::create()),
-      _icon(ui::ImageView::create(string{kDialogueTriangle})),
-      _label(Label::createWithTTF(text, string{kBoldFont}, kRegularFontSize)),
-      _handler(handler) {
+    : _layout{ui::Layout::create()},
+      _icon{ui::ImageView::create(string{kDialogueTriangle})},
+      _label{Label::createWithTTF(text, string{kBoldFont}, kRegularFontSize)},
+      _handler{handler} {
   _icon->setAnchorPoint({0, 1});
   _icon->setVisible(false);
 

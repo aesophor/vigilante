@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "Hud.h"
 
 #include "Assets.h"
@@ -18,14 +19,14 @@ USING_NS_AX;
 namespace vigilante {
 
 Hud::Hud()
-    : _layer(Layer::create()),
-      _healthBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)),
-      _magickaBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)),
-      _staminaBar(make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)),
-      _equippedWeaponBg(ui::ImageView::create(string{kEquippedWeaponBg})),
-      _equippedWeapon(ui::ImageView::create()),
-      _equippedWeaponDescBg(ui::ImageView::create(string{kEquippedWeaponDescBg})),
-      _equippedWeaponDesc(Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)) {
+    : _layer{Layer::create()},
+      _healthBar{make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, _kBarLength)},
+      _magickaBar{make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kMagickaBar, _kBarLength)},
+      _staminaBar{make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kStaminaBar, _kBarLength)},
+      _equippedWeaponBg{ui::ImageView::create(string{kEquippedWeaponBg})},
+      _equippedWeapon{ui::ImageView::create()},
+      _equippedWeaponDescBg{ui::ImageView::create(string{kEquippedWeaponDescBg})},
+      _equippedWeaponDesc{Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)} {
   _equippedWeaponBg->setPosition({-20, -15});
   _equippedWeaponDescBg->setPosition({33, -25});
 

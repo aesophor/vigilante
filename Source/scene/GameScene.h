@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_GAME_SCENE_H_
-#define VIGILANTE_GAME_SCENE_H_
+
+#ifndef VIGILANTE_SCENE_GAME_SCENE_H_
+#define VIGILANTE_SCENE_GAME_SCENE_H_
 
 #include <memory>
 #include <string>
@@ -31,7 +32,7 @@
 
 namespace vigilante {
 
-class GameScene : public ax::Scene, public Controllable {
+class GameScene final : public ax::Scene, public Controllable {
  public:
   CREATE_FUNC(GameScene);
   virtual ~GameScene() override = default;
@@ -95,4 +96,4 @@ class GameScene : public ax::Scene, public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_GAME_SCENE_H_
+#endif  // VIGILANTE_SCENE_GAME_SCENE_H_

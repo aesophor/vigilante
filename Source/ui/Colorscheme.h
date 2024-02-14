@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COLORSCHEME_H_
-#define VIGILANTE_COLORSCHEME_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_COLORSCHEME_H_
+#define VIGILANTE_UI_COLORSCHEME_H_
 
 #include <axmol.h>
 
@@ -13,4 +14,4 @@ inline const ax::Color4B kRed = {0xb0, 0x30, 0x60, 0xff};
 
 }  // namespace vigilante::colorscheme
 
-#endif // VIGILANTE_COLORSCHEME_H_
+#endif // VIGILANTE_UI_COLORSCHEME_H_

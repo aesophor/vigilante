@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_FLOATING_DAMAGES_H_
-#define VIGILANTE_FLOATING_DAMAGES_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_
+#define VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_
 
 #include <deque>
 #include <map>
@@ -22,12 +23,12 @@ class FloatingDamages final {
 
  private:
   struct DamageLabel {
-    DamageLabel(const std::string& text, float lifetime);
+    DamageLabel(const std::string& text, const float lifetime);
     bool operator==(const DamageLabel& other) { return label == other.label; }
 
     ax::Label* label;
     float lifetime;
-    float timer;
+    float timer{};
   };
 
   static inline constexpr float kDeltaX = 0.0f;
@@ -41,4 +42,4 @@ class FloatingDamages final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_FLOATING_DAMAGES_H_
+#endif  // VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_

@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TIMED_LABEL_SERVICE_H_
-#define VIGILANTE_TIMED_LABEL_SERVICE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_TIMED_LABEL_SERVICE_H_
+#define VIGILANTE_UI_TIMED_LABEL_SERVICE_H_
 
 #include <string>
 
@@ -17,8 +18,7 @@ class TimedLabelService {
     static inline Alignment kCenter = {0.5, 1};
     static inline Alignment kRight = {1, 1};
 
-    TimedLabel(const std::string& text, float lifetime,
-               TimedLabel::Alignment alignment);
+    TimedLabel(const std::string& text, const float lifetime, const TimedLabel::Alignment alignment);
 
     bool operator== (const TimedLabel& other) {
       return label == other.label;
@@ -26,7 +26,7 @@ class TimedLabelService {
 
     ax::Label* label;
     float lifetime;
-    float timer;
+    float timer{};
   };
 
   virtual ~TimedLabelService() = default;
@@ -36,9 +36,9 @@ class TimedLabelService {
   inline ax::Layer* getLayer() const { return _layer; }
 
  protected:
-  TimedLabelService(int startingX, int startingY,
-                    uint8_t maxLabelCount, uint8_t labelLifetime,
-                    TimedLabelService::TimedLabel::Alignment alignment);
+  TimedLabelService(const float startingX, const float startingY,
+                    const uint8_t maxLabelCount, const uint8_t labelLifetime,
+                    const TimedLabelService::TimedLabel::Alignment alignment);
 
   static inline constexpr float _kMoveUpDuration = .2f;
   static inline constexpr float _kFadeDuration = 1.0f;
@@ -57,4 +57,4 @@ class TimedLabelService {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_TIMED_LABEL_SERVICE_H_
+#endif  // VIGILANTE_UI_TIMED_LABEL_SERVICE_H_

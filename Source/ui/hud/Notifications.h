@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_NOTIFICATIONS_H_
-#define VIGILANTE_NOTIFICATIONS_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_HUD_NOTIFICATIONS_H_
+#define VIGILANTE_UI_HUD_NOTIFICATIONS_H_
 
 #include "ui/TimedLabelService.h"
 
@@ -14,4 +15,4 @@ class Notifications final : public TimedLabelService {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_NOTIFICATIONS_H_
+#endif  // VIGILANTE_UI_HUD_NOTIFICATIONS_H_

@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_LOGGER_H_
-#define VIGILANTE_LOGGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_LOGGER_H_
+#define VIGILANTE_UTIL_LOGGER_H_
 
 #include <array>
 #include <memory>
@@ -39,4 +40,4 @@ void segvHandler(int);
 
 }  // namespace vigilante::logger
 
-#endif // VIGILANTE_LOGGER_H_
+#endif  // VIGILANTE_UTIL_LOGGER_H_

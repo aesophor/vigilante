@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_MATH_UTIL_H_
-#define VIGILANTE_MATH_UTIL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_MATH_UTIL_H_
+#define VIGILANTE_UTIL_MATH_UTIL_H_
 
 #include <numbers>
 #include <optional>
@@ -17,4 +18,4 @@ b2Vec2 rotateCounterClockwise(const b2Vec2& v, const float degree);
 
 }  // namespace vigilante::math_util
 
-#endif  // VIGILANTE_MATH_UTIL_H_
+#endif  // VIGILANTE_UTIL_MATH_UTIL_H_

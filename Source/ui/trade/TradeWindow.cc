@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "TradeWindow.h"
 
 #include "Assets.h"
@@ -6,29 +7,33 @@
 #include "input/InputManager.h"
 #include "util/StringUtil.h"
 
-#define TRADE_WINDOW_CONTENT_MARGIN_LEFT 10
-#define TRADE_WINDOW_CONTENT_MARGIN_RIGHT 10
-#define TRADE_WINDOW_CONTENT_MARGIN_TOP 30
-#define TRADE_WINDOW_CONTENT_MARGIN_BOTTOM 40
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr float kMarginLeft = 10.0f;
+constexpr float kMarginRight = 10.0f;
+constexpr float kMarginTop = 30.0f;
+constexpr float kMarginBottom = 40.0f;
+
+}  // namespace
+
 TradeWindow::TradeWindow(Character* buyer, Character* seller)
-    : Window(),
-      _contentBackground(ui::ImageView::create(string{kTradeBg})),
-      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _tradeListView(make_unique<TradeListView>(this)),
-      _isTradingWithAlly(seller->getAllies().find(buyer) != seller->getAllies().end()),
-      _buyer(buyer),
-      _seller(seller) {
+    : Window{},
+      _contentBackground{ui::ImageView::create(string{kTradeBg})},
+      _tabView{std::make_unique<TabView>(kTabRegular, kTabHighlighted)},
+      _tradeListView{std::make_unique<TradeListView>(this)},
+      _isTradingWithAlly{seller->getAllies().find(buyer) != seller->getAllies().end()},
+      _buyer{buyer},
+      _seller{seller} {
   // Resize window: Make the window slightly larger than `_contentBackground`.
   auto tradeWindowSize = _contentBackground->getContentSize();
-  tradeWindowSize.width += TRADE_WINDOW_CONTENT_MARGIN_LEFT + TRADE_WINDOW_CONTENT_MARGIN_RIGHT;
-  tradeWindowSize.height += TRADE_WINDOW_CONTENT_MARGIN_TOP + TRADE_WINDOW_CONTENT_MARGIN_BOTTOM;
+  tradeWindowSize.width += kMarginLeft + kMarginRight;
+  tradeWindowSize.height += kMarginTop + kMarginBottom;
   resize(tradeWindowSize);
 
   _contentBackground->setAnchorPoint({0, 1});

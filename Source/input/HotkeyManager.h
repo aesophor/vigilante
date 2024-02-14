@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_HOTKEY_MANAGER_H_
-#define VIGILANTE_HOTKEY_MANAGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_INPUT_HOTKEY_MANAGER_H_
+#define VIGILANTE_INPUT_HOTKEY_MANAGER_H_
 
 #include <array>
 #include <functional>
@@ -43,4 +44,4 @@ class HotkeyManager final {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_HOTKEY_MANAGER
+#endif // VIGILANTE_INPUT_HOTKEY_MANAGER_H_

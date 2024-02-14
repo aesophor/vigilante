@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "OptionPane.h"
 
 #include <vector>
@@ -8,18 +9,21 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 
-#define OPTIONS_COUNT 4
-
 using namespace std;
 USING_NS_AX;
 
 namespace vigilante {
 
-OptionPane::OptionPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu),
-      _options(OPTIONS_COUNT),
-      _optionListView(std::make_unique<OptionListView>(pauseMenu)) {
+namespace {
 
+constexpr int kMaxOptionCount = 4;
+
+}  // namespace
+
+OptionPane::OptionPane(PauseMenu* pauseMenu)
+    : AbstractPane{pauseMenu},
+      _options{kMaxOptionCount},
+      _optionListView{std::make_unique<OptionListView>(pauseMenu)} {
   _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
   _layout->setAnchorPoint({0, 1}); // Make top-left (0, 0)
 

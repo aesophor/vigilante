@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_WINDOW_MANAGER_H_
-#define VIGILANTE_WINDOW_MANAGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_WINDOW_MANAGER_H_
+#define VIGILANTE_UI_WINDOW_MANAGER_H_
 
 #include <memory>
 #include <vector>
@@ -34,11 +35,11 @@ class WindowManager final {
  private:
   const size_t _kMaxWindowCount;
 
-  ax::Scene* _scene;
+  ax::Scene* _scene{};
   uint16_t _defaultCameraMask;
   std::vector<std::unique_ptr<Window>> _windows;
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_WINDOW_MANAGER_H_
+#endif  // VIGILANTE_UI_WINDOW_MANAGER_H_

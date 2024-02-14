@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_HUD_H_
-#define VIGILANTE_HUD_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_HUD_HUD_H_
+#define VIGILANTE_UI_HUD_HUD_H_
 
 #include <memory>
 #include <string>
@@ -37,4 +38,4 @@ class Hud final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_HUD_H_
+#endif  // VIGILANTE_UI_HUD_HUD_H_

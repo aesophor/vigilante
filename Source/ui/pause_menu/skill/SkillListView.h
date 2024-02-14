@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SKILL_LIST_VIEW_H_
-#define VIGILANTE_SKILL_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
+#define VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
 
 #include <string>
 
@@ -11,7 +12,7 @@ namespace vigilante {
 
 class PauseMenu;
 
-class SkillListView : public ListView<Skill*> {
+class SkillListView final : public ListView<Skill*> {
  public:
   explicit SkillListView(PauseMenu* pauseMenu);
   virtual ~SkillListView() = default;
@@ -29,4 +30,4 @@ class SkillListView : public ListView<Skill*> {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SKILL_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_

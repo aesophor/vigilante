@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_EQUIPMENT_H_
-#define VIGILANTE_EQUIPMENT_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_ITEM_EQUIPMENT_H_
+#define VIGILANTE_ITEM_EQUIPMENT_H_
 
 #include <array>
 #include <string>
@@ -81,4 +82,4 @@ class Equipment : public Item {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_EQUIPMENT_H_
+#endif  // VIGILANTE_ITEM_EQUIPMENT_H_

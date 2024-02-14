@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_OPTION_LIST_VIEW_H_
-#define VIGILANTE_OPTION_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_LIST_VIEW_H_
+#define VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_LIST_VIEW_H_
 
 #include <functional>
 #include <string>
@@ -13,7 +14,7 @@ class PauseMenu;
 
 using Option = std::pair<std::string, std::function<void ()>>;
 
-class OptionListView : public ListView<Option*> {
+class OptionListView final : public ListView<Option*> {
  public:
   explicit OptionListView(PauseMenu* pauseMenu);
   virtual ~OptionListView() = default;
@@ -24,6 +25,6 @@ class OptionListView : public ListView<Option*> {
   PauseMenu* _pauseMenu;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_OPTION_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_LIST_VIEW_H_

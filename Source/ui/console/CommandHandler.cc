@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "CommandHandler.h"
 
 #include <memory>
@@ -13,14 +14,18 @@
 #include "util/StringUtil.h"
 #include "util/Logger.h"
 
-#define DEFAULT_ERR_MSG "unable to parse this line"
-
 using namespace std;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
 using CmdTable = unordered_map<string, void (CommandHandler::*)(const vector<string>&)>;
+
+constexpr char kDefaultErrMsg[] = "Unable to parse this line";
+
+}  // namespace
 
 bool CommandHandler::handle(const string& cmd, bool showNotification) {
   if (cmd.empty()) {
@@ -33,7 +38,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   }
 
   _success = false;
-  _errMsg = DEFAULT_ERR_MSG;
+  _errMsg = kDefaultErrMsg;
 
   static const CmdTable cmdTable = {
     {"startQuest",              &CommandHandler::startQuest             },

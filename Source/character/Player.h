@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PLAYER_H_
-#define VIGILANTE_PLAYER_H_
+
+#ifndef VIGILANTE_CHARACTER_PLAYER_H_
+#define VIGILANTE_CHARACTER_PLAYER_H_
 
 #include <memory>
 #include <string>
@@ -48,4 +49,4 @@ class Player final : public Character, public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PLAYER_H_
+#endif  // VIGILANTE_CHARACTER_PLAYER_H_

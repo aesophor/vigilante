@@ -1,6 +1,7 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_NPC_CONTROLLER_H_
-#define VIGILANTE_NPC_CONTROLLER_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_CHARACTER_NPC_CONTROLLER_H_
+#define VIGILANTE_CHARACTER_NPC_CONTROLLER_H_
 
 #include <box2d/box2d.h>
 
@@ -46,4 +47,4 @@ class NpcController final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_NPC_CONTROLLER_H_
+#endif  // VIGILANTE_CHARACTER_NPC_CONTROLLER_H_

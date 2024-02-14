@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_B2_BODY_BUILDER_H_
-#define VIGILANTE_B2_BODY_BUILDER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_B2_BODY_BUILDER_H_
+#define VIGILANTE_UTIL_B2_BODY_BUILDER_H_
 
 #include <memory>
 
@@ -47,4 +48,4 @@ class B2BodyBuilder final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_B2_BODY_BUILDER_H_
+#endif  // VIGILANTE_UTIL_B2_BODY_BUILDER_H_

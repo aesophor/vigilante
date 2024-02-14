@@ -1,6 +1,7 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PARALLAX_BACKGROUND_H_
-#define VIGILANTE_PARALLAX_BACKGROUND_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_MAP_PARALLAX_BACKGROUND_H_
+#define VIGILANTE_MAP_PARALLAX_BACKGROUND_H_
 
 #include <filesystem>
 #include <map>
@@ -56,4 +57,4 @@ class ParallaxBackground final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PARALLAX_BACKGROUND_H_
+#endif  // VIGILANTE_MAP_PARALLAX_BACKGROUND_H_

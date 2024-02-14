@@ -1,14 +1,10 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "TextField.h"
 
 #include "Assets.h"
 #include "input/InputManager.h"
 #include "util/KeyCodeUtil.h"
-
-#define CURSOR_CHAR "|"
-#define CURSOR_BLINK_INTERVAL 0.7f
-
-#define DEFAULT_DISMISS_KEY EventKeyboard::KeyCode::KEY_ENTER
 
 using namespace std;
 using namespace vigilante::assets;
@@ -16,19 +12,18 @@ USING_NS_AX;
 
 namespace vigilante {
 
-TextField::TextField(const string& defaultText)
-    : _layout(ui::Layout::create()),
-      _label(Label::createWithTTF(CURSOR_CHAR, string{kRegularFont}, kRegularFontSize)),
-      _buffer(),
-      _onSubmit(),
-      _onDismiss(),
-      _onKeyPressed(),
-      _extraOnKeyPressed(),
-      _dismissKey(DEFAULT_DISMISS_KEY),
-      _timer(),
-      _isReceivingInput(),
-      _isCursorVisible() {
+namespace {
 
+constexpr char kCursor[] = "|";
+constexpr float kCursorBlinkInterval = 0.7f;
+constexpr auto kDefaultDismissKey = EventKeyboard::KeyCode::KEY_ENTER;
+
+}  // namespace
+
+TextField::TextField(const string& defaultText)
+    : _layout{ui::Layout::create()},
+      _label{Label::createWithTTF(kCursor, string{kRegularFont}, kRegularFontSize)},
+      _dismissKey{kDefaultDismissKey} {
   _label->setAnchorPoint({0, 0});
   _layout->addChild(_label);
 
@@ -51,7 +46,7 @@ TextField::TextField(const string& defaultText)
     if (keyCode == EventKeyboard::KeyCode::KEY_BACKSPACE) {
       if (!_buffer.empty()) {
         _buffer.pop_back();
-        _label->setString(_buffer + CURSOR_CHAR);
+        _label->setString(_buffer + kCursor);
       }
       return;
     }
@@ -61,7 +56,7 @@ TextField::TextField(const string& defaultText)
     
     if (c != 0x00) {
       _buffer += c;
-      _label->setString(_buffer + CURSOR_CHAR);
+      _label->setString(_buffer + kCursor);
     }
   };
 
@@ -73,7 +68,7 @@ TextField::TextField(const string& defaultText)
 void TextField::update(const float delta) {
   _timer += delta;
 
-  if (_timer >= CURSOR_BLINK_INTERVAL) {
+  if (_timer >= kCursorBlinkInterval) {
     _timer = 0;
     toggleCursor();
   }
@@ -81,7 +76,7 @@ void TextField::update(const float delta) {
 
 void TextField::setString(const string& s) {
   _buffer = s;
-  _label->setString(_buffer + CURSOR_CHAR);
+  _label->setString(_buffer + kCursor);
 }
 
 void TextField::clear() {
@@ -89,7 +84,7 @@ void TextField::clear() {
 }
 
 void TextField::toggleCursor() {
-  _label->setString((_isCursorVisible) ? _buffer : _buffer + CURSOR_CHAR);
+  _label->setString((_isCursorVisible) ? _buffer : _buffer + kCursor);
   _isCursorVisible = !_isCursorVisible;
 }
 

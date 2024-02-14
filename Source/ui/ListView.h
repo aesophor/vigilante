@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_LIST_VIEW_H_
-#define VIGILANTE_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_LIST_VIEW_H_
+#define VIGILANTE_UI_LIST_VIEW_H_
 
 #include <set>
 #include <deque>
@@ -25,6 +26,8 @@ class PauseMenu;
 
 template <typename T>
 class ListView {
+  friend class ListViewItem;
+
  public:
   ListView(int visibleItemCount, float width, float height, float itemGapHeight,
            const std::string& regularBg=assets::kEmptyImage,
@@ -77,7 +80,7 @@ class ListView {
     ax::ui::ImageView* _background;
     ax::ui::ImageView* _icon;
     ax::Label* _label;
-    T _object;
+    T _object{};
   };
 
   ax::ui::Layout* _layout;
@@ -100,31 +103,25 @@ class ListView {
   std::string _font;
   float _fontSize;
 
-  int _firstVisibleIndex;
-  int _current;
-
-  bool _showScrollBar;
-
-  friend class ListViewItem;
+  int _firstVisibleIndex{};
+  int _current{};
+  bool _showScrollBar{true};
 };
 
 template <typename T>
 ListView<T>::ListView(int visibleItemCount, float width, float height, float itemGapHeight,
                       const std::string& regularBg, const std::string& highlightedBg,
                       const std::string& font, const float fontSize)
-    : _layout(ax::ui::Layout::create()),
-      _scrollBar(ax::ui::ImageView::create(std::string{assets::kScrollBar})),
-      _visibleItemCount(visibleItemCount),
-      _width(width),
-      _height(height),
-      _itemGapHeight(itemGapHeight),
-      _regularBg(regularBg),
-      _highlightedBg(highlightedBg),
-      _font(font),
-      _fontSize(fontSize),
-      _firstVisibleIndex(),
-      _current(),
-      _showScrollBar(true) {
+    : _layout{ax::ui::Layout::create()},
+      _scrollBar{ax::ui::ImageView::create(std::string{assets::kScrollBar})},
+      _visibleItemCount{visibleItemCount},
+      _width{width},
+      _height{height},
+      _itemGapHeight{itemGapHeight},
+      _regularBg{regularBg},
+      _highlightedBg{highlightedBg},
+      _font{font},
+      _fontSize{fontSize} {
   _scrollBar->setPosition({width, 0});
   _scrollBar->setAnchorPoint({0, 1});
   _scrollBar->setScaleY(height);
@@ -222,7 +219,7 @@ void ListView<T>::setObjects(const ContainerType<T>& objects) {
     _current = 0;
     _firstVisibleIndex = 0;
   } else if (_current >= _objects.size()) {
-    _current = _objects.size() - 1;
+    _current = static_cast<int>(_objects.size() - 1);
     _firstVisibleIndex = std::max(0, _current - (_visibleItemCount - 1));
   }
 
@@ -275,12 +272,11 @@ ax::Size ListView<T>::getContentSize() const {
 
 template <typename T>
 ListView<T>::ListViewItem::ListViewItem(ListView<T>* parent, float x, float y)
-    : _parent(parent),
-      _layout(TableLayout::create(parent->_width)),
-      _background(ax::ui::ImageView::create(parent->_regularBg)),
-      _icon(ax::ui::ImageView::create(std::string{assets::kEmptyImage})),
-      _label(ax::Label::createWithTTF("---", parent->_font, parent->_fontSize)),
-      _object() {
+    : _parent{parent},
+      _layout{TableLayout::create(parent->_width)},
+      _background{ax::ui::ImageView::create(parent->_regularBg)},
+      _icon{ax::ui::ImageView::create(std::string{assets::kEmptyImage})},
+      _label{ax::Label::createWithTTF("---", parent->_font, parent->_fontSize)} {
   _icon->setScale((float) _kListViewIconSize / kIconSize);
 
   _background->setAnchorPoint({0, 1});
@@ -322,4 +318,4 @@ void ListView<T>::ListViewItem::setObject(T object) {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_LIST_VIEW_H_

@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_GAME_STATE_H_
-#define VIGILANTE_GAME_STATE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_GAMEPLAY_GAME_STATE_H_
+#define VIGILANTE_GAMEPLAY_GAME_STATE_H_
 
 #include <filesystem>
 
@@ -41,4 +42,4 @@ class GameState final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_GAME_STATE_H_
+#endif  // VIGILANTE_GAMEPLAY_GAME_STATE_H_

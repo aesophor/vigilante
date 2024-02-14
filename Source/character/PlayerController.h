@@ -1,6 +1,7 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PLAYER_CONTROLLER_H_
-#define VIGILANTE_PLAYER_CONTROLLER_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_
+#define VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_
 
 #include "Controllable.h"
 
@@ -26,4 +27,4 @@ class PlayerController final : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PLAYER_CONTROLLER_H_
+#endif  // VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_

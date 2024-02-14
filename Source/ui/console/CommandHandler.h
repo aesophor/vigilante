@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COMMAND_HANDLER_H_
-#define VIGILANTE_COMMAND_HANDLER_H_
+
+#ifndef VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_
+#define VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_
 
 #include <string>
 #include <unordered_map>
@@ -41,4 +42,4 @@ class CommandHandler final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_COMMAND_HANDLER_H_
+#endif  // VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_

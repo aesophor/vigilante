@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_AMOUNT_SELECTION_WINDOW_H_
-#define VIGILANTE_AMOUNT_SELECTION_WINDOW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_
+#define VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_
 
 #include <functional>
 #include <memory>
@@ -17,7 +18,7 @@
 
 namespace vigilante {
 
-class AmountSelectionWindow : public Window {
+class AmountSelectionWindow final : public Window {
  public:
   AmountSelectionWindow();
   virtual ~AmountSelectionWindow();
@@ -34,4 +35,4 @@ class AmountSelectionWindow : public Window {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_AMOUNT_SELECTION_WINDOW_H_
+#endif  // VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_

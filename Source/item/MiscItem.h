@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_MISC_ITEM_H_
-#define VIGILANTE_MISC_ITEM_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_ITEM_MISC_ITEM_H_
+#define VIGILANTE_ITEM_MISC_ITEM_H_
 
 #include <string>
 
@@ -16,4 +17,4 @@ class MiscItem : public Item {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_MISC_ITEM_H_
+#endif  // VIGILANTE_ITEM_MISC_ITEM_H_

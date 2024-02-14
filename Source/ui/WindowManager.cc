@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "WindowManager.h"
 
 #include "Constants.h"
@@ -11,10 +12,8 @@ USING_NS_AX;
 namespace vigilante {
 
 WindowManager::WindowManager()
-    : _kMaxWindowCount(kWindowTop - kWindowBottom + 1),
-      _scene(),
-      _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)),
-      _windows() {}
+    : _kMaxWindowCount{kWindowTop - kWindowBottom + 1},
+      _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)) {}
 
 void WindowManager::update(const float delta) {
   for (auto& w : _windows) {
@@ -33,7 +32,7 @@ void WindowManager::push(unique_ptr<Window> window) {
 
   // Show window.
   window->getLayer()->setVisible(true);
-  _scene->addChild(window->getLayer(), kWindowBottom + _windows.size());
+  _scene->addChild(window->getLayer(), kWindowBottom + static_cast<int>(_windows.size()));
 
   // Manage window.
   _windows.push_back(std::move(window));

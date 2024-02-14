@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "DialogueManager.h"
 
 using namespace std;
@@ -7,10 +8,9 @@ USING_NS_AX;
 namespace vigilante {
 
 DialogueManager::DialogueManager()
-    : _layer(Layer::create()),
-      _subtitles(std::make_unique<Subtitles>()),
-      _dialogueMenu(std::make_unique<DialogueMenu>()),
-      _latestNpcDialogueTree() {
+    : _layer{Layer::create()},
+      _subtitles{std::make_unique<Subtitles>()},
+      _dialogueMenu{std::make_unique<DialogueMenu>()} {
   _layer->addChild(_subtitles->getLayer());
   _layer->addChild(_dialogueMenu->getLayer());
 }

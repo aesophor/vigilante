@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_OPTION_PANE_H_
-#define VIGILANTE_OPTION_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
 
 #include <memory>
 #include <vector>
@@ -8,11 +9,9 @@
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/option/OptionListView.h"
 
-#define OPTION_COUNT 4
-
 namespace vigilante {
 
-class OptionPane : public AbstractPane {
+class OptionPane final : public AbstractPane {
  public:
   explicit OptionPane(PauseMenu* pauseMenu);
   virtual ~OptionPane() = default;
@@ -27,4 +26,4 @@ class OptionPane : public AbstractPane {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_OPTION_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_

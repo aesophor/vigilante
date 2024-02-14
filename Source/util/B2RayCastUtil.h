@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_B2_RAY_CAST_UTIL_H_
-#define VIGILANTE_B2_RAY_CAST_UTIL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_
+#define VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_
 
 #include <functional>
 
@@ -31,4 +32,4 @@ class B2RayCastCallback final : public b2RayCastCallback {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_B2_RAY_CAST_UTIL_H_
+#endif  // VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_

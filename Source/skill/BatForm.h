@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_BAT_FORM_H_
-#define VIGILANTE_BAT_FORM_H_
+
+#ifndef VIGILANTE_SKILL_BAT_FORM_H_
+#define VIGILANTE_SKILL_BAT_FORM_H_
 
 #include <string>
 
@@ -10,7 +11,7 @@ namespace vigilante {
 
 class Character;
 
-class BatForm : public Skill {
+class BatForm final : public Skill {
  public:
   BatForm(const std::string& jsonFilePath, Character* user);
   virtual ~BatForm() = default;
@@ -35,4 +36,4 @@ class BatForm : public Skill {
 
 }  // namespace vigilante
 
-#endif // VIGILANTE_BAT_FORM_H_
+#endif // VIGILANTE_SKILL_BAT_FORM_H_

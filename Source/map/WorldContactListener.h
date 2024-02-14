@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_WORLD_CONTACT_LISTENER_H_
-#define VIGILANTE_WORLD_CONTACT_LISTENER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_MAP_WORLD_CONTACT_LISTENER_H_
+#define VIGILANTE_MAP_WORLD_CONTACT_LISTENER_H_
 
 #include <box2d/box2d.h>
 
@@ -19,4 +20,4 @@ class WorldContactListener : public b2ContactListener {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_WORLD_CONTACT_LISTENER_H_
+#endif  // VIGILANTE_MAP_WORLD_CONTACT_LISTENER_H_

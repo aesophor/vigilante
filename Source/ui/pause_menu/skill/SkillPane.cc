@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "SkillPane.h"
 
 #include "Assets.h"
@@ -11,10 +12,10 @@ USING_NS_AX;
 namespace vigilante {
 
 SkillPane::SkillPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu),
-      _background(ui::ImageView::create(string{kInventoryBg})),
-      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _skillListView(make_unique<SkillListView>(pauseMenu)) {
+    : AbstractPane{pauseMenu},
+      _background{ui::ImageView::create(string{kInventoryBg})},
+      _tabView{std::make_unique<TabView>(kTabRegular, kTabHighlighted)},
+      _skillListView{std::make_unique<SkillListView>(pauseMenu)} {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
@@ -56,4 +57,4 @@ void SkillPane::handleInput() {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante

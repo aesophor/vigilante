@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_QUEST_LIST_VIEW_H_
-#define VIGILANTE_QUEST_LIST_VIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_LIST_VIEW_H_
+#define VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_LIST_VIEW_H_
 
 #include <string>
 
@@ -11,7 +12,7 @@ namespace vigilante {
 
 class PauseMenu;
 
-class QuestListView : public ListView<Quest*> {
+class QuestListView final : public ListView<Quest*> {
  public:
   explicit QuestListView(PauseMenu* pauseMenu);
   virtual ~QuestListView() = default;
@@ -33,4 +34,4 @@ class QuestListView : public ListView<Quest*> {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_LIST_VIEW_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_QUEST_QUEST_LIST_VIEW_H_

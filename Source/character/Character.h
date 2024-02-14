@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CHARACTER_H_
-#define VIGILANTE_CHARACTER_H_
+
+#ifndef VIGILANTE_CHARACTER_CHARACTER_H_
+#define VIGILANTE_CHARACTER_CHARACTER_H_
 
 #include <array>
 #include <functional>
@@ -493,4 +494,4 @@ class Character : public DynamicActor, public Importable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CHARACTER_H_
+#endif  // VIGILANTE_CHARACTER_CHARACTER_H_

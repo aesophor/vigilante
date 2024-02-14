@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #ifndef VIGILANTE_FX_MANAGER_H_
 #define VIGILANTE_FX_MANAGER_H_
 
@@ -11,7 +12,6 @@
 
 namespace vigilante {
 
-// Forward Declaration
 class Character;
 
 class FxManager final {

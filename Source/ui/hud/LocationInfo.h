@@ -1,6 +1,7 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_LOCATION_INFO_H_
-#define VIGILANTE_LOCATION_INFO_H_
+
+#ifndef VIGILANTE_UI_HUD_LOCATION_INFO_H_
+#define VIGILANTE_UI_HUD_LOCATION_INFO_H_
 
 #include <string>
 
@@ -24,4 +25,4 @@ class LocationInfo final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_LOCATION_INFO_H_
+#endif  // VIGILANTE_UI_HUD_LOCATION_INFO_H_

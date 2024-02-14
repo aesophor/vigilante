@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CONSUMABLE_H_
-#define VIGILANTE_CONSUMABLE_H_
+
+#ifndef VIGILANTE_ITEM_CONSUMABLE_H_
+#define VIGILANTE_ITEM_CONSUMABLE_H_
 
 #include <string>
 
@@ -52,4 +53,4 @@ class Consumable : public Item, public Keybindable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CONSUMABLE_H_
+#endif  // VIGILANTE_ITEM_CONSUMABLE_H_

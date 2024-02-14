@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "Subtitles.h"
 
 #include <vector>
@@ -24,14 +25,11 @@ constexpr auto kSubtitlesY = 38;
 }  // namespace
 
 Subtitles::Subtitles()
-    : _layer(Layer::create()),
-      _label(Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)),
-      _nextSubtitleIcon(ui::ImageView::create(string{kDialogueTriangle})),
-      _upperLetterbox(ui::ImageView::create(string{kShade})),
-      _lowerLetterbox(ui::ImageView::create(string{kShade})),
-      _currentSubtitle(""),
-      _isTransitioning(),
-      _timer() {
+    : _layer{Layer::create()},
+      _label{Label::createWithTTF("", string{kRegularFont}, kRegularFontSize)},
+      _nextSubtitleIcon{ui::ImageView::create(string{kDialogueTriangle})},
+      _upperLetterbox{ui::ImageView::create(string{kShade})},
+      _lowerLetterbox{ui::ImageView::create(string{kShade})} {
   auto winSize = Director::getInstance()->getWinSize();
   _label->setPosition(winSize.width / 2, kSubtitlesY);
   _label->getFontAtlas()->setAliasTexParameters();

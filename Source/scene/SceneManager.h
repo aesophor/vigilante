@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SCENE_MANAGER_H_
-#define VIGILANTE_SCENE_MANAGER_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_SCENE_SCENE_MANAGER_H_
+#define VIGILANTE_SCENE_SCENE_MANAGER_H_
 
 #include <stack>
 
@@ -36,4 +37,4 @@ class SceneManager final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SCENE_MANAGER_H_
+#endif  // VIGILANTE_SCENE_SCENE_MANAGER_H_

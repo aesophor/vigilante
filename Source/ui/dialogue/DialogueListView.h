@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOGUE_LISTVIEW_H_
-#define VIGILANTE_DIALOGUE_LISTVIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
+#define VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
 
 #include "gameplay/DialogueTree.h"
 #include "ui/ListView.h"
@@ -14,7 +15,7 @@ class DialogueMenu;
 // See gameplay/DialogueTree.h for this alias.
 using Dialogue = DialogueTree::Node;
 
-class DialogueListView : public ListView<Dialogue*> {
+class DialogueListView final : public ListView<Dialogue*> {
  public:
   explicit DialogueListView(DialogueMenu* dialogueMenu);
   virtual ~DialogueListView() = default;
@@ -31,4 +32,4 @@ class DialogueListView : public ListView<Dialogue*> {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_LISTVIEW_H_
+#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_

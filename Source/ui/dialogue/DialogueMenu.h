@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOGUE_MENU_H_
-#define VIGILANTE_DIALOGUE_MENU_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_
+#define VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_
 
 #include <memory>
 
@@ -14,7 +15,7 @@ namespace vigilante {
 
 class Npc;
 
-class DialogueMenu : public Controllable {
+class DialogueMenu final : public Controllable {
  public:
   DialogueMenu();
   virtual ~DialogueMenu() = default;
@@ -33,4 +34,4 @@ class DialogueMenu : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_MENU_H_
+#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_

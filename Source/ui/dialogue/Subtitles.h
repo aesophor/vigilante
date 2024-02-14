@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SUBTITLES_H_
-#define VIGILANTE_SUBTITLES_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_DIALOGUE_SUBTITLES_H_
+#define VIGILANTE_UI_DIALOGUE_SUBTITLES_H_
 
 #include <string>
 #include <queue>
@@ -41,11 +42,11 @@ class Subtitles : public Controllable {
   ax::ui::ImageView* _lowerLetterbox;
 
   std::queue<Subtitles::Subtitle> _subtitleQueue;
-  Subtitles::Subtitle _currentSubtitle;
-  bool _isTransitioning;
-  float _timer;
+  Subtitles::Subtitle _currentSubtitle{""};
+  bool _isTransitioning{};
+  float _timer{};
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SUBTITLES_H_
+#endif  // VIGILANTE_UI_DIALOGUE_SUBTITLES_H_

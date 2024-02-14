@@ -1,6 +1,7 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIGRAPH_H_
-#define VIGILANTE_DIGRAPH_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_DS_DIGRAPH_H_
+#define VIGILANTE_UTIL_DS_DIGRAPH_H_
 
 #include <list>
 #include <optional>
@@ -54,4 +55,4 @@ class Digraph final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DIGRAPH_H_
+#endif  // VIGILANTE_UTIL_DS_DIGRAPH_H_

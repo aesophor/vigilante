@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_WINDOW_H_
-#define VIGILANTE_WINDOW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_WINDOW_H_
+#define VIGILANTE_UI_WINDOW_H_
 
 #include <string>
 
@@ -15,7 +16,7 @@ namespace vigilante {
 
 class Window : public Controllable {
  public:
-  Window(float width=300, float height=150);
+  Window(const float width=300, const float height=150);
   virtual ~Window() = default;
 
   virtual void update(const float delta) = 0;
@@ -61,11 +62,11 @@ class Window : public Controllable {
   ax::ui::ImageView* _rightBg;
   ax::ui::ImageView* _bottomBg;
   
-  bool _isVisible;
-  ax::Vec2 _position;
+  bool _isVisible{};
+  ax::Vec2 _position{0, 0};
   ax::Size _size;
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_WINDOW_H_
+#endif  // VIGILANTE_UI_WINDOW_H_

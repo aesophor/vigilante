@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "StatusBar.h"
 
 using namespace std;
@@ -11,12 +12,12 @@ StatusBar::StatusBar(const string& leftPaddingImgPath,
                      const string& statusBarImgPath,
                      const float maxLength,
                      const float numSecAutoHide)
-    : _layout(ui::Layout::create()),
-      _leftPaddingImg(ui::ImageView::create(leftPaddingImgPath)),
-      _rightPaddingImg(ui::ImageView::create(rightPaddingImgPath)),
-      _statusBarImg(ui::ImageView::create(statusBarImgPath)),
-      _maxLength(maxLength),
-      _numSecAutoHide(numSecAutoHide) {
+    : _layout{ui::Layout::create()},
+      _leftPaddingImg{ui::ImageView::create(leftPaddingImgPath)},
+      _rightPaddingImg{ui::ImageView::create(rightPaddingImgPath)},
+      _statusBarImg{ui::ImageView::create(statusBarImgPath)},
+      _maxLength{maxLength},
+      _numSecAutoHide{numSecAutoHide} {
   _leftPaddingImg->setAnchorPoint({0, 0});
   _rightPaddingImg->setAnchorPoint({0, 0});
   _statusBarImg->setAnchorPoint({0, 0});

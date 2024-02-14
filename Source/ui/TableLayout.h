@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TABLE_LAYOUT_H_
-#define VIGILANTE_TABLE_LAYOUT_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_TABLE_LAYOUT_H_
+#define VIGILANTE_UI_TABLE_LAYOUT_H_
 
 #include <axmol.h>
 #include <ui/UILayout.h>
@@ -59,4 +60,4 @@ class TableLayout : public ax::ui::Layout {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_TABLE_LAYOUT_H_
+#endif  // VIGILANTE_UI_TABLE_LAYOUT_H_

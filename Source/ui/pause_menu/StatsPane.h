@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_STATS_PANE_H_
-#define VIGILANTE_STATS_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_STATS_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_STATS_PANE_H_
 
 #include <string>
 
@@ -14,7 +15,7 @@
 
 namespace vigilante {
 
-class StatsPane : public AbstractPane {
+class StatsPane final : public AbstractPane {
  public:
   explicit StatsPane(PauseMenu* pauseMenu);
   virtual ~StatsPane() = default;
@@ -48,6 +49,6 @@ class StatsPane : public AbstractPane {
   ax::Label* _luk;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_STATS_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_STATS_PANE_H_

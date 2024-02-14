@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PAUSE_MENU_DIALOG_H_
-#define VIGILANTE_PAUSE_MENU_DIALOG_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_DIALOG_H_
+#define VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_DIALOG_H_
 
 #include <functional>
 #include <memory>
@@ -17,7 +18,7 @@
 
 namespace vigilante {
 
-class PauseMenuDialog : public AbstractPane {
+class PauseMenuDialog final : public AbstractPane {
  public:
   explicit PauseMenuDialog(PauseMenu* pauseMenu);
   virtual ~PauseMenuDialog() = default;
@@ -67,9 +68,9 @@ class PauseMenuDialog : public AbstractPane {
 
   ax::Label* _message;
   std::vector<std::unique_ptr<PauseMenuDialog::Option>> _options;
-  int _current;
+  int _current{};
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PAUSE_MENU_DIALOG_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_DIALOG_H_

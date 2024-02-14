@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "ControlHints.h"
 
 #include <algorithm>
@@ -19,9 +20,8 @@ USING_NS_AX;
 namespace vigilante {
 
 ControlHints::ControlHints()
-    : _layer(Layer::create()),
-      _profiles(),
-      _currentProfileStack({ControlHints::Profile::GAME}) {
+    : _layer{Layer::create()},
+      _currentProfileStack{{ControlHints::Profile::GAME}} {
   _layer->setPositionY(CONTROL_HINTS_Y);
 
   // Install Control Hints presets.

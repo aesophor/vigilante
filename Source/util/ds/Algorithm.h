@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DS_ALGORITHM_H_
-#define VIGILANTE_DS_ALGORITHM_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_DS_ALGORITHM_H_
+#define VIGILANTE_UTIL_DS_ALGORITHM_H_
 
 #include <memory>
 #include <vector>
@@ -18,4 +19,4 @@ std::vector<T*> uniqueVec2RawVec(const std::vector<std::unique_ptr<T>>& vec) {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DS_ALGORITHM_H_
+#endif  // VIGILANTE_UTIL_DS_ALGORITHM_H_

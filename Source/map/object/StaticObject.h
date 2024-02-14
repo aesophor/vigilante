@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_STATIC_OBJECT_H_
-#define VIGILANTE_STATIC_OBJECT_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_
+#define VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_
 
 #include <string>
 
@@ -39,4 +40,4 @@ class StaticObject : public StaticActor {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_STATIC_OBJECT_H_
+#endif  // VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_

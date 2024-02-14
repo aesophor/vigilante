@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_QUEST_H_
-#define VIGILANTE_QUEST_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_QUEST_QUEST_H_
+#define VIGILANTE_QUEST_QUEST_H_
 
 #include <memory>
 #include <string>
@@ -11,7 +12,7 @@
 
 namespace vigilante {
 
-class Quest : public Importable {
+class Quest final : public Importable {
  public:
   explicit Quest(const std::string& jsonFilePath) : _questProfile{jsonFilePath} {}
   virtual ~Quest() = default;
@@ -82,4 +83,4 @@ class Quest : public Importable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_QUEST_H_
+#endif  // VIGILANTE_QUEST_QUEST_H_

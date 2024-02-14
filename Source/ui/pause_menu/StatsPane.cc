@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "StatsPane.h"
 
 #include "Assets.h"
@@ -14,21 +15,21 @@ USING_NS_AX;
 namespace vigilante {
 
 StatsPane::StatsPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu, TableLayout::create()), // install TableLayout to base class
-      _background(ui::ImageView::create(string{kStatsBg})),
-      _name(Label::createWithTTF("Joanna", string{kRegularFont}, kRegularFontSize)),
-      _level(Label::createWithTTF("Level 1", string{kRegularFont}, kRegularFontSize)),
-      _health(Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)),
-      _magicka(Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)),
-      _stamina(Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)),
-      _attackRange(Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)),
-      _attackSpeed(Label::createWithTTF("10", string{kRegularFont}, kRegularFontSize)),
-      _moveSpeed(Label::createWithTTF("100", string{kRegularFont}, kRegularFontSize)),
-      _jumpHeight(Label::createWithTTF("100", string{kRegularFont}, kRegularFontSize)),
-      _str(Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)),
-      _dex(Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)),
-      _int(Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)),
-      _luk(Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)) {
+    : AbstractPane{pauseMenu, TableLayout::create()},  // install TableLayout to base class
+      _background{ui::ImageView::create(string{kStatsBg})},
+      _name{Label::createWithTTF("Joanna", string{kRegularFont}, kRegularFontSize)},
+      _level{Label::createWithTTF("Level 1", string{kRegularFont}, kRegularFontSize)},
+      _health{Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)},
+      _magicka{Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)},
+      _stamina{Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)},
+      _attackRange{Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)},
+      _attackSpeed{Label::createWithTTF("10", string{kRegularFont}, kRegularFontSize)},
+      _moveSpeed{Label::createWithTTF("100", string{kRegularFont}, kRegularFontSize)},
+      _jumpHeight{Label::createWithTTF("100", string{kRegularFont}, kRegularFontSize)},
+      _str{Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)},
+      _dex{Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)},
+      _int{Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)},
+      _luk{Label::createWithTTF("5", string{kRegularFont}, kRegularFontSize)} {
   // AbstractPane::_layout is a ax::ui::Layout,
   // but we know it's a TableLayout in StatsPane
   TableLayout* layout = dynamic_cast<TableLayout*>(_layout);
@@ -104,4 +105,4 @@ void StatsPane::addEntry(const string& title, Label* label) const {
   layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->row();
 }
 
-} // namespace vigilante
+}  // namespace vigilante

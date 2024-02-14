@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_CONTROL_HINTS_H_
-#define VIGILANTE_CONTROL_HINTS_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_HUD_CONTROL_HINTS_H_
+#define VIGILANTE_UI_HUD_CONTROL_HINTS_H_
 
 #include <array>
 #include <stack>
@@ -12,6 +13,7 @@
 #include <2d/Label.h>
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
+
 #include "ui/Colorscheme.h"
 
 namespace vigilante {
@@ -87,4 +89,4 @@ class ControlHints final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_CONTROL_HINTS_H_
+#endif  // VIGILANTE_UI_HUD_CONTROL_HINTS_H_

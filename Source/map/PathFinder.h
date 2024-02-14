@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_PATH_FINDER_H_
-#define VIGILANTE_PATH_FINDER_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_MAP_PATH_FINDER_H_
+#define VIGILANTE_MAP_PATH_FINDER_H_
 
 #include <optional>
 
@@ -25,4 +26,4 @@ class SimplePathFinder final : public PathFinder {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_PATH_FINDER_H_
+#endif  // VIGILANTE_MAP_PATH_FINDER_H_

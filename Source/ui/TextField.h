@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TEXT_FIELD_H_
-#define VIGILANTE_TEXT_FIELD_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_TEXT_FIELD_H_
+#define VIGILANTE_UI_TEXT_FIELD_H_
 
 #include <functional>
 #include <string>
@@ -52,11 +53,11 @@ class TextField {
   // The keyCode of the key which will dismiss this TextField
   ax::EventKeyboard::KeyCode _dismissKey;
 
-  float _timer;
-  bool _isReceivingInput;
-  bool _isCursorVisible;
+  float _timer{};
+  bool _isReceivingInput{};
+  bool _isCursorVisible{};
 };
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_TEXT_FIELD_H_
+#endif  // VIGILANTE_UI_TEXT_FIELD_H_

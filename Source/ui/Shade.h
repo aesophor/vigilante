@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SHADE_H_
-#define VIGILANTE_SHADE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_SHADE_H_
+#define VIGILANTE_UI_SHADE_H_
 
 #include <axmol.h>
 #include <ui/UIImageView.h>
@@ -20,6 +21,6 @@ class Shade final {
   ax::ui::ImageView* _imageView;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_SHADE_H_
+#endif  // VIGILANTE_UI_SHADE_H_

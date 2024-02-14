@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOGUE_TREE_H_
-#define VIGILANTE_DIALOGUE_TREE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
+#define VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
 
 #include <string>
 #include <vector>
@@ -95,4 +96,4 @@ using Dialogue = DialogueTree::Node;
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_TREE_H_
+#endif  // VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_

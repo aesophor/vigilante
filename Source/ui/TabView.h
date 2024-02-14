@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_TABVIEW_H_
-#define VIGILANTE_TABVIEW_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_TABVIEW_H_
+#define VIGILANTE_UI_TABVIEW_H_
 
 #include <vector>
 #include <string>
@@ -48,13 +49,13 @@ class TabView {
  protected:
   ax::ui::Layout* _layout;
   std::vector<std::unique_ptr<TabView::Tab>> _tabs;
-  int _current;
-  ax::Vec2 _nextTabPos;
+  int _current{};
+  ax::Vec2 _nextTabPos{0, 0};
 
   std::string _regularBg;
   std::string _highlightedBg;
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_TABVIEW_H_
+#endif  // VIGILANTE_UI_TABVIEW_H_

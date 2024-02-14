@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "QuestPane.h"
 
 #include "Assets.h"
@@ -12,10 +13,10 @@ USING_NS_AX;
 namespace vigilante {
 
 QuestPane::QuestPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu),
-      _background(ui::ImageView::create(string{kInventoryBg})),
-      _tabView(make_unique<TabView>(kTabRegular, kTabHighlighted)),
-      _questListView(make_unique<QuestListView>(pauseMenu)) {
+    : AbstractPane{pauseMenu},
+      _background{ui::ImageView::create(string{kInventoryBg})},
+      _tabView{std::make_unique<TabView>(kTabRegular, kTabHighlighted)},
+      _questListView{std::make_unique<QuestListView>(pauseMenu)} {
   _background->setAnchorPoint({0, 1});
 
   _layout->setLayoutType(ui::Layout::Type::ABSOLUTE);
@@ -67,4 +68,4 @@ void QuestPane::handleInput() {
   }
 }
 
-} // namespace vigilante
+}  // namespace vigilante

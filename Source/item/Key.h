@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_KEY_H_
-#define VIGILANTE_KEY_H_
+
+#ifndef VIGILANTE_ITEM_KEY_H_
+#define VIGILANTE_ITEM_KEY_H_
 
 #include <string>
 
@@ -28,4 +29,4 @@ class Key : public MiscItem {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_KEY_H_
+#endif  // VIGILANTE_ITEM_KEY_H_

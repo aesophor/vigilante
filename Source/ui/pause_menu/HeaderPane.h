@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_HEADER_PANE_H_
-#define VIGILANTE_HEADER_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_
 
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@
 
 namespace vigilante {
 
-class HeaderPane : public AbstractPane {
+class HeaderPane final : public AbstractPane {
  public:
   explicit HeaderPane(PauseMenu* pauseMenu);
   virtual ~HeaderPane() = default;
@@ -39,9 +40,9 @@ class HeaderPane : public AbstractPane {
   static inline constexpr int _kOptionCount = 5;
 
   std::vector<ax::Label*> _labels;
-  int _currentIndex;
+  int _currentIndex{};
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_HEADER_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_

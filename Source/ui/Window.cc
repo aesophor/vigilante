@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "Window.h"
 
 #include <cassert>
@@ -22,23 +23,21 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Window::Window(float width, float height)
-    : _layer(Layer::create()),
-      _layout(TableLayout::create(width, DEFAULT_ROW_HEIGHT)),
-      _contentLayout(ui::Layout::create()),
-      _titleLabel(Label::createWithTTF(DEFAULT_TITLE, string{kBoldFont}, kRegularFontSize)),
-      _contentBg(ui::ImageView::create(string{kWindowContentBg})),
-      _topLeftBg(ui::ImageView::create(string{kWindowTopLeftBg})),
-      _topRightBg(ui::ImageView::create(string{kWindowTopRightBg})),
-      _bottomLeftBg(ui::ImageView::create(string{kWindowBottomLeftBg})),
-      _bottomRightBg(ui::ImageView::create(string{kWindowBottomRightBg})),
-      _topBg(ui::ImageView::create(string{kWindowTopBg})),
-      _leftBg(ui::ImageView::create(string{kWindowLeftBg})),
-      _rightBg(ui::ImageView::create(string{kWindowRightBg})),
-      _bottomBg(ui::ImageView::create(string{kWindowBottomBg})),
-      _position(0, 0),  // Calculated in Window::normalize()
+Window::Window(const float width, const float height)
+    : _layer{Layer::create()},
+      _layout{TableLayout::create(width, DEFAULT_ROW_HEIGHT)},
+      _contentLayout{ui::Layout::create()},
+      _titleLabel{Label::createWithTTF(DEFAULT_TITLE, string{kBoldFont}, kRegularFontSize)},
+      _contentBg{ui::ImageView::create(string{kWindowContentBg})},
+      _topLeftBg{ui::ImageView::create(string{kWindowTopLeftBg})},
+      _topRightBg{ui::ImageView::create(string{kWindowTopRightBg})},
+      _bottomLeftBg{ui::ImageView::create(string{kWindowBottomLeftBg})},
+      _bottomRightBg{ui::ImageView::create(string{kWindowBottomRightBg})},
+      _topBg{ui::ImageView::create(string{kWindowTopBg})},
+      _leftBg{ui::ImageView::create(string{kWindowLeftBg})},
+      _rightBg{ui::ImageView::create(string{kWindowRightBg})},
+      _bottomBg{ui::ImageView::create(string{kWindowBottomBg})},
       _size(width, height) {
-
   // All {topLeft,topRight,bottomLeft,bottomRight}Bg images
   // should be squares and be of the same size.
   assert(_topLeftBg->getContentSize().width == _topLeftBg->getContentSize().height);

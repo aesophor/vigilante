@@ -1,4 +1,5 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "AfterImageFxManager.h"
 
 #include "scene/GameScene.h"

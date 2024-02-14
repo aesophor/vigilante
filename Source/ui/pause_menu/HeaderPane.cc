@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "HeaderPane.h"
 
 #include "Assets.h"
@@ -11,9 +12,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-HeaderPane::HeaderPane(PauseMenu* pauseMenu)
-    : AbstractPane(pauseMenu),
-      _currentIndex() {
+HeaderPane::HeaderPane(PauseMenu* pauseMenu) : AbstractPane{pauseMenu} {
   _layout->setLayoutType(ui::Layout::Type::RELATIVE);
   _layout->setAnchorPoint({0, 1});  // Make top-left (0, 0)
 
@@ -57,4 +56,4 @@ void HeaderPane::selectNext() {
   select((_currentIndex + 1) % _kOptionCount);
 }
 
-} // namespace vigilante
+}  // namespace vigilante

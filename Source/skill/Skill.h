@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_SKILL_H_
-#define VIGILANTE_SKILL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_SKILL_SKILL_H_
+#define VIGILANTE_SKILL_SKILL_H_
 
 #include <memory>
 #include <string>
@@ -84,4 +85,4 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_SKILL_H_
+#endif  // VIGILANTE_SKILL_SKILL_H_

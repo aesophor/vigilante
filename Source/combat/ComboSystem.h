@@ -1,6 +1,6 @@
-// Copyright (c) 2023 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COMBO_SYSTEM_H_
-#define VIGILANTE_COMBO_SYSTEM_H_
+// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+#ifndef VIGILANTE_COMBAT_COMBO_SYSTEM_H_
+#define VIGILANTE_COMBAT_COMBO_SYSTEM_H_
 
 #include "character/Character.h"
 #include "util/ds/Digraph.h"
@@ -91,4 +91,4 @@ class ComboSystem final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_COMBO_SYSTEM_H_
+#endif  // VIGILANTE_COMBAT_COMBO_SYSTEM_H_

@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_QUEST_BOOK_H_
-#define VIGILANTE_QUEST_BOOK_H_
+
+#ifndef VIGILANTE_QUEST_QUEST_BOOK_H_
+#define VIGILANTE_QUEST_QUEST_BOOK_H_
 
 #include <memory>
 #include <string>
@@ -11,7 +12,7 @@
 
 namespace vigilante {
 
-class QuestBook {
+class QuestBook final {
  public:
   explicit QuestBook(const std::string& questsListFilePath);
   virtual ~QuestBook() = default;
@@ -40,4 +41,4 @@ class QuestBook {
 
 } // namespace vigilante
 
-#endif // VIGILANTE_QUEST_BOOK_H_
+#endif // VIGILANTE_QUEST_QUEST_BOOK_H_

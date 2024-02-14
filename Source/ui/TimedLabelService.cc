@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "TimedLabelService.h"
 
 #include "Assets.h"
@@ -9,15 +10,15 @@ USING_NS_AX;
 
 namespace vigilante {
 
-TimedLabelService::TimedLabelService(int startingX, int startingY,
-                                     uint8_t maxLabelCount, uint8_t labelLifetime,
-                                     TimedLabelService::TimedLabel::Alignment alignment)
-    : _layer(Layer::create()),
-      _kStartingX(startingX),
-      _kStartingY(startingY),
-      _kMaxLabelCount(maxLabelCount),
-      _kLabelLifetime(labelLifetime),
-      _kAlignment(alignment) {}
+TimedLabelService::TimedLabelService(const float startingX, const float startingY,
+                                     const uint8_t maxLabelCount, const uint8_t labelLifetime,
+                                     const TimedLabelService::TimedLabel::Alignment alignment)
+    : _layer{Layer::create()},
+      _kStartingX{startingX},
+      _kStartingY{startingY},
+      _kMaxLabelCount{maxLabelCount},
+      _kLabelLifetime{labelLifetime},
+      _kAlignment{alignment} {}
 
 void TimedLabelService::update(const float delta) {
   for (auto& notification : _labelQueue) {
@@ -64,11 +65,9 @@ void TimedLabelService::show(const string& message) {
   _layer->setCameraMask(_layer->getCameraMask());
 }
 
-TimedLabelService::TimedLabel::TimedLabel(const string& text, float lifetime,
-                                          TimedLabel::Alignment alignment)
-    : label(Label::createWithTTF(text, string{kRegularFont}, kRegularFontSize)),
-      lifetime(lifetime),
-      timer() {
+TimedLabelService::TimedLabel::TimedLabel(const string& text, const float lifetime, const TimedLabel::Alignment alignment)
+    : label{Label::createWithTTF(text, string{kRegularFont}, kRegularFontSize)},
+      lifetime{lifetime} {
   label->setAnchorPoint(alignment);
   label->getFontAtlas()->setAliasTexParameters();
 }

@@ -1,4 +1,5 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
 #include "AmountSelectionWindow.h"
 
 #include "Assets.h"
@@ -6,30 +7,34 @@
 #include "input/InputManager.h"
 #include "util/StringUtil.h"
 
-#define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_LEFT 10
-#define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_RIGHT 10
-#define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_TOP 5
-#define AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_BOTTOM 15
-
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr float kMarginLeft = 10.0f;
+constexpr float kMarginRight = 10.0f;
+constexpr float kMarginTop = 5.0f;
+constexpr float kMarginBottom = 15.0f;
+
+}  // namespace
+
 AmountSelectionWindow::AmountSelectionWindow()
-    : Window(),
-      _contentBackground(ui::ImageView::create(string{kTextFieldBg})),
-      _textField("1") {
+    : Window{},
+      _contentBackground{ui::ImageView::create(string{kTextFieldBg})},
+      _textField{"1"} {
 
   setTitle("How many?");
   Size windowSize = _titleLabel->getContentSize();
   windowSize.width = std::max(windowSize.width, _contentBackground->getContentSize().width);
   windowSize.height += _contentBackground->getContentSize().height;
-  windowSize.width += AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_LEFT;
-  windowSize.width += AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_RIGHT;
-  windowSize.height += AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_TOP;
-  windowSize.height += AMOUNT_SELECTION_WINDOW_CONTENT_MARGIN_BOTTOM;
+  windowSize.width += kMarginLeft;
+  windowSize.width += kMarginRight;
+  windowSize.height += kMarginTop;
+  windowSize.height += kMarginBottom;
   resize(windowSize);
 
   _contentBackground->setAnchorPoint({0, 1});

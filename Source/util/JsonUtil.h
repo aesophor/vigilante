@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_JSON_UTIL_H_
-#define VIGILANTE_JSON_UTIL_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UTIL_JSON_UTIL_H_
+#define VIGILANTE_UTIL_JSON_UTIL_H_
 
 #include <filesystem>
 #include <list>
@@ -159,4 +160,4 @@ void saveToFile(const fs::path& jsonFilePath, const rapidjson::Document& json);
 
 }  // namespace vigilante::json_util
 
-#endif  // VIGILANTE_JSON_UTIL_H_
+#endif  // VIGILANTE_UTIL_JSON_UTIL_H_

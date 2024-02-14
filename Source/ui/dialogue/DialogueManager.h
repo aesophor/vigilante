@@ -1,6 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_DIALOGUE_MANAGER_H_
-#define VIGILANTE_DIALOGUE_MANAGER_H_
+
+#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_
+#define VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_
 
 #include <memory>
 
@@ -12,7 +13,7 @@
 
 namespace vigilante {
 
-class DialogueManager : public Controllable {
+class DialogueManager final : public Controllable {
  public:
   DialogueManager();
   virtual ~DialogueManager() override = default;
@@ -46,4 +47,4 @@ class DialogueManager : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_DIALOGUE_MANAGER_H_
+#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_

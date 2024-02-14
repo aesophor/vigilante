@@ -1,6 +1,7 @@
-// Copyright (c) 2018-2021 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_EQUIPMENT_PANE_H_
-#define VIGILANTE_EQUIPMENT_PANE_H_
+// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+
+#ifndef VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
+#define VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
 
 #include <memory>
 #include <string>
@@ -18,7 +19,7 @@
 
 namespace vigilante {
 
-class EquipmentPane : public AbstractPane {
+class EquipmentPane final : public AbstractPane {
  public:
   explicit EquipmentPane(PauseMenu* pauseMenu);
   virtual ~EquipmentPane() = default;
@@ -46,7 +47,7 @@ class EquipmentPane : public AbstractPane {
     inline ax::ui::Layout* getLayout() const { return _layout; }
 
    private:
-    static const int _kEquipmentIconSize;
+    static inline const int _kEquipmentIconSize{16};
 
     EquipmentPane* _parent;
     TableLayout* _layout;
@@ -54,15 +55,15 @@ class EquipmentPane : public AbstractPane {
     ax::ui::ImageView* _icon;
     ax::Label* _equipmentTypeLabel;
     ax::Label* _equipmentNameLabel;
-    Equipment* _equipment;
+    Equipment* _equipment{};
 
     friend class EquipmentPane;
   };
 
   std::vector<std::unique_ptr<EquipmentItem>> _equipmentItems;
-  int _current;
+  int _current{};
 };
 
-} // namespace vigilante
+}  // namespace vigilante
 
-#endif // VIGILANTE_EQUIPMENT_PANE_H_
+#endif  // VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
