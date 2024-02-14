@@ -1,6 +1,6 @@
 <div align="center">
 <h3>VIGILANTE</h3>
-<img src="/Documentation/images/cover.png">
+<img src="/Documentation/images/explore3.png">
 </div>
 
 ## Overview
@@ -18,8 +18,13 @@ Similar to The Elder Scrolls series, the player can team up with certain NPCs an
 1. Generate xcode project `cmake -S . -B build -GXcode -DCMAKE_OSX_ARCHITECTURES=arm64`
 2. Launch xcode, open the project and build
 
+#### Resources
+This is a commercial project, so everything under the `Resources` directory is kept private.
+
+I've always been wondering how a large-scale video game can be made from scratch in C++ ever since I was a kid, but I've never found any good example on the Internet. Hence, I open-sourced a part of this project with the aim of helping those who are looking for such an example (although you'll not be able to run it due to lack of `Resources`).
+
 ## License
-Copyright (c) 2018-2023 Marco Wang \<m.aesophor@gmail.com\>. All rights reserved.
+Copyright (c) 2018-2024 Marco Wang \<m.aesophor@gmail.com\>. All rights reserved.
 
 * You are allowed to:
   - edit and modify the codebase for educational purposes;
