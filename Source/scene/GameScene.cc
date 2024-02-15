@@ -84,15 +84,18 @@ bool GameScene::init() {
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_shade->getImageView(), graphical_layers::kShade);
 
+  // Initialize time.
+  _time = std::make_unique<Time>();
+
   // Initialize HUD.
   _hud = std::make_unique<Hud>();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_hud->getLayer(), graphical_layers::kHud);
 
-  // Initialize LocationInfo.
-  _locationInfo = std::make_unique<LocationInfo>();
-  _locationInfo->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_locationInfo->getLayer(), graphical_layers::kLocationInfo);
+  // Initialize TimeLocationInfo.
+  _timeLocationInfo = std::make_unique<TimeLocationInfo>();
+  _timeLocationInfo->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
+  addChild(_timeLocationInfo->getLayer(), graphical_layers::kTimeLocationInfo);
 
   // Initialize console.
   _console = std::make_unique<Console>();
@@ -194,6 +197,8 @@ void GameScene::update(const float delta) {
     _gameMapManager->getWorld()->Step(1.0f / kFps, kVelocityIterations, kPositionIterations);
   }
 
+  _time->update(delta);
+  _timeLocationInfo->update();
   _gameMapManager->update(delta);
   _afterImageFxManager->update(delta);
   _floatingDamages->update(delta);

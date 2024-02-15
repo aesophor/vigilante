@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_LOCATION_INFO_H_
-#define VIGILANTE_UI_HUD_LOCATION_INFO_H_
+#ifndef VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_
+#define VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_
 
 #include <string>
 
@@ -10,11 +10,11 @@
 
 namespace vigilante {
 
-class LocationInfo final {
+class TimeLocationInfo final {
  public:
-  LocationInfo();
+  TimeLocationInfo();
 
-  void updateLocationName();
+  void update();
 
   inline ax::Layer* getLayer() const { return _layer; }
 
@@ -25,4 +25,4 @@ class LocationInfo final {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_UI_HUD_LOCATION_INFO_H_
+#endif  // VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_

@@ -15,6 +15,7 @@
 #include "AfterImageFxManager.h"
 #include "Controllable.h"
 #include "FxManager.h"
+#include "gameplay/Time.h"
 #include "input/HotkeyManager.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
@@ -23,7 +24,7 @@
 #include "ui/hud/ControlHints.h"
 #include "ui/hud/FloatingDamages.h"
 #include "ui/hud/Hud.h"
-#include "ui/hud/LocationInfo.h"
+#include "ui/hud/TimeLocationInfo.h"
 #include "ui/hud/Notifications.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/quest_hints/QuestHints.h"
@@ -52,8 +53,9 @@ class GameScene final : public ax::Scene, public Controllable {
   inline ax::Camera* getGameCamera() const { return _gameCamera; }
 
   inline Shade* getShade() const { return _shade.get(); }
+  inline Time* getTime() const { return _time.get(); }
   inline Hud* getHud() const { return _hud.get(); }
-  inline LocationInfo* getLocationInfo() const { return _locationInfo.get(); }
+  inline TimeLocationInfo* getTimeLocationInfo() const { return _timeLocationInfo.get(); }
   inline Console* getConsole() const { return _console.get(); }
   inline PauseMenu* getPauseMenu() const { return _pauseMenu.get(); }
   inline WindowManager* getWindowManager() const { return _windowManager.get(); }
@@ -78,9 +80,10 @@ class GameScene final : public ax::Scene, public Controllable {
   ax::extension::PhysicsDebugNodeBox2D _debugDraw;
 
   std::unique_ptr<HotkeyManager> _hotkeyManager;
+  std::unique_ptr<Time> _time;
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
-  std::unique_ptr<LocationInfo> _locationInfo;
+  std::unique_ptr<TimeLocationInfo> _timeLocationInfo;
   std::unique_ptr<Console> _console;
   std::unique_ptr<Notifications> _notifications;
   std::unique_ptr<QuestHints> _questHints;

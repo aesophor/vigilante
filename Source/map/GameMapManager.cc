@@ -94,9 +94,6 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
     Audio::the().playBgm(_gameMap->getBgmFilePath());
   }
 
-  auto locationInfo = SceneManager::the().getCurrentScene<GameScene>()->getLocationInfo();
-  locationInfo->updateLocationName();
-
   return _gameMap.get();
 }
 
