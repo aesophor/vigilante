@@ -22,6 +22,8 @@ class CommandHandler final {
   void setStage(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);
   void removeItem(const std::vector<std::string>& args);
+  void addGold(const std::vector<std::string>& args);
+  void removeGold(const std::vector<std::string>& args);
   void updateDialogueTree(const std::vector<std::string>& args);
   void joinPlayerParty(const std::vector<std::string>& args);
   void leavePlayerParty(const std::vector<std::string>& args);

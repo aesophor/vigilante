@@ -45,6 +45,8 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"setStage",                &CommandHandler::setStage               },
     {"addItem",                 &CommandHandler::addItem                },
     {"removeItem",              &CommandHandler::removeItem             },
+    {"addGold",                 &CommandHandler::addGold                },
+    {"removeGold",              &CommandHandler::removeGold             },
     {"updateDialogueTree",      &CommandHandler::updateDialogueTree     },
     {"joinPlayerParty",         &CommandHandler::joinPlayerParty        },
     {"leavePlayerParty",        &CommandHandler::leavePlayerParty       },
@@ -197,6 +199,62 @@ void CommandHandler::removeItem(const vector<string>& args) {
   unique_ptr<Item> item = Item::create(args[1]);
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getPlayer()->removeItem(item.get(), amount);
+  setSuccess();
+}
+
+void CommandHandler::addGold(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: removeItem <amount>");
+    return;
+  }
+
+  int amount = 1;
+  try {
+    amount = std::stoi(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `amount`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`amount` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  player->addGold(amount);
+  setSuccess();
+}
+
+void CommandHandler::removeGold(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: removeGold <amount>");
+    return;
+  }
+
+  int amount = 1;
+  try {
+    amount = std::stoi(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `amount`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`amount` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (player->getGoldBalance() < amount) {
+    setError("Failed to remove gold, insufficient gold.");
+    return;
+  }
+  player->removeGold(amount);
   setSuccess();
 }
 
