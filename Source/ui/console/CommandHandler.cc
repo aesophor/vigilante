@@ -458,7 +458,7 @@ void CommandHandler::playerRentRoom(const vector<string>& args) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
   if (player->getGoldBalance() < fee) {
-    setError("Failed to rend room, insufficient gold.");
+    setError("Failed to rent room, insufficient gold.");
     return;
   }
 
