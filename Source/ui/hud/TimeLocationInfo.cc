@@ -35,11 +35,11 @@ TimeLocationInfo::TimeLocationInfo()
 }
 
 void TimeLocationInfo::update() {
-  auto time = SceneManager::the().getCurrentScene<GameScene>()->getTime();
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
 
   const string s = string_util::format("%02d:%02d / %s",
-                                       time->getHour(), time->getMinute(),
+                                       inGameTime->getHour(), inGameTime->getMinute(),
                                        gmMgr->getGameMap()->getLocationName().c_str());
   _locationNameLabel->setString(s);
 }
