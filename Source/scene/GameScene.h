@@ -16,6 +16,7 @@
 #include "Controllable.h"
 #include "FxManager.h"
 #include "gameplay/InGameTime.h"
+#include "gameplay/RoomRentalTracker.h"
 #include "input/HotkeyManager.h"
 #include "input/InputManager.h"
 #include "map/GameMapManager.h"
@@ -53,7 +54,6 @@ class GameScene final : public ax::Scene, public Controllable {
   inline ax::Camera* getGameCamera() const { return _gameCamera; }
 
   inline Shade* getShade() const { return _shade.get(); }
-  inline InGameTime* getInGameTime() const { return _inGameTime.get(); }
   inline Hud* getHud() const { return _hud.get(); }
   inline TimeLocationInfo* getTimeLocationInfo() const { return _timeLocationInfo.get(); }
   inline Console* getConsole() const { return _console.get(); }
@@ -68,6 +68,8 @@ class GameScene final : public ax::Scene, public Controllable {
   inline FxManager* getFxManager() const { return _fxManager.get(); }
   inline AfterImageFxManager* getAfterImageFxManager() const { return _afterImageFxManager.get(); }
   inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
+  inline InGameTime* getInGameTime() const { return _inGameTime.get(); }
+  inline RoomRentalTracker* getRoomRentalTracker() const { return _roomRentalTracker.get(); }
 
  private:
   bool _isRunning;
@@ -80,7 +82,6 @@ class GameScene final : public ax::Scene, public Controllable {
   ax::extension::PhysicsDebugNodeBox2D _debugDraw;
 
   std::unique_ptr<HotkeyManager> _hotkeyManager;
-  std::unique_ptr<InGameTime> _inGameTime;
   std::unique_ptr<Shade> _shade;
   std::unique_ptr<Hud> _hud;
   std::unique_ptr<TimeLocationInfo> _timeLocationInfo;
@@ -95,6 +96,8 @@ class GameScene final : public ax::Scene, public Controllable {
   std::unique_ptr<FxManager> _fxManager;
   std::unique_ptr<AfterImageFxManager> _afterImageFxManager;
   std::unique_ptr<PauseMenu> _pauseMenu;
+  std::unique_ptr<InGameTime> _inGameTime;
+  std::unique_ptr<RoomRentalTracker> _roomRentalTracker;
 };
 
 }  // namespace vigilante

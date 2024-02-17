@@ -436,14 +436,14 @@ void CommandHandler::playerRest(const vector<string>& args) {
 }
 
 void CommandHandler::playerRentRoom(const vector<string>& args) {
-  if (args.size() < 2) {
-    setError("usage: playerRentRoom <gold>");
+  if (args.size() < 3) {
+    setError("usage: playerRentRoom <tmxMapFilePath> <gold>");
     return;
   }
 
   int fee = 0;
   try {
-    fee = std::stoi(args[1]);
+    fee = std::stoi(args[2]);
   } catch (const invalid_argument& ex) {
     setError("invalid argument `amount`");
     return;
@@ -461,8 +461,21 @@ void CommandHandler::playerRentRoom(const vector<string>& args) {
     setError("Failed to rent room, insufficient gold.");
     return;
   }
-
   player->removeGold(fee);
+
+  const string tmxMapFilePath = args[1];
+  auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+  if (!roomRentalTracker->checkIn(tmxMapFilePath)) {
+    setError("Failed to rent room.");
+    player->addGold(fee);
+    return;
+  }
+
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+  inGameTime->runAfter(24, 0, 0, [roomRentalTracker, tmxMapFilePath]() {
+    roomRentalTracker->checkOut(tmxMapFilePath);
+  });
+
   setSuccess();
 }
 

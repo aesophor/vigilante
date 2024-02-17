@@ -84,9 +84,6 @@ bool GameScene::init() {
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_shade->getImageView(), graphical_layers::kShade);
 
-  // Initialize in-game time.
-  _inGameTime = std::make_unique<InGameTime>();
-
   // Initialize HUD.
   _hud = std::make_unique<Hud>();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
@@ -148,6 +145,12 @@ bool GameScene::init() {
   _pauseMenu = std::make_unique<PauseMenu>();
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
   addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
+
+  // Initialize in-game time.
+  _inGameTime = std::make_unique<InGameTime>();
+
+  // Initialize room rental tracker.
+  _roomRentalTracker = std::make_unique<RoomRentalTracker>();
 
   // Initialize box2d debug draw.
   uint32 flags = 0;
