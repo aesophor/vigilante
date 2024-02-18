@@ -35,6 +35,12 @@ class GameState final {
   rapidjson::Value serializePlayerParty() const;
   void deserializePlayerParty(const rapidjson::Value& obj) const;
 
+  rapidjson::Value serializeInGameTime() const;
+  void deserializeInGameTime(const rapidjson::Value& obj) const;
+
+  rapidjson::Value serializeRoomRentalTrackerState() const;
+  void deserializeRoomRentalTrackerState(const rapidjson::Value& obj) const;
+
   const fs::path _saveFilePath;
   rapidjson::Document _json;
   rapidjson::Document::AllocatorType& _allocator;

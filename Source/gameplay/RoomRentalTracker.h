@@ -13,6 +13,11 @@ class RoomRentalTracker final {
   bool checkIn(const std::string& innTmxFilePath);
   bool checkOut(const std::string& innTmxFilePath);
 
+  inline const std::unordered_set<std::string>& getCheckedInInns() const { return _checkedInInns; }
+  inline void setCheckedInInns(std::unordered_set<std::string>&& checkedInInns) {
+    _checkedInInns = std::move(checkedInInns);
+  }
+
  private:
   std::unordered_set<std::string> _checkedInInns;
 };

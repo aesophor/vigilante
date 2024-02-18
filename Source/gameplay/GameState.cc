@@ -18,6 +18,8 @@ void GameState::save() {
 
   _json.AddMember("gameMap", serializeGameMapState(), _allocator);
   _json.AddMember("player", serializePlayerState(), _allocator);
+  _json.AddMember("inGameTime", serializeInGameTime(), _allocator);
+  _json.AddMember("roomRentalTracker", serializeRoomRentalTrackerState(), _allocator);
 
   VGLOG(LOG_INFO, "Saving to save file [%s].", _saveFilePath.c_str());
   json_util::saveToFile(_saveFilePath, _json);
@@ -32,6 +34,8 @@ void GameState::load() {
 
   deserializePlayerState(_json["player"].GetObject());
   deserializeGameMapState(_json["gameMap"].GetObject());
+  deserializeInGameTime(_json["inGameTime"].GetObject());
+  deserializeRoomRentalTrackerState(_json["roomRentalTracker"].GetObject());
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
@@ -291,6 +295,55 @@ void GameState::deserializePlayerParty(const rapidjson::Value& obj) const {
         make_pair("y", &info.y));
     playerParty->_waitingMembersLocationInfos.insert(make_pair(npcJsonFilePath, info));
   }
+}
+
+rapidjson::Value GameState::serializeInGameTime() const {
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+
+  return json_util::serialize(_allocator,
+                              make_pair("hour", inGameTime->getHour()),
+                              make_pair("minute", inGameTime->getMinute()),
+                              make_pair("second", inGameTime->getSecond()),
+                              make_pair("secondsElapsed", inGameTime->getSecondsElapsed()),
+                              make_pair("deferredCmdsMinHeap", inGameTime->getDeferredCmdsMinHeap()));
+}
+
+void GameState::deserializeInGameTime(const rapidjson::Value& obj) const {
+  int hour{};
+  int minute{};
+  int second{};
+  uint64_t secondsElapsed{};
+  vector<InGameTime::DeferredCmd> deferredCmdsMinHeap;
+
+  json_util::deserialize(obj,
+                         make_pair("hour", &hour),
+                         make_pair("minute", &minute),
+                         make_pair("second", &second),
+                         make_pair("secondsElapsed", &secondsElapsed),
+                         make_pair("deferredCmdsMinHeap", &deferredCmdsMinHeap));
+
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+  inGameTime->setHour(hour);
+  inGameTime->setMinute(minute);
+  inGameTime->setSecond(second);
+  inGameTime->setSecondsElapsed(secondsElapsed);
+  inGameTime->setdDeferredCmdsMinHeap(std::move(deferredCmdsMinHeap));
+}
+
+rapidjson::Value GameState::serializeRoomRentalTrackerState() const {
+  auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+
+  return json_util::serialize(_allocator,
+                              make_pair("checkedInInns", roomRentalTracker->getCheckedInInns()));
+}
+
+void GameState::deserializeRoomRentalTrackerState(const rapidjson::Value& obj) const {
+  unordered_set<string> checkedInInns;
+
+  json_util::deserialize(obj, make_pair("checkedInInns", &checkedInInns));
+
+  auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+  roomRentalTracker->setCheckedInInns(std::move(checkedInInns));
 }
 
 }  // namespace vigilante
