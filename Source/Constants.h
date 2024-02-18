@@ -50,16 +50,15 @@ inline constexpr int kTmxTiledMap = 10;
 inline constexpr int kChest = 15;
 inline constexpr int kStaticObjects = 18;
 inline constexpr int kSpell = 20;
-
 inline constexpr int kNpcBody = 24;
 inline constexpr int kEnemyBody = 25;
 inline constexpr int kItem = 28;
 inline constexpr int kPlayerBody = 30;
 inline constexpr int kEquipment = 37;
+inline constexpr int kFx = 45;
 
-inline constexpr int kDefault = 50;
+inline constexpr int kDefault = 60;
 
-inline constexpr int kFx = 70;
 inline constexpr int kFloatingDamage = 80;
 inline constexpr int kNotification = 82;
 inline constexpr int kQuestHint = 84;
