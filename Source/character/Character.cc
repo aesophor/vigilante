@@ -1131,8 +1131,7 @@ bool Character::removeItem(Item* item, int amount) {
     return false;
   }
 
-  const int finalAmount = existingItemObj->getAmount() - amount;
-  assert(finalAmount >= 0 && "Item amount must be >= 0 after removing item from character.");
+  const int finalAmount = std::max(0, existingItemObj->getAmount() - amount);
   existingItemObj->setAmount(finalAmount);
 
   if (finalAmount == 0) {
