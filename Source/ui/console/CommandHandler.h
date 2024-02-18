@@ -11,6 +11,7 @@ namespace vigilante {
 
 namespace cmd {
 
+constexpr char kSetBgmVolume[] = "setbgmvolume";
 constexpr char kStartQuest[] = "startquest";
 constexpr char kSetStage[] = "setstage";
 constexpr char kAddItem[] = "additem";
@@ -43,6 +44,7 @@ class CommandHandler final {
   void setError(const std::string& errMsg);
 
   // Command handlers.
+  void setBgmVolume(const std::vector<std::string>& args);
   void startQuest(const std::vector<std::string>& args);
   void setStage(const std::vector<std::string>& args);
   void addItem(const std::vector<std::string>& args);

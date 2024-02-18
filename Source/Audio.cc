@@ -12,6 +12,7 @@ namespace vigilante {
 namespace {
 
 AUDIO_ID bgmAudioId{};
+float bgmVolume{1.0f};
 
 }  // namespace
 
@@ -30,11 +31,16 @@ void Audio::playBgm(const string& filePath) {
     bgmAudioId = {};
   }
 
-  bgmAudioId = AudioEngine::play2d(filePath.c_str(), /*loop=*/true);
+  bgmAudioId = AudioEngine::play2d(filePath.c_str(), /*loop=*/true, /*volume=*/bgmVolume);
 }
 
 void Audio::stopBgm() {
   AudioEngine::stop(bgmAudioId);
+}
+
+void Audio::setBgmVolume(const float volume) {
+  bgmVolume = volume;
+  AudioEngine::setVolume(bgmAudioId, bgmVolume);
 }
 
 }  // namespace vigilante

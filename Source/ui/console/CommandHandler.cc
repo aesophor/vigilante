@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "Audio.h"
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
@@ -42,6 +43,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   _errMsg = kDefaultErrMsg;
 
   static const CmdTable cmdTable = {
+    {cmd::kSetBgmVolume,       &CommandHandler::setBgmVolume       },
     {cmd::kStartQuest,         &CommandHandler::startQuest         },
     {cmd::kSetStage,           &CommandHandler::setStage           },
     {cmd::kAddItem,            &CommandHandler::addItem            },
@@ -92,6 +94,35 @@ void CommandHandler::setSuccess() {
 void CommandHandler::setError(const string& errMsg) {
   _success = false;
   _errMsg = errMsg;
+}
+
+void CommandHandler::setBgmVolume(const std::vector<std::string> &args) {
+  if (args.size() < 2) {
+    setError(string_util::format("usage: %s <volume>", args[0].c_str()));
+    return;
+  }
+
+  float volume{0};
+  try {
+    volume = std::stof(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `volume`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`volume` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  if (volume < 0 || volume > 100) {
+    setError("volume must be set between [0,100]");
+    return;
+  }
+
+  Audio::the().setBgmVolume(volume / 100);
+  setSuccess();
 }
 
 void CommandHandler::startQuest(const vector<string>& args) {

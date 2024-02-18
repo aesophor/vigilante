@@ -14,6 +14,7 @@ class Audio {
   void playSfx(const std::string& filePath);
   void playBgm(const std::string& filePath);
   void stopBgm();
+  void setBgmVolume(const float volume);
 
  private:
   Audio() = default;
