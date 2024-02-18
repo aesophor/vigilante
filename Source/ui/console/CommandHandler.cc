@@ -41,26 +41,26 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   _errMsg = kDefaultErrMsg;
 
   static const CmdTable cmdTable = {
-    {"startQuest",              &CommandHandler::startQuest             },
-    {"setStage",                &CommandHandler::setStage               },
-    {"addItem",                 &CommandHandler::addItem                },
-    {"removeItem",              &CommandHandler::removeItem             },
-    {"addGold",                 &CommandHandler::addGold                },
-    {"removeGold",              &CommandHandler::removeGold             },
-    {"updateDialogueTree",      &CommandHandler::updateDialogueTree     },
-    {"joinPlayerParty",         &CommandHandler::joinPlayerParty        },
-    {"leavePlayerParty",        &CommandHandler::leavePlayerParty       },
-    {"playerPartyMemberWait",   &CommandHandler::playerPartyMemberWait  },
-    {"playerPartyMemberFollow", &CommandHandler::playerPartyMemberFollow},
-    {"tradeWithPlayer",         &CommandHandler::tradeWithPlayer        },
-    {"killCurrentTarget",       &CommandHandler::killCurrentTarget      },
+    {"startquest",              &CommandHandler::startQuest             },
+    {"setstage",                &CommandHandler::setStage               },
+    {"additem",                 &CommandHandler::addItem                },
+    {"removeitem",              &CommandHandler::removeItem             },
+    {"addgold",                 &CommandHandler::addGold                },
+    {"removegold",              &CommandHandler::removeGold             },
+    {"updatedialoguetree",      &CommandHandler::updateDialogueTree     },
+    {"joinplayerparty",         &CommandHandler::joinPlayerParty        },
+    {"leaveplayerparty",        &CommandHandler::leavePlayerParty       },
+    {"playerpartymemberwait",   &CommandHandler::playerPartyMemberWait  },
+    {"playerpartymemberfollow", &CommandHandler::playerPartyMemberFollow},
+    {"tradewithplayer",         &CommandHandler::tradeWithPlayer        },
+    {"killcurrenttarget",       &CommandHandler::killCurrentTarget      },
     {"interact",                &CommandHandler::interact               },
     {"narrate",                 &CommandHandler::narrate                },
-    {"playerRest",              &CommandHandler::playerRest             },
-    {"playerRentRoomCheckIn",   &CommandHandler::playerRentRoomCheckIn  },
-    {"playerRentRoomCheckOut",  &CommandHandler::playerRentRoomCheckOut },
-    {"beginBossFight",          &CommandHandler::beginBossFight         },
-    {"endBossFight",            &CommandHandler::endBossFight           },
+    {"rest",                    &CommandHandler::rest                   },
+    {"rentroomcheckin",         &CommandHandler::rentRoomCheckIn        },
+    {"rentroomcheckout",        &CommandHandler::rentRoomCheckOut       },
+    {"beginbossfight",          &CommandHandler::beginBossFight         },
+    {"endbossfight",            &CommandHandler::endBossFight           },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -95,7 +95,7 @@ void CommandHandler::setError(const string& errMsg) {
 
 void CommandHandler::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: startQuest <quest>");
+    setError(string_util::format("usage: %s <quest>", args[0].c_str()));
     return;
   }
 
@@ -110,7 +110,7 @@ void CommandHandler::startQuest(const vector<string>& args) {
 
 void CommandHandler::setStage(const vector<string>& args) {
   if (args.size() < 3) {
-    setError("usage: setStage <quest> <stage_idx>");
+    setError(string_util::format("usage: %s <quest> <stage_idx>", args[0].c_str()));
     return;
   }
 
@@ -139,7 +139,7 @@ void CommandHandler::setStage(const vector<string>& args) {
 
 void CommandHandler::addItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: addItem <itemName> [amount]");
+    setError(string_util::format("usage: %s <itemName> [amount]", args[0].c_str()));
     return;
   }
 
@@ -172,7 +172,7 @@ void CommandHandler::addItem(const vector<string>& args) {
 
 void CommandHandler::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: removeItem <itemName> [amount]");
+    setError(string_util::format("usage: %s <itemName> [amount]", args[0].c_str()));
     return;
   }
 
@@ -205,7 +205,7 @@ void CommandHandler::removeItem(const vector<string>& args) {
 
 void CommandHandler::addGold(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: removeItem <amount>");
+    setError(string_util::format("usage: %s <amount>", args[0].c_str()));
     return;
   }
 
@@ -231,7 +231,7 @@ void CommandHandler::addGold(const vector<string>& args) {
 
 void CommandHandler::removeGold(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: removeGold <amount>");
+    setError(string_util::format("usage: %s <amount>", args[0].c_str()));
     return;
   }
 
@@ -261,7 +261,7 @@ void CommandHandler::removeGold(const vector<string>& args) {
 
 void CommandHandler::updateDialogueTree(const vector<string>& args) {
   if (args.size() < 3) {
-    setError("usage: updateDialogueTree <npcJson> <dialogueTreeJson>");
+    setError(string_util::format("usage: %s <npcJson> <dialogueTreeJson>", args[0].c_str()));
     return;
   }
 
@@ -401,7 +401,7 @@ void CommandHandler::interact(const vector<string>&) {
 
 void CommandHandler::narrate(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: narrate <narratives...>");
+    setError(string_util::format("usage: %s <narratives...>", args[0].c_str()));
     return;
   }
 
@@ -416,9 +416,9 @@ void CommandHandler::narrate(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::playerRest(const vector<string>& args) {
+void CommandHandler::rest(const vector<string>& args) {
   if (args.size() < 1) {
-    setError("usage: playerRest");
+    setError(string_util::format("usage: %s", args[0].c_str()));
     return;
   }
 
@@ -436,9 +436,9 @@ void CommandHandler::playerRest(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::playerRentRoomCheckIn(const vector<string>& args) {
+void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   if (args.size() < 4) {
-    setError("usage: playerRentRoomCheckIn <tmxMapFilePath> <bedroomKeyJsonFilePath> <gold>");
+    setError(string_util::format("usage: %s <tmxMapFilePath> <bedroomKeyJsonFilePath> <gold>", args[0].c_str()));
     return;
   }
 
@@ -474,15 +474,15 @@ void CommandHandler::playerRentRoomCheckIn(const vector<string>& args) {
 
   const string bedroomKeyJsonFilePath = args[2];
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->runAfter(0, 10, 0, string_util::format("playerRentRoomCheckOut %s", tmxMapFilePath.c_str()));
-  inGameTime->runAfter(0, 10, 0, string_util::format("removeItem %s", bedroomKeyJsonFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("playerrentroomcheckout %s", tmxMapFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("removeitem %s", bedroomKeyJsonFilePath.c_str()));
 
   setSuccess();
 }
 
-void CommandHandler::playerRentRoomCheckOut(const vector<string>& args) {
+void CommandHandler::rentRoomCheckOut(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: playerRentRoomCheckOut <tmxMapFilePath>");
+    setError(string_util::format("usage: %s <tmxMapFilePath>", args[0].c_str()));
     return;
   }
 
@@ -498,7 +498,7 @@ void CommandHandler::playerRentRoomCheckOut(const vector<string>& args) {
 
 void CommandHandler::beginBossFight(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: beginBossFight <bossStageProfileJsonPath>");
+    setError(string_util::format("usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
     return;
   }
 
@@ -517,7 +517,7 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
 
 void CommandHandler::endBossFight(const vector<string>& args) {
   if (args.size() < 2) {
-    setError("usage: endBossFight <bossStageProfileJsonPath>");
+    setError(string_util::format("usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
     return;
   }
 

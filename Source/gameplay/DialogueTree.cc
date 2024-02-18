@@ -141,7 +141,7 @@ void DialogueTree::addAllyDialogueToRootNode() {
 void DialogueTree::addTradingDialogue() {
   auto tradeNode = std::make_unique<DialogueTree::Node>(this);
   tradeNode->_lines.push_back("Trade.");
-  tradeNode->_cmds.push_back("tradeWithPlayer");
+  tradeNode->_cmds.push_back("tradewithplayer");
 
   _tradeNode = tradeNode.get();
   _rootNode->_children.push_back(std::move(tradeNode));
@@ -151,20 +151,20 @@ void DialogueTree::update() {
   if (_toggleJoinPartyNode) {
     if (!_owner->isPlayerLeaderOfParty()) {
       _toggleJoinPartyNode->_lines.front() = "Follow me.";
-      _toggleJoinPartyNode->_cmds.front() = "joinPlayerParty";
+      _toggleJoinPartyNode->_cmds.front() = "joinplayerparty";
     } else {
       _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
-      _toggleJoinPartyNode->_cmds.front() = "leavePlayerParty";
+      _toggleJoinPartyNode->_cmds.front() = "leaveplayerparty";
     }
   }
 
   if (_toggleWaitNode) {
     if (!_owner->isWaitingForPlayer()) {
       _toggleWaitNode->_lines.front() = "Wait here.";
-      _toggleWaitNode->_cmds.front() = "playerPartyMemberWait";
+      _toggleWaitNode->_cmds.front() = "playerpartymemberwait";
     } else {
       _toggleWaitNode->_lines.front() = "Continue to follow me.";
-      _toggleWaitNode->_cmds.front() = "playerPartyMemberFollow";
+      _toggleWaitNode->_cmds.front() = "playerpartymemberfollow";
     }
   }
 }

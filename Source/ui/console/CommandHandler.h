@@ -33,9 +33,9 @@ class CommandHandler final {
   void killCurrentTarget(const std::vector<std::string>& args);
   void interact(const std::vector<std::string>& args);
   void narrate(const std::vector<std::string>& args);
-  void playerRest(const std::vector<std::string>& args);
-  void playerRentRoomCheckIn(const std::vector<std::string>& args);
-  void playerRentRoomCheckOut(const std::vector<std::string>& args);
+  void rest(const std::vector<std::string>& args);
+  void rentRoomCheckIn(const std::vector<std::string>& args);
+  void rentRoomCheckOut(const std::vector<std::string>& args);
   void beginBossFight(const std::vector<std::string>& args);
   void endBossFight(const std::vector<std::string>& args);
 
