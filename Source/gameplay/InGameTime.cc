@@ -2,11 +2,18 @@
 
 #include "InGameTime.h"
 
-#include "util/Logger.h"
+#include <algorithm>
+
+#include "scene/GameScene.h"
+#include "scene/SceneManager.h"
 
 using namespace std;
 
 namespace vigilante {
+
+InGameTime::InGameTime() {
+  std::make_heap(_deferredCmdsMinHeap.begin(), _deferredCmdsMinHeap.end(), cmdsMinHeapCmp);
+}
 
 void InGameTime::update(const float delta) {
   updateTime(delta);
@@ -37,20 +44,25 @@ void InGameTime::updateTime(const float delta) {
   }
 }
 
-void InGameTime::runAfter(const int hours, const int minutes, const int seconds, function<void ()>&& callback) {
+void InGameTime::runAfter(const int hours, const int minutes, const int seconds, const string& cmd) {
   const uint64_t timestamp = _secondsElapsed + seconds + 60 * minutes + 3600 * hours;
-  _callbackPriorityQueue.emplace(timestamp, std::move(callback));
+
+  _deferredCmdsMinHeap.emplace_back(timestamp, cmd);
+  std::push_heap(_deferredCmdsMinHeap.begin(), _deferredCmdsMinHeap.end(), cmdsMinHeapCmp);
 }
 
 void InGameTime::executeCallbacks() {
-  while (_callbackPriorityQueue.size()) {
-    const auto& [timestamp, callback] = _callbackPriorityQueue.top();
-    if (timestamp > _secondsElapsed) {
+  while (_deferredCmdsMinHeap.size()) {
+    const auto& [secondsElapsedRequired, cmd] = _deferredCmdsMinHeap.front();
+    if (secondsElapsedRequired > _secondsElapsed) {
       return;
     }
 
-    callback();
-    _callbackPriorityQueue.pop();
+    auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+    console->executeCmd(cmd);
+
+    std::pop_heap(_deferredCmdsMinHeap.begin(), _deferredCmdsMinHeap.end(), cmdsMinHeapCmp);
+    _deferredCmdsMinHeap.pop_back();
   }
 }
 
