@@ -8,6 +8,7 @@
 #include "character/Npc.h"
 #include "gameplay/DialogueTree.h"
 #include "item/Item.h"
+#include "item/Key.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "util/JsonUtil.h"
@@ -494,36 +495,58 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   }
 
   auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
-  const string tmxMapFilePath = args[1];
+  const string& tmxMapFilePath = args[1];
   if (!roomRentalTracker->checkIn(tmxMapFilePath)) {
     VGLOG(LOG_INFO, "Already rented a room in this inn.");
     setSuccess();
     return;
   }
 
-  const string bedroomKeyJsonFilePath = args[2];
+  const string& bedroomKeyJsonFilePath = args[2];
   player->addItem(Item::create(bedroomKeyJsonFilePath));
   player->removeGold(fee);
 
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRentRoomCheckOut, tmxMapFilePath.c_str()));
-  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRemoveItem, bedroomKeyJsonFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s %s", cmd::kRentRoomCheckOut,
+                                                                 tmxMapFilePath.c_str(),
+                                                                 bedroomKeyJsonFilePath.c_str()));
 
   setSuccess();
 }
 
 void CommandHandler::rentRoomCheckOut(const vector<string>& args) {
-  if (args.size() < 2) {
-    setError(string_util::format("usage: %s <tmxMapFilePath>", args[0].c_str()));
+  if (args.size() < 3) {
+    setError(string_util::format("usage: %s <tmxMapFilePath> <bedroomKeyJsonFilePath>", args[0].c_str()));
     return;
   }
 
-  const string tmxMapFilePath = args[1];
+  const string& tmxMapFilePath = args[1];
   auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
   if (!roomRentalTracker->checkOut(tmxMapFilePath)) {
     setError("Failed to check out.");
     return;
   }
+
+  const string& bedroomKeyJsonFilePath = args[2];
+  unique_ptr<Item> item = Item::create(bedroomKeyJsonFilePath);
+  if (!item) {
+    setError(string_util::format("Failed to create item [%s].", bedroomKeyJsonFilePath.c_str()));
+    return;
+  }
+  Key* bedroomKey = dynamic_cast<Key*>(item.get());
+  if (!bedroomKey) {
+    setError(string_util::format("Failed to cast item [%s] to key.", bedroomKeyJsonFilePath.c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->setOpened(tmxMapFilePath,
+                   GameMap::OpenableObjectType::PORTAL,
+                   bedroomKey->getKeyProfile().targetPortalId,
+                   false);
+
+  auto player = gmMgr->getPlayer();
+  player->removeItem(bedroomKey);
 
   setSuccess();
 }
