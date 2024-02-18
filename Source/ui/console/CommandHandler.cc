@@ -492,17 +492,19 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
     setError("Failed to rent room, insufficient gold.");
     return;
   }
-  player->removeGold(fee);
 
-  const string tmxMapFilePath = args[1];
   auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+  const string tmxMapFilePath = args[1];
   if (!roomRentalTracker->checkIn(tmxMapFilePath)) {
-    setError("Failed to rent room.");
-    player->addGold(fee);
+    VGLOG(LOG_INFO, "Already rented a room in this inn.");
+    setSuccess();
     return;
   }
 
   const string bedroomKeyJsonFilePath = args[2];
+  player->addItem(Item::create(bedroomKeyJsonFilePath));
+  player->removeGold(fee);
+
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
   inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRentRoomCheckOut, tmxMapFilePath.c_str()));
   inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRemoveItem, bedroomKeyJsonFilePath.c_str()));
