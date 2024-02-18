@@ -24,8 +24,8 @@ USING_NS_AX;
 namespace vigilante {
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
-    : _layer{Layer::create()},
-      _parallaxLayer{Layer::create()},
+    : _parallaxLayer{Layer::create()},
+      _layer{Layer::create()},
       _worldContactListener{std::make_unique<WorldContactListener>()},
       _world{std::make_unique<b2World>(gravity)} {
   _world->SetAllowSleeping(true);

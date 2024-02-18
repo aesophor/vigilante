@@ -58,10 +58,10 @@ bool GameScene::init() {
   _gameCamera->setDepth(1);
   _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
   _gameCamera->setPosition(winSize.width / 2, winSize.height / 2);
-  const Vec3& eyePosOld = _gameCamera->getPosition3D();
-  const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
 
   // Initialize Parallax camera.
+  const Vec3& eyePosOld = _gameCamera->getPosition3D();
+  const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
   _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
   _parallaxCamera->setDepth(0);
   _parallaxCamera->setCameraFlag(CameraFlag::USER2);
@@ -132,8 +132,8 @@ bool GameScene::init() {
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = std::make_unique<GameMapManager>(b2Vec2{0, kGravity});
   _gameMapManager->getParallaxLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
-  addChild(_gameMapManager->getLayer());
   addChild(_gameMapManager->getParallaxLayer());
+  addChild(_gameMapManager->getLayer());
 
   // Initialize FxManager.
   _fxManager = std::make_unique<FxManager>();

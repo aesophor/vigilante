@@ -53,6 +53,7 @@ class GameScene final : public ax::Scene, public Controllable {
 
   inline ax::Camera* getGameCamera() const { return _gameCamera; }
 
+  inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
   inline Shade* getShade() const { return _shade.get(); }
   inline Hud* getHud() const { return _hud.get(); }
   inline TimeLocationInfo* getTimeLocationInfo() const { return _timeLocationInfo.get(); }
@@ -67,7 +68,6 @@ class GameScene final : public ax::Scene, public Controllable {
   inline GameMapManager* getGameMapManager() const { return _gameMapManager.get(); }
   inline FxManager* getFxManager() const { return _fxManager.get(); }
   inline AfterImageFxManager* getAfterImageFxManager() const { return _afterImageFxManager.get(); }
-  inline HotkeyManager* getHotkeyManager() const { return _hotkeyManager.get(); }
   inline InGameTime* getInGameTime() const { return _inGameTime.get(); }
   inline RoomRentalTracker* getRoomRentalTracker() const { return _roomRentalTracker.get(); }
 
