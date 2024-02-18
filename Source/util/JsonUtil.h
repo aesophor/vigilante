@@ -90,6 +90,8 @@ template <typename T>
 T extractJsonObject(const rapidjson::Value& val) {
   if constexpr (std::is_same_v<T, bool>) {
     return val.GetBool();
+  } else if constexpr (std::is_same_v<T, uint64_t>) {
+    return val.GetUint64();
   } else if constexpr (std::is_same_v<T, int>) {
     return val.GetInt();
   } else if constexpr (std::is_same_v<T, float>) {
