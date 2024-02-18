@@ -293,6 +293,7 @@ void GameMap::createTriggers() {
 }
 
 void GameMap::createPortals() {
+  int portalId{};
   for (const auto& rectObj : getObjects("Portal")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -310,7 +311,7 @@ void GameMap::createPortals() {
       .buildBody();
 
     auto portal = std::make_unique<GameMap::Portal>(
-        destTmxMapFilePath, destPortalId, willInteractOnContact, isLocked, body);
+        _tmxTiledMapFilePath, portalId, destTmxMapFilePath, destPortalId, willInteractOnContact, isLocked, body);
     auto portal_raw_ptr = portal.get();
     _portals.emplace_back(std::move(portal));
 
@@ -320,6 +321,8 @@ void GameMap::createPortals() {
       .friction(0)
       .setUserData(portal_raw_ptr)
       .buildFixture();
+
+    portalId++;
   }
 }
 
@@ -490,9 +493,13 @@ void GameMap::Trigger::hideHintUI() {
   controlHints->remove({EventKeyboard::KeyCode::KEY_CAPITAL_E});
 }
 
-GameMap::Portal::Portal(const string& destTmxMapFilePath, int destPortalId,
-                        bool willInteractOnContact, bool isLocked, b2Body* body)
-    : _destTmxMapFilePath{destTmxMapFilePath},
+GameMap::Portal::Portal(const string& tmxMapFilePath, const int portalId,
+                        const string& destTmxMapFilePath, const int destPortalId,
+                        bool willInteractOnContact, bool isLocked,
+                        b2Body* body)
+    : _tmxMapFilePath{tmxMapFilePath},
+      _portalId{portalId},
+      _destTmxMapFilePath{destTmxMapFilePath},
       _destPortalId{destPortalId},
       _willInteractOnContact{willInteractOnContact},
       _isLocked{isLocked},
@@ -624,8 +631,7 @@ void GameMap::Portal::unlock() {
 
 void GameMap::Portal::saveLockUnlockState() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  constexpr auto kType = OpenableObjectType::PORTAL;
-  gmMgr->setOpened(_destTmxMapFilePath, kType, _destPortalId, !_isLocked);
+  gmMgr->setOpened(_tmxMapFilePath, OpenableObjectType::PORTAL, _portalId, !_isLocked);
 }
 
 int GameMap::Portal::getPortalId() const {

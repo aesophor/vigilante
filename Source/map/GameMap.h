@@ -88,10 +88,9 @@ class GameMap final {
 
   class Portal final : public Interactable {
    public:
-    Portal(const std::string& targetTmxMapFilePath,
-           int targetPortalId,
-           bool willInteractOnContact,
-           bool isLocked,
+    Portal(const std::string& tmxMapFilePath, const int portalId,
+           const std::string& targetTmxMapFilePath, const int targetPortalId,
+           bool willInteractOnContact, bool isLocked,
            b2Body* body);
     virtual ~Portal();
 
@@ -105,6 +104,8 @@ class GameMap final {
     void lock();
     void unlock();
 
+    //inline const std::string& getTmxMapFilePath() const { return _tmxMapFilePath; }
+    //inline int getPortalId() const { return _portalId; }
     inline const std::string& getDestTmxMapFilePath() const { return _destTmxMapFilePath; }
     inline int getDestPortalId() const { return _destPortalId; }
 
@@ -120,8 +121,10 @@ class GameMap final {
     void saveLockUnlockState() const;
     int getPortalId() const;
 
-    std::string _destTmxMapFilePath;  // new (destination) .tmx filepath
-    int _destPortalId{};  // the portal id in the new (destination) map
+    const std::string _tmxMapFilePath;
+    const int _portalId;
+    const std::string _destTmxMapFilePath;  // new (destination) .tmx filepath
+    const int _destPortalId{};  // the portal id in the new (destination) map
     bool _willInteractOnContact{};  // interact with the portal on contact?
     bool _isLocked{};
     b2Body* _body{};
