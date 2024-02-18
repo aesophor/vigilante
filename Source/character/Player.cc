@@ -121,6 +121,7 @@ bool Player::addItem(shared_ptr<Item> item, int amount) {
 }
 
 bool Player::removeItem(Item* item, int amount) {
+  const string itemName = item->getName();
   if (!Character::removeItem(item, amount)) {
     VGLOG(LOG_ERR, "Failed to remove item from player.");
     return false;
@@ -128,8 +129,8 @@ bool Player::removeItem(Item* item, int amount) {
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show((amount > 1) ?
-      string_util::format("Removed item: %s (%d).", item->getName().c_str(), amount) :
-      string_util::format("Removed item: %s.", item->getName().c_str()));
+      string_util::format("Removed item: %s (%d).", itemName.c_str(), amount) :
+      string_util::format("Removed item: %s.", itemName.c_str()));
 
   return true;
 }
