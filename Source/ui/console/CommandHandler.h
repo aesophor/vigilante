@@ -9,6 +9,31 @@
 
 namespace vigilante {
 
+namespace cmd {
+
+constexpr char kStartQuest[] = "startquest";
+constexpr char kSetStage[] = "setstage";
+constexpr char kAddItem[] = "additem";
+constexpr char kRemoveItem[] = "removeitem";
+constexpr char kAddGold[] = "addgold";
+constexpr char kRemoveGold[] = "removegold";
+constexpr char kUpdateDialogueTree[] = "updatedialoguetree";
+constexpr char kJoinPlayerParty[] = "joinplayerparty";
+constexpr char kLeavePlayerParty[] = "leaveplayerparty";
+constexpr char kPartyMemberWait[] = "partymemberwait";
+constexpr char kPartyMemberFollow[] = "partymemberfollow";
+constexpr char kTrade[] = "trade";
+constexpr char kKill[] = "kill";
+constexpr char kInteract[] = "interact";
+constexpr char kNarrate[] = "narrate";
+constexpr char kRest[] = "rest";
+constexpr char kRentRoomCheckIn[] = "rentroomcheckin";
+constexpr char kRentRoomCheckOut[] = "rentroomcheckout";
+constexpr char kBeginBossFight[] = "beginbossfight";
+constexpr char kEndBossFight[] = "endbossfight";
+
+}  // namespace cmd
+
 class CommandHandler final {
  public:
   bool handle(const std::string& cmd, bool showNotification);
@@ -27,10 +52,10 @@ class CommandHandler final {
   void updateDialogueTree(const std::vector<std::string>& args);
   void joinPlayerParty(const std::vector<std::string>& args);
   void leavePlayerParty(const std::vector<std::string>& args);
-  void playerPartyMemberWait(const std::vector<std::string>& args);
-  void playerPartyMemberFollow(const std::vector<std::string>& args);
-  void tradeWithPlayer(const std::vector<std::string>& args);
-  void killCurrentTarget(const std::vector<std::string>& args);
+  void partyMemberWait(const std::vector<std::string>& args);
+  void partyMemberFollow(const std::vector<std::string>& args);
+  void trade(const std::vector<std::string>& args);
+  void kill(const std::vector<std::string>& args);
   void interact(const std::vector<std::string>& args);
   void narrate(const std::vector<std::string>& args);
   void rest(const std::vector<std::string>& args);

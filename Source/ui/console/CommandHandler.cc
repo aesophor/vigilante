@@ -41,26 +41,26 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   _errMsg = kDefaultErrMsg;
 
   static const CmdTable cmdTable = {
-    {"startquest",              &CommandHandler::startQuest             },
-    {"setstage",                &CommandHandler::setStage               },
-    {"additem",                 &CommandHandler::addItem                },
-    {"removeitem",              &CommandHandler::removeItem             },
-    {"addgold",                 &CommandHandler::addGold                },
-    {"removegold",              &CommandHandler::removeGold             },
-    {"updatedialoguetree",      &CommandHandler::updateDialogueTree     },
-    {"joinplayerparty",         &CommandHandler::joinPlayerParty        },
-    {"leaveplayerparty",        &CommandHandler::leavePlayerParty       },
-    {"playerpartymemberwait",   &CommandHandler::playerPartyMemberWait  },
-    {"playerpartymemberfollow", &CommandHandler::playerPartyMemberFollow},
-    {"tradewithplayer",         &CommandHandler::tradeWithPlayer        },
-    {"killcurrenttarget",       &CommandHandler::killCurrentTarget      },
-    {"interact",                &CommandHandler::interact               },
-    {"narrate",                 &CommandHandler::narrate                },
-    {"rest",                    &CommandHandler::rest                   },
-    {"rentroomcheckin",         &CommandHandler::rentRoomCheckIn        },
-    {"rentroomcheckout",        &CommandHandler::rentRoomCheckOut       },
-    {"beginbossfight",          &CommandHandler::beginBossFight         },
-    {"endbossfight",            &CommandHandler::endBossFight           },
+    {cmd::kStartQuest,         &CommandHandler::startQuest         },
+    {cmd::kSetStage,           &CommandHandler::setStage           },
+    {cmd::kAddItem,            &CommandHandler::addItem            },
+    {cmd::kRemoveItem,         &CommandHandler::removeItem         },
+    {cmd::kAddGold,            &CommandHandler::addGold            },
+    {cmd::kRemoveGold,         &CommandHandler::removeGold         },
+    {cmd::kUpdateDialogueTree, &CommandHandler::updateDialogueTree },
+    {cmd::kJoinPlayerParty,    &CommandHandler::joinPlayerParty    },
+    {cmd::kLeavePlayerParty,   &CommandHandler::leavePlayerParty   },
+    {cmd::kPartyMemberWait,    &CommandHandler::partyMemberWait    },
+    {cmd::kPartyMemberFollow,  &CommandHandler::partyMemberFollow  },
+    {cmd::kTrade,              &CommandHandler::trade              },
+    {cmd::kKill,               &CommandHandler::kill               },
+    {cmd::kInteract,           &CommandHandler::interact           },
+    {cmd::kNarrate,            &CommandHandler::narrate            },
+    {cmd::kRest,               &CommandHandler::rest               },
+    {cmd::kRentRoomCheckIn,    &CommandHandler::rentRoomCheckIn    },
+    {cmd::kRentRoomCheckOut,   &CommandHandler::rentRoomCheckOut   },
+    {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
+    {cmd::kEndBossFight,       &CommandHandler::endBossFight       },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -272,7 +272,12 @@ void CommandHandler::updateDialogueTree(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::joinPlayerParty(const vector<string>&) {
+void CommandHandler::joinPlayerParty(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -289,7 +294,12 @@ void CommandHandler::joinPlayerParty(const vector<string>&) {
   setSuccess();
 }
 
-void CommandHandler::leavePlayerParty(const vector<string>&) {
+void CommandHandler::leavePlayerParty(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -306,7 +316,12 @@ void CommandHandler::leavePlayerParty(const vector<string>&) {
   setSuccess();
 }
 
-void CommandHandler::playerPartyMemberWait(const vector<string>&) {
+void CommandHandler::partyMemberWait(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -328,7 +343,12 @@ void CommandHandler::playerPartyMemberWait(const vector<string>&) {
   setSuccess();
 }
 
-void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
+void CommandHandler::partyMemberFollow(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -350,7 +370,12 @@ void CommandHandler::playerPartyMemberFollow(const vector<string>&) {
   setSuccess();
 }
 
-void CommandHandler::tradeWithPlayer(const vector<string>&) {
+void CommandHandler::trade(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -367,7 +392,12 @@ void CommandHandler::tradeWithPlayer(const vector<string>&) {
   setSuccess();
 }
 
-void CommandHandler::killCurrentTarget(const vector<string>&) {
+void CommandHandler::kill(const vector<string>& args) {
+  if (args.size() < 1) {
+    setError(string_util::format("usage: %s", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
@@ -474,8 +504,8 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
 
   const string bedroomKeyJsonFilePath = args[2];
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->runAfter(0, 10, 0, string_util::format("playerrentroomcheckout %s", tmxMapFilePath.c_str()));
-  inGameTime->runAfter(0, 10, 0, string_util::format("removeitem %s", bedroomKeyJsonFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRentRoomCheckOut, tmxMapFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s", cmd::kRemoveItem, bedroomKeyJsonFilePath.c_str()));
 
   setSuccess();
 }

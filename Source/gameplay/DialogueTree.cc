@@ -8,6 +8,7 @@
 #include <axmol.h>
 
 #include "character/Npc.h"
+#include "ui/console/CommandHandler.h"
 #include "util/ds/Algorithm.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
@@ -141,7 +142,7 @@ void DialogueTree::addAllyDialogueToRootNode() {
 void DialogueTree::addTradingDialogue() {
   auto tradeNode = std::make_unique<DialogueTree::Node>(this);
   tradeNode->_lines.push_back("Trade.");
-  tradeNode->_cmds.push_back("tradewithplayer");
+  tradeNode->_cmds.push_back(cmd::kTrade);
 
   _tradeNode = tradeNode.get();
   _rootNode->_children.push_back(std::move(tradeNode));
@@ -151,20 +152,20 @@ void DialogueTree::update() {
   if (_toggleJoinPartyNode) {
     if (!_owner->isPlayerLeaderOfParty()) {
       _toggleJoinPartyNode->_lines.front() = "Follow me.";
-      _toggleJoinPartyNode->_cmds.front() = "joinplayerparty";
+      _toggleJoinPartyNode->_cmds.front() = cmd::kJoinPlayerParty;
     } else {
       _toggleJoinPartyNode->_lines.front() = "It's time for us to part ways";
-      _toggleJoinPartyNode->_cmds.front() = "leaveplayerparty";
+      _toggleJoinPartyNode->_cmds.front() = cmd::kLeavePlayerParty;
     }
   }
 
   if (_toggleWaitNode) {
     if (!_owner->isWaitingForPlayer()) {
       _toggleWaitNode->_lines.front() = "Wait here.";
-      _toggleWaitNode->_cmds.front() = "playerpartymemberwait";
+      _toggleWaitNode->_cmds.front() = cmd::kPartyMemberWait;
     } else {
       _toggleWaitNode->_lines.front() = "Continue to follow me.";
-      _toggleWaitNode->_cmds.front() = "playerpartymemberfollow";
+      _toggleWaitNode->_cmds.front() = cmd::kPartyMemberFollow;
     }
   }
 }
