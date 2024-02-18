@@ -57,7 +57,8 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {"interact",                &CommandHandler::interact               },
     {"narrate",                 &CommandHandler::narrate                },
     {"playerRest",              &CommandHandler::playerRest             },
-    {"playerRentRoom",          &CommandHandler::playerRentRoom         },
+    {"playerRentRoomCheckIn",   &CommandHandler::playerRentRoomCheckIn  },
+    {"playerRentRoomCheckOut",  &CommandHandler::playerRentRoomCheckOut },
     {"beginBossFight",          &CommandHandler::beginBossFight         },
     {"endBossFight",            &CommandHandler::endBossFight           },
   };
@@ -435,15 +436,15 @@ void CommandHandler::playerRest(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::playerRentRoom(const vector<string>& args) {
-  if (args.size() < 3) {
-    setError("usage: playerRentRoom <tmxMapFilePath> <gold>");
+void CommandHandler::playerRentRoomCheckIn(const vector<string>& args) {
+  if (args.size() < 4) {
+    setError("usage: playerRentRoomCheckIn <tmxMapFilePath> <bedroomKeyJsonFilePath> <gold>");
     return;
   }
 
   int fee = 0;
   try {
-    fee = std::stoi(args[2]);
+    fee = std::stoi(args[3]);
   } catch (const invalid_argument& ex) {
     setError("invalid argument `amount`");
     return;
@@ -471,10 +472,26 @@ void CommandHandler::playerRentRoom(const vector<string>& args) {
     return;
   }
 
+  const string bedroomKeyJsonFilePath = args[2];
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->runAfter(24, 0, 0, [roomRentalTracker, tmxMapFilePath]() {
-    roomRentalTracker->checkOut(tmxMapFilePath);
-  });
+  inGameTime->runAfter(0, 10, 0, string_util::format("playerRentRoomCheckOut %s", tmxMapFilePath.c_str()));
+  inGameTime->runAfter(0, 10, 0, string_util::format("removeItem %s", bedroomKeyJsonFilePath.c_str()));
+
+  setSuccess();
+}
+
+void CommandHandler::playerRentRoomCheckOut(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError("usage: playerRentRoomCheckOut <tmxMapFilePath>");
+    return;
+  }
+
+  const string tmxMapFilePath = args[1];
+  auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+  if (!roomRentalTracker->checkOut(tmxMapFilePath)) {
+    setError("Failed to check out.");
+    return;
+  }
 
   setSuccess();
 }
