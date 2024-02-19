@@ -27,12 +27,22 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _parallaxLayer{Layer::create()},
       _layer{Layer::create()},
       _lightingLayer{Layer::create()},
+      _light{Sprite::create("Texture/light.png")},
       _renderTexture{RenderTexture::create(1, 1)},
       _worldContactListener{std::make_unique<WorldContactListener>()},
       _world{std::make_unique<b2World>(gravity)} {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
+
+  _light->setBlendFunc({ax::backend::BlendFactor::ZERO, ax::backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
+  _light->retain();
+
+  _layer->addChild(_renderTexture, z_order::kDefault + 1);
+}
+
+GameMapManager::~GameMapManager() {
+  _light->release();
 }
 
 void GameMapManager::update(const float delta) {
@@ -41,12 +51,18 @@ void GameMapManager::update(const float delta) {
   }
   _gameMap->update(delta);
 
-  if (_player) {
-    _player->update(delta);
-    for (const auto& ally : _player->getAllies()) {
-      ally->update(delta);
-    }
+  if (!_player) {
+    return;
   }
+  _player->update(delta);
+  for (const auto& ally : _player->getAllies()) {
+    ally->update(delta);
+  }
+
+  _renderTexture->beginWithClear(0, 0, 0, 0.8f);
+  _light->setPosition(_player->getBody()->GetPosition().x * kPpm, _player->getBody()->GetPosition().y * kPpm);
+  _light->visit();
+  _renderTexture->end();
 }
 
 void GameMapManager::loadGameMap(const string& tmxMapFilePath,
@@ -94,14 +110,8 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
 
   const float ambientLight = .2f;
   const float darkness = 1.f - ambientLight;
-
-  // Create a transparent black that sits over the level to give the illusion of darkness
-  _layer->getParent()->removeChild(_renderTexture);
-  _renderTexture = RenderTexture::create(_gameMap->getWidth(), _gameMap->getHeight());
-  _layer->getParent()->addChild(_renderTexture);
-  //_renderTexture->setScale(_gameMap->getWidth(), _gameMap->getHeight());
+  _renderTexture->initWithWidthAndHeight(_gameMap->getWidth(), _gameMap->getHeight(), backend::PixelFormat::RGBA8);
   _renderTexture->setPosition(_gameMap->getWidth() / 2, _gameMap->getHeight() / 2);
-  //_renderTexture->setGlobalZOrder(100);
   _renderTexture->clear(0, 0, 0, darkness);
 
   if (oldBgmFilePath != _gameMap->getBgmFilePath()) {

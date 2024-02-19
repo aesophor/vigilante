@@ -27,6 +27,7 @@ class GameMapManager final {
 
  public:
   explicit GameMapManager(const b2Vec2& gravity);
+  ~GameMapManager();
 
   void update(const float delta);
 
@@ -75,6 +76,7 @@ class GameMapManager final {
   ax::Layer* _parallaxLayer{};
   ax::Layer* _layer{};
   ax::Layer* _lightingLayer{};
+  ax::Sprite* _light{};
   ax::RenderTexture* _renderTexture{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;

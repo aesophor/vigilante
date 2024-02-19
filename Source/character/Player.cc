@@ -40,11 +40,6 @@ Player::Player(const std::string& jsonFilePath)
       _playerController{*this} {
   // The player has a party (team) with no other members by default.
   _party = std::make_shared<Party>(this);
-
-  _light = Sprite::create("Texture/light.png");
-  _light->getTexture()->setAliasTexParameters();
-  _light->setBlendFunc({ax::backend::BlendFactor::ZERO, ax::backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
-  _light->retain();
 }
 
 bool Player::showOnMap(float x, float y) {
@@ -67,16 +62,6 @@ bool Player::showOnMap(float x, float y) {
   gmMgr->getLayer()->addChild(_node, z_order::kPlayerBody);
 
   return true;
-}
-
-void Player::update(const float delta) {
-  Character::update(delta);
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getRenderTexture()->beginWithClear(0, 0, 0, 0.8f);
-  _light->setPosition(_body->GetPosition().x * kPpm, _body->GetPosition().y * kPpm);
-  _light->visit();
-  gmMgr->getRenderTexture()->end();
 }
 
 void Player::onKilled() {

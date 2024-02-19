@@ -11,9 +11,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-WindowManager::WindowManager()
-    : _kMaxWindowCount{kWindowTop - kWindowBottom + 1},
-      _defaultCameraMask(static_cast<uint16_t>(CameraFlag::USER1)) {}
+WindowManager::WindowManager() : _kMaxWindowCount{kWindowTop - kWindowBottom + 1} {}
 
 void WindowManager::update(const float delta) {
   for (auto& w : _windows) {
@@ -28,7 +26,7 @@ void WindowManager::push(unique_ptr<Window> window) {
   }
   
   // Ensure that `_defaultCameraMask` is set on newly rendered window.
-  window->getLayer()->setCameraMask(_defaultCameraMask);
+  window->getLayer()->setCameraMask(window->getLayer()->getCameraMask());
 
   // Show window.
   window->getLayer()->setVisible(true);

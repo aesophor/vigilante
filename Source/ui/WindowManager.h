@@ -26,17 +26,13 @@ class WindowManager final {
 
   inline Window* top() const { return isEmpty() ? nullptr : _windows.back().get(); }
   inline bool isEmpty() const { return _windows.empty(); }
-  inline int getSize() const { return _windows.size(); }
-  inline uint16_t getDefaultCameraMask() const { return _defaultCameraMask; }
-
+  inline int getSize() const { return static_cast<int>(_windows.size()); }
   inline void setScene(ax::Scene* scene) { _scene = scene; }
-  inline void setDefaultCameraMask(uint16_t cameraMask) { _defaultCameraMask = cameraMask; }
 
  private:
   const size_t _kMaxWindowCount;
 
   ax::Scene* _scene{};
-  uint16_t _defaultCameraMask;
   std::vector<std::unique_ptr<Window>> _windows;
 };
 
