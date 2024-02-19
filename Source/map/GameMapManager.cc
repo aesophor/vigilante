@@ -26,6 +26,8 @@ namespace vigilante {
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _parallaxLayer{Layer::create()},
       _layer{Layer::create()},
+      _lightingLayer{Layer::create()},
+      _renderTexture{RenderTexture::create(1, 1)},
       _worldContactListener{std::make_unique<WorldContactListener>()},
       _world{std::make_unique<b2World>(gravity)} {
   _world->SetAllowSleeping(true);
@@ -89,6 +91,18 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   if (!_player) {
     _player = _gameMap->createPlayer();
   }
+
+  const float ambientLight = .2f;
+  const float darkness = 1.f - ambientLight;
+
+  // Create a transparent black that sits over the level to give the illusion of darkness
+  _layer->getParent()->removeChild(_renderTexture);
+  _renderTexture = RenderTexture::create(_gameMap->getWidth(), _gameMap->getHeight());
+  _layer->getParent()->addChild(_renderTexture);
+  //_renderTexture->setScale(_gameMap->getWidth(), _gameMap->getHeight());
+  _renderTexture->setPosition(_gameMap->getWidth() / 2, _gameMap->getHeight() / 2);
+  //_renderTexture->setGlobalZOrder(100);
+  _renderTexture->clear(0, 0, 0, darkness);
 
   if (oldBgmFilePath != _gameMap->getBgmFilePath()) {
     Audio::the().playBgm(_gameMap->getBgmFilePath());

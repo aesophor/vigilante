@@ -58,6 +58,8 @@ class GameMapManager final {
 
   inline ax::Layer* getParallaxLayer() const { return _parallaxLayer; }
   inline ax::Layer* getLayer() const { return _layer; }
+  inline ax::Layer* getLightingLayer() const { return _lightingLayer; }
+  inline ax::RenderTexture* getRenderTexture() const { return _renderTexture; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
@@ -70,6 +72,8 @@ class GameMapManager final {
 
   ax::Layer* _parallaxLayer{};
   ax::Layer* _layer{};
+  ax::Layer* _lightingLayer{};
+  ax::RenderTexture* _renderTexture{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
   std::unique_ptr<GameMap> _gameMap;

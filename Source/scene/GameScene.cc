@@ -134,6 +134,7 @@ bool GameScene::init() {
   _gameMapManager->getParallaxLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
   addChild(_gameMapManager->getParallaxLayer());
   addChild(_gameMapManager->getLayer());
+  addChild(_gameMapManager->getRenderTexture());
 
   // Initialize FxManager.
   _fxManager = std::make_unique<FxManager>();

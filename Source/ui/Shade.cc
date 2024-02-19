@@ -14,8 +14,7 @@ namespace vigilante {
 
 Shade::Shade() : _imageView{ui::ImageView::create(string{kShade})} {
   const auto& winSize = Director::getInstance()->getWinSize();
-  _imageView->setScaleX(winSize.width);
-  _imageView->setScaleY(winSize.height);
+  _imageView->setScale(winSize.width, winSize.height);
   _imageView->setAnchorPoint({0, 0});
   _imageView->runAction(FadeOut::create(kFadeOutTime));
 }

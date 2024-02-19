@@ -23,6 +23,7 @@ class Player final : public Character, public Controllable {
   virtual ~Player() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
+  virtual void update(const float delta) override;  // Character
   virtual void onKilled() override;  // Character
 
   virtual bool inflictDamage(Character* target, int damage) override;  // Character
@@ -45,6 +46,8 @@ class Player final : public Character, public Controllable {
  private:
   PlayerController _playerController;
   QuestBook _questBook{assets::kQuestsList};
+
+  ax::Sprite* _light{};
 };
 
 }  // namespace vigilante
