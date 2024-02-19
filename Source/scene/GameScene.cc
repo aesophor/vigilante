@@ -22,6 +22,13 @@ USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+constexpr float kNearPlane{1.0f};
+constexpr float kFarPlane{1000.0f};
+
+}  // namespace
+
 bool GameScene::init() {
   if (!Scene::init()) {
     return false;
@@ -56,13 +63,13 @@ bool GameScene::init() {
   const auto& winSize = Director::getInstance()->getWinSize();
   _gameCamera = getDefaultCamera();
   _gameCamera->setDepth(1);
-  _gameCamera->initOrthographic(winSize.width, winSize.height, 1, 1000);
+  _gameCamera->initOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
   _gameCamera->setPosition(winSize.width / 2, winSize.height / 2);
 
   // Initialize Parallax camera.
   const Vec3& eyePosOld = _gameCamera->getPosition3D();
   const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
-  _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
+  _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
   _parallaxCamera->setDepth(0);
   _parallaxCamera->setCameraFlag(CameraFlag::USER2);
   _parallaxCamera->setPosition3D(eyePos);
@@ -71,7 +78,7 @@ bool GameScene::init() {
   addChild(_parallaxCamera);
 
   // Initialize HUD camera.
-  _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, 1, 1000);
+  _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
   _hudCamera->setDepth(2);
   _hudCamera->setCameraFlag(CameraFlag::USER1);
   _hudCamera->setPosition3D(eyePos);
@@ -134,7 +141,6 @@ bool GameScene::init() {
   _gameMapManager->getParallaxLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
   addChild(_gameMapManager->getParallaxLayer());
   addChild(_gameMapManager->getLayer());
-  addChild(_gameMapManager->getRenderTexture());
 
   // Initialize FxManager.
   _fxManager = std::make_unique<FxManager>();
@@ -217,9 +223,9 @@ void GameScene::update(const float delta) {
     _gameMapManager->getWorld()->DebugDraw();
   }
 
-  vigilante::camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
-  vigilante::camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
-  vigilante::camera_util::updateShake(_gameCamera, delta);
+  camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
+  camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
+  camera_util::updateShake(_gameCamera, delta);
 }
 
 void GameScene::handleInput() {
