@@ -1,18 +1,18 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
+ 
  https://axmolengine.github.io/
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
+ 
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,23 +22,25 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include <memory>
+#pragma once
 
-#include <android/log.h>
-#include <jni.h>
+#include "pch.h"
 
-#include "AppDelegate.h"
+#include "App.xaml.g.h"
+#include "OpenGLES.h"
 
-#define LOG_TAG "main"
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+using namespace winrt;
 
-namespace
+namespace winrt::AxmolAppWinRT::implementation
 {
-std::unique_ptr<AppDelegate> appDelegate;
-}
-
-void axmol_android_app_init(JNIEnv* env)
-{
-    LOGD("axmol_android_app_init");
-    appDelegate.reset(new AppDelegate());
+    struct App : AppT<App>
+    {
+        App();
+        void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs const&);
+        void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
+        void OnResuming(IInspectable const&, IInspectable const&);
+        void OnNavigationFailed(IInspectable const&, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs const&);
+        Windows::Foundation::IInspectable mPage;
+        OpenGLES mOpenGLES;
+    };
 }

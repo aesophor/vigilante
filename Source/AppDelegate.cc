@@ -49,7 +49,7 @@ static int register_all_packages() {
 bool AppDelegate::applicationDidFinishLaunching() {
   // Initialize director
   Director* director = Director::getInstance();
-  GLView* glview = director->getOpenGLView();
+  GLView* glview = director->getGLView();
 
   if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
@@ -57,7 +57,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #else
     glview = GLViewImpl::create("Vigilante");
 #endif
-    director->setOpenGLView(glview);
+    director->setGLView(glview);
   }
 
   glview->setDesignResolutionSize(kVirtualWidth, kVirtualHeight, ResolutionPolicy::SHOW_ALL);

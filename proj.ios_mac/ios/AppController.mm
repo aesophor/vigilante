@@ -53,7 +53,7 @@ static AppDelegate s_sharedApplication;
     // Add the view controller's view to the window and display.
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    // Use RootViewController to manage CCEAGLView
+    // Use RootViewController to manage EAGLView
     _viewController                       = [[RootViewController alloc] init];
 #if !defined(AX_TARGET_OS_TVOS)
     _viewController.wantsFullScreenLayout = YES;
@@ -85,7 +85,7 @@ static AppDelegate s_sharedApplication;
 
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController
     ax::GLView* glView = ax::GLViewImpl::createWithEAGLView((__bridge void*)_viewController.view);
-    ax::Director::getInstance()->setOpenGLView(glView);
+    ax::Director::getInstance()->setGLView(glView);
 
     // run the cocos2d-x game scene
     app->run();

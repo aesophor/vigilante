@@ -125,7 +125,7 @@ T extractJsonObject(const rapidjson::Value& val) {
     }
     return ret;
   } else {
-    return const_cast<rapidjson::Value&>(val).GetObject();
+    return T{const_cast<rapidjson::Value&>(val).GetObject()};
   }
 }
 

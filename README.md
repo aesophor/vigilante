@@ -16,12 +16,30 @@ I've always been wondering how a large-scale video game can be made from scratch
 ## Build and Run
 
 #### Build requirements
-* C++20
-* [axmol](https://github.com/axmolengine/axmol)
+* [axmol](https://github.com/axmolengine/axmol) 2.1.1 (C++20)
 
 #### Building and running vigilante using Xcode
-1. Generate xcode project `cmake -S . -B build -GXcode -DCMAKE_OSX_ARCHITECTURES=arm64`
-2. Launch xcode, open the project and build
+1. Install powershell on dev machine
+   ```shell
+   brew install powershell/tap/powershell
+   ```
+2. Clone and setup axmol
+   ```shell
+   git clone https://github.com/axmolengine/axmol
+   cd axmol
+   pwsh setup.ps1
+   ```
+3. Restart shell and cd into vigilante's project root dir
+   ```shell
+   cd ~/Code/vigilante
+   ```
+4. Generate xcode project for macOS arm64
+   ```shell
+   axmol build -p osx -a arm64 -c
+   ```
+5. Launch xcode
+   - open the project `~/Code/vigilante/build_arm64/vigilante.xcodeproj`
+   - from the top bar, select `vigilante` as build target, and press build.
 
 ## License
 Copyright (c) 2018-2024 Marco Wang \<m.aesophor@gmail.com\>. All rights reserved.
