@@ -26,6 +26,9 @@ class Character;
 class Player;
 
 class GameMap final {
+  friend class GameMapManager;
+  friend class GameState;
+
  public:
   enum class PhysicalLayer {
     GROUND,
@@ -194,9 +197,6 @@ class GameMap final {
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<PathFinder> _pathFinder;
   bool _isInBossFight{};
-
-  friend class GameMapManager;
-  friend class GameState;
 };
 
 template <typename ReturnType>

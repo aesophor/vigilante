@@ -29,6 +29,8 @@ class DialogueTree : public Importable {
   virtual void update();
 
   class Node final {
+    friend class DialogueTree;
+
    public:
     enum class Type {
       CHILDREN,
@@ -60,8 +62,6 @@ class DialogueTree : public Importable {
     std::string _childrenRef;
     std::vector<std::unique_ptr<Node>> _children;
     std::vector<std::unique_ptr<Node>> _childrenOnExecFail;
-
-    friend class DialogueTree;
   };
 
 

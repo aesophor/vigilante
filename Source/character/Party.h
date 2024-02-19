@@ -15,6 +15,8 @@ namespace vigilante {
 class Character;
 
 class Party final {
+  friend class GameState;
+
  public:
   struct WaitingLocationInfo {
     std::string tmxMapFilePath;
@@ -61,8 +63,6 @@ class Party final {
   Character* _leader{};
   std::unordered_set<std::shared_ptr<Character>> _members;
   std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfos;
-
-  friend class GameState;
 };
 
 }  // namespace vigilante

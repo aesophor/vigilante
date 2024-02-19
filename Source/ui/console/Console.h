@@ -30,6 +30,8 @@ class Console final {
 
  private:
   class CommandHistory final : public CircularBuffer<std::string> {
+    friend class Console;
+
    public:
     CommandHistory();
     virtual ~CommandHistory() = default;
@@ -42,8 +44,6 @@ class Console final {
 
    private:
     int _current;
-
-    friend class Console;
   };
 
   ax::Layer* _layer;

@@ -23,6 +23,8 @@
 namespace vigilante {
 
 class GameMapManager final {
+  friend class GameState;
+
  public:
   explicit GameMapManager(const b2Vec2& gravity);
 
@@ -86,8 +88,6 @@ class GameMapManager final {
   // 1. The unlock/lock state of all portals in all maps.
   // 2. The open/close state of all chests in all maps.
   std::unordered_map<std::string, bool> _allOpenableObjectStates;
-
-  friend class GameState;
 };
 
 }  // namespace vigilante

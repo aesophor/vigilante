@@ -34,6 +34,8 @@ namespace vigilante {
 class ComboSystem;
 
 class Character : public DynamicActor, public Importable {
+  friend class GameState;
+
  public:
   enum State {
     IDLE,
@@ -488,8 +490,6 @@ class Character : public DynamicActor, public Importable {
   // (1) be a leader who has a set of allies/followers, or
   // (2) be a follower of other character
   std::shared_ptr<Party> _party;
-
-  friend class GameState;
 };
 
 }  // namespace vigilante
