@@ -24,7 +24,7 @@ bool StaticActor::showOnMap(float x, float y) {
   _isShownOnMap = true;
   _bodySprite->setPosition(x, y);
 
-  _node->addChild(_bodySprite, graphical_layers::kDefault);
+  _node->addChild(_bodySprite, z_order::kDefault);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getLayer()->addChild(_node);

@@ -82,46 +82,46 @@ bool GameScene::init() {
   // Initialize shade.
   _shade = std::make_unique<Shade>();
   _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_shade->getImageView(), graphical_layers::kShade);
+  addChild(_shade->getImageView(), z_order::kShade);
 
   // Initialize HUD.
   _hud = std::make_unique<Hud>();
   _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_hud->getLayer(), graphical_layers::kHud);
+  addChild(_hud->getLayer(), z_order::kHud);
 
   // Initialize TimeLocationInfo.
   _timeLocationInfo = std::make_unique<TimeLocationInfo>();
   _timeLocationInfo->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_timeLocationInfo->getLayer(), graphical_layers::kTimeLocationInfo);
+  addChild(_timeLocationInfo->getLayer(), z_order::kTimeLocationInfo);
 
   // Initialize console.
   _console = std::make_unique<Console>();
   _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_console->getLayer(), graphical_layers::kConsole);
+  addChild(_console->getLayer(), z_order::kConsole);
 
   // Initialize notifications.
   _notifications = std::make_unique<Notifications>();
   _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_notifications->getLayer(), graphical_layers::kNotification);
+  addChild(_notifications->getLayer(), z_order::kNotification);
 
   // Initialize quest hints.
   _questHints = std::make_unique<QuestHints>();
   _questHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_questHints->getLayer(), graphical_layers::kQuestHint);
+  addChild(_questHints->getLayer(), z_order::kQuestHint);
 
   // Initialize floating damages.
   _floatingDamages = std::make_unique<FloatingDamages>();
-  addChild(_floatingDamages->getLayer(), graphical_layers::kFloatingDamage);
+  addChild(_floatingDamages->getLayer(), z_order::kFloatingDamage);
 
   // Initialize control hints.
   _controlHints = std::make_unique<ControlHints>();
   _controlHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_controlHints->getLayer(), graphical_layers::kControlHints);
+  addChild(_controlHints->getLayer(), z_order::kControlHints);
 
   // Initialize dialogue manager.
   _dialogueManager = std::make_unique<DialogueManager>();
   _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_dialogueManager->getLayer(), graphical_layers::kDialogue);
+  addChild(_dialogueManager->getLayer(), z_order::kDialogue);
 
   // Initialize window manager.
   _windowManager = std::make_unique<WindowManager>();
@@ -144,7 +144,7 @@ bool GameScene::init() {
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>();
   _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  addChild(_pauseMenu->getLayer(), graphical_layers::kPauseMenu);
+  addChild(_pauseMenu->getLayer(), z_order::kPauseMenu);
 
   // Initialize in-game time.
   _inGameTime = std::make_unique<InGameTime>();

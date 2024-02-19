@@ -6,7 +6,7 @@
 #include "util/Logger.h"
 
 using namespace std;
-using namespace vigilante::graphical_layers;
+using namespace vigilante::z_order;
 USING_NS_AX;
 
 namespace vigilante {

@@ -73,10 +73,10 @@ bool Item::showOnMap(float x, float y) {
   _bodySprite->getTexture()->setAliasTexParameters();
   _bodySprite->setScale(0.8f);
 
-  _node->addChild(_bodySprite, graphical_layers::kItem);
+  _node->addChild(_bodySprite, z_order::kItem);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, graphical_layers::kItem);
+  gmMgr->getLayer()->addChild(_node, z_order::kItem);
 
   return true;
 }

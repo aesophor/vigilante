@@ -84,7 +84,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   destroyGameMap();
   _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFilePath);
   _gameMap->createObjects();
-  _layer->addChild(_gameMap->getTmxTiledMap(), graphical_layers::kTmxTiledMap);
+  _layer->addChild(_gameMap->getTmxTiledMap(), z_order::kTmxTiledMap);
 
   if (!_player) {
     _player = _gameMap->createPlayer();
@@ -102,7 +102,7 @@ bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short c
   if (shouldDrawLine) {
     auto draw = ax::DrawNode::create();
     draw->drawLine(Point{src.x * kPpm, src.y * kPpm}, Point{dst.x * kPpm, dst.y * kPpm}, ax::Color4F::WHITE);
-    _layer->addChild(draw, graphical_layers::kHud);
+    _layer->addChild(draw, z_order::kHud);
   }
 
   B2RayCastCallback cb{[categoryBitsToStop](b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) -> float {

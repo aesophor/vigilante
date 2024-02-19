@@ -44,7 +44,7 @@ inline constexpr short kDestroyed = 16384;
 
 }  // namespace category_bits
 
-namespace graphical_layers {
+namespace z_order {
 
 inline constexpr int kTmxTiledMap = 10;
 inline constexpr int kChest = 15;
@@ -72,7 +72,7 @@ inline constexpr int kControlHints = 98;
 inline constexpr int kConsole = 99;
 inline constexpr int kShade = 100;
 
-}  // namespace graphical_layers
+}  // namespace z_order
 
 }  // namespace vigilante
 

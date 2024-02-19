@@ -82,7 +82,7 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
   spritesheet->getTexture()->setAliasTexParameters();
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(spritesheet, graphical_layers::kFx);
+  gmMgr->getLayer()->addChild(spritesheet, z_order::kFx);
 
   const bool shouldRepeatForever = loopCount == static_cast<unsigned int>(-1);
   auto animate = Animate::create(_animationCache[cacheKey]);

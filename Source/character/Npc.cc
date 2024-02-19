@@ -101,11 +101,11 @@ bool Npc::showOnMap(float x, float y) {
   _floatingHealthBar->setVisible(false);
 
   _node->removeAllChildren();
-  _node->addChild(_bodySpritesheet, graphical_layers::kNpcBody);
-  _node->addChild(_floatingHealthBar->getLayout(), graphical_layers::kHud);
+  _node->addChild(_bodySpritesheet, z_order::kNpcBody);
+  _node->addChild(_floatingHealthBar->getLayout(), z_order::kHud);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, graphical_layers::kNpcBody);
+  gmMgr->getLayer()->addChild(_node, z_order::kNpcBody);
 
   return true;
 }

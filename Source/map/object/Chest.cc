@@ -58,10 +58,10 @@ bool Chest::showOnMap(float x, float y) {
   }
   _bodySprite->getTexture()->setAliasTexParameters();
 
-  _node->addChild(_bodySprite, graphical_layers::kChest);
+  _node->addChild(_bodySprite, z_order::kChest);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, graphical_layers::kChest);
+  gmMgr->getLayer()->addChild(_node, z_order::kChest);
 
   return true;
 }

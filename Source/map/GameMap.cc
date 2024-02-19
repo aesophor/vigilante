@@ -389,7 +389,7 @@ void GameMap::createAnimatedObjects() {
     const string framesName = valMap.at("framesName").asString();
     const float frameInterval = valMap.at("frameInterval").asFloat();
     const float flipped = valMap.contains("flipped") ? valMap.at("flipped").asBool() : false;
-    const float zOrder = valMap.contains("zOrder") ? valMap.at("zOrder").asInt() : graphical_layers::kStaticObjects;
+    const float zOrder = valMap.contains("zOrder") ? valMap.at("zOrder").asInt() : z_order::kStaticObjects;
 
     auto staticObject = std::make_shared<StaticObject>(textureResDir, framesName, frameInterval, flipped, zOrder);
     showStaticActor(std::move(staticObject), x, y);

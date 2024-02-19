@@ -56,10 +56,10 @@ bool Player::showOnMap(float x, float y) {
   defineTexture(_characterProfile.textureResDir, x, y);
 
   _node->removeAllChildren();
-  _node->addChild(_bodySpritesheet, graphical_layers::kPlayerBody);
+  _node->addChild(_bodySpritesheet, z_order::kPlayerBody);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, graphical_layers::kPlayerBody);
+  gmMgr->getLayer()->addChild(_node, z_order::kPlayerBody);
 
   return true;
 }
