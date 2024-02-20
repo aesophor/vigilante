@@ -22,13 +22,6 @@ USING_NS_AX;
 
 namespace vigilante {
 
-namespace {
-
-constexpr float kNearPlane{1.0f};
-constexpr float kFarPlane{1000.0f};
-
-}  // namespace
-
 bool GameScene::init() {
   if (!Scene::init()) {
     return false;
@@ -55,40 +48,39 @@ bool GameScene::init() {
   vigilante::rand_util::init();
 
   // Camera note:
-  // DEFAULT (orthographic): used to render HUD
+  // DEFAULT (orthographic): unused
   // USER1 (orthographic): used to render parallax background images
   // USER2 (orthographic): used to render tilemaps/game objects
-  // Initialize the default camera from "perspective" to "orthographic",
-  // and use it as the game world camera.
+  // USER3 (orthographic): used to render hud/ui elements
   const auto& winSize = Director::getInstance()->getWinSize();
   auto defaultCamera = getDefaultCamera();
-  defaultCamera->initOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
+  defaultCamera->initOrthographic(winSize.width, winSize.height, camera::kNearPlane, camera::kFarPlane);
   defaultCamera->setPosition(winSize.width / 2, winSize.height / 2);
 
   // Initialize Parallax camera.
   const Vec3& eyePosOld = defaultCamera->getPosition3D();
   const Vec3 eyePos = {eyePosOld.x, eyePosOld.y, eyePosOld.z};
-  _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
+  _parallaxCamera = Camera::createOrthographic(winSize.width, winSize.height, camera::kNearPlane, camera::kFarPlane);
   _parallaxCamera->setDepth(0);
-  _parallaxCamera->setCameraFlag(CameraFlag::USER1);
+  _parallaxCamera->setCameraFlag(camera::kParallaxCameraFlag);
   _parallaxCamera->setPosition3D(eyePos);
   _parallaxCamera->lookAt(eyePos);
   _parallaxCamera->setPosition(winSize / 2);
   addChild(_parallaxCamera);
 
   // Initialize game camera.
-  _gameCamera = Camera::createOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
+  _gameCamera = Camera::createOrthographic(winSize.width, winSize.height, camera::kNearPlane, camera::kFarPlane);
   _gameCamera->setDepth(1);
-  _gameCamera->setCameraFlag(CameraFlag::USER2);
+  _gameCamera->setCameraFlag(camera::kGameCameraFlag);
   _gameCamera->setPosition3D(eyePos);
   _gameCamera->lookAt(eyePos);
   _gameCamera->setPosition(winSize / 2);
   addChild(_gameCamera);
 
   // Initialize hud camera.
-  _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, kNearPlane, kFarPlane);
+  _hudCamera = Camera::createOrthographic(winSize.width, winSize.height, camera::kNearPlane, camera::kFarPlane);
   _hudCamera->setDepth(2);
-  _hudCamera->setCameraFlag(CameraFlag::USER3);
+  _hudCamera->setCameraFlag(camera::kHudCameraFlag);
   _hudCamera->setPosition3D(eyePos);
   _hudCamera->lookAt(eyePos);
   _hudCamera->setPosition(winSize / 2);
@@ -96,58 +88,59 @@ bool GameScene::init() {
 
   // Initialize shade.
   _shade = std::make_unique<Shade>();
-  _shade->getImageView()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _shade->getImageView()->setCameraMask(camera::kHudCameraMask);
   addChild(_shade->getImageView(), z_order::kShade);
 
   // Initialize HUD.
   _hud = std::make_unique<Hud>();
-  _hud->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _hud->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_hud->getLayer(), z_order::kHud);
 
   // Initialize TimeLocationInfo.
   _timeLocationInfo = std::make_unique<TimeLocationInfo>();
-  _timeLocationInfo->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _timeLocationInfo->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_timeLocationInfo->getLayer(), z_order::kTimeLocationInfo);
 
   // Initialize console.
   _console = std::make_unique<Console>();
-  _console->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _console->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_console->getLayer(), z_order::kConsole);
 
   // Initialize notifications.
   _notifications = std::make_unique<Notifications>();
-  _notifications->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _notifications->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_notifications->getLayer(), z_order::kNotification);
 
   // Initialize quest hints.
   _questHints = std::make_unique<QuestHints>();
-  _questHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _questHints->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_questHints->getLayer(), z_order::kQuestHint);
 
   // Initialize floating damages.
   _floatingDamages = std::make_unique<FloatingDamages>();
-  _floatingDamages->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
+  _floatingDamages->getLayer()->setCameraMask(camera::kGameCameraMask);
   addChild(_floatingDamages->getLayer(), z_order::kFloatingDamage);
 
   // Initialize control hints.
   _controlHints = std::make_unique<ControlHints>();
-  _controlHints->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _controlHints->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_controlHints->getLayer(), z_order::kControlHints);
 
   // Initialize dialogue manager.
   _dialogueManager = std::make_unique<DialogueManager>();
-  _dialogueManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _dialogueManager->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_dialogueManager->getLayer(), z_order::kDialogue);
 
   // Initialize window manager.
   _windowManager = std::make_unique<WindowManager>();
+  _windowManager->setCameraMask(camera::kHudCameraMask);
   _windowManager->setScene(this);
 
   // Initialize GameMapManager.
   // b2World is created when GameMapManager's ctor is called.
   _gameMapManager = std::make_unique<GameMapManager>(b2Vec2{0, kGravity});
-  _gameMapManager->getParallaxLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER1));
-  _gameMapManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
+  _gameMapManager->getParallaxLayer()->setCameraMask(camera::kParallaxCameraMask);
+  _gameMapManager->getLayer()->setCameraMask(camera::kGameCameraMask);
   addChild(_gameMapManager->getParallaxLayer());
   addChild(_gameMapManager->getLayer());
 
@@ -159,7 +152,7 @@ bool GameScene::init() {
 
   // Initialize Pause Menu.
   _pauseMenu = std::make_unique<PauseMenu>();
-  _pauseMenu->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER3));
+  _pauseMenu->getLayer()->setCameraMask(camera::kHudCameraMask);
   addChild(_pauseMenu->getLayer(), z_order::kPauseMenu);
 
   // Initialize in-game time.
@@ -180,7 +173,7 @@ bool GameScene::init() {
   _gameMapManager->getWorld()->SetDebugDraw(&_debugDraw);
   _drawBox2D = _debugDraw.GetDrawNode();
   _drawBox2D->setOpacity(100);
-  _drawBox2D->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
+  _drawBox2D->setCameraMask(camera::kGameCameraMask);
   addChild(_drawBox2D);
 
   // Tick the box2d world.
@@ -233,8 +226,8 @@ void GameScene::update(const float delta) {
     _gameMapManager->getWorld()->DebugDraw();
   }
 
-  _gameMapManager->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
-  _floatingDamages->getLayer()->setCameraMask(static_cast<uint16_t>(CameraFlag::USER2));
+  _gameMapManager->getLayer()->setCameraMask(_gameMapManager->getLayer()->getCameraMask());
+  _floatingDamages->getLayer()->setCameraMask(_floatingDamages->getLayer()->getCameraMask());
 
   camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());

@@ -3,6 +3,8 @@
 #ifndef VIGILANTE_CONSTANTS_H_
 #define VIGILANTE_CONSTANTS_H_
 
+#include <2d/Camera.h>
+
 namespace vigilante {
 
 inline constexpr float kFps = 60.0f;
@@ -43,6 +45,21 @@ inline constexpr short kProjectile = 8192;
 inline constexpr short kDestroyed = 16384;
 
 }  // namespace category_bits
+
+namespace camera {
+
+inline constexpr float kNearPlane = 1.0f;
+inline constexpr float kFarPlane = 1000.0f;
+
+inline constexpr ax::CameraFlag kParallaxCameraFlag = ax::CameraFlag::USER1;
+inline constexpr ax::CameraFlag kGameCameraFlag = ax::CameraFlag::USER2;
+inline constexpr ax::CameraFlag kHudCameraFlag = ax::CameraFlag::USER3;
+
+inline constexpr uint16_t kParallaxCameraMask = static_cast<uint16_t>(kParallaxCameraFlag);
+inline constexpr uint16_t kGameCameraMask = static_cast<uint16_t>(kGameCameraFlag);
+inline constexpr uint16_t kHudCameraMask = static_cast<uint16_t>(kHudCameraFlag);
+
+}  // namespace camera
 
 namespace z_order {
 

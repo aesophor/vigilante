@@ -26,7 +26,7 @@ void WindowManager::push(unique_ptr<Window> window) {
   }
   
   // Ensure that `_defaultCameraMask` is set on newly rendered window.
-  window->getLayer()->setCameraMask(window->getLayer()->getCameraMask());
+  window->getLayer()->setCameraMask(_cameraMask);
 
   // Show window.
   window->getLayer()->setVisible(true);
