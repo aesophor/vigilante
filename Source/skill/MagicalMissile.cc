@@ -11,6 +11,7 @@
 #include "character/Character.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
 
@@ -53,7 +54,7 @@ bool MagicalMissile::showOnMap(float x, float y) {
   _node->addChild(_bodySpritesheet, z_order::kSpell);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, z_order::kSpell);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, z_order::kSpell);
 
   return true;
 }

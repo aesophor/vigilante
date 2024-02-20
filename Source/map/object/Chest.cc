@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
@@ -57,11 +58,10 @@ bool Chest::showOnMap(float x, float y) {
     _bodySprite = Sprite::create("Texture/interactable_object/chest/chest_open.png");
   }
   _bodySprite->getTexture()->setAliasTexParameters();
-
   _node->addChild(_bodySprite, z_order::kChest);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, z_order::kChest);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, z_order::kChest);
 
   return true;
 }

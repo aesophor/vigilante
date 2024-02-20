@@ -17,6 +17,7 @@
 #include "skill/MagicalMissile.h"
 #include "quest/KillTargetObjective.h"
 #include "quest/InteractWithTargetObjective.h"
+#include "util/AxUtil.h"
 #include "util/CameraUtil.h"
 #include "util/StringUtil.h"
 
@@ -59,7 +60,7 @@ bool Player::showOnMap(float x, float y) {
   _node->addChild(_bodySpritesheet, z_order::kPlayerBody);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, z_order::kPlayerBody);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, z_order::kPlayerBody);
 
   return true;
 }

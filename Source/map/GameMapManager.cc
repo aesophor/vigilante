@@ -14,6 +14,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "skill/MagicalMissile.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/B2RayCastUtil.h"
 #include "util/StringUtil.h"
@@ -102,7 +103,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   destroyGameMap();
   _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFilePath);
   _gameMap->createObjects();
-  _layer->addChild(_gameMap->getTmxTiledMap(), z_order::kTmxTiledMap);
+  ax_util::addChildWithParentCameraMask(_layer, _gameMap->getTmxTiledMap(), z_order::kTmxTiledMap);
 
   if (!_player) {
     _player = _gameMap->createPlayer();
@@ -111,6 +112,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   const float ambientLight = .2f;
   const float darkness = 1.f - ambientLight;
   _renderTexture->initWithWidthAndHeight(_gameMap->getWidth(), _gameMap->getHeight(), backend::PixelFormat::RGBA8);
+  _renderTexture->setCameraMask(_layer->getCameraMask());
   _renderTexture->setPosition(_gameMap->getWidth() / 2, _gameMap->getHeight() / 2);
   _renderTexture->clear(0, 0, 0, darkness);
 

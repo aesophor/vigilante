@@ -226,9 +226,6 @@ void GameScene::update(const float delta) {
     _gameMapManager->getWorld()->DebugDraw();
   }
 
-  _gameMapManager->getLayer()->setCameraMask(_gameMapManager->getLayer()->getCameraMask());
-  _floatingDamages->getLayer()->setCameraMask(_floatingDamages->getLayer()->getCameraMask());
-
   camera_util::lerpToTarget(_gameCamera, _gameMapManager->getPlayer()->getBody()->GetPosition());
   camera_util::boundCamera(_gameCamera, _gameMapManager->getGameMap());
   camera_util::updateShake(_gameCamera, delta);

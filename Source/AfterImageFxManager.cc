@@ -4,6 +4,7 @@
 
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 USING_NS_AX;
@@ -27,7 +28,7 @@ void createAfterImage(const Sprite* sprite,
   afterImage->setOpacity(80);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(afterImage, zOrder);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), afterImage, zOrder);
 
   DelayTime* delay = DelayTime::create(durationInSec);
   CallFunc* remove = CallFunc::create([=]() {

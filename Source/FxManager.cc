@@ -9,6 +9,7 @@
 #include "character/Character.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 using namespace vigilante::assets;
@@ -82,7 +83,7 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
   spritesheet->getTexture()->setAliasTexParameters();
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(spritesheet, z_order::kFx);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), spritesheet, z_order::kFx);
 
   const bool shouldRepeatForever = loopCount == static_cast<unsigned int>(-1);
   auto animate = Animate::create(_animationCache[cacheKey]);

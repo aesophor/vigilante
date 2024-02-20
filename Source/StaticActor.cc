@@ -9,6 +9,7 @@
 #include "map/GameMapManager.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -23,11 +24,10 @@ bool StaticActor::showOnMap(float x, float y) {
 
   _isShownOnMap = true;
   _bodySprite->setPosition(x, y);
-
   _node->addChild(_bodySprite, z_order::kDefault);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node);
 
   return true;
 }

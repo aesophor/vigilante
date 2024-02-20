@@ -15,7 +15,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-FloatingDamages::FloatingDamages() : _layer(Layer::create()) {}
+FloatingDamages::FloatingDamages() : _layer{Layer::create()} {}
 
 void FloatingDamages::update(const float delta) {
   deque<map<Character*, deque<DamageLabel>>::iterator> trash;

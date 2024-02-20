@@ -6,6 +6,7 @@
 
 #include "Constants.h"
 #include "map/GameMapManager.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 
@@ -25,7 +26,6 @@ void DynamicActor::setPosition(float x, float y) {
 }
 
 void DynamicActor::update(const float) {
-  // Sync the body sprite with its b2body.
   b2Vec2 b2bodyPos = _body->GetPosition();
   _bodySprite->setPosition(b2bodyPos.x * kPpm, b2bodyPos.y * kPpm);
 }

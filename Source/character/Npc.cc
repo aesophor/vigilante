@@ -15,6 +15,7 @@
 #include "quest/CollectItemObjective.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 #include "ui/trade/TradeWindow.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
@@ -105,7 +106,7 @@ bool Npc::showOnMap(float x, float y) {
   _node->addChild(_floatingHealthBar->getLayout(), z_order::kHud);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, z_order::kNpcBody);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, z_order::kNpcBody);
 
   return true;
 }

@@ -12,6 +12,7 @@
 #include "item/Key.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
@@ -72,11 +73,10 @@ bool Item::showOnMap(float x, float y) {
   _bodySprite = Sprite::create(getIconPath());
   _bodySprite->getTexture()->setAliasTexParameters();
   _bodySprite->setScale(0.8f);
-
   _node->addChild(_bodySprite, z_order::kItem);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, z_order::kItem);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, z_order::kItem);
 
   return true;
 }

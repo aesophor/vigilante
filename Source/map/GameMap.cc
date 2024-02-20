@@ -24,6 +24,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
 #include "util/MathUtil.h"
@@ -411,9 +412,8 @@ void GameMap::createParallaxBackground() {
     return;
   }
 
-  auto parallaxLayer = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager()->getParallaxLayer();
-  parallaxLayer->addChild(_parallaxBackground->getParallaxNode());
-  parallaxLayer->setCameraMask(parallaxLayer->getCameraMask());
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  ax_util::addChildWithParentCameraMask(gmMgr->getParallaxLayer(), _parallaxBackground->getParallaxNode());
 }
 
 GameMap::Trigger::Trigger(const vector<string>& cmds,

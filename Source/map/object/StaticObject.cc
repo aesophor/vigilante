@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 USING_NS_AX;
@@ -21,12 +22,11 @@ bool StaticObject::showOnMap(float x, float y) {
 
   defineTexture();
   _bodySprite->setPosition(x, y);
-
   _node->removeAllChildren();
   _node->addChild(_bodySpritesheet);
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLayer()->addChild(_node, _zOrder);
+  ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), _node, _zOrder);
 
   return true;
 }
