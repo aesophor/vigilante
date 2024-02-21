@@ -27,23 +27,14 @@ namespace vigilante {
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _parallaxLayer{Layer::create()},
       _layer{Layer::create()},
-      _lightingLayer{Layer::create()},
-      _light{Sprite::create("Texture/light.png")},
-      _renderTexture{RenderTexture::create(1, 1)},
       _worldContactListener{std::make_unique<WorldContactListener>()},
-      _world{std::make_unique<b2World>(gravity)} {
+      _world{std::make_unique<b2World>(gravity)},
+      _lighting{std::make_unique<Lighting>()} {
   _world->SetAllowSleeping(true);
   _world->SetContinuousPhysics(true);
   _world->SetContactListener(_worldContactListener.get());
 
-  _light->setBlendFunc({ax::backend::BlendFactor::ZERO, ax::backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
-  _light->retain();
-
-  _layer->addChild(_renderTexture, z_order::kDefault + 1);
-}
-
-GameMapManager::~GameMapManager() {
-  _light->release();
+  ax_util::addChildWithParentCameraMask(_layer, _lighting->getLayer(), z_order::kDefault + 1);
 }
 
 void GameMapManager::update(const float delta) {
@@ -60,10 +51,7 @@ void GameMapManager::update(const float delta) {
     ally->update(delta);
   }
 
-  _renderTexture->beginWithClear(0, 0, 0, 0.8f);
-  _light->setPosition(_player->getBody()->GetPosition().x * kPpm, _player->getBody()->GetPosition().y * kPpm);
-  _light->visit();
-  _renderTexture->end();
+  _lighting->update();
 }
 
 void GameMapManager::loadGameMap(const string& tmxMapFilePath,
@@ -107,14 +95,10 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
 
   if (!_player) {
     _player = _gameMap->createPlayer();
+    _lighting->addLightSource(_player.get());
   }
 
-  const float ambientLight = .2f;
-  const float darkness = 1.f - ambientLight;
-  _renderTexture->initWithWidthAndHeight(_gameMap->getWidth(), _gameMap->getHeight(), backend::PixelFormat::RGBA8);
-  _renderTexture->setCameraMask(_layer->getCameraMask());
-  _renderTexture->setPosition(_gameMap->getWidth() / 2, _gameMap->getHeight() / 2);
-  _renderTexture->clear(0, 0, 0, darkness);
+  _lighting->setDarknessOverlaySize(_gameMap->getWidth(), _gameMap->getHeight());
 
   if (oldBgmFilePath != _gameMap->getBgmFilePath()) {
     Audio::the().playBgm(_gameMap->getBgmFilePath());

@@ -100,6 +100,9 @@ inline const fs::path kDustDir = kFxDir / "dust";
 inline const fs::path kHitDir = kFxDir / "hit";
 inline const fs::path kHintBubbleDir = kFxDir / "hint_bubble";
 
+// Lighting
+inline const fs::path kLightSource = kTextureDir / "light.png";
+
 // Important items
 inline const fs::path kGoldCoin = kDataDir / "item/misc/gold_coin.json";
 

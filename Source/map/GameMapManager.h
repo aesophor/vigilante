@@ -18,6 +18,7 @@
 #include "character/Player.h"
 #include "item/Item.h"
 #include "map/GameMap.h"
+#include "map/Lighting.h"
 #include "map/WorldContactListener.h"
 
 namespace vigilante {
@@ -27,7 +28,6 @@ class GameMapManager final {
 
  public:
   explicit GameMapManager(const b2Vec2& gravity);
-  ~GameMapManager();
 
   void update(const float delta);
 
@@ -61,8 +61,6 @@ class GameMapManager final {
 
   inline ax::Layer* getParallaxLayer() const { return _parallaxLayer; }
   inline ax::Layer* getLayer() const { return _layer; }
-  inline ax::Layer* getLightingLayer() const { return _lightingLayer; }
-  inline ax::RenderTexture* getRenderTexture() const { return _renderTexture; }
   inline b2World* getWorld() const { return _world.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
@@ -75,11 +73,9 @@ class GameMapManager final {
 
   ax::Layer* _parallaxLayer{};
   ax::Layer* _layer{};
-  ax::Layer* _lightingLayer{};
-  ax::Sprite* _light{};
-  ax::RenderTexture* _renderTexture{};
   std::unique_ptr<WorldContactListener> _worldContactListener;
   std::unique_ptr<b2World> _world;
+  std::unique_ptr<Lighting> _lighting;
   std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
 
