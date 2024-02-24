@@ -25,7 +25,8 @@ void Lighting::update() {
     lightSourceSprite->visit();
   }
 
-  for (const auto& [_, lightSourceSprite] : _staticLightSources) {
+  for (const auto& [pos, lightSourceSprite] : _staticLightSources) {
+    lightSourceSprite->setPosition(pos.first, pos.second);
     lightSourceSprite->visit();
   }
 
@@ -45,7 +46,17 @@ void Lighting::addLightSource(StaticActor *staticActor) {
   lightSourceSprite->setBlendFunc({backend::BlendFactor::ZERO, backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
   lightSourceSprite->retain();
 
-  _staticLightSources.push_back({staticActor, lightSourceSprite});
+  const float x = staticActor->getBodySprite()->getPosition().x;
+  const float y = staticActor->getBodySprite()->getPosition().y;
+  _staticLightSources.push_back({{x, y}, lightSourceSprite});
+}
+
+void Lighting::addLightSource(const float x, const float y) {
+  Sprite* lightSourceSprite = Sprite::create(kLightSource.c_str());
+  lightSourceSprite->setBlendFunc({backend::BlendFactor::ZERO, backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
+  lightSourceSprite->retain();
+
+  _staticLightSources.push_back({{x, y}, lightSourceSprite});
 }
 
 void Lighting::setDarknessOverlaySize(const float width, const float height) const {

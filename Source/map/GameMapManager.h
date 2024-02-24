@@ -62,6 +62,7 @@ class GameMapManager final {
   inline ax::Layer* getParallaxLayer() const { return _parallaxLayer; }
   inline ax::Layer* getLayer() const { return _layer; }
   inline b2World* getWorld() const { return _world.get(); }
+  inline Lighting* getLighting() const { return _lighting.get(); }
   inline GameMap* getGameMap() const { return _gameMap.get(); }
   inline Player* getPlayer() const { return _player.get(); }
 

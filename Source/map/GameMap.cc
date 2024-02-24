@@ -47,6 +47,9 @@ GameMap::GameMap(b2World* world, const string& tmxMapFilePath)
       _pathFinder{std::make_unique<SimplePathFinder>()} {}
 
 GameMap::~GameMap() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->getLighting()->clear();
+
   for (auto body : _tmxTiledMapBodies) {
     _world->DestroyBody(body);
   }
@@ -95,6 +98,7 @@ void GameMap::createObjects() {
   createPortals();
   createChests();
   createNpcs();
+  createLightSources();
   createAnimatedObjects();
   createParallaxBackground();
 }
@@ -377,6 +381,27 @@ void GameMap::createChests() {
 
     auto chest = std::make_shared<Chest>(_tmxTiledMapFilePath, i, items);
     showDynamicActor(std::move(chest), x, y);
+  }
+}
+
+void GameMap::createLightSources() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+
+  const Value ambientLightLevelDay = _tmxTiledMap->getProperty("ambientLightLevelDay");
+  if (ambientLightLevelDay.isNull()) {
+    VGLOG(LOG_ERR, "Failed to extract ambientLightLevelDay property from tmx.");
+    gmMgr->getLighting()->setAmbientLightLevel(1.0f);
+  } else {
+    gmMgr->getLighting()->setAmbientLightLevel(ambientLightLevelDay.asFloat());
+  }
+
+  ax::ValueVector objects = getObjects("LightSources");
+  for (int i = 0; i < objects.size(); i++) {
+    const auto& valMap = objects[i].asValueMap();
+    const float x = valMap.at("x").asFloat();
+    const float y = valMap.at("y").asFloat();
+
+    gmMgr->getLighting()->addLightSource(x, y);
   }
 }
 

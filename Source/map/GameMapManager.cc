@@ -95,7 +95,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
 
   if (!_player) {
     _player = _gameMap->createPlayer();
-    _lighting->addLightSource(_player.get());
+    //_lighting->addLightSource(_player.get());
   }
 
   _lighting->setDarknessOverlaySize(_gameMap->getWidth(), _gameMap->getHeight());

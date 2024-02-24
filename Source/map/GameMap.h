@@ -180,6 +180,7 @@ class GameMap final {
   void createPortals();
   void createNpcs();
   void createChests();
+  void createLightSources();
   void createAnimatedObjects();
   void createParallaxBackground();
 
