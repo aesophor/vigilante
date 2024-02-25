@@ -479,19 +479,32 @@ void CommandHandler::narrate(const vector<string>& args) {
 }
 
 void CommandHandler::rest(const vector<string>& args) {
-  if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+  if (args.size() < 2) {
+    setError(string_util::format("usage: %s <innTmxMapFilePath>", args[0].c_str()));
+    return;
+  }
+
+  auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
+  const string& tmxMapFilePath = args[1];
+  if (!roomRentalTracker->hasCheckedIn(tmxMapFilePath)) {
+    auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+    notifications->show("You cannot rest here because you haven't rented this room.");
+
+    setError(string_util::format("failed to rest in [%s], haven't checked in.", tmxMapFilePath.c_str()));
     return;
   }
 
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
       FadeIn::create(Shade::kFadeInTime * 3),
-      FadeOut::create(Shade::kFadeOutTime * 3),
       CallFunc::create([]() {
+        auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+        inGameTime->fastForward(8, 0, 0);
+
         auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
         notifications->show("You awaken feeling well rested.");
       }),
+      FadeOut::create(Shade::kFadeOutTime * 3),
       nullptr
   ));
 
@@ -500,7 +513,7 @@ void CommandHandler::rest(const vector<string>& args) {
 
 void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   if (args.size() < 4) {
-    setError(string_util::format("usage: %s <tmxMapFilePath> <bedroomKeyJsonFilePath> <gold>", args[0].c_str()));
+    setError(string_util::format("usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath> <gold>", args[0].c_str()));
     return;
   }
 
@@ -538,7 +551,7 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   player->removeGold(fee);
 
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->runAfter(0, 10, 0, string_util::format("%s %s %s", cmd::kRentRoomCheckOut,
+  inGameTime->runAfter(24, 0, 0, string_util::format("%s %s %s", cmd::kRentRoomCheckOut,
                                                                  tmxMapFilePath.c_str(),
                                                                  bedroomKeyJsonFilePath.c_str()));
 
@@ -547,7 +560,7 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
 
 void CommandHandler::rentRoomCheckOut(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("usage: %s <tmxMapFilePath> <bedroomKeyJsonFilePath>", args[0].c_str()));
+    setError(string_util::format("usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath>", args[0].c_str()));
     return;
   }
 

@@ -8,6 +8,10 @@ using namespace std;
 
 namespace vigilante {
 
+bool RoomRentalTracker::hasCheckedIn(const std::string &innTmxFilePath) const {
+  return _checkedInInns.contains(innTmxFilePath);
+}
+
 bool RoomRentalTracker::checkIn(const string& innTmxFilePath) {
   const auto it = _checkedInInns.find(innTmxFilePath);
   if (it != _checkedInInns.end()) {

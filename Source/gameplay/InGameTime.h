@@ -15,6 +15,7 @@ class InGameTime final {
   InGameTime();
 
   void update(const float delta);
+  void fastForward(const int hourDelta, const int minuteDelta, const int secondDelta);
   void runAfter(const int hours, const int minutes, const int seconds, const std::string& cmd);
 
   inline bool isDawn() const { return _hour >= 5 && _hour <= 6; }

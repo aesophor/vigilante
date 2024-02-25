@@ -28,9 +28,13 @@ void InGameTime::updateTime(const float delta) {
 
   const int secondDelta = _accumulatedDelta * kTimeScale;
   _accumulatedDelta = 0.0f;
-  _secondsElapsed += secondDelta;
+  fastForward(0, 0, secondDelta);
+}
 
-  _second += secondDelta;
+void InGameTime::fastForward(const int hourDelta, const int minuteDelta, const int secondDelta) {
+  const int totalSecondDelta = hourDelta * 3600 + minuteDelta * 60 + secondDelta;
+  _secondsElapsed += totalSecondDelta;
+  _second += totalSecondDelta;
   while (_second > 59) {
     _minute++;
     _second -= 60;

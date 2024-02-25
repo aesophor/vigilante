@@ -10,6 +10,7 @@ namespace vigilante {
 
 class RoomRentalTracker final {
  public:
+  bool hasCheckedIn(const std::string& innTmxFilePath) const;
   bool checkIn(const std::string& innTmxFilePath);
   bool checkOut(const std::string& innTmxFilePath);
 
