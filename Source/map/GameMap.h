@@ -14,8 +14,10 @@
 #include <box2d/box2d.h>
 
 #include "DynamicActor.h"
+#include "gameplay/InGameTime.h"
 #include "Interactable.h"
 #include "item/Item.h"
+#include "map/Lighting.h"
 #include "map/ParallaxBackground.h"
 #include "map/PathFinder.h"
 #include "util/Logger.h"
@@ -134,7 +136,7 @@ class GameMap final {
     ax::Sprite* _hintBubbleFxSprite{};
   };
 
-  GameMap(b2World* world, const std::string& tmxMapFilePath);
+  GameMap(b2World* world, Lighting* lighting, const std::string& tmxMapFilePath);
   ~GameMap();
 
   void update(const float delta);
@@ -162,6 +164,9 @@ class GameMap final {
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
   inline const std::string& getBgmFilePath() const { return _bgmFilePath; }
   inline const std::string& getLocationName() const { return _locationName; }
+  inline float getAmbientLightLevelDay() const { return _ambientLightLevelDay; }
+  inline float getAmbientLightLevelNight() const { return _ambientLightLevelNight; }
+  inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
@@ -185,10 +190,13 @@ class GameMap final {
   void createParallaxBackground();
 
   b2World* _world{};
+  Lighting* _lighting{};
   ax::TMXTiledMap* _tmxTiledMap{};
   std::string _tmxTiledMapFilePath;
   std::string _bgmFilePath;
   std::string _locationName;
+  float _ambientLightLevelDay{1.0f};
+  float _ambientLightLevelNight{0.3f};
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;

@@ -17,6 +17,11 @@ class InGameTime final {
   void update(const float delta);
   void runAfter(const int hours, const int minutes, const int seconds, const std::string& cmd);
 
+  inline bool isDawn() const { return _hour >= 5 && _hour <= 6; }
+  inline bool isDay() const { return _hour > 6 && _hour < 18; }
+  inline bool isDusk() const { return _hour >= 18 && _hour <= 19; }
+  inline bool isNight() const { return _hour > 19 || _hour < 5; }
+
   inline int getHour() const { return _hour; }
   inline int getMinute() const { return _minute; }
   inline int getSecond() const { return _second; }
@@ -32,6 +37,14 @@ class InGameTime final {
   }
 
   static constexpr int kTimeScale = 20;
+
+  // Dawn: [05:00, 06:59]
+  static constexpr int kDawnBeginHour = 5;
+  static constexpr int kDawnEndHour = 7;
+
+  // Dusk: [18:00, 19:59]
+  static constexpr int kDuskBeginHour = 18;
+  static constexpr int kDuskEndHour = 20;
 
  private:
   void updateTime(const float delta);

@@ -38,8 +38,9 @@ USING_NS_AX;
 
 namespace vigilante {
 
-GameMap::GameMap(b2World* world, const string& tmxMapFilePath)
+GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePath)
     : _world{world},
+      _lighting{lighting},
       _tmxTiledMap{TMXTiledMap::create(tmxMapFilePath)},
       _tmxTiledMapFilePath{tmxMapFilePath},
       _bgmFilePath{_tmxTiledMap->getProperty("bgm").asString()},
@@ -47,13 +48,6 @@ GameMap::GameMap(b2World* world, const string& tmxMapFilePath)
       _pathFinder{std::make_unique<SimplePathFinder>()} {}
 
 GameMap::~GameMap() {
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getLighting()->clear();
-
-  for (auto body : _tmxTiledMapBodies) {
-    _world->DestroyBody(body);
-  }
-
   for (auto& actor : _dynamicActors) {
     actor->removeFromMap();
   }
@@ -61,6 +55,12 @@ GameMap::~GameMap() {
   for (auto& actor : _staticActors) {
     actor->removeFromMap();
   }
+
+  for (auto body : _tmxTiledMapBodies) {
+    _world->DestroyBody(body);
+  }
+
+  _lighting->clear();
 }
 
 void GameMap::update(const float delta) {
@@ -385,23 +385,21 @@ void GameMap::createChests() {
 }
 
 void GameMap::createLightSources() {
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-
-  const Value ambientLightLevelDay = _tmxTiledMap->getProperty("ambientLightLevelDay");
-  if (ambientLightLevelDay.isNull()) {
-    VGLOG(LOG_ERR, "Failed to extract ambientLightLevelDay property from tmx.");
-    gmMgr->getLighting()->setAmbientLightLevel(1.0f);
-  } else {
-    gmMgr->getLighting()->setAmbientLightLevel(ambientLightLevelDay.asFloat());
+  if (const Value ambientLightLevelDay = _tmxTiledMap->getProperty("ambientLightLevelDay"); !ambientLightLevelDay.isNull()) {
+    _ambientLightLevelDay = ambientLightLevelDay.asFloat();
+  }
+  if (const Value ambientLightLevelNight = _tmxTiledMap->getProperty("ambientLightLevelNight"); !ambientLightLevelNight.isNull()) {
+    _ambientLightLevelNight = ambientLightLevelNight.asFloat();
   }
 
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   ax::ValueVector objects = getObjects("LightSources");
   for (int i = 0; i < objects.size(); i++) {
     const auto& valMap = objects[i].asValueMap();
     const float x = valMap.at("x").asFloat();
     const float y = valMap.at("y").asFloat();
 
-    gmMgr->getLighting()->addLightSource(x, y);
+    _lighting->addLightSource(x, y);
   }
 }
 

@@ -8,9 +8,12 @@
 #include <axmol.h>
 
 #include "DynamicActor.h"
+#include "gameplay/InGameTime.h"
 #include "StaticActor.h"
 
 namespace vigilante {
+
+class GameMap;
 
 class Lighting final {
  public:
@@ -25,14 +28,21 @@ class Lighting final {
   void clear();
 
   inline ax::Layer* getLayer() const { return _layer; }
+  inline void setGameMap(GameMap* gameMap) { _gameMap = gameMap; }
   inline void setAmbientLightLevel(const float level) { _ambientLightLevel = level; }
 
  private:
+  float getBrightnessPercentage(const InGameTime* inGameTime) const;
+  void updateAmbientLightLevel(const InGameTime* inGameTime, const float brightnessPercentage);
+  void updateParallaxLightLevel(const InGameTime* inGameTime, const float brightnessPercentage);
+  void updateLightSources();
+
   ax::Layer* _layer{};
   ax::RenderTexture* _darknessOverlay{};
   std::list<std::pair<DynamicActor*, ax::Sprite*>> _dynamicLightSources;
   std::list<std::pair<std::pair<float, float>, ax::Sprite*>> _staticLightSources;
 
+  GameMap* _gameMap{};
   float _ambientLightLevel{0.3f};
 };
 

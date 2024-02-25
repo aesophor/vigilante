@@ -89,7 +89,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   const string oldBgmFilePath = (_gameMap) ? _gameMap->getBgmFilePath() : "";
 
   destroyGameMap();
-  _gameMap = std::make_unique<GameMap>(_world.get(), tmxMapFilePath);
+  _gameMap = std::make_unique<GameMap>(_world.get(), _lighting.get(), tmxMapFilePath);
   _gameMap->createObjects();
   ax_util::addChildWithParentCameraMask(_layer, _gameMap->getTmxTiledMap(), z_order::kTmxTiledMap);
 
@@ -98,6 +98,7 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
     //_lighting->addLightSource(_player.get());
   }
 
+  _lighting->setGameMap(_gameMap.get());
   _lighting->setDarknessOverlaySize(_gameMap->getWidth(), _gameMap->getHeight());
 
   if (oldBgmFilePath != _gameMap->getBgmFilePath()) {
