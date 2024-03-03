@@ -308,6 +308,7 @@ void GameMap::createPortals() {
     string destTmxMapFilePath = valMap.at("destMap").asString();
     int destPortalId = valMap.at("destPortalID").asInt();
     bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
+    bool shouldAdjustOffsetX = valMap.at("shouldAdjustOffsetX").asBool();
     bool isLocked = valMap.at("isLocked").asBool();
 
     B2BodyBuilder bodyBuilder(_world);
@@ -316,7 +317,9 @@ void GameMap::createPortals() {
       .buildBody();
 
     auto portal = std::make_unique<GameMap::Portal>(
-        _tmxTiledMapFilePath, portalId, destTmxMapFilePath, destPortalId, willInteractOnContact, isLocked, body);
+        _tmxTiledMapFilePath, portalId, destTmxMapFilePath, destPortalId,
+        willInteractOnContact, shouldAdjustOffsetX, isLocked,
+        w / kPpm, h / kPpm, body);
     auto portal_raw_ptr = portal.get();
     _portals.emplace_back(std::move(portal));
 
@@ -518,14 +521,17 @@ void GameMap::Trigger::hideHintUI() {
 
 GameMap::Portal::Portal(const string& tmxMapFilePath, const int portalId,
                         const string& destTmxMapFilePath, const int destPortalId,
-                        bool willInteractOnContact, bool isLocked,
-                        b2Body* body)
+                        const bool willInteractOnContact, const bool shouldAdjustOffsetX, const bool isLocked,
+                        const float width, const float height, b2Body* body)
     : _tmxMapFilePath{tmxMapFilePath},
       _portalId{portalId},
       _destTmxMapFilePath{destTmxMapFilePath},
       _destPortalId{destPortalId},
       _willInteractOnContact{willInteractOnContact},
+      _shouldAdjustOffsetX{shouldAdjustOffsetX},
       _isLocked{isLocked},
+      _width{width},
+      _height{height},
       _body{body} {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   constexpr auto kType = OpenableObjectType::PORTAL;
@@ -545,20 +551,25 @@ void GameMap::Portal::onInteract(Character* user) {
     return;
   }
 
-  string destMapFilePath = _destTmxMapFilePath;
-  int destPortalId = _destPortalId;
+  const string destMapFilePath = _destTmxMapFilePath;
+  const int destPortalId = _destPortalId;
+
+  const bool shouldAdjustOffsetX = _shouldAdjustOffsetX;
+  const float offsetXPercentage = (user->getBody()->GetPosition().x - _body->GetPosition().x) / _width;
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto afterLoadingGameMap = [user, destMapFilePath, destPortalId, gmMgr]() {
+  auto afterLoadingGameMap = [user, destMapFilePath, destPortalId, shouldAdjustOffsetX, offsetXPercentage, gmMgr]() {
     const auto& portals = gmMgr->getGameMap()->_portals;
     assert(destPortalId < portals.size());
 
     const auto& portalPos = portals[destPortalId]->_body->GetPosition();
-    user->setPosition(portalPos.x, portalPos.y);
+    const float x = portalPos.x + portals[destPortalId]->_width * (shouldAdjustOffsetX ? offsetXPercentage : 0);
+    const float y = portalPos.y;
+    user->setPosition(x, y);
 
     for (auto ally : user->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
-        ally->setPosition(portalPos.x, portalPos.y);
+        ally->setPosition(x, y);
       } else if (destMapFilePath != ally->getParty()->getWaitingMemberLocationInfo(
                  ally->getCharacterProfile().jsonFilePath)->tmxMapFilePath) {
         ally->removeFromMap();

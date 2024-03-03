@@ -92,11 +92,11 @@ class GameMap final {
   };
 
   class Portal final : public Interactable {
-   public:
+  public:
     Portal(const std::string& tmxMapFilePath, const int portalId,
            const std::string& targetTmxMapFilePath, const int targetPortalId,
-           bool willInteractOnContact, bool isLocked,
-           b2Body* body);
+           const bool willInteractOnContact, const bool shouldAdjustOffsetX, const bool isLocked,
+           const float width, const float height, b2Body* body);
     virtual ~Portal();
 
     virtual void onInteract(Character* user) override;  // Interactable
@@ -109,12 +109,12 @@ class GameMap final {
     void lock();
     void unlock();
 
-    //inline const std::string& getTmxMapFilePath() const { return _tmxMapFilePath; }
-    //inline int getPortalId() const { return _portalId; }
     inline const std::string& getDestTmxMapFilePath() const { return _destTmxMapFilePath; }
     inline int getDestPortalId() const { return _destPortalId; }
+    inline const float getWidth() const { return _width; }
+    inline const float getHeight() const { return _height; }
 
-   protected:
+  protected:
     virtual void createHintBubbleFx() override;  // Interactable
     virtual void removeHintBubbleFx() override;  // Interactable
 
@@ -131,7 +131,10 @@ class GameMap final {
     const std::string _destTmxMapFilePath;  // new (destination) .tmx filepath
     const int _destPortalId{};  // the portal id in the new (destination) map
     bool _willInteractOnContact{};  // interact with the portal on contact?
+    bool _shouldAdjustOffsetX{};
     bool _isLocked{};
+    const float _width{};
+    const float _height{};
     b2Body* _body{};
     ax::Sprite* _hintBubbleFxSprite{};
   };
