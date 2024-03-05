@@ -32,6 +32,7 @@ constexpr char kRentRoomCheckIn[] = "rentroomcheckin";
 constexpr char kRentRoomCheckOut[] = "rentroomcheckout";
 constexpr char kBeginBossFight[] = "beginbossfight";
 constexpr char kEndBossFight[] = "endbossfight";
+constexpr char kSetInGameTime[] = "setingametime";
 
 }  // namespace cmd
 
@@ -65,6 +66,7 @@ class CommandHandler final {
   void rentRoomCheckOut(const std::vector<std::string>& args);
   void beginBossFight(const std::vector<std::string>& args);
   void endBossFight(const std::vector<std::string>& args);
+  void setInGameTime(const std::vector<std::string>& args);
 
   bool _success{};
   std::string _errMsg;

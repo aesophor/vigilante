@@ -64,6 +64,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kRentRoomCheckOut,   &CommandHandler::rentRoomCheckOut   },
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
     {cmd::kEndBossFight,       &CommandHandler::endBossFight       },
+    {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -546,6 +547,9 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
     return;
   }
 
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show("You have successfully rented a room.");
+
   const string& bedroomKeyJsonFilePath = args[2];
   player->addItem(Item::create(bedroomKeyJsonFilePath));
   player->removeGold(fee);
@@ -622,6 +626,62 @@ void CommandHandler::endBossFight(const vector<string>& args) {
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   gmMgr->getGameMap()->onBossFightEnd();
+
+  setSuccess();
+}
+
+void CommandHandler::setInGameTime(const vector<string>& args) {
+  if (args.size() < 4) {
+    setError(string_util::format("usage: %s <hour> <minute> <second>", args[0].c_str()));
+    return;
+  }
+
+  int hour = 0;
+  try {
+    hour = std::stoi(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `hour`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`hour` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  int minute = 0;
+  try {
+    minute = std::stoi(args[2]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `minute`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`minute` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  int second = 0;
+  try {
+    second = std::stoi(args[3]);
+  } catch (const invalid_argument& ex) {
+    setError("invalid argument `second`");
+    return;
+  } catch (const out_of_range& ex) {
+    setError("`second` is too large");
+    return;
+  } catch (...) {
+    setError("unknown error");
+    return;
+  }
+
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+  inGameTime->setHour(hour);
+  inGameTime->setMinute(minute);
+  inGameTime->setSecond(second);
 
   setSuccess();
 }
