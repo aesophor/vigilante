@@ -53,6 +53,9 @@ void init() {
   ::keyMap[EventKeyboard::KeyCode::KEY_MINUS] = "MINUS";
   ::keyMap[EventKeyboard::KeyCode::KEY_ENTER] = "ENTER";
   ::keyMap[EventKeyboard::KeyCode::KEY_SPACE] = "SPACE";
+  ::keyMap[EventKeyboard::KeyCode::KEY_SEMICOLON] = "SEMICOLON";
+  ::keyMap[EventKeyboard::KeyCode::KEY_LEFT_BRACKET] = "LEFT BRACKET";
+  ::keyMap[EventKeyboard::KeyCode::KEY_RIGHT_BRACKET] = "RIGHT BRACKET";
 
   ::keyMap[EventKeyboard::KeyCode::KEY_0] = "0";
   ::keyMap[EventKeyboard::KeyCode::KEY_1] = "1";
@@ -120,14 +123,13 @@ void init() {
   ::keyMap[EventKeyboard::KeyCode::KEY_Z] = "z";
 }
 
-string keyCodeToString(EventKeyboard::KeyCode keyCode) {
+string keyCodeToString(const EventKeyboard::KeyCode keyCode) {
   return ::keyMap[keyCode];
 }
 
-char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed) {
-  if ((keyCode >= EventKeyboard::KeyCode::KEY_0 && keyCode <= EventKeyboard::KeyCode::KEY_9)
-    || (keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z)
-    || (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
+char keyCodeToAscii(const EventKeyboard::KeyCode keyCode, const bool isCapsLocked, const bool isShiftPressed) {
+  if ((keyCode >= EventKeyboard::KeyCode::KEY_CAPITAL_A && keyCode <= EventKeyboard::KeyCode::KEY_CAPITAL_Z) ||
+      (keyCode >= EventKeyboard::KeyCode::KEY_A && keyCode <= EventKeyboard::KeyCode::KEY_Z)) {
     char c = keyCodeToString(keyCode).front();
 
     if (isCapsLocked) {
@@ -145,19 +147,46 @@ char keyCodeToAscii(EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isSh
     return c;
   }
 
+  const bool alt = isCapsLocked || isShiftPressed;
   switch (keyCode) {
+    case EventKeyboard::KeyCode::KEY_1:
+      return alt ? '!' : '1';
+    case EventKeyboard::KeyCode::KEY_2:
+      return alt ? '@' : '2';
+    case EventKeyboard::KeyCode::KEY_3:
+      return alt ? '#' : '3';
+    case EventKeyboard::KeyCode::KEY_4:
+      return alt ? '$' : '4';
+    case EventKeyboard::KeyCode::KEY_5:
+      return alt ? '%' : '5';
+    case EventKeyboard::KeyCode::KEY_6:
+      return alt ? '^' : '6';
+    case EventKeyboard::KeyCode::KEY_7:
+      return alt ? '&' : '7';
+    case EventKeyboard::KeyCode::KEY_8:
+      return alt ? '*' : '8';
+    case EventKeyboard::KeyCode::KEY_9:
+      return alt ? '(' : '9';
+    case EventKeyboard::KeyCode::KEY_0:
+      return alt ? ')' : '0';
+    case EventKeyboard::KeyCode::KEY_MINUS:
+      return alt ? '_' : '-';
+    case EventKeyboard::KeyCode::KEY_EQUAL:
+      return alt ? '+' : '=';
+    case EventKeyboard::KeyCode::KEY_LEFT_BRACKET:
+      return alt ? '{' : '[';
+    case EventKeyboard::KeyCode::KEY_RIGHT_BRACKET:
+      return alt ? '}' : ']';
+    case EventKeyboard::KeyCode::KEY_COMMA:
+      return alt ? '<' : ',';
+    case EventKeyboard::KeyCode::KEY_PERIOD:
+      return alt ? '>' : '.';
+    case EventKeyboard::KeyCode::KEY_SLASH:
+      return alt ? '?' : '/';
+    case EventKeyboard::KeyCode::KEY_SEMICOLON:
+      return alt ? ';' : ':';
     case EventKeyboard::KeyCode::KEY_SPACE:
       return ' ';
-    case EventKeyboard::KeyCode::KEY_COMMA:
-      return (isShiftPressed) ? '<' : ',';
-    case EventKeyboard::KeyCode::KEY_PERIOD:
-      return (isShiftPressed) ? '>' : '.';
-    case EventKeyboard::KeyCode::KEY_SLASH:
-      return (isShiftPressed) ? '?' : '/';
-    case EventKeyboard::KeyCode::KEY_MINUS:
-      return (isShiftPressed) ? '_' : '-';
-    case EventKeyboard::KeyCode::KEY_EQUAL:
-      return (isShiftPressed) ? '+' : '=';
     default:
       return 0x00;
   }

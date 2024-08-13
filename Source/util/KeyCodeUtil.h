@@ -10,8 +10,8 @@
 namespace vigilante::keycode_util {
 
 void init();
-std::string keyCodeToString(ax::EventKeyboard::KeyCode keyCode);
-char keyCodeToAscii(ax::EventKeyboard::KeyCode keyCode, bool isCapsLocked, bool isShiftPressed);
+std::string keyCodeToString(const ax::EventKeyboard::KeyCode keyCode);
+char keyCodeToAscii(const ax::EventKeyboard::KeyCode keyCode, const bool isCapsLocked, const bool isShiftPressed);
 
 }  // namespace vigilante::keycode_util
 
