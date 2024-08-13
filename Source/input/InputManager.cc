@@ -3,7 +3,6 @@
 #include "input/InputManager.h"
 
 #include "ui/TextField.h"
-#include "util/Logger.h"
 
 using namespace std;
 USING_NS_AX;
@@ -23,18 +22,19 @@ void InputManager::activate(Scene* scene) {
     if (keyCode == EventKeyboard::KeyCode::KEY_CAPS_LOCK) {
       _isCapsLocked = !_isCapsLocked;
     }
-    
+
+    _pressedKeys.insert(keyCode);
+
     if (_specialOnKeyPressed) {
       // Execute the additional onKeyPressed handler for special events.
       // (e.g., prompting for a hotkey, receiving TextField input, etc)
-      _specialOnKeyPressed(keyCode, e);
-      return;
-    }
+      bool shouldReleaseKey = false;
+      _specialOnKeyPressed(keyCode, e, shouldReleaseKey);
 
-    // We keep track of which keys have been pressed only when there is no active
-    // _specialOnKeyPressed event listener, because _specialOnKeyPressed will do
-    // whatever it needs to do with these keys.
-    _pressedKeys.insert(keyCode);
+      if (shouldReleaseKey) {
+        _pressedKeys.erase(keyCode);
+      }
+    }
   };
 
   _keyboardEvLstnr->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event*) {

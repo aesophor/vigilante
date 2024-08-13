@@ -30,7 +30,7 @@ Console::Console() : _layer{Layer::create()} {
     setVisible(false);
   };
 
-  auto extraOnKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event*) {
+  auto extraOnKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event*, bool&) {
     if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW && _cmdHistory.canGoBack()) {
       _cmdHistory.goBack();
       _textField.setString(_cmdHistory.getCurrentLine());
@@ -69,7 +69,7 @@ bool Console::executeCmd(const string& cmd,
     _cmdHistory.push(cmd);
     _cmdHistory._current = _cmdHistory._tail;
   }
-  
+
   return hasSucceeded;
 }
 

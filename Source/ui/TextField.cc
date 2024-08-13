@@ -27,9 +27,9 @@ TextField::TextField(const string& defaultText)
   _label->setAnchorPoint({0, 0});
   _layout->addChild(_label);
 
-  _onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e) {
+  _onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* e, bool& shouldReleaseKey) {
     if (_extraOnKeyPressed) {
-      _extraOnKeyPressed(keyCode, e);
+      _extraOnKeyPressed(keyCode, e, shouldReleaseKey);
     }
 
     if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
@@ -40,6 +40,7 @@ TextField::TextField(const string& defaultText)
 
     if (keyCode == _dismissKey && _onDismiss) {
       _onDismiss();
+      shouldReleaseKey = true;
       return;
     }
 
@@ -51,10 +52,9 @@ TextField::TextField(const string& defaultText)
       return;
     }
 
-    char c = keycode_util::keyCodeToAscii(keyCode,
+    const char c = keycode_util::keyCodeToAscii(keyCode,
         InputManager::the().isCapsLocked(), InputManager::the().isShiftPressed());
-    
-    if (c != 0x00) {
+    if (c) {
       _buffer += c;
       _label->setString(_buffer + kCursor);
     }

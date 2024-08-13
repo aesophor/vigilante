@@ -109,7 +109,7 @@ void TradeListView::confirm() {
     window->getTextField()->setOnSubmit(onSubmit);
     window->getTextField()->setOnDismiss(onDismiss);
     window->getTextField()->setReceivingInput(true);
-    
+
     auto wm = SceneManager::the().getCurrentScene<GameScene>()->getWindowManager();
     wm->push(std::move(window));
   }

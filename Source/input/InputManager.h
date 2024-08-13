@@ -21,7 +21,7 @@ namespace vigilante {
 
 class InputManager final {
  public:
-  using OnKeyPressedEvLstnr = std::function<void (ax::EventKeyboard::KeyCode, ax::Event*)>;
+  using OnKeyPressedEvLstnr = std::function<void (ax::EventKeyboard::KeyCode, ax::Event*, bool&)>;
 
   static InputManager& the();
 
@@ -45,7 +45,8 @@ class InputManager final {
   }
 
   inline bool isShiftPressed() const {
-    return isKeyPressed(ax::EventKeyboard::KeyCode::KEY_SHIFT);
+    return isKeyPressed(ax::EventKeyboard::KeyCode::KEY_LEFT_SHIFT) ||
+           isKeyPressed(ax::EventKeyboard::KeyCode::KEY_RIGHT_SHIFT);
   }
 
   inline bool hasSpecialOnKeyPressed() const {
