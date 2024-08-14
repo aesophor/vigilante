@@ -65,6 +65,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
     {cmd::kEndBossFight,       &CommandHandler::endBossFight       },
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
+    {cmd::kMoveTo,             &CommandHandler::moveTo             },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -172,7 +173,7 @@ void CommandHandler::setStage(const vector<string>& args) {
 
 void CommandHandler::addItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <itemName> [amount]", args[0].c_str()));
+    setError(string_util::format("usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
     return;
   }
 
@@ -205,7 +206,7 @@ void CommandHandler::addItem(const vector<string>& args) {
 
 void CommandHandler::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <itemName> [amount]", args[0].c_str()));
+    setError(string_util::format("usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
     return;
   }
 
@@ -682,6 +683,46 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   inGameTime->setHour(hour);
   inGameTime->setMinute(minute);
   inGameTime->setSecond(second);
+
+  setSuccess();
+}
+
+void CommandHandler::moveTo(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("usage: %s <mapAlias>", args[0].c_str()));
+    return;
+  }
+
+  const string &mapAlias = args[1];
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);
+  if (!tmxMapFilePath.has_value()) {
+    setError(string_util::format("Failed to moveto: [%s], unknown mapAlias.", mapAlias.c_str()));
+    return;
+  }
+
+  auto afterLoadingGameMap = [gmMgr](const GameMap* newGameMap) {
+    Player* player = gmMgr->getPlayer();
+    if (!player) {
+      return;
+    }
+
+    GameMap::Portal* portal = newGameMap->getPortals()[0].get();
+    const auto& portalPos = portal->getBody()->GetPosition();
+    player->setPosition(portalPos.x, portalPos.y);
+
+    for (auto ally : player->getAllies()) {
+      if (!ally->isWaitingForPartyLeader()) {
+        ally->setPosition(portalPos.x, portalPos.y);
+      } else if (newGameMap->getTmxTiledMapFilePath() != ally->getParty()->getWaitingMemberLocationInfo(
+                 ally->getCharacterProfile().jsonFilePath)->tmxMapFilePath) {
+        ally->removeFromMap();
+      }
+    }
+  };
+
+  gmMgr->loadGameMap(*tmxMapFilePath, afterLoadingGameMap);
 
   setSuccess();
 }

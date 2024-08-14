@@ -113,6 +113,7 @@ class GameMap final {
     inline int getDestPortalId() const { return _destPortalId; }
     inline const float getWidth() const { return _width; }
     inline const float getHeight() const { return _height; }
+    inline b2Body* getBody() const { return _body; }
 
   protected:
     virtual void createHintBubbleFx() override;  // Interactable
@@ -173,6 +174,7 @@ class GameMap final {
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
+  inline const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const { return _portals; };
 
   float getWidth() const;
   float getHeight() const;

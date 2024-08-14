@@ -70,7 +70,7 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
                          make_pair("allPortalStates", &gmMgr->_allOpenableObjectStates),
                          make_pair("playerPos", &playerPos));
 
-  gmMgr->loadGameMap(tmxTiledMapFilePath, [=]() {
+  gmMgr->loadGameMap(tmxTiledMapFilePath, [=](const GameMap*) {
     player->setPosition(playerPos.first, playerPos.second);
 
     const auto& playerParty = player->getParty();

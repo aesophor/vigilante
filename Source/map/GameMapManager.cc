@@ -2,6 +2,10 @@
 
 #include "GameMapManager.h"
 
+#include <filesystem>
+#include <fstream>
+#include <system_error>
+
 #include <box2d/box2d.h>
 
 #include "Assets.h"
@@ -19,6 +23,7 @@
 #include "util/B2RayCastUtil.h"
 #include "util/StringUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
@@ -35,6 +40,45 @@ GameMapManager::GameMapManager(const b2Vec2& gravity)
   _world->SetContactListener(_worldContactListener.get());
 
   ax_util::addChildWithParentCameraMask(_layer, _lighting->getLayer(), z_order::kDefault + 1);
+
+  if (!initMapAliases()) {
+    VGLOG(LOG_INFO, "Failed to init map aliases");
+  }
+}
+
+bool GameMapManager::initMapAliases() {
+  error_code ec{};
+  const bool exists = fs::exists(assets::kMapAliasesIni, ec);
+  if (ec) {
+    VGLOG(LOG_INFO, "Failed to init map aliases from [%s], err [%s]", assets::kMapAliasesIni.c_str(), ec.message().c_str());
+    return false;
+  }
+  if (!exists) {
+    VGLOG(LOG_INFO, "Failed to init map aliases from [%s], err [No such file or directory]", assets::kMapAliasesIni.c_str());
+    return false;
+  }
+
+  ifstream fin{assets::kMapAliasesIni};
+  if (!fin.is_open()) {
+    VGLOG(LOG_INFO, "Failed to open [%s], err [%s]", assets::kMapAliasesIni.c_str(), strerror(errno));
+    return false;
+  }
+
+  string line;
+  while (std::getline(fin, line)) {
+    string_util::strip(line);
+    if (line.empty() || (line.front() == '[' && line.back() == ']')) {
+      continue;
+    }
+
+    vector<string> key_val = string_util::split(line, '=');
+    string& key = key_val[0];
+    string& val = key_val[1];
+    string_util::strip(key);
+    string_util::strip(val);
+    _mapAliasToTmxMapFilePath.emplace(std::move(key), std::move(val));
+  }
+  return true;
 }
 
 void GameMapManager::update(const float delta) {
@@ -55,13 +99,13 @@ void GameMapManager::update(const float delta) {
 }
 
 void GameMapManager::loadGameMap(const string& tmxMapFilePath,
-                                 const function<void ()>& afterLoadingGameMap) {
+                                 const function<void (const GameMap*)>& afterLoadingGameMap) {
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
       FadeIn::create(Shade::kFadeInTime),
       CallFunc::create([this, shade, tmxMapFilePath, afterLoadingGameMap]() {
         doLoadGameMap(tmxMapFilePath);
-        afterLoadingGameMap();
+        afterLoadingGameMap(_gameMap.get());
         setNpcsAllowedToAct(true);
       }),
       FadeOut::create(Shade::kFadeOutTime),
@@ -85,7 +129,7 @@ void GameMapManager::destroyGameMap() {
   }
 }
 
-GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
+void GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   const string oldBgmFilePath = (_gameMap) ? _gameMap->getBgmFilePath() : "";
 
   destroyGameMap();
@@ -104,8 +148,6 @@ GameMap* GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   if (oldBgmFilePath != _gameMap->getBgmFilePath()) {
     Audio::the().playBgm(_gameMap->getBgmFilePath());
   }
-
-  return _gameMap.get();
 }
 
 bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short categoryBitsToStop,
@@ -124,6 +166,11 @@ bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short c
   }};
   _world->RayCast(&cb, src, dst);
   return cb.hasHit();
+}
+
+optional<string> GameMapManager::getTmxMapFilePathByMapAlias(const string& mapAlias) const {
+  const auto it = _mapAliasToTmxMapFilePath.find(mapAlias);
+  return it != _mapAliasToTmxMapFilePath.end() ? it->second : optional<string>{std::nullopt};
 }
 
 bool GameMapManager::isNpcAllowedToSpawn(const string& jsonFilePath) const {

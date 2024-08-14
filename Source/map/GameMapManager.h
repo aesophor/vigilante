@@ -6,6 +6,7 @@
 #include <atomic>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_set>
 
@@ -35,10 +36,12 @@ class GameMapManager final {
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFilePath,
-                   const std::function<void ()>& afterLoadingGameMap=[]() {});
+                   const std::function<void (const GameMap*)>& afterLoadingGameMap=[](const GameMap*) {});
   void destroyGameMap();
   bool rayCast(const b2Vec2& src, const b2Vec2& dst, const short categoryBitsToStop,
                const bool shouldDrawLine = false) const;
+
+  std::optional<std::string> getTmxMapFilePathByMapAlias(const std::string& mapAlias) const;
 
   bool isNpcAllowedToSpawn(const std::string& jsonFilePath) const;
   void setNpcAllowedToSpawn(const std::string& jsonFilePath, bool canSpawn);
@@ -67,7 +70,8 @@ class GameMapManager final {
   inline Player* getPlayer() const { return _player.get(); }
 
  private:
-  GameMap* doLoadGameMap(const std::string& tmxMapFilePath);
+  bool initMapAliases();
+  void doLoadGameMap(const std::string& tmxMapFilePath);
   std::string getOpenableObjectQueryKey(const std::string& tmxMapFilePath,
                                         const GameMap::OpenableObjectType type,
                                         const int targetObjectId) const;
@@ -79,6 +83,7 @@ class GameMapManager final {
   std::unique_ptr<Lighting> _lighting;
   std::unique_ptr<GameMap> _gameMap;
   std::unique_ptr<Player> _player;
+  std::unordered_map<std::string, std::string> _mapAliasToTmxMapFilePath;
 
   std::unordered_set<std::string> _npcSpawningBlacklist;
   std::atomic<bool> _areNpcsAllowedToAct{true};

@@ -288,7 +288,7 @@ void GameScene::startNewGame() {
 }
 
 void GameScene::loadGame(const string& gameSaveFilePath) {
-  _gameMapManager->loadGameMap(kNewGameInitialMap, [gameSaveFilePath]() {
+  _gameMapManager->loadGameMap(kNewGameInitialMap, [gameSaveFilePath](const GameMap*) {
     GameState(gameSaveFilePath).load();
   });
 }

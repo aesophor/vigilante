@@ -551,33 +551,27 @@ void GameMap::Portal::onInteract(Character* user) {
     return;
   }
 
-  const string destMapFilePath = _destTmxMapFilePath;
   const int destPortalId = _destPortalId;
+  const float offsetXPercentage = _shouldAdjustOffsetX ? (user->getBody()->GetPosition().x - _body->GetPosition().x) / _width : 0;
 
-  const bool shouldAdjustOffsetX = _shouldAdjustOffsetX;
-  const float offsetXPercentage = (user->getBody()->GetPosition().x - _body->GetPosition().x) / _width;
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto afterLoadingGameMap = [user, destMapFilePath, destPortalId, shouldAdjustOffsetX, offsetXPercentage, gmMgr]() {
-    const auto& portals = gmMgr->getGameMap()->_portals;
-    assert(destPortalId < portals.size());
-
-    const auto& portalPos = portals[destPortalId]->_body->GetPosition();
-    const float x = portalPos.x + portals[destPortalId]->_width * (shouldAdjustOffsetX ? offsetXPercentage : 0);
+  auto afterLoadingGameMap = [user, destPortalId, offsetXPercentage](const GameMap* newGameMap) {
+    const auto& portalPos = newGameMap->_portals[destPortalId]->_body->GetPosition();
+    const float x = portalPos.x + newGameMap->_portals[destPortalId]->_width * offsetXPercentage;
     const float y = portalPos.y;
     user->setPosition(x, y);
 
     for (auto ally : user->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
         ally->setPosition(x, y);
-      } else if (destMapFilePath != ally->getParty()->getWaitingMemberLocationInfo(
+      } else if (newGameMap->getTmxTiledMapFilePath() != ally->getParty()->getWaitingMemberLocationInfo(
                  ally->getCharacterProfile().jsonFilePath)->tmxMapFilePath) {
         ally->removeFromMap();
       }
     }
   };
 
-  gmMgr->loadGameMap(destMapFilePath, afterLoadingGameMap);
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  gmMgr->loadGameMap(_destTmxMapFilePath, afterLoadingGameMap);
 }
 
 bool GameMap::Portal::willInteractOnContact() const {

@@ -38,7 +38,8 @@ inline const fs::path kTitleFont = kFontDir / "MatchupPro.ttf";
 // MainMenu
 inline const fs::path kMainMenuBg = kUIDir / "mainmenu_bg.png";
 
-// NewGame initial GameMap
+// GameMap Related
+inline const fs::path kMapAliasesIni = kMapDir / "map_aliases.ini";
 inline const fs::path kNewGameInitialMap = kMapDir / "AbandonedCastlePrison/Main.tmx";
 
 // Common UI Textures
