@@ -15,6 +15,7 @@
 #include "gameplay/ExpPointTable.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
 #include "util/MathUtil.h"
@@ -168,7 +169,6 @@ void Character::import(const string& jsonFilePath) {
 }
 
 void Character::replaceSpritesheet(const string& jsonFilePath) {
-  const float spriteZOrder = _bodySprite->getLocalZOrder();
   const float spritesheetZOrder = _bodySpritesheet->getLocalZOrder();
 
   _bodySprite->removeFromParent();
@@ -179,7 +179,7 @@ void Character::replaceSpritesheet(const string& jsonFilePath) {
   _characterProfile.loadSpritesheetInfo(jsonFilePath);
   loadBodyAnimations(_characterProfile.textureResDir);
 
-  _node->addChild(_bodySpritesheet, spritesheetZOrder);
+  ax_util::addChildWithParentCameraMask(_node, _bodySpritesheet, spritesheetZOrder);
 }
 
 void Character::defineBody(b2BodyType bodyType,
