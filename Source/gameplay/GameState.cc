@@ -89,7 +89,7 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
 
 rapidjson::Value GameState::serializePlayerState() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  const auto &profile = gmMgr->getPlayer()->getCharacterProfile();
+  const auto& profile = gmMgr->getPlayer()->getCharacterProfile();
 
   return json_util::serialize(_allocator,
                               make_pair("name", profile.name),
@@ -118,7 +118,7 @@ rapidjson::Value GameState::serializePlayerState() const {
 
 void GameState::deserializePlayerState(const rapidjson::Value& obj) const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto &profile = gmMgr->getPlayer()->getCharacterProfile();
+  auto& profile = gmMgr->getPlayer()->getCharacterProfile();
 
   rapidjson::Value inventoryJsonObject;
   rapidjson::Value partyJsonObject;
@@ -247,7 +247,7 @@ rapidjson::Value GameState::serializePlayerParty() const {
   auto player = gmMgr->getPlayer();
 
   list<string> alliesProfilesFilePaths;
-  for (const auto &member : player->getParty()->getMembers()) {
+  for (const auto& member : player->getParty()->getMembers()) {
     alliesProfilesFilePaths.push_back(member->getCharacterProfile().jsonFilePath);
   }
   auto alliesJsonObject

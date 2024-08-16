@@ -52,7 +52,7 @@ optional<Character::State> ComboSystem::determineNextAttackState() {
   auto isKeyPressed = [](const EventKeyboard::KeyCode keyCode) -> bool {
     return IS_KEY_PRESSED(keyCode);
   };
-  for (const auto &[nextStateId, keyCodes] : reqs) {
+  for (const auto& [nextStateId, keyCodes] : reqs) {
     if (std::all_of(keyCodes.begin(), keyCodes.end(), isKeyPressed)) {
       _fsm.setCurrentStateId(nextStateId);
       _fsm.setTimer(kComboResetTimer);

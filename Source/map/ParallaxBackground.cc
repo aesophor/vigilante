@@ -15,7 +15,7 @@ bool InfiniteParallaxNode::init() {
   return true;
 }
 
-void InfiniteParallaxNode::addLayer(const string &filePath,
+void InfiniteParallaxNode::addLayer(const string& filePath,
                                     const int z,
                                     const Vec2& parallaxRatio,
                                     const Vec2& position,
@@ -51,7 +51,7 @@ void InfiniteParallaxNode::update(const float delta) {
   }
 
   const Vec2 gameCameraPosDelta = gameCamera->getPosition() - _prevGameCameraPos;
-  for (auto &[_, layerData] : _layerData) {
+  for (auto& [_, layerData] : _layerData) {
     const Vec2 layerDelta = gameCameraPosDelta * layerData.ratio;
     layerData.spriteA->setPosition(layerData.spriteA->getPosition() - layerDelta);
     layerData.spriteB->setPosition(layerData.spriteB->getPosition() - layerDelta);

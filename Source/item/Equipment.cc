@@ -22,7 +22,7 @@ Equipment::Profile::Profile(const string& jsonFilePath) {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   for (int i = 0; i < Equipment::Sfx::SFX_SIZE; i++) {
-    const string &sfxKey = Equipment::_kEquipmentSfxStr[i];
+    const string& sfxKey = Equipment::_kEquipmentSfxStr[i];
     if (!json["sfx"].HasMember(sfxKey.c_str())) {
       continue;
     }

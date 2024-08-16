@@ -173,7 +173,7 @@ class Character : public DynamicActor, public Importable {
   virtual void dodgeForward();
   virtual void teleportToTarget(Character* target);
   virtual void teleportToTarget(const b2Vec2& targetPos);
-  virtual void enableAfterImageFx(const ax::Color3B &color);
+  virtual void enableAfterImageFx(const ax::Color3B& color);
   virtual void disableAfterImageFx();
   virtual void runIntroAnimation();
   virtual void stopMotion();
@@ -250,7 +250,7 @@ class Character : public DynamicActor, public Importable {
 
   inline Character::Profile& getCharacterProfile() { return _characterProfile; }
 
-  inline ComboSystem &getCombatSystem() { return *_comboSystem; }
+  inline ComboSystem& getCombatSystem() { return *_comboSystem; }
 
   inline std::unordered_set<Character*>& getInRangeTargets() { return _inRangeTargets; }
   inline Character* getLockedOnTarget() const { return _lockedOnTarget; }
@@ -386,7 +386,7 @@ class Character : public DynamicActor, public Importable {
 
   Item* getExistingItemObj(Item* item) const;
 
-  void dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag);
+  void dodge(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag);
   void cancelAttack();
 
   // Characater data.

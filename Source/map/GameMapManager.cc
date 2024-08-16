@@ -150,7 +150,7 @@ void GameMapManager::doLoadGameMap(const string& tmxMapFilePath) {
   }
 }
 
-bool GameMapManager::rayCast(const b2Vec2 &src, const b2Vec2 &dst, const short categoryBitsToStop,
+bool GameMapManager::rayCast(const b2Vec2& src, const b2Vec2& dst, const short categoryBitsToStop,
                              const bool shouldDrawLine) const {
   if (shouldDrawLine) {
     auto draw = ax::DrawNode::create();

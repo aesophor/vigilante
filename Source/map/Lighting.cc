@@ -125,7 +125,7 @@ void Lighting::addLightSource(DynamicActor* dynamicActor) {
   _dynamicLightSources.push_back({dynamicActor, lightSourceSprite});
 }
 
-void Lighting::addLightSource(StaticActor *staticActor) {
+void Lighting::addLightSource(StaticActor* staticActor) {
   Sprite* lightSourceSprite = Sprite::create(kLightSource.c_str());
   lightSourceSprite->setBlendFunc({backend::BlendFactor::ZERO, backend::BlendFactor::ONE_MINUS_SRC_ALPHA});
   lightSourceSprite->retain();

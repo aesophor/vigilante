@@ -17,20 +17,20 @@ class InfiniteParallaxNode : public ax::Node {
     ax::Vec2 ratio;
     ax::Vec2 position;
     ax::Vec2 scale;
-    ax::Sprite *spriteA{};
-    ax::Sprite *spriteB{};
+    ax::Sprite* spriteA{};
+    ax::Sprite* spriteB{};
   };
 
   CREATE_FUNC(InfiniteParallaxNode);
 
   virtual bool init();
-  virtual void setPosition(const ax::Vec2 &position) {
+  virtual void setPosition(const ax::Vec2& position) {
     _speed = position - _position;
     _position = position;
   }
   virtual const ax::Vec2& getPosition() const { return _position; }
 
-  void addLayer(const std::string &filePath,
+  void addLayer(const std::string& filePath,
                 const int z,
                 const ax::Vec2& parallaxRatio,
                 const ax::Vec2& position,

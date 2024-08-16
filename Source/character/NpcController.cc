@@ -41,7 +41,7 @@ void NpcController::update(const float delta) {
 
   Character* lockedOnTarget = _npc.getLockedOnTarget();
   if (lockedOnTarget && !lockedOnTarget->isSetToKill()) {
-    auto &skillbook = _npc.getSkillBook()[Skill::Type::MAGIC];
+    auto& skillbook = _npc.getSkillBook()[Skill::Type::MAGIC];
     if (skillbook.size() && _activateSkillTimer >= kActivateRandomSkillInterval) {
       Skill* skill = skillbook.front();
       _npc.activateSkill(skill);

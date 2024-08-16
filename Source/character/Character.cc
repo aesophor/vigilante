@@ -532,7 +532,7 @@ void Character::onKilled() {
   _isKilled = true;
   destroyBody();
 
-  for (const auto &callback : _onKilledCallbacks) {
+  for (const auto& callback : _onKilledCallbacks) {
     std::invoke(callback);
   }
 
@@ -568,7 +568,7 @@ void Character::onBodyContactWithEnemyBody(Character* enemy) {
   enemy->inflictDamage(this, 25);
 }
 
-void Character::onMeleeWeaponContactWithEnemyBody(Character *enemy) {
+void Character::onMeleeWeaponContactWithEnemyBody(Character* enemy) {
   if (_isUsingSkill &&
       _currentlyUsedSkill->getSkillProfile().skillType == Skill::Type::MELEE &&
       _currentlyUsedSkill->getSkillProfile().physicalDamage) {
@@ -745,7 +745,7 @@ void Character::dodgeForward() {
   dodge(State::DODGING_FORWARD, rushPowerX, _isDodgingForward);
 }
 
-void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool &isDodgingFlag) {
+void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag) {
   if (isDodging() || isDoubleJumping() || isMovementDisallowed()) {
     return;
   }
@@ -785,7 +785,7 @@ void Character::teleportToTarget(const b2Vec2& targetPos) {
   setPosition(targetPos.x, targetPos.y);
 }
 
-void Character::enableAfterImageFx(const ax::Color3B &color) {
+void Character::enableAfterImageFx(const ax::Color3B& color) {
   auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
   afterImageFxMgr->registerNode(_node, color, 0.15f, 0.05f);
 }
@@ -871,7 +871,7 @@ void Character::cancelAttack() {
 
   {
     lock_guard<mutex> lock{_cancelAttackCallbackIDsMutex};
-    for (const auto &callbackId : _cancelAttackCallbackIDs) {
+    for (const auto& callbackId : _cancelAttackCallbackIDs) {
       CallbackManager::the().cancel(callbackId);
     }
     _cancelAttackCallbackIDs.clear();
@@ -879,7 +879,7 @@ void Character::cancelAttack() {
 
   {
     lock_guard<mutex> lock{_inflictDamageCallbackIDsMutex};
-    for (const auto &callbackId : _inflictDamageCallbackIDs) {
+    for (const auto& callbackId : _inflictDamageCallbackIDs) {
       CallbackManager::the().cancel(callbackId);
     }
     _inflictDamageCallbackIDs.clear();
@@ -970,7 +970,7 @@ bool Character::inflictDamage(Character* target, int damage) {
   return true;
 }
 
-bool Character::inflictDamage(Character *target, int damage,
+bool Character::inflictDamage(Character* target, int damage,
                               const int numTimesInflictDamage, const float damageInflictionInterval) {
   if (!target) {
     VGLOG(LOG_ERR, "Failed to inflict damage to target: [nullptr].");
@@ -1010,7 +1010,7 @@ bool Character::inflictDamage(Character *target, int damage,
   return true;
 }
 
-bool Character::receiveDamage(Character *source, int damage, float takeDamageDuration) {
+bool Character::receiveDamage(Character* source, int damage, float takeDamageDuration) {
   if (_isSetToKill || _isInvincible) {
     return false;
   }
@@ -1461,7 +1461,7 @@ void Character::Profile::loadSpritesheetInfo(const string& jsonFilePath) {
   }
 
   for (int i = 0; i < Character::Sfx::SFX_SIZE; i++) {
-    const string &sfxKey = Character::_kCharacterSfxStr[i];
+    const string& sfxKey = Character::_kCharacterSfxStr[i];
     if (!json["sfx"].HasMember(sfxKey.c_str())) {
       continue;
     }

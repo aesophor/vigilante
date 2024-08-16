@@ -98,7 +98,7 @@ void CommandHandler::setError(const string& errMsg) {
   _errMsg = errMsg;
 }
 
-void CommandHandler::setBgmVolume(const std::vector<std::string> &args) {
+void CommandHandler::setBgmVolume(const std::vector<std::string>& args) {
   if (args.size() < 2) {
     setError(string_util::format("usage: %s <volume>", args[0].c_str()));
     return;
@@ -693,7 +693,7 @@ void CommandHandler::moveTo(const vector<string>& args) {
     return;
   }
 
-  const string &mapAlias = args[1];
+  const string& mapAlias = args[1];
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);

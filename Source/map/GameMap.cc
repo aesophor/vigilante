@@ -616,7 +616,7 @@ void GameMap::Portal::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
-void GameMap::Portal::maybeUnlockPortalAs(Character *user) {
+void GameMap::Portal::maybeUnlockPortalAs(Character* user) {
   if (!_isLocked) {
     return;
   }

@@ -13,7 +13,7 @@ class B2RayCastCallback final : public b2RayCastCallback {
  public:
   using Callback = std::function<float(b2Fixture*, const b2Vec2&, const b2Vec2&, float)>;
 
-  B2RayCastCallback(Callback &&callback) : _callback{std::move(callback)} {}
+  B2RayCastCallback(Callback&& callback) : _callback{std::move(callback)} {}
 
   virtual float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) {
     const float result = _callback(fixture, point, normal, fraction);

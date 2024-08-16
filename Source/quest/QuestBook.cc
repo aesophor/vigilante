@@ -98,7 +98,7 @@ bool QuestBook::setStage(Quest* quest, const int stageIdx) {
     return true;
   }
 
-  const Quest::Stage &prevStage = quest->getCurrentStage();
+  const Quest::Stage& prevStage = quest->getCurrentStage();
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : prevStage.cmds) {
     console->executeCmd(cmd);

@@ -11,14 +11,14 @@ namespace vigilante {
 
 class InteractWithTargetObjective : public Quest::Objective {
  public:
-  InteractWithTargetObjective(const std::string& desc, const std::string &targetJsonFilePath)
+  InteractWithTargetObjective(const std::string& desc, const std::string& targetJsonFilePath)
       : Quest::Objective{Quest::Objective::Type::INTERACT_WITH, desc},
         _targetJsonFilePath{targetJsonFilePath} {}
   virtual ~InteractWithTargetObjective() = default;
 
   virtual bool isCompleted() const override { return _is_completed; }
 
-  inline const std::string &getTargetProfileJsonFilePath() const { return _targetJsonFilePath; }
+  inline const std::string& getTargetProfileJsonFilePath() const { return _targetJsonFilePath; }
   inline void setCompleted(const bool is_completed) { return _is_completed = is_completed; }
 
  private:
