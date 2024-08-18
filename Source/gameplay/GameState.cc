@@ -75,7 +75,7 @@ void GameState::deserializeGameMapState(const rapidjson::Value& obj) const {
 
     const auto& playerParty = player->getParty();
     for (const auto ally : player->getAllies()) {
-      const string& jsonFilePath = ally->getCharacterProfile().jsonFilePath;
+      const fs::path& jsonFilePath = ally->getCharacterProfile().jsonFilePath;
       if (auto waitLoc = playerParty->getWaitingMemberLocationInfo(jsonFilePath)) {
         if (waitLoc->tmxMapFilePath == tmxTiledMapFilePath) {
           ally->showOnMap(waitLoc->x * kPpm, waitLoc->y * kPpm);

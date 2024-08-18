@@ -42,7 +42,7 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
     ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
-    icon->loadTexture(skill->getIconPath());
+    icon->loadTexture(skill->getIconPath().native());
     label->setString(skill->getName());
 
     // Display skill hotkey (if defined).

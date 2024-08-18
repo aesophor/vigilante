@@ -15,6 +15,7 @@
 #include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 using namespace vigilante::category_bits;
@@ -32,7 +33,7 @@ constexpr auto kMagicalMissleMaskBits = kPlayer | kEnemy | kWall;
 
 }  // namespace
 
-MagicalMissile::MagicalMissile(const string& jsonFilePath, Character* user, const bool onGround)
+MagicalMissile::MagicalMissile(const fs::path& jsonFilePath, Character* user, const bool onGround)
     : DynamicActor{kMagicalMissleNumAnimations, kMagicalMissleNumFixtures},
       _skillProfile{jsonFilePath},
       _user{user},
@@ -49,7 +50,7 @@ bool MagicalMissile::showOnMap(float x, float y) {
              kMagicalMissleCategoryBits,
              kMagicalMissleMaskBits);
 
-  defineTexture(_skillProfile.textureResDir, x, y);
+  defineTexture(_skillProfile.textureResDirPath, x, y);
 
   _node->addChild(_bodySpritesheet, z_order::kSpell);
 
@@ -116,7 +117,7 @@ void MagicalMissile::onHit(Character* target) {
   Audio::the().playSfx(_skillProfile.sfxHit);
 }
 
-void MagicalMissile::import(const string& jsonFilePath) {
+void MagicalMissile::import(const fs::path& jsonFilePath) {
   _skillProfile = Skill::Profile{jsonFilePath};
 }
 
@@ -173,8 +174,8 @@ void MagicalMissile::activate() {
   }, _user->getAnimationDuration(Character::State::SPELLCAST) * 0.7f);
 }
 
-string MagicalMissile::getIconPath() const {
-  return fs::path{_skillProfile.textureResDir} / kIconPng;
+fs::path MagicalMissile::getIconPath() const {
+  return _skillProfile.textureResDirPath / kIconPng;
 }
 
 void MagicalMissile::defineBody(b2BodyType bodyType,
@@ -206,15 +207,15 @@ void MagicalMissile::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-void MagicalMissile::defineTexture(const string& textureResDir, float x, float y) {
-  _bodySpritesheet = SpriteBatchNode::create(textureResDir + "/spritesheet.png");
+void MagicalMissile::defineTexture(const fs::path& textureResDirPath, float x, float y) {
+  _bodySpritesheet = SpriteBatchNode::create((textureResDirPath / "spritesheet.png").native());
 
-  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResDir, "launch", 5.0f / kPpm);
-  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResDir, "flying", 1.0f / kPpm);
-  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResDir, "on_hit", 8.0f / kPpm);
+  _bodyAnimations[AnimationType::LAUNCH_FX] = createAnimation(textureResDirPath, "launch", 5.0f / kPpm);
+  _bodyAnimations[AnimationType::FLYING] = createAnimation(textureResDirPath, "flying", 1.0f / kPpm);
+  _bodyAnimations[AnimationType::ON_HIT] = createAnimation(textureResDirPath, "on_hit", 8.0f / kPpm);
 
   // Select a frame as default look for this sprite.
-  string frameNamePrefix = StaticActor::getLastDirName(textureResDir);
+  string frameNamePrefix = StaticActor::getLastDirName(textureResDirPath);
   _launchFxSprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_launch/0.png");
   _launchFxSprite->setPosition(x, y);
   _bodySprite = Sprite::createWithSpriteFrameName(frameNamePrefix + "_flying/0.png");

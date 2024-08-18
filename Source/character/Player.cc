@@ -21,6 +21,7 @@
 #include "util/CameraUtil.h"
 #include "util/StringUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::category_bits;
 USING_NS_AX;
@@ -36,7 +37,7 @@ constexpr auto kPlayerWeaponMaskBits = kEnemy;
 
 }  // namespace
 
-Player::Player(const std::string& jsonFilePath)
+Player::Player(const fs::path& jsonFilePath)
     : Character{jsonFilePath},
       _playerController{*this} {
   // The player has a party (team) with no other members by default.
@@ -54,7 +55,7 @@ bool Player::showOnMap(float x, float y) {
              kPlayerFeetMaskBits,
              kPlayerWeaponMaskBits);
 
-  defineTexture(_characterProfile.textureResDir, x, y);
+  defineTexture(_characterProfile.textureResDirPath, x, y);
 
   _node->removeAllChildren();
   _node->addChild(_bodySpritesheet, z_order::kPlayerBody);

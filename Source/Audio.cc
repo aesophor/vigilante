@@ -4,6 +4,7 @@
 
 #include <audio/AudioEngine.h>
 
+namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
@@ -21,11 +22,11 @@ Audio& Audio::the() {
   return instance;
 }
 
-void Audio::playSfx(const string& filePath) {
+void Audio::playSfx(const fs::path& filePath) {
   AudioEngine::play2d(filePath.c_str(), /*loop=*/false);
 }
 
-void Audio::playBgm(const string& filePath) {
+void Audio::playBgm(const fs::path& filePath) {
   if (bgmAudioId) {
     stopBgm();
     bgmAudioId = {};

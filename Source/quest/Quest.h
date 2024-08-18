@@ -14,7 +14,7 @@ namespace vigilante {
 
 class Quest final : public Importable {
  public:
-  explicit Quest(const std::string& jsonFilePath) : _questProfile{jsonFilePath} {}
+  explicit Quest(const std::filesystem::path& jsonFilePath) : _questProfile{jsonFilePath} {}
   virtual ~Quest() = default;
 
   class Objective {
@@ -54,15 +54,15 @@ class Quest final : public Importable {
   };
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
 
-    std::string jsonFilePath;
+    std::filesystem::path jsonFilePath;
     std::string title;
     std::string desc;
     std::vector<Quest::Stage> stages;
   };
 
-  virtual void import(const std::string& jsonFilePath) override;  // Importable
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Importable
 
   void unlock() { _isUnlocked = true; }
   void advanceStage();

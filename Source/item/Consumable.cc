@@ -4,16 +4,17 @@
 
 #include "util/JsonUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
 namespace vigilante {
 
-Consumable::Consumable(const string& jsonFilePath)
+Consumable::Consumable(const fs::path& jsonFilePath)
     : Item{jsonFilePath},
       _consumableProfile{jsonFilePath} {}
 
-void Consumable::import(const string& jsonFilePath) {
+void Consumable::import(const fs::path& jsonFilePath) {
   Item::import(jsonFilePath);
   _consumableProfile = Consumable::Profile{jsonFilePath};
 }
@@ -26,7 +27,7 @@ void Consumable::setHotkey(EventKeyboard::KeyCode hotkey) {
   _consumableProfile.hotkey = hotkey;
 }
 
-Consumable::Profile::Profile(const string& jsonFilePath) : hotkey{} {
+Consumable::Profile::Profile(const fs::path& jsonFilePath) : hotkey{} {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   duration = json["duration"].GetFloat();

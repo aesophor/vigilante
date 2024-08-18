@@ -3,6 +3,7 @@
 #ifndef VIGILANTE_FX_MANAGER_H_
 #define VIGILANTE_FX_MANAGER_H_
 
+#include <filesystem>
 #include <string>
 #include <unordered_map>
 
@@ -23,7 +24,7 @@ class FxManager final {
 
   void removeFx(ax::Sprite* sprite);
 
-  ax::Sprite* createAnimation(const std::string& textureResDir,
+  ax::Sprite* createAnimation(const std::filesystem::path& textureResDirPath,
                               const std::string& framesName,
                               const float x,
                               const float y,
@@ -31,7 +32,7 @@ class FxManager final {
                               const float frameInterval = 10.0f);
 
  private:
-  std::unordered_map<std::string, ax::Animation*> _animationCache;
+  std::unordered_map<std::filesystem::path, ax::Animation*> _animationCache;
 };
 
 }  // namespace vigilante

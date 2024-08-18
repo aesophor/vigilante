@@ -22,6 +22,7 @@
 #include "util/RandUtil.h"
 #include "util/StringUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 using namespace vigilante::category_bits;
@@ -43,7 +44,7 @@ constexpr auto kEnemyWeaponMaskBits = kPlayer | kNpc;
 
 }  // namespace
 
-Npc::Npc(const string& jsonFilePath)
+Npc::Npc(const fs::path& jsonFilePath)
     : Character{jsonFilePath},
       _npcProfile{jsonFilePath},
       _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
@@ -96,7 +97,7 @@ bool Npc::showOnMap(float x, float y) {
   setDisposition(_disposition);
 
   // Load sprites, spritesheets, and animations, and then add them to GameMapManager layer.
-  defineTexture(_characterProfile.textureResDir, x, y);
+  defineTexture(_characterProfile.textureResDirPath, x, y);
 
   _floatingHealthBar = make_unique<StatusBar>(kBarLeftPadding, kBarRightPadding, kHealthBar, 45.0f, 5.0f);
   _floatingHealthBar->setVisible(false);
@@ -149,7 +150,7 @@ void Npc::defineBody(b2BodyType bodyType, float x, float y,
     .buildFixture();
 }
 
-void Npc::import(const string& jsonFilePath) {
+void Npc::import(const fs::path& jsonFilePath) {
   Character::import(jsonFilePath);
   _npcProfile = Npc::Profile{jsonFilePath};
 }
@@ -285,13 +286,13 @@ void Npc::dropItems() {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
 
     for (const auto& i : _npcProfile.droppedItems) {
-      const string& itemJson = i.first;
+      const fs::path& itemJsonFilePath = i.first;
       const float dropChance = i.second.chance;
 
       const float randChance = rand_util::randInt(0, 100);
       if (randChance <= dropChance) {
         int amount = rand_util::randInt(i.second.minAmount, i.second.maxAmount);
-        gmMgr->getGameMap()->createItem(itemJson, _killedPos.x * kPpm, _killedPos.y * kPpm, amount);
+        gmMgr->getGameMap()->createItem(itemJsonFilePath, _killedPos.x * kPpm, _killedPos.y * kPpm, amount);
       }
     }
   }, 0.1f);
@@ -384,7 +385,7 @@ void Npc::setDisposition(Npc::Disposition disposition) {
   }
 }
 
-Npc::Profile::Profile(const string& jsonFilePath) {
+Npc::Profile::Profile(const fs::path& jsonFilePath) {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
   const auto& droppedItemsMap = json["droppedItems"].GetObject();

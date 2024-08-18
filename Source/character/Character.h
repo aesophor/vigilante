@@ -85,18 +85,18 @@ class Character : public DynamicActor, public Importable {
 
   struct Profile final {
     Profile() = default;
-    explicit Profile(const std::string& jsonFilePath);
-    void loadSpritesheetInfo(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
+    void loadSpritesheetInfo(const std::filesystem::path& jsonFilePath);
 
-    std::string jsonFilePath;
-    std::string textureResDir;
+    std::filesystem::path jsonFilePath;
+    std::filesystem::path textureResDirPath;
     float spriteOffsetX;
     float spriteOffsetY;
     float spriteScaleX;
     float spriteScaleY;
     std::array<float, Character::State::STATE_SIZE> frameIntervals;
     std::vector<float> extraAttackFrameIntervals;
-    std::array<std::string, Character::Sfx::SFX_SIZE> sfxFilePaths;
+    std::array<std::filesystem::path, Character::Sfx::SFX_SIZE> sfxFilePaths;
 
     std::string name;
     int level;
@@ -145,8 +145,8 @@ class Character : public DynamicActor, public Importable {
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual bool removeFromMap() override;  // DynamicActor
   virtual void update(const float delta) override;  // DynamicActor
-  virtual void import(const std::string& jsonFilePath) override;  // Importable
-  virtual void replaceSpritesheet(const std::string& jsonFilePath);
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Importable
+  virtual void replaceSpritesheet(const std::filesystem::path& jsonFilePath);
 
   virtual void onSetToKill();
   virtual void onKilled();
@@ -339,7 +339,7 @@ class Character : public DynamicActor, public Importable {
            state == State::ATTACKING_UPWARD;
   }
 
-  explicit Character(const std::string& jsonFilePath);
+  explicit Character(const std::filesystem::path& jsonFilePath);
 
   virtual void regenHealth(int deltaHealth);
   virtual void regenMagicka(int deltaMagicka);
@@ -355,8 +355,8 @@ class Character : public DynamicActor, public Importable {
   virtual void redefineBodyFixture(short bodyCategoryBits = 0, short bodyMaskBits = 0);
   virtual void redefineFeetFixture(short feetMaskBits = 0);
   virtual void redefineWeaponFixture(short weaponMaskBits = 0);
-  virtual void defineTexture(const std::string& bodyTextureResDir, float x, float y);
-  virtual void loadBodyAnimations(const std::string& bodyTextureResDir);
+  virtual void defineTexture(const std::filesystem::path& bodyTextureResDirPath, float x, float y);
+  virtual void loadBodyAnimations(const std::filesystem::path& bodyTextureResDirPath);
 
   void moveImpl(const bool moveTowardsRight);
   bool receiveDamage(Character* source, int damage, float numSecCantMove);
@@ -380,7 +380,7 @@ class Character : public DynamicActor, public Importable {
   Character::State determineAttackState() const;
   void maybeOverrideCurrentStateWithAttackingMidairState();
   void maybeOverrideCurrentStateWithStopRunningState();
-  const std::string& getSfxFilePath(const Character::Sfx sfx) const {
+  const std::filesystem::path& getSfxFilePath(const Character::Sfx sfx) const {
     return _characterProfile.sfxFilePaths[sfx];
   }
 

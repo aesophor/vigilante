@@ -3,7 +3,7 @@
 #ifndef VIGILANTE_IMPORTABLE_H_
 #define VIGILANTE_IMPORTABLE_H_
 
-#include <string>
+#include <filesystem>
 
 namespace vigilante {
 
@@ -11,7 +11,7 @@ class Importable {
  public:
   virtual ~Importable() = default;
 
-  virtual void import(const std::string& jsonFilePath) = 0;
+  virtual void import(const std::filesystem::path& jsonFilePath) = 0;
 };
 
 }  // namespace vigilante

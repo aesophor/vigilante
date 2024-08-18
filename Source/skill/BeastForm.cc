@@ -9,18 +9,19 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
-BeastForm::BeastForm(const string& jsonFilePath, Character* user)
+BeastForm::BeastForm(const fs::path& jsonFilePath, Character* user)
     : Skill{},
       _skillProfile{jsonFilePath},
       _user{user} {}
 
-void BeastForm::import(const string& jsonFilePath) {
+void BeastForm::import(const fs::path& jsonFilePath) {
   _skillProfile = Skill::Profile{jsonFilePath};
 }
 
@@ -43,8 +44,8 @@ void BeastForm::deactivate() {
   _user->getCharacterProfile() = _originalCharacterProfile;
 }
 
-string BeastForm::getIconPath() const {
-  return fs::path{_skillProfile.textureResDir} / kIconPng;
+fs::path BeastForm::getIconPath() const {
+  return _skillProfile.textureResDirPath / kIconPng;
 }
 
 } // namespace vigilante

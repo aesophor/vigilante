@@ -51,7 +51,7 @@ Sprite* FxManager::createHintBubbleFx(const b2Body* body,
   return createAnimation(kHintBubbleDir, framesName, x, y, -1, 45);
 }
 
-Sprite* FxManager::createAnimation(const string& textureResDir,
+Sprite* FxManager::createAnimation(const fs::path& textureResDirPath,
                                    const string& framesName,
                                    const float x,
                                    const float y,
@@ -62,13 +62,13 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
   //
   // Texture/fx/dust/dust_white/0.png
   // |_____________| |__||____|
-  //  textureResDir    |  framesName
+  // textureResDirPath |  framesName
   //            framesNamePrefix
-  const string framesNamePrefix = StaticActor::getLastDirName(textureResDir);
-  const string cacheKey = textureResDir + "/" + framesNamePrefix + "_" + framesName;
+  const string framesNamePrefix = StaticActor::getLastDirName(textureResDirPath);
+  const fs::path cacheKey = textureResDirPath / (framesNamePrefix + "_" + framesName);
 
   if (_animationCache.find(cacheKey) == _animationCache.end()) {
-    Animation* animation = StaticActor::createAnimation(textureResDir, framesName, frameInterval / kPpm);
+    Animation* animation = StaticActor::createAnimation(textureResDirPath, framesName, frameInterval / kPpm);
     _animationCache.emplace(cacheKey, animation);
   }
 
@@ -77,7 +77,7 @@ Sprite* FxManager::createAnimation(const string& textureResDir,
                                                      framesName + "/0.png");
   sprite->setPosition(x, y);
 
-  string spritesheetFilePath = StaticActor::getSpritesheetFilePath(textureResDir);
+  string spritesheetFilePath = StaticActor::getSpritesheetFilePath(textureResDirPath);
   SpriteBatchNode* spritesheet = SpriteBatchNode::create(spritesheetFilePath);
   spritesheet->addChild(sprite);
   spritesheet->getTexture()->setAliasTexParameters();

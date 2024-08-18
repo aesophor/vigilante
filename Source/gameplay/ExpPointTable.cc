@@ -8,6 +8,7 @@
 
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 namespace vigilante {
@@ -20,10 +21,10 @@ array<int, exp_point_table::kLevelCap> levelUpExp;
 
 namespace exp_point_table {
 
-void import(const string& tableFilePath) {
+void import(const fs::path& tableFilePath) {
   ifstream fin{tableFilePath};
   if (!fin.is_open()) {
-    throw runtime_error("Failed to import exp point table from: " + tableFilePath);
+    throw runtime_error("Failed to import exp point table from: " + tableFilePath.native());
   }
 
   VGLOG(LOG_INFO, "Loading exp point table...");

@@ -18,8 +18,8 @@ using namespace std;
 
 namespace vigilante {
 
-void Quest::import(const string& jsonFilePath) {
-  _questProfile = Quest::Profile(jsonFilePath);
+void Quest::import(const fs::path& jsonFilePath) {
+  _questProfile = Quest::Profile{jsonFilePath};
 }
 
 void Quest::advanceStage() {
@@ -77,7 +77,7 @@ string Quest::Stage::getHint() const {
   }
 }
 
-Quest::Profile::Profile(const string& jsonFilePath) : jsonFilePath{jsonFilePath} {
+Quest::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath{jsonFilePath} {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
   title = json["title"].GetString();
   desc = json["desc"].GetString();

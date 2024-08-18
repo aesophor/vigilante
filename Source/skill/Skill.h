@@ -27,14 +27,14 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
   };
 
   struct Profile {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
     virtual ~Profile() = default;
 
-    std::string jsonFilePath;
+    std::filesystem::path jsonFilePath;
     Skill::Type skillType;
 
     std::string characterFramesName;
-    std::string textureResDir;  // the animation of skill itself
+    std::filesystem::path textureResDirPath;  // the animation of skill itself
     float spriteOffsetX;
     float spriteOffsetY;
     float spriteScaleX;
@@ -65,10 +65,10 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
 
   // Create a skill by automatically deducing its concrete type
   // based on the json passed in.
-  static std::shared_ptr<Skill> create(const std::string& jsonFilePath, Character* user);
+  static std::shared_ptr<Skill> create(const std::filesystem::path& jsonFilePath, Character* user);
 
   virtual ~Skill() = default;
-  virtual void import(const std::string& jsonFilePath) = 0;  // Importable
+  virtual void import(const std::filesystem::path& jsonFilePath) = 0;  // Importable
 
   virtual ax::EventKeyboard::KeyCode getHotkey() const = 0;  // Keybindable
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) = 0;  // Keybindable
@@ -80,7 +80,7 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
   virtual Skill::Profile& getSkillProfile() = 0;
   virtual const std::string& getName() const = 0;
   virtual const std::string& getDesc() const = 0;
-  virtual std::string getIconPath() const = 0;
+  virtual std::filesystem::path getIconPath() const = 0;
 };
 
 }  // namespace vigilante

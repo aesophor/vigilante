@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <filesystem>
 
 #include "Assets.h"
 #include "Audio.h"
@@ -29,7 +28,7 @@ USING_NS_AX;
 
 namespace vigilante {
 
-Character::Character(const string& jsonFilePath)
+Character::Character(const fs::path& jsonFilePath)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
       _characterProfile{jsonFilePath},
       _comboSystem{std::make_shared<ComboSystem>(*this)},
@@ -164,11 +163,11 @@ void Character::update(const float delta) {
   }
 }
 
-void Character::import(const string& jsonFilePath) {
+void Character::import(const fs::path& jsonFilePath) {
   _characterProfile = Character::Profile{jsonFilePath};
 }
 
-void Character::replaceSpritesheet(const string& jsonFilePath) {
+void Character::replaceSpritesheet(const fs::path& jsonFilePath) {
   const float spritesheetZOrder = _bodySpritesheet->getLocalZOrder();
 
   _bodySprite->removeFromParent();
@@ -177,7 +176,7 @@ void Character::replaceSpritesheet(const string& jsonFilePath) {
   std::fill(_bodyExtraAttackAnimations.begin(), _bodyExtraAttackAnimations.end(), nullptr);
 
   _characterProfile.loadSpritesheetInfo(jsonFilePath);
-  loadBodyAnimations(_characterProfile.textureResDir);
+  loadBodyAnimations(_characterProfile.textureResDirPath);
 
   ax_util::addChildWithParentCameraMask(_node, _bodySpritesheet, spritesheetZOrder);
 }
@@ -300,14 +299,14 @@ void Character::redefineWeaponFixture(short weaponMaskBits) {
     .buildFixture();
 }
 
-void Character::defineTexture(const string& bodyTextureResDir, float x, float y) {
-  loadBodyAnimations(bodyTextureResDir);
+void Character::defineTexture(const fs::path& bodyTextureResDirPath, float x, float y) {
+  loadBodyAnimations(bodyTextureResDirPath);
   _bodySprite->setPosition(x * kPpm, y * kPpm + _characterProfile.spriteOffsetY);
 
   runAnimation(State::IDLE);
 }
 
-void Character::loadBodyAnimations(const string& bodyTextureResDir) {
+void Character::loadBodyAnimations(const fs::path& bodyTextureResDirPath) {
   createBodyAnimation(State::IDLE, nullptr);
   Animation* fallback = _bodyAnimations[State::IDLE];
 
@@ -346,7 +345,7 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
     }
 
     _bodyExtraAttackAnimations[i] = createAnimation(
-        bodyTextureResDir,
+        bodyTextureResDirPath,
         "attacking" + std::to_string(1 + i),
         _characterProfile.extraAttackFrameIntervals[i] / kPpm,
         fallback
@@ -354,12 +353,12 @@ void Character::loadBodyAnimations(const string& bodyTextureResDir) {
   }
 
   // Select a frame as the default look for this spritesheet.
-  string framePrefix = StaticActor::getLastDirName(bodyTextureResDir);
+  string framePrefix = StaticActor::getLastDirName(bodyTextureResDirPath);
   _bodySprite = Sprite::createWithSpriteFrameName(framePrefix + "_idle/0.png");
   _bodySprite->setScale(_characterProfile.spriteScaleX,
                         _characterProfile.spriteScaleY);
 
-  _bodySpritesheet = SpriteBatchNode::create(bodyTextureResDir + "/spritesheet.png");
+  _bodySpritesheet = SpriteBatchNode::create((bodyTextureResDirPath / "spritesheet.png").native());
   _bodySpritesheet->getTexture()->setAliasTexParameters();  // disable texture antialiasing
   _bodySpritesheet->addChild(_bodySprite);
 }
@@ -371,7 +370,7 @@ void Character::createBodyAnimation(const Character::State state,
   }
 
   _bodyAnimations[state]
-    = createAnimation(_characterProfile.textureResDir,
+    = createAnimation(_characterProfile.textureResDirPath,
                       _kCharacterStateStr[state],
                       _characterProfile.frameIntervals[state] / kPpm,
                       fallbackAnimation);
@@ -379,16 +378,16 @@ void Character::createBodyAnimation(const Character::State state,
 
 int Character::getExtraAttackAnimationsCount() const {
   FileUtils* fileUtils = FileUtils::getInstance();
-  const string& framesNamePrefix = StaticActor::getLastDirName(_characterProfile.textureResDir);
+  const string& framesNamePrefix = StaticActor::getLastDirName(_characterProfile.textureResDirPath);
 
   // player_attacking0  // must have!
   // player_attacking1  // optional...
   // player_attacking2  // optional...
   // ...
-  string dir = _characterProfile.textureResDir + "/" + framesNamePrefix + "_" + "attacking";
+  const fs::path dirPath = _characterProfile.textureResDirPath / (framesNamePrefix + "_attacking");
   int frameCount = 0;
   fileUtils->setPopupNotify(false);  // disable CCLOG
-  while (fileUtils->isDirectoryExist(dir + std::to_string(frameCount + 1))) {
+  while (fileUtils->isDirectoryExist(dirPath.native() + std::to_string(frameCount + 1))) {
     frameCount++;
   }
   fileUtils->setPopupNotify(true);
@@ -427,7 +426,7 @@ void Character::runAnimation(const string& framesName, float interval) {
     bodyAnimation = _skillBodyAnimations[framesName];
   } else {
     Animation* fallback = _bodyAnimations[State::ATTACKING];
-    bodyAnimation = createAnimation(_characterProfile.textureResDir, framesName, interval, fallback);
+    bodyAnimation = createAnimation(_characterProfile.textureResDirPath, framesName, interval, fallback);
     // Cache this skill animation (body).
     _skillBodyAnimations.insert({framesName, bodyAnimation});
   }
@@ -536,7 +535,8 @@ void Character::onKilled() {
     std::invoke(callback);
   }
 
-  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_KILLED); sfxFilePath.size()) {
+  const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_KILLED);
+  if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
   }
 }
@@ -720,7 +720,8 @@ void Character::getUpFromCrouching() {
 }
 
 void Character::getUpFromFalling() {
-  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_JUMP); sfxFilePath.size()) {
+  const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_JUMP);
+  if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
   }
 
@@ -801,7 +802,8 @@ void Character::runIntroAnimation() {
     _isRunningIntroAnimation = false;
   }, _bodyAnimations[State::INTRO]->getDuration());
 
-  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_INTRO); sfxFilePath.size()) {
+  const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_INTRO);
+  if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
   }
 }
@@ -839,11 +841,13 @@ bool Character::attack(const Character::State attackState,
 
   const auto weapon = _equipmentSlots[Equipment::Type::WEAPON];
   if (!weapon) {
-    if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_ATTACK_UNARMED); sfxFilePath.size()) {
+    const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_ATTACK_UNARMED);
+    if (!sfxFilePath.native().empty()) {
       Audio::the().playSfx(sfxFilePath);
     }
   } else {
-    if (const auto& sfxFilePath = weapon->getSfxFilePath(Equipment::Sfx::SFX_SWING); sfxFilePath.size()) {
+    const auto& sfxFilePath = weapon->getSfxFilePath(Equipment::Sfx::SFX_SWING);
+    if (!sfxFilePath.native().empty()) {
       Audio::the().playSfx(sfxFilePath);
     }
   }
@@ -1069,7 +1073,8 @@ bool Character::receiveDamage(Character* source, int damage, float takeDamageDur
   auto floatingDamages = SceneManager::the().getCurrentScene<GameScene>()->getFloatingDamages();
   floatingDamages->show(this, damage);
 
-  if (const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_HURT); sfxFilePath.size()) {
+  const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_HURT);
+  if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
   }
 
@@ -1235,7 +1240,7 @@ void Character::pickupItem(Item* item) {
 }
 
 void Character::discardItem(Item* item, int amount) {
-  const string& jsonFilePath = item->getItemProfile().jsonFilePath;
+  const fs::path& jsonFilePath = item->getItemProfile().jsonFilePath;
   float x = _body->GetPosition().x;
   float y = _body->GetPosition().y;
 
@@ -1384,7 +1389,7 @@ void Character::regenStamina(int deltaStamina) {
   hud->updateStatusBars();
 }
 
-Character::Profile::Profile(const string& jsonFilePath) : jsonFilePath{jsonFilePath} {
+Character::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath{jsonFilePath} {
   loadSpritesheetInfo(jsonFilePath);
 
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
@@ -1420,10 +1425,10 @@ Character::Profile::Profile(const string& jsonFilePath) : jsonFilePath{jsonFileP
   }
 }
 
-void Character::Profile::loadSpritesheetInfo(const string& jsonFilePath) {
+void Character::Profile::loadSpritesheetInfo(const fs::path& jsonFilePath) {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
-  textureResDir = json["textureResDir"].GetString();
+  textureResDirPath = json["textureResDirPath"].GetString();
   spriteOffsetX = json["spriteOffsetX"].GetFloat();
   spriteOffsetY = json["spriteOffsetY"].GetFloat();
   spriteScaleX = json["spriteScaleX"].GetFloat();

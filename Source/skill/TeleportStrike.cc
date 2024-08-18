@@ -55,12 +55,12 @@ bool isTargetFacingAgainstFarEnoughFromWall(Character* target, const float minDi
 
 }  // namespace
 
-TeleportStrike::TeleportStrike(const string& jsonFilePath, Character* user)
+TeleportStrike::TeleportStrike(const fs::path& jsonFilePath, Character* user)
     : Skill{},
       _skillProfile{jsonFilePath},
       _user{user} {}
 
-void TeleportStrike::import(const string& jsonFilePath) {
+void TeleportStrike::import(const fs::path& jsonFilePath) {
   _skillProfile = Skill::Profile{jsonFilePath};
 }
 
@@ -113,8 +113,8 @@ void TeleportStrike::activate() {
   Audio::the().playSfx(_skillProfile.sfxActivate);
 }
 
-string TeleportStrike::getIconPath() const {
-  return fs::path{_skillProfile.textureResDir} / kIconPng;
+fs::path TeleportStrike::getIconPath() const {
+  return _skillProfile.textureResDirPath / kIconPng;
 }
 
 Character* TeleportStrike::getClosestEnemyWithinDist(const float maxEuclideanDist) const {

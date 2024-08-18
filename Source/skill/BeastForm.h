@@ -14,10 +14,10 @@ class Character;
 
 class BeastForm final : public Skill {
  public:
-  BeastForm(const std::string& jsonFilePath, Character* user);
+  BeastForm(const std::filesystem::path& jsonFilePath, Character* user);
   virtual ~BeastForm() = default;
 
-  virtual void import(const std::string& jsonFilePath) override;  // Skill
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Skill
   virtual ax::EventKeyboard::KeyCode getHotkey() const override { return _skillProfile.hotkey; }  // Skill
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override { _skillProfile.hotkey = hotkey; }  // Skill
   virtual bool canActivate() override;  // Skill
@@ -27,7 +27,7 @@ class BeastForm final : public Skill {
   virtual Skill::Profile& getSkillProfile() override { return _skillProfile; }  // Skill
   virtual const std::string& getName() const override { return _skillProfile.name; }  // Skill
   virtual const std::string& getDesc() const override { return _skillProfile.desc; }  // Skill
-  virtual std::string getIconPath() const override;  // Skill
+  virtual std::filesystem::path getIconPath() const override;  // Skill
 
  private:
   Skill::Profile _skillProfile;

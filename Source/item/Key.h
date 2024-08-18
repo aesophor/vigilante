@@ -12,13 +12,13 @@ namespace vigilante {
 class Key : public MiscItem {
  public:
   struct Profile final {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
 
-    std::string targetTmxFilePath;
+    std::filesystem::path targetTmxFilePath;
     int targetPortalId;
   };
 
-  explicit Key(const std::string& jsonFilePath);
+  explicit Key(const std::filesystem::path& jsonFilePath);
   virtual ~Key() override = default;
 
   inline const Key::Profile& getKeyProfile() const { return _keyProfile; }

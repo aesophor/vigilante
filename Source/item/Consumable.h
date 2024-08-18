@@ -15,7 +15,7 @@ namespace vigilante {
 class Consumable : public Item, public Keybindable {
  public:
   struct Profile final {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
 
     float duration; // sec
 
@@ -37,10 +37,10 @@ class Consumable : public Item, public Keybindable {
     ax::EventKeyboard::KeyCode hotkey;
   };
 
-  explicit Consumable(const std::string& jsonFilePath);
+  explicit Consumable(const std::filesystem::path& jsonFilePath);
   virtual ~Consumable() override = default;
 
-  virtual void import (const std::string& jsonFilePath) override;  // Importable
+  virtual void import (const std::filesystem::path& jsonFilePath) override;  // Importable
 
   virtual ax::EventKeyboard::KeyCode getHotkey() const override;  // Keybindable
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) override;  // Keybindable

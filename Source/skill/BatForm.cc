@@ -9,18 +9,19 @@
 #include "character/Character.h"
 #include "map/GameMapManager.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
-BatForm::BatForm(const string& jsonFilePath, Character* user)
+BatForm::BatForm(const fs::path& jsonFilePath, Character* user)
     : Skill{},
       _skillProfile{jsonFilePath},
       _user{user} {}
 
-void BatForm::import(const string& jsonFilePath) {
+void BatForm::import(const fs::path& jsonFilePath) {
   _skillProfile = Skill::Profile{jsonFilePath};
 }
 
@@ -53,8 +54,8 @@ void BatForm::activate() {
   }, _skillProfile.framesDuration);
 }
 
-string BatForm::getIconPath() const {
-  return fs::path{_skillProfile.textureResDir} / kIconPng;
+fs::path BatForm::getIconPath() const {
+  return _skillProfile.textureResDirPath / kIconPng;
 }
 
 } // namespace vigilante

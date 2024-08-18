@@ -3,6 +3,7 @@
 #ifndef VIGILANTE_STATIC_ACTOR_H_
 #define VIGILANTE_STATIC_ACTOR_H_
 
+#include <filesystem>
 #include <vector>
 
 #include <axmol.h>
@@ -41,12 +42,12 @@ class StaticActor {
   //
   // IMPORTANT: animations created with this utility method should be release()d!
   //
-  // @param textureResDir: the path to texture resource directory
+  // @param textureResDirPath: the path to texture resource directory
   // @param framesName: the name of the frames
   // @param interval: the interval between each frame
   // @param fallback: the fallback animation (if the target animation cannot be created)
   // @return: an pointer to the instance of ax::Animation
-  static ax::Animation* createAnimation(const std::string& textureResDir,
+  static ax::Animation* createAnimation(const std::filesystem::path& textureResDirPath,
                                         const std::string& framesName,
                                         const float interval,
                                         ax::Animation* fallback = nullptr);
@@ -55,21 +56,21 @@ class StaticActor {
   //
   // Texture/character/player/player_attacking0/0.png
   // |______________________| |____| |________| |___|
-  //      textureResDir          |   framesName
+  //    textureResDirPath        |   framesName
   //                      framesNamePrefix
   //
   // As you can see, each framesName (e.g., attacking0) is preceded by a prefix,
   // this is to **prevent frames name collision** in ax::SpriteFrameCache!
   //
-  // The following utility method takes in textureResPath as a parameter
+  // The following utility method takes in textureResDirPath as a parameter
   // and returns the last dirname.
   // e.g., "Texture/character/player" -> "player"
-  static std::string getLastDirName(const std::string& directory);
+  static std::string getLastDirName(const std::filesystem::path& directoryPath);
 
   // Example: Texture/fx/dust/spritesheet.png
   //          |_____________| |_____________|
-  //           textureResDir
-  static std::string getSpritesheetFilePath(const std::string& textureResDir);
+  //         textureResDirPath
+  static std::filesystem::path getSpritesheetFilePath(const std::filesystem::path& textureResDirPath);
 
  protected:
   explicit StaticActor(const size_t numAnimations = 1)

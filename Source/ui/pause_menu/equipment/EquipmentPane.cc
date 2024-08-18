@@ -115,7 +115,7 @@ void EquipmentPane::EquipmentItem::setEquipment(Equipment* equipment) {
   _equipment = equipment;
 
   if (equipment) {
-    _icon->loadTexture(equipment->getIconPath());
+    _icon->loadTexture(equipment->getIconPath().native());
     _equipmentNameLabel->setString(equipment->getItemProfile().name);
   } else {
     _icon->loadTexture(string{kEmptyImage});

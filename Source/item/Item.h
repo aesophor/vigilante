@@ -24,11 +24,11 @@ class Item : public DynamicActor, public Importable {
   };
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
 
-    std::string jsonFilePath;
+    std::filesystem::path jsonFilePath;
+    std::filesystem::path textureResDirPath;
     Item::Type itemType;
-    std::string textureResDir;
     std::string name;
     std::string desc;
     int price;
@@ -36,26 +36,26 @@ class Item : public DynamicActor, public Importable {
 
   // Create an item by automatically deducing its concrete type
   // based on the json passed in.
-  static std::unique_ptr<Item> create(const std::string& jsonFilePath);
+  static std::unique_ptr<Item> create(const std::filesystem::path& jsonFilePath);
 
   virtual ~Item() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // DynamicActor
   virtual void update(const float delta) override;  // DynamicActor
-  virtual void import(const std::string& jsonFilePath) override;  // Importable
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Importable
 
   inline Item::Profile& getItemProfile() { return _itemProfile; }
   inline const Item::Profile& getItemProfile() const { return _itemProfile; }
   inline const std::string& getName() const { return _itemProfile.name; }
   inline const std::string& getDesc() const { return _itemProfile.desc; }
-  std::string getIconPath() const;
+  std::filesystem::path getIconPath() const;
   bool isGold() const;
 
   inline int getAmount() const { return _amount; }
   inline void setAmount(int amount) { _amount = amount; }
 
  protected:
-  explicit Item(const std::string& jsonFilePath);
+  explicit Item(const std::filesystem::path& jsonFilePath);
 
   void defineBody(b2BodyType bodyType,
                   float x,

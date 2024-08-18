@@ -38,7 +38,7 @@ class Npc final : public Character, public Interactable {
   };
 
   struct Profile final {
-    explicit Profile(const std::string& jsonFilePath);
+    explicit Profile(const std::filesystem::path& jsonFilePath);
 
     struct DroppedItemData {
       int chance;
@@ -56,13 +56,13 @@ class Npc final : public Character, public Interactable {
     bool shouldSandbox;
   };
 
-  explicit Npc(const std::string& jsonFilePath);
+  explicit Npc(const std::filesystem::path& jsonFilePath);
   virtual ~Npc() override = default;
 
   virtual bool showOnMap(float x, float y) override;  // Character
   virtual bool removeFromMap() override;  // Character
   virtual void update(const float delta) override;  // Character
-  virtual void import(const std::string& jsonFilePath) override;  // Character
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Character
 
   virtual void onSetToKill() override;  // Character
   virtual void onKilled() override;  // Character

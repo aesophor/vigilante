@@ -5,21 +5,34 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 namespace vigilante {
 
-Equipment::Equipment(const string& jsonFilePath)
+Equipment::Equipment(const fs::path& jsonFilePath)
     : Item{jsonFilePath},
       _equipmentProfile{jsonFilePath} {}
 
-void Equipment::import(const string& jsonFilePath) {
+void Equipment::import(const fs::path& jsonFilePath) {
   Item::import(jsonFilePath);
   _equipmentProfile = Equipment::Profile{jsonFilePath};
 }
 
-Equipment::Profile::Profile(const string& jsonFilePath) {
+Equipment::Profile::Profile(const fs::path& jsonFilePath) {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
+
+  equipmentType = static_cast<Equipment::Type>(json["equipmentType"].GetInt());
+  bonusPhysicalDamage = json["bonusPhysicalDamage"].GetInt();
+  bonusMagicalDamage = json["bonusMagicalDamage"].GetInt();
+
+  bonusStr = json["bonusStr"].GetInt();
+  bonusDex = json["bonusDex"].GetInt();
+  bonusInt = json["bonusInt"].GetInt();
+  bonusLuk = json["bonusLuk"].GetInt();
+
+  bonusMoveSpeed = json["bonusMoveSpeed"].GetInt();
+  bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 
   for (int i = 0; i < Equipment::Sfx::SFX_SIZE; i++) {
     const string& sfxKey = Equipment::_kEquipmentSfxStr[i];
@@ -35,18 +48,6 @@ Equipment::Profile::Profile(const string& jsonFilePath) {
     }
     sfxFilePaths[i] = sfxPath;
   }
-
-  equipmentType = static_cast<Equipment::Type>(json["equipmentType"].GetInt());
-  bonusPhysicalDamage = json["bonusPhysicalDamage"].GetInt();
-  bonusMagicalDamage = json["bonusMagicalDamage"].GetInt();
-
-  bonusStr = json["bonusStr"].GetInt();
-  bonusDex = json["bonusDex"].GetInt();
-  bonusInt = json["bonusInt"].GetInt();
-  bonusLuk = json["bonusLuk"].GetInt();
-
-  bonusMoveSpeed = json["bonusMoveSpeed"].GetInt();
-  bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
 }  // namespace vigilante

@@ -3,6 +3,7 @@
 #ifndef VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
 #define VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
 
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <memory>
@@ -16,7 +17,7 @@ class Npc;
 
 class DialogueTree : public Importable {
  public:
-  DialogueTree(const std::string& jsonFilePath, Npc* owner) : _owner{owner} {
+  DialogueTree(const std::filesystem::path& jsonFilePath, Npc* owner) : _owner{owner} {
     import(jsonFilePath);
   }
   DialogueTree(const DialogueTree&) = delete;
@@ -65,7 +66,7 @@ class DialogueTree : public Importable {
   };
 
 
-  virtual void import(const std::string& jsonFilePath) override;  // Importable
+  virtual void import(const std::filesystem::path& jsonFilePath) override;  // Importable
 
   DialogueTree::Node* getNode(const std::string& nodeName) const;
 

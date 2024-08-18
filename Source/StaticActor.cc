@@ -51,7 +51,7 @@ void StaticActor::setPosition(float x, float y) {
   _bodySprite->setPosition(x, y);
 }
 
-Animation* StaticActor::createAnimation(const string& textureResDir,
+Animation* StaticActor::createAnimation(const fs::path& textureResDirPath,
                                         const string& framesName,
                                         const float interval,
                                         Animation* fallback) {
@@ -62,24 +62,24 @@ Animation* StaticActor::createAnimation(const string& textureResDir,
   //
   // Texture/character/player/player_attacking0/0.png
   // |______________________| |____| |________| |___|
-  //      textureResDir          |   framesName
+  //    textureResDirPath        |   framesName
   //                      framesNamePrefix
   //
   // As you can see, each framesName (e.g., attacking0) is preceded by a prefix,
   // this is to **prevent frames name collision** in ax::SpriteFrameCache!
-  string framesNamePrefix = StaticActor::getLastDirName(textureResDir);
+  const string framesNamePrefix = StaticActor::getLastDirName(textureResDirPath);
 
   // Count how many frames (.png) are there in the corresponding directory.
   // Method: we will use FileUtils to test whether a file exists starting from
   //         0.png, 1.png, ..., n.png
-  string dir = textureResDir + "/" + framesNamePrefix + "_" + framesName;
-  if (!fileUtils->isDirectoryExist(dir)) {
+  const fs::path dirPath = textureResDirPath / (framesNamePrefix + "_" + framesName);
+  if (!fileUtils->isDirectoryExist(dirPath.native())) {
     return fallback;
   }
 
   size_t frameCount = 0;
   fileUtils->setPopupNotify(false); // disable CCLOG
-  while (fileUtils->isFileExist(dir + "/" + std::to_string(frameCount) + ".png")) {
+  while (fileUtils->isFileExist((dirPath / (std::to_string(frameCount) + ".png")).native())) {
     frameCount++;
   }
   fileUtils->setPopupNotify(true); // re-enable CCLOG
@@ -90,7 +90,7 @@ Animation* StaticActor::createAnimation(const string& textureResDir,
       return fallback;
     } else {
       throw runtime_error("Failed to create animations from " +
-                          dir + ", but fallback animation is not provided.");
+                          dirPath.native() + ", but fallback animation is not provided.");
     }
   }
 
@@ -105,12 +105,12 @@ Animation* StaticActor::createAnimation(const string& textureResDir,
   return animation;
 }
 
-string StaticActor::getLastDirName(const string& directory) {
-  return directory.substr(directory.find_last_of('/') + 1);
+string StaticActor::getLastDirName(const fs::path& directoryPath) {
+  return directoryPath.native().substr(directoryPath.native().find_last_of('/') + 1);
 }
 
-string StaticActor::getSpritesheetFilePath(const string& textureResDir) {
-  return fs::path{textureResDir} / "spritesheet.png";
+fs::path StaticActor::getSpritesheetFilePath(const fs::path& textureResDirPath) {
+  return textureResDirPath / "spritesheet.png";
 }
 
 }  // namespace vigilante

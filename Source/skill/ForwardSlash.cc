@@ -10,18 +10,19 @@
 #include "scene/SceneManager.h"
 #include "util/CameraUtil.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
 
-ForwardSlash::ForwardSlash(const string& jsonFilePath, Character* user)
+ForwardSlash::ForwardSlash(const fs::path& jsonFilePath, Character* user)
     : Skill{},
       _skillProfile{jsonFilePath},
       _user{user} {}
 
-void ForwardSlash::import(const string& jsonFilePath) {
+void ForwardSlash::import(const fs::path& jsonFilePath) {
   _skillProfile = Skill::Profile{jsonFilePath};
 }
 
@@ -72,8 +73,8 @@ void ForwardSlash::activate() {
   Audio::the().playSfx(_skillProfile.sfxActivate);
 }
 
-string ForwardSlash::getIconPath() const {
-  return fs::path{_skillProfile.textureResDir} / kIconPng;
+fs::path ForwardSlash::getIconPath() const {
+  return _skillProfile.textureResDirPath / kIconPng;
 }
 
 } // namespace vigilante

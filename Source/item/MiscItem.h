@@ -11,8 +11,7 @@ namespace vigilante {
 
 class MiscItem : public Item {
  public:
-  explicit MiscItem(const std::string& jsonFilePath);
-  virtual ~MiscItem() override = default;
+  explicit MiscItem(const std::filesystem::path& jsonFilePath);
 };
 
 }  // namespace vigilante

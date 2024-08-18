@@ -13,6 +13,7 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 namespace vigilante {
@@ -38,7 +39,7 @@ DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
   return *this;
 }
 
-void DialogueTree::import(const string& jsonFilePath) {
+void DialogueTree::import(const fs::path& jsonFilePath) {
   if (jsonFilePath.empty()) {
     return;
   }

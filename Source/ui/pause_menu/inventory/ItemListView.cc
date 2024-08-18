@@ -43,7 +43,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
     ui::ImageView* icon = listViewItem->getIcon();
     Label* label = listViewItem->getLabel();
 
-    icon->loadTexture(item ? item->getIconPath() : kEmptyImage.native());
+    icon->loadTexture(item ? item->getIconPath().native() : kEmptyImage.native());
     label->setString(item ? item->getName() : kEmptyItemName);
 
     if (!item) {

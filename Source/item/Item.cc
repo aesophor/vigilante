@@ -17,6 +17,7 @@
 #include "util/JsonUtil.h"
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 using namespace vigilante::assets;
 using namespace vigilante::category_bits;
@@ -37,14 +38,14 @@ constexpr float kFloatingDisplacementFactor = 3.0f;
 
 }  // namespace
 
-unique_ptr<Item> Item::create(const string& jsonFilePath) {
-  if (jsonFilePath.find("equipment") != jsonFilePath.npos) {
+unique_ptr<Item> Item::create(const fs::path& jsonFilePath) {
+  if (jsonFilePath.native().find("equipment") != jsonFilePath.native().npos) {
     return std::make_unique<Equipment>(jsonFilePath);
-  } else if (jsonFilePath.find("consumable") != jsonFilePath.npos) {
+  } else if (jsonFilePath.native().find("consumable") != jsonFilePath.native().npos) {
     return std::make_unique<Consumable>(jsonFilePath);
-  } else if (jsonFilePath.find("key") != jsonFilePath.npos) {
+  } else if (jsonFilePath.native().find("key") != jsonFilePath.native().npos) {
     return std::make_unique<Key>(jsonFilePath);
-  } else if (jsonFilePath.find("misc") != jsonFilePath.npos) {
+  } else if (jsonFilePath.native().find("misc") != jsonFilePath.native().npos) {
     return std::make_unique<MiscItem>(jsonFilePath);
   }
 
@@ -52,10 +53,10 @@ unique_ptr<Item> Item::create(const string& jsonFilePath) {
   return nullptr;
 }
 
-Item::Item(const string& jsonFilePath)
+Item::Item(const fs::path& jsonFilePath)
     : DynamicActor{kItemNumAnimations, kItemNumFixtures},
       _itemProfile{jsonFilePath} {
-  _bodySprite = Sprite::create(getIconPath());
+  _bodySprite = Sprite::create(getIconPath().native());
   _bodySprite->getTexture()->setAliasTexParameters();
 }
 
@@ -70,7 +71,7 @@ bool Item::showOnMap(float x, float y) {
              kItemCategoryBits,
              kItemMaskBits);
 
-  _bodySprite = Sprite::create(getIconPath());
+  _bodySprite = Sprite::create(getIconPath().native());
   _bodySprite->getTexture()->setAliasTexParameters();
   _bodySprite->setScale(0.8f);
   _node->addChild(_bodySprite, z_order::kItem);
@@ -87,7 +88,7 @@ void Item::update(const float delta) {
   handleVerticalFloatingMovement(delta);
 }
 
-void Item::import(const string& jsonFilePath) {
+void Item::import(const fs::path& jsonFilePath) {
   _itemProfile = Item::Profile{jsonFilePath};
 }
 
@@ -118,8 +119,8 @@ void Item::defineBody(b2BodyType bodyType,
     .buildFixture();
 }
 
-string Item::getIconPath() const {
-  return fs::path{_itemProfile.textureResDir} / kIconPng;
+fs::path Item::getIconPath() const {
+  return _itemProfile.textureResDirPath / kIconPng;
 }
 
 bool Item::isGold() const {
@@ -133,11 +134,11 @@ void Item::handleVerticalFloatingMovement(const float delta) {
   _bodySprite->setPositionY(_bodySprite->getPositionY() + offsetY);
 }
 
-Item::Profile::Profile(const string& jsonFilePath) : jsonFilePath(jsonFilePath) {
+Item::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath(jsonFilePath) {
   rapidjson::Document json = json_util::loadFromFile(jsonFilePath);
 
+  textureResDirPath = json["textureResDirPath"].GetString();
   itemType = static_cast<Item::Type>(json["itemType"].GetInt());
-  textureResDir = json["textureResDir"].GetString();
   name = json["name"].GetString();
   desc = json["desc"].GetString();
   price = json["price"].GetInt();

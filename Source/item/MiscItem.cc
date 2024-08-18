@@ -2,10 +2,11 @@
 
 #include "MiscItem.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 namespace vigilante {
 
-MiscItem::MiscItem(const string& jsonFilePath) : Item{jsonFilePath} {}
+MiscItem::MiscItem(const fs::path& jsonFilePath) : Item{jsonFilePath} {}
 
 }  // namespace vigilante

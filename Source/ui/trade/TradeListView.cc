@@ -42,7 +42,7 @@ TradeListView::TradeListView(TradeWindow* tradeWindow)
     Label* label = listViewItem->getLabel();
 
     assert(item != nullptr);
-    icon->loadTexture(item->getIconPath());
+    icon->loadTexture(item->getIconPath().native());
     label->setString(item->getName());
 
     // Display item price if not trading with ally.

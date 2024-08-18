@@ -2,13 +2,13 @@
 #ifndef VIGILANTE_GAMEPLAY_EXP_POINT_TABLE_H_
 #define VIGILANTE_GAMEPLAY_EXP_POINT_TABLE_H_
 
-#include <string>
+#include <filesystem>
 
 namespace vigilante::exp_point_table {
 
 inline constexpr int kLevelCap = 100;
 
-void import(const std::string& tableFilePath);
+void import(const std::filesystem::path& tableFilePath);
 int getNextLevelExp(const int currentLevel);
 
 }  // namespace vigilante::exp_point_table
