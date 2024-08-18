@@ -9,6 +9,7 @@
 
 #include "util/Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
@@ -18,10 +19,10 @@ void loadSpritesheets() {
   VGLOG(LOG_INFO, "Loading textures...");
 
   SpriteFrameCache* frameCache = SpriteFrameCache::getInstance();
-  for (const auto dentry : fs::recursive_directory_iterator{kTextureDir}) {
-    if (const string dirPath{fs::path{dentry}}; dirPath.ends_with(".plist")) {
-      frameCache->addSpriteFramesWithFile(dirPath);
-      VGLOG(LOG_INFO, "Successfully loaded spritesheet [%s]...", dirPath.c_str());
+  for (const fs::directory_entry& dentry : fs::recursive_directory_iterator{kTextureDir}) {
+    if (dentry.is_regular_file() && dentry.path().native().ends_with(".plist")) {
+      frameCache->addSpriteFramesWithFile(dentry.path().native());
+      VGLOG(LOG_INFO, "Successfully loaded spritesheet [%s]...", dentry.path().c_str());
     }
   }
 }
