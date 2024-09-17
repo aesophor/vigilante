@@ -11,7 +11,7 @@ namespace vigilante::math_util {
 
 optional<float> getSlope(const b2Vec2& point1, const b2Vec2& point2) {
   array<b2Vec2, 2> v = {{point1, point2}};
-  sort(v.begin(), v.end(), [](const b2Vec2& p1, const b2Vec2& p2) { return p1.x <= p2.x; });
+  sort(v.begin(), v.end(), [](const b2Vec2& p1, const b2Vec2& p2) { return p1.x < p2.x; });
 
   if (v[0].x == v[1].x) {
     return nullopt;
