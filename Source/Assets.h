@@ -13,6 +13,7 @@ inline constexpr char kIconPng[] = "icon.png";
 
 // Dirs
 inline const fs::path kDataDir = "Data";
+inline const fs::path kCharacterDir = kDataDir / "character";
 inline const fs::path kGameplayDir = kDataDir / "gameplay";
 inline const fs::path kFontDir = "Font";
 inline const fs::path kMapDir = "Map";

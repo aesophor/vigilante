@@ -38,6 +38,31 @@ USING_NS_AX;
 
 namespace vigilante {
 
+namespace {
+
+bool shouldShowNpcAtCurrentInGameTime(const InGameTime& inGameTime,
+                                      const bool shouldShowDuringDawn,
+                                      const bool shouldShowDuringDay,
+                                      const bool shouldShowDuringDusk,
+                                      const bool shouldShowDuringNight) {
+  if (!shouldShowDuringDawn && inGameTime.isDawn()) {
+    return false;
+  }
+  if (!shouldShowDuringDay && inGameTime.isDay()) {
+    return false;
+  }
+  if (!shouldShowDuringDusk && inGameTime.isDusk()) {
+    return false;
+  }
+  if (!shouldShowDuringNight && inGameTime.isNight()) {
+    return false;
+  }
+
+  return true;
+}
+
+}  // namespace
+
 GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePath)
     : _world{world},
       _lighting{lighting},
@@ -301,10 +326,10 @@ void GameMap::createPortals() {
   int portalId{};
   for (const auto& rectObj : getObjects("Portal")) {
     const auto& valMap = rectObj.asValueMap();
-    float x = valMap.at("x").asFloat();
-    float y = valMap.at("y").asFloat();
-    float w = valMap.at("width").asFloat();
-    float h = valMap.at("height").asFloat();
+    const float x = valMap.at("x").asFloat();
+    const float y = valMap.at("y").asFloat();
+    const float w = valMap.at("width").asFloat();
+    const float h = valMap.at("height").asFloat();
     string destTmxMapFilePath = valMap.at("destMap").asString();
     int destPortalId = valMap.at("destPortalID").asInt();
     bool willInteractOnContact = valMap.at("willInteractOnContact").asBool();
@@ -336,21 +361,34 @@ void GameMap::createPortals() {
 
 void GameMap::createNpcs() {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
 
   for (const auto& rectObj : getObjects("Npcs")) {
     const auto& valMap = rectObj.asValueMap();
-    float x = valMap.at("x").asFloat();
-    float y = valMap.at("y").asFloat();
-    string json = valMap.at("json").asString();
+    const float x = valMap.at("x").asFloat();
+    const float y = valMap.at("y").asFloat();
+    const string npcJsonFilePath = valMap.at("json").asString();
+    const bool shouldShowDuringDawn = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDawn", true);
+    const bool shouldShowDuringDay = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDay", true);
+    const bool shouldShowDuringDusk = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDusk", true);
+    const bool shouldShowDuringNight = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringNight", true);
 
-    if (!gmMgr->isNpcAllowedToSpawn(json)) {
+    if (!shouldShowNpcAtCurrentInGameTime(*inGameTime, shouldShowDuringDawn, shouldShowDuringDay,
+                                          shouldShowDuringDusk, shouldShowDuringNight)) {
       continue;
     }
 
-    auto npc = std::make_shared<Npc>(json);
-    if (auto it = valMap.find("isFacingRight"); it != valMap.end()) {
-      npc->setFacingRight(it->second.asBool());
+    if (!gmMgr->isNpcAllowedToSpawn(npcJsonFilePath)) {
+      continue;
     }
+
+    auto npc = std::make_shared<Npc>(npcJsonFilePath);
+
+    const optional<bool> isFacingRight = ax_util::extractValueFromValueMap<bool>(valMap, "isFacingRight");
+    if (isFacingRight.has_value()) {
+      npc->setFacingRight(isFacingRight.value());
+    }
+
     showDynamicActor(std::move(npc), x, y);
   }
 
