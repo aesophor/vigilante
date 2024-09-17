@@ -23,15 +23,14 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments "-DCMAKE_FIND_ROOT_PATH=", "-DANDROID_STL=c++_shared", "-DANDROID_TOOLCHAIN=clang", "-DANDROID_ARM_NEON=TRUE"
+                arguments = []
                 arguments.addAll(cmakeOptions)
                 cppFlags "-frtti -fexceptions -fsigned-char"
             }
         }
 
         ndk {
-            abiFilters = []
-            abiFilters.addAll(PROP_APP_ABI.split(':').collect{it as String})
+            abiFilters = __1K_ARCHS.split(':').collect{it as String}
         }
     }
 
@@ -81,7 +80,7 @@ android {
     }
 
     aaptOptions {
-       noCompress 'mp3','ogg','wav','mp4','ttf','ttc'
+       noCompress 'mp3','ogg','wav','mp4','ttf','ttc','otf'
     }
 
     buildFeatures {

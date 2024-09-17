@@ -14,8 +14,8 @@
 #define LOG_INFO vigilante::logger::Severity::INFO
 
 // Example usage: VGLOG(LOG_INFO, __FILE__, "test msg %d", 5);
-#define VGLOG(severity, format, ...)\
-  ax::log("[%s] [%s: %d] " format,\
+#define VGLOG(severity, format, ...) \
+  ax::print("[%s] [%s: %d] " format,\
       (vigilante::logger::_kSeverityStr[severity].c_str()),\
       (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__),\
       (__LINE__),\

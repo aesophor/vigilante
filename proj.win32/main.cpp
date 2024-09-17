@@ -1,7 +1,8 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +27,19 @@
 #include "AppDelegate.h"
 #include "axmol.h"
 
+// Uncomment to enable win32 console
+#define USE_WIN32_CONSOLE
+
 USING_NS_AX;
 
+int axmol_main() {
+    // create the application instance
+    AppDelegate app;
+    int ret = Application::getInstance()->run();
+    return ret;
+}
+
+#if !defined(_CONSOLE)
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
@@ -35,17 +47,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 
     // create the application instance
 #ifdef USE_WIN32_CONSOLE
-    AllocConsole();
-    freopen("CONIN$", "r", stdin);
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
+#    include "platform/win32/EmbedConsole.h"
 #endif
 
     // create the application instance
-    AppDelegate app;
-    int ret = Application::getInstance()->run();
-
-#ifdef USE_WIN32_CONSOLE
-    FreeConsole();
-#endif
+    return axmol_main();
 }
+#else
+int main(int, char**) {
+    return axmol_main();
+}
+#endif

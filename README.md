@@ -38,7 +38,7 @@ I've always been wondering how a large-scale video game can be made from scratch
    axmol build -p osx -a arm64 -c
    ```
 5. Launch xcode
-   - open the project `~/Code/vigilante/build_arm64/vigilante.xcodeproj`
+   - open the project `~/Code/vigilante/build/vigilante.xcodeproj`
    - from the top bar, select `vigilante` as build target, and press build.
 
 ## License
