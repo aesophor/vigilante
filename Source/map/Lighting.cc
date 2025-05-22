@@ -10,6 +10,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "util/Logger.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 using namespace vigilante::assets;
@@ -19,9 +20,7 @@ namespace vigilante {
 
 Lighting::Lighting()
     : _layer{Layer::create()},
-      _darknessOverlay{RenderTexture::create(1, 1)} {
-  _layer->addChild(_darknessOverlay);
-}
+      _darknessOverlay{nullptr} {}
 
 void Lighting::update() {
   const auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
@@ -143,10 +142,15 @@ void Lighting::addLightSource(const float x, const float y) {
   _staticLightSources.push_back({{x, y}, lightSourceSprite});
 }
 
-void Lighting::setDarknessOverlaySize(const float width, const float height) const {
-  _darknessOverlay->initWithWidthAndHeight(width, height, backend::PixelFormat::RGBA8);
-  _darknessOverlay->setCameraMask(_layer->getCameraMask());
+void Lighting::setDarknessOverlaySize(const float width, const float height) {
+  _layer->removeChild(_darknessOverlay);
+
+  _darknessOverlay = RenderTexture::create(width, height, backend::PixelFormat::RGBA8);
+  _darknessOverlay->setAnchorPoint({0.5, 0.5});
   _darknessOverlay->setPosition(width / 2, height / 2);
+  _darknessOverlay->getSprite()->setCameraMask(_layer->getCameraMask());
+
+  ax_util::addChildWithParentCameraMask(_layer, _darknessOverlay);
 }
 
 void Lighting::clear() {

@@ -24,7 +24,7 @@ class Lighting final {
   void addLightSource(DynamicActor* dynamicActor);
   void addLightSource(StaticActor* staticActor);
   void addLightSource(const float x, const float y);
-  void setDarknessOverlaySize(const float width, const float height) const;
+  void setDarknessOverlaySize(const float width, const float height);
   void clear();
 
   inline ax::Layer* getLayer() const { return _layer; }
