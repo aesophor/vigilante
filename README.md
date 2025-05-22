@@ -16,7 +16,7 @@ I've always been wondering how a large-scale video game can be made from scratch
 ## Build and Run
 
 #### Build requirements
-* [axmol](https://github.com/axmolengine/axmol) 2.1.1 (C++20)
+* [axmol](https://github.com/axmolengine/axmol) tag: `v2.3.2` (C++20)
 
 #### Building and running vigilante using Xcode
 1. Install powershell on dev machine
