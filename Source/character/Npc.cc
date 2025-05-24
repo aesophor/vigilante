@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Npc.h"
 
@@ -10,6 +10,7 @@
 #include "CallbackManager.h"
 #include "Constants.h"
 #include "character/Player.h"
+#include "gameplay/InGameTime.h"
 #include "item/Item.h"
 #include "quest/KillTargetObjective.h"
 #include "quest/CollectItemObjective.h"
@@ -49,7 +50,12 @@ Npc::Npc(const fs::path& jsonFilePath)
       _npcProfile{jsonFilePath},
       _dialogueTree{_npcProfile.dialogueTreeJsonFile, this},
       _disposition{_npcProfile.disposition},
-      _npcController(*this) {
+      _npcController{*this},
+      _isEnabled{true},
+      _shouldShowDuringDawn{true},
+      _shouldShowDuringDay{true},
+      _shouldShowDuringDusk{true},
+      _shouldShowDuringNight{true} {
   if (_npcProfile.shouldSandbox) {
     _npcController.setSandboxing(_npcProfile.shouldSandbox);
   }
@@ -82,6 +88,13 @@ void Npc::update(const float delta) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   if (gmMgr->areNpcsAllowedToAct()) {
     act(delta);
+  }
+
+  auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
+  if (shouldShowAtCurrentInGameTime(*inGameTime)) {
+    enable();
+  } else {
+    disable();
   }
 }
 
@@ -279,6 +292,24 @@ void Npc::removeHintBubbleFx() {
   _hintBubbleFxSprite = nullptr;
 }
 
+void Npc::enable() {
+  if (_isEnabled) {
+    return;
+  }
+  _node->setVisible(true);
+  _body->SetEnabled(true);
+  _isEnabled = true;
+}
+
+void Npc::disable() {
+  if (!_isEnabled) {
+    return;
+  }
+  _node->setVisible(false);
+  _body->SetEnabled(false);
+  _isEnabled = false;
+}
+
 void Npc::dropItems() {
   // We'll use a callback to drop items since creating fixtures during collision callback
   // will cause the game to crash. Ref: https://github.com/libgdx/libgdx/issues/2730
@@ -383,6 +414,23 @@ void Npc::setDisposition(Npc::Disposition disposition) {
       VGLOG(LOG_ERR, "Invalid disposition for user: %s", _characterProfile.name.c_str());
       break;
   }
+}
+
+bool Npc::shouldShowAtCurrentInGameTime(const InGameTime& inGameTime) const {
+  if (!_shouldShowDuringDawn && inGameTime.isDawn()) {
+    return false;
+  }
+  if (!_shouldShowDuringDay && inGameTime.isDay()) {
+    return false;
+  }
+  if (!_shouldShowDuringDusk && inGameTime.isDusk()) {
+    return false;
+  }
+  if (!_shouldShowDuringNight && inGameTime.isNight()) {
+    return false;
+  }
+
+  return true;
 }
 
 Npc::Profile::Profile(const fs::path& jsonFilePath) {

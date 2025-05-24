@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "GameMap.h"
 
@@ -37,31 +37,6 @@ using namespace vigilante::assets;
 USING_NS_AX;
 
 namespace vigilante {
-
-namespace {
-
-bool shouldShowNpcAtCurrentInGameTime(const InGameTime& inGameTime,
-                                      const bool shouldShowDuringDawn,
-                                      const bool shouldShowDuringDay,
-                                      const bool shouldShowDuringDusk,
-                                      const bool shouldShowDuringNight) {
-  if (!shouldShowDuringDawn && inGameTime.isDawn()) {
-    return false;
-  }
-  if (!shouldShowDuringDay && inGameTime.isDay()) {
-    return false;
-  }
-  if (!shouldShowDuringDusk && inGameTime.isDusk()) {
-    return false;
-  }
-  if (!shouldShowDuringNight && inGameTime.isNight()) {
-    return false;
-  }
-
-  return true;
-}
-
-}  // namespace
 
 GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePath)
     : _world{world},
@@ -160,7 +135,7 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string
   if (_isInBossFight) {
     return false;
   }
-  
+
   auto it = std::find_if(_dynamicActors.begin(), _dynamicActors.end(), [](const shared_ptr<DynamicActor>& actor) {
     return std::dynamic_pointer_cast<Character>(actor);
   });
@@ -368,21 +343,21 @@ void GameMap::createNpcs() {
     const float x = valMap.at("x").asFloat();
     const float y = valMap.at("y").asFloat();
     const string npcJsonFilePath = valMap.at("json").asString();
-    const bool shouldShowDuringDawn = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDawn", true);
-    const bool shouldShowDuringDay = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDay", true);
-    const bool shouldShowDuringDusk = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDusk", true);
-    const bool shouldShowDuringNight = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringNight", true);
-
-    if (!shouldShowNpcAtCurrentInGameTime(*inGameTime, shouldShowDuringDawn, shouldShowDuringDay,
-                                          shouldShowDuringDusk, shouldShowDuringNight)) {
-      continue;
-    }
 
     if (!gmMgr->isNpcAllowedToSpawn(npcJsonFilePath)) {
       continue;
     }
 
     auto npc = std::make_shared<Npc>(npcJsonFilePath);
+
+    const bool shouldShowDuringDawn = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDawn", true);
+    const bool shouldShowDuringDay = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDay", true);
+    const bool shouldShowDuringDusk = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDusk", true);
+    const bool shouldShowDuringNight = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringNight", true);
+    npc->setShowDuringDawn(shouldShowDuringDawn);
+    npc->setShowDuringDay(shouldShowDuringDay);
+    npc->setShowDuringDusk(shouldShowDuringDusk);
+    npc->setShowDuringNight(shouldShowDuringNight);
 
     const optional<bool> isFacingRight = ax_util::extractValueFromValueMap<bool>(valMap, "isFacingRight");
     if (isFacingRight.has_value()) {

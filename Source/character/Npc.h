@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_CHARACTER_NPC_H_
 #define VIGILANTE_CHARACTER_NPC_H_
@@ -77,6 +77,9 @@ class Npc final : public Character, public Interactable {
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable
 
+  void enable();
+  void disable();
+
   void act(const float delta) { _npcController.update(delta); }
   void reverseDirection() { _npcController.reverseDirection(); }
   void dropItems();
@@ -99,6 +102,11 @@ class Npc final : public Character, public Interactable {
   inline bool isSandboxing() const { return _npcController.isSandboxing(); }
   inline void setSandboxing(const bool sandboxing) { _npcController.setSandboxing(sandboxing); }
 
+  inline void setShowDuringDawn(const bool showDuringDawn) { _shouldShowDuringDawn = showDuringDawn; }
+  inline void setShowDuringDay(const bool showDuringDay) { _shouldShowDuringDay = showDuringDay; }
+  inline void setShowDuringDusk(const bool showDuringDusk) { _shouldShowDuringDusk = showDuringDusk; }
+  inline void setShowDuringNight(const bool showDuringNight) { _shouldShowDuringNight = showDuringNight; }
+
  private:
   virtual void defineBody(b2BodyType bodyType,
                           float x,
@@ -111,10 +119,17 @@ class Npc final : public Character, public Interactable {
   virtual void createHintBubbleFx() override;  // Interactable
   virtual void removeHintBubbleFx() override;  // Interactable
 
+  bool shouldShowAtCurrentInGameTime(const InGameTime& inGameTime) const;
+
   Npc::Profile _npcProfile;
   DialogueTree _dialogueTree;
   Npc::Disposition _disposition;
   NpcController _npcController;
+  bool _isEnabled;
+  bool _shouldShowDuringDawn;
+  bool _shouldShowDuringDay;
+  bool _shouldShowDuringDusk;
+  bool _shouldShowDuringNight;
 
   ax::Sprite* _hintBubbleFxSprite{};
   std::unique_ptr<StatusBar> _floatingHealthBar;
