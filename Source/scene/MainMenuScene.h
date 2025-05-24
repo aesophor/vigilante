@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
 #define VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
@@ -41,8 +41,8 @@ class MainMenuScene final : public ax::Scene, public Controllable {
     "Options",
     "Exit",
   }};
-  static inline constexpr const char* _kCopyrightStr = "© 2018-2024 Aesophor Softworks";
-  static inline constexpr const char* _kVersionStr = "0.2.0";
+  static inline constexpr const char* _kCopyrightStr = "© 2018-2025 Aesophor Softworks";
+  static inline constexpr const char* _kVersionStr = "0.3.0";
   static inline constexpr int _kMenuOptionGap = 20;
   static inline constexpr int _kFooterLabelPadding = 10;
 
