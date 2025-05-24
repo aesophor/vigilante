@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2024-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_GAMEPLAY_IN_GAME_TIME_H_
 #define VIGILANTE_GAMEPLAY_IN_GAME_TIME_H_
@@ -15,7 +15,7 @@ class InGameTime final {
   InGameTime();
 
   void update(const float delta);
-  void fastForward(const int hourDelta, const int minuteDelta, const int secondDelta);
+  void fastForward(const int secondsDelta);
   void runAfter(const int hours, const int minutes, const int seconds, const std::string& cmd);
 
   inline bool isDawn() const { return _hour >= 5 && _hour <= 6; }

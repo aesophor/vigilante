@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "CommandHandler.h"
 
@@ -501,7 +501,7 @@ void CommandHandler::rest(const vector<string>& args) {
       FadeIn::create(Shade::kFadeInTime * 3),
       CallFunc::create([]() {
         auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-        inGameTime->fastForward(8, 0, 0);
+        inGameTime->fastForward(8 * 60 * 60);  // 8 hours
 
         auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
         notifications->show("You awaken feeling well rested.");
@@ -680,9 +680,17 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   }
 
   auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
-  inGameTime->setHour(hour);
-  inGameTime->setMinute(minute);
-  inGameTime->setSecond(second);
+  const int currentHour = inGameTime->getHour();
+  const int currentMinute = inGameTime->getMinute();
+  const int currentSecond = inGameTime->getSecond();
+
+  const int secElapsedToday = currentSecond + 60 * currentMinute + 3600 * currentHour;
+  int secElapsedTarget = second + 60 * minute + 3600 * hour;
+  if (secElapsedTarget < secElapsedToday) {
+    secElapsedTarget += 24 * 60 * 60;
+  }
+  secElapsedTarget -= secElapsedToday;
+  inGameTime->fastForward(secElapsedTarget);
 
   setSuccess();
 }

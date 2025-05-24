@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2024-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "InGameTime.h"
 
@@ -28,13 +28,13 @@ void InGameTime::updateTime(const float delta) {
 
   const int secondDelta = _accumulatedDelta * kTimeScale;
   _accumulatedDelta = 0.0f;
-  fastForward(0, 0, secondDelta);
+  fastForward(secondDelta);
 }
 
-void InGameTime::fastForward(const int hourDelta, const int minuteDelta, const int secondDelta) {
-  const int totalSecondDelta = hourDelta * 3600 + minuteDelta * 60 + secondDelta;
-  _secondsElapsed += totalSecondDelta;
-  _second += totalSecondDelta;
+void InGameTime::fastForward(const int secondDelta) {
+  _secondsElapsed += secondDelta;
+  _second += secondDelta;
+
   while (_second > 59) {
     _minute++;
     _second -= 60;
