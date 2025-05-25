@@ -4,8 +4,8 @@
 
 #include "Assets.h"
 #include "character/Npc.h"
+#include "gameplay/DialogueManager.h"
 #include "input/InputManager.h"
-#include "ui/dialogue/DialogueManager.h"
 
 using namespace std;
 using namespace vigilante::assets;

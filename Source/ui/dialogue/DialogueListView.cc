@@ -4,10 +4,10 @@
 
 #include "Assets.h"
 #include "Constants.h"
+#include "gameplay/DialogueManager.h"
 #include "gameplay/DialogueTree.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
-#include "ui/dialogue/DialogueManager.h"
 #include "ui/dialogue/DialogueListView.h"
 
 using namespace std;

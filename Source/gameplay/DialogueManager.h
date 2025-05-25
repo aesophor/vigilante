@@ -1,7 +1,7 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_
-#define VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_
+#ifndef VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
+#define VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
 
 #include <memory>
 
@@ -47,4 +47,4 @@ class DialogueManager final : public Controllable {
 
 }  // namespace vigilante
 
-#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_MANAGER_H_
+#endif  // VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
