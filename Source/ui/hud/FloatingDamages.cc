@@ -28,7 +28,7 @@ void FloatingDamages::update(const float delta) {
       if (dmg.timer >= dmg.lifetime) {
         dmg.label->runAction(Sequence::createWithTwoActions(
           FadeOut::create(kFadeDuration),
-          CallFunc::create([=]() {
+          CallFunc::create([this, dmg]() {
             // After the label fully fades out, remove the label from _layer.
             _layer->removeChild(dmg.label);
           })

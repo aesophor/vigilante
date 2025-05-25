@@ -27,7 +27,7 @@ void TimedLabelService::update(const float delta) {
     if (notification.timer >= notification.lifetime) {
       notification.label->runAction(Sequence::createWithTwoActions(
         FadeOut::create(_kFadeDuration),
-        CallFunc::create([=]() {
+        CallFunc::create([this, notification]() {
           // After the label fully fades out, remove the label from _layer.
           _layer->removeChild(notification.label);
         })

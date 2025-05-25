@@ -55,11 +55,11 @@ void ForwardSlash::activate() {
   auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
   afterImageFxMgr->registerNode(_user->getNode(), AfterImageFxManager::kPlayerAfterImageColor, 0.15f, 0.05f);
 
-  CallbackManager::the().runAfter([=](const CallbackManager::CallbackId) {
+  CallbackManager::the().runAfter([this, oldGravityScale](const CallbackManager::CallbackId) {
     _user->getBody()->SetGravityScale(oldGravityScale);
   }, _skillProfile.framesDuration / 4);
 
-  CallbackManager::the().runAfter([=](const CallbackManager::CallbackId) {
+  CallbackManager::the().runAfter([this, oldBodyDamping](const CallbackManager::CallbackId) {
     auto afterImageFxMgr = SceneManager::the().getCurrentScene<GameScene>()->getAfterImageFxManager();
     afterImageFxMgr->unregisterNode(_user->getNode());
 

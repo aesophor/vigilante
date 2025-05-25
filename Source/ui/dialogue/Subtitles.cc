@@ -101,7 +101,7 @@ void Subtitles::beginSubtitles() {
   _upperLetterbox->runAction(MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(kLetterboxTransitionDuration, {0, kLetterboxHeight}),
-    CallFunc::create([=]() {
+    CallFunc::create([this]() {
       _isTransitioning = false;
       showNextSubtitle();
     })
@@ -117,7 +117,7 @@ void Subtitles::endSubtitles() {
   _upperLetterbox->runAction(MoveBy::create(kLetterboxTransitionDuration, {0, kLetterboxHeight}));
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}),
-    CallFunc::create([=]() {
+    CallFunc::create([this]() {
       _isTransitioning = false;
       _layer->setVisible(false);
 

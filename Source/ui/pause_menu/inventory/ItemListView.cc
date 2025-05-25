@@ -86,13 +86,13 @@ void ItemListView::confirm() {
 
   switch (item->getItemProfile().itemType) {
     case Item::Type::EQUIPMENT:
-      dialog->setOption(0, true, "Equip", [=]() {
+      dialog->setOption(0, true, "Equip", [this, item]() {
         _pauseMenu->getPlayer()->equip(dynamic_cast<Equipment*>(item));
         _pauseMenu->update();
       });
       break;
     case Item::Type::CONSUMABLE:
-      dialog->setOption(0, true, "Use", [=]() {
+      dialog->setOption(0, true, "Use", [this, item]() {
         _pauseMenu->getPlayer()->useItem(dynamic_cast<Consumable*>(item));
         _pauseMenu->update();
       });
@@ -102,7 +102,7 @@ void ItemListView::confirm() {
       break;
   }
 
-  dialog->setOption(1, true, "Discard", [=]() {
+  dialog->setOption(1, true, "Discard", [this, item]() {
     _pauseMenu->getPlayer()->discardItem(item, 1);
     _pauseMenu->update();
   });

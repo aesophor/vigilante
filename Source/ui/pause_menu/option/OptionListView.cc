@@ -38,7 +38,7 @@ void OptionListView::confirm() {
   dialog->reset();
   dialog->setMessage("Are you sure?");
 
-  dialog->setOption(1, true, "Confirm", [=]() {
+  dialog->setOption(1, true, "Confirm", [this, &optionHandler]() {
     optionHandler();
     _pauseMenu->update();
   });

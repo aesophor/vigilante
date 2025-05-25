@@ -46,7 +46,7 @@ void BatForm::activate() {
   _user->setInvincible(true);
   _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(true);
 
-  CallbackManager::the().runAfter([=](const CallbackManager::CallbackId) {
+  CallbackManager::the().runAfter([this, oldBodyDamping](const CallbackManager::CallbackId) {
     _user->getBody()->SetLinearDamping(oldBodyDamping);
     _user->setInvincible(false);
     _user->getFixtures()[Character::FixtureType::BODY]->SetSensor(false);

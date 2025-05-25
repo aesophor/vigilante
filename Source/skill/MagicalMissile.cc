@@ -94,7 +94,7 @@ void MagicalMissile::onHit(Character* target) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   _bodySprite->runAction(Sequence::createWithTwoActions(
     Animate::create(_bodyAnimations[AnimationType::ON_HIT]),
-    CallFunc::create([=]() {
+    CallFunc::create([this, gmMgr]() {
       gmMgr->getGameMap()->removeDynamicActor(this);
       _user->removeActiveSkillInstance(this);
     })
@@ -167,7 +167,7 @@ void MagicalMissile::activate() {
     _launchFxSprite->setPosition((x + offsetX) * kPpm, (y + offsetY) * kPpm);
     _launchFxSprite->runAction(Sequence::createWithTwoActions(
       Animate::create(_bodyAnimations[AnimationType::LAUNCH_FX]),
-      CallFunc::create([=]() {
+      CallFunc::create([this]() {
         _bodySpritesheet->removeChild(_launchFxSprite, true);
       })
     ));
