@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_GAMEPLAY_GAME_STATE_H_
 #define VIGILANTE_GAMEPLAY_GAME_STATE_H_
@@ -40,6 +40,9 @@ class GameState final {
 
   rapidjson::Value serializeRoomRentalTrackerState() const;
   void deserializeRoomRentalTrackerState(const rapidjson::Value& obj) const;
+
+  rapidjson::Value serializeLatestNpcDialogueTrees() const;
+  void deserializeLatestNpcDialogueTrees(const rapidjson::Value& obj) const;
 
   const fs::path _saveFilePath;
   rapidjson::Document _json;

@@ -15,6 +15,8 @@ namespace vigilante {
 
 class DialogueManager final : public Controllable {
  public:
+  friend class GameState;
+
   DialogueManager();
   virtual ~DialogueManager() override = default;
 
@@ -42,7 +44,7 @@ class DialogueManager final : public Controllable {
   std::unique_ptr<Subtitles> _subtitles;
   std::unique_ptr<DialogueMenu> _dialogueMenu;
 
-  std::unordered_map<std::string, std::string> _latestNpcDialogueTree;
+  std::unordered_map<std::string, std::string> _latestNpcDialogueTrees;
 };
 
 }  // namespace vigilante

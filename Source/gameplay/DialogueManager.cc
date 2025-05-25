@@ -39,13 +39,13 @@ void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {
 }
 
 string DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFilePath) {
-  auto it = _latestNpcDialogueTree.find(npcJsonFilePath);
-  return (it != _latestNpcDialogueTree.end()) ? it->second : "";
+  auto it = _latestNpcDialogueTrees.find(npcJsonFilePath);
+  return (it != _latestNpcDialogueTrees.end()) ? it->second : "";
 }
 
 void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFilePath,
                                                const string& dialogueTreeJsonFilePath) {
-  _latestNpcDialogueTree[npcJsonFilePath] = dialogueTreeJsonFilePath;
+  _latestNpcDialogueTrees[npcJsonFilePath] = dialogueTreeJsonFilePath;
 }
 
 }  // namespace vigilante

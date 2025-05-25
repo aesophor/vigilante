@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "GameState.h"
 
@@ -20,6 +20,7 @@ void GameState::save() {
   _json.AddMember("player", serializePlayerState(), _allocator);
   _json.AddMember("inGameTime", serializeInGameTime(), _allocator);
   _json.AddMember("roomRentalTracker", serializeRoomRentalTrackerState(), _allocator);
+  _json.AddMember("latestNpcDialogueTrees", serializeLatestNpcDialogueTrees(), _allocator);
 
   VGLOG(LOG_INFO, "Saving to save file [%s].", _saveFilePath.c_str());
   json_util::saveToFile(_saveFilePath, _json);
@@ -36,6 +37,7 @@ void GameState::load() {
   deserializeGameMapState(_json["gameMap"].GetObject());
   deserializeInGameTime(_json["inGameTime"].GetObject());
   deserializeRoomRentalTrackerState(_json["roomRentalTracker"].GetObject());
+  deserializeLatestNpcDialogueTrees(_json["latestNpcDialogueTrees"].GetObject());
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
@@ -344,6 +346,19 @@ void GameState::deserializeRoomRentalTrackerState(const rapidjson::Value& obj) c
 
   auto roomRentalTracker = SceneManager::the().getCurrentScene<GameScene>()->getRoomRentalTracker();
   roomRentalTracker->setCheckedInInns(std::move(checkedInInns));
+}
+
+rapidjson::Value GameState::serializeLatestNpcDialogueTrees() const {
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  return json_util::serialize(_allocator,
+                              make_pair("latestNpcDialogueTrees", dialogueMgr->_latestNpcDialogueTrees));
+}
+
+void GameState::deserializeLatestNpcDialogueTrees(const rapidjson::Value& obj) const {
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+
+  json_util::deserialize(obj, make_pair("latestNpcDialogueTrees", &dialogueMgr->_latestNpcDialogueTrees));
 }
 
 }  // namespace vigilante
