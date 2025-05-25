@@ -59,7 +59,7 @@ class InGameTime final {
   float _accumulatedDelta{};
 
   // In-game time.
-  int _hour{8};
+  int _hour{22};
   int _minute{30};
   int _second{};
 
