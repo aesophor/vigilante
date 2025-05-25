@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "GameScene.h"
 
@@ -27,7 +27,7 @@ bool GameScene::init() {
     return false;
   }
 
-  _isRunning = true;
+  _isActive = true;
   _isTerminating = false;
 
   // Initialize vigilante's exp point table.
@@ -183,7 +183,7 @@ bool GameScene::init() {
 }
 
 void GameScene::update(const float delta) {
-  if (!_isRunning) {
+  if (!_isActive) {
     if (_isTerminating) {
       return;
     }

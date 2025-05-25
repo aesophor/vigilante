@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Player.h"
 
@@ -69,7 +69,7 @@ bool Player::showOnMap(float x, float y) {
 void Player::onKilled() {
   Character::onKilled();
 
-  SceneManager::the().getCurrentScene<GameScene>()->setRunning(false);
+  SceneManager::the().getCurrentScene<GameScene>()->setActive(false);
 }
 
 bool Player::inflictDamage(Character* target, int damage) {

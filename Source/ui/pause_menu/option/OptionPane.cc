@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "OptionPane.h"
 
@@ -36,7 +36,7 @@ OptionPane::OptionPane(PauseMenu* pauseMenu)
     {"Save Game", []() { GameState("quicksave.vgs").save(); }},
     {"Load Game", []() { GameState("quicksave.vgs").load(); }},
     {"Options",   []() {}},
-    {"Quit",      []() { SceneManager::the().getCurrentScene<GameScene>()->setRunning(false); }},
+    {"Quit",      []() { SceneManager::the().getCurrentScene<GameScene>()->setActive(false); }},
   }};
 
   vector<Option*> options;

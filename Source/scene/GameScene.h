@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_SCENE_GAME_SCENE_H_
 #define VIGILANTE_SCENE_GAME_SCENE_H_
@@ -48,8 +48,8 @@ class GameScene final : public ax::Scene, public Controllable {
   void loadGame(const std::string& gameSaveFilePath);
   void quit();
 
-  inline bool isRunning() const { return _isRunning; }
-  inline void setRunning(bool running) { _isRunning = running; }
+  inline bool isActive() const { return _isActive; }
+  inline void setActive(bool active) { _isActive = active; }
 
   inline ax::Camera* getGameCamera() const { return _gameCamera; }
 
@@ -72,7 +72,7 @@ class GameScene final : public ax::Scene, public Controllable {
   inline RoomRentalTracker* getRoomRentalTracker() const { return _roomRentalTracker.get(); }
 
  private:
-  bool _isRunning;
+  bool _isActive;
   bool _isTerminating;
 
   ax::Camera* _parallaxCamera;
