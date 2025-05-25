@@ -66,7 +66,7 @@ class Npc final : public Character, public Interactable {
 
   virtual void onSetToKill() override;  // Character
   virtual void onKilled() override;  // Character
-  virtual void onMapChanged() override;  // Character
+  virtual void beforeMapChanged() override;  // Character
 
   virtual bool inflictDamage(Character* target, int damage) override;  // Character
   virtual bool receiveDamage(Character* source, int damage) override;  // Character

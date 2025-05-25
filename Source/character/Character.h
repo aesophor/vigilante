@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_CHARACTER_CHARACTER_H_
 #define VIGILANTE_CHARACTER_CHARACTER_H_
@@ -153,7 +153,7 @@ class Character : public DynamicActor, public Importable {
   virtual void onFallToGroundOrPlatform();
   virtual void onBodyContactWithEnemyBody(Character* enemy);
   virtual void onMeleeWeaponContactWithEnemyBody(Character* enemy);
-  virtual void onMapChanged() {}
+  virtual void beforeMapChanged() {}
 
   virtual bool isMovementDisallowed() const;
   virtual bool isJumpingDownDisallowed() const;

@@ -185,7 +185,8 @@ void Npc::onKilled() {
   _floatingHealthBar->setVisible(false);
 }
 
-void Npc::onMapChanged() {
+void Npc::beforeMapChanged() {
+  setLockedOnTarget(nullptr);
   _npcController.clearMoveDest();
 
   if (_isKilled && _party) {
