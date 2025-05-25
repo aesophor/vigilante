@@ -229,7 +229,7 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, const short cate
     float yRef = valMap.at("y").asFloat();
 
     const auto& valVec = valMap.at("polylinePoints").asValueVector();
-    b2Vec2 vertices[valVec.size()];
+    vector<b2Vec2> vertices(valVec.size());
     for (size_t i = 0; i < valVec.size(); i++) {
       float x = valVec.at(i).asValueMap().at("x").asFloat() / scaleFactor;
       float y = valVec.at(i).asValueMap().at("y").asFloat() / scaleFactor;
@@ -251,7 +251,7 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, const short cate
       .position(0, 0, kPpm)
       .buildBody();
 
-    bodyBuilder.newPolylineFixture(vertices, valVec.size(), kPpm)
+    bodyBuilder.newPolylineFixture(vertices.data(), valVec.size(), kPpm)
       .categoryBits(categoryBits)
       .setSensor(!collidable)
       .friction(friction)

@@ -2,6 +2,8 @@
 
 #include "B2BodyBuilder.h"
 
+#include <vector>
+
 using namespace std;
 
 namespace vigilante {
@@ -36,11 +38,11 @@ B2BodyBuilder& B2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t c
   _fdef.shape = _shape.get();
 
   auto shape = static_cast<b2PolygonShape*>(_shape.get());
-  b2Vec2 scaledVertices[count];
+  vector<b2Vec2> scaledVertices(count);
   for (int i = 0; i < static_cast<int>(count); i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
   }
-  shape->Set(scaledVertices, static_cast<int>(count));
+  shape->Set(scaledVertices.data(), static_cast<int>(count));
   return *this;
 }
 
