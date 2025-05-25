@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Subtitles.h"
 
@@ -59,7 +59,7 @@ void Subtitles::update(const float delta) {
   }
 
   if (_timer >= kShowCharInterval) {
-    int nextCharIdx = _label->getString().size();
+    int nextCharIdx = static_cast<int>(_label->getString().size());
     _label->setString(string{_label->getString()} + _currentSubtitle.text.at(nextCharIdx));
     _timer = 0;
   }

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Logger.h"
 
@@ -20,7 +20,7 @@ void segvHandler(int) {
   size_t size = backtrace(array, 10);
 
   int fd = open(LOG_FILENAME, O_CREAT | O_WRONLY, 0600);
-  backtrace_symbols_fd(array + 2, size - 2, fd);
+  backtrace_symbols_fd(array + 2, static_cast<int>(size - 2), fd);
   close(fd);
 
   exit(EXIT_FAILURE);

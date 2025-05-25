@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "B2BodyBuilder.h"
 
@@ -37,10 +37,10 @@ B2BodyBuilder& B2BodyBuilder::newPolygonFixture(const b2Vec2* vertices, size_t c
 
   auto shape = static_cast<b2PolygonShape*>(_shape.get());
   b2Vec2 scaledVertices[count];
-  for (size_t i = 0; i < count; i++) {
+  for (int i = 0; i < static_cast<int>(count); i++) {
     scaledVertices[i] = {vertices[i].x / ppm, vertices[i].y / ppm};
   }
-  shape->Set(scaledVertices, count);
+  shape->Set(scaledVertices, static_cast<int>(count));
   return *this;
 }
 

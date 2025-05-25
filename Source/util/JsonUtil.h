@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_UTIL_JSON_UTIL_H_
 #define VIGILANTE_UTIL_JSON_UTIL_H_
@@ -58,7 +58,7 @@ makeJsonObject(rapidjson::Document::AllocatorType& allocator, T&& value) {
   using _T = std::remove_const_t<std::remove_reference_t<T>>;
 
   if constexpr (std::is_same_v<_T, std::string>) {
-    return rapidjson::Value(value.c_str(), value.size(), allocator);
+    return rapidjson::Value(value.c_str(), static_cast<int>(value.size()), allocator);
   } else if constexpr (is_map<_T> || is_unordered_map<_T>) {
     rapidjson::Value ret(rapidjson::kObjectType);
     for (auto& [key, val] : value) {

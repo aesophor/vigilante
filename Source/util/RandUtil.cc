@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "RandUtil.h"
 
@@ -8,7 +8,7 @@
 namespace vigilante::rand_util {
 
 void init() {
-  srand(time(nullptr));
+  srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 int randInt(int min, int max) {
