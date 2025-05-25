@@ -115,6 +115,7 @@ rapidjson::Value GameState::serializePlayerState() const {
                               make_pair("attackRange", profile.attackRange),
                               make_pair("baseMeleeDamage", profile.baseMeleeDamage),
                               make_pair("inventory", serializePlayerInventory()),
+                              make_pair("skills", serializePlayerSkills()),
                               make_pair("questBook", serializePlayerQuestBook()),
                               make_pair("party", serializePlayerParty()));
 }
@@ -124,6 +125,7 @@ void GameState::deserializePlayerState(const rapidjson::Value& obj) const {
   auto& profile = gmMgr->getPlayer()->getCharacterProfile();
 
   rapidjson::Value inventoryJsonObject;
+  rapidjson::Value skillBookJsonObject;
   rapidjson::Value questBookJsonObject;
   rapidjson::Value partyJsonObject;
 
@@ -149,10 +151,12 @@ void GameState::deserializePlayerState(const rapidjson::Value& obj) const {
                          make_pair("attackRange", &profile.attackRange),
                          make_pair("baseMeleeDamage", &profile.baseMeleeDamage),
                          make_pair("inventory", &inventoryJsonObject),
+                         make_pair("skills", &skillBookJsonObject),
                          make_pair("questBook", &questBookJsonObject),
                          make_pair("party", &partyJsonObject));
 
   deserializePlayerInventory(inventoryJsonObject);
+  deserializePlayerSkills(skillBookJsonObject);
   deserializePlayerQuestBook(questBookJsonObject);
   deserializePlayerParty(partyJsonObject);
 }
@@ -245,6 +249,37 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
       continue;
     }
     player->_equipmentSlots[type] = equipment;
+  }
+}
+
+rapidjson::Value GameState::serializePlayerSkills() const {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+
+  vector<string> skills;
+  for (const auto& [skillJsonFilePath, _] : player->_skills) {
+    skills.push_back(skillJsonFilePath);
+  }
+
+  return json_util::serialize(_allocator, make_pair("skills", skills));
+}
+
+void GameState::deserializePlayerSkills(const rapidjson::Value& obj) const {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+
+  vector<string> skills;
+  json_util::deserialize(obj, make_pair("skills", &skills));
+
+  player->_skills.clear();
+  for (int type = 0; type < Skill::Type::SIZE; type++) {
+    player->_skillBook[type].clear();
+  }
+
+  for (const auto& skillJsonFilePath : skills) {
+    shared_ptr<Skill> skill = Skill::create(skillJsonFilePath, player);
+    player->_skills.insert(make_pair(skillJsonFilePath, skill));
+    player->_skillBook[skill->getSkillProfile().skillType].insert(skill.get());
   }
 }
 

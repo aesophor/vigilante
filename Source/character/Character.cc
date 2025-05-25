@@ -1271,14 +1271,14 @@ bool Character::addSkill(shared_ptr<Skill> skill) {
     return false;
   }
 
-  if (_skills.contains(skill->getName())) {
+  if (_skills.contains(skill->getSkillProfile().jsonFilePath)) {
     VGLOG(LOG_WARN, "Failed to add skill [%s] to [%s], already added",
           skill->getName().c_str(), _characterProfile.name.c_str());
     return false;
   }
 
   _skillBook[skill->getSkillProfile().skillType].insert(skill.get());
-  _skills.emplace(skill->getName(), std::move(skill));
+  _skills.emplace(skill->getSkillProfile().jsonFilePath, std::move(skill));
   return true;
 }
 
@@ -1288,7 +1288,7 @@ bool Character::removeSkill(Skill* skill) {
     return false;
   }
 
-  auto it = _skills.find(skill->getName());
+  auto it = _skills.find(skill->getSkillProfile().jsonFilePath);
   if (it == _skills.end()) {
     VGLOG(LOG_WARN, "Failed to remove skill [%s] from [%s], already removed.",
           skill->getName().c_str(), _characterProfile.name.c_str());
