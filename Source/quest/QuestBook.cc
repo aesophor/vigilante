@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "QuestBook.h"
 
@@ -19,17 +19,8 @@ using namespace std;
 
 namespace vigilante {
 
-QuestBook::QuestBook(const string& questsListFilePath) {
-  ifstream fin{questsListFilePath};
-  if (!fin.is_open()) {
-    throw runtime_error("Failed to open quest list: " + questsListFilePath);
-  }
-
-  string line;
-  while (std::getline(fin, line)) {
-    const fs::path path = fs::path{line}.lexically_normal();
-    _questMapper[path] = std::make_unique<Quest>(path);
-  }
+QuestBook::QuestBook() {
+  reset();
 }
 
 void QuestBook::update(Quest::Objective::Type objectiveType) {
@@ -50,6 +41,23 @@ void QuestBook::update(Quest::Objective::Type objectiveType) {
         questHints->show(quest->getCurrentStage().objective->getDesc());
       }
     }
+  }
+}
+
+bool QuestBook::reset() {
+  _questMapper.clear();
+  _inProgressQuests.clear();
+  _completedQuests.clear();
+
+  ifstream fin{assets::kQuestsList};
+  if (!fin.is_open()) {
+    throw runtime_error("Failed to open quest list: " + assets::kQuestsList.native());
+  }
+
+  string line;
+  while (std::getline(fin, line)) {
+    const fs::path path = fs::path{line}.lexically_normal();
+    _questMapper[path] = std::make_unique<Quest>(path);
   }
 }
 
@@ -177,6 +185,16 @@ vector<Quest*> QuestBook::getAllQuests() const {
   vector<Quest*> allQuests(_inProgressQuests.begin(), _inProgressQuests.end());
   allQuests.insert(allQuests.end(), _completedQuests.begin(), _completedQuests.end());
   return allQuests;
+}
+
+optional<Quest*> QuestBook::getQuest(const string& questJsonFilePath) const {
+  auto it = _questMapper.find(questJsonFilePath);
+  if (it == _questMapper.end()) {
+    VGLOG(LOG_ERR, "Failed to find quest [%s].", questJsonFilePath.c_str());
+    return nullopt;
+  }
+
+  return it->second.get();
 }
 
 }  // namespace vigilante

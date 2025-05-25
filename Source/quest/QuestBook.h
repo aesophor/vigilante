@@ -1,9 +1,10 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_QUEST_QUEST_BOOK_H_
 #define VIGILANTE_QUEST_QUEST_BOOK_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -14,11 +15,14 @@ namespace vigilante {
 
 class QuestBook final {
  public:
-  explicit QuestBook(const std::string& questsListFilePath);
+  friend class GameState;
+  
+  QuestBook();
   virtual ~QuestBook() = default;
 
   void update(const Quest::Objective::Type objectiveType);
 
+  bool reset();
   bool unlockQuest(Quest* quest);
   bool startQuest(Quest* quest);
   bool setStage(Quest* quest, const int stageIdx);
@@ -30,6 +34,7 @@ class QuestBook final {
   bool markCompleted(const std::string& questJsonFilePath);
 
   std::vector<Quest*> getAllQuests() const;
+  std::optional<Quest*> getQuest(const std::string& questJsonFilePath) const;
   inline const std::vector<Quest*>& getInProgressQuests() const { return _inProgressQuests; }
   inline const std::vector<Quest*>& getCompletedQuests() const { return _completedQuests; }
 

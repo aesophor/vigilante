@@ -115,6 +115,7 @@ rapidjson::Value GameState::serializePlayerState() const {
                               make_pair("attackRange", profile.attackRange),
                               make_pair("baseMeleeDamage", profile.baseMeleeDamage),
                               make_pair("inventory", serializePlayerInventory()),
+                              make_pair("questBook", serializePlayerQuestBook()),
                               make_pair("party", serializePlayerParty()));
 }
 
@@ -123,6 +124,7 @@ void GameState::deserializePlayerState(const rapidjson::Value& obj) const {
   auto& profile = gmMgr->getPlayer()->getCharacterProfile();
 
   rapidjson::Value inventoryJsonObject;
+  rapidjson::Value questBookJsonObject;
   rapidjson::Value partyJsonObject;
 
   json_util::deserialize(obj,
@@ -147,9 +149,11 @@ void GameState::deserializePlayerState(const rapidjson::Value& obj) const {
                          make_pair("attackRange", &profile.attackRange),
                          make_pair("baseMeleeDamage", &profile.baseMeleeDamage),
                          make_pair("inventory", &inventoryJsonObject),
+                         make_pair("questBook", &questBookJsonObject),
                          make_pair("party", &partyJsonObject));
 
   deserializePlayerInventory(inventoryJsonObject);
+  deserializePlayerQuestBook(questBookJsonObject);
   deserializePlayerParty(partyJsonObject);
 }
 
@@ -241,6 +245,59 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
       continue;
     }
     player->_equipmentSlots[type] = equipment;
+  }
+}
+
+rapidjson::Value GameState::serializePlayerQuestBook() const {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+
+  vector<pair<string, int>> inProgressQuests;
+  for (const auto quest : player->getQuestBook().getInProgressQuests()) {
+    inProgressQuests.push_back({quest->getQuestProfile().jsonFilePath, quest->getCurrentStageIdx()});
+  }
+
+  vector<pair<string, int>> completedQuests;
+  for (const auto quest : player->getQuestBook().getCompletedQuests()) {
+    completedQuests.push_back({quest->getQuestProfile().jsonFilePath, quest->getCurrentStageIdx()});
+  }
+
+  return json_util::serialize(_allocator,
+                              make_pair("inProgress", inProgressQuests),
+                              make_pair("completed", completedQuests));
+}
+
+void GameState::deserializePlayerQuestBook(const rapidjson::Value& obj) const {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+
+  vector<pair<string, int>> inProgressQuests;
+  vector<pair<string, int>> completedQuests;
+
+  json_util::deserialize(obj,
+                         make_pair("inProgress", &inProgressQuests),
+                         make_pair("completed", &completedQuests));
+
+  player->getQuestBook().reset();
+
+  for (const auto& [questJsonFilePath, stageIdx] : inProgressQuests) {
+    const optional<Quest*> quest = player->getQuestBook().getQuest(questJsonFilePath);
+    if (!quest.has_value()) {
+      VGLOG(LOG_ERR, "Failed to load quest [%s] from game save.", questJsonFilePath.c_str());
+      continue;
+    }
+    quest.value()->_currentStageIdx = stageIdx;
+    player->getQuestBook()._inProgressQuests.push_back(quest.value());
+  }
+
+  for (const auto& [questJsonFilePath, stageIdx] : completedQuests) {
+    const optional<Quest*> quest = player->getQuestBook().getQuest(questJsonFilePath);
+    if (!quest.has_value()) {
+      VGLOG(LOG_ERR, "Failed to load quest [%s] from game save.", questJsonFilePath.c_str());
+      continue;
+    }
+    quest.value()->_currentStageIdx = stageIdx;
+    player->getQuestBook()._completedQuests.push_back(quest.value());
   }
 }
 

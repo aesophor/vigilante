@@ -32,6 +32,9 @@ class GameState final {
   rapidjson::Value serializePlayerInventory() const;
   void deserializePlayerInventory(const rapidjson::Value& obj) const;
 
+  rapidjson::Value serializePlayerQuestBook() const;
+  void deserializePlayerQuestBook(const rapidjson::Value& obj) const;
+
   rapidjson::Value serializePlayerParty() const;
   void deserializePlayerParty(const rapidjson::Value& obj) const;
 

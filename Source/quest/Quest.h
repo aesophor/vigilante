@@ -14,6 +14,8 @@ namespace vigilante {
 
 class Quest final : public Importable {
  public:
+  friend class GameState;
+  
   explicit Quest(const std::filesystem::path& jsonFilePath) : _questProfile{jsonFilePath} {}
   virtual ~Quest() = default;
 

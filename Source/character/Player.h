@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef VIGILANTE_CHARACTER_PLAYER_H_
 #define VIGILANTE_CHARACTER_PLAYER_H_
@@ -44,7 +44,7 @@ class Player final : public Character, public Controllable {
 
  private:
   PlayerController _playerController;
-  QuestBook _questBook{assets::kQuestsList};
+  QuestBook _questBook;
 };
 
 }  // namespace vigilante
