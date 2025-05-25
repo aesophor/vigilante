@@ -165,9 +165,9 @@ rapidjson::Value GameState::serializePlayerInventory() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
 
-  map<string, int> itemMapper;
+  map<string, int> items;
   for (const auto& [itemJsonFilePath, item] : player->_items) {
-    itemMapper.insert(std::make_pair(itemJsonFilePath, item->getAmount()));
+    items.insert(std::make_pair(itemJsonFilePath, item->getAmount()));
   }
 
   vector<vector<string>> inventory(Item::Type::SIZE);
@@ -190,7 +190,7 @@ rapidjson::Value GameState::serializePlayerInventory() const {
   }
 
   return json_util::serialize(_allocator,
-                              make_pair("itemMapper", itemMapper),
+                              make_pair("items", items),
                               make_pair("inventory", inventory),
                               make_pair("equipmentSlots", equipmentSlots));
 }
@@ -199,12 +199,12 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
 
-  map<string, int> itemMapper;
+  map<string, int> items;
   vector<vector<string>> inventory;
   vector<string> equipmentSlots;
 
   json_util::deserialize(obj,
-                         make_pair("itemMapper", &itemMapper),
+                         make_pair("items", &items),
                          make_pair("inventory", &inventory),
                          make_pair("equipmentSlots", &equipmentSlots));
 
@@ -213,7 +213,7 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
   }
 
   player->_items.clear();
-  for (const auto& [itemJsonFilePath, amount] : itemMapper) {
+  for (const auto& [itemJsonFilePath, amount] : items) {
     shared_ptr<Item> item = Item::create(itemJsonFilePath);
     item->setAmount(amount);
     player->_items.insert(make_pair(itemJsonFilePath, std::move(item)));
@@ -224,7 +224,7 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
     for (const auto& itemJsonFilePath : inventory[type]) {
       auto it = player->_items.find(itemJsonFilePath);
       if (it == player->_items.end()) {
-        VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", itemJsonFilePath.c_str());
+        VGLOG(LOG_ERR, "Failed to find [%s] in player's items.", itemJsonFilePath.c_str());
         continue;
       }
       player->_inventory[type].insert(it->second.get());
@@ -240,7 +240,7 @@ void GameState::deserializePlayerInventory(const rapidjson::Value& obj) const {
 
     auto it = player->_items.find(equipmentJsonFilePath);
     if (it == player->_items.end()) {
-      VGLOG(LOG_ERR, "Failed to find [%s] in player's itemMapper.", equipmentJsonFilePath.c_str());
+      VGLOG(LOG_ERR, "Failed to find [%s] in player's items.", equipmentJsonFilePath.c_str());
       continue;
     }
     auto equipment = dynamic_cast<Equipment*>(it->second.get());
