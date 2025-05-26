@@ -17,7 +17,7 @@ namespace requiem {
 StatsPane::StatsPane(PauseMenu* pauseMenu)
     : AbstractPane{pauseMenu, TableLayout::create()},  // install TableLayout to base class
       _background{ui::ImageView::create(string{kStatsBg})},
-      _name{Label::createWithTTF("Joanna", string{kRegularFont}, kRegularFontSize)},
+      _name{Label::createWithTTF("Player", string{kRegularFont}, kRegularFontSize)},
       _level{Label::createWithTTF("Level 1", string{kRegularFont}, kRegularFontSize)},
       _health{Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)},
       _magicka{Label::createWithTTF("100 / 100", string{kRegularFont}, kRegularFontSize)},
@@ -67,6 +67,7 @@ StatsPane::StatsPane(PauseMenu* pauseMenu)
 void StatsPane::update() {
   Character::Profile& profile = _pauseMenu->getPlayer()->getCharacterProfile();
 
+  _name->setString(profile.name);
   _level->setString(string_util::format("Level %d", profile.level));
   _health->setString(string_util::format("%d / %d", profile.health, profile.fullHealth));
   _magicka->setString(string_util::format("%d / %d", profile.magicka, profile.fullMagicka));
