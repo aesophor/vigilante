@@ -61,6 +61,10 @@ class GameMapManager final {
                  const GameMap::OpenableObjectType type,
                  const int targetPortalId,
                  const bool locked);
+  bool hasActivatedTrigger(const std::string& tmxMapFilePath,
+                           const int targetTriggerId) const;
+  void setTriggerActivated(const std::string& tmxMapFilePath,
+                           const int targetTriggerId);
 
   inline ax::Layer* getParallaxLayer() const { return _parallaxLayer; }
   inline ax::Layer* getLayer() const { return _layer; }
@@ -75,6 +79,8 @@ class GameMapManager final {
   std::string getOpenableObjectQueryKey(const std::string& tmxMapFilePath,
                                         const GameMap::OpenableObjectType type,
                                         const int targetObjectId) const;
+  std::string getActivatedTriggerQueryKey(const std::string& tmxMapFilePath,
+                                          const int targetObjectId) const;
 
   ax::Layer* _parallaxLayer{};
   ax::Layer* _layer{};
@@ -92,6 +98,8 @@ class GameMapManager final {
   // 1. The unlock/lock state of all portals in all maps.
   // 2. The open/close state of all chests in all maps.
   std::unordered_map<std::string, bool> _allOpenableObjectStates;
+
+  std::unordered_set<std::string> _activatedTriggers;
 };
 
 }  // namespace vigilante

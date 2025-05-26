@@ -215,6 +215,16 @@ void GameMapManager::setOpened(const string& tmxMapFilePath,
   _allOpenableObjectStates[key] = locked;
 }
 
+bool GameMapManager::hasActivatedTrigger(const string& tmxMapFilePath, const int targetTriggerId) const {
+  const string key = getActivatedTriggerQueryKey(tmxMapFilePath, targetTriggerId);
+  return _activatedTriggers.contains(key);
+}
+
+void GameMapManager::setTriggerActivated(const string& tmxMapFilePath, const int targetTriggerId) {
+  const string key = getActivatedTriggerQueryKey(tmxMapFilePath, targetTriggerId);
+  _activatedTriggers.insert(key);
+}
+
 string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFilePath,
                                                  const GameMap::OpenableObjectType type,
                                                  const int targetObjectId) const {
@@ -231,6 +241,11 @@ string GameMapManager::getOpenableObjectQueryKey(const string& tmxMapFilePath,
   }
 
   return string_util::format("%s_%s_%d", tmxMapFilePath.c_str(), typeStr.c_str(), targetObjectId);
+}
+
+string GameMapManager::getActivatedTriggerQueryKey(const std::string& tmxMapFilePath,
+                                                   const int targetObjectId) const {
+  return string_util::format("%s_%d", tmxMapFilePath.c_str(), targetObjectId);
 }
 
 }  // namespace vigilante

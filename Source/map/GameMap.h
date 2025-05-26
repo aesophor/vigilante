@@ -49,7 +49,9 @@ class GameMap final {
 
   class Trigger final : public Interactable {
    public:
-    Trigger(const std::vector<std::string>& cmds,
+    Trigger(const std::string& tmxMapFilePath,
+            const int triggerId,
+            const std::vector<std::string>& cmds,
             const bool canBeTriggeredOnlyOnce,
             const bool canBeTriggeredOnlyByPlayer,
             const bool shouldBlockWhileInBossFight,
@@ -80,6 +82,8 @@ class GameMap final {
     virtual void createHintBubbleFx() override {}  // Interactable
     virtual void removeHintBubbleFx() override {}  // Interactable
 
+    const std::string _tmxMapFilePath;
+    const int _triggerId;
     std::vector<std::string> _cmds;
     bool _canBeTriggeredOnlyOnce{};
     bool _canBeTriggeredOnlyByPlayer{};

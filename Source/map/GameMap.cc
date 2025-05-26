@@ -264,6 +264,7 @@ list<b2Body*> GameMap::createPolylines(const string& layerName, const short cate
 }
 
 void GameMap::createTriggers() {
+  int triggerId{};
   for (const auto& rectObj : getObjects("Trigger")) {
     const auto& valMap = rectObj.asValueMap();
     float x = valMap.at("x").asFloat();
@@ -283,6 +284,7 @@ void GameMap::createTriggers() {
       .buildBody();
 
     auto trigger = std::make_unique<GameMap::Trigger>(
+        _tmxTiledMapFilePath, triggerId,
         cmds, canBeTriggeredOnlyOnce, canBeTriggeredOnlyByPlayer,
         shouldBlockWhileInBossFight, controlHintText, damage, body);
     auto trigger_raw_ptr = trigger.get();
@@ -294,6 +296,8 @@ void GameMap::createTriggers() {
       .friction(0)
       .setUserData(trigger_raw_ptr)
       .buildFixture();
+
+    triggerId++;
   }
 }
 
@@ -455,14 +459,18 @@ void GameMap::createParallaxBackground() {
   ax_util::addChildWithParentCameraMask(gmMgr->getParallaxLayer(), _parallaxBackground->getParallaxNode());
 }
 
-GameMap::Trigger::Trigger(const vector<string>& cmds,
+GameMap::Trigger::Trigger(const string& tmxMapFilePath,
+                          const int triggerId,
+                          const vector<string>& cmds,
                           const bool canBeTriggeredOnlyOnce,
                           const bool canBeTriggeredOnlyByPlayer,
                           const bool shouldBlockWhileInBossFight,
                           const string& controlHintText,
                           const int damage,
                           b2Body* body)
-    : _cmds{cmds},
+    : _tmxMapFilePath{tmxMapFilePath},
+      _triggerId{triggerId},
+      _cmds{cmds},
       _canBeTriggeredOnlyOnce{canBeTriggeredOnlyOnce},
       _canBeTriggeredOnlyByPlayer{canBeTriggeredOnlyByPlayer},
       _shouldBlockWhileInBossFight{shouldBlockWhileInBossFight},
@@ -475,7 +483,8 @@ GameMap::Trigger::~Trigger() {
 }
 
 void GameMap::Trigger::onInteract(Character* user) {
-  if (_canBeTriggeredOnlyOnce && _hasTriggered) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (_canBeTriggeredOnlyOnce && (_hasTriggered || gmMgr->hasActivatedTrigger(_tmxMapFilePath, _triggerId))) {
     return;
   }
 
@@ -484,6 +493,9 @@ void GameMap::Trigger::onInteract(Character* user) {
   }
 
   _hasTriggered = true;
+  if (_canBeTriggeredOnlyOnce) {
+    gmMgr->setTriggerActivated(_tmxMapFilePath, _triggerId);
+  }
 
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
   for (const auto& cmd : _cmds) {
