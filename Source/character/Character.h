@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_CHARACTER_H_
-#define VIGILANTE_CHARACTER_CHARACTER_H_
+#ifndef REQUIEM_CHARACTER_CHARACTER_H_
+#define REQUIEM_CHARACTER_CHARACTER_H_
 
 #include <array>
 #include <functional>
@@ -29,7 +29,7 @@
 #include "skill/Skill.h"
 #include "util/ds/SetVector.h"
 
-namespace vigilante {
+namespace requiem {
 
 class ComboSystem;
 
@@ -492,6 +492,6 @@ class Character : public DynamicActor, public Importable {
   std::shared_ptr<Party> _party;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_CHARACTER_H_
+#endif  // REQUIEM_CHARACTER_CHARACTER_H_

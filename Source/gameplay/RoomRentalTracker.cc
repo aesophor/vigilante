@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 bool RoomRentalTracker::hasCheckedIn(const std::string& innTmxFilePath) const {
   return _checkedInInns.contains(innTmxFilePath);
@@ -33,4 +33,4 @@ bool RoomRentalTracker::checkOut(const string& innTmxFilePath) {
   return _checkedInInns.erase(innTmxFilePath);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

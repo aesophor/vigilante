@@ -1,11 +1,11 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_IMPORTABLE_H_
-#define VIGILANTE_IMPORTABLE_H_
+#ifndef REQUIEM_IMPORTABLE_H_
+#define REQUIEM_IMPORTABLE_H_
 
 #include <filesystem>
 
-namespace vigilante {
+namespace requiem {
 
 class Importable {
  public:
@@ -14,6 +14,6 @@ class Importable {
   virtual void import(const std::filesystem::path& jsonFilePath) = 0;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_IMPORTABLE_H_
+#endif  // REQUIEM_IMPORTABLE_H_

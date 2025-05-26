@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_TRADE_TRADE_WINDOW_H_
-#define VIGILANTE_UI_TRADE_TRADE_WINDOW_H_
+#ifndef REQUIEM_UI_TRADE_TRADE_WINDOW_H_
+#define REQUIEM_UI_TRADE_TRADE_WINDOW_H_
 
 #include <memory>
 
@@ -13,7 +13,7 @@
 #include "ui/TabView.h"
 #include "ui/trade/TradeListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 class TradeWindow : public Window {
  public:
@@ -39,6 +39,6 @@ class TradeWindow : public Window {
   Character* _seller;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_TRADE_TRADE_WINDOW_H_
+#endif  // REQUIEM_UI_TRADE_TRADE_WINDOW_H_

@@ -16,7 +16,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 void Quest::import(const fs::path& jsonFilePath) {
   _questProfile = Quest::Profile{jsonFilePath};
@@ -131,4 +131,4 @@ Quest::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath{jsonFilePat
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

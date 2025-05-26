@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_STATUS_BAR_H_
-#define VIGILANTE_UI_HUD_STATUS_BAR_H_
+#ifndef REQUIEM_UI_HUD_STATUS_BAR_H_
+#define REQUIEM_UI_HUD_STATUS_BAR_H_
 
 #include <string>
 
@@ -9,7 +9,7 @@
 #include <ui/UILayout.h>
 #include <ui/UIImageView.h>
 
-namespace vigilante {
+namespace requiem {
 
 class StatusBar final {
  public:
@@ -40,6 +40,6 @@ class StatusBar final {
   float _autoHideTimer{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_STATUS_BAR_H_
+#endif  // REQUIEM_UI_HUD_STATUS_BAR_H_

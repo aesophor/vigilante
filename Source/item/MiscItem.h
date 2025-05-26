@@ -1,19 +1,19 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_ITEM_MISC_ITEM_H_
-#define VIGILANTE_ITEM_MISC_ITEM_H_
+#ifndef REQUIEM_ITEM_MISC_ITEM_H_
+#define REQUIEM_ITEM_MISC_ITEM_H_
 
 #include <string>
 
 #include "Item.h"
 
-namespace vigilante {
+namespace requiem {
 
 class MiscItem : public Item {
  public:
   explicit MiscItem(const std::filesystem::path& jsonFilePath);
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_ITEM_MISC_ITEM_H_
+#endif  // REQUIEM_ITEM_MISC_ITEM_H_

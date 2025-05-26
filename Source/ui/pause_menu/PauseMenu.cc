@@ -15,10 +15,10 @@
 #include "util/Logger.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -148,4 +148,4 @@ void PauseMenu::setVisible(bool visible) {
   Audio::the().playSfx(kSfxOpenClosePauseMenu);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

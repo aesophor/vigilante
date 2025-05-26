@@ -1,14 +1,14 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_ITEM_EQUIPMENT_H_
-#define VIGILANTE_ITEM_EQUIPMENT_H_
+#ifndef REQUIEM_ITEM_EQUIPMENT_H_
+#define REQUIEM_ITEM_EQUIPMENT_H_
 
 #include <array>
 #include <string>
 
 #include "Item.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Equipment : public Item {
  public:
@@ -77,6 +77,6 @@ class Equipment : public Item {
   Equipment::Profile _equipmentProfile;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_ITEM_EQUIPMENT_H_
+#endif  // REQUIEM_ITEM_EQUIPMENT_H_

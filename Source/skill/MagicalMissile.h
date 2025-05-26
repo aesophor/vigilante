@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SKILL_MAGICAL_MISSILE_H_
-#define VIGILANTE_SKILL_MAGICAL_MISSILE_H_
+#ifndef REQUIEM_SKILL_MAGICAL_MISSILE_H_
+#define REQUIEM_SKILL_MAGICAL_MISSILE_H_
 
 #include <string>
 
@@ -12,7 +12,7 @@
 #include "Skill.h"
 #include "Projectile.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -65,6 +65,6 @@ class MagicalMissile final : public DynamicActor, public Skill, public Projectil
   ax::Sprite* _launchFxSprite{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_SKILL_MAGICAL_MISSILE_H_
+#endif  // REQUIEM_SKILL_MAGICAL_MISSILE_H_

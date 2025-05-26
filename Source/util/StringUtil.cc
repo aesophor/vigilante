@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace vigilante::string_util {
+namespace requiem::string_util {
 
 vector<string> split(const string& s, const char delimiter) {
   stringstream ss{s};
@@ -86,4 +86,4 @@ string& toLower(string& s) {
   return s;
 }
 
-}  // namespace vigilante::string_util
+}  // namespace requiem::string_util

@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 bool StaticActor::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -113,4 +113,4 @@ fs::path StaticActor::getSpritesheetFilePath(const fs::path& textureResDirPath) 
   return textureResDirPath / "spritesheet.png";
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,12 +1,12 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
-#define VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
+#ifndef REQUIEM_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
+#define REQUIEM_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
 
 #include "gameplay/DialogueTree.h"
 #include "ui/ListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 // Forward declaration
 class DialogueMenu;
@@ -30,6 +30,6 @@ class DialogueListView final : public ListView<Dialogue*> {
   DialogueMenu* _dialogueMenu;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_
+#endif  // REQUIEM_UI_DIALOGUE_DIALOGUE_LISTVIEW_H_

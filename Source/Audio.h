@@ -1,11 +1,11 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_AUDIO_H_
-#define VIGILANTE_AUDIO_H_
+#ifndef REQUIEM_AUDIO_H_
+#define REQUIEM_AUDIO_H_
 
 #include <filesystem>
 
-namespace vigilante {
+namespace requiem {
 
 class Audio {
  public:
@@ -20,6 +20,6 @@ class Audio {
   Audio() = default;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_AUDIO_H_
+#endif  // REQUIEM_AUDIO_H_

@@ -7,7 +7,7 @@
 
 USING_NS_AX;
 
-namespace vigilante::camera_util {
+namespace requiem::camera_util {
 
 namespace {
 
@@ -89,4 +89,4 @@ void updateShake(Camera* camera, const float delta) {
   }
 }
 
-}  // namespace vigilante::camera_util
+}  // namespace requiem::camera_util

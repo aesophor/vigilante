@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SCENE_GAME_SCENE_H_
-#define VIGILANTE_SCENE_GAME_SCENE_H_
+#ifndef REQUIEM_SCENE_GAME_SCENE_H_
+#define REQUIEM_SCENE_GAME_SCENE_H_
 
 #include <memory>
 #include <string>
@@ -32,7 +32,7 @@
 #include "ui/Shade.h"
 #include "ui/WindowManager.h"
 
-namespace vigilante {
+namespace requiem {
 
 class GameScene final : public ax::Scene, public Controllable {
  public:
@@ -100,6 +100,6 @@ class GameScene final : public ax::Scene, public Controllable {
   std::unique_ptr<RoomRentalTracker> _roomRentalTracker;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_SCENE_GAME_SCENE_H_
+#endif  // REQUIEM_SCENE_GAME_SCENE_H_

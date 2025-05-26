@@ -8,7 +8,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -55,4 +55,4 @@ bool handleCombatMotion(Character& c, const Character::State attackState) {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

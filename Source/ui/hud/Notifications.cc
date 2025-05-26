@@ -2,7 +2,7 @@
 
 #include "Notifications.h"
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -16,4 +16,4 @@ constexpr uint8_t kMaxLabelLifetime = 5;
 Notifications::Notifications()
     : TimedLabelService{kStartingX, kStartingY, kMaxLabelCount, kMaxLabelLifetime, TimedLabelService::TimedLabel::kLeft} {}
 
-}  // namespace vigilante
+}  // namespace requiem

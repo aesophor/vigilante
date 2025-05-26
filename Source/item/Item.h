@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_ITEM_ITEM_H_
-#define VIGILANTE_ITEM_ITEM_H_
+#ifndef REQUIEM_ITEM_ITEM_H_
+#define REQUIEM_ITEM_ITEM_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 #include "DynamicActor.h"
 #include "Importable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Item : public DynamicActor, public Importable {
  public:
@@ -70,6 +70,6 @@ class Item : public DynamicActor, public Importable {
   float _accumulatedDelta{};  // used for in-game-map up & down floating.
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_ITEM_ITEM_H_
+#endif  // REQUIEM_ITEM_ITEM_H_

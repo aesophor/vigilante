@@ -13,10 +13,10 @@
 #include "util/KeyCodeUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -123,4 +123,4 @@ void SkillListView::showSkillsByType(Skill::Type skillType) {
   _descLabel->setString((_objects.size() > 0) ? _objects[_current]->getDesc() : "");
 }
 
-}  // namespace vigilante
+}  // namespace requiem

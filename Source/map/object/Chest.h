@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_OBJECT_CHEST_H_
-#define VIGILANTE_MAP_OBJECT_CHEST_H_
+#ifndef REQUIEM_MAP_OBJECT_CHEST_H_
+#define REQUIEM_MAP_OBJECT_CHEST_H_
 
 #include <string>
 #include <vector>
@@ -11,7 +11,7 @@
 #include "DynamicActor.h"
 #include "Interactable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Chest : public DynamicActor, public Interactable {
  public:
@@ -44,6 +44,6 @@ class Chest : public DynamicActor, public Interactable {
   ax::Sprite* _hintBubbleFxSprite{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_OBJECT_CHEST_H_
+#endif  // REQUIEM_MAP_OBJECT_CHEST_H_

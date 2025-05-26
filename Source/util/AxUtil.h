@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_AX_UTIL_H_
-#define VIGILANTE_UTIL_AX_UTIL_H_
+#ifndef REQUIEM_UTIL_AX_UTIL_H_
+#define REQUIEM_UTIL_AX_UTIL_H_
 
 #include <concepts>
 #include <optional>
@@ -9,7 +9,7 @@
 
 #include <axmol.h>
 
-namespace vigilante::ax_util {
+namespace requiem::ax_util {
 
 void addChildWithParentCameraMask(ax::Node* parent, ax::Node* child);
 void addChildWithParentCameraMask(ax::Node* parent, ax::Node* child, const int localZOrder);
@@ -98,6 +98,6 @@ T extractValueFromValueMap(const ax::ValueMap& valueMap, const std::string& key,
   return it != valueMap.end() ? it->second.asString() : default_value;
 }
 
-}  // namespace vigilante::ax_util
+}  // namespace requiem::ax_util
 
-#endif  // VIGILANTE_UTIL_AX_UTIL_H_
+#endif  // REQUIEM_UTIL_AX_UTIL_H_

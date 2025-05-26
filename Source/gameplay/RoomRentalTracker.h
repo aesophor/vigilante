@@ -1,12 +1,12 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_GAMEPLAY_ROOM_RENTAL_TRACKER_H_
-#define VIGILANTE_GAMEPLAY_ROOM_RENTAL_TRACKER_H_
+#ifndef REQUIEM_GAMEPLAY_ROOM_RENTAL_TRACKER_H_
+#define REQUIEM_GAMEPLAY_ROOM_RENTAL_TRACKER_H_
 
 #include <string>
 #include <unordered_set>
 
-namespace vigilante {
+namespace requiem {
 
 class RoomRentalTracker final {
  public:
@@ -23,6 +23,6 @@ class RoomRentalTracker final {
   std::unordered_set<std::string> _checkedInInns;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_GAMEPLAY_ROOM_RENTAL_TRACKER_H_
+#endif  // REQUIEM_GAMEPLAY_ROOM_RENTAL_TRACKER_H_

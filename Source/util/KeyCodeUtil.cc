@@ -25,7 +25,7 @@ unordered_map<EventKeyboard::KeyCode, string> keyMap;
 
 }  // namespace
 
-namespace vigilante::keycode_util {
+namespace requiem::keycode_util {
 
 void init() {
   ::keyMap[EventKeyboard::KeyCode::KEY_BACK] = "BACK";
@@ -192,4 +192,4 @@ char keyCodeToAscii(const EventKeyboard::KeyCode keyCode, const bool isCapsLocke
   }
 }
 
-}  // namespace vigilante::keycode_util
+}  // namespace requiem::keycode_util

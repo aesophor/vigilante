@@ -19,7 +19,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -735,4 +735,4 @@ void CommandHandler::moveTo(const vector<string>& args) {
   setSuccess();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

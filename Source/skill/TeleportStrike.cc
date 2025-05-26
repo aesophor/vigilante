@@ -11,10 +11,10 @@
 #include "util/CameraUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -165,4 +165,4 @@ std::optional<b2Vec2> TeleportStrike::determineTeleportDest(Character* target) c
   return std::nullopt;
 }
 
-} // namespace vigilante
+} // namespace requiem

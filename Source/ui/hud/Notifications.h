@@ -1,11 +1,11 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_NOTIFICATIONS_H_
-#define VIGILANTE_UI_HUD_NOTIFICATIONS_H_
+#ifndef REQUIEM_UI_HUD_NOTIFICATIONS_H_
+#define REQUIEM_UI_HUD_NOTIFICATIONS_H_
 
 #include "ui/TimedLabelService.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Notifications final : public TimedLabelService {
  public:
@@ -13,6 +13,6 @@ class Notifications final : public TimedLabelService {
   virtual ~Notifications() override = default;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_NOTIFICATIONS_H_
+#endif  // REQUIEM_UI_HUD_NOTIFICATIONS_H_

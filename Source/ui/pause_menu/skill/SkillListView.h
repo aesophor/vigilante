@@ -1,14 +1,14 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
-#define VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
+#define REQUIEM_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
 
 #include <string>
 
 #include "skill/Skill.h"
 #include "ui/ListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 class PauseMenu;
 
@@ -28,6 +28,6 @@ class SkillListView final : public ListView<Skill*> {
   ax::Label* _descLabel;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_SKILL_SKILL_LIST_VIEW_H_

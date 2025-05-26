@@ -21,7 +21,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 void WorldContactListener::BeginContact(b2Contact* contact) {
   b2Fixture* fixtureA = contact->GetFixtureA();
@@ -415,4 +415,4 @@ b2Fixture* WorldContactListener::GetTargetFixture(short targetCategoryBits, b2Fi
   return targetFixture;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -10,10 +10,10 @@
 #include "util/StringUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -44,4 +44,4 @@ void TimeLocationInfo::update() {
   _locationNameLabel->setString(s);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,9 +1,9 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_INTERACTABLE_H_
-#define VIGILANTE_INTERACTABLE_H_
+#ifndef REQUIEM_INTERACTABLE_H_
+#define REQUIEM_INTERACTABLE_H_
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -21,6 +21,6 @@ class Interactable {
   virtual void removeHintBubbleFx() = 0;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_INTERACTABLE_H_
+#endif  // REQUIEM_INTERACTABLE_H_

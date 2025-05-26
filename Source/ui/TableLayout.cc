@@ -7,7 +7,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 TableLayout* TableLayout::create(float tableWidth, float rowHeight) {
   TableLayout* tableLayout = new (nothrow) TableLayout;
@@ -147,4 +147,4 @@ void TableLayout::reset() {
   _nextChildPosition = {0, 0};
 }
 
-}  // namespace vigilante
+}  // namespace requiem

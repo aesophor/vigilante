@@ -12,10 +12,10 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 ForwardSlash::ForwardSlash(const fs::path& jsonFilePath, Character* user)
     : Skill{},
@@ -77,4 +77,4 @@ fs::path ForwardSlash::getIconPath() const {
   return _skillProfile.textureResDirPath / kIconPng;
 }
 
-} // namespace vigilante
+} // namespace requiem

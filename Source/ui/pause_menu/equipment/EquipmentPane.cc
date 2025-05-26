@@ -10,10 +10,10 @@
 #include "ui/pause_menu/inventory/InventoryPane.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 EquipmentPane::EquipmentPane(PauseMenu* pauseMenu) : AbstractPane{pauseMenu, TableLayout::create(300)} {
   ui::Layout* innerLayout = ui::Layout::create();
@@ -127,4 +127,4 @@ void EquipmentPane::EquipmentItem::setSelected(bool selected) const {
   _background->loadTexture(selected ? string{kEquipmentHighlighted} : string{kEquipmentRegular});
 }
 
-}  // namespace vigilante
+}  // namespace requiem

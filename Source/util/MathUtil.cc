@@ -7,7 +7,7 @@
 
 using namespace std;
 
-namespace vigilante::math_util {
+namespace requiem::math_util {
 
 optional<float> getSlope(const b2Vec2& point1, const b2Vec2& point2) {
   array<b2Vec2, 2> v = {{point1, point2}};
@@ -27,4 +27,4 @@ b2Vec2 rotateCounterClockwise(const b2Vec2& v, const float degree) {
   return {x, y};
 }
 
-}  // namespace vigilante::math_util
+}  // namespace requiem::math_util

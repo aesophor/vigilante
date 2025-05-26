@@ -1,14 +1,14 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_STRING_UTIL_H_
-#define VIGILANTE_UTIL_STRING_UTIL_H_
+#ifndef REQUIEM_UTIL_STRING_UTIL_H_
+#define REQUIEM_UTIL_STRING_UTIL_H_
 
 #include <cstring>
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace vigilante {
+namespace requiem {
 
 namespace string_util {
 
@@ -41,6 +41,6 @@ std::string string_util::format(const std::string& fmt, Args&&... args) {
           std::forward<Args>(args)...) > 0) ? std::string(buf.get()) : "";
 }
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_STRING_UTIL_H_
+#endif  // REQUIEM_UTIL_STRING_UTIL_H_

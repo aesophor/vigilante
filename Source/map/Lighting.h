@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_LIGHTING_H_
-#define VIGILANTE_MAP_LIGHTING_H_
+#ifndef REQUIEM_MAP_LIGHTING_H_
+#define REQUIEM_MAP_LIGHTING_H_
 
 #include <list>
 
@@ -11,7 +11,7 @@
 #include "gameplay/InGameTime.h"
 #include "StaticActor.h"
 
-namespace vigilante {
+namespace requiem {
 
 class GameMap;
 
@@ -46,6 +46,6 @@ class Lighting final {
   float _ambientLightLevel{0.3f};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_LIGHTING_H_
+#endif  // REQUIEM_MAP_LIGHTING_H_

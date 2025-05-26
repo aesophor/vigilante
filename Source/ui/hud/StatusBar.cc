@@ -5,7 +5,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 StatusBar::StatusBar(const string& leftPaddingImgPath,
                      const string& rightPaddingImgPath,
@@ -46,4 +46,4 @@ void StatusBar::update(const int currentVal, const int fullVal) {
   _rightPaddingImg->setPositionX(_statusBarImg->getPositionX() + _maxLength * currentVal / fullVal);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

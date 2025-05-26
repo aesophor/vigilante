@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_GAME_MAP_H_
-#define VIGILANTE_MAP_GAME_MAP_H_
+#ifndef REQUIEM_MAP_GAME_MAP_H_
+#define REQUIEM_MAP_GAME_MAP_H_
 
 #include <list>
 #include <memory>
@@ -22,7 +22,7 @@
 #include "map/PathFinder.h"
 #include "util/Logger.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 class Player;
@@ -282,6 +282,6 @@ std::shared_ptr<ReturnType> GameMap::removeDynamicActor(DynamicActor* actor) {
   return removedActor;
 }
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_GAME_MAP_H_
+#endif  // REQUIEM_MAP_GAME_MAP_H_

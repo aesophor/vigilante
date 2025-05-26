@@ -19,11 +19,11 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::assets;
-using namespace vigilante::category_bits;
+using namespace requiem::assets;
+using namespace requiem::category_bits;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -144,4 +144,4 @@ Item::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath(jsonFilePath
   price = json["price"].GetInt();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

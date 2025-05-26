@@ -23,10 +23,10 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::category_bits;
+using namespace requiem::category_bits;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -198,4 +198,4 @@ void Player::updateKillTargetObjectives(Character* killedCharacter) {
   _questBook.update(Quest::Objective::Type::KILL);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

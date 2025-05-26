@@ -12,7 +12,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -61,4 +61,4 @@ void OptionPane::handleInput() {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

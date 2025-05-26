@@ -1,14 +1,14 @@
 // Copyright (c) 2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_
-#define VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_
+#ifndef REQUIEM_UI_HUD_TIME_LOCATION_INFO_H_
+#define REQUIEM_UI_HUD_TIME_LOCATION_INFO_H_
 
 #include <string>
 
 #include <axmol.h>
 #include <2d/Label.h>
 
-namespace vigilante {
+namespace requiem {
 
 class TimeLocationInfo final {
  public:
@@ -23,6 +23,6 @@ class TimeLocationInfo final {
   ax::Label* _locationNameLabel{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_TIME_LOCATION_INFO_H_
+#endif  // REQUIEM_UI_HUD_TIME_LOCATION_INFO_H_

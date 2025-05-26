@@ -4,7 +4,7 @@
 
 USING_NS_AX;
 
-namespace vigilante::ax_util {
+namespace requiem::ax_util {
 
 void addChildWithParentCameraMask(Node* parent, Node* child) {
   child->setCameraMask(parent->getCameraMask());
@@ -16,4 +16,4 @@ void addChildWithParentCameraMask(Node* parent, Node* child, const int localZOrd
   parent->addChild(child, localZOrder);
 }
 
-}  // namespace vigilante::ax_util
+}  // namespace requiem::ax_util

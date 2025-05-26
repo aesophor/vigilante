@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_PLAYER_H_
-#define VIGILANTE_CHARACTER_PLAYER_H_
+#ifndef REQUIEM_CHARACTER_PLAYER_H_
+#define REQUIEM_CHARACTER_PLAYER_H_
 
 #include <memory>
 #include <string>
@@ -15,7 +15,7 @@
 #include "item/Equipment.h"
 #include "quest/QuestBook.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Player final : public Character, public Controllable {
  public:
@@ -47,6 +47,6 @@ class Player final : public Character, public Controllable {
   QuestBook _questBook;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_PLAYER_H_
+#endif  // REQUIEM_CHARACTER_PLAYER_H_

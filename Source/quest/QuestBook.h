@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_QUEST_QUEST_BOOK_H_
-#define VIGILANTE_QUEST_QUEST_BOOK_H_
+#ifndef REQUIEM_QUEST_QUEST_BOOK_H_
+#define REQUIEM_QUEST_QUEST_BOOK_H_
 
 #include <memory>
 #include <optional>
@@ -11,7 +11,7 @@
 
 #include "Quest.h"
 
-namespace vigilante {
+namespace requiem {
 
 class QuestBook final {
  public:
@@ -44,6 +44,6 @@ class QuestBook final {
   std::vector<Quest*> _completedQuests;
 };
 
-} // namespace vigilante
+} // namespace requiem
 
-#endif // VIGILANTE_QUEST_QUEST_BOOK_H_
+#endif // REQUIEM_QUEST_QUEST_BOOK_H_

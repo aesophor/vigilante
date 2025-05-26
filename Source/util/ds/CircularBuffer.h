@@ -1,12 +1,12 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_
-#define VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_
+#ifndef REQUIEM_UTIL_DS_CIRCULAR_BUFFER_H_
+#define REQUIEM_UTIL_DS_CIRCULAR_BUFFER_H_
 
 #include <memory>
 #include <string>
 
-namespace vigilante {
+namespace requiem {
 
 template <typename T>
 class CircularBuffer {
@@ -70,6 +70,6 @@ void CircularBuffer<T>::clear() {
   _head = 0;
 }
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_DS_CIRCULAR_BUFFER_H_
+#endif  // REQUIEM_UTIL_DS_CIRCULAR_BUFFER_H_

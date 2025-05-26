@@ -25,7 +25,7 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-set(APP_NAME vigilante)
+set(APP_NAME requiem)
 
 project(${APP_NAME})
 

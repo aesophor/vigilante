@@ -5,7 +5,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 CallbackManager& CallbackManager::the() {
   static CallbackManager instance;
@@ -40,4 +40,4 @@ void CallbackManager::cancel(const CallbackManager::CallbackId callbackId) {
   _cancelledCallbackIds.emplace(callbackId);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

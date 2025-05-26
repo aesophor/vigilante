@@ -1,7 +1,7 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_PARALLAX_BACKGROUND_H_
-#define VIGILANTE_MAP_PARALLAX_BACKGROUND_H_
+#ifndef REQUIEM_MAP_PARALLAX_BACKGROUND_H_
+#define REQUIEM_MAP_PARALLAX_BACKGROUND_H_
 
 #include <filesystem>
 #include <map>
@@ -9,7 +9,7 @@
 
 #include <axmol.h>
 
-namespace vigilante {
+namespace requiem {
 
 class InfiniteParallaxNode : public ax::Node {
  public:
@@ -55,6 +55,6 @@ class ParallaxBackground final {
   InfiniteParallaxNode* _parallaxNode{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_PARALLAX_BACKGROUND_H_
+#endif  // REQUIEM_MAP_PARALLAX_BACKGROUND_H_

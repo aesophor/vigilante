@@ -17,10 +17,10 @@
 #include "util/Logger.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 bool GameScene::init() {
   if (!Scene::init()) {
@@ -30,7 +30,7 @@ bool GameScene::init() {
   _isActive = true;
   _isTerminating = false;
 
-  // Initialize vigilante's exp point table.
+  // Initialize requiem's exp point table.
   exp_point_table::import(kExpPointTable);
 
   // Initialize InputManager.
@@ -43,9 +43,9 @@ bool GameScene::init() {
   // Initialize CallbackManager.
   CallbackManager::the().setScene(this);
 
-  // Initialize Vigilante's utils.
-  vigilante::keycode_util::init();
-  vigilante::rand_util::init();
+  // Initialize requiem's utils.
+  requiem::keycode_util::init();
+  requiem::rand_util::init();
 
   // Camera note:
   // DEFAULT (orthographic): unused
@@ -297,4 +297,4 @@ void GameScene::quit() {
   _gameMapManager->destroyGameMap();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

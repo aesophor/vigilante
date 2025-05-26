@@ -11,7 +11,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -164,4 +164,4 @@ void NpcController::jumpIfStucked(const float delta, const float checkInterval) 
   _calculateDistanceTimer = 0;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_
-#define VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_
+#ifndef REQUIEM_UI_AMOUNT_SELECTION_WINDOW_H_
+#define REQUIEM_UI_AMOUNT_SELECTION_WINDOW_H_
 
 #include <functional>
 #include <memory>
@@ -16,7 +16,7 @@
 #include "ui/TabView.h"
 #include "ui/trade/TradeListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 class AmountSelectionWindow final : public Window {
  public:
@@ -33,6 +33,6 @@ class AmountSelectionWindow final : public Window {
   TextField _textField;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_AMOUNT_SELECTION_WINDOW_H_
+#endif  // REQUIEM_UI_AMOUNT_SELECTION_WINDOW_H_

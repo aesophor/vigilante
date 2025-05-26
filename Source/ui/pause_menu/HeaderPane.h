@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_
-#define VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_HEADER_PANE_H_
+#define REQUIEM_UI_PAUSE_MENU_HEADER_PANE_H_
 
 #include <string>
 #include <vector>
@@ -12,7 +12,7 @@
 
 #include "ui/pause_menu/AbstractPane.h"
 
-namespace vigilante {
+namespace requiem {
 
 class HeaderPane final : public AbstractPane {
  public:
@@ -43,6 +43,6 @@ class HeaderPane final : public AbstractPane {
   int _currentIndex{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_HEADER_PANE_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_HEADER_PANE_H_

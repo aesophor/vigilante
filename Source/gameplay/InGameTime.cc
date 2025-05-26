@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 InGameTime::InGameTime() {
   std::make_heap(_deferredCmdsMinHeap.begin(), _deferredCmdsMinHeap.end(), cmdsMinHeapCmp);
@@ -70,4 +70,4 @@ void InGameTime::executeCallbacks() {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -44,4 +44,4 @@ void Audio::setBgmVolume(const float volume) {
   AudioEngine::setVolume(bgmAudioId, bgmVolume);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

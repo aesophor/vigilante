@@ -11,7 +11,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -42,4 +42,4 @@ int getNextLevelExp(const int currentLevel) {
 
 }  // namespace exp_point_table
 
-}  // namespace vigilante
+}  // namespace requiem

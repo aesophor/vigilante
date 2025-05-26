@@ -11,10 +11,10 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 BatForm::BatForm(const fs::path& jsonFilePath, Character* user)
     : Skill{},
@@ -58,4 +58,4 @@ fs::path BatForm::getIconPath() const {
   return _skillProfile.textureResDirPath / kIconPng;
 }
 
-} // namespace vigilante
+} // namespace requiem

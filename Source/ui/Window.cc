@@ -18,10 +18,10 @@
 #define CONTENT_MARGIN_BOTTOM 30
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Window::Window(const float width, const float height)
     : _layer{Layer::create()},
@@ -165,4 +165,4 @@ void Window::normalize(bool init) {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SKILL_TELEPORT_STRIKE_H_
-#define VIGILANTE_SKILL_TELEPORT_STRIKE_H_
+#ifndef REQUIEM_SKILL_TELEPORT_STRIKE_H_
+#define REQUIEM_SKILL_TELEPORT_STRIKE_H_
 
 #include <optional>
 #include <string>
@@ -10,7 +10,7 @@
 
 #include "Skill.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -39,6 +39,6 @@ class TeleportStrike final : public Skill {
   bool _hasActivated{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif // VIGILANTE_SKILL_TELEPORT_STRIKE_H_
+#endif // REQUIEM_SKILL_TELEPORT_STRIKE_H_

@@ -12,10 +12,10 @@
 #include "util/AxUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 void FxManager::createDustFx(const Character* c) {
   if (!c) {
@@ -108,4 +108,4 @@ void FxManager::removeFx(Sprite* sprite) {
   sprite->removeFromParent();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

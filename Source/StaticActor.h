@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_STATIC_ACTOR_H_
-#define VIGILANTE_STATIC_ACTOR_H_
+#ifndef REQUIEM_STATIC_ACTOR_H_
+#define REQUIEM_STATIC_ACTOR_H_
 
 #include <filesystem>
 #include <vector>
@@ -9,7 +9,7 @@
 #include <axmol.h>
 #include <2d/Node.h>
 
-namespace vigilante {
+namespace requiem {
 
 // A static actor is an abstract class which represents a game entity
 // consisting of the following members:
@@ -86,6 +86,6 @@ class StaticActor {
   std::vector<ax::Animation*> _bodyAnimations;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_STATIC_ACTOR_H_
+#endif  // REQUIEM_STATIC_ACTOR_H_

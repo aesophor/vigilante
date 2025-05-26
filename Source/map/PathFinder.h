@@ -1,13 +1,13 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_PATH_FINDER_H_
-#define VIGILANTE_MAP_PATH_FINDER_H_
+#ifndef REQUIEM_MAP_PATH_FINDER_H_
+#define REQUIEM_MAP_PATH_FINDER_H_
 
 #include <optional>
 
 #include <box2d/box2d.h>
 
-namespace vigilante {
+namespace requiem {
 
 class PathFinder {
  public:
@@ -24,6 +24,6 @@ class SimplePathFinder final : public PathFinder {
                                                    const float followDist) override;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_PATH_FINDER_H_
+#endif  // REQUIEM_MAP_PATH_FINDER_H_

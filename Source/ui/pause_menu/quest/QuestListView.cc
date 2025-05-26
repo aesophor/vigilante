@@ -9,10 +9,10 @@
 #include "ui/pause_menu/PauseMenuDialog.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -133,4 +133,4 @@ string QuestListView::generateDesc(const Quest* q) {
   return text;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

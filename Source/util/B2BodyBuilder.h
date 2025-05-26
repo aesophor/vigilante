@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_B2_BODY_BUILDER_H_
-#define VIGILANTE_UTIL_B2_BODY_BUILDER_H_
+#ifndef REQUIEM_UTIL_B2_BODY_BUILDER_H_
+#define REQUIEM_UTIL_B2_BODY_BUILDER_H_
 
 #include <memory>
 
 #include <box2d/box2d.h>
 
-namespace vigilante {
+namespace requiem {
 
 class B2BodyBuilder final {
  public:
@@ -46,6 +46,6 @@ class B2BodyBuilder final {
   void* _userData{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_B2_BODY_BUILDER_H_
+#endif  // REQUIEM_UTIL_B2_BODY_BUILDER_H_

@@ -17,7 +17,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 QuestBook::QuestBook() {
   reset();
@@ -197,4 +197,4 @@ optional<Quest*> QuestBook::getQuest(const string& questJsonFilePath) const {
   return it->second.get();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

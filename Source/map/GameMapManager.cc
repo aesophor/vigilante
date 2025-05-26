@@ -27,7 +27,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 GameMapManager::GameMapManager(const b2Vec2& gravity)
     : _parallaxLayer{Layer::create()},
@@ -248,4 +248,4 @@ string GameMapManager::getActivatedTriggerQueryKey(const std::string& tmxMapFile
   return string_util::format("%s_%d", tmxMapFilePath.c_str(), targetObjectId);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

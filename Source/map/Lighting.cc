@@ -13,10 +13,10 @@
 #include "util/AxUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Lighting::Lighting()
     : _layer{Layer::create()},
@@ -165,4 +165,4 @@ void Lighting::clear() {
   _staticLightSources.clear();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

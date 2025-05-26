@@ -14,10 +14,10 @@
 #define CONTROL_HINTS_MAX_ITEMS 3
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 ControlHints::ControlHints()
     : _layer{Layer::create()},
@@ -234,4 +234,4 @@ Size ControlHints::Hint::getContentSize() const {
   return ret;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

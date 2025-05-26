@@ -5,10 +5,10 @@
 #include "Assets.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 TabView::TabView(const string& regularBg, const string& highlightedBg)
     : _layout{ui::Layout::create()},
@@ -69,4 +69,4 @@ void TabView::Tab::setIsSelected(bool isSelected) {
   _isSelected = isSelected;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

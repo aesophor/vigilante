@@ -12,7 +12,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -63,4 +63,4 @@ optional<Character::State> ComboSystem::determineNextAttackState() {
   return nullopt;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

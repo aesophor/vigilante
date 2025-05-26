@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_GAMEPLAY_GAME_STATE_H_
-#define VIGILANTE_GAMEPLAY_GAME_STATE_H_
+#ifndef REQUIEM_GAMEPLAY_GAME_STATE_H_
+#define REQUIEM_GAMEPLAY_GAME_STATE_H_
 
 #include <filesystem>
 
@@ -9,7 +9,7 @@
 
 namespace fs = std::filesystem;
 
-namespace vigilante {
+namespace requiem {
 
 class GameState final {
  public:
@@ -55,6 +55,6 @@ class GameState final {
   rapidjson::Document::AllocatorType& _allocator;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_GAMEPLAY_GAME_STATE_H_
+#endif  // REQUIEM_GAMEPLAY_GAME_STATE_H_

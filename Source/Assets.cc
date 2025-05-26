@@ -13,7 +13,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante::assets {
+namespace requiem::assets {
 
 void loadSpritesheets() {
   VGLOG(LOG_INFO, "Loading textures...");
@@ -27,4 +27,4 @@ void loadSpritesheets() {
   }
 }
 
-}  // namespace vigilante::assets
+}  // namespace requiem::assets

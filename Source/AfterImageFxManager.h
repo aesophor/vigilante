@@ -1,13 +1,13 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_AFTER_IMAGE_FX_MANAGER_H_
-#define VIGILANTE_AFTER_IMAGE_FX_MANAGER_H_
+#ifndef REQUIEM_AFTER_IMAGE_FX_MANAGER_H_
+#define REQUIEM_AFTER_IMAGE_FX_MANAGER_H_
 
 #include <unordered_map>
 
 #include <axmol.h>
 
-namespace vigilante {
+namespace requiem {
 
 class AfterImageFxManager final {
  public:
@@ -32,6 +32,6 @@ class AfterImageFxManager final {
   std::unordered_map<const ax::Node*, AfterImageFxData> _entries;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_AFTER_IMAGE_FX_MANAGER_H_
+#endif  // REQUIEM_AFTER_IMAGE_FX_MANAGER_H_

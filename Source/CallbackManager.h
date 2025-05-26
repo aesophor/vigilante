@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CALLBACK_MANAGER_H_
-#define VIGILANTE_CALLBACK_MANAGER_H_
+#ifndef REQUIEM_CALLBACK_MANAGER_H_
+#define REQUIEM_CALLBACK_MANAGER_H_
 
 #include <cstdint>
 #include <functional>
@@ -9,7 +9,7 @@
 
 #include <axmol.h>
 
-namespace vigilante {
+namespace requiem {
 
 class CallbackManager final {
  public:
@@ -30,6 +30,6 @@ class CallbackManager final {
   std::unordered_set<CallbackId> _cancelledCallbackIds;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CALLBACK_MANAGER_H_
+#endif  // REQUIEM_CALLBACK_MANAGER_H_

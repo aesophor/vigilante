@@ -16,7 +16,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
     : _nodeMapper{std::move(other._nodeMapper)},
@@ -195,4 +195,4 @@ vector<DialogueTree::Node*> DialogueTree::Node::getChildrenOnExecFail() const {
 }
 
 
-}  // namespace vigilante
+}  // namespace requiem

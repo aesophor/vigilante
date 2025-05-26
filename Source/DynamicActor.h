@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_DYNAMIC_ACTOR_H_
-#define VIGILANTE_DYNAMIC_ACTOR_H_
+#ifndef REQUIEM_DYNAMIC_ACTOR_H_
+#define REQUIEM_DYNAMIC_ACTOR_H_
 
 #include <vector>
 
@@ -9,7 +9,7 @@
 
 #include "StaticActor.h"
 
-namespace vigilante {
+namespace requiem {
 
 // A dynamic actor is an abstract class which represents a game entity
 // consisting of the following members:
@@ -45,6 +45,6 @@ class DynamicActor : public StaticActor {
   std::vector<b2Fixture*> _fixtures;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_DYNAMIC_ACTOR_H_
+#endif  // REQUIEM_DYNAMIC_ACTOR_H_

@@ -5,10 +5,10 @@
 #include "Assets.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 TimedLabelService::TimedLabelService(const float startingX, const float startingY,
                                      const uint8_t maxLabelCount, const uint8_t labelLifetime,
@@ -72,4 +72,4 @@ TimedLabelService::TimedLabel::TimedLabel(const string& text, const float lifeti
   label->getFontAtlas()->setAliasTexParameters();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

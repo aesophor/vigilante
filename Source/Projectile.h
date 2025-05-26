@@ -1,9 +1,9 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_PROJECTILE_H_
-#define VIGILANTE_PROJECTILE_H_
+#ifndef REQUIEM_PROJECTILE_H_
+#define REQUIEM_PROJECTILE_H_
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -17,6 +17,6 @@ class Projectile {
   virtual void onHit(Character* target) = 0;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_PROJECTILE_H_
+#endif  // REQUIEM_PROJECTILE_H_

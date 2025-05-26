@@ -9,7 +9,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Keybindable* HotkeyManager::getHotkeyAction(EventKeyboard::KeyCode keyCode) const {
   for (size_t i = 0; i < kBindableKeys.size(); i++) {
@@ -65,4 +65,4 @@ void HotkeyManager::promptHotkey(Keybindable* keybindable, PauseMenuDialog* paus
   InputManager::the().setSpecialOnKeyPressed(onKeyPressedEvLstnr);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

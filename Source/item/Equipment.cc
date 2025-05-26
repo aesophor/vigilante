@@ -8,7 +8,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 Equipment::Equipment(const fs::path& jsonFilePath)
     : Item{jsonFilePath},
@@ -50,4 +50,4 @@ Equipment::Profile::Profile(const fs::path& jsonFilePath) {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

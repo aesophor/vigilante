@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_
-#define VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_
+#ifndef REQUIEM_UTIL_B2_RAY_CAST_UTIL_H_
+#define REQUIEM_UTIL_B2_RAY_CAST_UTIL_H_
 
 #include <functional>
 
 #include <box2d/box2d.h>
 
-namespace vigilante {
+namespace requiem {
 
 class B2RayCastCallback final : public b2RayCastCallback {
  public:
@@ -30,6 +30,6 @@ class B2RayCastCallback final : public b2RayCastCallback {
   bool _hasHit{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_B2_RAY_CAST_UTIL_H_
+#endif  // REQUIEM_UTIL_B2_RAY_CAST_UTIL_H_

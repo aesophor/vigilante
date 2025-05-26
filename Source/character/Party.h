@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_PARTY_H_
-#define VIGILANTE_CHARACTER_PARTY_H_
+#ifndef REQUIEM_CHARACTER_PARTY_H_
+#define REQUIEM_CHARACTER_PARTY_H_
 
 #include <memory>
 #include <optional>
@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace vigilante {
+namespace requiem {
 
 // Forward declaration
 class Character;
@@ -65,6 +65,6 @@ class Party final {
   std::unordered_map<std::string, Party::WaitingLocationInfo> _waitingMembersLocationInfos;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_PARTY_H_
+#endif  // REQUIEM_CHARACTER_PARTY_H_

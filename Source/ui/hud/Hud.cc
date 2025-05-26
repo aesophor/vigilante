@@ -13,10 +13,10 @@
 #define HUD_Y ax::Director::getInstance()->getWinSize().height - 40
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Hud::Hud()
     : _layer{Layer::create()},
@@ -73,4 +73,4 @@ void Hud::updateStatusBars() {
   _staminaBar->update(profile.stamina, profile.fullStamina);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

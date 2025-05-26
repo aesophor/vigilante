@@ -7,10 +7,10 @@
 #include "ui/pause_menu/PauseMenu.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 HeaderPane::HeaderPane(PauseMenu* pauseMenu) : AbstractPane{pauseMenu} {
   _layout->setLayoutType(ui::Layout::Type::RELATIVE);
@@ -56,4 +56,4 @@ void HeaderPane::selectNext() {
   select((_currentIndex + 1) % _kOptionCount);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

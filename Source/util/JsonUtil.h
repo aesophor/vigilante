@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_JSON_UTIL_H_
-#define VIGILANTE_UTIL_JSON_UTIL_H_
+#ifndef REQUIEM_UTIL_JSON_UTIL_H_
+#define REQUIEM_UTIL_JSON_UTIL_H_
 
 #include <filesystem>
 #include <list>
@@ -18,7 +18,7 @@
 
 namespace fs = std::filesystem;
 
-namespace vigilante::json_util {
+namespace requiem::json_util {
 
 template <typename T>
 inline constexpr bool dependent_false_v = false;
@@ -160,6 +160,6 @@ void deserialize(const rapidjson::Value& obj, KVs... kvs) {
 rapidjson::Document loadFromFile(const fs::path& jsonFilePath);
 void saveToFile(const fs::path& jsonFilePath, const rapidjson::Document& json);
 
-}  // namespace vigilante::json_util
+}  // namespace requiem::json_util
 
-#endif  // VIGILANTE_UTIL_JSON_UTIL_H_
+#endif  // REQUIEM_UTIL_JSON_UTIL_H_

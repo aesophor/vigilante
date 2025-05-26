@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_
-#define VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_
+#ifndef REQUIEM_MAP_OBJECT_STATIC_OBJECT_H_
+#define REQUIEM_MAP_OBJECT_STATIC_OBJECT_H_
 
 #include <string>
 
@@ -9,7 +9,7 @@
 
 #include "StaticActor.h"
 
-namespace vigilante {
+namespace requiem {
 
 class StaticObject : public StaticActor {
  public:
@@ -38,6 +38,6 @@ class StaticObject : public StaticActor {
   const int _zOrder;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_OBJECT_STATIC_OBJECT_H_
+#endif  // REQUIEM_MAP_OBJECT_STATIC_OBJECT_H_

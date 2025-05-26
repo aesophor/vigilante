@@ -33,10 +33,10 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePath)
     : _world{world},
@@ -701,4 +701,4 @@ int GameMap::Portal::getPortalId() const {
   return -1;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

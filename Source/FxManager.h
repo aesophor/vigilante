@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_FX_MANAGER_H_
-#define VIGILANTE_FX_MANAGER_H_
+#ifndef REQUIEM_FX_MANAGER_H_
+#define REQUIEM_FX_MANAGER_H_
 
 #include <filesystem>
 #include <string>
@@ -11,7 +11,7 @@
 
 #include <box2d/box2d.h>
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -35,6 +35,6 @@ class FxManager final {
   std::unordered_map<std::filesystem::path, ax::Animation*> _animationCache;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_FX_MANAGER_H_
+#endif  // REQUIEM_FX_MANAGER_H_

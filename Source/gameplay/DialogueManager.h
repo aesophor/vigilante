@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
-#define VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
+#ifndef REQUIEM_GAMEPLAY_DIALOGUE_MANAGER_H_
+#define REQUIEM_GAMEPLAY_DIALOGUE_MANAGER_H_
 
 #include <memory>
 
@@ -11,7 +11,7 @@
 #include "ui/dialogue/Subtitles.h"
 #include "ui/dialogue/DialogueMenu.h"
 
-namespace vigilante {
+namespace requiem {
 
 class DialogueManager final : public Controllable {
  public:
@@ -47,6 +47,6 @@ class DialogueManager final : public Controllable {
   std::unordered_map<std::string, std::string> _latestNpcDialogueTrees;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_GAMEPLAY_DIALOGUE_MANAGER_H_
+#endif  // REQUIEM_GAMEPLAY_DIALOGUE_MANAGER_H_

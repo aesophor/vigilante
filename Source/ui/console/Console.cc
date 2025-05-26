@@ -8,7 +8,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -111,4 +111,4 @@ const string& Console::CommandHistory::getCurrentLine() const {
   return _data[_current];
 }
 
-}  // namespace vigilante
+}  // namespace requiem

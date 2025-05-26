@@ -1,10 +1,10 @@
 <div align="center">
-<h3>VIGILANTE</h3>
+<h3>REQUIEM</h3>
 <img src="/Documentation/images/explore3.png">
 </div>
 
 ## Overview
-Vigilante is a 2D side-scrolling single-player RPG which offers gaming experience similar to Maplestory, Castlevania and The Elder Scrolls Series. Vigilante features an intriguing vampire storyline, allowing the player to grow from a nobody eventually to a vampiric lord. It also provides plenty of maps, enemies, magics, and equipments to discover.
+Requiem is a 2D side-scrolling single-player RPG which offers gaming experience similar to Maplestory, Castlevania and The Elder Scrolls Series. Requiem features an intriguing vampire storyline, allowing the player to grow from a nobody eventually to a vampiric lord. It also provides plenty of maps, enemies, magics, and equipments to discover.
 
 Similar to The Elder Scrolls series, the player can team up with certain NPCs and go adventure together. The player can either take side with the vampire hunters and save the world from the vampires' plot, or join the vampires and bring destruction to the world. The storyline will be tailored based on the player's playstyle.
 
@@ -18,7 +18,7 @@ I've always been wondering how a large-scale video game can be made from scratch
 #### Build requirements
 * [axmol](https://github.com/axmolengine/axmol) tag: `v2.3.2` (C++20)
 
-#### Building and running vigilante using Xcode
+#### Building and running requiem using Xcode
 1. Install powershell on dev machine
    ```shell
    brew install powershell/tap/powershell
@@ -29,17 +29,17 @@ I've always been wondering how a large-scale video game can be made from scratch
    cd axmol
    pwsh setup.ps1
    ```
-3. Restart shell and cd into vigilante's project root dir
+3. Restart shell and cd into requiem's project root dir
    ```shell
-   cd ~/Code/vigilante
+   cd ~/Code/requiem
    ```
 4. Generate xcode project for macOS arm64
    ```shell
    axmol build -p osx -a arm64 -c
    ```
 5. Launch xcode
-   - open the project `~/Code/vigilante/build/vigilante.xcodeproj`
-   - from the top bar, select `vigilante` as build target, and press build.
+   - open the project `~/Code/requiem/build/requiem.xcodeproj`
+   - from the top bar, select `requiem` as build target, and press build.
 
 ## License
 Copyright (c) 2018-2024 Marco Wang \<m.aesophor@gmail.com\>. All rights reserved.

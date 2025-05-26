@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_CONTROL_HINTS_H_
-#define VIGILANTE_UI_HUD_CONTROL_HINTS_H_
+#ifndef REQUIEM_UI_HUD_CONTROL_HINTS_H_
+#define REQUIEM_UI_HUD_CONTROL_HINTS_H_
 
 #include <array>
 #include <stack>
@@ -16,7 +16,7 @@
 
 #include "ui/Colorscheme.h"
 
-namespace vigilante {
+namespace requiem {
 
 // ControlHints contains a fixed number of "profiles"
 // for the game to switch between.
@@ -87,6 +87,6 @@ class ControlHints final {
   std::stack<ControlHints::Profile> _currentProfileStack;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_CONTROL_HINTS_H_
+#endif  // REQUIEM_UI_HUD_CONTROL_HINTS_H_

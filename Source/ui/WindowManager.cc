@@ -6,10 +6,10 @@
 #include "util/Logger.h"
 
 using namespace std;
-using namespace vigilante::z_order;
+using namespace requiem::z_order;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 WindowManager::WindowManager() : _kMaxWindowCount{kWindowTop - kWindowBottom + 1} {}
 
@@ -53,4 +53,4 @@ unique_ptr<Window> WindowManager::pop() {
   return removedWindow;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,11 +1,11 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CONSTANTS_H_
-#define VIGILANTE_CONSTANTS_H_
+#ifndef REQUIEM_CONSTANTS_H_
+#define REQUIEM_CONSTANTS_H_
 
 #include <2d/Camera.h>
 
-namespace vigilante {
+namespace requiem {
 
 inline constexpr float kFps = 60.0f;
 inline constexpr int kVelocityIterations = 6;
@@ -91,6 +91,6 @@ inline constexpr int kShade = 100;
 
 }  // namespace z_order
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CONSTANTS_H_
+#endif  // REQUIEM_CONSTANTS_H_

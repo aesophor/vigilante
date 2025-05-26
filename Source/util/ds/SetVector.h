@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_DS_SET_VECTOR_H_
-#define VIGILANTE_UTIL_DS_SET_VECTOR_H_
+#ifndef REQUIEM_UTIL_DS_SET_VECTOR_H_
+#define REQUIEM_UTIL_DS_SET_VECTOR_H_
 
 #include <initializer_list>
 #include <unordered_set>
 #include <vector>
 
-namespace vigilante {
+namespace requiem {
 
 // A vector that contains a set of unique objects of type Key
 // where the order of iteration is the order of insertion.
@@ -106,6 +106,6 @@ class SetVector final {
   std::vector<Key> _vec;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_DS_SET_VECTOR_H_
+#endif  // REQUIEM_UTIL_DS_SET_VECTOR_H_

@@ -5,7 +5,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 DialogueManager::DialogueManager()
     : _layer{Layer::create()},
@@ -48,4 +48,4 @@ void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFilePath,
   _latestNpcDialogueTrees[npcJsonFilePath] = dialogueTreeJsonFilePath;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

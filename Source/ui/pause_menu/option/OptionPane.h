@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
-#define VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
+#define REQUIEM_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
 
 #include <memory>
 #include <vector>
@@ -9,7 +9,7 @@
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/pause_menu/option/OptionListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 class OptionPane final : public AbstractPane {
  public:
@@ -24,6 +24,6 @@ class OptionPane final : public AbstractPane {
   std::unique_ptr<OptionListView> _optionListView;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_OPTION_OPTION_PANE_H_

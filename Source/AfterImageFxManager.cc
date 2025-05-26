@@ -9,7 +9,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -87,4 +87,4 @@ bool AfterImageFxManager::unregisterNode(const ax::Node* node) {
   return true;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

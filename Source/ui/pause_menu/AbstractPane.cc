@@ -4,7 +4,7 @@
 
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 AbstractPane::AbstractPane(PauseMenu* pauseMenu)
     : _pauseMenu{pauseMenu}, _layout{ui::Layout::create()} {}
@@ -29,4 +29,4 @@ void AbstractPane::setPosition(const Vec2& pos) const {
   _layout->setPosition(pos);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

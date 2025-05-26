@@ -1,12 +1,12 @@
 // Copyright (c) 2024-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_GAMEPLAY_IN_GAME_TIME_H_
-#define VIGILANTE_GAMEPLAY_IN_GAME_TIME_H_
+#ifndef REQUIEM_GAMEPLAY_IN_GAME_TIME_H_
+#define REQUIEM_GAMEPLAY_IN_GAME_TIME_H_
 
 #include <string>
 #include <vector>
 
-namespace vigilante {
+namespace requiem {
 
 class InGameTime final {
  public:
@@ -70,6 +70,6 @@ class InGameTime final {
   std::vector<DeferredCmd> _deferredCmdsMinHeap;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_GAMEPLAY_IN_GAME_TIME_H_
+#endif  // REQUIEM_GAMEPLAY_IN_GAME_TIME_H_

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_
-#define VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_
+#ifndef REQUIEM_UI_HUD_FLOATING_DAMAGES_H_
+#define REQUIEM_UI_HUD_FLOATING_DAMAGES_H_
 
 #include <deque>
 #include <map>
@@ -9,7 +9,7 @@
 
 #include <axmol.h>
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -40,6 +40,6 @@ class FloatingDamages final {
   std::map<Character*, std::deque<FloatingDamages::DamageLabel>> _damageMap;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_FLOATING_DAMAGES_H_
+#endif  // REQUIEM_UI_HUD_FLOATING_DAMAGES_H_

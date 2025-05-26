@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_QUEST_GENERAL_OBJECTIVE_H_
-#define VIGILANTE_QUEST_GENERAL_OBJECTIVE_H_
+#ifndef REQUIEM_QUEST_GENERAL_OBJECTIVE_H_
+#define REQUIEM_QUEST_GENERAL_OBJECTIVE_H_
 
 #include <string>
 
 #include "Quest.h"
 
-namespace vigilante {
+namespace requiem {
 
 // This type of quest objective can only be advanced (i.e. completed)
 // through console command.
@@ -18,6 +18,6 @@ class GeneralObjective : public Quest::Objective {
   virtual bool isCompleted() const override { return false; }
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_QUEST_GENERAL_OBJECTIVE_H_
+#endif  // REQUIEM_QUEST_GENERAL_OBJECTIVE_H_

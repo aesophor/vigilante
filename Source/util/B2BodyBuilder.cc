@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 B2BodyBuilder& B2BodyBuilder::type(b2BodyType bodyType) {
   _bdef.type = bodyType;
@@ -133,4 +133,4 @@ b2Fixture* B2BodyBuilder::buildFixture() {
   return _fixture;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

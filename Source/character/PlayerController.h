@@ -1,11 +1,11 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_
-#define VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_
+#ifndef REQUIEM_CHARACTER_PLAYER_CONTROLLER_H_
+#define REQUIEM_CHARACTER_PLAYER_CONTROLLER_H_
 
 #include "Controllable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Player;
 
@@ -25,6 +25,6 @@ class PlayerController final : public Controllable {
   Player& _player;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_PLAYER_CONTROLLER_H_
+#endif  // REQUIEM_CHARACTER_PLAYER_CONTROLLER_H_

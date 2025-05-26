@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
-#define VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
+#ifndef REQUIEM_GAMEPLAY_DIALOGUE_TREE_H_
+#define REQUIEM_GAMEPLAY_DIALOGUE_TREE_H_
 
 #include <filesystem>
 #include <string>
@@ -11,7 +11,7 @@
 
 #include "Importable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Npc;
 
@@ -95,6 +95,6 @@ class DialogueTree : public Importable {
 // This alias improves code readability in ui/pause_menu/DialogueListView.cc
 using Dialogue = DialogueTree::Node;
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_GAMEPLAY_DIALOGUE_TREE_H_
+#endif  // REQUIEM_GAMEPLAY_DIALOGUE_TREE_H_

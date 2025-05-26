@@ -1,12 +1,12 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_
-#define VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_ABSTRACT_PANE_H_
+#define REQUIEM_UI_PAUSE_MENU_ABSTRACT_PANE_H_
 
 #include <axmol.h>
 #include <ui/UILayout.h>
 
-namespace vigilante {
+namespace requiem {
 
 // Forward declaration of PauseMenu class.
 // We only need to know its existence, so
@@ -35,6 +35,6 @@ class AbstractPane {
   ax::ui::Layout* _layout;  // auto-release object
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_ABSTRACT_PANE_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_ABSTRACT_PANE_H_

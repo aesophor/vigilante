@@ -1,11 +1,11 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_NPC_CONTROLLER_H_
-#define VIGILANTE_CHARACTER_NPC_CONTROLLER_H_
+#ifndef REQUIEM_CHARACTER_NPC_CONTROLLER_H_
+#define REQUIEM_CHARACTER_NPC_CONTROLLER_H_
 
 #include <box2d/box2d.h>
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 class Npc;
@@ -45,6 +45,6 @@ class NpcController final {
   b2Vec2 _lastStoppedPosition{0.f, 0.f};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_NPC_CONTROLLER_H_
+#endif  // REQUIEM_CHARACTER_NPC_CONTROLLER_H_

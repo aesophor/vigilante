@@ -1,14 +1,14 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_TIMED_LABEL_SERVICE_H_
-#define VIGILANTE_UI_TIMED_LABEL_SERVICE_H_
+#ifndef REQUIEM_UI_TIMED_LABEL_SERVICE_H_
+#define REQUIEM_UI_TIMED_LABEL_SERVICE_H_
 
 #include <string>
 
 #include <axmol.h>
 #include <2d/Label.h>
 
-namespace vigilante {
+namespace requiem {
 
 class TimedLabelService {
  public:
@@ -55,6 +55,6 @@ class TimedLabelService {
   const TimedLabelService::TimedLabel::Alignment _kAlignment;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_TIMED_LABEL_SERVICE_H_
+#endif  // REQUIEM_UI_TIMED_LABEL_SERVICE_H_

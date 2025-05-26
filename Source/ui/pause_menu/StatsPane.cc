@@ -9,10 +9,10 @@
 #include "util/StringUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 StatsPane::StatsPane(PauseMenu* pauseMenu)
     : AbstractPane{pauseMenu, TableLayout::create()},  // install TableLayout to base class
@@ -105,4 +105,4 @@ void StatsPane::addEntry(const string& title, Label* label) const {
   layout->align(TableLayout::Alignment::RIGHT)->padRight(_kPadRight)->row();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

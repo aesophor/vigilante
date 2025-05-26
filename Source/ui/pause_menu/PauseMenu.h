@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_
-#define VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_PAUSE_MENU_H_
+#define REQUIEM_UI_PAUSE_MENU_PAUSE_MENU_H_
 
 #include <array>
 #include <memory>
@@ -19,7 +19,7 @@
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "ui/pause_menu/AbstractPane.h"
 
-namespace vigilante {
+namespace requiem {
 
 // Forward Declaration
 class Player;
@@ -74,6 +74,6 @@ class PauseMenu final : public Controllable {
   std::array<std::unique_ptr<AbstractPane>, PauseMenu::Pane::SIZE> _panes;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_PAUSE_MENU_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_PAUSE_MENU_H_

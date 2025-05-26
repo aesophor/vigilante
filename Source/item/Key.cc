@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 Key::Key(const fs::path& jsonFilePath)
     : MiscItem{jsonFilePath},
@@ -20,4 +20,4 @@ Key::Profile::Profile(const fs::path& jsonFilePath) {
   targetPortalId = json["targetPortalId"].GetInt();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_HUD_HUD_H_
-#define VIGILANTE_UI_HUD_HUD_H_
+#ifndef REQUIEM_UI_HUD_HUD_H_
+#define REQUIEM_UI_HUD_HUD_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 
 #include "StatusBar.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Hud final {
  public:
@@ -36,6 +36,6 @@ class Hud final {
   ax::Label* _equippedWeaponDesc{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_HUD_HUD_H_
+#endif  // REQUIEM_UI_HUD_HUD_H_

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SKILL_SKILL_H_
-#define VIGILANTE_SKILL_SKILL_H_
+#ifndef REQUIEM_SKILL_SKILL_H_
+#define REQUIEM_SKILL_SKILL_H_
 
 #include <memory>
 #include <string>
@@ -11,7 +11,7 @@
 #include "Importable.h"
 #include "input/Keybindable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -83,6 +83,6 @@ class Skill : public Importable, public Keybindable, public std::enable_shared_f
   virtual std::filesystem::path getIconPath() const = 0;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_SKILL_SKILL_H_
+#endif  // REQUIEM_SKILL_SKILL_H_

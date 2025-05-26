@@ -8,10 +8,10 @@
 #include "ui/TableLayout.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 PauseMenuDialog::PauseMenuDialog(PauseMenu* pauseMenu)
     : AbstractPane{pauseMenu, TableLayout::create()},
@@ -156,4 +156,4 @@ float PauseMenuDialog::Option::getWidth() const {
   return _icon->getContentSize().width + _label->getContentSize().width;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

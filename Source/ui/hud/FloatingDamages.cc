@@ -10,10 +10,10 @@
 #include "ui/Colorscheme.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 FloatingDamages::FloatingDamages() : _layer{Layer::create()} {}
 
@@ -85,4 +85,4 @@ FloatingDamages::DamageLabel::DamageLabel(const string& text, const float lifeti
   label->getFontAtlas()->setAliasTexParameters();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

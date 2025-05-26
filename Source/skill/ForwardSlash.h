@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SKILL_FORWARD_SLASH_H_
-#define VIGILANTE_SKILL_FORWARD_SLASH_H_
+#ifndef REQUIEM_SKILL_FORWARD_SLASH_H_
+#define REQUIEM_SKILL_FORWARD_SLASH_H_
 
 #include <string>
 
 #include "Skill.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -34,6 +34,6 @@ class ForwardSlash final : public Skill {
   bool _hasActivated{};
 };
 
-} // namespace vigilante
+} // namespace requiem
 
-#endif // VIGILANTE_SKILL_FORWARD_SLASH_H_
+#endif // REQUIEM_SKILL_FORWARD_SLASH_H_

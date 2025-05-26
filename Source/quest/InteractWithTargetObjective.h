@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_
-#define VIGILANTE_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_
+#ifndef REQUIEM_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_
+#define REQUIEM_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_
 
 #include <string>
 
 #include "Quest.h"
 
-namespace vigilante {
+namespace requiem {
 
 class InteractWithTargetObjective : public Quest::Objective {
  public:
@@ -26,6 +26,6 @@ class InteractWithTargetObjective : public Quest::Objective {
   bool _is_completed{false};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_
+#endif  // REQUIEM_QUEST_INTERACT_WITH_TARGET_OBJECTIVE_H_

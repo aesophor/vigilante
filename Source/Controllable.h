@@ -1,9 +1,9 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CONTROLLABLE_H_
-#define VIGILANTE_CONTROLLABLE_H_
+#ifndef REQUIEM_CONTROLLABLE_H_
+#define REQUIEM_CONTROLLABLE_H_
 
-namespace vigilante {
+namespace requiem {
 
 class Controllable {
  public:
@@ -11,6 +11,6 @@ class Controllable {
   virtual void handleInput() = 0;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CONTROLLABLE_H_
+#endif  // REQUIEM_CONTROLLABLE_H_

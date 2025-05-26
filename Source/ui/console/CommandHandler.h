@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_
-#define VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_
+#ifndef REQUIEM_UI_CONSOLE_COMMAND_HANDLER_H_
+#define REQUIEM_UI_CONSOLE_COMMAND_HANDLER_H_
 
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-namespace vigilante {
+namespace requiem {
 
 namespace cmd {
 
@@ -74,6 +74,6 @@ class CommandHandler final {
   std::string _errMsg;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_CONSOLE_COMMAND_HANDLER_H_
+#endif  // REQUIEM_UI_CONSOLE_COMMAND_HANDLER_H_

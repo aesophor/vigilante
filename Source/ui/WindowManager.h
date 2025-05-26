@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_WINDOW_MANAGER_H_
-#define VIGILANTE_UI_WINDOW_MANAGER_H_
+#ifndef REQUIEM_UI_WINDOW_MANAGER_H_
+#define REQUIEM_UI_WINDOW_MANAGER_H_
 
 #include <memory>
 #include <vector>
@@ -9,7 +9,7 @@
 #include <axmol.h>
 #include "ui/Window.h"
 
-namespace vigilante {
+namespace requiem {
 
 // A simple stacking/floating window manager.
 class WindowManager final {
@@ -40,6 +40,6 @@ class WindowManager final {
   std::vector<std::unique_ptr<Window>> _windows;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_WINDOW_MANAGER_H_
+#endif  // REQUIEM_UI_WINDOW_MANAGER_H_

@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SCENE_SCENE_MANAGER_H_
-#define VIGILANTE_SCENE_SCENE_MANAGER_H_
+#ifndef REQUIEM_SCENE_SCENE_MANAGER_H_
+#define REQUIEM_SCENE_SCENE_MANAGER_H_
 
 #include <stack>
 
@@ -9,7 +9,7 @@
 
 #include "scene/GameScene.h"
 
-namespace vigilante {
+namespace requiem {
 
 // ax-x's Director is a pile of bullshit because
 // it doesn't allow me to fucking pop a scene and
@@ -35,6 +35,6 @@ class SceneManager final {
   std::stack<ax::Scene*> _scenes;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_SCENE_SCENE_MANAGER_H_
+#endif  // REQUIEM_SCENE_SCENE_MANAGER_H_

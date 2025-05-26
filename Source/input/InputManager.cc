@@ -7,7 +7,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 InputManager& InputManager::the() {
   static InputManager instance;
@@ -56,4 +56,4 @@ void InputManager::deactivate() {
   _pressedKeys.clear();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

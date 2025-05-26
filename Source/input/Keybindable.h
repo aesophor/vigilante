@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_INPUT_KEYBINDABLE_H_
-#define VIGILANTE_INPUT_KEYBINDABLE_H_
+#ifndef REQUIEM_INPUT_KEYBINDABLE_H_
+#define REQUIEM_INPUT_KEYBINDABLE_H_
 
 #include <string>
 
 #include <axmol.h>
 
-namespace vigilante {
+namespace requiem {
 
 class Keybindable {
  public:
@@ -17,6 +17,6 @@ class Keybindable {
   virtual void setHotkey(ax::EventKeyboard::KeyCode hotkey) = 0;
 };
 
-} // namespace vigilante
+} // namespace requiem
 
-#endif // VIGILANTE_INPUT_KEYBINDABLE_H_
+#endif // REQUIEM_INPUT_KEYBINDABLE_H_

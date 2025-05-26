@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_APP_DELEGATE_H_
-#define VIGILANTE_APP_DELEGATE_H_
+#ifndef REQUIEM_APP_DELEGATE_H_
+#define REQUIEM_APP_DELEGATE_H_
 
 #include <axmol.h>
 
@@ -24,4 +24,4 @@ class AppDelegate final : private ax::Application {
   virtual void applicationWillEnterForeground() override;
 };
 
-#endif  // VIGILANTE_APP_DELEGATE_H_
+#endif  // REQUIEM_APP_DELEGATE_H_

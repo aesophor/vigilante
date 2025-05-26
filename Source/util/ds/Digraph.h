@@ -1,14 +1,14 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UTIL_DS_DIGRAPH_H_
-#define VIGILANTE_UTIL_DS_DIGRAPH_H_
+#ifndef REQUIEM_UTIL_DS_DIGRAPH_H_
+#define REQUIEM_UTIL_DS_DIGRAPH_H_
 
 #include <list>
 #include <optional>
 #include <unordered_map>
 #include <vector>
 
-namespace vigilante {
+namespace requiem {
 
 template <typename V, typename E>
 class Digraph final {
@@ -53,6 +53,6 @@ class Digraph final {
   std::unordered_map<VertexId, std::list<E>> _outgoingEdges;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UTIL_DS_DIGRAPH_H_
+#endif  // REQUIEM_UTIL_DS_DIGRAPH_H_

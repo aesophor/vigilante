@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Consumable::Consumable(const fs::path& jsonFilePath)
     : Item{jsonFilePath},
@@ -48,4 +48,4 @@ Consumable::Profile::Profile(const fs::path& jsonFilePath) : hotkey{} {
   bonusJumpHeight = json["bonusJumpHeight"].GetInt();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

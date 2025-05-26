@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 bool InfiniteParallaxNode::init() {
   _visibleSize = Director::getInstance()->getVisibleSize();
@@ -117,4 +117,4 @@ bool ParallaxBackground::load(const fs::path& bgDirPath, const float bgScale) {
   return true;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 optional<b2Vec2> SimplePathFinder::findOptimalNextHop(const b2Vec2& srcPos,
                                                       const b2Vec2& destPos,
@@ -46,4 +46,4 @@ optional<b2Vec2> SimplePathFinder::findOptimalNextHop(const b2Vec2& srcPos,
   return targetPos;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

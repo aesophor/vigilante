@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_DIALOGUE_SUBTITLES_H_
-#define VIGILANTE_UI_DIALOGUE_SUBTITLES_H_
+#ifndef REQUIEM_UI_DIALOGUE_SUBTITLES_H_
+#define REQUIEM_UI_DIALOGUE_SUBTITLES_H_
 
 #include <string>
 #include <queue>
@@ -11,7 +11,7 @@
 #include <ui/UIImageView.h>
 #include "Controllable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Subtitles : public Controllable {
  public:
@@ -47,6 +47,6 @@ class Subtitles : public Controllable {
   float _timer{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_DIALOGUE_SUBTITLES_H_
+#endif  // REQUIEM_UI_DIALOGUE_SUBTITLES_H_

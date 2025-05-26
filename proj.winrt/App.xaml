@@ -6,7 +6,7 @@
 
     <Application.Resources>
 
-      <x:String x:Key="AppName">vigilante</x:String>
+      <x:String x:Key="AppName">requiem</x:String>
 
     </Application.Resources>
 </Application>

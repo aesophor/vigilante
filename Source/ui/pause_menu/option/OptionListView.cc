@@ -7,10 +7,10 @@
 #include "character/Player.h"
 #include "ui/pause_menu/PauseMenu.h"
 
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -46,4 +46,4 @@ void OptionListView::confirm() {
   dialog->show();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

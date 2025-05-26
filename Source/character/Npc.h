@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_CHARACTER_NPC_H_
-#define VIGILANTE_CHARACTER_NPC_H_
+#ifndef REQUIEM_CHARACTER_NPC_H_
+#define REQUIEM_CHARACTER_NPC_H_
 
 #include <string>
 #include <unordered_map>
@@ -14,7 +14,7 @@
 #include "gameplay/DialogueTree.h"
 #include "ui/hud/StatusBar.h"
 
-namespace vigilante {
+namespace requiem {
 
 // Npc: Non-player character
 // i.e., enemies and allies are all npcs.
@@ -135,6 +135,6 @@ class Npc final : public Character, public Interactable {
   std::unique_ptr<StatusBar> _floatingHealthBar;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_CHARACTER_NPC_H_
+#endif  // REQUIEM_CHARACTER_NPC_H_

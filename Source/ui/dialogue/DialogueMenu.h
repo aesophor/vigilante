@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_
-#define VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_
+#ifndef REQUIEM_UI_DIALOGUE_DIALOGUE_MENU_H_
+#define REQUIEM_UI_DIALOGUE_DIALOGUE_MENU_H_
 
 #include <memory>
 
@@ -11,7 +11,7 @@
 #include "Controllable.h"
 #include "ui/dialogue/DialogueListView.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Npc;
 
@@ -32,6 +32,6 @@ class DialogueMenu final : public Controllable {
   std::unique_ptr<DialogueListView> _dialogueListView;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_DIALOGUE_DIALOGUE_MENU_H_
+#endif  // REQUIEM_UI_DIALOGUE_DIALOGUE_MENU_H_

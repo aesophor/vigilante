@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
-#define VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
+#ifndef REQUIEM_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
+#define REQUIEM_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
 
 #include <memory>
 #include <string>
@@ -17,7 +17,7 @@
 #include "ui/pause_menu/AbstractPane.h"
 #include "ui/TableLayout.h"
 
-namespace vigilante {
+namespace requiem {
 
 class EquipmentPane final : public AbstractPane {
  public:
@@ -64,6 +64,6 @@ class EquipmentPane final : public AbstractPane {
   int _current{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_
+#endif  // REQUIEM_UI_PAUSE_MENU_EQUIPMENT_EQUIPMENT_PANE_H_

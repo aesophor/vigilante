@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_ITEM_KEY_H_
-#define VIGILANTE_ITEM_KEY_H_
+#ifndef REQUIEM_ITEM_KEY_H_
+#define REQUIEM_ITEM_KEY_H_
 
 #include <string>
 
 #include "MiscItem.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Key : public MiscItem {
  public:
@@ -27,6 +27,6 @@ class Key : public MiscItem {
   Key::Profile _keyProfile;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_ITEM_KEY_H_
+#endif  // REQUIEM_ITEM_KEY_H_

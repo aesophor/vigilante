@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2019-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include <iostream>
 #include <string>
@@ -8,7 +8,7 @@
 #include "../../Source/util/Logger.h"
 
 int main(int argc, char* args[]) {
-  signal(SIGSEGV, &vigilante::logger::segvHandler);
+  signal(SIGSEGV, &requiem::logger::segvHandler);
 
   AppDelegate app;
   try {

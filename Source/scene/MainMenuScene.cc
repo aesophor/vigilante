@@ -13,7 +13,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 bool MainMenuScene::init() {
   if (!Scene::init()) {
@@ -23,7 +23,7 @@ bool MainMenuScene::init() {
   auto winSize = Director::getInstance()->getWinSize();
 
   // Initialize background ImageView.
-  _background = ui::ImageView::create(string{vigilante::assets::kMainMenuBg});
+  _background = ui::ImageView::create(string{requiem::assets::kMainMenuBg});
   _background->setAnchorPoint({0, 0});
   addChild(_background);
 
@@ -36,7 +36,7 @@ bool MainMenuScene::init() {
     _labels.push_back(label);
   }
   _current = 0;
-  _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
+  _labels[_current]->setTextColor(requiem::colorscheme::kRed);
 
   // Initialize footer labels.
   Label* copyrightLabel = Label::createWithTTF(_kCopyrightStr, string{assets::kBoldFont}, assets::kRegularFontSize);
@@ -68,14 +68,14 @@ void MainMenuScene::handleInput() {
     if (_current == 0) {
       return;
     }
-    _labels[_current--]->setTextColor(vigilante::colorscheme::kWhite);
-    _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
+    _labels[_current--]->setTextColor(requiem::colorscheme::kWhite);
+    _labels[_current]->setTextColor(requiem::colorscheme::kRed);
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
     if (_current == static_cast<int>(Option::SIZE) - 1) {
       return;
     }
-    _labels[_current++]->setTextColor(vigilante::colorscheme::kWhite);
-    _labels[_current]->setTextColor(vigilante::colorscheme::kRed);
+    _labels[_current++]->setTextColor(requiem::colorscheme::kWhite);
+    _labels[_current]->setTextColor(requiem::colorscheme::kRed);
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     switch (static_cast<Option>(_current)) {
       case Option::NEW_GAME: {
@@ -103,4 +103,4 @@ void MainMenuScene::handleInput() {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -15,7 +15,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 shared_ptr<Skill> Skill::create(const fs::path& jsonFilePath, Character* user) {
   if (jsonFilePath.native().find("bat_form") != jsonFilePath.native().npos) {
@@ -67,4 +67,4 @@ Skill::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath(jsonFilePat
   sfxHit = json["sfxHit"].GetString();
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 Character* Party::getMember(const string& characterJsonFilePath) const {
   auto it = std::find_if(_members.begin(), _members.end(), [&characterJsonFilePath](const shared_ptr<Character>& c) {
@@ -188,4 +188,4 @@ shared_ptr<Character> Party::removeMember(Character* character) {
   return removedMember;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

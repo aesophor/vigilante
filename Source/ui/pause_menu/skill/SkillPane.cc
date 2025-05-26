@@ -6,10 +6,10 @@
 #include "input/InputManager.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 SkillPane::SkillPane(PauseMenu* pauseMenu)
     : AbstractPane{pauseMenu},
@@ -57,4 +57,4 @@ void SkillPane::handleInput() {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

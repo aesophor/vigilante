@@ -4,12 +4,12 @@
 
 #include "Constants.h"
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
-constexpr auto kStartingX = vigilante::kVirtualWidth / 2;
-constexpr auto kStartingY = vigilante::kVirtualHeight * .65f;
+constexpr auto kStartingX = requiem::kVirtualWidth / 2;
+constexpr auto kStartingY = requiem::kVirtualHeight * .65f;
 constexpr auto kMaxLabelCount = 5;
 constexpr auto kMaxLabelLifetime = 8.0f;
 
@@ -19,4 +19,4 @@ QuestHints::QuestHints()
     : TimedLabelService(kStartingX, kStartingY, kMaxLabelCount,
                         kMaxLabelLifetime, TimedLabelService::TimedLabel::kCenter) {}
 
-}  // namespace vigilante
+}  // namespace requiem

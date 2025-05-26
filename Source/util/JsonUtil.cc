@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace vigilante::json_util {
+namespace requiem::json_util {
 
 rapidjson::Document loadFromFile(const fs::path& jsonFilePath) {
   ifstream ifs(jsonFilePath);
@@ -40,4 +40,4 @@ void saveToFile(const fs::path& jsonFilePath, const rapidjson::Document& json) {
   json.Accept(writer);
 }
 
-}  // namespace vigilante::json_util
+}  // namespace requiem::json_util

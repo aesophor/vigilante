@@ -10,7 +10,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 bool DynamicActor::removeFromMap() {
   if (!StaticActor::removeFromMap()) {
@@ -53,4 +53,4 @@ void DynamicActor::setMaskBits(b2Fixture* fixture, const short maskBits) {
   fixture->SetFilterData(filter);
 }
 
-}  // namespace vigilante
+}  // namespace requiem

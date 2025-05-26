@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
-#define VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
+#ifndef REQUIEM_SCENE_MAIN_MENU_SCENE_H_
+#define REQUIEM_SCENE_MAIN_MENU_SCENE_H_
 
 #include <array>
 #include <string>
@@ -15,7 +15,7 @@
 #include "Controllable.h"
 #include "input/InputManager.h"
 
-namespace vigilante {
+namespace requiem {
 
 class MainMenuScene final : public ax::Scene, public Controllable {
  public:
@@ -51,6 +51,6 @@ class MainMenuScene final : public ax::Scene, public Controllable {
   int _current;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_SCENE_MAIN_MENU_SCENE_H_
+#endif  // REQUIEM_SCENE_MAIN_MENU_SCENE_H_

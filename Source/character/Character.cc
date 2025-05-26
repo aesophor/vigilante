@@ -23,10 +23,10 @@
 
 namespace fs = std::filesystem;
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 Character::Character(const fs::path& jsonFilePath)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
@@ -1494,4 +1494,4 @@ optional<Character::State> Character::getCharacterState(const string& frameName)
   return it != cache.end() ? make_optional(it->second) : nullopt;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -8,7 +8,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 SceneManager& SceneManager::the() {
   static SceneManager instance;
@@ -44,4 +44,4 @@ void SceneManager::popScene() {
   InputManager::the().activate(getCurrentScene());
 }
 
-}  // namespace vigilante
+}  // namespace requiem

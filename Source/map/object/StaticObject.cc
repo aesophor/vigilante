@@ -11,7 +11,7 @@
 using namespace std;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 bool StaticObject::showOnMap(float x, float y) {
   if (_isShownOnMap) {
@@ -58,4 +58,4 @@ void StaticObject::defineTexture() {
   }
 }
 
-}  // namespace vigilante
+}  // namespace requiem

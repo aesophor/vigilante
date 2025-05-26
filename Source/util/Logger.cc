@@ -11,9 +11,9 @@ extern "C" {
 }
 
 #define NUM_STACKTRACE_FUNC 10
-#define LOG_FILENAME "vigilante.log"
+#define LOG_FILENAME "requiem.log"
 
-namespace vigilante::logger {
+namespace requiem::logger {
 
 void segvHandler(int) {
   void* array[10];
@@ -26,4 +26,4 @@ void segvHandler(int) {
   exit(EXIT_FAILURE);
 }
 
-}  // namespace vigilante::logger
+}  // namespace requiem::logger

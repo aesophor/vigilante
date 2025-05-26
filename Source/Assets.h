@@ -1,13 +1,13 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_ASSETS_H_
-#define VIGILANTE_ASSETS_H_
+#ifndef REQUIEM_ASSETS_H_
+#define REQUIEM_ASSETS_H_
 
 #include <filesystem>
 #include <string>
 
 namespace fs = std::filesystem;
 
-namespace vigilante::assets {
+namespace requiem::assets {
 
 inline constexpr char kIconPng[] = "icon.png";
 
@@ -120,6 +120,6 @@ inline const fs::path kSfxDoorUnlocked = kSfxEnvDir / "unlocked.mp3";
 
 void loadSpritesheets();
 
-}  // namespace vigilante::assets
+}  // namespace requiem::assets
 
-#endif  // VIGILANTE_ASSETS_H_
+#endif  // REQUIEM_ASSETS_H_

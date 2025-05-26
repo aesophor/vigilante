@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 void GameState::save() {
   _json.SetObject();
@@ -455,4 +455,4 @@ void GameState::deserializeLatestNpcDialogueTrees(const rapidjson::Value& obj) c
   json_util::deserialize(obj, make_pair("latestNpcDialogueTrees", &dialogueMgr->_latestNpcDialogueTrees));
 }
 
-}  // namespace vigilante
+}  // namespace requiem

@@ -7,11 +7,11 @@
 
 using namespace std;
 
-namespace vigilante {
+namespace requiem {
 
 bool CollectItemObjective::isCompleted() const {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   return gmMgr->getPlayer()->getItemAmount(_itemJsonFilePath) >= _amount;
 }
 
-}  // namespace vigilante
+}  // namespace requiem

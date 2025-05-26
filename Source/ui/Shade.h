@@ -1,12 +1,12 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_SHADE_H_
-#define VIGILANTE_UI_SHADE_H_
+#ifndef REQUIEM_UI_SHADE_H_
+#define REQUIEM_UI_SHADE_H_
 
 #include <axmol.h>
 #include <ui/UIImageView.h>
 
-namespace vigilante {
+namespace requiem {
 
 class Shade final {
  public:
@@ -21,6 +21,6 @@ class Shade final {
   ax::ui::ImageView* _imageView;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_SHADE_H_
+#endif  // REQUIEM_UI_SHADE_H_

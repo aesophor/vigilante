@@ -14,10 +14,10 @@
 #include "util/KeyCodeUtil.h"
 
 using namespace std;
-using namespace vigilante::assets;
+using namespace requiem::assets;
 USING_NS_AX;
 
-namespace vigilante {
+namespace requiem {
 
 namespace {
 
@@ -167,4 +167,4 @@ void ItemListView::showEquipmentByType(Equipment::Type equipmentType) {
   _descLabel->setString(_objects.size() > 0 ? "Unequip" : "");
 }
 
-}  // namespace vigilante
+}  // namespace requiem

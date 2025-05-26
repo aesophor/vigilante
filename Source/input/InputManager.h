@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_INPUT_INPUT_MANAGER_H_
-#define VIGILANTE_INPUT_INPUT_MANAGER_H_
+#ifndef REQUIEM_INPUT_INPUT_MANAGER_H_
+#define REQUIEM_INPUT_INPUT_MANAGER_H_
 
 #include <functional>
 #include <stack>
@@ -17,7 +17,7 @@
 #define IS_KEY_JUST_PRESSED(keyCode) \
   InputManager::the().isKeyJustPressed(keyCode)
 
-namespace vigilante {
+namespace requiem {
 
 class InputManager final {
  public:
@@ -76,6 +76,6 @@ class InputManager final {
   OnKeyPressedEvLstnr _specialOnKeyPressed{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_INPUT_INPUT_MANAGER_H_
+#endif  // REQUIEM_INPUT_INPUT_MANAGER_H_

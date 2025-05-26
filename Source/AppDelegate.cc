@@ -19,8 +19,8 @@ extern "C" {
 #include "scene/MainMenuScene.h"
 
 using namespace std;
-using vigilante::kVirtualWidth;
-using vigilante::kVirtualHeight;
+using requiem::kVirtualWidth;
+using requiem::kVirtualHeight;
 USING_NS_AX;
 
 namespace {
@@ -53,9 +53,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
   if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-    glview = GLViewImpl::createWithRect("Vigilante", ax::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+    glview = GLViewImpl::createWithRect("Requiem", ax::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
-    glview = GLViewImpl::create("Vigilante");
+    glview = GLViewImpl::create("Requiem");
 #endif
     director->setGLView(glview);
   }
@@ -69,8 +69,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
   chdir("Resources");
 #endif
 
-  vigilante::assets::loadSpritesheets();
-  vigilante::SceneManager::the().runWithScene(vigilante::MainMenuScene::create());
+  requiem::assets::loadSpritesheets();
+  requiem::SceneManager::the().runWithScene(requiem::MainMenuScene::create());
 
   return true;
 }

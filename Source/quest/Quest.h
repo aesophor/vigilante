@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_QUEST_QUEST_H_
-#define VIGILANTE_QUEST_QUEST_H_
+#ifndef REQUIEM_QUEST_QUEST_H_
+#define REQUIEM_QUEST_QUEST_H_
 
 #include <memory>
 #include <string>
@@ -10,7 +10,7 @@
 
 #include "Importable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Quest final : public Importable {
  public:
@@ -83,6 +83,6 @@ class Quest final : public Importable {
   int _currentStageIdx{-1};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_QUEST_QUEST_H_
+#endif  // REQUIEM_QUEST_QUEST_H_

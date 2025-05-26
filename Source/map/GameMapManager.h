@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_MAP_GAME_MAP_MANAGER_H_
-#define VIGILANTE_MAP_GAME_MAP_MANAGER_H_
+#ifndef REQUIEM_MAP_GAME_MAP_MANAGER_H_
+#define REQUIEM_MAP_GAME_MAP_MANAGER_H_
 
 #include <atomic>
 #include <functional>
@@ -22,7 +22,7 @@
 #include "map/Lighting.h"
 #include "map/WorldContactListener.h"
 
-namespace vigilante {
+namespace requiem {
 
 class GameMapManager final {
   friend class GameState;
@@ -102,6 +102,6 @@ class GameMapManager final {
   std::unordered_set<std::string> _activatedTriggers;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_MAP_GAME_MAP_MANAGER_H_
+#endif  // REQUIEM_MAP_GAME_MAP_MANAGER_H_

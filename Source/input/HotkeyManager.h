@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_INPUT_HOTKEY_MANAGER_H_
-#define VIGILANTE_INPUT_HOTKEY_MANAGER_H_
+#ifndef REQUIEM_INPUT_HOTKEY_MANAGER_H_
+#define REQUIEM_INPUT_HOTKEY_MANAGER_H_
 
 #include <array>
 #include <functional>
@@ -10,7 +10,7 @@
 
 #include "input/Keybindable.h"
 
-namespace vigilante {
+namespace requiem {
 
 class PauseMenuDialog;
 
@@ -42,6 +42,6 @@ class HotkeyManager final {
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
 };
 
-} // namespace vigilante
+} // namespace requiem
 
-#endif // VIGILANTE_INPUT_HOTKEY_MANAGER_H_
+#endif // REQUIEM_INPUT_HOTKEY_MANAGER_H_

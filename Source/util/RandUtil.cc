@@ -5,7 +5,7 @@
 #include <ctime>
 #include <random>
 
-namespace vigilante::rand_util {
+namespace requiem::rand_util {
 
 void init() {
   srand(static_cast<unsigned int>(time(nullptr)));
@@ -19,4 +19,4 @@ float randFloat(float min, float max) {
   return (float(rand()) / (float(RAND_MAX) + 1.0)) * (max - min) + min;
 }
 
-}  // namespace vigilante::rand_util
+}  // namespace requiem::rand_util

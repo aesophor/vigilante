@@ -1,7 +1,7 @@
 // Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
-#ifndef VIGILANTE_UI_TEXT_FIELD_H_
-#define VIGILANTE_UI_TEXT_FIELD_H_
+#ifndef REQUIEM_UI_TEXT_FIELD_H_
+#define REQUIEM_UI_TEXT_FIELD_H_
 
 #include <functional>
 #include <string>
@@ -12,7 +12,7 @@
 
 #include "input/InputManager.h"
 
-namespace vigilante {
+namespace requiem {
 
 class TextField {
  public:
@@ -58,6 +58,6 @@ class TextField {
   bool _isCursorVisible{};
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_UI_TEXT_FIELD_H_
+#endif  // REQUIEM_UI_TEXT_FIELD_H_

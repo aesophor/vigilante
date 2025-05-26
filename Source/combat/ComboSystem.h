@@ -1,11 +1,11 @@
 // Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
-#ifndef VIGILANTE_COMBAT_COMBO_SYSTEM_H_
-#define VIGILANTE_COMBAT_COMBO_SYSTEM_H_
+#ifndef REQUIEM_COMBAT_COMBO_SYSTEM_H_
+#define REQUIEM_COMBAT_COMBO_SYSTEM_H_
 
 #include "character/Character.h"
 #include "util/ds/Digraph.h"
 
-namespace vigilante {
+namespace requiem {
 
 class Character;
 
@@ -89,6 +89,6 @@ class ComboSystem final {
   TimedFiniteStateMachine<Character::State, StateTransitionRequirement> _fsm;
 };
 
-}  // namespace vigilante
+}  // namespace requiem
 
-#endif  // VIGILANTE_COMBAT_COMBO_SYSTEM_H_
+#endif  // REQUIEM_COMBAT_COMBO_SYSTEM_H_
