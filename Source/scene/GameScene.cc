@@ -174,6 +174,7 @@ bool GameScene::init() {
   _drawBox2D = _debugDraw.GetDrawNode();
   _drawBox2D->setOpacity(100);
   _drawBox2D->setCameraMask(camera::kGameCameraMask);
+  _drawBox2D->setVisible(false);
   addChild(_drawBox2D);
 
   // Tick the box2d world.
