@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "FloatingDamages.h"
 
@@ -8,6 +8,7 @@
 #include "character/Player.h"
 #include "character/Npc.h"
 #include "ui/Colorscheme.h"
+#include "util/AxUtil.h"
 
 using namespace std;
 using namespace requiem::assets;
@@ -76,7 +77,7 @@ void FloatingDamages::show(Character* character, int damage) {
   dmg.label->runAction(MoveBy::create(kMoveUpDuration, {kDeltaX, kDeltaY}));
 
   _damageMap[character].push_back(dmg);
-  _layer->addChild(dmg.label);
+  ax_util::addChildWithParentCameraMask(_layer, dmg.label);
 }
 
 FloatingDamages::DamageLabel::DamageLabel(const string& text, const float lifetime)
