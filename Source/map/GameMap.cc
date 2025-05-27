@@ -158,6 +158,11 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string
     trigger->onBossFightBegin();
   }
 
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  if (auto player = gmMgr->getPlayer()) {
+    target->lockOn(player);
+  }
+
   _isInBossFight = true;
   return true;
 }
