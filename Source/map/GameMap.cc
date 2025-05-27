@@ -272,6 +272,9 @@ void GameMap::createTriggers() {
     float w = valMap.at("width").asFloat();
     float h = valMap.at("height").asFloat();
     vector<string> cmds = string_util::split(valMap.at("cmds").asString(), ';');
+    for (auto& cmd : cmds) {
+      string_util::strip(cmd);
+    }
     bool canBeTriggeredOnlyOnce = valMap.at("canBeTriggeredOnlyOnce").asBool();
     bool canBeTriggeredOnlyByPlayer = valMap.at("canBeTriggeredOnlyByPlayer").asBool();
     bool shouldBlockWhileInBossFight = valMap.at("shouldBlockWhileInBossFight").asBool();
