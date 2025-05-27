@@ -1,9 +1,11 @@
-// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "NpcController.h"
 
 #include "Constants.h"
 #include "character/Npc.h"
+#include "combat/CombatMotion.h"
+#include "combat/ComboSystem.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "util/RandUtil.h"
@@ -47,7 +49,15 @@ void NpcController::update(const float delta) {
       _npc.activateSkill(skill);
       _activateSkillTimer = 0;
     } else if (_npc.getInRangeTargets().contains(lockedOnTarget)) {
-      _npc.attack();
+      const optional<Character::State> attackState = _npc.getCombatSystem().determineNextAttackState();
+      if (!attackState.has_value()) {
+        _npc.attack();
+        return;
+      }
+      if (!handleCombatMotion(_npc, *attackState)) {
+        VGLOG(LOG_ERR, "Failed to handle combat motion, character: [%s], attackState: [%d]",
+              _npc.getCharacterProfile().jsonFilePath.c_str(), *attackState);
+      }
     } else if (!_npc.isUsingSkill()) {
       moveToTarget(delta, lockedOnTarget, _npc.getCharacterProfile().attackRange / kPpm);
     }
