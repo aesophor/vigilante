@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Character.h"
 
@@ -1056,6 +1056,13 @@ bool Character::receiveDamage(Character* source, int damage, float takeDamageDur
           sourceAlly->setLockedOnTarget(nullptr);
         }
       }
+
+      for (const auto ally : getAllies()) {
+        if (ally->isKilled() || ally->isSetToKill()) {
+          continue;
+        }
+        source->setLockedOnTarget(ally);
+      }
     }
 
     DynamicActor::setCategoryBits(_fixtures[FixtureType::BODY], category_bits::kDestroyed);
@@ -1339,7 +1346,9 @@ unordered_set<Character*> Character::getAllies() const {
 
   unordered_set<Character*> ret;
   for (const auto& member : _party->getMembers()) {
-    ret.insert(member.get());
+    if (member.get() != this) {
+      ret.insert(member.get());
+    }
   }
   if (Character* leader = _party->getLeader(); leader != this) {
     ret.insert(leader);
