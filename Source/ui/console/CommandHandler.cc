@@ -443,7 +443,12 @@ void CommandHandler::kill(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::interact(const vector<string>&) {
+void CommandHandler::interact(const vector<string>& args) {
+  if (args.size() > 2) {
+    setError(string_util::format("usage: %s [npcJsonFilePath]", args[0].c_str()));
+    return;
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   Player* player = gmMgr->getPlayer();
   if (!player) {
@@ -451,15 +456,25 @@ void CommandHandler::interact(const vector<string>&) {
     return;
   }
 
-  const list<Interactable*>& interactables = player->getInRangeInteractables();
-  if (interactables.empty()) {
-    setError("No nearby interactable objects.");
-    return;
+  if (args.size() == 2) {
+    const fs::path npcJsonFilePath{args[1]};
+    for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+      if (auto npc = dynamic_pointer_cast<Npc>(actor)) {
+        player->interact(npc.get());
+        break;
+      }
+    }
+  } else {
+    const list<Interactable*>& interactables = player->getInRangeInteractables();
+    if (interactables.empty()) {
+      setError("No nearby interactable objects.");
+      return;
+    }
+    for (auto interactable : interactables) {
+      player->interact(interactable);
+    }
   }
 
-  for (auto interactable : interactables) {
-    player->interact(interactable);
-  }
   setSuccess();
 }
 
