@@ -42,9 +42,6 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setOnPlatform(false);
         c->onFallToGroundOrPlatform();
 
-        // Prevent the character from sliding down the slope.
-        c->stopMotion();
-
         b2EdgeShape* shape = dynamic_cast<b2EdgeShape*>(groundFixture->GetShape());
         if (shape) {
           const optional<float> slope = math_util::getSlope(shape->m_vertex1, shape->m_vertex2);

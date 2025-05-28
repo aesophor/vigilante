@@ -70,13 +70,6 @@ void Character::update(const float delta) {
     return;
   }
 
-  constexpr float kSlopeStopMinVelocity = 0.05f;
-  if (_isOnGround &&
-      std::abs(_body->GetLinearVelocity().x) < kSlopeStopMinVelocity &&
-      std::abs(_body->GetLinearVelocity().y) < kSlopeStopMinVelocity) {
-    stopMotion();
-  }
-
   // Flip the sprite and weapon fixture if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
     _bodySprite->setFlippedX(true);
@@ -806,10 +799,6 @@ void Character::runIntroAnimation() {
   if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
   }
-}
-
-void Character::stopMotion() {
-  _body->SetAwake(false);
 }
 
 bool Character::attack(const Character::State attackState,

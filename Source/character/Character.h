@@ -176,7 +176,6 @@ class Character : public DynamicActor, public Importable {
   virtual void enableAfterImageFx(const ax::Color3B& color);
   virtual void disableAfterImageFx();
   virtual void runIntroAnimation();
-  virtual void stopMotion();
 
   virtual bool attack(const Character::State attackState = Character::State::ATTACKING,
                       const int numTimesInflictDamage = 1,

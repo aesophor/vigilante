@@ -94,7 +94,6 @@ void TeleportStrike::activate() {
     _user->setFacingRight(teleportDestPos->x < targetPos.x);
 
     CallbackManager::the().runAfter([this, target](const CallbackManager::CallbackId) {
-      _user->stopMotion();
       _user->attack(Character::State::ATTACKING_FORWARD, _user->getCharacterProfile().forwardAttackNumTimesInflictDamage);
     }, 0.1f);
 
