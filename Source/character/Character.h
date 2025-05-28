@@ -4,6 +4,7 @@
 #define REQUIEM_CHARACTER_CHARACTER_H_
 
 #include <array>
+#include <chrono>
 #include <functional>
 #include <list>
 #include <memory>
@@ -358,6 +359,7 @@ class Character : public DynamicActor, public Importable {
   virtual void loadBodyAnimations(const std::filesystem::path& bodyTextureResDirPath);
 
   void moveImpl(const bool moveTowardsRight);
+  bool isTryingToMove() const;
   bool receiveDamage(Character* source, int damage, float numSecCantMove);
 
   void createBodyAnimation(const Character::State state,
@@ -431,6 +433,8 @@ class Character : public DynamicActor, public Importable {
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
 
+  bool _isTryingToMove{};
+  uint64_t _lastMoveTimeMs{};
   float _groundAngle{};
 
   // Callbacks

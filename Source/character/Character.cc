@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
 
 #include "Assets.h"
 #include "Audio.h"
@@ -27,6 +28,15 @@ using namespace requiem::assets;
 USING_NS_AX;
 
 namespace requiem {
+
+namespace {
+
+uint64_t getCurrentTimeMs() {
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
+}  // namespace
 
 Character::Character(const fs::path& jsonFilePath)
     : DynamicActor{State::STATE_SIZE, FixtureType::FIXTURE_SIZE},
@@ -68,6 +78,22 @@ bool Character::removeFromMap() {
 void Character::update(const float delta) {
   if (!_isShownOnMap || _isKilled) {
     return;
+  }
+
+  if (!isDodging() && /*!_isTakingDamage*/) {
+    if (isTryingToMove()) {
+      _body->SetLinearDamping(0);
+    } else {
+      b2Vec2 bodyPos = _body->GetPosition();
+      b2Vec2 groundPos = {bodyPos.x, bodyPos.y - 0.25f};
+      auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+      if (gmMgr->rayCast(bodyPos, groundPos, category_bits::kGround)) {
+        _body->SetLinearDamping(numeric_limits<float>::infinity());
+      } else {
+        _body->SetLinearDamping(0);
+      }
+    }
+    _isTryingToMove = false;
   }
 
   // Flip the sprite and weapon fixture if needed.
@@ -621,6 +647,8 @@ void Character::moveImpl(const bool moveTowardsRight) {
   }
 
   _isFacingRight = moveTowardsRight;
+  _isTryingToMove = true;
+  _lastMoveTimeMs = getCurrentTimeMs();
 
   const b2Vec2& velocity = _body->GetLinearVelocity();
   if (velocity.x == 0 && _previousBodyVelocity.x == 0) {
@@ -639,7 +667,20 @@ void Character::moveImpl(const bool moveTowardsRight) {
     }
 
     _body->ApplyLinearImpulseToCenter(impulse, true);
+  } else if (!isDodging() && !isJumping()) {
+    // clamp linear velocity
+    b2Vec2 linearVelocity = _body->GetLinearVelocity();
+    linearVelocity.x = linearVelocity.x > 0 ? min(linearVelocity.x, sqrt(_characterProfile.moveSpeed))
+                                            : max(linearVelocity.x, -sqrt(_characterProfile.moveSpeed));
+    linearVelocity.y = linearVelocity.y > 0 ? min(linearVelocity.y, sqrt(_characterProfile.moveSpeed))
+                                            : max(linearVelocity.y, -sqrt(_characterProfile.moveSpeed));
+    _body->SetLinearVelocity(linearVelocity);
   }
+}
+
+bool Character::isTryingToMove() const {
+  constexpr auto kGracePeriod = 150;  // ms
+  return _isTryingToMove || (getCurrentTimeMs() - _lastMoveTimeMs) < kGracePeriod;
 }
 
 void Character::jump() {
@@ -668,6 +709,10 @@ void Character::jump() {
   }, .2f);
 
   _isJumping = true;
+  _isTryingToMove = true;
+  _lastMoveTimeMs = getCurrentTimeMs();
+
+  _body->SetLinearDamping(0);
   _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
 }
 
@@ -746,7 +791,6 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
 
   _comboSystem->reset();
 
-  const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
   _body->ApplyLinearImpulseToCenter({_isFacingRight ? rushPowerX : -rushPowerX, 1.0f}, true);
 
@@ -758,9 +802,9 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   }, 0.2f);
 
   isDodgingFlag = true;
-  CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag](const CallbackManager::CallbackId) {
+  CallbackManager::the().runAfter([this, &isDodgingFlag](const CallbackManager::CallbackId) {
     isDodgingFlag = false;
-    _body->SetLinearDamping(originalBodyDamping);
+    _body->SetLinearDamping(0);
     disableAfterImageFx();
   }, _bodyAnimations[dodgeState]->getDuration());
 }
