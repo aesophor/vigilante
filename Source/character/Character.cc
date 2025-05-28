@@ -235,8 +235,8 @@ void Character::redefineFeetFixture(short feetMaskBits) {
   if (_fixtures[FixtureType::FEET]) {
     feetMaskBits = _fixtures[FixtureType::FEET]->GetFilterData().maskBits;
 
-    _body->DestroyFixture(_fixtures[FixtureType::BODY]);
-    _fixtures[FixtureType::BODY] = nullptr;
+    _body->DestroyFixture(_fixtures[FixtureType::FEET]);
+    _fixtures[FixtureType::FEET] = nullptr;
   }
 
   const float bw = _characterProfile.bodyWidth;
