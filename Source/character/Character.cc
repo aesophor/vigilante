@@ -17,9 +17,10 @@
 #include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/JsonUtil.h"
+#include "util/Logger.h"
 #include "util/MathUtil.h"
 #include "util/RandUtil.h"
-#include "util/Logger.h"
+#include "util/TimeUtil.h"
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -69,6 +70,8 @@ void Character::update(const float delta) {
   if (!_isShownOnMap || _isKilled) {
     return;
   }
+
+  avoidSlidingDownSlope();
 
   // Flip the sprite and weapon fixture if needed.
   if (!_isFacingRight && !_bodySprite->isFlippedX()) {
@@ -621,13 +624,17 @@ void Character::moveImpl(const bool moveTowardsRight) {
   }
 
   _isFacingRight = moveTowardsRight;
+  _isTryingToMove = true;
+  _lastMoveTimeMs = time_util::getCurrentTimeMs();
 
   const b2Vec2& velocity = _body->GetLinearVelocity();
   if (velocity.x == 0 && _previousBodyVelocity.x == 0) {
     startRunning();
   }
 
-  if (std::hypotf(velocity.x, velocity.y) <= _characterProfile.moveSpeed) {
+  if (std::hypotf(velocity.x, velocity.y) > _characterProfile.moveSpeed) {
+    clampLinearVelocity();
+  } else {
     float force = _characterProfile.bodyWidth * _characterProfile.bodyHeight * kBodyVolumeToMoveForceFactor;
     if (!moveTowardsRight) {
       force = -force;
@@ -640,6 +647,39 @@ void Character::moveImpl(const bool moveTowardsRight) {
 
     _body->ApplyLinearImpulseToCenter(impulse, true);
   }
+}
+
+void Character::clampLinearVelocity() {
+  if (isDodging() || isJumping() || !isOnGround()) {
+    return;
+  }
+
+  b2Vec2 linearVelocity = _body->GetLinearVelocity();
+  linearVelocity.x = linearVelocity.x > 0 ? min(linearVelocity.x, sqrt(_characterProfile.moveSpeed))
+                                          : max(linearVelocity.x, -sqrt(_characterProfile.moveSpeed));
+  linearVelocity.y = linearVelocity.y > 0 ? min(linearVelocity.y, sqrt(_characterProfile.moveSpeed))
+                                          : max(linearVelocity.y, -sqrt(_characterProfile.moveSpeed));
+  _body->SetLinearVelocity(linearVelocity);
+}
+
+void Character::avoidSlidingDownSlope() {
+  if (isDodging() || _isTakingDamage || _isTakingDamageFromTraps) {
+    return;
+  }
+
+  constexpr auto kGracePeriodMs = 150;
+  if (isTryingToMoveRecently(kGracePeriodMs)) {
+    _body->SetLinearDamping(0);
+  } else {
+    const bool isReallyOnGround = isOnGround(/*raycast=*/true);
+    _body->SetLinearDamping(isReallyOnGround ? numeric_limits<float>::infinity() : 0);
+  }
+
+  _isTryingToMove = false;
+}
+
+bool Character::isTryingToMoveRecently(const float gracePeriod) const {
+  return _isTryingToMove || (time_util::getCurrentTimeMs() - _lastMoveTimeMs) < gracePeriod;
 }
 
 void Character::jump() {
@@ -668,6 +708,13 @@ void Character::jump() {
   }, .2f);
 
   _isJumping = true;
+  _isTryingToMove = true;
+  _lastMoveTimeMs = time_util::getCurrentTimeMs();
+
+  // Respect the temporary linear damping set by dodging.
+  if (!isDodging()) {
+    _body->SetLinearDamping(0);
+  }
   _body->ApplyLinearImpulse({0, _characterProfile.jumpHeight}, _body->GetWorldCenter(), true);
 }
 
@@ -731,22 +778,21 @@ void Character::getUpFromFalling() {
 
 void Character::dodgeBackward() {
   constexpr float rushPowerX = -5.0f;
-  dodge(State::DODGING_BACKWARD, rushPowerX, _isDodgingBackward);
+  dodgeImpl(State::DODGING_BACKWARD, rushPowerX, _isDodgingBackward);
 }
 
 void Character::dodgeForward() {
   constexpr float rushPowerX = 5.0f;
-  dodge(State::DODGING_FORWARD, rushPowerX, _isDodgingForward);
+  dodgeImpl(State::DODGING_FORWARD, rushPowerX, _isDodgingForward);
 }
 
-void Character::dodge(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag) {
+void Character::dodgeImpl(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag) {
   if (isDodging() || isDoubleJumping() || isMovementDisallowed()) {
     return;
   }
 
   _comboSystem->reset();
 
-  const float originalBodyDamping = _body->GetLinearDamping();
   _body->SetLinearDamping(4.0f);
   _body->ApplyLinearImpulseToCenter({_isFacingRight ? rushPowerX : -rushPowerX, 1.0f}, true);
 
@@ -758,9 +804,9 @@ void Character::dodge(const Character::State dodgeState, const float rushPowerX,
   }, 0.2f);
 
   isDodgingFlag = true;
-  CallbackManager::the().runAfter([this, originalBodyDamping, &isDodgingFlag](const CallbackManager::CallbackId) {
+  CallbackManager::the().runAfter([this, &isDodgingFlag](const CallbackManager::CallbackId) {
     isDodgingFlag = false;
-    _body->SetLinearDamping(originalBodyDamping);
+    _body->SetLinearDamping(0);
     disableAfterImageFx();
   }, _bodyAnimations[dodgeState]->getDuration());
 }
@@ -941,6 +987,7 @@ void Character::knockBack(Character* target, float forceX, float forceY) const {
   }
 
   b2Body* b2body = target->getBody();
+  b2body->SetLinearDamping(0);
   b2body->ApplyLinearImpulse({forceX, forceY}, b2body->GetWorldCenter(), true);
 }
 
@@ -1306,6 +1353,19 @@ void Character::addGold(const int amount) {
 
 void Character::removeGold(const int amount) {
   removeItem(Item::create(assets::kGoldCoin).get(), amount);
+}
+
+bool Character::isOnGround(const bool raycast) const {
+  if (!raycast) {
+    return _isOnGround;
+  }
+
+  constexpr auto kGroundCheckDistRatio = .019583f;  // Obtained through play-testing
+  const b2Vec2 src{_body->GetPosition()};
+  const b2Vec2 dst{src.x, src.y - _characterProfile.bodyWidth * kGroundCheckDistRatio};
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  return gmMgr->rayCast(src, dst, category_bits::kGround);
 }
 
 int Character::getItemAmount(const string& itemJsonFilePath) const {

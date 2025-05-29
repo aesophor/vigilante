@@ -206,7 +206,7 @@ class Character : public DynamicActor, public Importable {
   void removeGold(const int amount);
 
   inline bool isFacingRight() const { return _isFacingRight; }
-  inline bool isOnGround() const { return _isOnGround; }
+  bool isOnGround(const bool raycast = false) const;
   inline bool isJumping() const { return _isJumping; }
   inline bool isDoubleJumping() const { return _isDoubleJumping; }
   inline bool isOnPlatform() const { return _isOnPlatform; }
@@ -358,7 +358,14 @@ class Character : public DynamicActor, public Importable {
   virtual void loadBodyAnimations(const std::filesystem::path& bodyTextureResDirPath);
 
   void moveImpl(const bool moveTowardsRight);
+  void clampLinearVelocity();
+  void avoidSlidingDownSlope();
+  bool isTryingToMoveRecently(const float gracePeriod) const;
+
+  void dodgeImpl(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag);
+
   bool receiveDamage(Character* source, int damage, float numSecCantMove);
+  void cancelAttack();
 
   void createBodyAnimation(const Character::State state,
                            ax::Animation* fallbackAnimation);
@@ -384,9 +391,6 @@ class Character : public DynamicActor, public Importable {
   }
 
   Item* getExistingItemObj(Item* item) const;
-
-  void dodge(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag);
-  void cancelAttack();
 
   // Characater data.
   Character::Profile _characterProfile;
@@ -430,6 +434,10 @@ class Character : public DynamicActor, public Importable {
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
+
+  // Physics hacks against the "sliding down the slope" problem.
+  bool _isTryingToMove{};
+  uint64_t _lastMoveTimeMs{};
 
   float _groundAngle{};
 
