@@ -131,8 +131,19 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
   return item;
 }
 
-bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string& bgmFilePath) {
+bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
+                               const string& bgmFilePath,
+                               optional<string>&& preFightCmds,
+                               optional<string>&& postFightFailedCmds,
+                               optional<string>&& postFightSuccessfulCmds) {
   if (_isInBossFight) {
+    return false;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    VGLOG(LOG_ERR, "Failed to get player.");
     return false;
   }
 
@@ -150,24 +161,35 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string
     return false;
   }
 
-  target->addOnKilledCallback([this]() { onBossFightEnd(); });
+  target->addOnKilledCallback([this]() { onBossFightEnd(/*successful=*/true); });
+  player->addOnKilledCallback([this]() { onBossFightEnd(/*successful=*/false); });
 
   Audio::the().playBgm(bgmFilePath);
+
+  if (preFightCmds.has_value() && preFightCmds.value().size()) {
+    auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+    for (const auto& cmd : string_util::parseCmds(preFightCmds.value())) {
+      console->executeCmd(cmd);
+    }
+  }
+  if (postFightFailedCmds.has_value() && postFightFailedCmds.value().size()) {
+    _postFightFailedCmds = std::move(postFightFailedCmds);
+  }
+  if (postFightSuccessfulCmds.has_value() && postFightSuccessfulCmds.value().size()) {
+    _postFightSuccessfulCmds = std::move(postFightSuccessfulCmds);
+  }
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightBegin();
   }
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (auto player = gmMgr->getPlayer()) {
-    target->lockOn(player);
-  }
+  target->lockOn(player);
 
   _isInBossFight = true;
   return true;
 }
 
-void GameMap::onBossFightEnd() {
+void GameMap::onBossFightEnd(const bool successful) {
   Audio::the().playBgm(_bgmFilePath);
 
   for (const auto& trigger : _triggers) {
@@ -175,6 +197,22 @@ void GameMap::onBossFightEnd() {
   }
 
   _isInBossFight = false;
+
+  if (!successful && _postFightFailedCmds.has_value()) {
+    auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+    for (const auto& cmd : string_util::parseCmds(_postFightFailedCmds.value())) {
+      console->executeCmd(cmd);
+    }
+    _postFightFailedCmds = nullopt;
+  }
+
+  if (successful && _postFightSuccessfulCmds.has_value()) {
+    auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+    for (const auto& cmd : string_util::parseCmds(_postFightSuccessfulCmds.value())) {
+      console->executeCmd(cmd);
+    }
+    _postFightSuccessfulCmds = nullopt;
+  }
 }
 
 float GameMap::getWidth() const {

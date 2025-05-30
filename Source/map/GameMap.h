@@ -165,8 +165,12 @@ class GameMap final {
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-  bool onBossFightBegin(const std::string& targetNpcJsonFilePath, const std::string& bgmFilePath);
-  void onBossFightEnd();
+  bool onBossFightBegin(const std::string& targetNpcJsonFilePath,
+                        const std::string& bgmFilePath,
+                        std::optional<std::string>&& preFightCmds,
+                        std::optional<std::string>&& postFightFailedCmds,
+                        std::optional<std::string>&& postFightSuccessfulCmds);
+  void onBossFightEnd(const bool successful);
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
@@ -206,6 +210,9 @@ class GameMap final {
   std::string _locationName;
   float _ambientLightLevelDay{1.0f};
   float _ambientLightLevelNight{0.3f};
+  bool _isInBossFight{};
+  std::optional<std::string> _postFightFailedCmds;
+  std::optional<std::string> _postFightSuccessfulCmds;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;
@@ -214,7 +221,6 @@ class GameMap final {
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<PathFinder> _pathFinder;
-  bool _isInBossFight{};
 };
 
 template <typename ReturnType>

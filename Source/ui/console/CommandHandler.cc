@@ -634,11 +634,18 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
   }
 
   const rapidjson::Document json = json_util::loadFromFile(args[1]);
-  const string targetNpcJsonFilePath = json["targetNpcJsonFilePath"].GetString();
-  const string bgmFilePath = json["bgmFilePath"].GetString();
+  const string targetNpcJsonFilePath = json_util::extract<string>(json, "targetNpcJsonFilePath", "");
+  const string bgmFilePath = json_util::extract<string>(json.GetObject(), "bgmFilePath", "");
+  optional<string> preFightCmds = json_util::extract<string>(json.GetObject(), "preFightCmds");
+  optional<string> postFightFailedCmds = json_util::extract<string>(json.GetObject(), "postFightFailedCmds");
+  optional<string> postFightSuccessfulCmds = json_util::extract<string>(json.GetObject(), "postFightSuccessfulCmds");
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath, bgmFilePath)) {
+  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath,
+                                             bgmFilePath,
+                                             std::move(preFightCmds),
+                                             std::move(postFightFailedCmds),
+                                             std::move(postFightSuccessfulCmds))) {
     setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;
   }
@@ -653,7 +660,7 @@ void CommandHandler::endBossFight(const vector<string>& args) {
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getGameMap()->onBossFightEnd();
+  gmMgr->getGameMap()->onBossFightEnd(/*successful=*/true);
 
   setSuccess();
 }
