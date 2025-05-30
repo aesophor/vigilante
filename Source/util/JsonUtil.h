@@ -16,6 +16,8 @@
 
 #include <rapidjson/document.h>
 
+#define JSON_HAS_AND_IS_TYPE(j, key, type) (j.HasMember(key.c_str()) && j[key.c_str()].Is##type())
+
 namespace fs = std::filesystem;
 
 namespace requiem::json_util {
@@ -155,6 +157,132 @@ serialize(rapidjson::Document::AllocatorType& allocator, KVs&&... kvs) {
 template <typename... KVs>
 void deserialize(const rapidjson::Value& obj, KVs... kvs) {
   (deserializeImpl(obj, kvs), ...);
+}
+
+template <typename T>
+requires std::same_as<T, std::uint64_t>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint64)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetUint64();
+}
+
+template <typename T>
+requires std::same_as<T, std::uint32_t>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetUint();
+}
+
+template <typename T>
+requires std::same_as<T, std::uint8_t>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetUint();
+}
+
+template <typename T>
+requires std::same_as<T, std::int64_t>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Int64)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetInt64();
+}
+
+template <typename T>
+requires std::same_as<T, std::int32_t>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Int)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetInt();
+}
+
+template <typename T>
+requires std::same_as<T, std::string>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, String)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetString();
+}
+
+template <typename T>
+requires std::same_as<T, bool>
+std::optional<T> extract(const rapidjson::Value& obj, const std::string& key) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Bool)) {
+    return std::nullopt;
+  }
+  return obj[key.c_str()].GetBool();
+}
+
+template <typename T>
+requires std::same_as<T, std::uint64_t>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint64)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetUint64();
+}
+
+template <typename T>
+requires std::same_as<T, std::uint32_t>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetUint();
+}
+
+template <typename T>
+requires std::same_as<T, std::uint8_t>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Uint)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetUint();
+}
+
+template <typename T>
+requires std::same_as<T, std::int64_t>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Int64)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetInt64();
+}
+
+template <typename T>
+requires std::same_as<T, std::int32_t>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Int)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetInt();
+}
+
+template <typename T>
+requires std::same_as<T, std::string>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, String)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetString();
+}
+
+template <typename T>
+requires std::same_as<T, bool>
+T extract(const rapidjson::Value& obj, const std::string& key, const T& default_value) {
+  if (!JSON_HAS_AND_IS_TYPE(obj, key, Bool)) {
+    return default_value;
+  }
+  return obj[key.c_str()].GetBool();
 }
 
 rapidjson::Document loadFromFile(const fs::path& jsonFilePath);
