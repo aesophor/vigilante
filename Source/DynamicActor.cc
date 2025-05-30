@@ -12,6 +12,10 @@ using namespace std;
 
 namespace requiem {
 
+DynamicActor::~DynamicActor() {
+  destroyBody();
+}
+
 bool DynamicActor::removeFromMap() {
   if (!StaticActor::removeFromMap()) {
     return false;

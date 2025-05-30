@@ -26,7 +26,7 @@ class DynamicActor : public StaticActor {
   DynamicActor(const std::size_t numAnimations = 1, const std::size_t numFixtures = 1)
       : StaticActor{numAnimations},
         _fixtures(numFixtures) {}
-  virtual ~DynamicActor() override = default;
+  virtual ~DynamicActor() override;
 
   virtual bool showOnMap(float x, float y) override = 0;  // StaticActor
   virtual bool removeFromMap() override;  // StaticActor:
@@ -41,7 +41,7 @@ class DynamicActor : public StaticActor {
   static void setCategoryBits(b2Fixture* fixture, const short categoryBits);
   static void setMaskBits(b2Fixture* fixture, const short maskBits);
 
-  b2Body* _body{};  // users should manually destory _body in subclass!
+  b2Body* _body{};
   std::vector<b2Fixture*> _fixtures;
 };
 
