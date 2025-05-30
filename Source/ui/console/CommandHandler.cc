@@ -43,6 +43,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
   _errMsg = kDefaultErrMsg;
 
   static const CmdTable cmdTable = {
+    {cmd::kEcho,               &CommandHandler::echo               },
     {cmd::kSetBgmVolume,       &CommandHandler::setBgmVolume       },
     {cmd::kStartQuest,         &CommandHandler::startQuest         },
     {cmd::kSetStage,           &CommandHandler::setStage           },
@@ -96,6 +97,17 @@ void CommandHandler::setSuccess() {
 void CommandHandler::setError(const string& errMsg) {
   _success = false;
   _errMsg = errMsg;
+}
+
+void CommandHandler::echo(const std::vector<std::string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("usage: %s <string>", args[0].c_str()));
+    return;
+  }
+
+  auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
+  notifications->show(args[1]);
+  setSuccess();
 }
 
 void CommandHandler::setBgmVolume(const std::vector<std::string>& args) {

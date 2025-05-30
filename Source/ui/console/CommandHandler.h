@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_UI_CONSOLE_COMMAND_HANDLER_H_
 #define REQUIEM_UI_CONSOLE_COMMAND_HANDLER_H_
@@ -11,6 +11,7 @@ namespace requiem {
 
 namespace cmd {
 
+constexpr char kEcho[] = "echo";
 constexpr char kSetBgmVolume[] = "setbgmvolume";
 constexpr char kStartQuest[] = "startquest";
 constexpr char kSetStage[] = "setstage";
@@ -46,6 +47,7 @@ class CommandHandler final {
   void setError(const std::string& errMsg);
 
   // Command handlers.
+  void echo(const std::vector<std::string>& args);
   void setBgmVolume(const std::vector<std::string>& args);
   void startQuest(const std::vector<std::string>& args);
   void setStage(const std::vector<std::string>& args);
