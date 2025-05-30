@@ -1447,6 +1447,20 @@ void Character::regenStamina(int deltaStamina) {
   hud->updateStatusBars();
 }
 
+optional<Character::State> Character::getCharacterState(const string& frameName) {
+  static auto buildCache = []() -> unordered_map<string, Character::State> {
+    unordered_map<string, Character::State> cache;
+    for (int i = 0; i < State::STATE_SIZE; i++) {
+      cache.emplace(Character::_kCharacterStateStr[i], static_cast<Character::State>(i));
+    }
+    return cache;
+  };
+
+  static unordered_map<string, Character::State> cache = buildCache();
+  const auto it = cache.find(frameName);
+  return it != cache.end() ? make_optional(it->second) : nullopt;
+}
+
 Character::Profile::Profile(const fs::path& jsonFilePath) : jsonFilePath{jsonFilePath} {
   loadSpritesheetInfo(jsonFilePath);
 
@@ -1536,20 +1550,6 @@ void Character::Profile::loadSpritesheetInfo(const fs::path& jsonFilePath) {
     }
     sfxFilePaths[i] = sfxPath;
   }
-}
-
-optional<Character::State> Character::getCharacterState(const string& frameName) {
-  static auto buildCache = []() -> unordered_map<string, Character::State> {
-    unordered_map<string, Character::State> cache;
-    for (int i = 0; i < State::STATE_SIZE; i++) {
-      cache.emplace(Character::_kCharacterStateStr[i], static_cast<Character::State>(i));
-    }
-    return cache;
-  };
-
-  static unordered_map<string, Character::State> cache = buildCache();
-  const auto it = cache.find(frameName);
-  return it != cache.end() ? make_optional(it->second) : nullopt;
 }
 
 }  // namespace requiem
