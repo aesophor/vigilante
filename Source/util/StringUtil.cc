@@ -45,6 +45,15 @@ vector<string> parseArgs(const string& s) {
   return tokens;
 }
 
+vector<string> parseCmds(const string& s) {
+  vector<string> cmds = split(s, ';');
+  for (auto& cmd : cmds) {
+    string_util::strip(cmd);
+  }
+
+  return cmds;
+}
+
 bool startsWith(const string& s, const string& keyword) {
   return s.find(keyword) == 0;
 }
