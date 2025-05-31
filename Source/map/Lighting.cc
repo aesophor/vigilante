@@ -18,9 +18,7 @@ USING_NS_AX;
 
 namespace requiem {
 
-Lighting::Lighting()
-    : _layer{Layer::create()},
-      _darknessOverlay{nullptr} {}
+Lighting::Lighting() : _layer{Layer::create()} {}
 
 void Lighting::update() {
   const auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
