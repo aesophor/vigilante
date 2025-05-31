@@ -101,7 +101,7 @@ void CommandHandler::setError(const string& errMsg) {
 
 void CommandHandler::echo(const std::vector<std::string>& args) {
  if (args.size() < 2) {
-    setError(string_util::format("usage: %s <string>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <string>", args[0].c_str()));
     return;
   }
 
@@ -112,7 +112,7 @@ void CommandHandler::echo(const std::vector<std::string>& args) {
 
 void CommandHandler::setBgmVolume(const std::vector<std::string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <volume>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <volume>", args[0].c_str()));
     return;
   }
 
@@ -120,18 +120,18 @@ void CommandHandler::setBgmVolume(const std::vector<std::string>& args) {
   try {
     volume = std::stof(args[1]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `volume`");
+    setError(string_util::format("Invalid argument, volume: [%s]", args[1].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`volume` is too large");
+    setError(string_util::format("Out of range, volume: [%s]", args[1].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
   if (volume < 0 || volume > 100) {
-    setError("volume must be set between [0,100]");
+    setError("Volume must be set between [0,100]");
     return;
   }
 
@@ -141,13 +141,13 @@ void CommandHandler::setBgmVolume(const std::vector<std::string>& args) {
 
 void CommandHandler::startQuest(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <quest>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <quest>", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   if (!gmMgr->getPlayer()->getQuestBook().startQuest(args[1])) {
-    setError("failed to start quest.");
+    setError(string_util::format("Failed to start quest: [%s]", args[1].c_str()));
     return;
   }
 
@@ -156,7 +156,7 @@ void CommandHandler::startQuest(const vector<string>& args) {
 
 void CommandHandler::setStage(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("usage: %s <quest> <stage_idx>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <quest> <stage_idx>", args[0].c_str()));
     return;
   }
 
@@ -164,19 +164,19 @@ void CommandHandler::setStage(const vector<string>& args) {
   try {
     stageIdx = std::stoi(args[2]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `stage_idx`");
+    setError(string_util::format("Invalid argument, stage_idx: [%s]", args[2].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`stage_idx` is too large");
+    setError(string_util::format("Out of range, stage_idx: [%s]", args[2].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   if (!gmMgr->getPlayer()->getQuestBook().setStage(args[1], stageIdx)) {
-    setError("failed to set the stage of quest.");
+    setError(string_util::format("failed to set the stage of quest [%s]", args[1].c_str()));
     return;
   }
 
@@ -185,7 +185,7 @@ void CommandHandler::setStage(const vector<string>& args) {
 
 void CommandHandler::addItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
+    setError(string_util::format("Usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
     return;
   }
 
@@ -194,19 +194,19 @@ void CommandHandler::addItem(const vector<string>& args) {
     try {
       amount = std::stoi(args[2]);
     } catch (const invalid_argument& ex) {
-      setError("invalid argument `amount`");
+      setError(string_util::format("Invalid argument, amount: [%s]", args[2].c_str()));
       return;
     } catch (const out_of_range& ex) {
-      setError("`amount` is too large");
+      setError(string_util::format("Out of range, amount: [%s]", args[2].c_str()));
       return;
     } catch (...) {
-      setError("unknown error");
+      setError("Unknown error");
       return;
     }
   }
 
   if (amount <= 0) {
-    setError("`amount` has to be at least 1");
+    setError(string_util::format("Invalid argument, amount: [%d] has to be at least 1", amount));
     return;
   }
 
@@ -218,7 +218,7 @@ void CommandHandler::addItem(const vector<string>& args) {
 
 void CommandHandler::removeItem(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
+    setError(string_util::format("Usage: %s <itemJsonFilePath> [amount]", args[0].c_str()));
     return;
   }
 
@@ -227,19 +227,19 @@ void CommandHandler::removeItem(const vector<string>& args) {
     try {
       amount = std::stoi(args[2]);
     } catch (const invalid_argument& ex) {
-      setError("invalid argument `amount`");
+      setError(string_util::format("Invalid argument, amount: [%s]", args[2].c_str()));
       return;
     } catch (const out_of_range& ex) {
-      setError("`amount` is too large");
+      setError(string_util::format("Out of range, amount: [%s]", args[2].c_str()));
       return;
     } catch (...) {
-      setError("unknown error");
+      setError("Unknown error");
       return;
     }
   }
 
   if (amount <= 0) {
-    setError("`amount` has to be at least 1");
+    setError(string_util::format("Invalid argument, amount: [%d] has to be at least 1", amount));
     return;
   }
 
@@ -251,7 +251,7 @@ void CommandHandler::removeItem(const vector<string>& args) {
 
 void CommandHandler::addGold(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <amount>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <amount>", args[0].c_str()));
     return;
   }
 
@@ -259,13 +259,18 @@ void CommandHandler::addGold(const vector<string>& args) {
   try {
     amount = std::stoi(args[1]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `amount`");
+    setError(string_util::format("Invalid argument, amount: [%s]", args[1].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`amount` is too large");
+    setError(string_util::format("Out of range, amount: [%s]", args[1].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
+    return;
+  }
+
+  if (amount <= 0) {
+    setError(string_util::format("Invalid argument, amount: [%d] has to be at least 1", amount));
     return;
   }
 
@@ -277,7 +282,7 @@ void CommandHandler::addGold(const vector<string>& args) {
 
 void CommandHandler::removeGold(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <amount>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <amount>", args[0].c_str()));
     return;
   }
 
@@ -285,20 +290,25 @@ void CommandHandler::removeGold(const vector<string>& args) {
   try {
     amount = std::stoi(args[1]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `amount`");
+    setError(string_util::format("Invalid argument, amount: [%s]", args[1].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`amount` is too large");
+    setError(string_util::format("Out of range, amount: [%s]", args[1].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
+    return;
+  }
+
+  if (amount <= 0) {
+    setError(string_util::format("Invalid argument, amount: [%d] has to be at least 1", amount));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
   if (player->getGoldBalance() < amount) {
-    setError("Failed to remove gold, insufficient gold.");
+    setError("Failed to remove gold, since player has insufficient gold.");
     return;
   }
   player->removeGold(amount);
@@ -307,7 +317,7 @@ void CommandHandler::removeGold(const vector<string>& args) {
 
 void CommandHandler::updateDialogueTree(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("usage: %s <npcJson> <dialogueTreeJson>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <npcJson> <dialogueTreeJson>", args[0].c_str()));
     return;
   }
 
@@ -320,19 +330,27 @@ void CommandHandler::updateDialogueTree(const vector<string>& args) {
 
 void CommandHandler::joinPlayerParty(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
   Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
 
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
   if (targetNpc->isPlayerLeaderOfParty()) {
-    setError("This Npc is already in player's party.");
+    setError(string_util::format("Failed to make npc [%s] join the player's party, "
+                                 "since it has already joined the player's party.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
     return;
   }
 
@@ -342,19 +360,27 @@ void CommandHandler::joinPlayerParty(const vector<string>& args) {
 
 void CommandHandler::leavePlayerParty(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
   Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
 
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
   if (!targetNpc->isPlayerLeaderOfParty()) {
-    setError("This Npc has not joined player's party yet.");
+     setError(string_util::format("Failed to make npc [%s] leave the player's party, "
+                                  "since it not joined player's party yet.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
     return;
   }
 
@@ -364,24 +390,33 @@ void CommandHandler::leavePlayerParty(const vector<string>& args) {
 
 void CommandHandler::partyMemberWait(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
   Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
-
-  if (!targetNpc->isPlayerLeaderOfParty()) {
-    setError("This Npc has not joined player's party yet.");
+  if (!player) {
+    setError("Failed to get player");
     return;
   }
 
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
+  if (!targetNpc->isPlayerLeaderOfParty()) {
+    setError(string_util::format("Failed to make npc [%s] wait for the player, "
+                                 "since it has not joined player's party yet.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
+    return;
+  }
   if (player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFilePath)) {
-    setError("This Npc is already waiting for player.");
+    setError(string_util::format("Failed to make npc [%s] wait for the player, "
+                                 "since it is already waiting for the player.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
     return;
   }
 
@@ -391,24 +426,33 @@ void CommandHandler::partyMemberWait(const vector<string>& args) {
 
 void CommandHandler::partyMemberFollow(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
   Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
-
-  if (!targetNpc->isPlayerLeaderOfParty()) {
-    setError("This Npc has not joined player's party yet.");
+  if (!player) {
+    setError("Failed to get player");
     return;
   }
 
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
+  if (!targetNpc->isPlayerLeaderOfParty()) {
+    setError(string_util::format("Failed to make npc [%s] follow the player, "
+                                 "since it has not joined player's party yet.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
+    return;
+  }
   if (!player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFilePath)) {
-    setError("This Npc is not waiting for player yet.");
+    setError(string_util::format("Failed to make npc [%s] follow the player, "
+                                 "since it is not waiting for the player.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
     return;
   }
 
@@ -418,19 +462,26 @@ void CommandHandler::partyMemberFollow(const vector<string>& args) {
 
 void CommandHandler::trade(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
   Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
 
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
   if (!targetNpc->getNpcProfile().isTradable) {
-    setError("This Npc is not tradable.");
+    setError(string_util::format("Failed to trade with npc [%s], since it is not tradable.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
     return;
   }
 
@@ -440,31 +491,38 @@ void CommandHandler::trade(const vector<string>& args) {
 
 void CommandHandler::kill(const vector<string>& args) {
   if (args.size() < 1) {
-    setError(string_util::format("usage: %s", args[0].c_str()));
-    return;
-  }
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-
-  Player* player = gmMgr->getPlayer();
-  Npc* targetNpc = dialogueMgr->getTargetNpc();
-  assert(player != nullptr && targetNpc != nullptr);
-
-  targetNpc->receiveDamage(player, 999);
-  setSuccess();
-}
-
-void CommandHandler::interact(const vector<string>& args) {
-  if (args.size() > 2) {
-    setError(string_util::format("usage: %s [npcJsonFilePath]", args[0].c_str()));
+    setError(string_util::format("Usage: %s", args[0].c_str()));
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   Player* player = gmMgr->getPlayer();
   if (!player) {
-    setError("No player.");
+    setError("Failed to get player");
+    return;
+  }
+
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
+
+  targetNpc->receiveDamage(player, 99999);
+  setSuccess();
+}
+
+void CommandHandler::interact(const vector<string>& args) {
+  if (args.size() > 2) {
+    setError(string_util::format("Usage: %s [npcJsonFilePath]", args[0].c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Player* player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player.");
     return;
   }
 
@@ -479,7 +537,7 @@ void CommandHandler::interact(const vector<string>& args) {
   } else {
     const list<Interactable*>& interactables = player->getInRangeInteractables();
     if (interactables.empty()) {
-      setError("No nearby interactable objects.");
+      setError("Failed to interact with nearby interactable objects since there aren't any.");
       return;
     }
     for (auto interactable : interactables) {
@@ -492,7 +550,7 @@ void CommandHandler::interact(const vector<string>& args) {
 
 void CommandHandler::narrate(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <narratives...>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <narratives...>", args[0].c_str()));
     return;
   }
 
@@ -509,7 +567,7 @@ void CommandHandler::narrate(const vector<string>& args) {
 
 void CommandHandler::rest(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <innTmxMapFilePath>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <innTmxMapFilePath>", args[0].c_str()));
     return;
   }
 
@@ -518,8 +576,7 @@ void CommandHandler::rest(const vector<string>& args) {
   if (!roomRentalTracker->hasCheckedIn(tmxMapFilePath)) {
     auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
     notifications->show("You cannot rest here because you haven't rented this room.");
-
-    setError(string_util::format("failed to rest in [%s], haven't checked in.", tmxMapFilePath.c_str()));
+    setError(string_util::format("Failed to rest in [%s], haven't checked in.", tmxMapFilePath.c_str()));
     return;
   }
 
@@ -542,7 +599,7 @@ void CommandHandler::rest(const vector<string>& args) {
 
 void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   if (args.size() < 4) {
-    setError(string_util::format("usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath> <gold>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath> <gold>", args[0].c_str()));
     return;
   }
 
@@ -550,20 +607,20 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
   try {
     fee = std::stoi(args[3]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `amount`");
+    setError(string_util::format("Invalid argument, fee: [%s]", args[3].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`amount` is too large");
+    setError(string_util::format("Out of range, fee: [%s]", args[3].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
   if (player->getGoldBalance() < fee) {
-    setError("Failed to rent room, insufficient gold.");
+    setError("Failed to rent room, since player has insufficient gold.");
     return;
   }
 
@@ -592,7 +649,7 @@ void CommandHandler::rentRoomCheckIn(const vector<string>& args) {
 
 void CommandHandler::rentRoomCheckOut(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <innTmxMapFilePath> <bedroomKeyJsonFilePath>", args[0].c_str()));
     return;
   }
 
@@ -629,7 +686,7 @@ void CommandHandler::rentRoomCheckOut(const vector<string>& args) {
 
 void CommandHandler::beginBossFight(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
     return;
   }
 
@@ -655,7 +712,7 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
 
 void CommandHandler::endBossFight(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
     return;
   }
 
@@ -667,7 +724,7 @@ void CommandHandler::endBossFight(const vector<string>& args) {
 
 void CommandHandler::setInGameTime(const vector<string>& args) {
   if (args.size() < 4) {
-    setError(string_util::format("usage: %s <hour> <minute> <second>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <hour> <minute> <second>", args[0].c_str()));
     return;
   }
 
@@ -675,13 +732,13 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   try {
     hour = std::stoi(args[1]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `hour`");
+    setError(string_util::format("Invalid argument, hour: [%s]", args[1].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`hour` is too large");
+    setError(string_util::format("Out of range, hour: [%s]", args[1].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
@@ -689,13 +746,13 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   try {
     minute = std::stoi(args[2]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `minute`");
+    setError(string_util::format("Invalid argument, minute: [%s]", args[2].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`minute` is too large");
+    setError(string_util::format("Out of range, minute: [%s]", args[2].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
@@ -703,13 +760,13 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   try {
     second = std::stoi(args[3]);
   } catch (const invalid_argument& ex) {
-    setError("invalid argument `second`");
+    setError(string_util::format("Invalid argument, second: [%s]", args[3].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError("`second` is too large");
+    setError(string_util::format("Out of range, second: [%s]", args[3].c_str()));
     return;
   } catch (...) {
-    setError("unknown error");
+    setError("Unknown error");
     return;
   }
 
@@ -743,13 +800,13 @@ void CommandHandler::moveTo(const vector<string>& args) {
     try {
       x = std::stof(args[2]) / kPpm;
     } catch (const invalid_argument& ex) {
-      setError("invalid argument `x`");
+      setError(string_util::format("Invalid argument, x: [%s]", args[2].c_str()));
       return;
     } catch (const out_of_range& ex) {
-      setError("`x` is too large");
+      setError(string_util::format("Out of range, x: [%s]", args[2].c_str()));
       return;
     } catch (...) {
-      setError("unknown error");
+      setError("Unknown error");
       return;
     }
   }
@@ -758,13 +815,13 @@ void CommandHandler::moveTo(const vector<string>& args) {
     try {
       y = std::stof(args[3]) / kPpm;
     } catch (const invalid_argument& ex) {
-      setError("invalid argument `y`");
+      setError(string_util::format("Invalid argument, y: [%s]", args[3].c_str()));
       return;
     } catch (const out_of_range& ex) {
-      setError("`y` is too large");
+      setError(string_util::format("Out of range, y: [%s]", args[3].c_str()));
       return;
     } catch (...) {
-      setError("unknown error");
+      setError("Unknown error");
       return;
     }
   }
@@ -772,7 +829,7 @@ void CommandHandler::moveTo(const vector<string>& args) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);
   if (!tmxMapFilePath.has_value()) {
-    setError(string_util::format("Failed to moveto: [%s], unknown mapAlias.", mapAlias.c_str()));
+    setError(string_util::format("Failed to moveto unknown map alias: [%s].", mapAlias.c_str()));
     return;
   }
 
