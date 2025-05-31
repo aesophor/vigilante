@@ -724,11 +724,43 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
 
 void CommandHandler::moveTo(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("usage: %s <mapAlias>", args[0].c_str()));
+    setError(string_util::format("usage: %s <mapAlias> [x] [y]", args[0].c_str()));
     return;
   }
 
   const string& mapAlias = args[1];
+  optional<float> x;
+  optional<float> y;
+
+  if (args.size() >= 3) {
+    try {
+      x = std::stof(args[2]) / kPpm;
+    } catch (const invalid_argument& ex) {
+      setError("invalid argument `x`");
+      return;
+    } catch (const out_of_range& ex) {
+      setError("`x` is too large");
+      return;
+    } catch (...) {
+      setError("unknown error");
+      return;
+    }
+  }
+
+  if (args.size() >= 4) {
+    try {
+      y = std::stof(args[3]) / kPpm;
+    } catch (const invalid_argument& ex) {
+      setError("invalid argument `y`");
+      return;
+    } catch (const out_of_range& ex) {
+      setError("`y` is too large");
+      return;
+    } catch (...) {
+      setError("unknown error");
+      return;
+    }
+  }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);
@@ -737,19 +769,24 @@ void CommandHandler::moveTo(const vector<string>& args) {
     return;
   }
 
-  auto afterLoadingGameMap = [gmMgr](const GameMap* newGameMap) {
+  auto afterLoadingGameMap = [gmMgr, x, y](const GameMap* newGameMap) {
     Player* player = gmMgr->getPlayer();
     if (!player) {
       return;
     }
 
-    GameMap::Portal* portal = newGameMap->getPortals()[0].get();
-    const auto& portalPos = portal->getBody()->GetPosition();
-    player->setPosition(portalPos.x, portalPos.y);
+    b2Vec2 newPlayerPos;
+    if (x.has_value() || y.has_value()) {
+      newPlayerPos = {x.value(), y.value()};
+    } else {
+      GameMap::Portal* portal = newGameMap->getPortals()[0].get();
+      newPlayerPos = portal->getBody()->GetPosition();
+    }
+    player->setPosition(newPlayerPos.x, newPlayerPos.y);
 
     for (auto ally : player->getAllies()) {
       if (!ally->isWaitingForPartyLeader()) {
-        ally->setPosition(portalPos.x, portalPos.y);
+        ally->setPosition(newPlayerPos.x, newPlayerPos.y);
       } else if (newGameMap->getTmxTiledMapFilePath() != ally->getParty()->getWaitingMemberLocationInfo(
                  ally->getCharacterProfile().jsonFilePath)->tmxMapFilePath) {
         ally->removeFromMap();
