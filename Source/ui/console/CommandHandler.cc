@@ -193,7 +193,7 @@ void CommandHandler::startQuest(const vector<string>& args) {
 
 void CommandHandler::setStage(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("Usage: %s <quest> <stage_idx>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <quest> <stageIdx>", args[0].c_str()));
     return;
   }
 
@@ -201,10 +201,10 @@ void CommandHandler::setStage(const vector<string>& args) {
   try {
     stageIdx = std::stoi(args[2]);
   } catch (const invalid_argument& ex) {
-    setError(string_util::format("Invalid argument, stage_idx: [%s]", args[2].c_str()));
+    setError(string_util::format("Invalid argument, stageIdx: [%s]", args[2].c_str()));
     return;
   } catch (const out_of_range& ex) {
-    setError(string_util::format("Out of range, stage_idx: [%s]", args[2].c_str()));
+    setError(string_util::format("Out of range, stageIdx: [%s]", args[2].c_str()));
     return;
   } catch (...) {
     setError("Unknown error");
