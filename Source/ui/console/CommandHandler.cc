@@ -66,6 +66,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
     {cmd::kMoveTo,             &CommandHandler::moveTo             },
+    {cmd::kSetPos,             &CommandHandler::setPos             },
     {cmd::kResurrect,          &CommandHandler::resurrect          },
   };
 
@@ -566,15 +567,7 @@ void CommandHandler::interact(const vector<string>& args) {
     return;
   }
 
-  if (args.size() == 2) {
-    const fs::path npcJsonFilePath{args[1]};
-    for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
-      if (auto npc = dynamic_pointer_cast<Npc>(actor)) {
-        player->interact(npc.get());
-        break;
-      }
-    }
-  } else {
+  if (args.size() < 2) {
     const list<Interactable*>& interactables = player->getInRangeInteractables();
     if (interactables.empty()) {
       setError("Failed to interact with nearby interactable objects since there aren't any.");
@@ -583,9 +576,39 @@ void CommandHandler::interact(const vector<string>& args) {
     for (auto interactable : interactables) {
       player->interact(interactable);
     }
+    setSuccess();
+    return;
   }
 
-  setSuccess();
+  const fs::path target{args[1]};
+
+  for (const auto& member : player->getParty()->getMembers()) {
+    auto npc = dynamic_pointer_cast<Npc>(member);
+    if (!npc) {
+      continue;
+    }
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    player->interact(npc.get());
+    setSuccess();
+    return;
+  }
+
+  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+    auto npc = dynamic_pointer_cast<Npc>(actor);
+    if (!npc) {
+      continue;
+    }
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    player->interact(npc.get());
+    setSuccess();
+    return;
+  }
+
+  setError(string_util::format("Failed to make player interact with target [%s], not found", target.c_str()));
 }
 
 void CommandHandler::narrate(const vector<string>& args) {
@@ -850,64 +873,26 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
 
 void CommandHandler::moveTo(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("Usage: %s <mapAlias> [x] [y]", args[0].c_str()));
+    setError(string_util::format("Usage: %s <mapAlias>", args[0].c_str()));
     return;
   }
 
-  const string& mapAlias = args[1];
-  optional<float> x;
-  optional<float> y;
-
-  if (args.size() >= 3) {
-    try {
-      x = std::stof(args[2]) / kPpm;
-    } catch (const invalid_argument& ex) {
-      setError(string_util::format("Invalid argument, x: [%s]", args[2].c_str()));
-      return;
-    } catch (const out_of_range& ex) {
-      setError(string_util::format("Out of range, x: [%s]", args[2].c_str()));
-      return;
-    } catch (...) {
-      setError("Unknown error");
-      return;
-    }
-  }
-
-  if (args.size() >= 4) {
-    try {
-      y = std::stof(args[3]) / kPpm;
-    } catch (const invalid_argument& ex) {
-      setError(string_util::format("Invalid argument, y: [%s]", args[3].c_str()));
-      return;
-    } catch (const out_of_range& ex) {
-      setError(string_util::format("Out of range, y: [%s]", args[3].c_str()));
-      return;
-    } catch (...) {
-      setError("Unknown error");
-      return;
-    }
-  }
-
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  const string& mapAlias = args[1];
   const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);
   if (!tmxMapFilePath.has_value()) {
     setError(string_util::format("Failed to moveto unknown map alias: [%s].", mapAlias.c_str()));
     return;
   }
 
-  auto afterLoadingGameMap = [gmMgr, x, y](const GameMap* newGameMap) {
+  auto afterLoadingGameMap = [gmMgr](const GameMap* newGameMap) {
     Player* player = gmMgr->getPlayer();
     if (!player) {
       return;
     }
 
-    b2Vec2 newPlayerPos;
-    if (x.has_value() || y.has_value()) {
-      newPlayerPos = {x.value(), y.value()};
-    } else {
-      GameMap::Portal* portal = newGameMap->getPortals()[0].get();
-      newPlayerPos = portal->getBody()->GetPosition();
-    }
+    GameMap::Portal* portal = newGameMap->getPortals()[0].get();
+    b2Vec2 newPlayerPos = portal->getBody()->GetPosition();
     player->setPosition(newPlayerPos.x, newPlayerPos.y);
 
     for (auto ally : player->getAllies()) {
@@ -922,6 +907,77 @@ void CommandHandler::moveTo(const vector<string>& args) {
 
   gmMgr->loadGameMap(*tmxMapFilePath, afterLoadingGameMap);
   setSuccess();
+}
+
+void CommandHandler::setPos(const vector<string>& args) {
+  if (args.size() < 4) {
+    setError(string_util::format("Usage: %s <characterJsonFilePath> <x> <y>", args[0].c_str()));
+    return;
+  }
+
+  float x{0};
+  try {
+    x = std::stof(args[2]) / kPpm;
+  } catch (const invalid_argument& ex) {
+    setError(string_util::format("Invalid argument, x: [%s]", args[2].c_str()));
+    return;
+  } catch (const out_of_range& ex) {
+    setError(string_util::format("Out of range, x: [%s]", args[2].c_str()));
+    return;
+  } catch (...) {
+    setError("Unknown error");
+    return;
+  }
+
+  float y{0};
+  try {
+    y = std::stof(args[3]) / kPpm;
+  } catch (const invalid_argument& ex) {
+    setError(string_util::format("Invalid argument, y: [%s]", args[3].c_str()));
+    return;
+  } catch (const out_of_range& ex) {
+    setError(string_util::format("Out of range, y: [%s]", args[3].c_str()));
+    return;
+  } catch (...) {
+    setError("Unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  const fs::path& target{args[1]};
+  if (target == "player") {
+    player->setPosition(x, y);
+    setSuccess();
+    return;
+  }
+
+  for (const auto& member : player->getParty()->getMembers()) {
+    if (member->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    member->setPosition(x, y);
+    setSuccess();
+    return;
+  }
+
+  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+    auto npc = dynamic_pointer_cast<Npc>(actor);
+    if (!npc) {
+      continue;
+    }
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    npc->setPosition(x, y);
+    setSuccess();
+    return;
+  }
 }
 
 void CommandHandler::resurrect(const vector<string>& args) {
@@ -939,16 +995,16 @@ void CommandHandler::resurrect(const vector<string>& args) {
 
   const string target{args[1]};
   if (target == "player") {
-      player->resurrect();
+    player->resurrect();
     setSuccess();
     return;
   }
 
-  for (const auto& npc : player->getParty()->getMembers()) {
-    if (npc->getCharacterProfile().jsonFilePath != target) {
+  for (const auto& member : player->getParty()->getMembers()) {
+    if (member->getCharacterProfile().jsonFilePath != target) {
       continue;
     }
-    npc->resurrect();
+    member->resurrect();
     setSuccess();
     return;
   }
