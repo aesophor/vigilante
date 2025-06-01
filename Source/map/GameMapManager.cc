@@ -99,16 +99,18 @@ void GameMapManager::update(const float delta) {
 }
 
 void GameMapManager::loadGameMap(const string& tmxMapFilePath,
-                                 const function<void (const GameMap*)>& afterLoadingGameMap) {
+                                 const function<void (const GameMap*)>& afterLoadingGameMap,
+                                 const float fadeInSec,
+                                 const float fadeOutSec) {
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
-      FadeIn::create(Shade::kFadeInTime),
+      FadeIn::create(fadeInSec),
       CallFunc::create([this, shade, tmxMapFilePath, afterLoadingGameMap]() {
         doLoadGameMap(tmxMapFilePath);
         afterLoadingGameMap(_gameMap.get());
         setNpcsAllowedToAct(true);
       }),
-      FadeOut::create(Shade::kFadeOutTime),
+      FadeOut::create(fadeOutSec),
       nullptr
   ));
 }

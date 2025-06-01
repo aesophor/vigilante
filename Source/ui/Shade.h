@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_UI_SHADE_H_
 #define REQUIEM_UI_SHADE_H_
@@ -14,8 +14,8 @@ class Shade final {
 
   inline ax::ui::ImageView* getImageView() const { return _imageView; }
 
-  static inline constexpr float kFadeOutTime = .65f;
-  static inline constexpr float kFadeInTime = .3f;
+  static inline constexpr float kFadeInSec = .3f;
+  static inline constexpr float kFadeOutSec = .65f;
 
  private:
   ax::ui::ImageView* _imageView;

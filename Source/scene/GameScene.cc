@@ -189,7 +189,7 @@ void GameScene::update(const float delta) {
       return;
     }
     _shade->getImageView()->runAction(Sequence::createWithTwoActions(
-        FadeIn::create(Shade::kFadeInTime * 5),
+        FadeIn::create(Shade::kFadeInSec * 5),
         CallFunc::create([]() { SceneManager::the().popScene(); })
     ));
     _isTerminating = true;

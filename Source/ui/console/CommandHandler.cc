@@ -12,6 +12,7 @@
 #include "item/Key.h"
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
+#include "ui/Shade.h"
 #include "util/JsonUtil.h"
 #include "util/StringUtil.h"
 #include "util/Logger.h"
@@ -676,7 +677,7 @@ void CommandHandler::rest(const vector<string>& args) {
 
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
-      FadeIn::create(Shade::kFadeInTime * 3),
+      FadeIn::create(Shade::kFadeInSec * 3),
       CallFunc::create([]() {
         auto inGameTime = SceneManager::the().getCurrentScene<GameScene>()->getInGameTime();
         inGameTime->fastForward(8 * 60 * 60);  // 8 hours
@@ -684,7 +685,7 @@ void CommandHandler::rest(const vector<string>& args) {
         auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
         notifications->show("You awaken feeling well rested.");
       }),
-      FadeOut::create(Shade::kFadeOutTime * 3),
+      FadeOut::create(Shade::kFadeOutSec * 3),
       nullptr
   ));
 
@@ -904,7 +905,7 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
 
 void CommandHandler::moveTo(const vector<string>& args) {
   if (args.size() < 2) {
-    setError(string_util::format("Usage: %s <mapAlias>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <mapAlias> [fadeInSec] [fadeOutSec]", args[0].c_str()));
     return;
   }
 
@@ -914,6 +915,38 @@ void CommandHandler::moveTo(const vector<string>& args) {
   if (!tmxMapFilePath.has_value()) {
     setError(string_util::format("Failed to moveto unknown map alias: [%s].", mapAlias.c_str()));
     return;
+  }
+
+  float fadeInSec = Shade::kFadeInSec;
+  if (args.size() >= 3) {
+    try {
+      fadeInSec = std::stof(args[2]);
+    } catch (const invalid_argument& ex) {
+      setError(string_util::format("Invalid argument, fadeInSec: [%s]", args[2].c_str()));
+      return;
+    } catch (const out_of_range& ex) {
+      setError(string_util::format("Out of range, fadeInSec: [%s]", args[2].c_str()));
+      return;
+    } catch (...) {
+      setError("Unknown error");
+      return;
+    }
+  }
+
+  float fadeOutSec = Shade::kFadeOutSec;
+  if (args.size() >= 4) {
+    try {
+      fadeOutSec = std::stof(args[3]);
+    } catch (const invalid_argument& ex) {
+      setError(string_util::format("Invalid argument, fadeInSec: [%s]", args[3].c_str()));
+      return;
+    } catch (const out_of_range& ex) {
+      setError(string_util::format("Out of range, fadeInSec: [%s]", args[3].c_str()));
+      return;
+    } catch (...) {
+      setError("Unknown error");
+      return;
+    }
   }
 
   auto afterLoadingGameMap = [gmMgr](const GameMap* newGameMap) {
@@ -936,7 +969,7 @@ void CommandHandler::moveTo(const vector<string>& args) {
     }
   };
 
-  gmMgr->loadGameMap(*tmxMapFilePath, afterLoadingGameMap);
+  gmMgr->loadGameMap(*tmxMapFilePath, afterLoadingGameMap, fadeInSec, fadeOutSec);
   setSuccess();
 }
 

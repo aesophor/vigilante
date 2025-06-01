@@ -16,7 +16,7 @@ Shade::Shade() : _imageView{ui::ImageView::create(string{kShade})} {
   const auto& winSize = Director::getInstance()->getWinSize();
   _imageView->setScale(winSize.width, winSize.height);
   _imageView->setAnchorPoint({0, 0});
-  _imageView->runAction(FadeOut::create(kFadeOutTime));
+  _imageView->runAction(FadeOut::create(kFadeOutSec));
 }
 
 }  // namespace requiem

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_MAP_GAME_MAP_MANAGER_H_
 #define REQUIEM_MAP_GAME_MAP_MANAGER_H_
@@ -21,6 +21,7 @@
 #include "map/GameMap.h"
 #include "map/Lighting.h"
 #include "map/WorldContactListener.h"
+#include "ui/Shade.h"
 
 namespace requiem {
 
@@ -36,7 +37,9 @@ class GameMapManager final {
   // @param afterLoadingGameMap: guaranteed to be called after the GameMap
   //                             has been loaded (optional).
   void loadGameMap(const std::string& tmxMapFilePath,
-                   const std::function<void (const GameMap*)>& afterLoadingGameMap=[](const GameMap*) {});
+                   const std::function<void (const GameMap*)>& afterLoadingGameMap=[](const GameMap*) {},
+                   const float fadeInSec = Shade::kFadeInSec,
+                   const float fadeOutSec = Shade::kFadeOutSec);
   void destroyGameMap();
   bool rayCast(const b2Vec2& src, const b2Vec2& dst, const short categoryBitsToStop,
                const bool shouldDrawLine = false) const;
