@@ -975,7 +975,7 @@ void CommandHandler::moveTo(const vector<string>& args) {
 
 void CommandHandler::setPos(const vector<string>& args) {
   if (args.size() < 4) {
-    setError(string_util::format("Usage: %s <characterJsonFilePath> <x> <y>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <characterJsonFilePath> <x> <y> [isFacingRight]", args[0].c_str()));
     return;
   }
 
@@ -1007,6 +1007,15 @@ void CommandHandler::setPos(const vector<string>& args) {
     return;
   }
 
+  optional<bool> isFacingRight;
+  if (args.size() == 5) {
+    if (args[4] != "true" && args[4] != "false") {
+      setError(string_util::format("Invalid argument, isFacingRight: [%s]", args[4].c_str()));
+      return;
+    }
+    isFacingRight = args[4] == "true";
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
   if (!player) {
@@ -1017,6 +1026,9 @@ void CommandHandler::setPos(const vector<string>& args) {
   const fs::path& target{args[1]};
   if (target == "player") {
     player->setPosition(x, y);
+    if (isFacingRight.has_value()) {
+      player->setFacingRight(isFacingRight.value());
+    }
     setSuccess();
     return;
   }
@@ -1026,6 +1038,9 @@ void CommandHandler::setPos(const vector<string>& args) {
       continue;
     }
     member->setPosition(x, y);
+    if (isFacingRight.has_value()) {
+      member->setFacingRight(isFacingRight.value());
+    }
     setSuccess();
     return;
   }
@@ -1039,6 +1054,9 @@ void CommandHandler::setPos(const vector<string>& args) {
       continue;
     }
     npc->setPosition(x, y);
+    if (isFacingRight.has_value()) {
+      npc->setFacingRight(isFacingRight.value());
+    }
     setSuccess();
     return;
   }
