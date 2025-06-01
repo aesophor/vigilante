@@ -197,9 +197,9 @@ class Character : public DynamicActor, public Importable {
   virtual void discardItem(Item* item, int amount);
   virtual void interact(Interactable* target);
   virtual void addExp(const int exp);
-
   virtual bool addSkill(std::shared_ptr<Skill> skill);
   virtual bool removeSkill(Skill* skill);
+  virtual void resurrect();
 
   int getGoldBalance() const;
   void addGold(const int amount);

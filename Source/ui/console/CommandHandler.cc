@@ -66,6 +66,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
     {cmd::kMoveTo,             &CommandHandler::moveTo             },
+    {cmd::kResurrect,          &CommandHandler::resurrect          },
   };
 
   // Execute the corresponding command handler from _cmdTable.
@@ -921,6 +922,51 @@ void CommandHandler::moveTo(const vector<string>& args) {
 
   gmMgr->loadGameMap(*tmxMapFilePath, afterLoadingGameMap);
   setSuccess();
+}
+
+void CommandHandler::resurrect(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("Usage: %s <characterJsonProfilePath>", args[0].c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  const string target{args[1]};
+  if (target == "player") {
+      player->resurrect();
+    setSuccess();
+    return;
+  }
+
+  for (const auto& npc : player->getParty()->getMembers()) {
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    npc->resurrect();
+    setSuccess();
+    return;
+  }
+
+  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+    auto npc = dynamic_pointer_cast<Npc>(actor);
+    if (!npc) {
+      continue;
+    }
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    npc->resurrect();
+    setSuccess();
+    return;
+  }
+
+  setError(string_util::format("Failed to resurrect target [%s], not found", target.c_str()));
 }
 
 }  // namespace requiem

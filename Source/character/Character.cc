@@ -1343,6 +1343,20 @@ bool Character::removeSkill(Skill* skill) {
   return true;
 }
 
+void Character::resurrect() {
+  if (!_isSetToKill || !_isKilled) {
+    return;
+  }
+
+  removeFromMap();
+
+  _isSetToKill = false;
+  _isKilled = false;
+  _characterProfile.health = _characterProfile.fullHealth;
+
+  showOnMap(_killedPos.x * kPpm, _killedPos.y * kPpm);
+}
+
 int Character::getGoldBalance() const {
   return getItemAmount(Item::create(assets::kGoldCoin)->getItemProfile().jsonFilePath);
 }
