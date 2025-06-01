@@ -527,13 +527,13 @@ void Character::onKilled() {
   _isKilled = true;
   destroyBody();
 
-  for (const auto& callback : _onKilledCallbacks) {
-    std::invoke(callback);
-  }
-
   const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_KILLED);
   if (!sfxFilePath.native().empty()) {
     Audio::the().playSfx(sfxFilePath);
+  }
+
+  for (const auto& callback : _onKilledCallbacks) {
+    std::invoke(callback);
   }
 }
 

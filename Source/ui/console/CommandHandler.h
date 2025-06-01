@@ -32,7 +32,6 @@ constexpr char kRest[] = "rest";
 constexpr char kRentRoomCheckIn[] = "rentroomcheckin";
 constexpr char kRentRoomCheckOut[] = "rentroomcheckout";
 constexpr char kBeginBossFight[] = "beginbossfight";
-constexpr char kEndBossFight[] = "endbossfight";
 constexpr char kSetInGameTime[] = "setingametime";
 constexpr char kMoveTo[] = "moveto";
 

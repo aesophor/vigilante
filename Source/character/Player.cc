@@ -67,9 +67,14 @@ bool Player::showOnMap(float x, float y) {
 }
 
 void Player::onKilled() {
-  Character::onKilled();
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  const bool isInBossFight = gmMgr->getGameMap()->isInBossFight();
+  const bool isGameOverOnPlayerDeath = gmMgr->getGameMap()->isGameOverOnPlayerDeath();
 
-  SceneManager::the().getCurrentScene<GameScene>()->setActive(false);
+  Character::onKilled();
+  if (!isInBossFight || isGameOverOnPlayerDeath) {
+    SceneManager::the().getCurrentScene<GameScene>()->setActive(false);
+  }
 }
 
 bool Player::inflictDamage(Character* target, int damage) {

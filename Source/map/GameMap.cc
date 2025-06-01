@@ -131,8 +131,18 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
   return item;
 }
 
-bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string& bgmFilePath) {
+bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
+                               const string& bgmFilePath,
+                               const bool isGameOverOnPlayerDeath,
+                               vector<string>&& execOnPlayerDeath) {
   if (_isInBossFight) {
+    return false;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    VGLOG(LOG_ERR, "Failed to get player");
     return false;
   }
 
@@ -150,31 +160,37 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath, const string
     return false;
   }
 
-  target->addOnKilledCallback([this]() { onBossFightEnd(); });
-
-  Audio::the().playBgm(bgmFilePath);
+  target->lockOn(player);
+  target->addOnKilledCallback([this]() { onBossFightEnd(/*isPlayerKilled=*/false); });
+  player->addOnKilledCallback([this]() { onBossFightEnd(/*isPlayerKilled=*/true); });
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightBegin();
   }
 
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (auto player = gmMgr->getPlayer()) {
-    target->lockOn(player);
-  }
+  Audio::the().playBgm(bgmFilePath);
 
   _isInBossFight = true;
+  _isGameOverOnPlayerDeath = isGameOverOnPlayerDeath;
+  _execOnPlayerDeath = std::move(execOnPlayerDeath);
   return true;
 }
 
-void GameMap::onBossFightEnd() {
+void GameMap::onBossFightEnd(const bool isPlayerKilled) {
   Audio::the().playBgm(_bgmFilePath);
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightEnd();
   }
 
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+  for (const auto& cmd : _execOnPlayerDeath) {
+    console->executeCmd(cmd);
+  }
+
   _isInBossFight = false;
+  _isGameOverOnPlayerDeath = true;
+  _execOnPlayerDeath.clear();
 }
 
 float GameMap::getWidth() const {

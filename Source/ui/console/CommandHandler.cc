@@ -64,7 +64,6 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kRentRoomCheckIn,    &CommandHandler::rentRoomCheckIn    },
     {cmd::kRentRoomCheckOut,   &CommandHandler::rentRoomCheckOut   },
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
-    {cmd::kEndBossFight,       &CommandHandler::endBossFight       },
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
     {cmd::kMoveTo,             &CommandHandler::moveTo             },
   };
@@ -734,26 +733,52 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
   }
 
   const rapidjson::Document json = json_util::loadFromFile(args[1]);
-  const string targetNpcJsonFilePath = json["targetNpcJsonFilePath"].GetString();
-  const string bgmFilePath = json["bgmFilePath"].GetString();
+
+  const string targetNpcJsonFilePath = json_util::extract<string>(json, "targetNpcJsonFilePath", "");
+  if (targetNpcJsonFilePath.empty()) {
+    setError(string_util::format("Failed to extract targetNpcJsonFilePath from json [%s]", args[1].c_str()));
+    return;
+  }
+
+  const string bgmFilePath = json_util::extract<string>(json, "bgmFilePath", "");
+  if (bgmFilePath.empty()) {
+    setError(string_util::format("Failed to extract bgmFilePath from json [%s]", args[1].c_str()));
+    return;
+  }
+
+  bool isGameOverOnPlayerDeath = true;
+  vector<string> execOnPlayerDeath;
+  if (json.HasMember("onPlayerDeath")) {
+    if (!json["onPlayerDeath"].IsObject()) {
+      setError(string_util::format("Failed to extract onPlayerDeath as an object from json [%s]",
+                                   args[1].c_str()));
+      return;
+    }
+
+    const rapidjson::Value::ConstObject& onPlayerDeath = json["onPlayerDeath"].GetObject();
+    isGameOverOnPlayerDeath = json_util::extract<bool>(onPlayerDeath, "isGameOver", true);
+
+    if (onPlayerDeath.HasMember("exec") && !onPlayerDeath["exec"].IsArray()) {
+      setError(string_util::format("Failed to extract exec as an array from json [%s]", args[1].c_str()));
+      return;
+    }
+    for (const auto& cmd : onPlayerDeath["exec"].GetArray()) {
+      if (!cmd.IsString()) {
+        setError(string_util::format("Failed to extract cmd as a string from json [%s]", args[1].c_str()));
+        return;
+      }
+      execOnPlayerDeath.push_back(cmd.GetString());
+    }
+  }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath, bgmFilePath)) {
+  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath,
+                                             bgmFilePath,
+                                             isGameOverOnPlayerDeath,
+                                             std::move(execOnPlayerDeath))) {
     setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;
   }
-
-  setSuccess();
-}
-
-void CommandHandler::endBossFight(const vector<string>& args) {
-  if (args.size() < 2) {
-    setError(string_util::format("Usage: %s <bossStageProfileJsonPath>", args[0].c_str()));
-    return;
-  }
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  gmMgr->getGameMap()->onBossFightEnd();
 
   setSuccess();
 }

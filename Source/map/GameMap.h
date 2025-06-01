@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_MAP_GAME_MAP_H_
 #define REQUIEM_MAP_GAME_MAP_H_
@@ -165,8 +165,11 @@ class GameMap final {
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-  bool onBossFightBegin(const std::string& targetNpcJsonFilePath, const std::string& bgmFilePath);
-  void onBossFightEnd();
+  bool onBossFightBegin(const std::string& targetNpcJsonFilePath,
+                        const std::string& bgmFilePath,
+                        const bool isGameOverOnPlayerDeath,
+                        std::vector<std::string>&& execOnPlayerDeath);
+  void onBossFightEnd(const bool isPlayerKilled);
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
@@ -174,6 +177,10 @@ class GameMap final {
   inline const std::string& getLocationName() const { return _locationName; }
   inline float getAmbientLightLevelDay() const { return _ambientLightLevelDay; }
   inline float getAmbientLightLevelNight() const { return _ambientLightLevelNight; }
+  inline bool isInBossFight() const { return _isInBossFight; }
+  inline bool isGameOverOnPlayerDeath() const { return _isGameOverOnPlayerDeath; }
+  inline const std::vector<std::string>& getExecOnPlayerDeath() const { return _execOnPlayerDeath; }
+  inline void setExecOnPlayerDeath(std::vector<std::string>&& cmds) { _execOnPlayerDeath = std::move(cmds); }
   inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
@@ -206,6 +213,9 @@ class GameMap final {
   std::string _locationName;
   float _ambientLightLevelDay{1.0f};
   float _ambientLightLevelNight{0.3f};
+  bool _isInBossFight{};
+  bool _isGameOverOnPlayerDeath{true};
+  std::vector<std::string> _execOnPlayerDeath;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;
@@ -214,7 +224,6 @@ class GameMap final {
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<PathFinder> _pathFinder;
-  bool _isInBossFight{};
 };
 
 template <typename ReturnType>
