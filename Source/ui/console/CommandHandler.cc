@@ -44,6 +44,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
 
   static const CmdTable cmdTable = {
     {cmd::kEcho,               &CommandHandler::echo               },
+    {cmd::kDelayExec,          &CommandHandler::delayExec          },
     {cmd::kSetBgmVolume,       &CommandHandler::setBgmVolume       },
     {cmd::kStartQuest,         &CommandHandler::startQuest         },
     {cmd::kSetStage,           &CommandHandler::setStage           },
@@ -108,6 +109,36 @@ void CommandHandler::echo(const std::vector<std::string>& args) {
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show(args[1]);
+  setSuccess();
+}
+
+void CommandHandler::delayExec(const vector<string>& args) {
+  if (args.size() < 3) {
+    setError(string_util::format("Usage: %s <delaySec> <cmds...>", args[0].c_str()));
+    return;
+  }
+
+  float delaySec = 0;
+  try {
+    delaySec = std::stof(args[1]);
+  } catch (const invalid_argument& ex) {
+    setError(string_util::format("Invalid argument, delayedMs: [%s]", args[1].c_str()));
+    return;
+  } catch (const out_of_range& ex) {
+    setError(string_util::format("Out of range, delayedMs: [%s]", args[1].c_str()));
+    return;
+  } catch (...) {
+    setError("Unknown error");
+    return;
+  }
+
+  for (int i = 2; i < static_cast<int>(args.size()); i++) {
+    const string& cmd = args[i];
+    CallbackManager::the().runAfter([this, cmd](const CallbackManager::CallbackId) {
+      handle(cmd, /*showNotification=*/false);
+    }, delaySec);
+  }
+
   setSuccess();
 }
 

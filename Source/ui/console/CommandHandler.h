@@ -12,6 +12,7 @@ namespace requiem {
 namespace cmd {
 
 constexpr char kEcho[] = "echo";
+constexpr char kDelayExec[] = "delayexec";
 constexpr char kSetBgmVolume[] = "setbgmvolume";
 constexpr char kStartQuest[] = "startquest";
 constexpr char kSetStage[] = "setstage";
@@ -49,6 +50,7 @@ class CommandHandler final {
 
   // Command handlers.
   void echo(const std::vector<std::string>& args);
+  void delayExec(const std::vector<std::string>& args);
   void setBgmVolume(const std::vector<std::string>& args);
   void startQuest(const std::vector<std::string>& args);
   void setStage(const std::vector<std::string>& args);
