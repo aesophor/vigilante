@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "SkillListView.h"
 
@@ -10,6 +10,7 @@
 #include "scene/SceneManager.h"
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
+#include "util/AxUtil.h"
 #include "util/KeyCodeUtil.h"
 
 using namespace std;
@@ -43,6 +44,7 @@ SkillListView::SkillListView(PauseMenu* pauseMenu)
     Label* label = listViewItem->getLabel();
 
     icon->loadTexture(skill->getIconPath().native());
+    ax_util::setAliasTexParameters(icon);
     label->setString(skill->getName());
 
     // Display skill hotkey (if defined).

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "ItemListView.h"
 
@@ -11,6 +11,7 @@
 #include "ui/pause_menu/PauseMenu.h"
 #include "ui/pause_menu/PauseMenuDialog.h"
 #include "util/ds/SetVector.h"
+#include "util/AxUtil.h"
 #include "util/KeyCodeUtil.h"
 
 using namespace std;
@@ -44,6 +45,7 @@ ItemListView::ItemListView(PauseMenu* pauseMenu)
     Label* label = listViewItem->getLabel();
 
     icon->loadTexture(item ? item->getIconPath().native() : kEmptyImage.native());
+    ax_util::setAliasTexParameters(icon);
     label->setString(item ? item->getName() : kEmptyItemName);
 
     if (!item) {

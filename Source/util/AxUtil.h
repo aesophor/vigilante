@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_UTIL_AX_UTIL_H_
 #define REQUIEM_UTIL_AX_UTIL_H_
@@ -8,11 +8,13 @@
 #include <string>
 
 #include <axmol.h>
+#include <ui/UIImageView.h>
 
 namespace requiem::ax_util {
 
 void addChildWithParentCameraMask(ax::Node* parent, ax::Node* child);
 void addChildWithParentCameraMask(ax::Node* parent, ax::Node* child, const int localZOrder);
+bool setAliasTexParameters(ax::ui::ImageView* imageView);
 
 template <typename T>
 requires std::same_as<T, bool>
