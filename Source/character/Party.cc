@@ -55,8 +55,6 @@ void Party::recruit(Character* targetCharacter) {
 }
 
 void Party::dismiss(Character* targetCharacter, bool addToMap) {
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-
   b2Body* body = targetCharacter->getBody();
   b2Vec2 targetPos = (body) ? body->GetPosition() : b2Vec2{0, 0};
 
@@ -75,7 +73,11 @@ void Party::dismiss(Character* targetCharacter, bool addToMap) {
   }
 
   targetNpc->removeFromMap();
-  gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFilePath, true);
+
+  if (targetNpc->getNpcProfile().isRespawnable) {
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+    gmMgr->setNpcAllowedToSpawn(targetNpc->getCharacterProfile().jsonFilePath, true);
+  }
 
   if (addToMap && body) {
     auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
