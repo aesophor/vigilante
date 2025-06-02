@@ -133,8 +133,8 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
 
 bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
                                const string& bgmFilePath,
-                               const bool isGameOverOnPlayerDeath,
-                               vector<string>&& execOnPlayerDeath) {
+                               const bool isGameOverOnPlayerKilled,
+                               vector<string>&& execOnPlayerKilled) {
   if (_isInBossFight) {
     return false;
   }
@@ -171,8 +171,8 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
   Audio::the().playBgm(bgmFilePath);
 
   _isInBossFight = true;
-  _isGameOverOnPlayerDeath = isGameOverOnPlayerDeath;
-  _execOnPlayerDeath = std::move(execOnPlayerDeath);
+  _isGameOverOnPlayerKilled = isGameOverOnPlayerKilled;
+  _execOnPlayerKilled = std::move(execOnPlayerKilled);
   return true;
 }
 
@@ -184,13 +184,13 @@ void GameMap::onBossFightEnd(const bool isPlayerKilled) {
   }
 
   auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
-  for (const auto& cmd : _execOnPlayerDeath) {
+  for (const auto& cmd : _execOnPlayerKilled) {
     console->executeCmd(cmd);
   }
 
   _isInBossFight = false;
-  _isGameOverOnPlayerDeath = true;
-  _execOnPlayerDeath.clear();
+  _isGameOverOnPlayerKilled = true;
+  _execOnPlayerKilled.clear();
 }
 
 float GameMap::getWidth() const {

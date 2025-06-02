@@ -167,8 +167,8 @@ class GameMap final {
 
   bool onBossFightBegin(const std::string& targetNpcJsonFilePath,
                         const std::string& bgmFilePath,
-                        const bool isGameOverOnPlayerDeath,
-                        std::vector<std::string>&& execOnPlayerDeath);
+                        const bool isGameOverOnPlayerKilled,
+                        std::vector<std::string>&& execOnPlayerKilled);
   void onBossFightEnd(const bool isPlayerKilled);
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
@@ -178,9 +178,7 @@ class GameMap final {
   inline float getAmbientLightLevelDay() const { return _ambientLightLevelDay; }
   inline float getAmbientLightLevelNight() const { return _ambientLightLevelNight; }
   inline bool isInBossFight() const { return _isInBossFight; }
-  inline bool isGameOverOnPlayerDeath() const { return _isGameOverOnPlayerDeath; }
-  inline const std::vector<std::string>& getExecOnPlayerDeath() const { return _execOnPlayerDeath; }
-  inline void setExecOnPlayerDeath(std::vector<std::string>&& cmds) { _execOnPlayerDeath = std::move(cmds); }
+  inline bool isGameOverOnPlayerKilled() const { return _isGameOverOnPlayerKilled; }
   inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
   inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
@@ -214,8 +212,8 @@ class GameMap final {
   float _ambientLightLevelDay{1.0f};
   float _ambientLightLevelNight{0.3f};
   bool _isInBossFight{};
-  bool _isGameOverOnPlayerDeath{true};
-  std::vector<std::string> _execOnPlayerDeath;
+  bool _isGameOverOnPlayerKilled{true};
+  std::vector<std::string> _execOnPlayerKilled;
   std::list<b2Body*> _tmxTiledMapBodies;
   std::list<b2Body*> _tmxTiledMapPlatformBodies;
   std::unordered_set<std::shared_ptr<StaticActor>> _staticActors;

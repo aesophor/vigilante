@@ -813,36 +813,36 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
     return;
   }
 
-  bool isGameOverOnPlayerDeath = true;
-  vector<string> execOnPlayerDeath;
-  if (json.HasMember("onPlayerDeath")) {
-    if (!json["onPlayerDeath"].IsObject()) {
-      setError(string_util::format("Failed to extract onPlayerDeath as an object from json [%s]",
+  bool isGameOverOnPlayerKilled = true;
+  vector<string> execOnPlayerKilled;
+  if (json.HasMember("onPlayerKilled")) {
+    if (!json["onPlayerKilled"].IsObject()) {
+      setError(string_util::format("Failed to extract onPlayerKilled as an object from json [%s]",
                                    args[1].c_str()));
       return;
     }
 
-    const rapidjson::Value::ConstObject& onPlayerDeath = json["onPlayerDeath"].GetObject();
-    isGameOverOnPlayerDeath = json_util::extract<bool>(onPlayerDeath, "isGameOver", true);
+    const rapidjson::Value::ConstObject& onPlayerKilled = json["onPlayerKilled"].GetObject();
+    isGameOverOnPlayerKilled = json_util::extract<bool>(onPlayerKilled, "isGameOver", true);
 
-    if (onPlayerDeath.HasMember("exec") && !onPlayerDeath["exec"].IsArray()) {
+    if (onPlayerKilled.HasMember("exec") && !onPlayerKilled["exec"].IsArray()) {
       setError(string_util::format("Failed to extract exec as an array from json [%s]", args[1].c_str()));
       return;
     }
-    for (const auto& cmd : onPlayerDeath["exec"].GetArray()) {
+    for (const auto& cmd : onPlayerKilled["exec"].GetArray()) {
       if (!cmd.IsString()) {
         setError(string_util::format("Failed to extract cmd as a string from json [%s]", args[1].c_str()));
         return;
       }
-      execOnPlayerDeath.push_back(cmd.GetString());
+      execOnPlayerKilled.push_back(cmd.GetString());
     }
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath,
                                              bgmFilePath,
-                                             isGameOverOnPlayerDeath,
-                                             std::move(execOnPlayerDeath))) {
+                                             isGameOverOnPlayerKilled,
+                                             std::move(execOnPlayerKilled))) {
     setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;
   }
