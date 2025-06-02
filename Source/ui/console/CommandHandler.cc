@@ -70,6 +70,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
     {cmd::kMoveTo,             &CommandHandler::moveTo             },
     {cmd::kSetPos,             &CommandHandler::setPos             },
+    {cmd::kRetainBodyIfKilled, &CommandHandler::retainBodyIfKilled },
     {cmd::kResurrect,          &CommandHandler::resurrect          },
   };
 
@@ -1070,6 +1071,58 @@ void CommandHandler::setPos(const vector<string>& args) {
     setSuccess();
     return;
   }
+}
+
+void CommandHandler::retainBodyIfKilled(const vector<string>& args) {
+  if (args.size() < 3) {
+    setError(string_util::format("Usage: %s <characterJsonProfilePath> <value>", args[0].c_str()));
+    return;
+  }
+
+  if (args[2] != "true" && args[2] != "false") {
+    setError(string_util::format("Invalid argument, value: [%s]", args[2].c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  const string target{args[1]};
+  const bool value = args[2] == "true";
+  if (target == "player") {
+    player->setRetainBodyIfKilled(value);
+    setSuccess();
+    return;
+  }
+
+  for (const auto& member : player->getParty()->getMembers()) {
+    if (member->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    member->setRetainBodyIfKilled(value);
+    setSuccess();
+    return;
+  }
+
+  for (const auto& actor : gmMgr->getGameMap()->getDynamicActors()) {
+    auto npc = dynamic_pointer_cast<Npc>(actor);
+    if (!npc) {
+      continue;
+    }
+    if (npc->getCharacterProfile().jsonFilePath != target) {
+      continue;
+    }
+    npc->setRetainBodyIfKilled(value);
+    setSuccess();
+    return;
+  }
+
+  setError(string_util::format("Failed to setRetainBodyIfKilled for target [%s], not found",
+                               target.c_str()));
 }
 
 void CommandHandler::resurrect(const vector<string>& args) {
