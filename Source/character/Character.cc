@@ -184,6 +184,10 @@ void Character::defineBody(b2BodyType bodyType,
                            short bodyMaskBits,
                            short feetMaskBits,
                            short weaponMaskBits) {
+  if (_body) {
+    destroyBody();
+  }
+
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   B2BodyBuilder bodyBuilder{gmMgr->getWorld()};
   _body = bodyBuilder.type(bodyType)
@@ -525,7 +529,10 @@ void Character::onSetToKill() {
 
 void Character::onKilled() {
   _isKilled = true;
-  destroyBody();
+
+  if (!_shouldRetainBodyIfKilled) {
+    destroyBody();
+  }
 
   const auto& sfxFilePath = getSfxFilePath(Character::Sfx::SFX_KILLED);
   if (!sfxFilePath.native().empty()) {

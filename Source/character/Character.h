@@ -224,6 +224,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isKilled() const { return _isKilled; }
   inline bool isSetToKill() const { return _isSetToKill; }
   inline bool isAfterImageFxEnabled() const { return _isAfterImageFxEnabled; }
+  inline bool shouldRetainBodyIfKilled() const { return _shouldRetainBodyIfKilled; }
 
   inline void setFacingRight(bool facingRight) { _isFacingRight = facingRight; }
   inline void setOnGround(bool onGround) { _isOnGround = onGround; }
@@ -239,6 +240,7 @@ class Character : public DynamicActor, public Importable {
   inline void setRunningIntroAnimation(bool runningIntroAnimation) { _isRunningIntroAnimation = runningIntroAnimation; }
   inline void setStunned(bool stunned) { _isStunned = stunned; }
   inline void setAfterImageFxEnabled(bool afterImageFxEnabled) { _isAfterImageFxEnabled = afterImageFxEnabled; }
+  inline void setRetainBodyIfKilled(bool retainBodyIfKilled) { _shouldRetainBodyIfKilled = retainBodyIfKilled; }
 
   inline float getGroundAngle() const { return _groundAngle; }
   inline void setGroundAngle(float groundAngle) { _groundAngle = groundAngle; }
@@ -434,6 +436,7 @@ class Character : public DynamicActor, public Importable {
   bool _isKilled{};
   bool _isSetToKill{};
   bool _isAfterImageFxEnabled{};
+  bool _shouldRetainBodyIfKilled{};
 
   // Physics hacks against the "sliding down the slope" problem.
   bool _isTryingToMove{};

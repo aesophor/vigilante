@@ -189,7 +189,7 @@ void Npc::beforeMapChanged() {
   setLockedOnTarget(nullptr);
   _npcController.clearMoveDest();
 
-  if (_isKilled && _party) {
+  if (_isKilled && _party && !_shouldRetainBodyIfKilled) {
     _party->dismiss(this, /*addToMap=*/false);
   }
 }
