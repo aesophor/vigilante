@@ -813,6 +813,28 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
     return;
   }
 
+  vector<string> execOnBegin;
+  if (json.HasMember("onBegin")) {
+    if (!json["onBegin"].IsObject()) {
+      setError(string_util::format("Failed to extract onBegin as an object from json [%s]",
+                                   args[1].c_str()));
+      return;
+    }
+
+    const rapidjson::Value::ConstObject& onBegin = json["onBegin"].GetObject();
+    if (onBegin.HasMember("exec") && !onBegin["exec"].IsArray()) {
+      setError(string_util::format("Failed to extract exec as an array from json [%s]", args[1].c_str()));
+      return;
+    }
+    for (const auto& cmd : onBegin["exec"].GetArray()) {
+      if (!cmd.IsString()) {
+        setError(string_util::format("Failed to extract cmd as a string from json [%s]", args[1].c_str()));
+        return;
+      }
+      execOnBegin.push_back(cmd.GetString());
+    }
+  }
+
   bool isGameOverOnPlayerKilled = true;
   vector<string> execOnPlayerKilled;
   if (json.HasMember("onPlayerKilled")) {
@@ -842,6 +864,7 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
   if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath,
                                              bgmFilePath,
                                              isGameOverOnPlayerKilled,
+                                             std::move(execOnBegin),
                                              std::move(execOnPlayerKilled))) {
     setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;

@@ -168,6 +168,7 @@ class GameMap final {
   bool onBossFightBegin(const std::string& targetNpcJsonFilePath,
                         const std::string& bgmFilePath,
                         const bool isGameOverOnPlayerKilled,
+                        std::vector<std::string>&& execOnBegin,
                         std::vector<std::string>&& execOnPlayerKilled);
   void onBossFightEnd(const bool isPlayerKilled);
 

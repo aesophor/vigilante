@@ -134,6 +134,7 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
 bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
                                const string& bgmFilePath,
                                const bool isGameOverOnPlayerKilled,
+                               vector<string>&& execOnBegin,
                                vector<string>&& execOnPlayerKilled) {
   if (_isInBossFight) {
     return false;
@@ -166,6 +167,11 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightBegin();
+  }
+
+  auto console = SceneManager::the().getCurrentScene<GameScene>()->getConsole();
+  for (const auto& cmd : execOnBegin) {
+    console->executeCmd(cmd);
   }
 
   Audio::the().playBgm(bgmFilePath);
