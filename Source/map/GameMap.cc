@@ -381,16 +381,16 @@ void GameMap::createNpcs() {
 
     auto npc = std::make_shared<Npc>(npcJsonFilePath);
 
-    const bool shouldShowDuringDawn = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDawn", true);
-    const bool shouldShowDuringDay = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDay", true);
-    const bool shouldShowDuringDusk = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringDusk", true);
-    const bool shouldShowDuringNight = ax_util::extractValueFromValueMap<bool>(valMap, "shouldShowDuringNight", true);
+    const bool shouldShowDuringDawn = ax_util::extract<bool>(valMap, "shouldShowDuringDawn", true);
+    const bool shouldShowDuringDay = ax_util::extract<bool>(valMap, "shouldShowDuringDay", true);
+    const bool shouldShowDuringDusk = ax_util::extract<bool>(valMap, "shouldShowDuringDusk", true);
+    const bool shouldShowDuringNight = ax_util::extract<bool>(valMap, "shouldShowDuringNight", true);
     npc->setShowDuringDawn(shouldShowDuringDawn);
     npc->setShowDuringDay(shouldShowDuringDay);
     npc->setShowDuringDusk(shouldShowDuringDusk);
     npc->setShowDuringNight(shouldShowDuringNight);
 
-    const optional<bool> isFacingRight = ax_util::extractValueFromValueMap<bool>(valMap, "isFacingRight");
+    const optional<bool> isFacingRight = ax_util::extract<bool>(valMap, "isFacingRight");
     if (isFacingRight.has_value()) {
       npc->setFacingRight(isFacingRight.value());
     }
