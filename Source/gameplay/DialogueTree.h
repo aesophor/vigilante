@@ -68,8 +68,9 @@ class DialogueTree : public Importable {
 
   virtual void import(const std::filesystem::path& jsonFilePath) override;  // Importable
 
+  void clear();
   DialogueTree::Node* getNode(const std::string& nodeName) const;
-
+  inline bool isEmpty() const { return !_rootNode; }
   inline DialogueTree::Node* getRootNode() const { return _rootNode.get(); }
   inline DialogueTree::Node* getCurrentNode() const { return _currentNode; }
   inline void setCurrentNode(DialogueTree::Node* node) { _currentNode = node; }
@@ -80,7 +81,7 @@ class DialogueTree : public Importable {
   void addTradingDialogue();
 
   // <nodeName, DialogueTree::Node*>
-  std::unordered_map<std::string, DialogueTree::Node*> _nodeMapper;
+  std::unordered_map<std::string, DialogueTree::Node*> _nodes;
   std::unique_ptr<DialogueTree::Node> _rootNode;
   DialogueTree::Node* _currentNode{};
 

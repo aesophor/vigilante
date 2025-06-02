@@ -249,6 +249,10 @@ void Npc::interact(Interactable* target) {
 
 void Npc::onInteract(Character*) {
   updateDialogueTreeIfNeeded();
+  if (_dialogueTree.isEmpty()) {
+    return;
+  }
+
   beginDialogue();
 }
 
@@ -257,7 +261,13 @@ bool Npc::willInteractOnContact() const {
 }
 
 void Npc::showHintUI() {
-  if (_npcProfile.dialogueTreeJsonFile.empty()) {
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  const optional<string> latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
+  if (latestDialogueTreeJsonFilePath.has_value() && latestDialogueTreeJsonFilePath.value().empty()) {
+    return;
+  }
+
+  if (_dialogueTree.isEmpty()) {
     return;
   }
 
@@ -332,14 +342,19 @@ void Npc::dropItems() {
 
 void Npc::updateDialogueTreeIfNeeded() {
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-  string latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
-  if (latestDialogueTreeJsonFilePath.empty()) {
+  const optional<string> latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
+  if (!latestDialogueTreeJsonFilePath.has_value()) {
     return;
   }
 
-  VGLOG(LOG_INFO, "Loading dialogue tree from file: [%s], character: [%s]",
-                  latestDialogueTreeJsonFilePath.c_str(), _characterProfile.jsonFilePath.c_str());
-  _dialogueTree = DialogueTree{latestDialogueTreeJsonFilePath, this};
+  if (latestDialogueTreeJsonFilePath.value().empty()) {
+    VGLOG(LOG_INFO, "Clear dialogue tree, character: [%s]", _characterProfile.jsonFilePath.c_str());
+    _dialogueTree.clear();
+  } else {
+    VGLOG(LOG_INFO, "Loading dialogue tree from file: [%s], character: [%s]",
+          latestDialogueTreeJsonFilePath->c_str(), _characterProfile.jsonFilePath.c_str());
+    _dialogueTree = DialogueTree{latestDialogueTreeJsonFilePath.value(), this};
+  }
 }
 
 void Npc::onDialogueBegin() {

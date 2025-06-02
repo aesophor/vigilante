@@ -19,7 +19,7 @@ using namespace std;
 namespace requiem {
 
 DialogueTree::DialogueTree(DialogueTree&& other) noexcept
-    : _nodeMapper{std::move(other._nodeMapper)},
+    : _nodes{std::move(other._nodes)},
       _rootNode{std::move(other._rootNode)},
       _currentNode{other._currentNode},
       _toggleJoinPartyNode{other._toggleJoinPartyNode},
@@ -28,7 +28,7 @@ DialogueTree::DialogueTree(DialogueTree&& other) noexcept
       _owner{other._owner} {}
 
 DialogueTree& DialogueTree::operator=(DialogueTree&& other) noexcept {
-  _nodeMapper = std::move(other._nodeMapper);
+  _nodes = std::move(other._nodes);
   _rootNode = std::move(other._rootNode);
   _currentNode = other._currentNode;
   _toggleJoinPartyNode = other._toggleJoinPartyNode;
@@ -63,7 +63,7 @@ void DialogueTree::import(const fs::path& jsonFilePath) {
 
     if (jsonNode.HasMember("nodeName")) {
       node->_nodeName = jsonNode["nodeName"].GetString();
-      _nodeMapper.insert({node->_nodeName, node.get()});
+      _nodes.insert({node->_nodeName, node.get()});
     }
 
     for (const auto& line : jsonNode["lines"].GetArray()) {
@@ -120,6 +120,15 @@ void DialogueTree::import(const fs::path& jsonFilePath) {
   update();
 }
 
+void DialogueTree::clear() {
+  _tradeNode = nullptr;
+  _toggleWaitNode = nullptr;
+  _toggleJoinPartyNode = nullptr;
+  _currentNode = nullptr;
+  _rootNode = nullptr;
+  _nodes.clear();
+}
+
 void DialogueTree::addAllyDialogueToRootNode() {
   // (1) toggle join/leave (recruit/dismiss) party
   // (2) toggle wait/follow (if this Npc already belongs to a party)
@@ -172,8 +181,8 @@ void DialogueTree::update() {
 }
 
 DialogueTree::Node* DialogueTree::getNode(const string& nodeName) const {
-  auto it = _nodeMapper.find(nodeName);
-  return it == _nodeMapper.end() ? nullptr : it->second;
+  auto it = _nodes.find(nodeName);
+  return it == _nodes.end() ? nullptr : it->second;
 }
 
 vector<DialogueTree::Node*> DialogueTree::Node::getChildren() const {

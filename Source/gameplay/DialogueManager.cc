@@ -38,14 +38,18 @@ void DialogueManager::setCurrentDialogue(Dialogue* dialogue) const {
   _targetNpc->getDialogueTree().setCurrentNode(dialogue);
 }
 
-string DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFilePath) {
+optional<string> DialogueManager::getLatestNpcDialogueTree(const string& npcJsonFilePath) {
   auto it = _latestNpcDialogueTrees.find(npcJsonFilePath);
-  return (it != _latestNpcDialogueTrees.end()) ? it->second : "";
+  return it != _latestNpcDialogueTrees.end() ? optional<string>{it->second} : nullopt;
 }
 
 void DialogueManager::setLatestNpcDialogueTree(const string& npcJsonFilePath,
                                                const string& dialogueTreeJsonFilePath) {
   _latestNpcDialogueTrees[npcJsonFilePath] = dialogueTreeJsonFilePath;
+}
+
+void DialogueManager::clearLatestNpcDialogueTree(const string& npcJsonFilePath) {
+  _latestNpcDialogueTrees[npcJsonFilePath] = "";
 }
 
 }  // namespace requiem

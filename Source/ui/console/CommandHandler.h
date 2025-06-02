@@ -21,6 +21,7 @@ constexpr char kRemoveItem[] = "removeitem";
 constexpr char kAddGold[] = "addgold";
 constexpr char kRemoveGold[] = "removegold";
 constexpr char kUpdateDialogueTree[] = "updatedialoguetree";
+constexpr char kClearDialogueTree[] = "cleardialoguetree";
 constexpr char kJoinPlayerParty[] = "joinplayerparty";
 constexpr char kLeavePlayerParty[] = "leaveplayerparty";
 constexpr char kPartyMemberWait[] = "partymemberwait";
@@ -59,6 +60,7 @@ class CommandHandler final {
   void addGold(const std::vector<std::string>& args);
   void removeGold(const std::vector<std::string>& args);
   void updateDialogueTree(const std::vector<std::string>& args);
+  void clearDialogueTree(const std::vector<std::string>& args);
   void joinPlayerParty(const std::vector<std::string>& args);
   void leavePlayerParty(const std::vector<std::string>& args);
   void partyMemberWait(const std::vector<std::string>& args);

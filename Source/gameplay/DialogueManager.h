@@ -4,8 +4,10 @@
 #define REQUIEM_GAMEPLAY_DIALOGUE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 
 #include <axmol.h>
+
 #include "Controllable.h"
 #include "character/Npc.h"
 #include "ui/dialogue/Subtitles.h"
@@ -33,9 +35,10 @@ class DialogueManager final : public Controllable {
   Dialogue* getCurrentDialogue() const;
   void setCurrentDialogue(Dialogue* dialogue) const;
 
-  std::string getLatestNpcDialogueTree(const std::string& npcJsonFilePath);
+  std::optional<std::string> getLatestNpcDialogueTree(const std::string& npcJsonFilePath);
   void setLatestNpcDialogueTree(const std::string& npcJsonFilePath,
                                 const std::string& dialogueTreeJsonFilePath);
+  void clearLatestNpcDialogueTree(const std::string& npcJsonFilePath);
 
  private:
   ax::Layer* _layer;

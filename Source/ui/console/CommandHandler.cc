@@ -54,6 +54,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kAddGold,            &CommandHandler::addGold            },
     {cmd::kRemoveGold,         &CommandHandler::removeGold         },
     {cmd::kUpdateDialogueTree, &CommandHandler::updateDialogueTree },
+    {cmd::kClearDialogueTree,  &CommandHandler::clearDialogueTree  },
     {cmd::kJoinPlayerParty,    &CommandHandler::joinPlayerParty    },
     {cmd::kLeavePlayerParty,   &CommandHandler::leavePlayerParty   },
     {cmd::kPartyMemberWait,    &CommandHandler::partyMemberWait    },
@@ -390,14 +391,23 @@ void CommandHandler::removeGold(const vector<string>& args) {
 
 void CommandHandler::updateDialogueTree(const vector<string>& args) {
   if (args.size() < 3) {
-    setError(string_util::format("Usage: %s <npcJson> <dialogueTreeJson>", args[0].c_str()));
+    setError(string_util::format("Usage: %s <npcJsonFilePath> <dialogueTreeJson>", args[0].c_str()));
     return;
   }
 
-  // TODO: Maybe add some argument check here?
-
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   dialogueMgr->setLatestNpcDialogueTree(args[1], args[2]);
+  setSuccess();
+}
+
+void CommandHandler::clearDialogueTree(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("Usage: %s <npcJsonFilePath>", args[0].c_str()));
+    return;
+  }
+
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  dialogueMgr->clearLatestNpcDialogueTree(args[1]);
   setSuccess();
 }
 
