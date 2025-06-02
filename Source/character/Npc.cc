@@ -242,12 +242,22 @@ bool Npc::receiveDamage(Character* source, int damage) {
 }
 
 void Npc::interact(Interactable* target) {
-  if (!dynamic_cast<GameMap::Portal*>(target)) {
-    Character::interact(target);
+  if (_isSetToKill || _isKilled) {
+    return;
   }
+
+  if (dynamic_cast<GameMap::Portal*>(target)) {
+    return;
+  }
+  
+  Character::interact(target);
 }
 
 void Npc::onInteract(Character*) {
+  if (_isSetToKill || _isKilled) {
+    return;
+  }
+
   updateDialogueTreeIfNeeded();
   if (_dialogueTree.isEmpty()) {
     return;
@@ -261,6 +271,10 @@ bool Npc::willInteractOnContact() const {
 }
 
 void Npc::showHintUI() {
+  if (_isSetToKill || _isKilled) {
+    return;
+  }
+
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
   const optional<string> latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
   if (latestDialogueTreeJsonFilePath.has_value() && latestDialogueTreeJsonFilePath.value().empty()) {
