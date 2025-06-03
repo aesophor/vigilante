@@ -647,9 +647,9 @@ void Character::moveImpl(const bool moveTowardsRight) {
       force = -force;
     }
 
-    b2Vec2 impulse = math_util::rotateCounterClockwise({force, 0}, _groundAngle);
-    if (impulse.y < 0) {
-      impulse.y = std::max(impulse.y, -0.1f);
+    b2Vec2 impulse{force, 0};
+    if (_isOnGround) {
+      impulse = math_util::rotateCounterClockwise({force, 0}, _groundAngle);
     }
 
     _body->ApplyLinearImpulseToCenter(impulse, true);
@@ -661,12 +661,15 @@ void Character::clampLinearVelocity() {
     return;
   }
 
-  b2Vec2 linearVelocity = _body->GetLinearVelocity();
-  linearVelocity.x = linearVelocity.x > 0 ? min(linearVelocity.x, sqrt(_characterProfile.moveSpeed))
-                                          : max(linearVelocity.x, -sqrt(_characterProfile.moveSpeed));
-  linearVelocity.y = linearVelocity.y > 0 ? min(linearVelocity.y, sqrt(_characterProfile.moveSpeed))
-                                          : max(linearVelocity.y, -sqrt(_characterProfile.moveSpeed));
-  _body->SetLinearVelocity(linearVelocity);
+  b2Vec2 velocity = _body->GetLinearVelocity();
+  const float speed = std::hypotf(velocity.x, velocity.y);
+  const float maxSpeed = _characterProfile.moveSpeed;
+  if (speed <= maxSpeed) {
+    return;
+  }
+
+  velocity *= maxSpeed / speed;
+  _body->SetLinearVelocity(velocity);
 }
 
 void Character::avoidSlidingDownSlope() {
@@ -674,7 +677,7 @@ void Character::avoidSlidingDownSlope() {
     return;
   }
 
-  constexpr auto kGracePeriodMs = 150;
+  constexpr auto kGracePeriodMs = 100;
   if (isTryingToMoveRecently(kGracePeriodMs)) {
     _body->SetLinearDamping(0);
   } else {
