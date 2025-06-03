@@ -131,11 +131,11 @@ Item* GameMap::createItem(const string& itemJson, float x, float y, int amount) 
   return item;
 }
 
-bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
-                               const string& bgmFilePath,
-                               const bool isGameOverOnPlayerKilled,
-                               vector<string>&& execOnBegin,
-                               vector<string>&& execOnPlayerKilled) {
+bool GameMap::beginBossFight(const string& targetNpcJsonFilePath,
+                             const string& bgmFilePath,
+                             const bool isGameOverOnPlayerKilled,
+                             vector<string>&& execOnBegin,
+                             vector<string>&& execOnPlayerKilled) {
   if (_isInBossFight) {
     return false;
   }
@@ -162,8 +162,8 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
   }
 
   target->lockOn(player);
-  target->addOnKilledCallback([this]() { onBossFightEnd(/*isPlayerKilled=*/false); });
-  player->addOnKilledCallback([this]() { onBossFightEnd(/*isPlayerKilled=*/true); });
+  target->addOnKilledCallback([this]() { endBossFight(/*isPlayerKilled=*/false); });
+  player->addOnKilledCallback([this]() { endBossFight(/*isPlayerKilled=*/true); });
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightBegin();
@@ -182,7 +182,7 @@ bool GameMap::onBossFightBegin(const string& targetNpcJsonFilePath,
   return true;
 }
 
-void GameMap::onBossFightEnd(const bool isPlayerKilled) {
+void GameMap::endBossFight(const bool isPlayerKilled) {
   Audio::the().playBgm(_bgmFilePath);
 
   for (const auto& trigger : _triggers) {

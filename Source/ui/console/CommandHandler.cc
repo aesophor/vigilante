@@ -861,11 +861,11 @@ void CommandHandler::beginBossFight(const vector<string>& args) {
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  if (!gmMgr->getGameMap()->onBossFightBegin(targetNpcJsonFilePath,
-                                             bgmFilePath,
-                                             isGameOverOnPlayerKilled,
-                                             std::move(execOnBegin),
-                                             std::move(execOnPlayerKilled))) {
+  if (!gmMgr->getGameMap()->beginBossFight(targetNpcJsonFilePath,
+                                           bgmFilePath,
+                                           isGameOverOnPlayerKilled,
+                                           std::move(execOnBegin),
+                                           std::move(execOnPlayerKilled))) {
     setError(string_util::format("Failed to begin boss fight, bossStageProfileJsonPath: [%s]", args[1].c_str()));
     return;
   }

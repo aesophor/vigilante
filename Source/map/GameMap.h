@@ -165,12 +165,12 @@ class GameMap final {
   template <typename ReturnType = DynamicActor>
   std::shared_ptr<ReturnType> removeDynamicActor(DynamicActor* actor);
 
-  bool onBossFightBegin(const std::string& targetNpcJsonFilePath,
-                        const std::string& bgmFilePath,
-                        const bool isGameOverOnPlayerKilled,
-                        std::vector<std::string>&& execOnBegin,
-                        std::vector<std::string>&& execOnPlayerKilled);
-  void onBossFightEnd(const bool isPlayerKilled);
+  bool beginBossFight(const std::string& targetNpcJsonFilePath,
+                      const std::string& bgmFilePath,
+                      const bool isGameOverOnPlayerKilled,
+                      std::vector<std::string>&& execOnBegin,
+                      std::vector<std::string>&& execOnPlayerKilled);
+  void endBossFight(const bool isPlayerKilled);
 
   inline ax::TMXTiledMap* getTmxTiledMap() const { return _tmxTiledMap; }
   inline const std::string& getTmxTiledMapFilePath() const { return _tmxTiledMapFilePath; }
