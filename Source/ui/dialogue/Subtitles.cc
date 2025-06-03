@@ -125,7 +125,12 @@ void Subtitles::endSubtitles() {
       hud->getLayer()->setVisible(true);
 
       auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
-      dialogueMgr->getTargetNpc()->onDialogueEnd();
+      auto targetNpc = dialogueMgr->getTargetNpc();
+      if (!targetNpc) {
+        return;
+      }
+
+      targetNpc->onDialogueEnd();
     })
   ));
 }
