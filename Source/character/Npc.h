@@ -72,7 +72,7 @@ class Npc final : public Character, public Interactable {
   virtual bool receiveDamage(Character* source, int damage) override;  // Character
   virtual void interact(Interactable* target) override;  // Character
 
-  virtual void onInteract(Character* user) override;  // Interactable
+  virtual void onInteract(Character* source) override;  // Interactable
   virtual bool willInteractOnContact() const override;  // Interactable
   virtual void showHintUI() override;  // Interactable
   virtual void hideHintUI() override;  // Interactable

@@ -372,20 +372,39 @@ void Npc::updateDialogueTreeIfNeeded() {
 }
 
 void Npc::onDialogueBegin() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    VGLOG(LOG_ERR, "Failed to get player");
+    return;
+  }
+  if (player->getInRangeInteractables().size()) {
+    player->getInRangeInteractables().front()->hideHintUI();
+  }
+
+  showHintUI();
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->setVisible(false);
 }
 
 void Npc::onDialogueEnd() {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    VGLOG(LOG_ERR, "Failed to get player");
+    return;
+  }
+  if (player->getInRangeInteractables().size() && player->getInRangeInteractables().front() != this) {
+    hideHintUI();
+    player->getInRangeInteractables().front()->showHintUI();
+  }
+
   auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
   controlHints->setVisible(true);
 }
 
 void Npc::beginDialogue() {
-  if (_npcProfile.dialogueTreeJsonFile.empty()) {
-    return;
-  }
-
   onDialogueBegin();
 
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();

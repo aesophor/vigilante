@@ -36,7 +36,7 @@ void PlayerController::handleInput() {
     return;
   }
 
-  if (_player.getInRangeInteractables().size() > 1 && IS_KEY_JUST_PRESSED(kSwitchInteractableTargetKey)) {
+  if (_player.getInRangeInteractables().size() && IS_KEY_JUST_PRESSED(kSwitchInteractableTargetKey)) {
     Interactable* i = _player.getInRangeInteractables().front();
     _player.getInRangeInteractables().pop_front();
     _player.getInRangeInteractables().emplace_back(i);
