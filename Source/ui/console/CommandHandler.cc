@@ -58,6 +58,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kJoinPlayerParty,    &CommandHandler::joinPlayerParty    },
     {cmd::kLeavePlayerParty,   &CommandHandler::leavePlayerParty   },
     {cmd::kPartyMemberWait,    &CommandHandler::partyMemberWait    },
+    {cmd::kPartyMemberWaitAt,  &CommandHandler::partyMemberWaitAt  },
     {cmd::kPartyMemberFollow,  &CommandHandler::partyMemberFollow  },
     {cmd::kTrade,              &CommandHandler::trade              },
     {cmd::kKill,               &CommandHandler::kill               },
@@ -505,6 +506,71 @@ void CommandHandler::partyMemberWait(const vector<string>& args) {
   }
 
   player->getParty()->askMemberToWait(targetNpc);
+  setSuccess();
+}
+
+void CommandHandler::partyMemberWaitAt(const vector<string>& args) {
+  if (args.size() < 4) {
+    setError(string_util::format("Usage: %s <tmxMapFilePath> <x> <y>", args[0].c_str()));
+    return;
+  }
+
+  float x = 0;
+  try {
+    x = std::stof(args[2]) / kPpm;
+  } catch (const invalid_argument& ex) {
+    setError(string_util::format("Invalid argument, amount: [%s]", args[2].c_str()));
+    return;
+  } catch (const out_of_range& ex) {
+    setError(string_util::format("Out of range, amount: [%s]", args[2].c_str()));
+    return;
+  } catch (...) {
+    setError("Unknown error");
+    return;
+  }
+
+  float y = 0;
+  try {
+    y = std::stof(args[3]) / kPpm;
+  } catch (const invalid_argument& ex) {
+    setError(string_util::format("Invalid argument, amount: [%s]", args[3].c_str()));
+    return;
+  } catch (const out_of_range& ex) {
+    setError(string_util::format("Out of range, amount: [%s]", args[3].c_str()));
+    return;
+  } catch (...) {
+    setError("Unknown error");
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  Player* player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  Npc* targetNpc = dialogueMgr->getTargetNpc();
+  if (!targetNpc) {
+    setError("Failed to get target npc from dialogue manager");
+    return;
+  }
+  if (!targetNpc->isPlayerLeaderOfParty()) {
+    setError(string_util::format("Failed to make npc [%s] wait for the player, "
+                                 "since it has not joined player's party yet.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
+    return;
+  }
+  if (player->getParty()->getWaitingMemberLocationInfo(targetNpc->getCharacterProfile().jsonFilePath)) {
+    setError(string_util::format("Failed to make npc [%s] wait for the player, "
+                                 "since it is already waiting for the player.",
+                                 targetNpc->getCharacterProfile().jsonFilePath.c_str()));
+    return;
+  }
+
+  const string& tmxMapFilePath{args[1]};
+  player->getParty()->askMemberToWait(targetNpc, tmxMapFilePath, x, y);
   setSuccess();
 }
 

@@ -25,6 +25,7 @@ constexpr char kClearDialogueTree[] = "cleardialoguetree";
 constexpr char kJoinPlayerParty[] = "joinplayerparty";
 constexpr char kLeavePlayerParty[] = "leaveplayerparty";
 constexpr char kPartyMemberWait[] = "partymemberwait";
+constexpr char kPartyMemberWaitAt[] = "partymemberwaitat";
 constexpr char kPartyMemberFollow[] = "partymemberfollow";
 constexpr char kTrade[] = "trade";
 constexpr char kKill[] = "kill";
@@ -65,6 +66,7 @@ class CommandHandler final {
   void joinPlayerParty(const std::vector<std::string>& args);
   void leavePlayerParty(const std::vector<std::string>& args);
   void partyMemberWait(const std::vector<std::string>& args);
+  void partyMemberWaitAt(const std::vector<std::string>& args);
   void partyMemberFollow(const std::vector<std::string>& args);
   void trade(const std::vector<std::string>& args);
   void kill(const std::vector<std::string>& args);
