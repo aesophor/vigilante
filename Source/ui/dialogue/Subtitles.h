@@ -29,6 +29,8 @@ class Subtitles : public Controllable {
 
   inline ax::Layer* getLayer() const { return _layer; }
 
+  static constexpr auto kLetterboxTransitionDuration{1.0f};
+
  private:
   struct Subtitle {
     explicit Subtitle(const std::string& text) : text(text) {}

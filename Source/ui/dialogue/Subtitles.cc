@@ -19,7 +19,6 @@ namespace {
 
 constexpr auto kShowCharInterval = .03f;
 constexpr auto kLetterboxHeight = 50;
-constexpr auto kLetterboxTransitionDuration = 1.0f;
 constexpr auto kSubtitlesY = 38;
 
 }  // namespace

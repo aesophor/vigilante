@@ -24,6 +24,7 @@
 #include "scene/GameScene.h"
 #include "scene/SceneManager.h"
 #include "ui/Colorscheme.h"
+#include "ui/dialogue/Subtitles.h"
 #include "util/AxUtil.h"
 #include "util/B2BodyBuilder.h"
 #include "util/Logger.h"
@@ -161,7 +162,10 @@ bool GameMap::beginBossFight(const string& targetNpcJsonFilePath,
     return false;
   }
 
-  target->lockOn(player);
+  CallbackManager::the().runAfter([player, target](const CallbackManager::CallbackId) {
+    target->lockOn(player);
+  }, Subtitles::kLetterboxTransitionDuration);
+
   target->addOnKilledCallback([this]() { endBossFight(/*isPlayerKilled=*/false); });
   player->addOnKilledCallback([this]() { endBossFight(/*isPlayerKilled=*/true); });
 
