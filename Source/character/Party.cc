@@ -102,10 +102,21 @@ void Party::askMemberToWait(Character* targetCharacter) {
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
 
-  addWaitingMember(targetCharacter->getCharacterProfile().jsonFilePath,
-                   gmMgr->getGameMap()->getTmxTiledMapFilePath(),
-                   targetPos.x,
-                   targetPos.y);
+  askMemberToWait(targetCharacter, gmMgr->getGameMap()->getTmxTiledMapFilePath(), targetPos.x, targetPos.y);
+}
+
+void Party::askMemberToWait(Character* targetCharacter,
+                            const string& tmxMapFilePath,
+                            const float x,
+                            const float y) {
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  const b2Vec2 targetPos = targetCharacter->getBody()->GetPosition();
+
+  addWaitingMember(targetCharacter->getCharacterProfile().jsonFilePath, tmxMapFilePath, x, y);
+
+  if (tmxMapFilePath != gmMgr->getGameMap()->getTmxTiledMapFilePath()) {
+    targetCharacter->removeFromMap();
+  }
 
   auto notifications = SceneManager::the().getCurrentScene<GameScene>()->getNotifications();
   notifications->show(string_util::format("%s will be waiting for you.",
@@ -121,15 +132,15 @@ void Party::askMemberToFollow(Character* targetCharacter) {
 }
 
 void Party::addWaitingMember(const string& characterJsonFilePath,
-                             const string& currentTmxMapFilePath,
-                             float x,
-                             float y) {
+                             const string& tmxMapFilePath,
+                             const float x,
+                             const float y) {
   auto it = _waitingMembersLocationInfos.find(characterJsonFilePath);
   if (it != _waitingMembersLocationInfos.end()) {
     VGLOG(LOG_ERR, "This member is already a waiting member of the party.");
     return;
   }
-  _waitingMembersLocationInfos.insert({characterJsonFilePath, {currentTmxMapFilePath, x, y}});
+  _waitingMembersLocationInfos.insert({characterJsonFilePath, {tmxMapFilePath, x, y}});
 }
 
 void Party::removeWaitingMember(const string& characterJsonFilePath) {

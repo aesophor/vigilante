@@ -32,13 +32,17 @@ class Party final {
   void dismiss(Character* targetCharacter, bool addToMap=true);
   void dismissAll(bool addToMap=true);
 
-  void askMemberToWait(Character* targetCharacter);  // wait in a specific map
-  void askMemberToFollow(Character* targetCharacter);  // resume following
+  void askMemberToWait(Character* targetCharacter);
+  void askMemberToWait(Character* targetCharacter,
+                       const std::string& tmxMapFilePath,
+                       const float x,
+                       const float y);
+  void askMemberToFollow(Character* targetCharacter);
 
   void addWaitingMember(const std::string& characterJsonFilePath,
-                        const std::string& currentTmxMapFilePath,
-                        float x,
-                        float y);
+                        const std::string& tmxMapFilePath,
+                        const float x,
+                        const float y);
   void removeWaitingMember(const std::string& characterJsonFilePath);
 
   std::optional<Party::WaitingLocationInfo>
