@@ -187,7 +187,9 @@ bool GameMap::beginBossFight(const string& targetNpcJsonFilePath,
 }
 
 void GameMap::endBossFight(const bool isPlayerKilled) {
-  Audio::the().playBgm(_bgmFilePath);
+  if (!isPlayerKilled) {
+    Audio::the().playBgm(_bgmFilePath);
+  }
 
   for (const auto& trigger : _triggers) {
     trigger->onBossFightEnd();
