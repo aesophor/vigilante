@@ -81,7 +81,7 @@ void SkillListView::confirm() {
     dialog->setMessage("Press a key to assign to...");
     dialog->setOption(2, true, "Cancel");
     dialog->show();
-    hotkeyMgr->promptHotkey(skill, dialog);
+    hotkeyMgr->promptHotkey(skill->shared_from_this(), dialog);
   });
 
   if (static_cast<bool>(skill->getHotkey())) {

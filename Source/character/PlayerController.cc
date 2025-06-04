@@ -130,14 +130,18 @@ void PlayerController::handleAttackInput() {
 
 void PlayerController::handleHotkeyInput() {
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
+
   for (auto keyCode : HotkeyManager::kBindableKeys) {
-    Keybindable* action = hotkeyMgr->getHotkeyAction(keyCode);
-    if (IS_KEY_JUST_PRESSED(keyCode) && action) {
-      if (dynamic_cast<Skill*>(action)) {
-        _player.activateSkill(dynamic_cast<Skill*>(action));
-      } else if (dynamic_cast<Consumable*>(action)) {
-        _player.useItem(dynamic_cast<Consumable*>(action));
-      }
+    shared_ptr<Keybindable> action = hotkeyMgr->getHotkeyAction(keyCode);
+    if (!action || !IS_KEY_JUST_PRESSED(keyCode)) {
+      continue;
+    }
+
+    if (auto skill = dynamic_pointer_cast<Skill>(action)) {
+      _player.activateSkill(skill.get());
+    }
+    if (auto consumable = dynamic_pointer_cast<Consumable>(action)) {
+      _player.useItem(consumable.get());
     }
   }
 }

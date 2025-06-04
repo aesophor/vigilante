@@ -462,7 +462,7 @@ rapidjson::Value GameState::serializeHotkeys() const {
 
   vector<string> hotkeys(hotkeyMgr->_hotkeys.size());
   for (int i = 0; i < static_cast<int>(hotkeyMgr->_hotkeys.size()); i++) {
-    if (auto skill = dynamic_cast<Skill*>(hotkeyMgr->_hotkeys[i])) {
+    if (auto skill = dynamic_pointer_cast<Skill>(hotkeyMgr->_hotkeys[i].lock())) {
       hotkeys[i] = skill->getSkillProfile().jsonFilePath.native();
     }
   }
@@ -472,8 +472,6 @@ rapidjson::Value GameState::serializeHotkeys() const {
 
 void GameState::deserializeHotkeys(const rapidjson::Value& obj) const {
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
-  std::fill(hotkeyMgr->_hotkeys.begin(), hotkeyMgr->_hotkeys.end(), nullptr);
-
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
   auto player = gmMgr->getPlayer();
 
@@ -489,7 +487,7 @@ void GameState::deserializeHotkeys(const rapidjson::Value& obj) const {
     }
 
     HotkeyManager::BindableKeys key = static_cast<HotkeyManager::BindableKeys>(i);
-    hotkeyMgr->setHotkeyAction(HotkeyManager::kBindableKeys[key], skill);
+    hotkeyMgr->setHotkeyAction(HotkeyManager::kBindableKeys[key], skill->shared_from_this());
   }
 }
 

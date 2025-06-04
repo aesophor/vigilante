@@ -1,10 +1,11 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_INPUT_HOTKEY_MANAGER_H_
 #define REQUIEM_INPUT_HOTKEY_MANAGER_H_
 
 #include <array>
 #include <functional>
+#include <memory>
 
 #include <axmol.h>
 
@@ -35,14 +36,13 @@ class HotkeyManager final {
     ax::EventKeyboard::KeyCode::KEY_V
   }};
 
-  Keybindable* getHotkeyAction(ax::EventKeyboard::KeyCode keyCode) const;
-  void setHotkeyAction(ax::EventKeyboard::KeyCode keyCode, Keybindable* keybindable);
+  std::shared_ptr<Keybindable> getHotkeyAction(ax::EventKeyboard::KeyCode keyCode) const;
+  void setHotkeyAction(ax::EventKeyboard::KeyCode keyCode, std::shared_ptr<Keybindable> keybindable);
   void clearHotkeyAction(ax::EventKeyboard::KeyCode keyCode);
-  void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
+  void promptHotkey(std::shared_ptr<Keybindable> keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:
-  // XXX: Perhaps replace Keybindable* with std::weak_ptr<Keybindable>
-  std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
+  std::array<std::weak_ptr<Keybindable>, BindableKeys::SIZE> _hotkeys;
 };
 
 } // namespace requiem
