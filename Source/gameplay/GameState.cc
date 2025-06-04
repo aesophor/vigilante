@@ -21,6 +21,7 @@ void GameState::save() {
   _json.AddMember("inGameTime", serializeInGameTime(), _allocator);
   _json.AddMember("roomRentalTracker", serializeRoomRentalTrackerState(), _allocator);
   _json.AddMember("latestNpcDialogueTrees", serializeLatestNpcDialogueTrees(), _allocator);
+  _json.AddMember("hotkeys", serializeHotkeys(), _allocator);
 
   VGLOG(LOG_INFO, "Saving to save file [%s].", _saveFilePath.c_str());
   json_util::saveToFile(_saveFilePath, _json);
@@ -38,6 +39,7 @@ void GameState::load() {
   deserializeInGameTime(_json["inGameTime"].GetObject());
   deserializeRoomRentalTrackerState(_json["roomRentalTracker"].GetObject());
   deserializeLatestNpcDialogueTrees(_json["latestNpcDialogueTrees"].GetObject());
+  deserializeHotkeys(_json["hotkeys"].GetObject());
 
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->updateEquippedWeapon();
@@ -453,6 +455,42 @@ void GameState::deserializeLatestNpcDialogueTrees(const rapidjson::Value& obj) c
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
 
   json_util::deserialize(obj, make_pair("latestNpcDialogueTrees", &dialogueMgr->_latestNpcDialogueTrees));
+}
+
+rapidjson::Value GameState::serializeHotkeys() const {
+  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
+
+  vector<string> hotkeys(hotkeyMgr->_hotkeys.size());
+  for (int i = 0; i < static_cast<int>(hotkeyMgr->_hotkeys.size()); i++) {
+    if (auto skill = dynamic_cast<Skill*>(hotkeyMgr->_hotkeys[i])) {
+      hotkeys[i] = skill->getSkillProfile().jsonFilePath.native();
+    }
+  }
+
+  return json_util::serialize(_allocator, make_pair("hotkeys", hotkeys));
+}
+
+void GameState::deserializeHotkeys(const rapidjson::Value& obj) const {
+  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
+  std::fill(hotkeyMgr->_hotkeys.begin(), hotkeyMgr->_hotkeys.end(), nullptr);
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+
+  vector<string> hotkeys(hotkeyMgr->_hotkeys.size());
+  json_util::deserialize(obj, make_pair("hotkeys", &hotkeys));
+
+  for (int i = 0; i < static_cast<int>(hotkeys.size()); i++) {
+    const string& jsonFilePath = hotkeys[i];
+    auto skill = player->getSkill(jsonFilePath);
+    if (!skill) {
+      VGLOG(LOG_ERR, "Failed to get skill [%s]", jsonFilePath.c_str());
+      continue;
+    }
+
+    HotkeyManager::BindableKeys key = static_cast<HotkeyManager::BindableKeys>(i);
+    hotkeyMgr->setHotkeyAction(HotkeyManager::kBindableKeys[key], skill);
+  }
 }
 
 }  // namespace requiem

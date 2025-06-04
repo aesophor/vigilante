@@ -16,6 +16,8 @@ class PauseMenuDialog;
 
 class HotkeyManager final {
  public:
+  friend class GameState;
+
   enum BindableKeys {
     LEFT_SHIFT,
     LEFT_CTRL,
@@ -39,6 +41,7 @@ class HotkeyManager final {
   void promptHotkey(Keybindable* keybindable, PauseMenuDialog* pauseMenuDialog);
 
  private:
+  // XXX: Perhaps replace Keybindable* with std::weak_ptr<Keybindable>
   std::array<Keybindable*, BindableKeys::SIZE> _hotkeys;
 };
 

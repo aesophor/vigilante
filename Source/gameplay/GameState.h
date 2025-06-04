@@ -50,6 +50,9 @@ class GameState final {
   rapidjson::Value serializeLatestNpcDialogueTrees() const;
   void deserializeLatestNpcDialogueTrees(const rapidjson::Value& obj) const;
 
+  rapidjson::Value serializeHotkeys() const;
+  void deserializeHotkeys(const rapidjson::Value& obj) const;
+
   const fs::path _saveFilePath;
   rapidjson::Document _json;
   rapidjson::Document::AllocatorType& _allocator;
