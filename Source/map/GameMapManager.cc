@@ -102,13 +102,16 @@ void GameMapManager::loadGameMap(const string& tmxMapFilePath,
                                  const function<void (const GameMap*)>& afterLoadingGameMap,
                                  const float fadeInSec,
                                  const float fadeOutSec) {
+  _isLoadingGameMap = true;
+
   auto shade = SceneManager::the().getCurrentScene<GameScene>()->getShade();
   shade->getImageView()->runAction(Sequence::create(
       FadeIn::create(fadeInSec),
       CallFunc::create([this, shade, tmxMapFilePath, afterLoadingGameMap]() {
         doLoadGameMap(tmxMapFilePath);
         afterLoadingGameMap(_gameMap.get());
-        setNpcsAllowedToAct(true);
+        _areNpcsAllowedToAct = true;
+        _isLoadingGameMap = false;
       }),
       FadeOut::create(fadeOutSec),
       nullptr

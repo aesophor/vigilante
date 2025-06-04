@@ -3,7 +3,6 @@
 #ifndef REQUIEM_MAP_GAME_MAP_MANAGER_H_
 #define REQUIEM_MAP_GAME_MAP_MANAGER_H_
 
-#include <atomic>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -49,6 +48,7 @@ class GameMapManager final {
   bool isNpcAllowedToSpawn(const std::string& jsonFilePath) const;
   void setNpcAllowedToSpawn(const std::string& jsonFilePath, bool canSpawn);
 
+  inline bool isLoadingGameMap() const { return _isLoadingGameMap; }
   inline bool areNpcsAllowedToAct() const { return _areNpcsAllowedToAct; }
   inline void setNpcsAllowedToAct(bool npcsAllowedToAct) {
     _areNpcsAllowedToAct = npcsAllowedToAct;
@@ -94,8 +94,9 @@ class GameMapManager final {
   std::unique_ptr<Player> _player;
   std::unordered_map<std::string, std::string> _mapAliasToTmxMapFilePath;
 
+  bool _isLoadingGameMap{};
+  bool _areNpcsAllowedToAct{true};
   std::unordered_set<std::string> _npcSpawningBlacklist;
-  std::atomic<bool> _areNpcsAllowedToAct{true};
 
   // This includes:
   // 1. The unlock/lock state of all portals in all maps.

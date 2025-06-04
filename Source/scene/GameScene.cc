@@ -254,6 +254,9 @@ void GameScene::handleInput() {
     if (_dialogueManager->getSubtitles()->isOngoing()) {
       return;
     }
+    if (_gameMapManager->isLoadingGameMap()) {
+      return;
+    }
 
     bool isVisible = !_pauseMenu->isVisible();
     _pauseMenu->setVisible(isVisible);
