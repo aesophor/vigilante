@@ -92,6 +92,8 @@ void Subtitles::beginSubtitles() {
     return;
   }
 
+  _isOngoing = true;
+
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->getLayer()->setVisible(false);
 
@@ -130,6 +132,7 @@ void Subtitles::endSubtitles() {
       }
 
       targetNpc->onDialogueEnd();
+      _isOngoing = false;
     })
   ));
 }

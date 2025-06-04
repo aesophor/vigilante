@@ -28,6 +28,7 @@ class Subtitles : public Controllable {
   void showNextSubtitle();
 
   inline ax::Layer* getLayer() const { return _layer; }
+  inline bool isOngoing() const { return _isOngoing; }
 
   static constexpr auto kLetterboxTransitionDuration{1.0f};
 
@@ -45,6 +46,7 @@ class Subtitles : public Controllable {
 
   std::queue<Subtitles::Subtitle> _subtitleQueue;
   Subtitles::Subtitle _currentSubtitle{""};
+  bool _isOngoing{};
   bool _isTransitioning{};
   float _timer{};
 };

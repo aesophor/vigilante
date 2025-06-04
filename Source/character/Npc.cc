@@ -276,6 +276,10 @@ void Npc::showHintUI() {
   }
 
   auto dialogueMgr = SceneManager::the().getCurrentScene<GameScene>()->getDialogueManager();
+  if (dialogueMgr->getSubtitles()->isOngoing()) {
+    return;
+  }
+
   const optional<string> latestDialogueTreeJsonFilePath = dialogueMgr->getLatestNpcDialogueTree(_characterProfile.jsonFilePath);
   if (latestDialogueTreeJsonFilePath.has_value() && latestDialogueTreeJsonFilePath.value().empty()) {
     return;
