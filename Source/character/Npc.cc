@@ -130,6 +130,7 @@ bool Npc::removeFromMap() {
     return false;
   }
 
+  hideHintUI();
   _floatingHealthBar->getLayout()->removeFromParentAndCleanup(true);
 }
 
