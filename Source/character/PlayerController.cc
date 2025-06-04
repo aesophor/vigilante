@@ -132,11 +132,15 @@ void PlayerController::handleHotkeyInput() {
   auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
 
   for (auto keyCode : HotkeyManager::kBindableKeys) {
-    shared_ptr<Keybindable> action = hotkeyMgr->getHotkeyAction(keyCode);
-    if (!action || !IS_KEY_JUST_PRESSED(keyCode)) {
+    if (!IS_KEY_JUST_PRESSED(keyCode)) {
       continue;
     }
 
+    shared_ptr<Keybindable> action = hotkeyMgr->getHotkeyAction(keyCode);
+    if (!action) {
+      hotkeyMgr->clearHotkeyAction(keyCode);
+      continue;
+    }
     if (auto skill = dynamic_pointer_cast<Skill>(action)) {
       _player.activateSkill(skill.get());
     }
