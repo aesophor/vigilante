@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "TeleportStrike.h"
 
@@ -106,6 +106,7 @@ void TeleportStrike::activate() {
       _user->disableAfterImageFx();
       _user->setInvincible(false);
       _user->getBody()->SetAwake(true);
+      _user->removeActiveSkillInstance(this);
     }, _user->getAnimationDuration(Character::State::ATTACKING_FORWARD));
   }, _skillProfile.framesDuration);
 
