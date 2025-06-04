@@ -53,6 +53,8 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kRemoveItem,         &CommandHandler::removeItem         },
     {cmd::kAddGold,            &CommandHandler::addGold            },
     {cmd::kRemoveGold,         &CommandHandler::removeGold         },
+    {cmd::kAddSkill,           &CommandHandler::addSkill           },
+    {cmd::kRemoveSkill,        &CommandHandler::removeSkill        },
     {cmd::kUpdateDialogueTree, &CommandHandler::updateDialogueTree },
     {cmd::kClearDialogueTree,  &CommandHandler::clearDialogueTree  },
     {cmd::kJoinPlayerParty,    &CommandHandler::joinPlayerParty    },
@@ -388,6 +390,55 @@ void CommandHandler::removeGold(const vector<string>& args) {
   }
 
   player->removeGold(amount);
+  setSuccess();
+}
+
+void CommandHandler::addSkill(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("Usage: %s <skillJsonFilePath>", args[0].c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  const fs::path skillJsonFilePath{args[1]};
+  if (!player->addSkill(Skill::create(skillJsonFilePath, player))) {
+    setError(string_util::format("Failed to add skill [%s], already added", skillJsonFilePath.c_str()));
+    return;
+  }
+
+  setSuccess();
+}
+
+void CommandHandler::removeSkill(const vector<string>& args) {
+  if (args.size() < 2) {
+    setError(string_util::format("Usage: %s <skillJsonFilePath>", args[0].c_str()));
+    return;
+  }
+
+  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+  auto player = gmMgr->getPlayer();
+  if (!player) {
+    setError("Failed to get player");
+    return;
+  }
+
+  const fs::path skillJsonFilePath{args[1]};
+  Skill* skill = player->getSkill(skillJsonFilePath);
+  if (!skill) {
+    setError(string_util::format("Failed to remove skill [%s], not learned yet.", skillJsonFilePath.c_str()));
+    return;
+  }
+  if (!player->removeSkill(skill)) {
+    setError(string_util::format("Failed to remove skill [%s].", skillJsonFilePath.c_str()));
+    return;
+  }
+
   setSuccess();
 }
 

@@ -1353,6 +1353,17 @@ bool Character::removeSkill(Skill* skill) {
   return true;
 }
 
+Skill* Character::getSkill(const fs::path& skillJsonFilePath) const {
+  auto it = _skills.find(skillJsonFilePath.native());
+  if (it == _skills.end()) {
+    VGLOG(LOG_WARN, "Failed to get skill [%s] from [%s].",
+          skillJsonFilePath.c_str(), _characterProfile.name.c_str());
+    return nullptr;
+  }
+
+  return it->second.get();
+}
+
 void Character::resurrect() {
   if (!_isSetToKill || !_isKilled) {
     return;

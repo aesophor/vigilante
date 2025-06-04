@@ -199,6 +199,7 @@ class Character : public DynamicActor, public Importable {
   virtual void addExp(const int exp);
   virtual bool addSkill(std::shared_ptr<Skill> skill);
   virtual bool removeSkill(Skill* skill);
+  virtual Skill* getSkill(const std::filesystem::path& skillJsonFilePath) const;
   virtual void resurrect();
 
   int getGoldBalance() const;
