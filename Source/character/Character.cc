@@ -1348,6 +1348,9 @@ bool Character::removeSkill(Skill* skill) {
     return false;
   }
 
+  auto hotkeyMgr = SceneManager::the().getCurrentScene<GameScene>()->getHotkeyManager();
+  hotkeyMgr->clearHotkeyAction(skill->getSkillProfile().hotkey);
+
   _skillBook[skill->getSkillProfile().skillType].erase(skill);
   _skills.erase(it);
   return true;
