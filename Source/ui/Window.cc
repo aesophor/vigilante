@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "Window.h"
 
@@ -98,6 +98,7 @@ void Window::normalize(bool init) {
   const auto winSize = Director::getInstance()->getWinSize();
   _position.x = winSize.width / 2 - _size.width / 2;
   _position.y = winSize.height / 2 + _size.height / 2;
+  _position.y += 15;
   layout->setPosition(_position);
 
   const float cornerBgSideLength = _topLeftBg->getContentSize().width;
