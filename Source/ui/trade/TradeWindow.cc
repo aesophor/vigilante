@@ -5,6 +5,7 @@
 #include "Assets.h"
 #include "character/Player.h"
 #include "input/InputManager.h"
+#include "scene/SceneManager.h"
 #include "util/StringUtil.h"
 
 using namespace std;
@@ -92,6 +93,18 @@ void TradeWindow::handleInput() {
   } else if (IS_KEY_JUST_PRESSED(EventKeyboard::KeyCode::KEY_ENTER)) {
     _tradeListView->confirm();
   }
+}
+
+void TradeWindow::setVisible(bool visible) {
+  if (!isVisible() && visible) {
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->pushProfile(ControlHints::Profile::TRADE);
+  } else if (isVisible() && !visible) {
+    auto controlHints = SceneManager::the().getCurrentScene<GameScene>()->getControlHints();
+    controlHints->popProfile();
+  }
+
+  Window::setVisible(visible);
 }
 
 void TradeWindow::toggleBuySell() {

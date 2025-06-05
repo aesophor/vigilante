@@ -76,6 +76,18 @@ ControlHints::ControlHints()
      "Confirm", colorscheme::kWhite},
   };
 
+  _profiles[ControlHints::Profile::TRADE] = {
+    {{EventKeyboard::KeyCode::KEY_CAPITAL_Q, EventKeyboard::KeyCode::KEY_CAPITAL_E},
+      "<Switch>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_LEFT_ARROW, EventKeyboard::KeyCode::KEY_RIGHT_ARROW},
+     "<Tab>", colorscheme::kWhite},
+
+    {{EventKeyboard::KeyCode::KEY_ENTER},
+      "Confirm", colorscheme::kWhite},
+  };
+
+
   for (auto profile : _profiles) {
     for (auto& hint : profile) {
       hint.getLayout()->setVisible(false);

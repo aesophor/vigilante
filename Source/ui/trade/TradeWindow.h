@@ -22,6 +22,7 @@ class TradeWindow : public Window {
 
   virtual void update(const float delta) override;  // Window
   virtual void handleInput() override;  // Window
+  virtual void setVisible(bool visible) override;  // Window
 
   void toggleBuySell();
 

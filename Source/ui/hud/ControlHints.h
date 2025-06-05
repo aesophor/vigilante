@@ -32,6 +32,7 @@ class ControlHints final {
     PAUSE_MENU_SKILLS,
     PAUSE_MENU_QUESTS,
     PAUSE_MENU_OPTIONS,
+    TRADE,
     GAME,
     SIZE
   };

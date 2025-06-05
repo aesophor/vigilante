@@ -26,6 +26,7 @@ class Window : public Controllable {
   virtual void move(float x, float y);
   virtual void resize(const ax::Size& size);
   virtual void resize(float width, float height);
+  virtual void setVisible(bool visible);
 
   inline ax::Layer* getLayer() const { return _layer; }
   inline ax::ui::Layout* getLayout() const { return _layout; }
@@ -36,7 +37,6 @@ class Window : public Controllable {
   inline const ax::Size& getSize() const { return _size; }
 
   void setTitle(const std::string& title);
-  void setVisible(bool visible);
 
  protected:
   // Place the window at the center, and place `_titleLabel` as well as

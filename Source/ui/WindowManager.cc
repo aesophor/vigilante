@@ -29,7 +29,7 @@ void WindowManager::push(unique_ptr<Window> window) {
   window->getLayer()->setCameraMask(_cameraMask);
 
   // Show window.
-  window->getLayer()->setVisible(true);
+  window->setVisible(true);
   _scene->addChild(window->getLayer(), kWindowBottom + static_cast<int>(_windows.size()));
 
   // Manage window.

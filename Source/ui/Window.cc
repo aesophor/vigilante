@@ -73,14 +73,14 @@ void Window::resize(float width, float height) {
   normalize();
 }
 
-void Window::setTitle(const string& title) {
-  _titleLabel->setString(title);
-  normalize();
-}
-
 void Window::setVisible(bool visible) {
   _isVisible = visible;
   _layer->setVisible(visible);
+}
+
+void Window::setTitle(const string& title) {
+  _titleLabel->setString(title);
+  normalize();
 }
 
 void Window::normalize(bool init) {
