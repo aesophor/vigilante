@@ -39,6 +39,7 @@ constexpr char kRentRoomCheckOut[] = "rentroomcheckout";
 constexpr char kBeginBossFight[] = "beginbossfight";
 constexpr char kSetInGameTime[] = "setingametime";
 constexpr char kLoadGameMap[] = "loadgamemap";
+constexpr char kMoveToPos[] = "movetopos";
 constexpr char kSetPos[] = "setpos";
 constexpr char kRetainBodyIfKilled[] = "retainbodyifkilled";
 constexpr char kResurrect[] = "resurrect";
@@ -83,6 +84,7 @@ class CommandHandler final {
   void endBossFight(const std::vector<std::string>& args);
   void setInGameTime(const std::vector<std::string>& args);
   void loadGameMap(const std::vector<std::string>& args);
+  void moveToPos(const std::vector<std::string>& args);
   void setPos(const std::vector<std::string>& args);
   void retainBodyIfKilled(const std::vector<std::string>& args);
   void resurrect(const std::vector<std::string>& args);

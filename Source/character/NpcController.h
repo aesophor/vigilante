@@ -1,7 +1,9 @@
-// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_CHARACTER_NPC_CONTROLLER_H_
 #define REQUIEM_CHARACTER_NPC_CONTROLLER_H_
+
+#include <functional>
 
 #include <box2d/box2d.h>
 
@@ -15,6 +17,7 @@ class NpcController final {
   explicit NpcController(Npc& npc) : _npc{npc} {}
 
   void update(const float delta);
+  void setMoveDest(const b2Vec2& targetPos, std::function<void()> onArrivalAtTarget);
 
   inline void reverseDirection() { _isMovingRight = !_isMovingRight; }
   inline bool isSandboxing() const { return _isSandboxing; }
@@ -43,6 +46,7 @@ class NpcController final {
   float _activateSkillTimer{};
   b2Vec2 _moveDest{0.f, 0.f};
   b2Vec2 _lastStoppedPosition{0.f, 0.f};
+  std::function<void()> _onArrivalAtMoveDest;
 };
 
 }  // namespace requiem

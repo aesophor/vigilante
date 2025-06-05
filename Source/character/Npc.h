@@ -97,6 +97,7 @@ class Npc final : public Character, public Interactable {
   inline Npc::Profile& getNpcProfile() { return _npcProfile; }
   inline DialogueTree& getDialogueTree() { return _dialogueTree; }
   inline Npc::Disposition getDisposition() const { return _disposition; }
+  inline NpcController& getNpcController() { return _npcController; }
   void setDisposition(Npc::Disposition disposition);
 
   inline bool isSandboxing() const { return _npcController.isSandboxing(); }

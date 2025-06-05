@@ -81,6 +81,11 @@ void NpcController::update(const float delta) {
   }
 }
 
+void NpcController::setMoveDest(const b2Vec2& targetPos, function<void()> onArrivalAtTarget) {
+  _moveDest = targetPos;
+  _onArrivalAtMoveDest = std::move(onArrivalAtTarget);
+}
+
 void NpcController::findNewLockedOnTargetFromParty(const Character* killedTarget) {
   if (!killedTarget->getParty()) {
     return;
@@ -114,6 +119,10 @@ void NpcController::moveToTarget(const float delta, Character* target, const flo
 void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, const float followDist) {
   const b2Vec2& thisPos = _npc.getBody()->GetPosition();
   if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
+    if (_onArrivalAtMoveDest) {
+      std::invoke(_onArrivalAtMoveDest);
+      _onArrivalAtMoveDest = nullptr;
+    }
     _moveDest.SetZero();
     return;
   }
