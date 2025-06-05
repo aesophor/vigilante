@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "ControlHints.h"
 
@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Assets.h"
+#include "util/AxUtil.h"
 #include "util/KeyCodeUtil.h"
 #include "util/Logger.h"
 
@@ -208,6 +209,8 @@ ControlHints::Hint::Hint(const vector<EventKeyboard::KeyCode>& keyCodes,
     _icons[i] = ui::ImageView::create(iconPath.native());
     _icons[i]->setAnchorPoint({0, 1});
     _icons[i]->setPositionX(i * _icons[i]->getContentSize().width);
+    ax_util::setAliasTexParameters(_icons[i]);
+    
     _layout->addChild(_icons[i]);
   }
 
