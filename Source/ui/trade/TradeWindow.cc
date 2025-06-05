@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2018-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #include "TradeWindow.h"
 
@@ -17,8 +17,8 @@ namespace {
 
 constexpr float kMarginLeft = 10.0f;
 constexpr float kMarginRight = 10.0f;
-constexpr float kMarginTop = 30.0f;
-constexpr float kMarginBottom = 40.0f;
+constexpr float kMarginTop = 25.0f;
+constexpr float kMarginBottom = 25.0f;
 
 }  // namespace
 
