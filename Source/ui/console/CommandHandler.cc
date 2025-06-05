@@ -71,7 +71,7 @@ bool CommandHandler::handle(const string& cmd, bool showNotification) {
     {cmd::kRentRoomCheckOut,   &CommandHandler::rentRoomCheckOut   },
     {cmd::kBeginBossFight,     &CommandHandler::beginBossFight     },
     {cmd::kSetInGameTime,      &CommandHandler::setInGameTime      },
-    {cmd::kMoveTo,             &CommandHandler::moveTo             },
+    {cmd::kLoadGameMap,        &CommandHandler::loadGameMap        },
     {cmd::kSetPos,             &CommandHandler::setPos             },
     {cmd::kRetainBodyIfKilled, &CommandHandler::retainBodyIfKilled },
     {cmd::kResurrect,          &CommandHandler::resurrect          },
@@ -1054,7 +1054,7 @@ void CommandHandler::setInGameTime(const vector<string>& args) {
   setSuccess();
 }
 
-void CommandHandler::moveTo(const vector<string>& args) {
+void CommandHandler::loadGameMap(const vector<string>& args) {
   if (args.size() < 2) {
     setError(string_util::format("Usage: %s <mapAlias> [fadeInSec] [fadeOutSec]", args[0].c_str()));
     return;
@@ -1064,7 +1064,7 @@ void CommandHandler::moveTo(const vector<string>& args) {
   const string& mapAlias = args[1];
   const optional<string> tmxMapFilePath = gmMgr->getTmxMapFilePathByMapAlias(mapAlias);
   if (!tmxMapFilePath.has_value()) {
-    setError(string_util::format("Failed to moveto unknown map alias: [%s].", mapAlias.c_str()));
+    setError(string_util::format("Failed to load game map, unknown map alias: [%s].", mapAlias.c_str()));
     return;
   }
 
