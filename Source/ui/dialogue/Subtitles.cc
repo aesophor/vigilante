@@ -92,11 +92,10 @@ void Subtitles::beginSubtitles() {
     return;
   }
 
-  _isOngoing = true;
-
   auto hud = SceneManager::the().getCurrentScene<GameScene>()->getHud();
   hud->getLayer()->setVisible(false);
 
+  _isOngoing = true;
   _isTransitioning = true;
   _layer->setVisible(true);
   _upperLetterbox->runAction(MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}));
@@ -119,6 +118,7 @@ void Subtitles::endSubtitles() {
   _lowerLetterbox->runAction(Sequence::createWithTwoActions(
     MoveBy::create(kLetterboxTransitionDuration, {0, -kLetterboxHeight}),
     CallFunc::create([this]() {
+      _isOngoing = false;
       _isTransitioning = false;
       _layer->setVisible(false);
 
@@ -132,7 +132,6 @@ void Subtitles::endSubtitles() {
       }
 
       targetNpc->onDialogueEnd();
-      _isOngoing = false;
     })
   ));
 }
