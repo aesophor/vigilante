@@ -797,7 +797,7 @@ void Character::dodgeForward() {
 }
 
 void Character::dodgeImpl(const Character::State dodgeState, const float rushPowerX, bool& isDodgingFlag) {
-  if (isDodging() || isDoubleJumping() || isMovementDisallowed()) {
+  if (isDodging() || hasDodgedMidair() || isDoubleJumping() || isMovementDisallowed()) {
     return;
   }
 
@@ -812,6 +812,8 @@ void Character::dodgeImpl(const Character::State dodgeState, const float rushPow
   CallbackManager::the().runAfter([this](const CallbackManager::CallbackId) {
     _isInvincible = false;
   }, 0.2f);
+
+  _hasDodgedMidair = true;
 
   isDodgingFlag = true;
   CallbackManager::the().runAfter([this, &isDodgingFlag](const CallbackManager::CallbackId) {

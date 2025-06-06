@@ -214,6 +214,7 @@ class Character : public DynamicActor, public Importable {
   inline bool isDodging() const { return _isDodgingBackward || _isDodgingForward; }
   inline bool isDodgingBackward() const { return _isDodgingBackward; }
   inline bool isDodgingForward() const { return _isDodgingForward; }
+  inline bool hasDodgedMidair() const { return _hasDodgedMidair; }
   inline bool isAttacking() const { return _isAttacking || isAttackState(_currentState); }
   inline bool isUsingSkill() const { return _isUsingSkill; }
   inline bool isBlocking() const { return _isBlocking; }
@@ -232,6 +233,7 @@ class Character : public DynamicActor, public Importable {
   inline void setJumping(bool jumping) { _isJumping = jumping; }
   inline void setDoubleJumping(bool doubleJumping) { _isDoubleJumping = doubleJumping; }
   inline void setOnPlatform(bool onPlatform) { _isOnPlatform = onPlatform; }
+  inline void setDodgedMidair(bool dodgedMidair) { _hasDodgedMidair = dodgedMidair; }
   inline void setAttacking(bool attacking) { _isAttacking = attacking; }
   inline void setUsingSkill(bool usingSkill) { _isUsingSkill = usingSkill; }
   inline void setBlocking(bool blocking) { _isBlocking = blocking; }
@@ -424,6 +426,7 @@ class Character : public DynamicActor, public Importable {
   bool _isGettingUpFromFalling{};
   bool _isDodgingBackward{};
   bool _isDodgingForward{};
+  bool _hasDodgedMidair{};
   bool _isAttacking{};
   bool _isUsingSkill{};
   bool _isBlocking{};

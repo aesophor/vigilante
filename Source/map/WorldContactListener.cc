@@ -40,6 +40,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         c->setJumping(false);
         c->setDoubleJumping(false);
         c->setOnPlatform(false);
+        c->setDodgedMidair(false);
         c->onFallToGroundOrPlatform();
 
         b2EdgeShape* shape = dynamic_cast<b2EdgeShape*>(groundFixture->GetShape());
@@ -60,6 +61,7 @@ void WorldContactListener::BeginContact(b2Contact* contact) {
         Character* c = reinterpret_cast<Character*>(feetFixture->GetUserData().pointer);
         c->setJumping(false);
         c->setDoubleJumping(false);
+        c->setDodgedMidair(false);
         c->setOnPlatform(true);
         c->setOnGround(false);
         c->setGroundAngle(0.0f);
