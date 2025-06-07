@@ -17,6 +17,7 @@
 #include "gameplay/InGameTime.h"
 #include "Interactable.h"
 #include "item/Item.h"
+#include "map/NavTiledMap.h"
 #include "map/Lighting.h"
 #include "map/ParallaxBackground.h"
 #include "map/PathFinder.h"
@@ -184,6 +185,7 @@ class GameMap final {
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
   inline const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const { return _portals; };
   inline ParallaxBackground& getParallaxBackground() { return *_parallaxBackground; }
+  inline const NavTiledMap& getNavTiledMap() const { return *_navTiledMap; }
   inline PathFinder& getPathFinder() { return *_pathFinder; }
 
   float getWidth() const;
@@ -222,6 +224,7 @@ class GameMap final {
   std::vector<std::unique_ptr<GameMap::Trigger>> _triggers;
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
+  std::unique_ptr<NavTiledMap> _navTiledMap;
   std::unique_ptr<PathFinder> _pathFinder;
 };
 

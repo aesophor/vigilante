@@ -46,6 +46,7 @@ GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePat
       _tmxTiledMapFilePath{tmxMapFilePath},
       _bgmFilePath{_tmxTiledMap->getProperty("bgm").asString()},
       _parallaxBackground{std::make_unique<ParallaxBackground>()},
+      _navTiledMap{std::make_unique<NavTiledMap>(*_tmxTiledMap)},
       _pathFinder{std::make_unique<SimplePathFinder>()} {}
 
 GameMap::~GameMap() {
@@ -73,7 +74,6 @@ void GameMap::update(const float delta) {
 }
 
 void GameMap::createObjects() {
-  // Create box2d objects from layers.
   list<b2Body*> bodies = createPolylines("Ground", category_bits::kGround, true, kGroundFriction);
   _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
 
@@ -89,6 +89,10 @@ void GameMap::createObjects() {
 
   bodies = createPolylines("CliffMarker", category_bits::kCliffMarker, false, 0);
   _tmxTiledMapBodies.splice(_tmxTiledMapBodies.end(), bodies);
+
+  if (auto bitmapLayer = _navTiledMap->getBitmapLayer()) {
+    //bitmapLayer->setVisible(false);
+  }
 
   const Value locationNameProperty = _tmxTiledMap->getProperty("locationName");
   if (!locationNameProperty.isNull()) {

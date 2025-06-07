@@ -7,6 +7,8 @@
 
 #include <box2d/box2d.h>
 
+#include "map/NavTiledMap.h"
+
 namespace requiem {
 
 class PathFinder {
@@ -26,6 +28,19 @@ class SimplePathFinder final : public PathFinder {
   virtual std::optional<b2Vec2> findOptimalNextHop(const b2Vec2& srcPos,
                                                    const b2Vec2& destPos,
                                                    const float followDist) override;
+};
+
+class AStarPathFinder final : public PathFinder {
+ public:
+  AStarPathFinder(const NavTiledMap& navTiledMap);
+
+  virtual std::optional<b2Vec2> findOptimalNextHop(const b2Vec2& srcPos,
+                                                   const b2Vec2& destPos,
+                                                   const float followDist) override;
+ private:
+  const NavTiledMap& _navTiledMap;
+
+  
 };
 
 }  // namespace requiem

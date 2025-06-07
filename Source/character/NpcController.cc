@@ -66,12 +66,14 @@ void NpcController::update(const float delta) {
     Character* killedTarget = lockedOnTarget;
     _npc.setLockedOnTarget(nullptr);
     findNewLockedOnTargetFromParty(killedTarget);
+  /*
   } else if (_npc.getParty() &&
              !_npc.isWaitingForPartyLeader() &&
              isTooFarAwayFromTarget(_npc.getParty()->getLeader())) {
     clearMoveDest();
     _npc.teleportToTarget(_npc.getParty()->getLeader());
     _npc.getBody()->SetAwake(true);
+  */
   } else if (_moveDest.x || _moveDest.y) {
     moveToTarget(delta, _moveDest, kMoveDestFollowDist);
   } else if (_npc.getParty() && !_npc.isWaitingForPartyLeader()) {
