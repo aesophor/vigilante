@@ -180,11 +180,11 @@ class GameMap final {
   inline float getAmbientLightLevelNight() const { return _ambientLightLevelNight; }
   inline bool isInBossFight() const { return _isInBossFight; }
   inline bool isGameOverOnPlayerKilled() const { return _isGameOverOnPlayerKilled; }
-  inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
-  inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
   inline const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const { return _portals; };
+  inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
+  inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
 
   float getWidth() const;
   float getHeight() const;
