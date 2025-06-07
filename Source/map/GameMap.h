@@ -183,8 +183,8 @@ class GameMap final {
   inline const std::unordered_set<std::shared_ptr<DynamicActor>>& getDynamicActors() const { return _dynamicActors; }
   inline const std::list<b2Body*> getTmxTiledMapPlatformBodies() const { return _tmxTiledMapPlatformBodies; }
   inline const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const { return _portals; };
-  inline ParallaxBackground* getParallaxBackground() const { return _parallaxBackground.get(); }
-  inline PathFinder* getPathFinder() const { return _pathFinder.get(); }
+  inline ParallaxBackground& getParallaxBackground() { return *_parallaxBackground; }
+  inline PathFinder& getPathFinder() { return *_pathFinder; }
 
   float getWidth() const;
   float getHeight() const;

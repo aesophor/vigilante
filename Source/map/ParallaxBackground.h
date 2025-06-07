@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_MAP_PARALLAX_BACKGROUND_H_
 #define REQUIEM_MAP_PARALLAX_BACKGROUND_H_
@@ -46,6 +46,10 @@ class InfiniteParallaxNode : public ax::Node {
 
 class ParallaxBackground final {
  public:
+  ParallaxBackground() = default;
+  ParallaxBackground(const ParallaxBackground&) = delete;
+  ParallaxBackground& operator=(const ParallaxBackground&) = delete;
+
   void update(const float delta);
   bool load(const std::filesystem::path& bgDirPath, const float bgScale);
 

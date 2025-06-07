@@ -128,8 +128,8 @@ void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, con
   }
 
   auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  PathFinder* pathFinder = gmMgr->getGameMap()->getPathFinder();
-  if (auto nextHop = pathFinder->findOptimalNextHop(thisPos, targetPos, followDist)) {
+  PathFinder& pathFinder = gmMgr->getGameMap()->getPathFinder();
+  if (auto nextHop = pathFinder.findOptimalNextHop(thisPos, targetPos, followDist)) {
     _moveDest = *nextHop;
   } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
     (thisPos.x > targetPos.x) ? _npc.moveLeft() : _npc.moveRight();

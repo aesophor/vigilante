@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
+// Copyright (c) 2023-2025 Marco Wang <m.aesophor@gmail.com>. All rights reserved.
 
 #ifndef REQUIEM_MAP_PATH_FINDER_H_
 #define REQUIEM_MAP_PATH_FINDER_H_
@@ -11,7 +11,11 @@ namespace requiem {
 
 class PathFinder {
  public:
+  PathFinder() = default;
+  PathFinder(const PathFinder&) = delete;
+  PathFinder& operator=(const PathFinder&) = delete;
   virtual ~PathFinder() = default;
+
   virtual std::optional<b2Vec2> findOptimalNextHop(const b2Vec2& srcPos,
                                                    const b2Vec2& destPos,
                                                    const float followDist) = 0;
