@@ -72,7 +72,8 @@ void Lighting::updateAmbientLightLevel(const InGameTime* inGameTime, const float
 }
 
 void Lighting::updateParallaxLightLevel(const InGameTime* inGameTime, const float brightnessPercentage) {
-  if (!_gameMap->getParallaxBackground()->getParallaxNode()) {
+  InfiniteParallaxNode* parallaxNode = _gameMap->getParallaxBackground().getParallaxNode();
+  if (!parallaxNode) {
     return;
   }
 
@@ -91,7 +92,7 @@ void Lighting::updateParallaxLightLevel(const InGameTime* inGameTime, const floa
   }
 
   const Color3B newColor{level, level, level};
-  for (const auto child : _gameMap->getParallaxBackground()->getParallaxNode()->getChildren()) {
+  for (const auto child : parallaxNode->getChildren()) {
     if (child->getColor() != newColor) {
       child->setColor(newColor);
     }
