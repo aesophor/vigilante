@@ -186,7 +186,6 @@ class GameMap final {
   inline const std::vector<std::unique_ptr<GameMap::Portal>>& getPortals() const { return _portals; };
   inline ParallaxBackground& getParallaxBackground() { return *_parallaxBackground; }
   inline const NavTiledMap& getNavTiledMap() const { return *_navTiledMap; }
-  inline PathFinder& getPathFinder() { return *_pathFinder; }
 
   float getWidth() const;
   float getHeight() const;
@@ -225,7 +224,6 @@ class GameMap final {
   std::vector<std::unique_ptr<GameMap::Portal>> _portals;
   std::unique_ptr<ParallaxBackground> _parallaxBackground;
   std::unique_ptr<NavTiledMap> _navTiledMap;
-  std::unique_ptr<PathFinder> _pathFinder;
 };
 
 template <typename ReturnType>

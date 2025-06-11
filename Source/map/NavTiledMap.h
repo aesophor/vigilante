@@ -29,15 +29,20 @@ class NavTiledMap final {
   NavTiledMap(const NavTiledMap&) = delete;
   NavTiledMap& operator=(const NavTiledMap&) = delete;
 
+  ax::Vec2 getTileCoordinate(const ax::Vec2& pos) const;
+  ax::Vec2 getTilePos(const ax::Vec2& tileCoordinate) const;
+  const NavTile& getNavTile(const ax::Vec2& tileCoordinate) const;
+
+  inline const ax::TMXTiledMap& getTmxTiledMap() const { return _tmxTiledMap; }
   inline ax::FastTMXLayer* getBitmapLayer() const { return _bitmapLayer; }
 
  private:
+  std::vector<std::vector<NavTile>> buildNavTiles() const;
   TileType getTileType(const ax::Vec2& tileCoordinate) const;
-  ax::Vec2 getTileCoordinate(const ax::Vec2& pos) const;
 
   const ax::TMXTiledMap& _tmxTiledMap;
   ax::FastTMXLayer* _bitmapLayer{};
-
+  
   std::vector<std::vector<NavTile>> _navTiles;
 };
 

@@ -10,6 +10,19 @@
 #include <axmol.h>
 #include <ui/UIImageView.h>
 
+namespace std {
+
+template <>
+struct hash<ax::Vec2> {
+  size_t operator()(const ax::Vec2& v) const {
+    int x = static_cast<int>(std::floor(v.x));
+    int y = static_cast<int>(std::floor(v.y));
+    return std::hash<int>()(x) ^ (std::hash<int>()(y) << 1);
+  }
+};
+
+}  // namespace std
+
 namespace requiem::ax_util {
 
 void addChildWithParentCameraMask(ax::Node* parent, ax::Node* child);

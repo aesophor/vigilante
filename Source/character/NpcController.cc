@@ -25,6 +25,10 @@ constexpr float kActivateRandomSkillInterval = 3.0f;
 
 }  // namespace
 
+NpcController::NpcController(Npc& npc)
+    : _npc{npc},
+      _pathFinder{std::make_unique<AStarPathFinder>()} {}
+
 // This Npc may perform one of the following actions:
 // (1) Has `_lockedOnTarget` and `_lockedOnTarget` is not dead yet:
 //     a. target is within attack range -> attack()
@@ -120,7 +124,37 @@ void NpcController::moveToTarget(const float delta, Character* target, const flo
 
 void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, const float followDist) {
   const b2Vec2& thisPos = _npc.getBody()->GetPosition();
-  if (std::hypotf(targetPos.x - thisPos.x, targetPos.y - thisPos.y) <= followDist) {
+
+  if (!_moveDest.x && !_moveDest.y) {
+    const optional<b2Vec2> waypoint = _pathFinder->getNextWaypoint(thisPos, targetPos, followDist);
+    if (!waypoint.has_value()) {
+      return;
+    }
+
+    auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
+    Vec2 tileCoord = gmMgr->getGameMap()->getNavTiledMap().getTileCoordinate(Vec2{waypoint->x * kPpm, waypoint->y * kPpm});
+    Vec2 tileOrigin = gmMgr->getGameMap()->getNavTiledMap().getTilePos(tileCoord); // in pixels, probably top-left or bottom-left depending on orientation
+
+    Vec2 p1 = tileOrigin + Vec2(-8, 8);   // top-left
+    Vec2 p2 = tileOrigin + Vec2(8, 8);    // top-right
+    Vec2 p3 = tileOrigin + Vec2(8, -8);   // bottom-right
+    Vec2 p4 = tileOrigin + Vec2(-8, -8);  // bottom-left
+
+    auto draw = ax::DrawNode::create();
+    draw->drawRect(p1, p2, p3, p4, ax::Color4F::GREEN, 1);
+    ax_util::addChildWithParentCameraMask(gmMgr->getLayer(), draw, 100);
+
+    CallbackManager::the().runAfter([draw](const CallbackManager::CallbackId) {
+      SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager()->getLayer()->removeChild(draw);
+    }, 5.0f);
+
+    _moveDest = waypoint.value();
+  }
+
+  VGLOG(LOG_INFO, "thisPos: [%f, %f], targetPos: [%f, %f], waypoint: [%f,%f]",
+        thisPos.x, thisPos.y, targetPos.x, targetPos.y, _moveDest.x, _moveDest.y);
+
+  if (std::hypotf(_moveDest.x - thisPos.x, _moveDest.y - thisPos.y) <= followDist) {
     if (_onArrivalAtMoveDest) {
       std::invoke(_onArrivalAtMoveDest);
       _onArrivalAtMoveDest = nullptr;
@@ -128,21 +162,25 @@ void NpcController::moveToTarget(const float delta, const b2Vec2& targetPos, con
     _moveDest.SetZero();
     return;
   }
-
-  auto gmMgr = SceneManager::the().getCurrentScene<GameScene>()->getGameMapManager();
-  PathFinder& pathFinder = gmMgr->getGameMap()->getPathFinder();
-  if (auto nextHop = pathFinder.findOptimalNextHop(thisPos, targetPos, followDist)) {
-    _moveDest = *nextHop;
-  } else if (std::abs(targetPos.x - thisPos.x) > .2f) {
-    (thisPos.x > targetPos.x) ? _npc.moveLeft() : _npc.moveRight();
+  
+  const float kMoveThreshold = static_cast<float>(16) / kPpm;
+  if (_moveDest.x < thisPos.x - kMoveThreshold) {
+    _npc.moveLeft();
+  } else if (_moveDest.x > thisPos.x + kMoveThreshold) {
+    _npc.moveRight();
+  }
+  if (_moveDest.y < thisPos.y - kMoveThreshold) {
+    _npc.jumpDown();
+  } else if (_moveDest.y > thisPos.y + kMoveThreshold) {
+    _npc.doubleJump();
   }
 
   // Sometimes when two Npcs are too close to each other,
   // they will stuck in the same place, unable to attack each other.
   // This is most likely because they are facing at the wrong direction.
-  _npc.setFacingRight(targetPos.x > thisPos.x);
+  //_npc.setFacingRight(targetPos.x > thisPos.x);
 
-  jumpIfStucked(delta, kJumpCheckInterval);
+  //jumpIfStucked(delta, kJumpCheckInterval);
 }
 
 void NpcController::moveRandomly(const float delta,

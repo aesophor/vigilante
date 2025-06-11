@@ -7,6 +7,8 @@
 
 #include <box2d/box2d.h>
 
+#include "map/PathFinder.h"
+
 namespace requiem {
 
 class Character;
@@ -14,7 +16,7 @@ class Npc;
 
 class NpcController final {
  public:
-  explicit NpcController(Npc& npc) : _npc{npc} {}
+  explicit NpcController(Npc& npc);
 
   void update(const float delta);
   void setMoveDest(const b2Vec2& targetPos, std::function<void()> onArrivalAtTarget);
@@ -35,6 +37,7 @@ class NpcController final {
   void jumpIfStucked(const float delta, const float checkInterval);
 
   Npc& _npc;
+  std::unique_ptr<PathFinder> _pathFinder;
 
   bool _isSandboxing{};
   bool _isMovingRight{};

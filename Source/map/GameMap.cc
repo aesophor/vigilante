@@ -46,8 +46,7 @@ GameMap::GameMap(b2World* world, Lighting* lighting, const string& tmxMapFilePat
       _tmxTiledMapFilePath{tmxMapFilePath},
       _bgmFilePath{_tmxTiledMap->getProperty("bgm").asString()},
       _parallaxBackground{std::make_unique<ParallaxBackground>()},
-      _navTiledMap{std::make_unique<NavTiledMap>(*_tmxTiledMap)},
-      _pathFinder{std::make_unique<SimplePathFinder>()} {}
+      _navTiledMap{std::make_unique<NavTiledMap>(*_tmxTiledMap)} {}
 
 GameMap::~GameMap() {
   for (auto& actor : _dynamicActors) {
